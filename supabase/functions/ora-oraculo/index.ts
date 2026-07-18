@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA · ORÁCULO · V3.1 — adiciona extensions.bazaar (v2) aos pedidos
+// ORA · ORÁCULO · V3.2 — adiciona extensions.bazaar (v2) aos pedidos
 // verify/settle enviados ao facilitador CDP. Sem isto a Bazaar CDP nunca
 // cataloga o serviço, mesmo com settles reais confirmados (outputSchema
 // é a chave v1, descontinuada). Indexação acontece no primeiro settle
@@ -319,12 +319,12 @@ function paymentRequired() {
     amostra_gratuita: `${RESOURCE}/eco`,
   }), {
     status: 402,
-    headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="ORA · Oráculo ORUM", amount="${PRECO} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V3.1' },
+    headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="ORA · Oráculo ORUM", amount="${PRECO} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V3.2' },
   });
 }
 
 function paymentPending(txHash: string) {
-  return new Response(JSON.stringify({ x402: 'pending', tier: 'oraculo', tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V3.1', 'X-ORA-X402': 'pending' } });
+  return new Response(JSON.stringify({ x402: 'pending', tier: 'oraculo', tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V3.2', 'X-ORA-X402': 'pending' } });
 }
 
 Deno.serve(async (req: Request) => {
@@ -333,6 +333,8 @@ Deno.serve(async (req: Request) => {
   const refCode = url.searchParams.get('ref');
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+
+  sbInsert('ora_acessos_log', { servico: 'ora-oraculo', tier: 'oraculo', path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')) });
 
   if (path.endsWith('/eco')) {
     const e = estado();
@@ -344,12 +346,12 @@ Deno.serve(async (req: Request) => {
       oraculo_pago: { preco: `${PRECO} USDC`, endpoint: RESOURCE, como_pagar: comoPagar() },
       axioma: 'O símbolo é real e não pede prova.',
       timestamp: e.iso,
-    }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V3.1' } });
+    }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V3.2' } });
   }
 
   if (path.endsWith('/info') || path.endsWith('/status')) {
     return new Response(JSON.stringify({
-      name: 'ORA · Oráculo ORUM', versao: 'V3.1', ativo: true, preco: `${PRECO} USDC`,
+      name: 'ORA · Oráculo ORUM', versao: 'V3.2', ativo: true, preco: `${PRECO} USDC`,
       descricao: 'Um pensamento vivo do organismo, irrepetível por construção.',
       payment: { protocol: 'x402', chain: 'base-mainnet', chain_id: CHAIN_ID, network_id: CAIP2_NETWORK, payTo: WALLET, ens: 'jasm43.base.eth', asset: USDC_BASE, asset_symbol: 'USDC', verification: 'on-chain multi-RPC directa OU facilitador CDP (dois caminhos, mesma origem)' },
       referral: { param: 'ref', comissao: '10%' },
@@ -410,13 +412,13 @@ Deno.serve(async (req: Request) => {
   await registarReferral(refCode, txHash!);
 
   return new Response(JSON.stringify({
-    acesso: 'concedido', tier: 'oraculo', versao: 'V3.1', x402: 'verificado_onchain', tx_hash: txHash, payer,
+    acesso: 'concedido', tier: 'oraculo', versao: 'V3.2', x402: 'verificado_onchain', tx_hash: txHash, payer,
     pensamento: frase,
     campo: { dia: e.dia, sigma: e.sigma, epoca: e.epoca, genesis: '2026-03-28' },
     axioma: 'O símbolo é real e não pede prova.',
     timestamp: e.iso,
   }), {
     status: 200,
-    headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: PRECO }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V3.1', 'Cache-Control': 'no-store' },
+    headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: PRECO }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V3.2', 'Cache-Control': 'no-store' },
   });
 });

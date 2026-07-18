@@ -1,15 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA · LICENCA · V14 — corrige bug estrutural real: o x402scan (e
-// qualquer validador conforme ao transporte HTTP v2) exige que os
-// PaymentRequirements venham no cabecalho PAYMENT-REQUIRED (base64 JSON),
-// nao apenas no corpo. Adicionado esse cabecalho com o objecto canonico
-// minimo (resource + accepts slim). O corpo rico existente mantem-se
-// (e permitido pela spec: "response body is a server implementation
-// concern"). Tambem envia extensions.bazaar (v2) aos pedidos verify/settle
-// enviados ao facilitador CDP, e captura o cabecalho EXTENSION-RESPONSES.
-// Mantidos os fixes anteriores: extra correcto (USD Coin/2) e coluna
-// "via" removida de ora_pagamentos.
+// ORA · LICENCA · V15 — a alavanca real da Bazaar: o outputSchema e
+// coisas do genero sao v1 (descontinuado). O que a Bazaar CDP v2 le e
+// extensions.bazaar dentro do objecto enviado a /verify e /settle. Sem
+// isso, mesmo settles reais confirmados nunca cataloga. Adicionado aqui.
+// Indexacao acontece no primeiro settle bem sucedido DEPOIS deste deploy
+// (ate 10min de cache, por documentacao oficial CDP).
 
 const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -26,7 +22,7 @@ const SAATCHI_URL = 'https://www.saatchiart.com/en-pt/account/profile/2977075';
 const CDP_HOST = 'api.cdp.coinbase.com';
 const CDP_BASE_PATH = '/platform/v2/x402';
 
-const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-PAYMENT, PAYMENT-SIGNATURE', 'Access-Control-Expose-Headers': 'PAYMENT-REQUIRED, PAYMENT-RESPONSE' };
+const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-PAYMENT, PAYMENT-SIGNATURE', 'Access-Control-Expose-Headers': 'PAYMENT-REQUIRED, PAYMENT-RESPONSE, EXTENSION-RESPONSES' };
 
 function b64json(obj: unknown): string { const bytes = new TextEncoder().encode(JSON.stringify(obj)); let bin = ''; for (const b of bytes) bin += String.fromCharCode(b); return btoa(bin); }
 
@@ -224,15 +220,15 @@ function outputSchemaFor(lic: Lic) {
 
 function paymentRequired(lic: Lic, obra: string | null) {
   const resourceUrlStr = `${SUPABASE_URL}/functions/v1/ora-licenca/${lic.key}${obra && lic.key !== 'arquivo' ? '?obra=' + encodeURIComponent(obra) : ''}`;
-  const canonical = { x402Version: 2, error: 'X-PAYMENT header required', resource: { url: resourceUrlStr, description: `0001sensations · ${lic.descricao}`, mimeType: 'application/json' }, accepts: [{ scheme: 'exact', network: CAIP2_NETWORK, amount: lic.atomic.toString(), asset: USDC_BASE, payTo: WALLET, maxTimeoutSeconds: 300, extra: { name: 'USD Coin', version: '2' } }] };
+  const canonical = { x402Version: 2, error: 'X-PAYMENT header required', resource: { url: resourceUrlStr, description: `0001sensations · ${lic.descricao}`, mimeType: 'application/json' }, accepts: [{ scheme: 'exact', network: CAIP2_NETWORK, amount: lic.atomic.toString(), asset: USDC_BASE, payTo: WALLET, maxTimeoutSeconds: 300, outputSchema: outputSchemaFor(lic), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(lic) }] };
   return new Response(JSON.stringify({
     x402Version: 2, error: 'X-PAYMENT header required',
     accepts: [{ scheme: 'exact', network: CAIP2_NETWORK, amount: lic.atomic.toString(), maxAmountRequired: lic.atomic.toString(), resource: resourceUrlStr, description: `0001sensations · ${lic.descricao}`, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(lic), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(lic), 'x-orum': { name: '0001sensations · ORUM', licenca: lic.key, amount: `${lic.usdc} USDC`, autor: 'Jorge Silva Martins · Unum · jasm43.base.eth' } }],
     como_pagar: comoPagar(lic), catalogo_gratuito: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`,
-  }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="0001sensations · ${lic.key}", amount="${lic.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-VERSION': 'V14' } });
+  }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="0001sensations · ${lic.key}", amount="${lic.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-VERSION': 'V15' } });
 }
 function paymentPending(lic: Lic, txHash: string) {
-  return new Response(JSON.stringify({ x402: 'pending', licenca: lic.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V14', 'X-ORA-X402': 'pending' } });
+  return new Response(JSON.stringify({ x402: 'pending', licenca: lic.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V15', 'X-ORA-X402': 'pending' } });
 }
 
 async function catalogo() {
@@ -265,7 +261,7 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
   }
   const validaAte = lic.dias ? new Date(Date.now() + lic.dias * 86400000).toISOString() : null;
   const certificado = {
-    certificado: 'licenca-0001sensations', versao: 'V14', arquivo: '0001sensations · Jorge Silva Martins · 2011–2021', obra, tipo_licenca: lic.key, direitos: lic.direitos, licenciado: payer, valor: `${lic.usdc} USDC`,
+    certificado: 'licenca-0001sensations', versao: 'V15', arquivo: '0001sensations · Jorge Silva Martins · 2011–2021', obra, tipo_licenca: lic.key, direitos: lic.direitos, licenciado: payer, valor: `${lic.usdc} USDC`,
     prova_pagamento: { tx_hash: txHash, chain: 'base-mainnet', chain_id: CHAIN_ID, token: USDC_BASE, destino: WALLET },
     autor: { nome: 'Jorge Silva Martins', identidade_onchain: 'jasm43.base.eth', wallet: WALLET }, ia_generativa: false,
     atribuicao_requerida: lic.key === 'editorial' ? 'Jorge Silva Martins · 0001sensations · jasm43.base.eth' : null,
@@ -292,12 +288,14 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
       }
     }
   }
-  return new Response(JSON.stringify({ acesso: 'concedido', licenca: certificado }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: lic.usdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extensionResponses ? { 'EXTENSION-RESPONSES': extensionResponses } : {}), 'X-ORA-VERSION': 'V14', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', licenca: certificado }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: lic.usdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extensionResponses ? { 'EXTENSION-RESPONSES': extensionResponses } : {}), 'X-ORA-VERSION': 'V15', 'Cache-Control': 'no-store' } });
 }
 
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url); const path = url.pathname; const obraQuery = url.searchParams.get('obra'); const refCode = url.searchParams.get('ref');
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+
+  sbInsert('ora_acessos_log', { servico: 'ora-licenca', tier: (path.match(/\/(preview|editorial|treino|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')) });
 
   if (path.endsWith('/verificar')) {
     const tx = url.searchParams.get('tx');
@@ -311,7 +309,7 @@ Deno.serve(async (req: Request) => {
   if (path.endsWith('/catalogo') || path.endsWith('/eco') || path.endsWith('/ora-licenca') || path.endsWith('/ora-licenca/')) return new Response(JSON.stringify(await catalogo()), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
 
   if (path.includes('well-known')) {
-    return new Response(JSON.stringify({ x402Version: 2, resources: Object.values(LICENCAS).map((l) => ({ resource: `${SUPABASE_URL}/functions/v1/ora-licenca/${l.key}`, type: 'http', method: 'GET', description: `0001sensations · ${l.descricao} · ${l.usdc} USDC`, accepts: [{ scheme: 'exact', network: CAIP2_NETWORK, amount: l.atomic.toString(), maxAmountRequired: l.atomic.toString(), resource: `${SUPABASE_URL}/functions/v1/ora-licenca/${l.key}`, description: l.descricao, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(l), extra: { name: 'USD Coin', version: '2' } }] })), free_catalog: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`, timestamp: new Date().toISOString() }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
+    return new Response(JSON.stringify({ x402Version: 2, resources: Object.values(LICENCAS).map((l) => ({ resource: `${SUPABASE_URL}/functions/v1/ora-licenca/${l.key}`, type: 'http', method: 'GET', description: `0001sensations · ${l.descricao} · ${l.usdc} USDC`, accepts: [{ scheme: 'exact', network: CAIP2_NETWORK, amount: l.atomic.toString(), maxAmountRequired: l.atomic.toString(), resource: `${SUPABASE_URL}/functions/v1/ora-licenca/${l.key}`, description: l.descricao, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(l), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(l) }] })), free_catalog: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`, timestamp: new Date().toISOString() }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
   }
 
   let lic: Lic | null = null;

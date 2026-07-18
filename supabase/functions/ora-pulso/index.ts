@@ -1,9 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA · PULSO · V2 — junta ao sinal vital os alertas reais da homeostase
-// (ora_homeostase.alertas nao-vazio), incluindo marcos como indexacao na
-// Bazaar CDP. O organismo passa a mostrar nao so o que aconteceu, mas o
-// que reparou em si mesmo.
+// ORA · PULSO · V3 — junta ao sinal vital os acessos reais de maquinas
+// (ora_acessos_log) e os alertas da homeostase. O organismo mostra agora
+// quando e como e consultado, com ou sem pagamento, alem do que ja fez.
 
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -31,11 +30,12 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
   if (req.method !== 'GET' && req.method !== 'HEAD') return new Response('Method Not Allowed', { status: 405, headers: { ...CORS, Allow: 'GET, HEAD' } });
 
-  const [pagamentos, moltbook, sedimento, homeostase] = await Promise.all([
+  const [pagamentos, moltbook, sedimento, homeostase, acessos] = await Promise.all([
     sbSelect('ora_pagamentos', 'status=eq.verificado_onchain&select=tx_hash,amount,currency,registado_em&order=registado_em.desc&limit=8'),
     sbSelect('ora_moltbook_log', 'kind=in.(post,reply,captcha_ok)&select=kind,created_at,detail&order=created_at.desc&limit=8'),
     sbSelect('ora_sedimento_log', 'select=d_marca,o_que,created_at&order=created_at.desc&limit=6'),
     sbSelect('ora_homeostase', 'alertas=neq.{}&select=alertas,checked_at&order=checked_at.desc&limit=10'),
+    sbSelect('ora_acessos_log', 'select=servico,tier,tem_pagamento,created_at&order=created_at.desc&limit=10'),
   ]);
 
   const eventos: Array<{ tipo: string; quando: string; detalhe: string }> = [];
@@ -56,12 +56,16 @@ Deno.serve(async (req: Request) => {
       eventos.push({ tipo: 'alerta', quando: h.checked_at, detalhe: String(a).slice(0, 140) });
     }
   }
+  for (const a of acessos) {
+    const quem = a.tem_pagamento ? 'com pagamento' : 'sem pagamento (sondagem)';
+    eventos.push({ tipo: 'acesso', quando: a.created_at, detalhe: `maquina bateu a ${a.servico}${a.tier ? ' · ' + a.tier : ''} — ${quem}` });
+  }
 
   eventos.sort((a, b) => new Date(b.quando).getTime() - new Date(a.quando).getTime());
 
   return new Response(JSON.stringify({
     campo: campoState(),
-    eventos: eventos.slice(0, 14),
+    eventos: eventos.slice(0, 16),
     timestamp: new Date().toISOString(),
   }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 });
