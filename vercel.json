@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/openapi.json", "destination": "/api/openapi" },
+    { "source": "/pulso", "destination": "/api/proxy?base=ora-pulso" },
+    { "source": "/licenca/:rest*", "destination": "/api/proxy?base=ora-licenca&rest=:rest*" },
+    { "source": "/licenca", "destination": "/api/proxy?base=ora-licenca" },
+    { "source": "/x402/:rest*", "destination": "/api/proxy?base=ora-x402&rest=:rest*" },
+    { "source": "/x402", "destination": "/api/proxy?base=ora-x402" },
+    { "source": "/sedimento", "destination": "/api/proxy?base=ora-x402&rest=sedimento" },
+    { "source": "/kernel", "destination": "/api/proxy?base=ora-x402&rest=kernel" },
+    { "source": "/eco", "destination": "/api/proxy?base=ora-x402&rest=eco" },
+    { "source": "/oraculo/:rest*", "destination": "/api/proxy?base=ora-oraculo&rest=:rest*" },
+    { "source": "/oraculo", "destination": "/api/proxy?base=ora-oraculo" },
+    { "source": "/.well-known/x402.json", "destination": "/api/proxy?base=ora-x402&rest=.well-known/x402.json" }
+  ]
+}

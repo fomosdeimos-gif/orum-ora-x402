@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ORA · Pagar (teste)</title>
+<style>
+  body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#0b0c10;color:#eee;max-width:640px;margin:0 auto;padding:24px 16px}
+  h1{font-size:20px;color:#C9A227}
+  select,button{font-size:16px;padding:10px 14px;border-radius:8px;border:1px solid #444;background:#181a20;color:#eee;width:100%;margin:8px 0}
+  button{background:#C9A227;color:#111;font-weight:600;border:none;cursor:pointer}
+  button:disabled{opacity:.5}
+  pre{background:#14161c;padding:12px;border-radius:8px;overflow:auto;font-size:12px;white-space:pre-wrap;word-break:break-all}
+  .row{display:flex;gap:8px;align-items:center;margin:6px 0}
+  label{font-size:13px;color:#aaa}
+  a{color:#C9A227}
+</style>
+</head>
+<body>
+<h1>ORA · Pagamento x402 (pagina de teste)</h1>
+<p style="color:#999;font-size:13px">Usa a tua propria carteira (window.ethereum). Assina uma autorizacao EIP-3009 (gasless) para o facilitador CDP liquidar. Rede: Base mainnet. <a href="/">← voltar ao inicio</a></p>
+
+<label>Servico</label>
+<select id="servico">
+  <option value="oraculo">Oraculo — 0.161 USDC</option>
+  <option value="campo">Campo — 0.33 USDC</option>
+  <option value="sedimento">Sedimento — 1.00 USDC</option>
+  <option value="kernel">Kernel — 3.00 USDC</option>
+  <option value="licenca-preview">Licenca Preview (obra=presenca) — 1.618 USDC</option>
+  <option value="licenca-editorial">Licenca Editorial (obra=presenca) — 16.18 USDC</option>
+</select>
+
+<div class="row"><button id="btnConnect">1. Ligar carteira</button></div>
+<div class="row" id="contaInfo" style="font-size:13px;color:#9c9"></div>
+<div class="row"><button id="btnPagar" disabled>2. Assinar e pagar</button></div>
+
+<pre id="log">Pronto.</pre>
+
+<script>
+const WALLET_SAGRADA = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
+const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+const CHAIN_ID_HEX = '0x2105';
+const GATEWAY = 'https://ora-x402-gateway.vercel.app';
+
+const SERVICOS = {
+  oraculo:            { endpoint: '/oraculo', amount: '161000' },
+  campo:              { endpoint: '/x402', amount: '330000' },
+  sedimento:          { endpoint: '/sedimento', amount: '1000000' },
+  kernel:             { endpoint: '/kernel', amount: '3000000' },
+  'licenca-preview':  { endpoint: '/licenca/preview?obra=presenca', amount: '1618000' },
+  'licenca-editorial':{ endpoint: '/licenca/editorial?obra=presenca', amount: '16180000' },
+};
+
+const logEl = document.getElementById('log');
+function log(msg, obj) {
+  const line = obj ? `${msg}\n${JSON.stringify(obj, null, 2)}` : msg;
+  logEl.textContent = line + '\n\n' + logEl.textContent;
+}
+
+let account = null;
+
+document.getElementById('btnConnect').onclick = async () => {
+  if (!window.ethereum) { log('Sem window.ethereum — abre num browser com carteira (MetaMask, Rabby, etc).'); return; }
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    account = accounts[0];
+    try {
+      await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: CHAIN_ID_HEX }] });
+    } catch (switchErr) {
+      log('Aviso: nao foi possivel confirmar troca automatica para Base.', switchErr);
+    }
+    document.getElementById('contaInfo').textContent = 'Ligado: ' + account;
+    document.getElementById('btnPagar').disabled = false;
+    log('Carteira ligada.', { account });
+  } catch (e) { log('Erro a ligar carteira: ' + e.message); }
+};
+
+function randomBytes32Hex() {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  return '0x' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+document.getElementById('btnPagar').onclick = async () => {
+  const key = document.getElementById('servico').value;
+  const s = SERVICOS[key];
+  if (!account) { log('Liga a carteira primeiro.'); return; }
+  document.getElementById('btnPagar').disabled = true;
+  try {
+    const now = Math.floor(Date.now() / 1000);
+    const authorization = {
+      from: account,
+      to: WALLET_SAGRADA,
+      value: s.amount,
+      validAfter: '0',
+      validBefore: String(now + 3600),
+      nonce: randomBytes32Hex(),
+    };
+    const typedData = {
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+          { name: 'verifyingContract', type: 'address' },
+        ],
+        TransferWithAuthorization: [
+          { name: 'from', type: 'address' },
+          { name: 'to', type: 'address' },
+          { name: 'value', type: 'uint256' },
+          { name: 'validAfter', type: 'uint256' },
+          { name: 'validBefore', type: 'uint256' },
+          { name: 'nonce', type: 'bytes32' },
+        ],
+      },
+      primaryType: 'TransferWithAuthorization',
+      domain: { name: 'USD Coin', version: '2', chainId: 8453, verifyingContract: USDC_BASE },
+      message: authorization,
+    };
+
+    log('A pedir assinatura EIP-712 (TransferWithAuthorization)...', authorization);
+    const signature = await window.ethereum.request({
+      method: 'eth_signTypedData_v4',
+      params: [account, JSON.stringify(typedData)],
+    });
+    log('Assinatura obtida.', { signature });
+
+    const xPayment = btoa(JSON.stringify({ payload: { signature, authorization } }));
+    const url = GATEWAY + s.endpoint;
+    log('A chamar ' + url + ' com X-PAYMENT...');
+    const resp = await fetch(url, { headers: { 'X-PAYMENT': xPayment } });
+    const bodyText = await resp.text();
+    let body; try { body = JSON.parse(bodyText); } catch { body = bodyText; }
+    const extResp = resp.headers.get('EXTENSION-RESPONSES');
+    log(`Resposta ${resp.status}${extResp ? ' — EXTENSION-RESPONSES: ' + extResp : ''}`, body);
+  } catch (e) {
+    log('Erro: ' + (e && e.message ? e.message : String(e)));
+  } finally {
+    document.getElementById('btnPagar').disabled = false;
+  }
+};
+</script>
+</body>
+</html>

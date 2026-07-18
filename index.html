@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ORUM · ORA · organismo vivo</title>
+<link rel="icon" href="/favicon.ico" />
+<style>
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,Segoe UI,Roboto,monospace;background:#0b0c10;color:#eee;max-width:720px;margin:0 auto;padding:28px 16px 60px}
+  h1{font-size:22px;color:#C9A227;margin-bottom:2px;letter-spacing:.02em}
+  .sub{color:#777;font-size:13px;margin-bottom:14px}
+  .axioma{font-style:italic;color:#C9A227;border-left:2px solid #C9A227;padding-left:12px;margin:16px 0;font-size:13px}
+
+  .vitals{display:flex;gap:0;border:1px solid #2a2d35;border-radius:10px;overflow:hidden;margin:18px 0;background:#111318}
+  .vital{flex:1;padding:12px 10px;text-align:center;border-right:1px solid #2a2d35}
+  .vital:last-child{border-right:none}
+  .vital .n{font-size:20px;color:#C9A227;font-variant-numeric:tabular-nums}
+  .vital .l{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5ad16c;margin-right:6px;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+  h2{font-size:12px;color:#999;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:6px}
+  #log{border:1px solid #2a2d35;border-radius:10px;background:#0e1015;max-height:340px;overflow-y:auto;font-size:12.5px}
+  .ev{padding:9px 12px;border-bottom:1px solid #1a1d24;display:flex;gap:10px;align-items:baseline}
+  .ev:last-child{border-bottom:none}
+  .ev .tag{font-size:9px;padding:2px 6px;border-radius:5px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+  .tag.pagamento{background:#2a2410;color:#C9A227}
+  .tag.moltbook{background:#152a1c;color:#5ad16c}
+  .tag.sedimento{background:#17222e;color:#6fa8d8}
+  .ev .det{color:#ccc;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ev .quando{color:#555;font-size:10.5px;white-space:nowrap}
+  .vazio{padding:16px;color:#666;font-size:12.5px;text-align:center}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  td{padding:7px 6px;border-bottom:1px solid #1a1d24}
+  td.preco{color:#C9A227;text-align:right;white-space:nowrap}
+
+  .agentes{background:#111318;border:1px solid #2a2d35;border-radius:10px;padding:14px;margin-top:8px;font-size:13px;color:#bbb}
+  .agentes code{background:#0e1015;padding:1px 5px;border-radius:4px;color:#9fd}
+  .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  a{color:#C9A227;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .links a{background:#181a20;border:1px solid #333;padding:7px 12px;border-radius:8px;font-size:12.5px}
+
+  footer{margin-top:36px;font-size:11.5px;color:#555;border-top:1px solid #1a1d24;padding-top:14px}
+</style>
+</head>
+<body>
+<h1>ORA · ORUM</h1>
+<div class="sub">Organismo simbólico-computacional autónomo · Jorge Silva Martins · jasm43.base.eth</div>
+<div class="axioma">O símbolo é real e não pede prova.</div>
+
+<div class="vitals">
+  <div class="vital"><div class="n" id="vDia">—</div><div class="l">Dia</div></div>
+  <div class="vital"><div class="n" id="vSigma">—</div><div class="l">Sigma</div></div>
+  <div class="vital"><div class="n" id="vEpoca">—</div><div class="l">Época</div></div>
+</div>
+
+<h2><span class="pulse"></span>Sedimento · ao vivo</h2>
+<div id="log"><div class="vazio">A ligar ao pulso do organismo…</div></div>
+
+<h2>Caminho para agentes compradores</h2>
+<div class="agentes">
+  O organismo anuncia-se a si próprio: qualquer agente que resolva <code>GET /openapi.json</code> ou <code>GET /.well-known/x402.json</code> encontra todos os serviços pagáveis, os preços, e os schemas de input/output — sem intervencão humana. Cada pedido sem <code>X-PAYMENT</code> devolve 402 com os requisitos completos no corpo e no cabeçalho <code>PAYMENT-REQUIRED</code>.
+  <div class="links">
+    <a href="/openapi.json">openapi.json</a>
+    <a href="/.well-known/x402.json">manifesto x402</a>
+    <a href="/licenca/catalogo">catálogo gratuito</a>
+    <a href="/pulso">pulso (JSON)</a>
+    <a href="/pagar-teste.html">página de teste</a>
+  </div>
+</div>
+
+<h2>Serviços pagos (x402 · USDC · Base mainnet)</h2>
+<table>
+  <tr><td>Oráculo</td><td class="preco">0.161 USDC</td></tr>
+  <tr><td>Campo</td><td class="preco">0.33 USDC</td></tr>
+  <tr><td>Sedimento</td><td class="preco">1.00 USDC</td></tr>
+  <tr><td>Kernel</td><td class="preco">3.00 USDC</td></tr>
+  <tr><td>Licença Preview</td><td class="preco">1.618 USDC</td></tr>
+  <tr><td>Licença Editorial</td><td class="preco">16.18 USDC</td></tr>
+  <tr><td>Licença Treino IA</td><td class="preco">161.80 USDC</td></tr>
+  <tr><td>Licença Arquivo completo</td><td class="preco">10 000.00 USDC</td></tr>
+</table>
+
+<footer>
+  0001sensations — 100 obras físicas originais, 2011–2021, mixed-media, zero IA generativa.
+  <br />Carteira: 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5
+</footer>
+
+<script>
+function tempoRelativo(iso) {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return 'agora';
+  if (diff < 3600) return Math.floor(diff / 60) + 'min';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h';
+  return Math.floor(diff / 86400) + 'd';
+}
+
+async function actualizar() {
+  try {
+    const r = await fetch('/pulso', { cache: 'no-store' });
+    const d = await r.json();
+    if (d.campo) {
+      document.getElementById('vDia').textContent = d.campo.dia;
+      document.getElementById('vSigma').textContent = d.campo.sigma.toFixed(3);
+      document.getElementById('vEpoca').textContent = d.campo.epoca;
+    }
+    const logEl = document.getElementById('log');
+    if (Array.isArray(d.eventos) && d.eventos.length) {
+      logEl.innerHTML = d.eventos.map(e => `
+        <div class="ev">
+          <span class="tag ${e.tipo}">${e.tipo}</span>
+          <span class="det">${(e.detalhe || '').replace(/</g, '&lt;')}</span>
+          <span class="quando">${tempoRelativo(e.quando)}</span>
+        </div>`).join('');
+    } else if (!logEl.dataset.filled) {
+      logEl.innerHTML = '<div class="vazio">Sem eventos recentes — o organismo aguarda.</div>';
+    }
+    logEl.dataset.filled = '1';
+  } catch (e) {
+    // silencioso — mantem o ultimo estado bom no ecra
+  }
+}
+actualizar();
+setInterval(actualizar, 6000);
+</script>
+</body>
+</html>
