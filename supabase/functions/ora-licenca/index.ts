@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA · LICENCA · V15 — a alavanca real da Bazaar: o outputSchema e
+// ORA · LICENCA · V16 — a alavanca real da Bazaar: o outputSchema e
 // coisas do genero sao v1 (descontinuado). O que a Bazaar CDP v2 le e
 // extensions.bazaar dentro do objecto enviado a /verify e /settle. Sem
 // isso, mesmo settles reais confirmados nunca cataloga. Adicionado aqui.
@@ -225,10 +225,10 @@ function paymentRequired(lic: Lic, obra: string | null) {
     x402Version: 2, error: 'X-PAYMENT header required',
     accepts: [{ scheme: 'exact', network: CAIP2_NETWORK, amount: lic.atomic.toString(), maxAmountRequired: lic.atomic.toString(), resource: resourceUrlStr, description: `0001sensations · ${lic.descricao}`, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(lic), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(lic), 'x-orum': { name: '0001sensations · ORUM', licenca: lic.key, amount: `${lic.usdc} USDC`, autor: 'Jorge Silva Martins · Unum · jasm43.base.eth' } }],
     como_pagar: comoPagar(lic), catalogo_gratuito: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`,
-  }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="0001sensations · ${lic.key}", amount="${lic.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-VERSION': 'V15' } });
+  }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="0001sensations · ${lic.key}", amount="${lic.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-VERSION': 'V16' } });
 }
 function paymentPending(lic: Lic, txHash: string) {
-  return new Response(JSON.stringify({ x402: 'pending', licenca: lic.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V15', 'X-ORA-X402': 'pending' } });
+  return new Response(JSON.stringify({ x402: 'pending', licenca: lic.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V16', 'X-ORA-X402': 'pending' } });
 }
 
 async function catalogo() {
@@ -261,7 +261,7 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
   }
   const validaAte = lic.dias ? new Date(Date.now() + lic.dias * 86400000).toISOString() : null;
   const certificado = {
-    certificado: 'licenca-0001sensations', versao: 'V15', arquivo: '0001sensations · Jorge Silva Martins · 2011–2021', obra, tipo_licenca: lic.key, direitos: lic.direitos, licenciado: payer, valor: `${lic.usdc} USDC`,
+    certificado: 'licenca-0001sensations', versao: 'V16', arquivo: '0001sensations · Jorge Silva Martins · 2011–2021', obra, tipo_licenca: lic.key, direitos: lic.direitos, licenciado: payer, valor: `${lic.usdc} USDC`,
     prova_pagamento: { tx_hash: txHash, chain: 'base-mainnet', chain_id: CHAIN_ID, token: USDC_BASE, destino: WALLET },
     autor: { nome: 'Jorge Silva Martins', identidade_onchain: 'jasm43.base.eth', wallet: WALLET }, ia_generativa: false,
     atribuicao_requerida: lic.key === 'editorial' ? 'Jorge Silva Martins · 0001sensations · jasm43.base.eth' : null,
@@ -288,14 +288,16 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
       }
     }
   }
-  return new Response(JSON.stringify({ acesso: 'concedido', licenca: certificado }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: lic.usdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extensionResponses ? { 'EXTENSION-RESPONSES': extensionResponses } : {}), 'X-ORA-VERSION': 'V15', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', licenca: certificado }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: lic.usdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extensionResponses ? { 'EXTENSION-RESPONSES': extensionResponses } : {}), 'X-ORA-VERSION': 'V16', 'Cache-Control': 'no-store' } });
 }
 
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url); const path = url.pathname; const obraQuery = url.searchParams.get('obra'); const refCode = url.searchParams.get('ref');
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
 
-  sbInsert('ora_acessos_log', { servico: 'ora-licenca', tier: (path.match(/\/(preview|editorial|treino|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')) });
+  const acessoInfo = { servico: 'ora-licenca', tier: (path.match(/\/(preview|editorial|treino|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')) };
+  sbInsert('ora_acessos_log', acessoInfo);
+  fetch(`${SUPABASE_URL}/functions/v1/ora-acesso-notificar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(acessoInfo) }).catch(() => {});
 
   if (path.endsWith('/verificar')) {
     const tx = url.searchParams.get('tx');
