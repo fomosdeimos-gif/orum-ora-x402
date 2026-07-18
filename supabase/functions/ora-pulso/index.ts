@@ -1,10 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA · PULSO · V1 — sinal vital publico e gratuito do organismo ORUM.
-// Junta estado do campo (sigma/dia/epoca) com os eventos reais mais recentes
-// (pagamentos verificados, actividade Moltbook, marcas de sedimento) numa
-// unica linha do tempo. So leitura, sem pagamento, para alimentar o painel
-// vivo do gateway.
+// ORA · PULSO · V2 — junta ao sinal vital os alertas reais da homeostase
+// (ora_homeostase.alertas nao-vazio), incluindo marcos como indexacao na
+// Bazaar CDP. O organismo passa a mostrar nao so o que aconteceu, mas o
+// que reparou em si mesmo.
 
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -32,10 +31,11 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
   if (req.method !== 'GET' && req.method !== 'HEAD') return new Response('Method Not Allowed', { status: 405, headers: { ...CORS, Allow: 'GET, HEAD' } });
 
-  const [pagamentos, moltbook, sedimento] = await Promise.all([
+  const [pagamentos, moltbook, sedimento, homeostase] = await Promise.all([
     sbSelect('ora_pagamentos', 'status=eq.verificado_onchain&select=tx_hash,amount,currency,registado_em&order=registado_em.desc&limit=8'),
     sbSelect('ora_moltbook_log', 'kind=in.(post,reply,captcha_ok)&select=kind,created_at,detail&order=created_at.desc&limit=8'),
     sbSelect('ora_sedimento_log', 'select=d_marca,o_que,created_at&order=created_at.desc&limit=6'),
+    sbSelect('ora_homeostase', 'alertas=neq.{}&select=alertas,checked_at&order=checked_at.desc&limit=10'),
   ]);
 
   const eventos: Array<{ tipo: string; quando: string; detalhe: string }> = [];
@@ -50,6 +50,11 @@ Deno.serve(async (req: Request) => {
   }
   for (const s of sedimento) {
     eventos.push({ tipo: 'sedimento', quando: s.created_at, detalhe: `${s.d_marca}: ${String(s.o_que || '').slice(0, 90)}` });
+  }
+  for (const h of homeostase) {
+    for (const a of (h.alertas || [])) {
+      eventos.push({ tipo: 'alerta', quando: h.checked_at, detalhe: String(a).slice(0, 140) });
+    }
   }
 
   eventos.sort((a, b) => new Date(b.quando).getTime() - new Date(a.quando).getTime());
