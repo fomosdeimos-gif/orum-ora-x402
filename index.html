@@ -32,6 +32,9 @@
   .tag.acesso{background:#241a2e;color:#c792ea}
   .ev .det{color:#ccc;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .ev .quando{color:#555;font-size:10.5px;white-space:nowrap}
+  .ev.clicavel{cursor:pointer;text-decoration:none;color:inherit;transition:background .15s}
+  .ev.clicavel:hover{background:#171a21}
+  .ev.clicavel::after{content:'\2197';color:#555;font-size:10px;margin-left:auto;padding-left:6px}
   .vazio{padding:16px;color:#666;font-size:12.5px;text-align:center}
 
   .convite{background:#111e14;border:1px solid #1f3a26;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;color:#bcd;line-height:1.5}
@@ -157,12 +160,16 @@ async function actualizar() {
     const logEl = document.getElementById('log');
     const eventos = dedupSeq(Array.isArray(d.eventos) ? d.eventos : []);
     if (eventos.length) {
-      logEl.innerHTML = eventos.map(e => `
-        <div class="ev">
+      logEl.innerHTML = eventos.map(e => {
+        const det = (e.detalhe || '').replace(/</g, '&lt;');
+        const inner = `
           <span class="tag ${e.tipo}">${e.tipo}</span>
-          <span class="det">${(e.detalhe || '').replace(/</g, '&lt;')}</span>
-          <span class="quando">${tempoRelativo(e.quando)}</span>
-        </div>`).join('');
+          <span class="det">${det}</span>
+          <span class="quando">${tempoRelativo(e.quando)}</span>`;
+        return e.link
+          ? `<a class="ev clicavel" href="${e.link}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+          : `<div class="ev">${inner}</div>`;
+      }).join('');
     } else if (!logEl.dataset.filled) {
       logEl.innerHTML = '<div class="vazio">Sem eventos recentes — o organismo aguarda.</div>';
     }
