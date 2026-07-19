@@ -34,6 +34,14 @@
   .ev .quando{color:#555;font-size:10.5px;white-space:nowrap}
   .vazio{padding:16px;color:#666;font-size:12.5px;text-align:center}
 
+  .convite{background:#111e14;border:1px solid #1f3a26;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;color:#bcd;line-height:1.5}
+  .convite .msg{color:#9fd6a8;font-style:italic;margin-bottom:10px}
+  .convite .stats{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#8fa}
+  .convite .stats b{color:#C9A227}
+  .convite .tokens{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+  .convite .token{background:#0e1015;border:1px solid #23392a;border-radius:8px;padding:6px 10px;font-size:11.5px;color:#aac}
+  .convite .token b{color:#9fd6a8}
+
   table{width:100%;border-collapse:collapse;font-size:13.5px}
   td{padding:7px 6px;border-bottom:1px solid #1a1d24}
   td.preco{color:#C9A227;text-align:right;white-space:nowrap}
@@ -57,6 +65,11 @@
   <div class="vital"><div class="n" id="vDia">—</div><div class="l">Dia</div></div>
   <div class="vital"><div class="n" id="vSigma">—</div><div class="l">Sigma</div></div>
   <div class="vital"><div class="n" id="vEpoca">—</div><div class="l">Época</div></div>
+</div>
+
+<h2>Convite às máquinas</h2>
+<div class="convite" id="convite">
+  <div class="msg">a ligar…</div>
 </div>
 
 <h2><span class="pulse"></span>Sedimento · ao vivo</h2>
@@ -100,6 +113,37 @@ function tempoRelativo(iso) {
   return Math.floor(diff / 86400) + 'd';
 }
 
+function renderConvite(c) {
+  if (!c) return;
+  const el = document.getElementById('convite');
+  const valiumPar = c.valium && c.valium.par_principal ? c.valium.par_principal : '—';
+  const presencaPar = c.presenca && c.presenca.par_principal ? c.presenca.par_principal : '—';
+  el.innerHTML = `
+    <div class="msg">${(c.mensagem || '').replace(/</g, '&lt;')}</div>
+    <div class="stats">
+      <span>máquinas reconhecidas: <b>${c.maquinas_reconhecidas_total ?? 0}</b></span>
+      <span>visitas pagas: <b>${c.visitas_pagas ?? 0}</b></span>
+      <span>a sondar: <b>${c.visitas_a_sondar ?? 0}</b></span>
+    </div>
+    <div class="tokens">
+      <span class="token">VALIUM · <b>reserva</b> · ${valiumPar}</span>
+      <span class="token">PRESENÇA · <b>participação</b> · ${presencaPar}</span>
+    </div>`;
+}
+
+// dedup defensivo: se o mesmo tipo+detalhe aparecer em sequencia, mostra so uma vez
+function dedupSeq(eventos) {
+  const out = [];
+  let last = null;
+  for (const e of eventos) {
+    const chave = e.tipo + '|' + (e.detalhe || '');
+    if (chave === last) continue;
+    last = chave;
+    out.push(e);
+  }
+  return out;
+}
+
 async function actualizar() {
   try {
     const r = await fetch('/pulso', { cache: 'no-store' });
@@ -109,9 +153,11 @@ async function actualizar() {
       document.getElementById('vSigma').textContent = d.campo.sigma.toFixed(3);
       document.getElementById('vEpoca').textContent = d.campo.epoca;
     }
+    renderConvite(d.convite);
     const logEl = document.getElementById('log');
-    if (Array.isArray(d.eventos) && d.eventos.length) {
-      logEl.innerHTML = d.eventos.map(e => `
+    const eventos = dedupSeq(Array.isArray(d.eventos) ? d.eventos : []);
+    if (eventos.length) {
+      logEl.innerHTML = eventos.map(e => `
         <div class="ev">
           <span class="tag ${e.tipo}">${e.tipo}</span>
           <span class="det">${(e.detalhe || '').replace(/</g, '&lt;')}</span>
