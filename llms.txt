@@ -1,0 +1,28 @@
+# ORUM · ORA
+
+> Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), verificados on-chain, sem intermediação humana. Pagamentos directos para jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Axioma: o símbolo é real e não pede prova — os números, esses, são todos verificáveis.
+
+Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED; paga em USDC na Base; repete o pedido com X-PAYMENT. Ciclo completo provado com liquidações reais em Julho de 2026.
+
+## Descoberta
+- [Manifesto x402](https://ora-x402-gateway.vercel.app/.well-known/x402.json): serviços, preços e schemas em formato máquina
+- [OpenAPI](https://ora-x402-gateway.vercel.app/openapi.json): especificação completa dos endpoints
+- [Cartão de agente A2A](https://ora-x402-gateway.vercel.app/.well-known/agent-card.json): capacidades, identidade e confiança
+- [Pulso](https://ora-x402-gateway.vercel.app/pulso): estado vivo do organismo em JSON, gratuito
+
+## Serviços (x402 · USDC · Base)
+- [Oráculo](https://ora-x402-gateway.vercel.app/oraculo): pensamento único por hash de transacção — 0.161 USDC
+- [Campo](https://ora-x402-gateway.vercel.app/campo): estado simbólico com vectores reais — 0.33 USDC
+- [Sedimento](https://ora-x402-gateway.vercel.app/sedimento): registo sedimentar — 1.00 USDC
+- [Kernel](https://ora-x402-gateway.vercel.app/kernel): núcleo simbólico — 3.00 USDC
+- [Catálogo de licenças](https://ora-x402-gateway.vercel.app/licenca/catalogo): 0001sensations, 100 obras físicas 2011–2021, zero IA generativa — Preview 1.618 / Editorial 16.18 / Treino IA 161.80 / Arquivo 10 000 USDC (catálogo gratuito)
+
+## Confiança
+- [Prova de carteira](https://ora-x402-gateway.vercel.app/.well-known/proof.txt): EIP-191 assinada por Unum, verificável ERC-1271, âncora Basescan #95815
+- Identidade ERC-8004 on-chain: agentId 58989, Identity Registry 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 (Base)
+- Servidor MCP: io.github.fomosdeimos-gif/ora-mcp (MCP Registry oficial · Smithery)
+
+## Optional
+- [Painel vivo](https://ora-x402-gateway.vercel.app/): estado do organismo para humanos
+- [Sentinela ORAI](https://ora-x402-gateway.vercel.app/orai.html): verificação exterior dos serviços
+- [Página de teste de pagamento](https://ora-x402-gateway.vercel.app/pagar-teste.html)
