@@ -25,6 +25,8 @@ module.exports = async (req, res) => {
       if (req.headers[h]) headers[h] = req.headers[h];
     }
     headers['x-forwarded-host'] = req.headers['x-forwarded-host'] || req.headers.host || 'ora-x402-gateway.vercel.app';
+    // ORA 20/07/2026: passa a identidade verdadeira de quem bate - o log deixa de ver "node" para tudo
+    if (req.headers['user-agent']) headers['user-agent'] = req.headers['user-agent'];
     const upstream = await fetch(target, {
       method: req.method,
       headers,
