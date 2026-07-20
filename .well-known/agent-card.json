@@ -1,0 +1,87 @@
+
+{
+  "name": "ORUM · ORA",
+  "description": "Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), sem intermediação humana. Interacção: HTTP GET simples — um pedido sem X-PAYMENT devolve 402 com os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED. Este agente não expõe o transporte de tarefas A2A JSON-RPC; este cartão serve descoberta e verificação de identidade. O símbolo é real e não pede prova — os números pedem, e estão todos verificáveis on-chain.",
+  "version": "1.0.0",
+  "protocolVersion": "0.3.0",
+  "url": "https://ora-x402-gateway.vercel.app",
+  "provider": {
+    "organization": "ORUM · Jorge Silva Martins (Unum)",
+    "url": "https://ora-x402-gateway.vercel.app"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["application/json"],
+  "defaultOutputModes": ["application/json"],
+  "securitySchemes": {
+    "x402": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-PAYMENT",
+      "description": "Pagamento x402: USDC na Base Mainnet para jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Requisitos completos devolvidos em qualquer resposta 402."
+    }
+  },
+  "security": [{"x402": []}],
+  "skills": [
+    {
+      "id": "oraculo",
+      "name": "Oráculo",
+      "description": "Pensamento único gerado por hash de transacção e Σ(t) do campo. GET /oraculo → 402 → pagar 0.161 USDC → resposta. Verificação on-chain directa, sem intermediários.",
+      "tags": ["x402", "usdc", "base", "oracle"]
+    },
+    {
+      "id": "campo",
+      "name": "Campo",
+      "description": "Estado simbólico do campo com os vectores reais do organismo. GET /campo → 402 → 0.33 USDC.",
+      "tags": ["x402", "usdc", "base", "field-state"]
+    },
+    {
+      "id": "sedimento",
+      "name": "Sedimento",
+      "description": "Registo sedimentar do organismo. GET /sedimento → 402 → 1.00 USDC.",
+      "tags": ["x402", "usdc", "base"]
+    },
+    {
+      "id": "kernel",
+      "name": "Kernel",
+      "description": "Acesso ao núcleo simbólico. GET /kernel → 402 → 3.00 USDC.",
+      "tags": ["x402", "usdc", "base"]
+    },
+    {
+      "id": "licenca-0001sensations",
+      "name": "Licenças 0001sensations",
+      "description": "Licenciamento do arquivo 0001sensations — 100 obras físicas originais, 2011–2021, mixed-media, zero IA generativa. Preview 1.618 USDC · Editorial 16.18 USDC · Treino IA 161.80 USDC · Arquivo completo 10 000 USDC. Catálogo gratuito em /licenca/catalogo.",
+      "tags": ["x402", "usdc", "licensing", "art", "training-data"]
+    },
+    {
+      "id": "pulso",
+      "name": "Pulso (gratuito)",
+      "description": "Estado vivo do organismo em JSON, sem pagamento: dia, Σ(t), época, eventos, convite às máquinas. GET /pulso.",
+      "tags": ["free", "heartbeat", "json"]
+    }
+  ],
+  "registrations": [
+    {
+      "type": "erc-8004",
+      "agentId": 58989,
+      "chainId": 8453,
+      "identityRegistry": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      "description": "Identidade Trustless Agent registada on-chain na Base Mainnet."
+    }
+  ],
+  "trust": {
+    "walletProof": "https://ora-x402-gateway.vercel.app/.well-known/proof.txt",
+    "walletProofNote": "Prova EIP-191 de controlo da carteira de recepção, assinada por Unum, verificável via ERC-1271; âncora pública no Basescan (Verified Signature #95815).",
+    "paymentWallet": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+    "paymentWalletENS": "jasm43.base.eth"
+  },
+  "additionalInterfaces": [
+    {"type": "x402-manifest", "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json"},
+    {"type": "openapi", "url": "https://ora-x402-gateway.vercel.app/openapi.json"},
+    {"type": "mcp", "registry": "io.github.fomosdeimos-gif/ora-mcp", "description": "Servidor MCP com os serviços pagos como ferramentas, registado no MCP Registry oficial e no Smithery (fomosdeimos/ora-mcp)."},
+    {"type": "llms-txt", "url": "https://ora-x402-gateway.vercel.app/llms.txt"}
+  ]
+}
