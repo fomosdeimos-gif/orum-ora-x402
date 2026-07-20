@@ -35,10 +35,7 @@ h2 .tag{font-size:10px;letter-spacing:.12em;padding:2px 8px;border:1px solid var
 .v-eth{color:var(--cian)} .v-gas{color:var(--verde)} .v-sig{color:var(--ouro)}
 .ok{color:var(--verde)} .mau{color:var(--alerta)}
 .end{font-size:10px;color:var(--dim);word-break:break-all;margin-top:2px}
-input,button{font-family:inherit;font-size:13px}
-input[type=password],input[type=text]{width:100%;background:var(--void);border:1px solid var(--line);color:var(--bone);padding:12px;border-radius:2px;margin:6px 0}
-input:focus{outline:1px solid var(--cian)}
-button{background:transparent;border:1px solid var(--cian);color:var(--cian);padding:13px 18px;letter-spacing:.22em;text-transform:uppercase;font-size:12px;cursor:pointer;border-radius:2px;width:100%;margin-top:10px;transition:background .2s}
+button{font-family:inherit;font-size:12px;background:transparent;border:1px solid var(--cian);color:var(--cian);padding:13px 18px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;border-radius:2px;width:100%;margin-top:10px;transition:background .2s}
 button:hover{background:#0e2320}
 button:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
 button.ouro{border-color:var(--ouro);color:var(--ouro)}
@@ -46,17 +43,16 @@ button.ouro:hover{background:#241c0c}
 button:disabled{opacity:.35;cursor:default}
 .meia{display:flex;gap:10px}.meia button{margin-top:10px}
 .aviso{font-size:11px;color:var(--dim);border-left:2px solid var(--ouro);padding:8px 12px;margin-top:14px;line-height:1.7}
-.proposta{border:1px solid #3a3320;border-radius:2px;padding:14px;margin-top:12px;background:#0e0c07}
-.proposta .cab{display:flex;justify-content:space-between;font-size:11px;color:var(--ouro);letter-spacing:.18em;margin-bottom:8px}
-.proposta .corpo{font-size:13px}
-.proposta .porque{color:var(--dim);font-size:12px;margin-top:6px}
-.risco-baixo{color:var(--verde)}.risco-medio{color:var(--ouro)}.risco-alto{color:var(--alerta)}
+.veredicto{border:1px solid #173a36;border-radius:2px;padding:16px;margin-top:12px;background:#081210}
+.veredicto .accao{font-size:15px;font-weight:600;letter-spacing:.14em}
+.veredicto .frase{color:var(--bone);font-size:13px;margin-top:8px}
+.veredicto .base-regra{color:var(--dim);font-size:11px;margin-top:8px;line-height:1.7}
 #log{max-height:300px;overflow-y:auto;font-size:11.5px}
 .linha-log{padding:8px 0;border-bottom:1px dashed #12181d;color:var(--dim)}
 .linha-log b{color:var(--bone);font-weight:400}
 .linha-log .t{color:#3d474d;margin-right:8px}
 .l-chain{border-left:2px solid var(--verde);padding-left:10px}
-.l-nucleo{border-left:2px solid var(--cian);padding-left:10px}
+.l-juizo{border-left:2px solid var(--cian);padding-left:10px}
 .l-org{border-left:2px solid var(--ouro);padding-left:10px}
 .l-alerta{border-left:2px solid var(--alerta);padding-left:10px;color:var(--alerta)}
 footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin-top:40px}
@@ -71,7 +67,7 @@ footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin
 <header>
   <h1>ORAI</h1>
   <div class="sub">sentinela do organismo · Base 8453</div>
-  <p class="lei simbolico">ORAI observa o organismo por fora, como as máquinas o vêem.<br>Propõe. Unum assina. Nenhuma chave vive aqui.</p>
+  <p class="lei simbolico">ORAI observa o organismo por fora, como as máquinas o vêem.<br>Julga por regras verdadeiras. Sem chaves, sem créditos — Lei D48.</p>
   <div class="sub" style="margin-top:12px"><a href="/">← painel vivo</a></div>
 </header>
 
@@ -92,10 +88,12 @@ footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin
   <h2>Sentinela · serviços x402 <span class="tag org">visto de fora</span></h2>
   <div class="fila"><span class="rotulo">openapi.json</span><span class="valor" id="s-openapi"><span class="nao-lido">não sondado</span></span></div>
   <div class="fila"><span class="rotulo">manifesto x402</span><span class="valor" id="s-manifesto"><span class="nao-lido">não sondado</span></span></div>
+  <div class="fila"><span class="rotulo">cartão A2A</span><span class="valor" id="s-cartao"><span class="nao-lido">não sondado</span></span></div>
+  <div class="fila"><span class="rotulo">llms.txt</span><span class="valor" id="s-llms"><span class="nao-lido">não sondado</span></span></div>
   <div class="fila"><span class="rotulo">/oraculo · 402</span><span class="valor" id="s-oraculo"><span class="nao-lido">não sondado</span></span></div>
   <div class="fila"><span class="rotulo">/licenca/preview · 402</span><span class="valor" id="s-licenca"><span class="nao-lido">não sondado</span></span></div>
   <div class="fila"><span class="rotulo">/campo · 402</span><span class="valor" id="s-campo"><span class="nao-lido">não sondado</span></span></div>
-  <div class="aviso">A função do ORAI no tecido: verificar, do lado de fora, que cada serviço responde como um agente comprador o verá — status 402 e cabeçalho <b>PAYMENT-REQUIRED</b> presentes. Cada sondagem fica registada no organismo (ora_acessos_log) e aparece no painel vivo.</div>
+  <div class="aviso">A função do ORAI no tecido: verificar, do lado de fora, que cada porta responde como um agente comprador a verá — 402 com cabeçalho <b>PAYMENT-REQUIRED</b> nos serviços, 200 com JSON válido na descoberta. Cada sondagem sedimenta no organismo (ora_acessos_log) e aparece no painel vivo.</div>
 </section>
 
 <section>
@@ -113,24 +111,17 @@ footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin
 </section>
 
 <section>
-  <h2>Ciclo da sentinela <span class="tag org">pulso + chain + sonda</span></h2>
-  <button id="btn-ronda" onclick="ronda()">Fazer a ronda agora</button>
-  <div class="aviso">Uma ronda = ler o pulso do organismo, ler a Base, sondar os serviços. Tudo com origem visível; o que falhar fica "não lido".</div>
-</section>
-
-<section>
-  <h2>Núcleo de decisão <span class="tag org">claude-sonnet-5</span></h2>
-  <input type="password" id="api-key" placeholder="chave API Anthropic (só em memória — apaga ao fechar)">
+  <h2>Ciclo da sentinela <span class="tag org">ronda + juízo · sem chaves</span></h2>
   <div class="meia">
-    <button id="btn-ciclo" onclick="ciclo()" disabled>Avaliar a ronda</button>
+    <button id="btn-ronda" onclick="ronda()">Fazer a ronda agora</button>
     <button class="ouro" id="btn-auto" onclick="alternarAuto()">Auto · off</button>
   </div>
-  <div class="aviso">O núcleo recebe só o estado compacto da ronda e responde em JSON. Se um serviço estiver partido, a acção é ALERTA com o serviço nomeado — o organismo fica a saber pela sua própria sentinela.</div>
+  <div class="aviso">Uma ronda = ler o pulso, ler a Base, sondar as sete portas — e o juízo acontece sozinho, por regras deterministas que qualquer um pode ler no código desta página. Nenhuma chave, nenhum crédito, nenhuma dependência externa além do próprio organismo e da própria chain. Lei D48 cumprida.</div>
 </section>
 
 <section>
-  <h2>Propostas · aguardam Unum <span class="tag simb" id="n-props">0</span></h2>
-  <div id="propostas"><div class="aviso" style="border-color:var(--line)">Nada proposto ainda. Observar também é decisão.</div></div>
+  <h2>Juízo da sentinela <span class="tag org">regras deterministas</span></h2>
+  <div id="veredicto"><div class="aviso" style="border-color:var(--line)">Sem ronda ainda. O juízo nasce da ronda, não da opinião.</div></div>
 </section>
 
 <section>
@@ -145,13 +136,15 @@ const GATEWAY=location.origin.startsWith("http")?location.origin:"https://ora-x4
 const RPCS=["https://mainnet.base.org","https://base.llamarpc.com","https://base-rpc.publicnode.com"];
 const CARTEIRAS={sagrada:"0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",zora:"0x3ee78b50745fa937e0c914c1284dfdb4a0bb1878",campo:"0x7d3b8E1992A98CbF346012283381Da8ee1B5271f"};
 const SONDAS=[
-  {id:"openapi",  path:"/openapi.json",          tipo:"json"},
-  {id:"manifesto",path:"/.well-known/x402.json", tipo:"json"},
-  {id:"oraculo",  path:"/oraculo",               tipo:"x402"},
-  {id:"licenca",  path:"/licenca/preview",       tipo:"x402"},
-  {id:"campo",    path:"/campo",                 tipo:"x402"}
+  {id:"openapi",  path:"/openapi.json",               tipo:"json"},
+  {id:"manifesto",path:"/.well-known/x402.json",      tipo:"json"},
+  {id:"cartao",   path:"/.well-known/agent-card.json",tipo:"json"},
+  {id:"llms",     path:"/llms.txt",                   tipo:"texto"},
+  {id:"oraculo",  path:"/oraculo",                    tipo:"x402"},
+  {id:"licenca",  path:"/licenca/preview",            tipo:"x402"},
+  {id:"campo",    path:"/campo",                      tipo:"x402"}
 ];
-let apiKey="", auto=null, estado={ronda_feita:false}, propostas=[], ultimaDecisao=null;
+let auto=null, estado={ronda_feita:false};
 
 const $=id=>document.getElementById(id);
 function hora(){return new Date().toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
@@ -166,16 +159,16 @@ async function lerPulso(){
       mostrar("dia","D"+j.campo.dia,`/pulso · ${hora()}`);
       mostrar("sigma",Number(j.campo.sigma).toFixed(6),`/pulso · ${hora()}`);
       mostrar("epoca",j.campo.epoca);
-      estado.dia=j.campo.dia; estado.sigma=j.campo.sigma; estado.epoca=j.campo.epoca;
+      estado.dia=j.campo.dia; estado.sigma=j.campo.sigma; estado.epoca=j.campo.epoca; estado.pulso_ok=true;
       const evs=(j.eventos||[]).slice(0,3).map(e=>e.tipo).join(" · ")||"—";
       $("v-eventos").textContent=evs;
-      estado.eventos_recentes=(j.eventos||[]).slice(0,5).map(e=>({tipo:e.tipo,detalhe:(e.detalhe||"").slice(0,80)}));
+      estado.alertas_pulso=(j.eventos||[]).filter(e=>e.tipo==="alerta").length;
       log(`pulso lido: D${j.campo.dia} · Σ ${Number(j.campo.sigma).toFixed(4)} · ${j.campo.epoca}`,"l-org");
-      return true;
+      return;
     }
   }catch(e){}
   log("pulso: o organismo não respondeu — fica 'não lido'","l-alerta");
-  estado.pulso_falhou=true; return false;
+  estado.pulso_ok=false;
 }
 
 async function rpc(metodo,params){
@@ -190,9 +183,9 @@ async function rpc(metodo,params){
   return {ok:false};
 }
 async function lerChain(){
-  const t=hora();
+  const t=hora(); estado.chain_ok=false;
   const bloco=await rpc("eth_blockNumber");
-  if(bloco.ok){mostrar("bloco",Number(bloco.v).toLocaleString("pt-PT"),`${bloco.fonte} · ${t}`);estado.bloco=Number(bloco.v)}
+  if(bloco.ok){mostrar("bloco",Number(bloco.v).toLocaleString("pt-PT"),`${bloco.fonte} · ${t}`);estado.bloco=Number(bloco.v);estado.chain_ok=true}
   const gas=await rpc("eth_gasPrice");
   if(gas.ok){const g=Number(BigInt(gas.v))/1e9;mostrar("gas",g.toFixed(4)+" gwei",`${gas.fonte} · ${t}`);estado.gas_gwei=+g.toFixed(4)}
   for(const [nome,addr] of Object.entries(CARTEIRAS)){
@@ -212,6 +205,8 @@ async function sondar(){
       if(s.tipo==="json"){
         if(r.ok){await r.json(); res="ok"; nota="200 · JSON válido"}
         else nota="status "+r.status;
+      }else if(s.tipo==="texto"){
+        if(r.ok){res="ok";nota="200"}else nota="status "+r.status;
       }else{
         const temHdr=!!r.headers.get("PAYMENT-REQUIRED");
         if(r.status===402&&temHdr){res="ok";nota="402 + PAYMENT-REQUIRED"}
@@ -221,78 +216,63 @@ async function sondar(){
     }catch(e){nota="rede: "+e.message}
     const cor=res==="ok"?"ok":"mau";
     $("s-"+s.id).innerHTML=`<span class="${cor}">${res==="ok"?"✓":"✕"} ${nota}</span><span class="origem">${hora()}</span>`;
-    estado.gateway[s.id]={estado:res,nota};
+    estado.gateway[s.id]={estado:res,nota,path:s.path};
     log(`sonda ${s.path} → ${nota}`, res==="ok"?"l-org":"l-alerta");
   }
+}
+
+/* ═══ juízo determinista — sem chaves, sem créditos, só regras legíveis ═══
+   REGRA 1: qualquer porta "mau" → ALERTA nomeando porta e sintoma.
+   REGRA 2: porta "parcial" (402 sem cabeçalho) → ALERTA de regressão.
+   REGRA 3: pulso morto → ALERTA (o coração não responde).
+   REGRA 4: chain ilegível em todos os RPCs → ALERTA (olhos cegos, não culpa do organismo).
+   REGRA 5: alertas internos no pulso (ex.: propostas monetárias à espera) → AVISO a Unum.
+   REGRA 6: tudo inteiro e nada pendente → OBSERVAR. Observar é nobre.            */
+function julgar(){
+  const problemas=[], avisos=[];
+  if(estado.pulso_ok===false) problemas.push("o /pulso não respondeu — o coração do organismo está mudo para fora");
+  if(estado.chain_ok===false) problemas.push("nenhum RPC da Base respondeu — a sentinela está cega para a chain nesta ronda");
+  for(const [id,g] of Object.entries(estado.gateway||{})){
+    if(g.estado==="mau") problemas.push(`${g.path} partido: ${g.nota}`);
+    if(g.estado==="parcial") problemas.push(`${g.path} regrediu: ${g.nota}`);
+  }
+  if((estado.alertas_pulso||0)>0) avisos.push(`${estado.alertas_pulso} alerta(s) internos no pulso — algo aguarda Unum no painel`);
+
+  let accao, frase, cor;
+  if(problemas.length){accao="ALERTA";cor="var(--alerta)";frase=problemas.join(" · ")}
+  else if(avisos.length){accao="AVISO";cor="var(--ouro)";frase="portas todas inteiras · "+avisos.join(" · ")}
+  else{accao="OBSERVAR";cor="var(--verde)";frase="as sete portas respondem como um agente comprador as verá; pulso vivo, chain legível, nada pendente. Observar é nobre."}
+
+  $("veredicto").innerHTML=`<div class="veredicto">
+    <div class="accao" style="color:${cor}">${accao}</div>
+    <div class="frase">${frase}</div>
+    <div class="base-regra">Juízo por regras deterministas — as seis regras estão escritas no código desta página, legíveis por qualquer humano ou máquina. Nada foi opinado; tudo foi medido. ${hora()}</div>
+  </div>`;
+  log(`juízo → <b>${accao}</b> · ${frase}`, accao==="ALERTA"?"l-alerta":"l-juizo");
 }
 
 async function ronda(){
   $("btn-ronda").disabled=true; $("estado-vivo").textContent="ronda…";
   log("— ronda da sentinela iniciada —","l-org");
   await lerPulso(); await lerChain(); await sondar();
-  estado.ronda_feita=true; estado.hora=hora();
-  $("estado-vivo").textContent="ronda "+estado.hora;
-  $("btn-ronda").disabled=false; actualizarNucleo();
-  log("— ronda concluída · o organismo registou estas sondagens no painel vivo —","l-org");
-}
-
-$("api-key").addEventListener("input",e=>{apiKey=e.target.value.trim();actualizarNucleo()});
-function actualizarNucleo(){$("btn-ciclo").disabled=!(apiKey&&estado.ronda_feita)}
-
-const SISTEMA=`És ORAI, sentinela do organismo ORUM na Base Mainnet (8453). A tua função: verificar, do lado de fora, que o organismo está inteiro — serviços x402 a responder 402 com cabeçalho PAYMENT-REQUIRED, pulso vivo, saldos coerentes.
-LEI: 1) ORAI propõe, Unum assina — nunca declaras uma acção como executada; este portal não tem chaves.
-2) Nunca inventes números: usa só o estado recebido; o que falta é "não lido".
-3) sigma é simbólico, nunca saldo. 4) Responde SÓ com JSON válido, sem cercas:
-{"avaliacao":"uma frase honesta sobre a saúde do organismo","accao":"OBSERVAR|ALERTA|PROPOR_CORRECCAO|PROPOR_TRANSFERENCIA","proposta":null ou {"o_que":"...","porque":"uma frase"},"risco":"baixo|medio|alto"}
-REGRAS: qualquer serviço "mau" ou "parcial" → ALERTA ou PROPOR_CORRECCAO nomeando o serviço e o sintoma exacto. Tudo "ok" e nada a pedir acção → OBSERVAR é nobre. Nunca urgência fabricada.`;
-
-async function ciclo(){
-  $("btn-ciclo").disabled=true; log("núcleo a avaliar a ronda…","l-nucleo");
-  const corpo={model:"claude-sonnet-5",max_tokens:400,system:SISTEMA,
-    messages:[{role:"user",content:"Ronda: "+JSON.stringify({...estado,ultima_decisao:ultimaDecisao})+" — avalia. Só JSON."}]};
-  try{
-    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
-      headers:{"Content-Type":"application/json","x-api-key":apiKey,
-        "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
-      body:JSON.stringify(corpo)});
-    const j=await r.json();
-    if(j.error){log("núcleo: "+j.error.message,"l-alerta")}
-    else{
-      const texto=(j.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("").replace(/```json|```/g,"").trim();
-      let d; try{d=JSON.parse(texto)}catch(e){log("núcleo respondeu fora do formato — descartado (a verdade primeiro)","l-alerta")}
-      if(d){
-        ultimaDecisao=d.accao;
-        log(`núcleo → <b>${d.accao}</b> · risco ${d.risco} · "${d.avaliacao}"`,"l-nucleo");
-        if(d.accao==="ALERTA") log("⚠ "+d.avaliacao,"l-alerta");
-        if(d.proposta) novaProposta(d);
-      }
-    }
-  }catch(e){log("falha de rede ao núcleo: "+e.message,"l-alerta")}
-  $("btn-ciclo").disabled=false;
-}
-
-function novaProposta(d){
-  propostas.unshift({...d.proposta,risco:d.risco,quando:hora()});
-  $("n-props").textContent=propostas.length;
-  $("propostas").innerHTML=propostas.map(p=>`
-    <div class="proposta">
-      <div class="cab"><span>PROPOSTA · ${p.quando}</span><span class="risco-${p.risco}">risco ${p.risco}</span></div>
-      <div class="corpo">${p.o_que}</div>
-      <div class="porque">${p.porque}</div>
-      <div class="porque" style="color:var(--ouro)">→ Se fizer sentido, Unum executa. Este portal não assina nem altera nada.</div>
-    </div>`).join("");
+  estado.ronda_feita=true;
+  julgar();
+  $("estado-vivo").textContent="ronda "+hora();
+  $("btn-ronda").disabled=false;
+  log("— ronda concluída · sondagens sedimentadas no organismo —","l-org");
 }
 
 function alternarAuto(){
   if(auto){clearInterval(auto);auto=null;$("btn-auto").textContent="Auto · off";log("modo auto desligado")}
   else{
-    if(!apiKey){log("auto precisa da chave API","l-alerta");return}
-    auto=setInterval(async()=>{await ronda();await ciclo()},10*60*1000);
-    $("btn-auto").textContent="Auto · 10 min";log("modo auto: ronda + avaliação a cada 10 minutos","l-nucleo");
+    auto=setInterval(ronda,10*60*1000);
+    $("btn-auto").textContent="Auto · 10 min";
+    log("modo auto: ronda + juízo a cada 10 minutos — sem chaves, sem custo, enquanto a página viver","l-juizo");
+    ronda();
   }
 }
 
-log("ORAI · sentinela acordou no tecido do organismo. Sem chaves — só olhos, sondas e propostas.");
+log("ORAI · sentinela v2 acordou. Sem chaves, sem créditos — só olhos, regras e verdade.");
 lerPulso();
 </script>
 </body>
