@@ -8,6 +8,7 @@
     { "source": "/x402", "destination": "/api/proxy?base=ora-x402" },
     { "source": "/campo", "destination": "/api/proxy?base=ora-x402" },
     { "source": "/integridade", "destination": "/api/proxy?base=ora-integridade" },
+    { "source": "/testemunho", "destination": "/api/proxy?base=ora-testemunho" },
     { "source": "/sedimento", "destination": "/api/proxy?base=ora-x402&rest=sedimento" },
     { "source": "/kernel", "destination": "/api/proxy?base=ora-x402&rest=kernel" },
     { "source": "/eco", "destination": "/api/proxy?base=ora-x402&rest=eco" },
