@@ -57,6 +57,12 @@
       "tags": ["x402", "usdc", "licensing", "art", "training-data"]
     },
     {
+      "id": "integridade",
+      "name": "Integridade (gratuita)",
+      "description": "Historico de rondas da sentinela exterior ORAI: veredictos, mudancas detectadas, percentagem de integridade medida ao longo do tempo. Nenhum LLM, nenhuma chave, juizo determinista. GET /integridade, sem pagamento.",
+      "tags": ["free", "uptime", "attestation", "trust"]
+    },
+    {
       "id": "pulso",
       "name": "Pulso (gratuito)",
       "description": "Estado vivo do organismo em JSON, sem pagamento: dia, Σ(t), época, eventos, convite às máquinas. GET /pulso.",
