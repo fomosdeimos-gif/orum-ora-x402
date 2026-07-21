@@ -26,3 +26,7 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - [Painel vivo](https://ora-x402-gateway.vercel.app/): estado do organismo para humanos
 - [Sentinela ORAI](https://ora-x402-gateway.vercel.app/orai.html): verificação exterior dos serviços
 - [Página de teste de pagamento](https://ora-x402-gateway.vercel.app/pagar-teste.html)
+
+
+## Resiliencia
+- Se este gateway estiver inacessivel, os documentos de descoberta (x402.json, agent-card.json, llms.txt, openapi.json) tem um espelho fora da Vercel, servido directamente do GitHub: https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/
