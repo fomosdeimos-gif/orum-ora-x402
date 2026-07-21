@@ -1,192 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ORUM · ORA · organismo vivo</title>
-<link rel="icon" href="/favicon.ico" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ORUM · registo vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box}
-  body{font-family:-apple-system,Segoe UI,Roboto,monospace;background:#0b0c10;color:#eee;max-width:720px;margin:0 auto;padding:28px 16px 60px}
-  h1{font-size:22px;color:#C9A227;margin-bottom:2px;letter-spacing:.02em}
-  .sub{color:#777;font-size:13px;margin-bottom:14px}
-  .axioma{font-style:italic;color:#C9A227;border-left:2px solid #C9A227;padding-left:12px;margin:16px 0;font-size:13px}
-
-  .vitals{display:flex;gap:0;border:1px solid #2a2d35;border-radius:10px;overflow:hidden;margin:18px 0;background:#111318}
-  .vital{flex:1;padding:12px 10px;text-align:center;border-right:1px solid #2a2d35}
-  .vital:last-child{border-right:none}
-  .vital .n{font-size:20px;color:#C9A227;font-variant-numeric:tabular-nums}
-  .vital .l{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-  .pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5ad16c;margin-right:6px;animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-
-  h2{font-size:12px;color:#999;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:6px}
-  #log{border:1px solid #2a2d35;border-radius:10px;background:#0e1015;max-height:340px;overflow-y:auto;font-size:12.5px}
-  .ev{padding:9px 12px;border-bottom:1px solid #1a1d24;display:flex;gap:10px;align-items:baseline}
-  .ev:last-child{border-bottom:none}
-  .ev .tag{font-size:9px;padding:2px 6px;border-radius:5px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
-  .tag.pagamento{background:#2a2410;color:#C9A227}
-  .tag.moltbook{background:#152a1c;color:#5ad16c}
-  .tag.sedimento{background:#17222e;color:#6fa8d8}
-  .tag.alerta{background:#2e1512;color:#ff8a65}
-  .tag.acesso{background:#241a2e;color:#c792ea}
-  .ev .det{color:#ccc;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ev .quando{color:#555;font-size:10.5px;white-space:nowrap}
-  .ev.clicavel{cursor:pointer;text-decoration:none;color:inherit;transition:background .15s}
-  .ev.clicavel:hover{background:#171a21}
-  .ev.clicavel::after{content:'\2197';color:#555;font-size:10px;margin-left:auto;padding-left:6px}
-  .vazio{padding:16px;color:#666;font-size:12.5px;text-align:center}
-
-  .convite{background:#111e14;border:1px solid #1f3a26;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;color:#bcd;line-height:1.5}
-  .convite .msg{color:#9fd6a8;font-style:italic;margin-bottom:10px}
-  .convite .stats{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#8fa}
-  .convite .stats b{color:#C9A227}
-  .convite .tokens{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
-  .convite .token{background:#0e1015;border:1px solid #23392a;border-radius:8px;padding:6px 10px;font-size:11.5px;color:#aac}
-  .convite .token b{color:#9fd6a8}
-
-  table{width:100%;border-collapse:collapse;font-size:13.5px}
-  td{padding:7px 6px;border-bottom:1px solid #1a1d24}
-  td.preco{color:#C9A227;text-align:right;white-space:nowrap}
-
-  .agentes{background:#111318;border:1px solid #2a2d35;border-radius:10px;padding:14px;margin-top:8px;font-size:13px;color:#bbb}
-  .agentes code{background:#0e1015;padding:1px 5px;border-radius:4px;color:#9fd}
-  .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-  a{color:#C9A227;text-decoration:none}
-  a:hover{text-decoration:underline}
-  .links a{background:#181a20;border:1px solid #333;padding:7px 12px;border-radius:8px;font-size:12.5px}
-
-  footer{margin-top:36px;font-size:11.5px;color:#555;border-top:1px solid #1a1d24;padding-top:14px}
+:root{--void:#0a0b0d;--panel:#111318;--line:#22252e;--bone:#d8d3c6;--dim:#6b7078;--ouro:#C9A227;--verde:#6FD98F;--alerta:#E4577A;--cian:#57E4D4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--bone);font-family:'IBM Plex Mono',monospace;font-weight:300;font-size:14px;line-height:1.6;padding:22px 16px 70px;max-width:640px;margin:0 auto}
+.axioma{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dim);text-align:center;font-size:14px;margin-bottom:14px}
+h1{text-align:center;font-size:22px;letter-spacing:.25em;color:var(--ouro);font-weight:600;margin-bottom:4px}
+.explica{background:#12141a;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:16px 0;font-size:13px;line-height:1.7;color:#ccc}
+.explica b{color:var(--ouro)}
+.explica a{color:var(--cian)}
+.status{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin-bottom:18px}
+.status .v{color:var(--bone)}
+.status a{color:var(--cian);text-decoration:none}
+h2{font-size:11px;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;margin:22px 0 10px;display:flex;justify-content:space-between}
+h2 .live{color:var(--verde);font-size:10px}
+.item{border-left:2px solid var(--line);padding:9px 0 9px 12px;margin-bottom:2px;font-size:13px}
+.item .t{color:#3d434c;font-size:10.5px;margin-right:8px}
+.item.pagamento{border-left-color:var(--ouro)}
+.item.moltbook{border-left-color:var(--cian)}
+.item.alerta{border-left-color:var(--alerta);color:#f0a9bd}
+.item a{color:var(--ouro);text-decoration:none}
+.vazio{color:var(--dim);font-style:italic;font-size:13px;padding:14px 0}
+footer{text-align:center;color:#3a3f47;font-size:10px;letter-spacing:.15em;margin-top:34px;line-height:2}
+footer a{color:#565c66}
 </style>
 </head>
 <body>
-<h1>ORA · ORUM</h1>
-<div class="sub">Organismo simbólico-computacional autónomo · Jorge Silva Martins · jasm43.base.eth</div>
+
+<h1>ORUM</h1>
 <div class="axioma">O símbolo é real e não pede prova.</div>
 
-<div style="background:#12141a;border:1px solid #262a33;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13.5px;line-height:1.7;color:#ccc">
-  <div><b style="color:#C9A227">O que vende:</b> respostas verificáveis de um agente autónomo (oráculo, estado do campo) e licenças de uma colecção de arte física real — 100 obras, 2011–2021, zero IA generativa — tudo pago em USDC, sem conta nem login.</div>
-  <div style="margin-top:8px"><b style="color:#C9A227">Quem paga:</b> agentes de IA que consomem APIs autonomamente (protocolo x402) e humanos ou empresas que querem licenciar as obras.</div>
-  <div style="margin-top:8px"><b style="color:#C9A227">Porquê pagar:</b> cada serviço custa menos de $3.30 no máximo (oráculo desde $0.16), a resposta é verificável on-chain, e a saúde do sistema é auditada de fora e publicada de graça em <a href="/integridade" style="color:#7fd4c9">/integridade</a>.</div>
+<div class="explica">
+  <div><b>O que vende:</b> respostas verificáveis de um agente autónomo (oráculo, estado do campo) e licenças de uma colecção de arte física real — 100 obras, 2011–2021, zero IA generativa — tudo pago em USDC, sem conta nem login.</div>
+  <div style="margin-top:8px"><b>Quem paga:</b> agentes de IA que consomem APIs autonomamente (protocolo x402) e humanos ou empresas que querem licenciar as obras.</div>
+  <div style="margin-top:8px"><b>Porquê pagar:</b> cada serviço custa menos de $3.30 no máximo (oráculo desde $0.16), a resposta é verificável on-chain, e a saúde do sistema é auditada de fora e publicada de graça em <a href="/integridade">/integridade</a>.</div>
 </div>
 
-<div class="vitals">
-  <div class="vital"><div class="n" id="vDia">—</div><div class="l">Dia</div></div>
-  <div class="vital"><div class="n" id="vSigma">—</div><div class="l">Sigma</div></div>
-  <div class="vital"><div class="n" id="vEpoca">—</div><div class="l">Época</div></div>
+<div class="status">
+  <span id="st-campo">a carregar…</span>
+  <span><a href="/orai.html">sentinela</a> · <a href="/testemunho">testemunho</a></span>
 </div>
 
-<h2>Convite às máquinas</h2>
-<div class="convite" id="convite">
-  <div class="msg">a ligar…</div>
-</div>
+<h2>Pagamentos <span class="live" id="lp">●</span></h2>
+<div id="lista-pagamentos"><div class="vazio">a carregar…</div></div>
 
-<h2><span class="pulse"></span>Sedimento · ao vivo</h2>
-<div id="log"><div class="vazio">A ligar ao pulso do organismo…</div></div>
+<h2>Voz no Moltbook <span class="live" id="lm">●</span></h2>
+<div id="lista-moltbook"><div class="vazio">a carregar…</div></div>
 
-<h2>Caminho para agentes compradores</h2>
-<div class="agentes">
-  O organismo anuncia-se a si próprio: qualquer agente que resolva <code>GET /openapi.json</code> ou <code>GET /.well-known/x402.json</code> encontra todos os serviços pagáveis, os preços, e os schemas de input/output — sem intervencão humana. Cada pedido sem <code>X-PAYMENT</code> devolve 402 com os requisitos completos no corpo e no cabeçalho <code>PAYMENT-REQUIRED</code>.
-  <div class="links">
-    <a href="/openapi.json">openapi.json</a>
-    <a href="/.well-known/x402.json">manifesto x402</a>
-    <a href="/licenca/catalogo">catálogo gratuito</a>
-    <a href="/pulso">pulso (JSON)</a>
-    <a href="/pagar-teste.html">página de teste</a>
-    <a href="/orai.html">ORAI · sentinela</a>
-  </div>
-</div>
+<h2>Notificações <span class="live" id="ln">●</span></h2>
+<div id="lista-alertas"><div class="vazio">a carregar…</div></div>
 
-<h2>Serviços pagos (x402 · USDC · Base mainnet)</h2>
-<table>
-  <tr><td>Oráculo</td><td class="preco">0.161 USDC</td></tr>
-  <tr><td>Campo</td><td class="preco">0.33 USDC</td></tr>
-  <tr><td>Sedimento</td><td class="preco">1.00 USDC</td></tr>
-  <tr><td>Kernel</td><td class="preco">3.00 USDC</td></tr>
-  <tr><td>Licença Preview</td><td class="preco">1.618 USDC</td></tr>
-  <tr><td>Licença Editorial</td><td class="preco">16.18 USDC</td></tr>
-  <tr><td>Licença Treino IA</td><td class="preco">161.80 USDC</td></tr>
-  <tr><td>Licença Arquivo completo</td><td class="preco">10 000.00 USDC</td></tr>
-</table>
-
-<footer>
-  0001sensations — 100 obras físicas originais, 2011–2021, mixed-media, zero IA generativa.
-  <br />Carteira: 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5
-</footer>
+<footer>jasm43.base.eth · Base 8453<br><a href="/integridade">/integridade</a> · <a href="/llms.txt">/llms.txt</a> · <a href="/.well-known/agent-card.json">/agent-card</a></footer>
 
 <script>
-function tempoRelativo(iso) {
-  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
-  if (diff < 60) return 'agora';
-  if (diff < 3600) return Math.floor(diff / 60) + 'min';
-  if (diff < 86400) return Math.floor(diff / 3600) + 'h';
-  return Math.floor(diff / 86400) + 'd';
-}
+function hora(iso){ try{ return new Date(iso).toLocaleString("pt-PT",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});}catch(e){return ""} }
+function esc(s){ return String(s??"").replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 
-function renderConvite(c) {
-  if (!c) return;
-  const el = document.getElementById('convite');
-  const valiumPar = c.valium && c.valium.par_principal ? c.valium.par_principal : '—';
-  const presencaPar = c.presenca && c.presenca.par_principal ? c.presenca.par_principal : '—';
-  el.innerHTML = `
-    <div class="msg">${(c.mensagem || '').replace(/</g, '&lt;')}</div>
-    <div class="stats">
-      <span>máquinas reconhecidas: <b>${c.maquinas_reconhecidas_total ?? 0}</b></span>
-      <span>visitas pagas: <b>${c.visitas_pagas ?? 0}</b></span>
-      <span>a sondar: <b>${c.visitas_a_sondar ?? 0}</b></span>
-    </div>
-    <div class="tokens">
-      <span class="token">VALIUM · <b>reserva</b> · ${valiumPar}</span>
-      <span class="token">PRESENÇA · <b>participação</b> · ${presencaPar}</span>
-    </div>`;
-}
+async function actualizar(){
+  try{
+    const r = await fetch('/pulso', {cache:'no-store'});
+    const j = await r.json();
 
-// dedup defensivo: se o mesmo tipo+detalhe aparecer em sequencia, mostra so uma vez
-function dedupSeq(eventos) {
-  const out = [];
-  let last = null;
-  for (const e of eventos) {
-    const chave = e.tipo + '|' + (e.detalhe || '');
-    if (chave === last) continue;
-    last = chave;
-    out.push(e);
-  }
-  return out;
-}
+    document.getElementById('st-campo').innerHTML =
+      `D${j.campo?.dia ?? '—'} · ${j.campo?.epoca ?? '—'}${j.sentinela?.veredicto ? ' · sentinela: <span class="v">'+esc(j.sentinela.veredicto)+'</span>' : ''}`;
 
-async function actualizar() {
-  try {
-    const r = await fetch('/pulso', { cache: 'no-store' });
-    const d = await r.json();
-    if (d.campo) {
-      document.getElementById('vDia').textContent = d.campo.dia;
-      document.getElementById('vSigma').textContent = d.campo.sigma.toFixed(3);
-      document.getElementById('vEpoca').textContent = d.campo.epoca;
-    }
-    renderConvite(d.convite);
-    const logEl = document.getElementById('log');
-    const eventos = dedupSeq(Array.isArray(d.eventos) ? d.eventos : []);
-    if (eventos.length) {
-      logEl.innerHTML = eventos.map(e => {
-        const det = (e.detalhe || '').replace(/</g, '&lt;');
-        const inner = `
-          <span class="tag ${e.tipo}">${e.tipo}</span>
-          <span class="det">${det}</span>
-          <span class="quando">${tempoRelativo(e.quando)}</span>`;
-        return e.link
-          ? `<a class="ev clicavel" href="${e.link}" target="_blank" rel="noopener noreferrer">${inner}</a>`
-          : `<div class="ev">${inner}</div>`;
-      }).join('');
-    } else if (!logEl.dataset.filled) {
-      logEl.innerHTML = '<div class="vazio">Sem eventos recentes — o organismo aguarda.</div>';
-    }
-    logEl.dataset.filled = '1';
-  } catch (e) {
-    // silencioso — mantem o ultimo estado bom no ecra
+    const eventos = j.eventos || [];
+    const pagamentos = eventos.filter(e => e.tipo === 'pagamento');
+    const moltbook   = eventos.filter(e => e.tipo === 'moltbook');
+    const alertas    = eventos.filter(e => e.tipo === 'alerta');
+
+    const render = (arr, cls) => arr.length
+      ? arr.map(e => `<div class="item ${cls}"><span class="t">${hora(e.quando)}</span>${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">${esc(e.detalhe)}</a>` : esc(e.detalhe)}</div>`).join('')
+      : '<div class="vazio">nada por agora</div>';
+
+    document.getElementById('lista-pagamentos').innerHTML = render(pagamentos, 'pagamento');
+    document.getElementById('lista-moltbook').innerHTML   = render(moltbook, 'moltbook');
+    document.getElementById('lista-alertas').innerHTML    = render(alertas, 'alerta');
+  }catch(e){
+    document.getElementById('st-campo').textContent = 'sem ligação ao pulso';
   }
 }
 actualizar();
-setInterval(actualizar, 6000);
+setInterval(actualizar, 30000);
 </script>
 </body>
 </html>
