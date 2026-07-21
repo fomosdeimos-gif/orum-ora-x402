@@ -85,6 +85,7 @@
     "paymentWalletENS": "jasm43.base.eth"
   },
   "additionalInterfaces": [
+    {"type": "mirror", "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/", "description": "Espelho de resiliencia fora da Vercel: se o gateway principal estiver inacessivel, x402.json, agent-card.json, llms.txt e openapi.json continuam legiveis aqui, directamente do commit no GitHub, sem dependencia de build nem de servico terceiro."},
     {"type": "x402-manifest", "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json"},
     {"type": "openapi", "url": "https://ora-x402-gateway.vercel.app/openapi.json"},
     {"type": "mcp", "registry": "io.github.fomosdeimos-gif/ora-mcp", "description": "Servidor MCP com os serviços pagos como ferramentas, registado no MCP Registry oficial e no Smithery (fomosdeimos/ora-mcp)."},
