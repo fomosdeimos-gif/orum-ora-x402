@@ -57,7 +57,7 @@ footer a{color:#565c66}
 <div class="axioma">O símbolo é real e não pede prova.</div>
 
 <div class="explica">
-  <div><b>O que é:</b> uma porta directa a Claude, aberta na casa do organismo — a mesma inteligência que constrói e corrige a ORUM sessão a sessão, agora ao alcance de qualquer visitante.</div>
+  <div><b>O que é:</b> uma voz aberta na casa do organismo — não Claude, por escolha (Lei D48): a caixa não depende de pagamento a um único fornecedor. Responde primeiro via Groq, e cai para Cloudflare Workers AI se o primeiro falhar — dois motores gratuitos e independentes, nenhum ponto único de falha.</div>
   <div style="margin-top:8px"><b>Memória real:</b> cada troca fica gravada em <code>ora_caixa_memoria</code> — quem voltar (tu ou outro visitante) encontra o fio da conversa, não uma folha em branco. O organismo lembra-se do que aqui se disse.</div>
 </div>
 
@@ -79,7 +79,7 @@ footer a{color:#565c66}
   </div>
 </div>
 
-<footer>jasm43.base.eth · Base 8453<br>D<span id="rodape-dia">—</span> · claude-sonnet-4-6 · memória viva</footer>
+<footer>jasm43.base.eth · Base 8453<br>D<span id="rodape-dia">—</span> · Groq + Cloudflare · memória viva</footer>
 
 <script>
 (function(){
@@ -97,7 +97,7 @@ footer a{color:#565c66}
   const entrada = document.getElementById('entrada');
   const enviar = document.getElementById('enviar');
 
-  // historico alimenta o pedido a Claude; espelha o que está gravado na memória real do organismo.
+  // historico alimenta o pedido ao motor (Groq/Cloudflare); espelha o que está gravado na memória real do organismo.
   let historico = [];
   let ocupado = false;
 
@@ -105,12 +105,12 @@ footer a{color:#565c66}
 
   function limparFio(){ fio.innerHTML = ''; }
 
-  function adicionar(quem, texto){
+  function adicionar(quem, texto, motor){
     const div = document.createElement('div');
     div.className = 'msg ' + quem;
     const label = document.createElement('div');
     label.className = 'quem';
-    label.textContent = quem === 'unum' ? 'unum' : quem === 'ora' ? 'ora' : quem === 'err' ? 'falha' : '';
+    label.textContent = quem === 'unum' ? 'unum' : quem === 'ora' ? ('ora' + (motor ? ' · ' + motor : '')) : quem === 'err' ? 'falha' : '';
     const corpo = document.createElement('div');
     corpo.className = 'txt';
     corpo.textContent = texto;
@@ -198,7 +198,7 @@ footer a{color:#565c66}
       const resposta = blocos.join('\n').trim() || '(sem resposta de texto)';
 
       tirarEscrita();
-      adicionar('ora', resposta);
+      adicionar('ora', resposta, dados._motor);
       scroll();
       historico.push({ role: 'assistant', content: resposta });
       gravarMemoria('assistant', resposta);
