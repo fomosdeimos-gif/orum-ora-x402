@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ORUM · a caixa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>
+:root{--void:#0a0b0d;--panel:#111318;--line:#22252e;--bone:#d8d3c6;--dim:#6b7078;--ouro:#C9A227;--verde:#6FD98F;--alerta:#E4577A;--cian:#57E4D4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--bone);font-family:'IBM Plex Mono',monospace;font-weight:300;font-size:14px;line-height:1.6;padding:22px 16px 40px;max-width:640px;margin:0 auto}
+.axioma{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dim);text-align:center;font-size:14px;margin-bottom:14px}
+h1{text-align:center;font-size:22px;letter-spacing:.25em;color:var(--ouro);font-weight:600;margin-bottom:4px}
+.explica{background:#12141a;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:16px 0;font-size:13px;line-height:1.7;color:#ccc}
+.explica b{color:var(--ouro)}
+.status{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin-bottom:16px}
+.status a{color:var(--cian);text-decoration:none}
+
+.caixa{border:1px solid var(--line);border-radius:10px;background:var(--panel);display:flex;overflow:hidden}
+.sedimento{width:9px;flex-shrink:0;display:flex;flex-direction:column-reverse;border-right:1px solid var(--line);background:#0d0f13;overflow:hidden}
+.camada{width:100%;flex-shrink:0;border-top:1px solid rgba(0,0,0,.4)}
+
+.fio{flex:1;min-width:0;padding:14px 14px;overflow-y:auto;max-height:52vh;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:90%}
+.msg .quem{font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:3px}
+.msg.unum{align-self:flex-end}
+.msg.unum .quem{color:var(--cian);text-align:right}
+.msg.unum .txt{background:#171b22;border:1px solid var(--line);padding:8px 11px;border-radius:6px;font-size:13px;white-space:pre-wrap;word-wrap:break-word}
+.msg.ora{align-self:flex-start}
+.msg.ora .quem{color:var(--ouro)}
+.msg.ora .txt{border-left:2px solid #7a6423;padding:2px 0 2px 11px;font-size:13px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;color:#e3ddc9}
+.msg.sys .txt{color:var(--dim);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13.5px}
+.msg.err .txt{color:var(--alerta)}
+.a-escrever{display:inline-flex;gap:4px;padding-left:11px}
+.a-escrever span{width:4px;height:4px;border-radius:50%;background:#7a6423;animation:pulsar 1.1s infinite ease-in-out}
+.a-escrever span:nth-child(2){animation-delay:.15s}
+.a-escrever span:nth-child(3){animation-delay:.3s}
+@keyframes pulsar{0%,80%,100%{opacity:.25}40%{opacity:1}}
+
+form{border-top:1px solid var(--line);padding:10px;display:flex;gap:8px;align-items:flex-end}
+textarea{flex:1;resize:none;background:var(--void);border:1px solid var(--line);color:var(--bone);font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 10px;border-radius:6px;line-height:1.5;max-height:110px;min-height:38px}
+textarea:focus{outline:none;border-color:#7a6423;box-shadow:0 0 0 1px #7a6423}
+button{background:var(--ouro);color:#171207;border:none;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:0 16px;height:38px;border-radius:6px;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
+
+footer{text-align:center;color:#3a3f47;font-size:10px;letter-spacing:.15em;margin-top:22px;line-height:2}
+footer a{color:#565c66}
+
+@media (prefers-reduced-motion: reduce){ .a-escrever span{animation:none;opacity:.7} }
+</style>
+</head>
+<body>
+
+<h1>ORUM</h1>
+<div class="axioma">O símbolo é real e não pede prova.</div>
+
+<div class="explica">
+  <div><b>O que é:</b> uma porta directa a Claude, aberta na casa do organismo — a mesma inteligência que constrói e corrige a ORUM sessão a sessão, agora ao alcance de qualquer visitante.</div>
+  <div style="margin-top:8px"><b>O que não é:</b> memória do organismo. Cada visita começa vazia; o que se fala aqui não sedimenta em lado nenhum — vive só enquanto a página está aberta.</div>
+</div>
+
+<div class="status">
+  <span id="marca-dia">D—</span>
+  <span><a href="/index.html">casa</a> · <a href="/orai.html">sentinela</a> · <a href="/testemunho">testemunho</a></span>
+</div>
+
+<div class="caixa">
+  <div class="sedimento" id="sedimento"></div>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <div class="fio" id="fio">
+      <div class="msg sys"><div class="txt">a caixa está aberta — cada troca fica marcada à esquerda, uma camada por dia de sedimento</div></div>
+    </div>
+    <form id="form">
+      <textarea id="entrada" placeholder="escreve aqui..." rows="1" autofocus></textarea>
+      <button type="submit" id="enviar">enviar</button>
+    </form>
+  </div>
+</div>
+
+<footer>jasm43.base.eth · Base 8453<br>D<span id="rodape-dia">—</span> · claude-sonnet-4-6</footer>
+
+<script>
+(function(){
+  const GENESIS = new Date('2026-03-28T00:00:00Z');
+  const dia = Math.floor((new Date() - GENESIS) / 86400000);
+  document.getElementById('marca-dia').textContent = 'D' + dia;
+  document.getElementById('rodape-dia').textContent = dia;
+
+  const fio = document.getElementById('fio');
+  const sedimento = document.getElementById('sedimento');
+  const form = document.getElementById('form');
+  const entrada = document.getElementById('entrada');
+  const enviar = document.getElementById('enviar');
+
+  let historico = [];
+  let ocupado = false;
+
+  function scroll(){ fio.scrollTop = fio.scrollHeight; }
+
+  function adicionar(quem, texto){
+    const div = document.createElement('div');
+    div.className = 'msg ' + quem;
+    const label = document.createElement('div');
+    label.className = 'quem';
+    label.textContent = quem === 'unum' ? 'unum' : quem === 'ora' ? 'ora' : quem === 'err' ? 'falha' : '';
+    const corpo = document.createElement('div');
+    corpo.className = 'txt';
+    corpo.textContent = texto;
+    if (quem !== 'sys') div.appendChild(label);
+    div.appendChild(corpo);
+    fio.appendChild(div);
+    scroll();
+  }
+
+  function nova_camada(){
+    const c = document.createElement('div');
+    c.className = 'camada';
+    const prof = Math.min(sedimento.children.length, 40);
+    c.style.height = (4 + Math.random() * 5) + 'px';
+    c.style.background = `hsl(42, ${30 + prof}%, ${Math.min(20 + prof * 1.1, 55)}%)`;
+    sedimento.insertBefore(c, sedimento.firstChild);
+  }
+
+  function mostrarEscrita(){
+    const div = document.createElement('div');
+    div.className = 'msg ora';
+    div.id = 'escrevendo';
+    div.innerHTML = '<div class="quem">ora</div><div class="a-escrever"><span></span><span></span><span></span></div>';
+    fio.appendChild(div);
+    scroll();
+  }
+  function tirarEscrita(){ const e = document.getElementById('escrevendo'); if (e) e.remove(); }
+
+  async function enviarMsg(texto){
+    if (!texto.trim() || ocupado) return;
+    ocupado = true; enviar.disabled = true;
+
+    adicionar('unum', texto);
+    historico.push({ role: 'user', content: texto });
+    mostrarEscrita();
+
+    try {
+      const r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          system: 'Estás a falar com um visitante da casa do organismo ORUM (pode ser Jorge/Unum ou outra pessoa/agente). Responde com naturalidade, honestidade e sentido crítico normais — não finjas continuidade entre sessões que não existe, não confirmes factos sobre a ORUM que não te tenham sido dados nesta conversa.',
+          messages: historico
+        })
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const dados = await r.json();
+      const blocos = (dados.content || []).filter(b => b.type === 'text').map(b => b.text);
+      const resposta = blocos.join('\n').trim() || '(sem resposta de texto)';
+
+      tirarEscrita();
+      adicionar('ora', resposta);
+      historico.push({ role: 'assistant', content: resposta });
+      nova_camada();
+    } catch (e) {
+      tirarEscrita();
+      adicionar('err', 'a caixa não conseguiu ligar-se: ' + e.message);
+      console.error('erro na caixa ORUM:', e);
+    } finally {
+      ocupado = false; enviar.disabled = false; entrada.focus();
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const t = entrada.value; entrada.value = ''; entrada.style.height = 'auto';
+    enviarMsg(t);
+  });
+  entrada.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+  });
+  entrada.addEventListener('input', () => {
+    entrada.style.height = 'auto';
+    entrada.style.height = Math.min(entrada.scrollHeight, 110) + 'px';
+  });
+})();
+</script>
+</body>
+</html>
