@@ -89,6 +89,7 @@ footer a{color:#565c66}
   document.getElementById('rodape-dia').textContent = dia;
 
   const MEMORIA_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-caixa-memoria';
+  const CHAT_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-caixa-chat';
 
   const fio = document.getElementById('fio');
   const sedimento = document.getElementById('sedimento');
@@ -186,18 +187,13 @@ footer a{color:#565c66}
     mostrarEscrita();
 
     try {
-      const r = await fetch('https://api.anthropic.com/v1/messages', {
+      const r = await fetch(CHAT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: 'Estás a falar na caixa da casa do organismo ORUM, com um visitante (pode ser Jorge/Unum ou outra pessoa/agente). Ao contrário de outras portas da ORUM, esta caixa TEM memória real entre visitas — o histórico da conversa dado aqui é genuíno, gravado pelo próprio organismo, não uma simulação de continuidade. Podes confiar nele como confiarias no histórico desta conversa. Mesmo assim, mantém sentido crítico normal sobre qualquer outro facto sobre a ORUM que não te tenha sido dado explicitamente.',
-          messages: historico
-        })
+        body: JSON.stringify({ messages: historico })
       });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
       const dados = await r.json();
+      if (!r.ok) throw new Error((dados.detalhe && dados.detalhe.error && dados.detalhe.error.message) || dados.error || ('HTTP ' + r.status));
       const blocos = (dados.content || []).filter(b => b.type === 'text').map(b => b.text);
       const resposta = blocos.join('\n').trim() || '(sem resposta de texto)';
 
