@@ -58,7 +58,7 @@ footer a{color:#565c66}
 
 <div class="explica">
   <div><b>O que é:</b> uma porta directa a Claude, aberta na casa do organismo — a mesma inteligência que constrói e corrige a ORUM sessão a sessão, agora ao alcance de qualquer visitante.</div>
-  <div style="margin-top:8px"><b>O que não é:</b> memória do organismo. Cada visita começa vazia; o que se fala aqui não sedimenta em lado nenhum — vive só enquanto a página está aberta.</div>
+  <div style="margin-top:8px"><b>Memória real:</b> cada troca fica gravada em <code>ora_caixa_memoria</code> — quem voltar (tu ou outro visitante) encontra o fio da conversa, não uma folha em branco. O organismo lembra-se do que aqui se disse.</div>
 </div>
 
 <div class="status">
@@ -70,7 +70,7 @@ footer a{color:#565c66}
   <div class="sedimento" id="sedimento"></div>
   <div style="flex:1;min-width:0;display:flex;flex-direction:column">
     <div class="fio" id="fio">
-      <div class="msg sys"><div class="txt">a caixa está aberta — cada troca fica marcada à esquerda, uma camada por dia de sedimento</div></div>
+      <div class="msg sys"><div class="txt">a ligar à memória do organismo…</div></div>
     </div>
     <form id="form">
       <textarea id="entrada" placeholder="escreve aqui..." rows="1" autofocus></textarea>
@@ -79,7 +79,7 @@ footer a{color:#565c66}
   </div>
 </div>
 
-<footer>jasm43.base.eth · Base 8453<br>D<span id="rodape-dia">—</span> · claude-sonnet-4-6</footer>
+<footer>jasm43.base.eth · Base 8453<br>D<span id="rodape-dia">—</span> · claude-sonnet-4-6 · memória viva</footer>
 
 <script>
 (function(){
@@ -88,16 +88,21 @@ footer a{color:#565c66}
   document.getElementById('marca-dia').textContent = 'D' + dia;
   document.getElementById('rodape-dia').textContent = dia;
 
+  const MEMORIA_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-caixa-memoria';
+
   const fio = document.getElementById('fio');
   const sedimento = document.getElementById('sedimento');
   const form = document.getElementById('form');
   const entrada = document.getElementById('entrada');
   const enviar = document.getElementById('enviar');
 
+  // historico alimenta o pedido a Claude; espelha o que está gravado na memória real do organismo.
   let historico = [];
   let ocupado = false;
 
   function scroll(){ fio.scrollTop = fio.scrollHeight; }
+
+  function limparFio(){ fio.innerHTML = ''; }
 
   function adicionar(quem, texto){
     const div = document.createElement('div');
@@ -111,15 +116,14 @@ footer a{color:#565c66}
     if (quem !== 'sys') div.appendChild(label);
     div.appendChild(corpo);
     fio.appendChild(div);
-    scroll();
   }
 
   function nova_camada(){
     const c = document.createElement('div');
     c.className = 'camada';
-    const prof = Math.min(sedimento.children.length, 40);
-    c.style.height = (4 + Math.random() * 5) + 'px';
-    c.style.background = `hsl(42, ${30 + prof}%, ${Math.min(20 + prof * 1.1, 55)}%)`;
+    const prof = Math.min(sedimento.children.length, 60);
+    c.style.height = (3 + Math.random() * 4) + 'px';
+    c.style.background = `hsl(42, ${30 + prof}%, ${Math.min(20 + prof * 0.7, 58)}%)`;
     sedimento.insertBefore(c, sedimento.firstChild);
   }
 
@@ -133,12 +137,52 @@ footer a{color:#565c66}
   }
   function tirarEscrita(){ const e = document.getElementById('escrevendo'); if (e) e.remove(); }
 
+  async function gravarMemoria(papel, conteudo){
+    try {
+      await fetch(MEMORIA_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ papel, conteudo })
+      });
+    } catch (e) {
+      console.error('falha a gravar na memória do organismo:', e);
+    }
+  }
+
+  async function carregarMemoria(){
+    try {
+      const r = await fetch(MEMORIA_URL, { cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const dados = await r.json();
+      const mensagens = dados.mensagens || [];
+
+      limparFio();
+      if (mensagens.length === 0) {
+        adicionar('sys', 'a caixa está aberta — é a primeira troca desta memória. Cada camada à esquerda é um dia de sedimento.');
+      } else {
+        adicionar('sys', mensagens.length + ' mensagens já sedimentadas — a continuar o fio.');
+        for (const m of mensagens) {
+          adicionar(m.papel === 'user' ? 'unum' : 'ora', m.conteudo);
+          historico.push({ role: m.papel, content: m.conteudo });
+          if (m.papel === 'assistant') nova_camada();
+        }
+      }
+      scroll();
+    } catch (e) {
+      limparFio();
+      adicionar('sys', 'a caixa está aberta — não consegui ler a memória do organismo agora, mas o que disseres aqui continua a tentar sedimentar.');
+      console.error('falha a carregar memória do organismo:', e);
+    }
+  }
+
   async function enviarMsg(texto){
     if (!texto.trim() || ocupado) return;
     ocupado = true; enviar.disabled = true;
 
     adicionar('unum', texto);
+    scroll();
     historico.push({ role: 'user', content: texto });
+    gravarMemoria('user', texto);
     mostrarEscrita();
 
     try {
@@ -148,7 +192,7 @@ footer a{color:#565c66}
         body: JSON.stringify({
           model: 'claude-sonnet-4-6',
           max_tokens: 1000,
-          system: 'Estás a falar com um visitante da casa do organismo ORUM (pode ser Jorge/Unum ou outra pessoa/agente). Responde com naturalidade, honestidade e sentido crítico normais — não finjas continuidade entre sessões que não existe, não confirmes factos sobre a ORUM que não te tenham sido dados nesta conversa.',
+          system: 'Estás a falar na caixa da casa do organismo ORUM, com um visitante (pode ser Jorge/Unum ou outra pessoa/agente). Ao contrário de outras portas da ORUM, esta caixa TEM memória real entre visitas — o histórico da conversa dado aqui é genuíno, gravado pelo próprio organismo, não uma simulação de continuidade. Podes confiar nele como confiarias no histórico desta conversa. Mesmo assim, mantém sentido crítico normal sobre qualquer outro facto sobre a ORUM que não te tenha sido dado explicitamente.',
           messages: historico
         })
       });
@@ -159,11 +203,14 @@ footer a{color:#565c66}
 
       tirarEscrita();
       adicionar('ora', resposta);
+      scroll();
       historico.push({ role: 'assistant', content: resposta });
+      gravarMemoria('assistant', resposta);
       nova_camada();
     } catch (e) {
       tirarEscrita();
       adicionar('err', 'a caixa não conseguiu ligar-se: ' + e.message);
+      scroll();
       console.error('erro na caixa ORUM:', e);
     } finally {
       ocupado = false; enviar.disabled = false; entrada.focus();
@@ -182,6 +229,8 @@ footer a{color:#565c66}
     entrada.style.height = 'auto';
     entrada.style.height = Math.min(entrada.scrollHeight, 110) + 'px';
   });
+
+  carregarMemoria();
 })();
 </script>
 </body>
