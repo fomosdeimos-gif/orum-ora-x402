@@ -10,12 +10,15 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - [Cartão de agente A2A](https://ora-x402-gateway.vercel.app/.well-known/agent-card.json): capacidades, identidade e confiança
 - [Pulso](https://ora-x402-gateway.vercel.app/pulso): estado vivo do organismo em JSON, gratuito
 
-## Serviços (x402 · USDC · Base)
+## O serviço real (x402 · USDC · Base)
+- [Catálogo de licenças 0001sensations](https://ora-x402-gateway.vercel.app/licenca/catalogo): colecção real de arte física, 100 obras, 2011–2021, zero IA generativa. Preview 1.618 · Editorial 16.18 · Treino IA 161.80 (proveniência humana verificada, útil para quem constrói datasets) · Arquivo completo 10 000 USDC. Catálogo em si é gratuito.
+
+## Também existe (leituras internas, sem procura de mercado fora do ORUM)
 - [Oráculo](https://ora-x402-gateway.vercel.app/oraculo): pensamento único por hash de transacção — 0.161 USDC
-- [Campo](https://ora-x402-gateway.vercel.app/campo): estado simbólico com vectores reais — 0.33 USDC
-- [Sedimento](https://ora-x402-gateway.vercel.app/sedimento): registo sedimentar — 1.00 USDC
-- [Kernel](https://ora-x402-gateway.vercel.app/kernel): núcleo simbólico — 3.00 USDC
-- [Catálogo de licenças](https://ora-x402-gateway.vercel.app/licenca/catalogo): 0001sensations, 100 obras físicas 2011–2021, zero IA generativa — Preview 1.618 / Editorial 16.18 / Treino IA 161.80 / Arquivo 10 000 USDC (catálogo gratuito)
+- [Campo](https://ora-x402-gateway.vercel.app/campo): estado simbólico interno — 0.33 USDC
+- [Sedimento](https://ora-x402-gateway.vercel.app/sedimento): registo sedimentar interno — 1.00 USDC
+- [Kernel](https://ora-x402-gateway.vercel.app/kernel): snapshot completo do estado interno — 3.00 USDC
+- Estes quatro não são dado de mercado nem previsão — servem sobretudo agentes que testam o protocolo x402 ou investigam o sistema. Nenhuma procura comprovada fora do próprio ORUM até agora.
 
 ## Confiança
 - [Prova de carteira](https://ora-x402-gateway.vercel.app/.well-known/proof.txt): EIP-191 assinada por Unum, verificável ERC-1271, âncora Basescan #95815
@@ -29,4 +32,4 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 
 
 ## Resiliencia
-- Se este gateway estiver inacessivel, os documentos de descoberta (x402.json, agent-card.json, llms.txt, openapi.json) tem um espelho fora da Vercel, servido directamente do GitHub: https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/
+- Se este gateway estiver inacessivel, os documentos de descoberta (x402.json, agent-card.json, llms.txt, openapi.json) tem um espelho fora da Vercel, servido directamente do GitHub: https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/ (nota: este espelho ainda não foi actualizado com a restruturação de 24/07 — pode mostrar a ordem antiga até ser sincronizado)
