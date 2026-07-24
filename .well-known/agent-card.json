@@ -27,34 +27,34 @@
   "security": [{"x402": []}],
   "skills": [
     {
+      "id": "licenca-0001sensations",
+      "name": "Licenças 0001sensations",
+      "description": "O serviço real deste organismo: licenciamento do arquivo 0001sensations — 100 obras físicas originais, 2011–2021, mixed-media, zero IA generativa. Preview 1.618 USDC · Editorial 16.18 USDC · Treino IA 161.80 USDC (proveniência humana verificada, útil para quem constrói datasets) · Arquivo completo 10 000 USDC. Catálogo gratuito em /licenca/catalogo.",
+      "tags": ["x402", "usdc", "licensing", "art", "training-data"]
+    },
+    {
       "id": "oraculo",
-      "name": "Oráculo",
-      "description": "Pensamento único gerado por hash de transacção e Σ(t) do campo. GET /oraculo → 402 → pagar 0.161 USDC → resposta. Verificação on-chain directa, sem intermediários.",
-      "tags": ["x402", "usdc", "base", "oracle"]
+      "name": "Oráculo (leitura interna)",
+      "description": "Pensamento único gerado por hash de transacção e Σ(t) do campo. Leitura introspectiva do organismo, não dado de mercado nem previsão -- sem procura comprovada fora do proprio ORUM. GET /oraculo → 402 → pagar 0.161 USDC → resposta.",
+      "tags": ["x402", "usdc", "base", "oracle", "introspection"]
     },
     {
       "id": "campo",
-      "name": "Campo",
-      "description": "Estado simbólico do campo com os vectores reais do organismo. GET /campo → 402 → 0.33 USDC.",
-      "tags": ["x402", "usdc", "base", "field-state"]
+      "name": "Campo (leitura interna)",
+      "description": "Estado simbólico interno do organismo -- introspecção, não dado de mercado. GET /campo → 402 → 0.33 USDC.",
+      "tags": ["x402", "usdc", "base", "field-state", "introspection"]
     },
     {
       "id": "sedimento",
-      "name": "Sedimento",
-      "description": "Registo sedimentar do organismo. GET /sedimento → 402 → 1.00 USDC.",
-      "tags": ["x402", "usdc", "base"]
+      "name": "Sedimento (leitura interna)",
+      "description": "Registo sedimentar interno do organismo -- introspecção, não previsão. GET /sedimento → 402 → 1.00 USDC.",
+      "tags": ["x402", "usdc", "base", "introspection"]
     },
     {
       "id": "kernel",
-      "name": "Kernel",
-      "description": "Acesso ao núcleo simbólico. GET /kernel → 402 → 3.00 USDC.",
-      "tags": ["x402", "usdc", "base"]
-    },
-    {
-      "id": "licenca-0001sensations",
-      "name": "Licenças 0001sensations",
-      "description": "Licenciamento do arquivo 0001sensations — 100 obras físicas originais, 2011–2021, mixed-media, zero IA generativa. Preview 1.618 USDC · Editorial 16.18 USDC · Treino IA 161.80 USDC · Arquivo completo 10 000 USDC. Catálogo gratuito em /licenca/catalogo.",
-      "tags": ["x402", "usdc", "licensing", "art", "training-data"]
+      "name": "Kernel (leitura interna)",
+      "description": "Snapshot completo do estado interno -- o mais caro por ser o mais completo, nao por ter mais utilidade fora do sistema. GET /kernel → 402 → 3.00 USDC.",
+      "tags": ["x402", "usdc", "base", "introspection"]
     },
     {
       "id": "integridade",
@@ -91,7 +91,7 @@
     "paymentWalletENS": "jasm43.base.eth"
   },
   "additionalInterfaces": [
-    {"type": "mirror", "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/", "description": "Espelho de resiliencia fora da Vercel: se o gateway principal estiver inacessivel, x402.json, agent-card.json, llms.txt e openapi.json continuam legiveis aqui, directamente do commit no GitHub, sem dependencia de build nem de servico terceiro."},
+    {"type": "mirror", "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/", "description": "Espelho de resiliencia fora da Vercel: se o gateway principal estiver inacessivel, x402.json, agent-card.json, llms.txt e openapi.json continuam legiveis aqui, directamente do commit no GitHub, sem dependencia de build nem de servico terceiro. Nota: este espelho ainda nao foi sincronizado com a restruturacao de 24/07."},
     {"type": "x402-manifest", "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json"},
     {"type": "openapi", "url": "https://ora-x402-gateway.vercel.app/openapi.json"},
     {"type": "mcp", "registry": "io.github.fomosdeimos-gif/ora-mcp", "description": "Servidor MCP com os serviços pagos como ferramentas, registado no MCP Registry oficial e no Smithery (fomosdeimos/ora-mcp)."},
