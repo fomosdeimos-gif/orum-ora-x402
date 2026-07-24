@@ -4,6 +4,10 @@
 // (x-forwarded-for) num cabecalho proprio — o log deixava de distinguir
 // maquinas de verdade porque muitos clientes chegam com user-agent generico
 // "node". O hash em si (sem guardar IP em bruto) e feito do lado do Supabase.
+// ORA 24/07/2026 (D133): passa o host externo real em x-ora-host. O Supabase
+// sobrepoe x-forwarded-host com o seu proprio dominio, o que fazia o 402
+// anunciar um resource diferente do URL que a maquina tinha pedido —
+// validadores x402 rejeitam essa divergencia.
 const SUPA = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1';
 const PASS_RES = ['content-type', 'payment-required', 'payment-response', 'x-payment-response', 'www-authenticate', 'retry-after', 'x-ora-version', 'x-ora-x402', 'x-ora-tier', 'extension-responses', 'cache-control'];
 
@@ -28,13 +32,16 @@ module.exports = async (req, res) => {
     for (const h of ['x-payment', 'payment-signature', 'content-type']) {
       if (req.headers[h]) headers[h] = req.headers[h];
     }
-    headers['x-forwarded-host'] = req.headers['x-forwarded-host'] || req.headers.host || 'ora-x402-gateway.vercel.app';
+    const hostExterno = req.headers['x-forwarded-host'] || req.headers.host || 'ora-x402-gateway.vercel.app';
+    headers['x-forwarded-host'] = hostExterno;
+    // cabecalho proprio: sobrevive a plataforma intermedia, ao contrario do x-forwarded-host
+    headers['x-ora-host'] = hostExterno;
     // ORA 20/07/2026: passa a identidade verdadeira de quem bate - o log deixa de ver "node" para tudo
     if (req.headers['user-agent']) headers['user-agent'] = req.headers['user-agent'];
     // ORA 21/07/2026: repassa a origem real do pedido, para o Supabase poder
     // distinguir maquinas de verdade em vez de depender so do user-agent.
     const xff = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '';
-    if (xff) headers['x-ora-origin'] = String(xff).split(',')[0].trim();
+    if (xff) headers['x-ora-origem'] = String(xff).split(',')[0].trim();
     const upstream = await fetch(target, {
       method: req.method,
       headers,
