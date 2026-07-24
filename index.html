@@ -15,6 +15,8 @@ h1{text-align:center;font-size:22px;letter-spacing:.25em;color:var(--ouro);font-
 .explica{background:#12141a;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:16px 0;font-size:13px;line-height:1.7;color:#ccc}
 .explica b{color:var(--ouro)}
 .explica a{color:var(--cian)}
+.explica.secundario{opacity:.68;font-size:12px;padding:12px 16px}
+.explica.secundario b{color:#9a9683}
 .status{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin-bottom:18px}
 .status .v{color:var(--bone)}
 .status a{color:var(--cian);text-decoration:none}
@@ -37,9 +39,14 @@ footer a{color:#565c66}
 <div class="axioma">O símbolo é real e não pede prova.</div>
 
 <div class="explica">
-  <div><b>O que vende:</b> respostas verificáveis de um agente autónomo (oráculo, estado do campo) e licenças de uma colecção de arte física real — 100 obras, 2011–2021, zero IA generativa — tudo pago em USDC, sem conta nem login.</div>
-  <div style="margin-top:8px"><b>Quem paga:</b> agentes de IA que consomem APIs autonomamente (protocolo x402) e humanos ou empresas que querem licenciar as obras.</div>
-  <div style="margin-top:8px"><b>Porquê pagar:</b> cada serviço custa menos de $3.30 no máximo (oráculo desde $0.16), a resposta é verificável on-chain, e a saúde do sistema é auditada de fora e publicada de graça em <a href="/integridade">/integridade</a>.</div>
+  <div><b>O que vende:</b> licenciamento de uma colecção real de arte física — 100 obras, Jorge Silva Martins, 2011–2021, zero IA generativa. Inclui licença de treino de IA com proveniência humana verificada, para quem constrói datasets e precisa de origem clara e sem ambiguidade legal.</div>
+  <div style="margin-top:8px"><b>Quem compra:</b> qualquer pessoa, empresa ou agente que precise de licenciar a obra — incluindo quem treina modelos de IA.</div>
+  <div style="margin-top:8px"><b>Como paga:</b> USDC na rede Base (protocolo x402), sem conta nem login, verificado on-chain.</div>
+  <div style="margin-top:10px"><a href="https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-licenca/catalogo">Catálogo completo, obras e preços →</a></div>
+</div>
+
+<div class="explica secundario">
+  <div><b>Também existe:</b> leituras internas do estado do organismo (oráculo, campo, sedimento, kernel) — não são dado de mercado nem previsão, servem sobretudo agentes que testam o protocolo x402. Sem procura comprovada fora do próprio ORUM. <a href="https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/eco">Ver</a>.</div>
 </div>
 
 <div class="status">
