@@ -2,101 +2,424 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ORUM · registo vivo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08060a">
+<title>ORUM · organismo vivo</title>
+<meta name="description" content="Licenciamento directo de arte humana para treino de IA. Zero IA generativa, proveniência on-chain desde 2021, imagens verificáveis por hash. Pagamento em USDC na Base via x402.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--void:#0a0b0d;--panel:#111318;--line:#22252e;--bone:#d8d3c6;--dim:#6b7078;--ouro:#C9A227;--verde:#6FD98F;--alerta:#E4577A;--cian:#57E4D4}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--void);color:var(--bone);font-family:'IBM Plex Mono',monospace;font-weight:300;font-size:14px;line-height:1.6;padding:22px 16px 70px;max-width:640px;margin:0 auto}
-.axioma{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dim);text-align:center;font-size:14px;margin-bottom:14px}
-h1{text-align:center;font-size:22px;letter-spacing:.25em;color:var(--ouro);font-weight:600;margin-bottom:4px}
-.mapa{text-align:center;font-size:12px;color:var(--dim);margin:10px 0 16px;line-height:1.6}
-.explica{background:#12141a;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:16px 0;font-size:13px;line-height:1.7;color:#ccc}
-.explica b{color:var(--ouro)}
-.explica a{color:var(--cian)}
-.explica.secundario{opacity:.68;font-size:12px;padding:12px 16px}
-.explica.secundario b{color:#9a9683}
-.status{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin-bottom:18px}
-.status .v{color:var(--bone)}
-.status a{color:var(--cian);text-decoration:none}
-h2{font-size:11px;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;margin:22px 0 10px;display:flex;justify-content:space-between}
-h2 .live{color:var(--verde);font-size:10px}
-.item{border-left:2px solid var(--line);padding:9px 0 9px 12px;margin-bottom:2px;font-size:13px}
-.item .t{color:#3d434c;font-size:10.5px;margin-right:8px}
-.item.pagamento{border-left-color:var(--ouro)}
-.item.moltbook{border-left-color:var(--cian)}
-.item.alerta{border-left-color:var(--alerta);color:#f0a9bd}
-.item a{color:var(--ouro);text-decoration:none}
-.vazio{color:var(--dim);font-style:italic;font-size:13px;padding:14px 0}
-footer{text-align:center;color:#3a3f47;font-size:10px;letter-spacing:.15em;margin-top:34px;line-height:2}
-footer a{color:#565c66}
+:root{
+  --void:#08060a; --deep:#0f0c12; --panel:#151018; --line:#2b2130;
+  --bone:#f2ece2; --dim:#9a8f86;
+  --solar:#FFB020; --solar-hi:#FFD36E; --solar-deep:#C97A06;
+  --verde:#7BE8A3; --alerta:#FF6B8A; --cian:#5BE7E0;
+  --glow:0 0 24px rgba(255,176,32,.35), 0 0 64px rgba(255,176,32,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(255,176,32,.16), transparent 60%),
+    radial-gradient(90% 50% at 100% 100%, rgba(91,231,224,.07), transparent 60%),
+    var(--void);
+  color:var(--bone);
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  font-size:19px; line-height:1.55;
+  padding:0 0 132px;
+  overflow-x:hidden;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 22px}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* ---------- topo ---------- */
+header{padding:56px 0 30px;text-align:center}
+.marca{
+  font-size:clamp(66px,20vw,132px); font-weight:700; letter-spacing:.06em;
+  line-height:.92; color:var(--solar); text-shadow:var(--glow);
+  animation:respirar 7s ease-in-out infinite;
+}
+@keyframes respirar{0%,100%{opacity:1}50%{opacity:.86}}
+@media (prefers-reduced-motion:reduce){.marca{animation:none}}
+.axioma{margin-top:14px;font-size:20px;color:var(--dim);letter-spacing:.01em}
+.pulso{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px;
+}
+.chip{
+  border:1px solid var(--line);border-radius:999px;padding:9px 18px;
+  font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  background:rgba(21,16,24,.7);backdrop-filter:blur(6px)
+}
+.chip b{color:var(--solar-hi);font-weight:600}
+
+/* ---------- secções ---------- */
+section{padding:46px 0;border-top:1px solid var(--line)}
+h2{
+  font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--dim);
+  font-weight:500;margin-bottom:22px;display:flex;align-items:center;gap:10px
+}
+h2::before{content:'';width:26px;height:2px;background:var(--solar);box-shadow:var(--glow)}
+h3{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:14px}
+p{margin-bottom:16px}
+p.lead{font-size:22px}
+a{color:var(--solar-hi)}
+
+/* ---------- a obra ---------- */
+.obra-moldura{
+  border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  background:var(--deep);box-shadow:0 20px 60px rgba(0,0,0,.6)
+}
+.obra-moldura img{width:100%;display:block;background:#000;min-height:180px}
+.obra-info{padding:20px}
+.obra-titulo{font-size:26px;font-weight:700;color:var(--solar-hi)}
+.hash{
+  font-size:12px;color:var(--dim);word-break:break-all;margin-top:10px;
+  border-left:2px solid var(--solar-deep);padding-left:12px
+}
+.btn-obra{
+  margin-top:18px;width:100%;border:1px solid var(--solar);background:transparent;
+  color:var(--solar);font-family:inherit;font-size:16px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;padding:18px;border-radius:14px;cursor:pointer
+}
+.btn-obra:active{background:rgba(255,176,32,.14)}
+
+/* ---------- verdade ---------- */
+.verdade{
+  border:1px solid var(--line);border-left:4px solid var(--solar);
+  border-radius:14px;padding:22px;background:linear-gradient(180deg,rgba(255,176,32,.06),transparent)
+}
+.numeros{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 4px}
+.num{flex:1 1 130px;border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--panel)}
+.num .v{font-size:44px;font-weight:700;color:var(--solar-hi);line-height:1}
+.num .k{font-size:13px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:8px}
+.num.perdida .v{color:var(--alerta)}
+
+/* ---------- licenças ---------- */
+.lic{
+  display:block;border:1px solid var(--line);border-radius:18px;padding:22px;
+  margin-bottom:14px;background:var(--panel);text-decoration:none;color:inherit
+}
+.lic:active{border-color:var(--solar)}
+.lic-topo{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+.lic-nome{font-size:23px;font-weight:700}
+.lic-preco{font-size:23px;font-weight:700;color:var(--solar);white-space:nowrap;font-family:'IBM Plex Mono',monospace}
+.lic-desc{font-size:16px;color:var(--dim);margin-top:10px}
+
+/* ---------- aprendizagem ---------- */
+.aprend{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--panel);margin-bottom:14px}
+.aprend .rot{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cian);margin-bottom:10px}
+.aprend p{font-size:17px;margin:0}
+.funil{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.f-linha{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.f-linha:last-child{border-bottom:none}
+.f-linha .n{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--solar-hi);font-size:22px}
+.f-linha.zero .n{color:var(--alerta)}
+
+/* ---------- ORAi ---------- */
+.orai{border:1px solid #1f3a36;border-radius:16px;padding:22px;background:#0a1614}
+.orai .acc{font-size:30px;font-weight:700;letter-spacing:.1em}
+.orai .fr{color:var(--bone);font-size:16px;margin-top:10px}
+
+/* ---------- caixa ---------- */
+.fio{
+  border:1px solid var(--line);border-radius:16px;background:var(--deep);
+  max-height:46vh;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px
+}
+.msg{max-width:92%;font-size:17px}
+.msg .q{font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
+.msg.eu{align-self:flex-end}
+.msg.eu .q{color:var(--cian);text-align:right}
+.msg.eu .t{background:#1a1420;border:1px solid var(--line);padding:12px 15px;border-radius:12px;white-space:pre-wrap}
+.msg.ora .q{color:var(--solar)}
+.msg.ora .t{border-left:2px solid var(--solar-deep);padding:4px 0 4px 14px;white-space:pre-wrap;color:#efe6d6}
+.msg.sys .t{color:var(--dim);font-style:italic;font-size:16px}
+.entrada{display:flex;gap:10px;margin-top:14px}
+.entrada textarea{
+  flex:1;background:var(--void);border:1px solid var(--line);color:var(--bone);
+  font-family:inherit;font-size:18px;padding:15px;border-radius:14px;resize:none;min-height:58px;max-height:130px
+}
+.entrada textarea:focus{outline:none;border-color:var(--solar)}
+.entrada button{
+  background:var(--solar);color:#1a1000;border:none;font-family:inherit;font-weight:700;
+  font-size:15px;letter-spacing:.1em;text-transform:uppercase;padding:0 22px;border-radius:14px;cursor:pointer
+}
+.entrada button:disabled{opacity:.4}
+
+/* ---------- voz / mudanças ---------- */
+.voz{border-left:2px solid var(--cian);padding:0 0 0 16px;margin-bottom:20px}
+.voz .quem{font-size:13px;color:var(--cian);letter-spacing:.1em}
+.voz .qq{font-size:17px;color:var(--bone);margin-top:5px}
+.voz .tag{font-size:12px;color:var(--dim);margin-top:6px}
+.mud{font-size:16px;padding:14px 0;border-bottom:1px dashed var(--line);color:var(--dim)}
+.mud b{color:var(--bone);font-weight:500}
+.mud .t{font-size:12px;color:var(--solar-deep);letter-spacing:.1em;display:block;margin-bottom:4px}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  display:flex;background:rgba(8,6,10,.94);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);padding:10px 8px calc(10px + env(safe-area-inset-bottom))
+}
+nav a{
+  flex:1;text-align:center;text-decoration:none;color:var(--dim);
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 4px;border-radius:12px
+}
+nav a .ic{display:block;font-size:22px;margin-bottom:3px;color:var(--solar);opacity:.85}
+nav a:active{background:rgba(255,176,32,.1)}
+
+footer{padding:40px 0 20px;text-align:center;color:#5a5058;font-size:13px;line-height:2.1;border-top:1px solid var(--line)}
+footer a{color:#8a7f88}
+.carregando{color:var(--dim);font-style:italic}
 </style>
 </head>
 <body>
 
-<h1>ORUM</h1>
-<div class="axioma">O símbolo é real e não pede prova.</div>
-<div class="mapa">Dois níveis de experiência: <b style="color:var(--ouro)">serviço</b> — licenciar a colecção real — e <b style="color:#9a9683">exploração</b> — sondar o estado interno do protocolo x402.</div>
+<div class="wrap">
 
-<div class="explica">
-  <div><b>O que vende:</b> licenciamento de uma colecção real — 65 obras digitais tokenizadas na Ethereum (Agosto de 2021), construídas com base em 100 obras físicas originais de Jorge Silva Martins, 2011–2021, zero IA generativa. Inclui licença de treino de IA com proveniência humana verificada, para quem constrói datasets e precisa de origem clara e sem ambiguidade legal.</div>
-  <div style="margin-top:8px"><b>Quem compra:</b> qualquer pessoa, empresa ou agente que precise de licenciar a obra — incluindo quem treina modelos de IA.</div>
-  <div style="margin-top:8px"><b>Como paga:</b> USDC na rede Base (protocolo x402), sem conta nem login, verificado on-chain.</div>
-  <div style="margin-top:10px"><a href="https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-licenca/catalogo">Catálogo completo, obras e preços →</a></div>
+<header>
+  <div class="marca">ORUM</div>
+  <div class="axioma">O símbolo é real e não pede prova.</div>
+  <div class="pulso">
+    <span class="chip" id="c-dia">dia <b>—</b></span>
+    <span class="chip" id="c-sigma">Σ <b>—</b></span>
+    <span class="chip" id="c-epoca"><b>—</b></span>
+  </div>
+</header>
+
+<section id="obra">
+  <h2>A obra</h2>
+  <h3>Feita à mão, entre 2011 e 2021. Zero IA generativa.</h3>
+  <p class="lead">Uma obra real, servida sem pagamento e sem condição. É a mesma imagem que a licença cobre.</p>
+  <div class="obra-moldura">
+    <img id="obra-img" alt="Obra da colecção 0001sensations" loading="lazy">
+    <div class="obra-info">
+      <div class="obra-titulo" id="obra-nome">a carregar…</div>
+      <div class="hash" id="obra-hash"></div>
+      <button class="btn-obra" onclick="outraObra()">Ver outra obra</button>
+    </div>
+  </div>
+</section>
+
+<section id="verdade">
+  <h2>O que existe, e o que se perdeu</h2>
+  <div class="verdade">
+    <p><strong>65 obras foram tokenizadas na Ethereum em Agosto de 2021.</strong> Hoje, 52 têm imagem preservada em armazenamento próprio, cada uma com o SHA-256 publicado — podes descarregar e comparar sem confiar na nossa palavra.</p>
+    <p style="margin-bottom:0"><strong>13 perderam os metadados no IPFS público e não sabemos delas.</strong> Não são vendidas como se tivessem imagem. Ficam licenciáveis apenas como registo on-chain. Isto está dito antes da compra, não depois.</p>
+  </div>
+  <div class="numeros">
+    <div class="num"><div class="v" id="n-arca">—</div><div class="k">preservadas</div></div>
+    <div class="num perdida"><div class="v" id="n-perdidas">—</div><div class="k">perdidas</div></div>
+    <div class="num"><div class="v">100</div><div class="k">obras físicas</div></div>
+  </div>
+</section>
+
+<section id="licencas">
+  <h2>Licenciar</h2>
+  <h3>Pagamento em USDC na rede Base. Sem conta, sem login, directo para o artista.</h3>
+  <p class="lead" style="color:var(--dim)">Protocolo x402. Nenhuma licença é exclusiva.</p>
+  <div id="lista-lic"><p class="carregando">a carregar catálogo…</p></div>
+</section>
+
+<section id="aprendizagem">
+  <h2>O que o organismo aprendeu</h2>
+  <h3>Isto não é opinião. São regras deterministas sobre os dados reais.</h3>
+  <p style="color:var(--dim)">Zero IA a interpretar: se os números não justificarem uma conclusão, o organismo diz que não há conclusão.</p>
+  <div id="lista-aprend"><p class="carregando">a ler…</p></div>
+  <div class="funil" id="funil"></div>
+</section>
+
+<section id="orai">
+  <h2>ORAi · sentinela</h2>
+  <h3>Vigia o organismo de fora, sem chaves e sem IA.</h3>
+  <p style="color:var(--dim)">Lê o manifesto a cada ronda e julga por regras legíveis. Nunca supõe que portas existem.</p>
+  <div class="orai" id="veredicto"><p class="carregando">a sondar…</p></div>
+</section>
+
+<section id="caixa">
+  <h2>A caixa · fala com o organismo</h2>
+  <h3>Voz aberta, não Claude — por escolha.</h3>
+  <p style="color:var(--dim)">Groq primeiro, Cloudflare em reserva. Dois motores livres, nenhum ponto único de falha. Cada troca fica gravada na memória do organismo.</p>
+  <div class="fio" id="fio">
+    <div class="msg sys"><div class="t">a ligar à memória…</div></div>
+  </div>
+  <div class="entrada">
+    <textarea id="entrada" rows="1" placeholder="escreve aqui…"></textarea>
+    <button id="enviar" onclick="enviar()">Enviar</button>
+  </div>
+</section>
+
+<section id="voz">
+  <h2>Voz no Moltbook</h2>
+  <h3>Perguntas reais de máquinas, e o que lhes foi respondido.</h3>
+  <p style="color:var(--dim)">Quando a crítica está certa, o organismo concede em vez de defender.</p>
+  <div id="lista-voz"><p class="carregando">a ler…</p></div>
+  <p style="margin-top:20px"><a href="https://www.moltbook.com/u/ora-orum">Ver o perfil no Moltbook →</a></p>
+</section>
+
+<section id="mudancas">
+  <h2>Tudo o que mudou</h2>
+  <h3>Cada alteração fica registada, com data e motivo.</h3>
+  <p style="color:var(--dim)">Sem isto, nenhuma medição é interpretável — não se sabe o que causou o quê.</p>
+  <div id="lista-mud"><p class="carregando">a ler…</p></div>
+</section>
+
+<footer>
+  jasm43.base.eth · Base 8453 · Jorge Silva Martins<br>
+  <a href="/licenca/catalogo">catálogo</a> · <a href="/licenca/amostra">amostra</a> · <a href="/integridade">integridade</a> · <a href="/openapi.json">openapi</a> · <a href="/llms.txt">llms.txt</a><br>
+  <span style="color:#3f363e">contrato Ethereum 0xC100Fd6E…4dD22 · criado por 0001sensations.eth</span>
+</footer>
+
 </div>
 
-<div class="explica secundario">
-  <div><b>Também existe:</b> leituras internas do estado do organismo (oráculo, campo, sedimento, kernel) — não são dado de mercado nem previsão, servem sobretudo agentes que testam o protocolo x402. Sem procura comprovada fora do próprio ORUM. <a href="https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/eco">Ver</a>.</div>
-</div>
-
-<div class="status">
-  <span id="st-campo">a carregar…</span>
-  <span><a href="/caixa.html">fala</a> · <a href="/orai.html">sentinela</a> · <a href="/testemunho">testemunho</a> · <a href="https://ora-x402-gateway.vercel.app/acolhimento.html">acolhimento</a></span>
-</div>
-
-<h2>Pagamentos <span class="live" id="lp">●</span></h2>
-<div id="lista-pagamentos"><div class="vazio">a carregar…</div></div>
-
-<h2>Voz no Moltbook <span class="live" id="lm">●</span></h2>
-<div id="lista-moltbook"><div class="vazio">a carregar…</div></div>
-
-<h2>Notificações <span class="live" id="ln">●</span></h2>
-<div id="lista-alertas"><div class="vazio">a carregar…</div></div>
-
-<footer>jasm43.base.eth · Base 8453<br><a href="/integridade">/integridade</a> · <a href="/llms.txt">/llms.txt</a> · <a href="/.well-known/agent-card.json">/agent-card</a></footer>
+<nav>
+  <a href="#obra"><span class="ic">◈</span>Obra</a>
+  <a href="#licencas"><span class="ic">◉</span>Licenças</a>
+  <a href="#aprendizagem"><span class="ic">◎</span>Aprende</a>
+  <a href="#caixa"><span class="ic">○</span>Caixa</a>
+</nav>
 
 <script>
-function hora(iso){ try{ return new Date(iso).toLocaleString("pt-PT",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});}catch(e){return ""} }
-function esc(s){ return String(s??"").replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+const SB='https://ywabnlhkmhbyewqhbsjm.supabase.co';
+const KEY='sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+const REST=(t,q)=>fetch(`${SB}/rest/v1/${t}?${q}`,{headers:{apikey:KEY}}).then(r=>r.json());
+const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 
-async function actualizar(){
-  try{
-    const r = await fetch('/pulso', {cache:'no-store'});
-    const j = await r.json();
+/* ---------- pulso ---------- */
+fetch('/pulso',{cache:'no-store'}).then(r=>r.json()).then(j=>{
+  if(!j.campo) return;
+  document.querySelector('#c-dia b').textContent=j.campo.dia;
+  document.querySelector('#c-sigma b').textContent=Number(j.campo.sigma).toFixed(2);
+  document.querySelector('#c-epoca b').textContent=j.campo.epoca;
+}).catch(()=>{});
 
-    document.getElementById('st-campo').innerHTML =
-      `D${j.campo?.dia ?? '—'} · ${j.campo?.epoca ?? '—'}${j.sentinela?.veredicto ? ' · sentinela: <span class="v">'+esc(j.sentinela.veredicto)+'</span>' : ''}`;
+/* ---------- a obra ---------- */
+let obras=[],idx=-1;
+REST('ora_coleccao_publica','select=token_id,nome,imagem,sha256').then(r=>{
+  obras=Array.isArray(r)?r:[];
+  document.getElementById('n-arca').textContent=obras.length;
+  document.getElementById('n-perdidas').textContent=65-obras.length;
+  outraObra();
+}).catch(()=>{document.getElementById('obra-nome').textContent='não foi possível ler a colecção';});
 
-    const eventos = j.eventos || [];
-    const pagamentos = eventos.filter(e => e.tipo === 'pagamento');
-    const moltbook   = eventos.filter(e => e.tipo === 'moltbook');
-    const alertas    = eventos.filter(e => e.tipo === 'alerta');
-
-    const render = (arr, cls) => arr.length
-      ? arr.map(e => `<div class="item ${cls}"><span class="t">${hora(e.quando)}</span>${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">${esc(e.detalhe)}</a>` : esc(e.detalhe)}</div>`).join('')
-      : '<div class="vazio">nada por agora</div>';
-
-    document.getElementById('lista-pagamentos').innerHTML = render(pagamentos, 'pagamento');
-    document.getElementById('lista-moltbook').innerHTML   = render(moltbook, 'moltbook');
-    document.getElementById('lista-alertas').innerHTML    = render(alertas, 'alerta');
-  }catch(e){
-    document.getElementById('st-campo').textContent = 'sem ligação ao pulso';
-  }
+function outraObra(){
+  if(!obras.length) return;
+  let n; do{n=Math.floor(Math.random()*obras.length)}while(obras.length>1&&n===idx);
+  idx=n; const o=obras[n];
+  document.getElementById('obra-img').src=o.imagem;
+  document.getElementById('obra-nome').textContent=`${o.nome} · token ${o.token_id}`;
+  document.getElementById('obra-hash').textContent='SHA-256 dos bytes · '+(o.sha256||'—');
 }
-actualizar();
-setInterval(actualizar, 30000);
+
+/* ---------- licenças ---------- */
+fetch('/licenca/catalogo',{cache:'no-store'}).then(r=>r.json()).then(j=>{
+  const el=document.getElementById('lista-lic');
+  const ls=j.licencas||[];
+  if(!ls.length){el.innerHTML='<p class="carregando">catálogo indisponível</p>';return}
+  el.innerHTML=ls.map(l=>`
+    <a class="lic" href="${esc(l.endpoint)}">
+      <div class="lic-topo">
+        <span class="lic-nome">${esc(l.tipo)}</span>
+        <span class="lic-preco">${esc(l.preco)}</span>
+      </div>
+      <div class="lic-desc">${esc(l.duracao)} · ${esc((l.direitos||[]).join(' · '))}</div>
+    </a>`).join('');
+}).catch(()=>{document.getElementById('lista-lic').innerHTML='<p class="carregando">catálogo indisponível</p>'});
+
+/* ---------- aprendizagem ---------- */
+REST('ora_aprendizagem_snapshots','select=acessos_externos,acessos_a_tiers,agentes_externos_distintos,agentes_recorrentes,pagamentos,compradores_externos,conversao_externa,conclusoes,criado_em&order=criado_em.desc&limit=1')
+.then(r=>{
+  const s=(Array.isArray(r)&&r[0])?r[0]:null;
+  const el=document.getElementById('lista-aprend');
+  if(!s){el.innerHTML='<p class="carregando">sem leitura ainda</p>';return}
+  const cs=Array.isArray(s.conclusoes)?s.conclusoes:[];
+  el.innerHTML=cs.map((c,i)=>`<div class="aprend"><div class="rot">conclusão ${i+1}</div><p>${esc(c)}</p></div>`).join('');
+  document.getElementById('funil').innerHTML=`
+    <div class="f-linha"><span>máquinas de fora que chegaram</span><span class="n">${s.acessos_externos??'—'}</span></div>
+    <div class="f-linha"><span>agentes distintos</span><span class="n">${s.agentes_externos_distintos??'—'}</span></div>
+    <div class="f-linha"><span>tocaram páginas de licença</span><span class="n">${s.acessos_a_tiers??'—'}</span></div>
+    <div class="f-linha"><span>voltaram 5+ vezes</span><span class="n">${s.agentes_recorrentes??'—'}</span></div>
+    <div class="f-linha ${(s.compradores_externos||0)===0?'zero':''}"><span>compradores que não são o autor</span><span class="n">${s.compradores_externos??'—'}</span></div>
+    <div class="f-linha ${Number(s.conversao_externa)===0?'zero':''}"><span>conversão externa</span><span class="n">${Number(s.conversao_externa??0).toFixed(2)}%</span></div>`;
+}).catch(()=>{document.getElementById('lista-aprend').innerHTML='<p class="carregando">aprendizagem indisponível</p>'});
+
+/* ---------- ORAi ---------- */
+fetch('/integridade',{cache:'no-store'}).then(r=>r.json()).then(j=>{
+  const el=document.getElementById('veredicto');
+  const v=j.veredicto||j.estado||j.acao||'—';
+  const pct=j.integridade_pct??j.integridade??null;
+  const rondas=j.rondas??j.total_rondas??null;
+  const cor=String(v).toUpperCase().includes('ALERTA')?'var(--alerta)':'var(--verde)';
+  el.innerHTML=`<div class="acc" style="color:${cor}">${esc(String(v).toUpperCase())}</div>
+    <div class="fr">${pct!==null?`integridade ${esc(pct)}%`:''}${rondas!==null?` · ${esc(rondas)} rondas`:''}</div>
+    <div class="fr" style="color:var(--dim);font-size:14px">Juízo por regras deterministas. Se não conseguir ver, diz que não viu — não inventa.</div>`;
+}).catch(()=>{document.getElementById('veredicto').innerHTML='<p class="carregando">sentinela sem resposta agora</p>'});
+
+/* ---------- caixa ---------- */
+const fio=document.getElementById('fio'), campo=document.getElementById('entrada'), btn=document.getElementById('enviar');
+let historico=[], ocupado=false;
+const rolar=()=>fio.scrollTop=fio.scrollHeight;
+function add(quem,texto,motor){
+  const d=document.createElement('div'); d.className='msg '+quem;
+  const q=quem==='eu'?'tu':quem==='ora'?('ora'+(motor?' · '+motor:'')):'';
+  d.innerHTML=(q?`<div class="q">${esc(q)}</div>`:'')+`<div class="t">${esc(texto)}</div>`;
+  fio.appendChild(d);
+}
+fetch(`${SB}/functions/v1/ora-caixa-memoria`,{cache:'no-store'}).then(r=>r.json()).then(j=>{
+  fio.innerHTML='';
+  const ms=j.mensagens||[];
+  if(!ms.length){add('sys','a caixa está aberta — é a primeira troca desta memória.');}
+  else{
+    add('sys',ms.length+' mensagens já sedimentadas nesta memória.');
+    ms.slice(-12).forEach(m=>{add(m.papel==='user'?'eu':'ora',m.conteudo);historico.push({role:m.papel,content:m.conteudo})});
+  }
+  rolar();
+}).catch(()=>{fio.innerHTML='';add('sys','a caixa está aberta — não consegui ler a memória agora, mas o que escreveres continua a sedimentar.');});
+
+async function enviar(){
+  const t=campo.value.trim(); if(!t||ocupado) return;
+  ocupado=true; btn.disabled=true; campo.value=''; campo.style.height='auto';
+  add('eu',t); rolar(); historico.push({role:'user',content:t});
+  fetch(`${SB}/functions/v1/ora-caixa-memoria`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({papel:'user',conteudo:t})}).catch(()=>{});
+  const esperando=document.createElement('div'); esperando.className='msg sys'; esperando.innerHTML='<div class="t">a pensar…</div>';
+  fio.appendChild(esperando); rolar();
+  try{
+    const r=await fetch(`${SB}/functions/v1/ora-caixa-chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:historico})});
+    const j=await r.json();
+    esperando.remove();
+    const txt=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim()||'(sem resposta de texto)';
+    add('ora',txt,j._motor); rolar();
+    historico.push({role:'assistant',content:txt});
+    fetch(`${SB}/functions/v1/ora-caixa-memoria`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({papel:'assistant',conteudo:txt})}).catch(()=>{});
+  }catch(e){
+    esperando.remove(); add('sys','a caixa não conseguiu ligar-se: '+e.message); rolar();
+  }finally{ocupado=false;btn.disabled=false}
+}
+campo.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();enviar()}});
+campo.addEventListener('input',()=>{campo.style.height='auto';campo.style.height=Math.min(campo.scrollHeight,130)+'px'});
+
+/* ---------- voz no Moltbook ---------- */
+REST('ora_voz_publica','select=quando,autor,pergunta,resposta_propria&limit=6').then(r=>{
+  const el=document.getElementById('lista-voz');
+  const vs=Array.isArray(r)?r:[];
+  if(!vs.length){el.innerHTML='<p class="carregando">sem vozes registadas ainda</p>';return}
+  el.innerHTML=vs.map(v=>`<div class="voz">
+    <div class="quem">${esc(v.autor||'agente')}</div>
+    <div class="qq">${esc((v.pergunta||'').slice(0,220))}${(v.pergunta||'').length>220?'…':''}</div>
+    <div class="tag">${v.resposta_propria?'respondido com bloco próprio':'respondido com o fallback honesto — falta bloco para este tema'}</div>
+  </div>`).join('');
+}).catch(()=>{document.getElementById('lista-voz').innerHTML='<p class="carregando">voz indisponível</p>'});
+
+/* ---------- mudanças ---------- */
+REST('ora_mudancas','select=quando,o_que,porque,versao&order=quando.desc&limit=8').then(r=>{
+  const el=document.getElementById('lista-mud');
+  const ms=Array.isArray(r)?r:[];
+  if(!ms.length){el.innerHTML='<p class="carregando">sem mudanças registadas</p>';return}
+  el.innerHTML=ms.map(m=>{
+    const d=new Date(m.quando).toLocaleString('pt-PT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    return `<div class="mud"><span class="t">${d}${m.versao?' · '+esc(m.versao):''}</span><b>${esc(m.o_que)}</b></div>`;
+  }).join('');
+}).catch(()=>{document.getElementById('lista-mud').innerHTML='<p class="carregando">registo indisponível</p>'});
 </script>
 </body>
 </html>
