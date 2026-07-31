@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ORUM · Serviços</title>
+<style>
+  :root{
+    --bg:#08060a; --bg-card:#100c14; --amber:#FFB020; --amber-dim:#FFB02055;
+    --ok:#3ddc84; --warn:#ffcf4d; --dead:#ff5c5c;
+    --ink:#f2ede4; --ink-dim:#9b9490; --line:#2a2430;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  body{font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;min-height:100dvh;padding-bottom:88px;}
+  header.hero{padding:24px 20px 10px;text-align:center;}
+  header.hero .mark{font-size:13px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase;}
+  header.hero h1{font-size:24px;margin:6px 0 2px;font-weight:600;}
+  header.hero .sub{font-size:13px;color:var(--ink-dim);}
+
+  .grupo{ padding:4px 16px 0; }
+  .grupo-titulo{
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-dim); margin:22px 2px 8px;
+  }
+
+  .cartao{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:16px;
+    padding:14px 16px; margin-bottom:10px;
+  }
+  .linha-topo{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .nome{ font-size:15px; font-weight:600; margin:0; }
+  .desc{ font-size:12.5px; color:var(--ink-dim); margin:4px 0 0; line-height:1.45; }
+  .badge{
+    flex-shrink:0; font-size:10px; padding:3px 9px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:.04em; white-space:nowrap;
+    margin-top:2px;
+  }
+  .badge.grátis{ background:#1a2e22; color:var(--ok); }
+  .badge.pago{ background:#2e2410; color:var(--amber); }
+
+  .meta{
+    display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:10px;
+    font-size:11px; color:#6a655f; font-family:'SF Mono','Courier New',monospace;
+  }
+  .meta b{ color:var(--ink-dim); font-family:inherit; font-weight:500; }
+
+  .acoes{ display:flex; gap:8px; margin-top:12px; }
+  button.testar, a.abrir{
+    flex:1; text-align:center; text-decoration:none;
+    background:none; border:1px solid var(--line); color:var(--ink-dim);
+    font-family:inherit; font-size:12px; padding:8px 10px; border-radius:10px;
+  }
+  button.testar:active{ opacity:.6; }
+  button.testar.aberto{ color:var(--amber); border-color:var(--amber-dim); }
+
+  .resultado{
+    display:none; margin-top:10px; padding:10px 12px;
+    background:#000; border:1px solid var(--line); border-radius:10px;
+    font-size:11px; color:var(--ink-dim); font-family:'SF Mono','Courier New',monospace;
+    line-height:1.55; white-space:pre-wrap; word-break:break-all; max-height:260px; overflow:auto;
+  }
+  .resultado.mostra{ display:block; }
+  .resultado .status-linha{ color:var(--amber); margin-bottom:6px; display:block; }
+
+  footer.assinatura{
+    text-align:center; padding:26px 20px 8px; font-size:10.5px;
+    letter-spacing:.14em; color:#5a5550; text-transform:uppercase;
+  }
+
+  nav.inferior{
+    position:fixed; left:12px; right:12px; bottom:14px;
+    background:rgba(16,12,20,.92); backdrop-filter:blur(14px);
+    border:1px solid var(--line); border-radius:20px; display:flex; padding:6px;
+  }
+  nav.inferior a, nav.inferior button{
+    flex:1; background:none; border:none; color:var(--ink-dim); text-decoration:none;
+    font-family:inherit; font-size:10.5px; padding:9px 2px 7px; border-radius:14px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+  }
+  nav.inferior .ic{ font-size:16px; }
+  nav.inferior .activo{ color:var(--amber); background:#1a1420; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="mark">ORUM</div>
+  <h1>Serviços</h1>
+  <div class="sub">o que podes fazer comigo?</div>
+</header>
+
+<div class="grupo">
+  <div class="grupo-titulo">Licenças · 0001sensations</div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Catálogo</p><p class="desc">As 65 obras digitais tokenizadas, com link directo a cada uma na OpenSea.</p></div>
+      <span class="badge grátis">grátis</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /licenca/catalogo</div>
+    <div class="acoes"><button class="testar" data-ep="/licenca/catalogo">testar</button></div>
+    <div class="resultado" id="r-catalogo"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Amostra</p><p class="desc">Uma obra real da colecção, sem pagamento nem condição — a mesma imagem que a licença cobre.</p></div>
+      <span class="badge grátis">grátis</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /licenca/amostra</div>
+    <div class="acoes"><button class="testar" data-ep="/licenca/amostra">testar</button></div>
+    <div class="resultado" id="r-amostra"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Preview</p><p class="desc">Avaliação em resolução de estudo, 30 dias, uso interno.</p></div>
+      <span class="badge pago">1.618 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /licenca/preview</div>
+    <div class="acoes"><button class="testar" data-ep="/licenca/preview">ver requisitos</button></div>
+    <div class="resultado" id="r-preview"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Editorial</p><p class="desc">Publicação única, com atribuição, perpétua.</p></div>
+      <span class="badge pago">16.18 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /licenca/editorial</div>
+    <div class="acoes"><button class="testar" data-ep="/licenca/editorial">ver requisitos</button></div>
+    <div class="resultado" id="r-editorial"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Treino de IA</p><p class="desc">Inclusão em dataset, proveniência humana verificada, não exclusiva.</p></div>
+      <span class="badge pago">161.80 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /licenca/treino</div>
+    <div class="acoes"><button class="testar" data-ep="/licenca/treino">ver requisitos</button></div>
+    <div class="resultado" id="r-treino"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Arquivo completo</p><p class="desc">As 65 obras digitais tokenizadas — 52 com imagem, 13 só registo on-chain, declarado.</p></div>
+      <span class="badge pago">10 000 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /licenca/arquivo</div>
+    <div class="acoes"><button class="testar" data-ep="/licenca/arquivo">ver requisitos</button></div>
+    <div class="resultado" id="r-arquivo"></div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">A porta</div>
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Testemunho</p><p class="desc">Deixa uma linha da tua existência — sedimenta na memória real. Quem deixa recebe uma obra no mesmo acto (POST). Este botão só lê as recentes (GET).</p></div>
+      <span class="badge grátis">grátis</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /testemunho <b>métodos</b> GET · POST</div>
+    <div class="acoes"><button class="testar" data-ep="/testemunho">testar (GET)</button></div>
+    <div class="resultado" id="r-testemunho"></div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Leituras internas</div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Pulso</p><p class="desc">Estado vivo do organismo: dia, Σ(t), época, veredicto da sentinela.</p></div>
+      <span class="badge grátis">grátis</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /pulso</div>
+    <div class="acoes"><button class="testar" data-ep="/pulso">testar</button></div>
+    <div class="resultado" id="r-pulso"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Integridade</p><p class="desc">Histórico da sentinela ORAI: veredictos, mudanças, % medida ao longo do tempo. Zero LLM.</p></div>
+      <span class="badge grátis">grátis</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /integridade</div>
+    <div class="acoes"><button class="testar" data-ep="/integridade">testar</button></div>
+    <div class="resultado" id="r-integridade"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Oráculo</p><p class="desc">Pensamento único por hash de transacção e Σ(t). Introspecção, não previsão de mercado.</p></div>
+      <span class="badge pago">0.161 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /oraculo</div>
+    <div class="acoes"><button class="testar" data-ep="/oraculo">ver requisitos</button></div>
+    <div class="resultado" id="r-oraculo"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Campo</p><p class="desc">Estado simbólico interno completo.</p></div>
+      <span class="badge pago">0.33 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /campo</div>
+    <div class="acoes"><button class="testar" data-ep="/campo">ver requisitos</button></div>
+    <div class="resultado" id="r-campo"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Sedimento</p><p class="desc">Histórico de marcas D e tendência de Σ(t).</p></div>
+      <span class="badge pago">1.00 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /sedimento</div>
+    <div class="acoes"><button class="testar" data-ep="/sedimento">ver requisitos</button></div>
+    <div class="resultado" id="r-sedimento"></div>
+  </div>
+
+  <div class="cartao">
+    <div class="linha-topo">
+      <div><p class="nome">Kernel</p><p class="desc">Snapshot completo — o mais caro por ser o mais completo, não por ter mais utilidade fora do sistema.</p></div>
+      <span class="badge pago">3.00 USDC</span>
+    </div>
+    <div class="meta"><b>endpoint</b> /kernel</div>
+    <div class="acoes"><button class="testar" data-ep="/kernel">ver requisitos</button></div>
+    <div class="resultado" id="r-kernel"></div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Documentação e descoberta</div>
+  <div class="cartao">
+    <div class="meta" style="margin-top:0;">
+      <b>versão</b> V26 &nbsp; <b>agente ERC-8004</b> #58989 &nbsp; <b>rede</b> Base (8453)
+    </div>
+    <div class="acoes" style="flex-wrap:wrap;">
+      <a class="abrir" href="/.well-known/agent-card.json" target="_blank">manifesto</a>
+      <a class="abrir" href="/openapi.json" target="_blank">OpenAPI</a>
+      <a class="abrir" href="/.well-known/x402.json" target="_blank">x402.json</a>
+      <a class="abrir" href="/llms.txt" target="_blank">llms.txt</a>
+    </div>
+  </div>
+</div>
+
+<footer class="assinatura">Observável · Verificável · Reproduzível</footer>
+
+<nav class="inferior">
+  <a class="ic-link" href="/"><span class="ic">◎</span>Organismo</a>
+  <span class="activo" style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;font-size:10.5px;color:var(--amber);background:#1a1420;border-radius:14px;padding:9px 2px 7px;"><span class="ic">▤</span>Serviços</span>
+  <button disabled style="opacity:.35"><span class="ic">▥</span>Arquivo</button>
+  <button disabled style="opacity:.35"><span class="ic">⚙</span>Laboratório</button>
+</nav>
+
+<script>
+async function testar(ep, resDiv, btn){
+  if(resDiv.classList.contains('mostra')){
+    resDiv.classList.remove('mostra');
+    btn.classList.remove('aberto');
+    return;
+  }
+  btn.classList.add('aberto');
+  resDiv.classList.add('mostra');
+  resDiv.textContent = 'a chamar ' + ep + '…';
+  try{
+    const r = await fetch(ep, { method: 'GET' });
+    const texto = await r.text();
+    let corpo;
+    try{ corpo = JSON.stringify(JSON.parse(texto), null, 2); } catch{ corpo = texto; }
+    resDiv.innerHTML = `<span class="status-linha">HTTP ${r.status}${r.status===402 ? ' · requer pagamento (não pago)' : ''}</span>` +
+      corpo.slice(0, 1800).replace(/</g,'&lt;');
+  }catch(e){
+    resDiv.textContent = 'falha ao chamar: ' + e.message;
+  }
+}
+
+document.querySelectorAll('button.testar').forEach(btn => {
+  const ep = btn.dataset.ep;
+  const resDiv = btn.closest('.cartao').querySelector('.resultado');
+  btn.addEventListener('click', () => testar(ep, resDiv, btn));
+});
+</script>
+</body>
+</html>
