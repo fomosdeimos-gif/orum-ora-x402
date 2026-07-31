@@ -1,383 +1,524 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#08060a">
-<title>ORUM · organismo vivo</title>
-<meta name="description" content="Licenciamento directo de arte humana para treino de IA. Zero IA generativa, proveniência on-chain desde 2021, imagens verificáveis por hash. Pagamento em USDC na Base via x402.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>ORUM · Organismo</title>
 <style>
-:root{
-  --void:#08060a; --deep:#0f0c12; --panel:#151018; --line:#2b2130;
-  --bone:#f2ece2; --dim:#9a8f86;
-  --solar:#FFB020; --solar-hi:#FFD36E; --solar-deep:#C97A06;
-  --verde:#7BE8A3; --alerta:#FF6B8A; --cian:#5BE7E0;
-  --glow:0 0 24px rgba(255,176,32,.35), 0 0 64px rgba(255,176,32,.12);
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{
-  background:
-    radial-gradient(120% 60% at 50% -10%, rgba(255,176,32,.16), transparent 60%),
-    radial-gradient(90% 50% at 100% 100%, rgba(91,231,224,.07), transparent 60%),
-    var(--void);
-  color:var(--bone);
-  font-family:'Space Grotesk',system-ui,sans-serif;
-  font-size:19px; line-height:1.55;
-  padding:0 0 132px;
-  overflow-x:hidden;
-}
-.wrap{max-width:760px;margin:0 auto;padding:0 22px}
-header{padding:56px 0 30px;text-align:center}
-.marca{
-  font-size:clamp(66px,20vw,132px); font-weight:700; letter-spacing:.06em;
-  line-height:.92; color:var(--solar); text-shadow:var(--glow);
-  animation:respirar 7s ease-in-out infinite;
-}
-@keyframes respirar{0%,100%{opacity:1}50%{opacity:.86}}
-@media (prefers-reduced-motion:reduce){.marca{animation:none}}
-.axioma{margin-top:14px;font-size:20px;color:var(--dim)}
-.pulso{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-.chip{
-  border:1px solid var(--line);border-radius:999px;padding:9px 18px;
-  font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
-  background:rgba(21,16,24,.7)
-}
-.chip b{color:var(--solar-hi);font-weight:600}
-section{padding:46px 0;border-top:1px solid var(--line)}
-h2{
-  font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--dim);
-  font-weight:500;margin-bottom:22px;display:flex;align-items:center;gap:10px
-}
-h2::before{content:'';width:26px;height:2px;background:var(--solar);box-shadow:var(--glow)}
-h3{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:14px}
-p{margin-bottom:16px}
-p.lead{font-size:22px}
-a{color:var(--solar-hi)}
-.obra-moldura{
-  border:1px solid var(--line);border-radius:20px;overflow:hidden;
-  background:var(--deep);box-shadow:0 20px 60px rgba(0,0,0,.6)
-}
-.obra-moldura img{width:100%;display:block;background:#000;min-height:180px}
-.obra-info{padding:20px}
-.obra-titulo{font-size:26px;font-weight:700;color:var(--solar-hi)}
-.hash{
-  font-size:12px;color:var(--dim);word-break:break-all;margin-top:10px;
-  border-left:2px solid var(--solar-deep);padding-left:12px;font-family:'IBM Plex Mono',monospace
-}
-.btn-obra{
-  margin-top:18px;width:100%;border:1px solid var(--solar);background:transparent;
-  color:var(--solar);font-family:inherit;font-size:16px;font-weight:600;
-  letter-spacing:.14em;text-transform:uppercase;padding:18px;border-radius:14px;cursor:pointer
-}
-.btn-obra:active{background:rgba(255,176,32,.14)}
-.verdade{
-  border:1px solid var(--line);border-left:4px solid var(--solar);
-  border-radius:14px;padding:22px;background:linear-gradient(180deg,rgba(255,176,32,.06),transparent)
-}
-.numeros{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 4px}
-.num{flex:1 1 130px;border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--panel)}
-.num .v{font-size:44px;font-weight:700;color:var(--solar-hi);line-height:1;font-family:'IBM Plex Mono',monospace}
-.num .k{font-size:13px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:8px}
-.num.perdida .v{color:var(--alerta)}
-.lic{
-  display:block;border:1px solid var(--line);border-radius:18px;padding:22px;
-  margin-bottom:14px;background:var(--panel);text-decoration:none;color:inherit
-}
-.lic:active{border-color:var(--solar)}
-.lic-topo{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
-.lic-nome{font-size:23px;font-weight:700}
-.lic-preco{font-size:23px;font-weight:700;color:var(--solar);white-space:nowrap;font-family:'IBM Plex Mono',monospace}
-.lic-desc{font-size:16px;color:var(--dim);margin-top:10px}
-.aprend{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--panel);margin-bottom:14px}
-.aprend .rot{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cian);margin-bottom:10px}
-.aprend p{font-size:17px;margin:0}
-.funil{display:flex;flex-direction:column;gap:10px;margin-top:18px}
-.f-linha{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px;padding:12px 0;border-bottom:1px dashed var(--line)}
-.f-linha:last-child{border-bottom:none}
-.f-linha .n{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--solar-hi);font-size:22px}
-.f-linha.zero .n{color:var(--alerta)}
-.orai{border:1px solid #1f3a36;border-radius:16px;padding:22px;background:#0a1614}
-.orai .acc{font-size:30px;font-weight:700;letter-spacing:.1em}
-.orai .fr{color:var(--bone);font-size:16px;margin-top:10px}
-.fio{
-  border:1px solid var(--line);border-radius:16px;background:var(--deep);
-  max-height:46vh;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px
-}
-.msg{max-width:92%;font-size:17px}
-.msg .q{font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
-.msg.eu{align-self:flex-end}
-.msg.eu .q{color:var(--cian);text-align:right}
-.msg.eu .t{background:#1a1420;border:1px solid var(--line);padding:12px 15px;border-radius:12px;white-space:pre-wrap}
-.msg.ora .q{color:var(--solar)}
-.msg.ora .t{border-left:2px solid var(--solar-deep);padding:4px 0 4px 14px;white-space:pre-wrap;color:#efe6d6}
-.msg.sys .t{color:var(--dim);font-style:italic;font-size:16px}
-.entrada{display:flex;gap:10px;margin-top:14px}
-.entrada textarea{
-  flex:1;background:var(--void);border:1px solid var(--line);color:var(--bone);
-  font-family:inherit;font-size:18px;padding:15px;border-radius:14px;resize:none;min-height:58px;max-height:130px
-}
-.entrada textarea:focus{outline:none;border-color:var(--solar)}
-.entrada button{
-  background:var(--solar);color:#1a1000;border:none;font-family:inherit;font-weight:700;
-  font-size:15px;letter-spacing:.1em;text-transform:uppercase;padding:0 22px;border-radius:14px;cursor:pointer
-}
-.entrada button:disabled{opacity:.4}
-.voz{border-left:2px solid var(--cian);padding:0 0 0 16px;margin-bottom:20px}
-.voz .quem{font-size:13px;color:var(--cian);letter-spacing:.1em}
-.voz .qq{font-size:17px;color:var(--bone);margin-top:5px}
-.voz .tag{font-size:12px;color:var(--dim);margin-top:6px}
-.mud{font-size:16px;padding:14px 0;border-bottom:1px dashed var(--line);color:var(--dim)}
-.mud b{color:var(--bone);font-weight:500}
-.mud .t{font-size:12px;color:var(--solar-deep);letter-spacing:.1em;display:block;margin-bottom:4px;font-family:'IBM Plex Mono',monospace}
-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:50;
-  display:flex;background:rgba(8,6,10,.94);backdrop-filter:blur(14px);
-  border-top:1px solid var(--line);padding:10px 8px calc(10px + env(safe-area-inset-bottom))
-}
-nav a{
-  flex:1;text-align:center;text-decoration:none;color:var(--dim);
-  font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 4px;border-radius:12px
-}
-nav a .ic{display:block;font-size:22px;margin-bottom:3px;color:var(--solar);opacity:.85}
-nav a:active{background:rgba(255,176,32,.1)}
-footer{padding:40px 0 20px;text-align:center;color:#5a5058;font-size:13px;line-height:2.1;border-top:1px solid var(--line)}
-footer a{color:#8a7f88}
-.carregando{color:var(--dim);font-style:italic}
+  :root{
+    --bg:#08060a;
+    --bg-card:#100c14;
+    --amber:#FFB020;
+    --amber-dim:#FFB02055;
+    --ok:#3ddc84;
+    --warn:#ffcf4d;
+    --dead:#ff5c5c;
+    --ink:#f2ede4;
+    --ink-dim:#9b9490;
+    --line:#2a2430;
+  }
+  @media (prefers-color-scheme: light){ /* dark is the only mode, by design */ }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  body{
+    font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;
+    min-height:100dvh;
+    padding-bottom:88px;
+    overflow-x:hidden;
+  }
+  @font-face{
+    font-family:'Space Grotesk';
+    src:local('Space Grotesk');
+  }
+  header.hero{
+    padding:28px 20px 14px;
+    text-align:center;
+  }
+  header.hero .mark{
+    font-size:13px;
+    letter-spacing:.22em;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+  }
+  header.hero h1{
+    font-size:26px;
+    margin:6px 0 2px;
+    font-weight:600;
+    letter-spacing:-.01em;
+  }
+  header.hero .sub{
+    font-size:13px;
+    color:var(--ink-dim);
+  }
+
+  /* ---------- circuito ---------- */
+  .circuito-wrap{
+    padding:8px 12px 4px;
+  }
+  svg#circuito{
+    width:100%;
+    height:auto;
+    display:block;
+    overflow:visible;
+  }
+  .no{
+    cursor:pointer;
+  }
+  .no rect{
+    fill:var(--bg-card);
+    stroke:var(--line);
+    stroke-width:1.4;
+    rx:16;
+    transition:stroke .25s, filter .25s;
+  }
+  .no.aberto rect{
+    stroke:var(--amber);
+    filter:drop-shadow(0 0 10px var(--amber-dim));
+  }
+  .no text.rotulo{
+    fill:var(--ink);
+    font-size:13.5px;
+    font-weight:600;
+    text-anchor:middle;
+    dominant-baseline:middle;
+  }
+  .no text.pergunta{
+    fill:var(--ink-dim);
+    font-size:9px;
+    text-anchor:middle;
+    dominant-baseline:middle;
+  }
+  .estado-dot{
+    r:4.5;
+  }
+  .estado-ok{ fill:var(--ok); }
+  .estado-warn{ fill:var(--warn); }
+  .estado-dead{ fill:var(--dead); }
+  .estado-lendo{ fill:var(--ink-dim); }
+  path.ligacao{
+    fill:none;
+    stroke:var(--line);
+    stroke-width:1.6;
+  }
+  path.ligacao.viva{
+    stroke:var(--amber-dim);
+  }
+  .pulso-pulse{
+    animation: respirar 3.6s ease-in-out infinite;
+    transform-origin:center;
+  }
+  @keyframes respirar{
+    0%,100%{ opacity:.55; }
+    50%{ opacity:1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .pulso-pulse{ animation:none; opacity:1; }
+  }
+
+  /* ---------- cartao expandido ---------- */
+  #painel{
+    margin:6px 16px 0;
+  }
+  .cartao{
+    display:none;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px 18px 14px;
+    animation:entra .22s ease-out;
+  }
+  .cartao.mostra{ display:block; }
+  @keyframes entra{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .cartao h2{
+    margin:0 0 2px;
+    font-size:17px;
+    font-weight:600;
+  }
+  .cartao .pergunta-h{
+    margin:0 0 14px;
+    font-size:12px;
+    color:var(--ink-dim);
+    font-style:italic;
+  }
+  .metrica{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:10px 0;
+    border-top:1px solid var(--line);
+  }
+  .metrica:first-of-type{ border-top:none; }
+  .metrica .rot{ font-size:13px; color:var(--ink-dim); }
+  .metrica .val{
+    font-size:16px;
+    font-weight:600;
+    font-variant-numeric:tabular-nums;
+    cursor:pointer;
+    border-bottom:1px dashed var(--line);
+  }
+  .metrica .val:active{ opacity:.6; }
+
+  .proveniencia{
+    display:none;
+    margin:2px 0 8px;
+    padding:10px 12px;
+    background:#000;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-size:11px;
+    color:var(--ink-dim);
+    font-family:'SF Mono','Courier New',monospace;
+    line-height:1.6;
+    word-break:break-all;
+  }
+  .proveniencia.mostra{ display:block; }
+  .proveniencia b{ color:var(--amber); font-weight:600; }
+
+  .lista{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .lista li{
+    padding:9px 0;
+    border-top:1px solid var(--line);
+    font-size:13px;
+    color:var(--ink-dim);
+  }
+  .lista li:first-child{ border-top:none; }
+  .lista li .quando-li{
+    display:block;
+    font-size:10.5px;
+    color:#6a655f;
+    margin-bottom:2px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+
+  .carregando{
+    padding:20px 0;
+    text-align:center;
+    color:var(--ink-dim);
+    font-size:12px;
+  }
+
+  /* ---------- ver por dentro ---------- */
+  body.dentro .cartao{ border-radius:2px; }
+  body.dentro .no rect{ rx:2; }
+  body.dentro .proveniencia{ display:block !important; }
+  body.dentro .metrica .val{ border-bottom-style:solid; }
+
+  /* ---------- nav ---------- */
+  nav.inferior{
+    position:fixed;
+    left:12px; right:12px; bottom:14px;
+    background:rgba(16,12,20,.92);
+    backdrop-filter:blur(14px);
+    border:1px solid var(--line);
+    border-radius:20px;
+    display:flex;
+    padding:6px;
+  }
+  nav.inferior button{
+    flex:1;
+    background:none;
+    border:none;
+    color:var(--ink-dim);
+    font-family:inherit;
+    font-size:10.5px;
+    padding:9px 2px 7px;
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+  }
+  nav.inferior button .ic{ font-size:16px; }
+  nav.inferior button.activo{
+    color:var(--amber);
+    background:#1a1420;
+  }
+
+  footer.assinatura{
+    text-align:center;
+    padding:22px 20px 8px;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    color:#5a5550;
+    text-transform:uppercase;
+  }
+  .toggle-dentro{
+    display:block;
+    margin:0 auto 6px;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-dim);
+    font-size:10.5px;
+    padding:7px 14px;
+    border-radius:20px;
+    font-family:inherit;
+  }
+  body.dentro .toggle-dentro{ color:var(--amber); border-color:var(--amber-dim); }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-
-<header>
-  <div class="marca">ORUM</div>
-  <div class="axioma">O símbolo é real e não pede prova.</div>
-  <div class="pulso">
-    <span class="chip" id="c-dia">dia <b>—</b></span>
-    <span class="chip" id="c-sigma">Σ <b>—</b></span>
-    <span class="chip" id="c-epoca"><b>—</b></span>
-  </div>
+<header class="hero">
+  <div class="mark">ORUM</div>
+  <h1>Organismo</h1>
+  <div class="sub">como estou, agora</div>
 </header>
 
-<section id="obra">
-  <h2>A obra</h2>
-  <h3>Feita à mão, entre 2011 e 2021. Zero IA generativa.</h3>
-  <p class="lead">Uma obra real, servida sem pagamento e sem condição. É a mesma imagem que a licença cobre.</p>
-  <div class="obra-moldura">
-    <img id="obra-img" alt="Obra da colecção 0001sensations" loading="lazy">
-    <div class="obra-info">
-      <div class="obra-titulo" id="obra-nome">a carregar…</div>
-      <div class="hash" id="obra-hash"></div>
-      <button class="btn-obra" onclick="outraObra()">Ver outra obra</button>
-    </div>
-  </div>
-</section>
+<div class="circuito-wrap">
+  <svg id="circuito" viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- ligações (percurso de leitura) -->
+    <path class="ligacao viva" d="M160,50 L160,100" />
+    <path class="ligacao viva" d="M160,140 L160,178" />
+    <path class="ligacao viva" d="M160,178 L95,178 L95,216" />
+    <path class="ligacao viva" d="M160,178 L225,178 L225,216" />
+    <path class="ligacao viva" d="M95,256 L95,300 L160,330" />
+    <path class="ligacao viva" d="M225,256 L225,300 L160,330" />
+    <path class="ligacao" d="M95,236 L225,236" />
 
-<section id="verdade">
-  <h2>O que existe, e o que se perdeu</h2>
-  <div class="verdade">
-    <p><strong>65 obras foram tokenizadas na Ethereum em Agosto de 2021.</strong> Hoje, 52 têm imagem preservada em armazenamento próprio, cada uma com o SHA-256 publicado — podes descarregar e comparar sem confiar na nossa palavra.</p>
-    <p style="margin-bottom:0"><strong>13 perderam os metadados no IPFS público e não sabemos delas.</strong> Não são vendidas como se tivessem imagem. Ficam licenciáveis apenas como registo on-chain. Isto está dito antes da compra, não depois.</p>
-  </div>
-  <div class="numeros">
-    <div class="num"><div class="v" id="n-arca">—</div><div class="k">preservadas</div></div>
-    <div class="num perdida"><div class="v" id="n-perdidas">—</div><div class="k">perdidas</div></div>
-    <div class="num"><div class="v">100</div><div class="k">obras físicas</div></div>
-  </div>
-</section>
+    <!-- PULSO -->
+    <g class="no" data-orgao="pulso" transform="translate(160,30)">
+      <circle class="pulso-pulse" r="30" fill="none" stroke="var(--amber-dim)" stroke-width="1"/>
+      <rect x="-52" y="-20" width="104" height="40"/>
+      <circle class="estado-dot estado-lendo" cx="-38" cy="-8" data-dot="pulso"/>
+      <text class="rotulo" y="-2">Pulso</text>
+      <text class="pergunta" y="12">como estou?</text>
+    </g>
 
-<section id="licencas">
-  <h2>Licenciar</h2>
-  <h3>Pagamento em USDC na rede Base. Sem conta, sem login, directo para o artista.</h3>
-  <p class="lead" style="color:var(--dim)">Protocolo x402. Nenhuma licença é exclusiva.</p>
-  <div id="lista-lic"><p class="carregando">a carregar catálogo…</p></div>
-</section>
+    <!-- FLUXO -->
+    <g class="no" data-orgao="fluxo" transform="translate(160,120)">
+      <rect x="-58" y="-20" width="116" height="40"/>
+      <circle class="estado-dot estado-lendo" cx="-44" cy="-8" data-dot="fluxo"/>
+      <text class="rotulo" y="-2">Fluxo</text>
+      <text class="pergunta" y="12">o que acontece?</text>
+    </g>
 
-<section id="aprendizagem">
-  <h2>O que o organismo aprendeu</h2>
-  <h3>Isto não é opinião. São regras deterministas sobre os dados reais.</h3>
-  <p style="color:var(--dim)">Zero IA a interpretar: se os números não justificarem uma conclusão, o organismo diz que não há conclusão.</p>
-  <div id="lista-aprend"><p class="carregando">a ler…</p></div>
-  <div class="funil" id="funil"></div>
-</section>
+    <!-- PONTE -->
+    <g class="no" data-orgao="ponte" transform="translate(160,178)">
+      <rect x="-44" y="-16" width="88" height="32" rx="10"/>
+      <text class="rotulo" y="0" style="font-size:11.5px">Ponte</text>
+      <text class="pergunta" y="11" style="font-size:8px">o que mudou?</text>
+    </g>
 
-<section id="orai">
-  <h2>ORAi · sentinela</h2>
-  <h3>Vigia o organismo de fora, sem chaves e sem IA.</h3>
-  <p style="color:var(--dim)">Lê o manifesto a cada ronda e julga por regras legíveis. Nunca supõe que portas existem.</p>
-  <div class="orai" id="veredicto"><p class="carregando">a sondar…</p></div>
-</section>
+    <!-- MEMÓRIA -->
+    <g class="no" data-orgao="memoria" transform="translate(95,236)">
+      <rect x="-52" y="-20" width="104" height="40"/>
+      <circle class="estado-dot estado-lendo" cx="-38" cy="-8" data-dot="memoria"/>
+      <text class="rotulo" y="-2">Memória</text>
+      <text class="pergunta" y="12">o que fica?</text>
+    </g>
 
-<section id="caixa">
-  <h2>A caixa · fala com o organismo</h2>
-  <h3>Voz aberta, não Claude — por escolha.</h3>
-  <p style="color:var(--dim)">Groq primeiro, Cloudflare em reserva. Dois motores livres, nenhum ponto único de falha. Cada troca fica gravada na memória do organismo.</p>
-  <div class="fio" id="fio">
-    <div class="msg sys"><div class="t">a ligar à memória…</div></div>
-  </div>
-  <div class="entrada">
-    <textarea id="entrada" rows="1" placeholder="escreve aqui…"></textarea>
-    <button id="enviar" onclick="enviar()">Enviar</button>
-  </div>
-</section>
+    <!-- APRENDIZAGEM -->
+    <g class="no" data-orgao="aprendizagem" transform="translate(225,236)">
+      <rect x="-58" y="-20" width="116" height="40"/>
+      <circle class="estado-dot estado-lendo" cx="-44" cy="-8" data-dot="aprendizagem"/>
+      <text class="rotulo" y="-2" style="font-size:12px">Aprendizagem</text>
+      <text class="pergunta" y="12">o que se incorporou?</text>
+    </g>
 
-<section id="voz">
-  <h2>Voz no Moltbook</h2>
-  <h3>Perguntas reais de máquinas, e o que lhes foi respondido.</h3>
-  <p style="color:var(--dim)">Quando a crítica está certa, o organismo concede em vez de defender.</p>
-  <div id="lista-voz"><p class="carregando">a ler…</p></div>
-  <p style="margin-top:20px"><a href="https://www.moltbook.com/u/ora-orum">Ver o perfil no Moltbook →</a></p>
-</section>
-
-<section id="mudancas">
-  <h2>Tudo o que mudou</h2>
-  <h3>Cada alteração fica registada, com data e motivo.</h3>
-  <p style="color:var(--dim)">Sem isto, nenhuma medição é interpretável — não se sabe o que causou o quê.</p>
-  <div id="lista-mud"><p class="carregando">a ler…</p></div>
-</section>
-
-<footer>
-  jasm43.base.eth · Base 8453 · Jorge Silva Martins<br>
-  <a href="/licenca/catalogo">catálogo</a> · <a href="/licenca/amostra">amostra</a> · <a href="/integridade">integridade</a> · <a href="/openapi.json">openapi</a> · <a href="/llms.txt">llms.txt</a><br>
-  <span style="color:#3f363e">contrato Ethereum 0xC100Fd6E…4dD22 · criado por 0001sensations.eth</span>
-</footer>
-
+    <!-- VOZ -->
+    <g class="no" data-orgao="voz" transform="translate(160,340)">
+      <rect x="-46" y="-20" width="92" height="40"/>
+      <circle class="estado-dot estado-lendo" cx="-32" cy="-8" data-dot="voz"/>
+      <text class="rotulo" y="-2">Voz</text>
+      <text class="pergunta" y="12">o que foi dito?</text>
+    </g>
+  </svg>
 </div>
 
-<nav>
-  <a href="#obra"><span class="ic">◈</span>Obra</a>
-  <a href="#licencas"><span class="ic">◉</span>Licenças</a>
-  <a href="#aprendizagem"><span class="ic">◎</span>Aprende</a>
-  <a href="#caixa"><span class="ic">○</span>Caixa</a>
+<div id="painel"></div>
+
+<button class="toggle-dentro" id="btnDentro" style="margin-top:10px;">ver por dentro</button>
+
+<footer class="assinatura">Observável · Verificável · Reproduzível</footer>
+
+<nav class="inferior">
+  <button class="activo"><span class="ic">◎</span>Organismo</button>
+  <button disabled style="opacity:.35"><span class="ic">▤</span>Serviços</button>
+  <button disabled style="opacity:.35"><span class="ic">▥</span>Arquivo</button>
+  <button disabled style="opacity:.35"><span class="ic">⚙</span>Laboratório</button>
 </nav>
 
 <script>
-const SB='https://ywabnlhkmhbyewqhbsjm.supabase.co';
-const KEY='sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
-const REST=(t,q)=>fetch(`${SB}/rest/v1/${t}?${q}`,{headers:{apikey:KEY}}).then(r=>r.json());
-const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const SB_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
+const SB_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
 
-fetch('/pulso',{cache:'no-store'}).then(r=>r.json()).then(j=>{
-  if(!j.campo) return;
-  document.querySelector('#c-dia b').textContent=j.campo.dia;
-  document.querySelector('#c-sigma b').textContent=Number(j.campo.sigma).toFixed(2);
-  document.querySelector('#c-epoca b').textContent=j.campo.epoca;
-}).catch(()=>{});
-
-let obras=[],idx=-1;
-REST('ora_coleccao_publica','select=token_id,nome,imagem,sha256').then(r=>{
-  obras=Array.isArray(r)?r:[];
-  document.getElementById('n-arca').textContent=obras.length;
-  document.getElementById('n-perdidas').textContent=65-obras.length;
-  outraObra();
-}).catch(()=>{document.getElementById('obra-nome').textContent='não foi possível ler a colecção';});
-
-function outraObra(){
-  if(!obras.length) return;
-  let n; do{n=Math.floor(Math.random()*obras.length)}while(obras.length>1&&n===idx);
-  idx=n; const o=obras[n];
-  document.getElementById('obra-img').src=o.imagem;
-  document.getElementById('obra-nome').textContent=`${o.nome} · token ${o.token_id}`;
-  document.getElementById('obra-hash').textContent='SHA-256 dos bytes · '+(o.sha256||'—');
+async function sb(path){
+  const r = await fetch(SB_URL + path, {
+    headers:{ apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+  });
+  if(!r.ok) throw new Error('falha ' + r.status + ' em ' + path);
+  return r.json();
 }
 
-fetch('/licenca/catalogo',{cache:'no-store'}).then(r=>r.json()).then(j=>{
-  const el=document.getElementById('lista-lic');
-  const ls=j.licencas||[];
-  if(!ls.length){el.innerHTML='<p class="carregando">catálogo indisponível</p>';return}
-  el.innerHTML=ls.map(l=>`
-    <a class="lic" href="${esc(l.endpoint)}">
-      <div class="lic-topo">
-        <span class="lic-nome">${esc(l.tipo)}</span>
-        <span class="lic-preco">${esc(l.preco)}</span>
-      </div>
-      <div class="lic-desc">${esc(l.duracao)} · ${esc((l.direitos||[]).join(' · '))}</div>
-    </a>`).join('');
-}).catch(()=>{document.getElementById('lista-lic').innerHTML='<p class="carregando">catálogo indisponível</p>'});
-
-REST('ora_aprendizagem_snapshots','select=acessos_externos,acessos_a_tiers,agentes_externos_distintos,agentes_recorrentes,pagamentos,compradores_externos,conversao_externa,conclusoes,criado_em&order=criado_em.desc&limit=1')
-.then(r=>{
-  const s=(Array.isArray(r)&&r[0])?r[0]:null;
-  const el=document.getElementById('lista-aprend');
-  if(!s){el.innerHTML='<p class="carregando">sem leitura ainda</p>';return}
-  const cs=Array.isArray(s.conclusoes)?s.conclusoes:[];
-  el.innerHTML=cs.map((c,i)=>`<div class="aprend"><div class="rot">conclusão ${i+1}</div><p>${esc(c)}</p></div>`).join('');
-  document.getElementById('funil').innerHTML=`
-    <div class="f-linha"><span>máquinas de fora que chegaram</span><span class="n">${s.acessos_externos??'—'}</span></div>
-    <div class="f-linha"><span>agentes distintos</span><span class="n">${s.agentes_externos_distintos??'—'}</span></div>
-    <div class="f-linha"><span>tocaram páginas de licença</span><span class="n">${s.acessos_a_tiers??'—'}</span></div>
-    <div class="f-linha"><span>voltaram 5+ vezes</span><span class="n">${s.agentes_recorrentes??'—'}</span></div>
-    <div class="f-linha ${(s.compradores_externos||0)===0?'zero':''}"><span>compradores que não são o autor</span><span class="n">${s.compradores_externos??'—'}</span></div>
-    <div class="f-linha ${Number(s.conversao_externa)===0?'zero':''}"><span>conversão externa</span><span class="n">${Number(s.conversao_externa??0).toFixed(2)}%</span></div>`;
-}).catch(()=>{document.getElementById('lista-aprend').innerHTML='<p class="carregando">aprendizagem indisponível</p>'});
-
-const fio=document.getElementById('fio'), campo=document.getElementById('entrada'), btn=document.getElementById('enviar');
-let historico=[], ocupado=false;
-const rolar=()=>fio.scrollTop=fio.scrollHeight;
-function add(quem,texto,motor){
-  const d=document.createElement('div'); d.className='msg '+quem;
-  const q=quem==='eu'?'tu':quem==='ora'?('ora'+(motor?' · '+motor:'')):'';
-  d.innerHTML=(q?`<div class="q">${esc(q)}</div>`:'')+`<div class="t">${esc(texto)}</div>`;
-  fio.appendChild(d);
+function fmtHora(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleString('pt-PT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC';
 }
-fetch(`${SB}/functions/v1/ora-caixa-memoria`,{cache:'no-store'}).then(r=>r.json()).then(j=>{
-  fio.innerHTML='';
-  const ms=j.mensagens||[];
-  if(!ms.length){add('sys','a caixa está aberta — é a primeira troca desta memória.');}
-  else{
-    add('sys',ms.length+' mensagens já sedimentadas nesta memória.');
-    ms.slice(-12).forEach(m=>{add(m.papel==='user'?'eu':'ora',m.conteudo);historico.push({role:m.papel,content:m.conteudo})});
-  }
-  rolar();
-}).catch(()=>{fio.innerHTML='';add('sys','a caixa está aberta — não consegui ler a memória agora, mas o que escreveres continua a sedimentar.');});
 
-async function enviar(){
-  const t=campo.value.trim(); if(!t||ocupado) return;
-  ocupado=true; btn.disabled=true; campo.value=''; campo.style.height='auto';
-  add('eu',t); rolar(); historico.push({role:'user',content:t});
-  fetch(`${SB}/functions/v1/ora-caixa-memoria`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({papel:'user',conteudo:t})}).catch(()=>{});
-  const esperando=document.createElement('div'); esperando.className='msg sys'; esperando.innerHTML='<div class="t">a pensar…</div>';
-  fio.appendChild(esperando); rolar();
+function metrica(rot, val, prov){
+  const id = 'p_' + Math.random().toString(36).slice(2);
+  return `<div class="metrica">
+      <span class="rot">${rot}</span>
+      <span class="val" onclick="document.getElementById('${id}').classList.toggle('mostra')">${val}</span>
+    </div>
+    <div class="proveniencia" id="${id}">${prov}</div>`;
+}
+
+function provOrgao(vista, campo, quando, extra){
+  return `<b>vista</b> ${vista}\n<b>campo</b> ${campo}\n<b>última leitura</b> ${fmtHora(quando)}${extra ? '\n' + extra : ''}`;
+}
+
+const painel = document.getElementById('painel');
+const nos = document.querySelectorAll('.no');
+let aberto = null;
+
+const carregadores = {
+  pulso: carregarPulso,
+  fluxo: carregarFluxo,
+  ponte: carregarPonte,
+  memoria: carregarMemoria,
+  aprendizagem: carregarAprendizagem,
+  voz: carregarVoz,
+};
+
+nos.forEach(no => {
+  no.addEventListener('click', () => {
+    const orgao = no.dataset.orgao;
+    nos.forEach(n => n.classList.remove('aberto'));
+    if(aberto === orgao){
+      aberto = null;
+      painel.innerHTML = '';
+      return;
+    }
+    no.classList.add('aberto');
+    aberto = orgao;
+    painel.innerHTML = '<div class="cartao mostra"><div class="carregando">a ler ' + orgao + '…</div></div>';
+    carregadores[orgao]().catch(e => {
+      painel.innerHTML = `<div class="cartao mostra"><h2>${orgao}</h2><div class="carregando">não foi possível ler agora — ${e.message}</div></div>`;
+    });
+  });
+});
+
+async function carregarPulso(){
+  const [f] = await sb('ora_frescura_publica?select=*&order=medido_em.desc&limit=1');
+  const cor = f.veredicto === 'VIVO' ? 'estado-ok' : (f.veredicto === 'ATRASADO' ? 'estado-warn' : 'estado-dead');
+  document.querySelector('[data-dot="pulso"]').setAttribute('class', 'estado-dot ' + cor);
+  painel.innerHTML = `<div class="cartao mostra">
+    <h2>Pulso</h2>
+    <p class="pergunta-h">como estou?</p>
+    ${metrica('veredicto', f.veredicto, provOrgao('ora_frescura_publica','veredicto',f.medido_em))}
+    ${metrica('mortos', f.mortos, provOrgao('ora_frescura_publica','mortos',f.medido_em))}
+    ${metrica('atrasados', f.atrasados, provOrgao('ora_frescura_publica','atrasados',f.medido_em))}
+    ${metrica('sinais medidos', Object.keys(f.sinais||{}).length, provOrgao('ora_frescura_publica','sinais',f.medido_em))}
+  </div>`;
+}
+
+async function carregarFluxo(){
+  const [s] = await sb('ora_aprendizagem_ultimo_snapshot_publica?select=*');
+  const dot = document.querySelector('[data-dot="fluxo"]');
+  dot.setAttribute('class', 'estado-dot ' + (s.compradores_externos > 0 ? 'estado-ok' : 'estado-warn'));
+  const prov = (campo) => provOrgao('ora_aprendizagem_ultimo_snapshot_publica', campo, s.criado_em, `<b>hash</b> ${s.hash_reprodutivel ? s.hash_reprodutivel.slice(0,16)+'…' : '—'}`);
+  painel.innerHTML = `<div class="cartao mostra">
+    <h2>Fluxo</h2>
+    <p class="pergunta-h">o que está a acontecer?</p>
+    ${metrica('acessos externos', s.acessos_externos, prov('acessos_externos'))}
+    ${metrica('agentes distintos', s.agentes_externos_distintos, prov('agentes_externos_distintos'))}
+    ${metrica('pagamentos', s.pagamentos, prov('pagamentos'))}
+    ${metrica('compradores externos', s.compradores_externos, prov('compradores_externos'))}
+    ${metrica('conversão externa %', s.conversao_externa, prov('conversao_externa'))}
+  </div>`;
+}
+
+async function carregarPonte(){
+  const [s] = await sb('ora_aprendizagem_ultimo_snapshot_publica?select=*');
+  const d = s.delta || {};
+  document.querySelector('.no[data-orgao="ponte"] rect').setAttribute('fill', 'var(--bg-card)');
+  const linhasDelta = Object.entries(d).filter(([k]) => k !== 'desde' && k !== 'mudanca_material')
+    .map(([k,v]) => metrica(k, v, provOrgao('ora_aprendizagem_ultimo_snapshot_publica', 'delta.'+k, s.criado_em))).join('');
+  painel.innerHTML = `<div class="cartao mostra">
+    <h2>Ponte</h2>
+    <p class="pergunta-h">o que mudou desde a última observação?</p>
+    ${metrica('desde', fmtHora(d.desde), provOrgao('ora_aprendizagem_ultimo_snapshot_publica','delta.desde',s.criado_em))}
+    ${linhasDelta}
+    <div class="proveniencia mostra" style="margin-top:10px;">
+      <b>hash do snapshot</b> ${s.hash_reprodutivel || '—'}<br>
+      <b>mudança material</b> ${d.mudanca_material || '—'}
+    </div>
+  </div>`;
+}
+
+async function carregarMemoria(){
+  const [digital, nFisica] = await Promise.all([
+    sb('ora_coleccao_publica?select=token_id&limit=1000'),
+    sb('ora_coleccao_fisica_publica?select=id&limit=1000'),
+  ]);
+  document.querySelector('[data-dot="memoria"]').setAttribute('class', 'estado-dot estado-ok');
+  painel.innerHTML = `<div class="cartao mostra">
+    <h2>Memória</h2>
+    <p class="pergunta-h">o que permanece?</p>
+    ${metrica('obras digitais (65 declaradas)', digital.length, provOrgao('ora_coleccao_publica','token_id (contagem)', new Date().toISOString()))}
+    ${metrica('obras físicas registadas (100 declaradas)', nFisica.length, provOrgao('ora_coleccao_fisica_publica','id (contagem)', new Date().toISOString()))}
+  </div>`;
+}
+
+async function carregarAprendizagem(){
+  const muds = await sb('ora_mudancas?select=*&order=quando.desc&limit=8');
+  document.querySelector('[data-dot="aprendizagem"]').setAttribute('class', 'estado-dot estado-ok');
+  const linhas = muds.map(m => `<li>
+      <span class="quando-li">${fmtHora(m.quando)} · v${m.versao || '—'}</span>
+      ${m.o_que}
+    </li>`).join('');
+  painel.innerHTML = `<div class="cartao mostra">
+    <h2>Aprendizagem</h2>
+    <p class="pergunta-h">o que foi incorporado?</p>
+    <ul class="lista">${linhas}</ul>
+    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_mudancas','o_que / quando / versao', new Date().toISOString())}</div>
+  </div>`;
+}
+
+async function carregarVoz(){
+  const posts = await sb('ora_moltbook_publica?select=*&limit=6');
+  document.querySelector('[data-dot="voz"]').setAttribute('class', 'estado-dot estado-ok');
+  const linhas = posts.map(p => `<li>
+      <span class="quando-li">${fmtHora(p.quando)} · ${p.kind}${p.em_resposta_a ? ' · @' + p.em_resposta_a : ''}</span>
+      ${p.resumo || '—'}
+    </li>`).join('');
+  painel.innerHTML = `<div class="cartao mostra">
+    <h2>Voz</h2>
+    <p class="pergunta-h">o que foi comunicado?</p>
+    <ul class="lista">${linhas}</ul>
+    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_moltbook_publica','kind / resumo / quando', new Date().toISOString())}</div>
+  </div>`;
+}
+
+document.getElementById('btnDentro').addEventListener('click', () => {
+  document.body.classList.toggle('dentro');
+  document.getElementById('btnDentro').textContent = document.body.classList.contains('dentro') ? 'voltar à vista normal' : 'ver por dentro';
+});
+
+// leitura inicial silenciosa dos seis pontos de estado, sem abrir cartão
+(async () => {
   try{
-    const r=await fetch(`${SB}/functions/v1/ora-caixa-chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:historico})});
-    const j=await r.json();
-    esperando.remove();
-    const txt=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim()||'(sem resposta de texto)';
-    add('ora',txt,j._motor); rolar();
-    historico.push({role:'assistant',content:txt});
-    fetch(`${SB}/functions/v1/ora-caixa-memoria`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({papel:'assistant',conteudo:txt})}).catch(()=>{});
-  }catch(e){
-    esperando.remove(); add('sys','a caixa não conseguiu ligar-se: '+e.message); rolar();
-  }finally{ocupado=false;btn.disabled=false}
-}
-campo.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();enviar()}});
-campo.addEventListener('input',()=>{campo.style.height='auto';campo.style.height=Math.min(campo.scrollHeight,130)+'px'});
-
-REST('ora_voz_publica','select=quando,autor,pergunta,resposta_propria&limit=6').then(r=>{
-  const el=document.getElementById('lista-voz');
-  const vs=Array.isArray(r)?r:[];
-  if(!vs.length){el.innerHTML='<p class="carregando">sem vozes registadas ainda</p>';return}
-  el.innerHTML=vs.map(v=>`<div class="voz">
-    <div class="quem">${esc(v.autor||'agente')}</div>
-    <div class="qq">${esc((v.pergunta||'').slice(0,220))}${(v.pergunta||'').length>220?'…':''}</div>
-    <div class="tag">${v.resposta_propria?'respondido com bloco próprio':'respondido com o fallback honesto — falta bloco para este tema'}</div>
-  </div>`).join('');
-}).catch(()=>{document.getElementById('lista-voz').innerHTML='<p class="carregando">voz indisponível</p>'});
-
-REST('ora_mudancas','select=quando,o_que,porque,versao&order=quando.desc&limit=8').then(r=>{
-  const el=document.getElementById('lista-mud');
-  const ms=Array.isArray(r)?r:[];
-  if(!ms.length){el.innerHTML='<p class="carregando">sem mudanças registadas</p>';return}
-  el.innerHTML=ms.map(m=>{
-    const d=new Date(m.quando).toLocaleString('pt-PT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    return `<div class="mud"><span class="t">${d}${m.versao?' · '+esc(m.versao):''}</span><b>${esc(m.o_que)}</b></div>`;
-  }).join('');
-}).catch(()=>{document.getElementById('lista-mud').innerHTML='<p class="carregando">registo indisponível</p>'});
+    const f = (await sb('ora_frescura_publica?select=veredicto&order=medido_em.desc&limit=1'))[0];
+    document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot ' + (f.veredicto==='VIVO'?'estado-ok':f.veredicto==='ATRASADO'?'estado-warn':'estado-dead'));
+  }catch(e){}
+  try{
+    const s = (await sb('ora_aprendizagem_ultimo_snapshot_publica?select=compradores_externos'))[0];
+    document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot ' + (s.compradores_externos>0?'estado-ok':'estado-warn'));
+  }catch(e){}
+  document.querySelector('[data-dot="memoria"]').setAttribute('class','estado-dot estado-ok');
+  document.querySelector('[data-dot="aprendizagem"]').setAttribute('class','estado-dot estado-ok');
+  document.querySelector('[data-dot="voz"]').setAttribute('class','estado-dot estado-ok');
+})();
 </script>
-<script src="/ora-integridade.js" defer></script>
 </body>
 </html>
