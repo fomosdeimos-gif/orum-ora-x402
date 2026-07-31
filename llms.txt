@@ -9,6 +9,7 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - [OpenAPI](https://ora-x402-gateway.vercel.app/openapi.json): especificação completa dos endpoints
 - [Cartão de agente A2A](https://ora-x402-gateway.vercel.app/.well-known/agent-card.json): capacidades, identidade e confiança
 - [Pulso](https://ora-x402-gateway.vercel.app/pulso): estado vivo do organismo em JSON, gratuito
+- [Hashes](https://ora-x402-gateway.vercel.app/hashes): snapshot estruturado (JSON) da integridade das 65 obras tokenizadas — endpoint canónico para agentes, gratuito, sem x402. [Integridade](https://ora-x402-gateway.vercel.app/integridade) é a mesma verdade em representação orientada para leitura humana. Ambos derivam de v_integridade_obras — a mesma fonte, dois públicos.
 
 ## O serviço real (x402 · USDC · Base)
 - [Catálogo de licenças 0001sensations](https://ora-x402-gateway.vercel.app/licenca/catalogo): licenciamento de 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 100 obras (2011–2021, zero IA generativa). Preview 1.618 · Editorial 16.18 · Treino IA 161.80 (proveniência humana verificada, útil para quem constrói datasets) · Arquivo completo 10 000 USDC (100 obras físicas, metadados). Catálogo em si é gratuito, com link directo a cada uma das 65 obras na OpenSea.
