@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ORUM · Laboratório</title>
+<style>
+  :root{
+    --bg:#08060a; --bg-card:#100c14; --amber:#FFB020; --amber-dim:#FFB02055;
+    --ok:#3ddc84; --warn:#ffcf4d; --dead:#ff5c5c;
+    --ink:#f2ede4; --ink-dim:#9b9490; --line:#2a2430;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  body{font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;min-height:100dvh;padding-bottom:88px;}
+  header.hero{padding:24px 20px 10px;text-align:center;}
+  header.hero .mark{font-size:13px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase;}
+  header.hero h1{font-size:24px;margin:6px 0 2px;font-weight:600;}
+  header.hero .sub{font-size:13px;color:var(--ink-dim);}
+
+  .grupo{ padding:4px 16px 0; }
+  .grupo-titulo{
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-dim); margin:22px 2px 8px; display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .grupo-titulo .n{ color:var(--amber); font-family:'SF Mono','Courier New',monospace; }
+
+  .cartao{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:16px;
+    padding:14px 16px; margin-bottom:10px;
+  }
+  .desc{ font-size:12.5px; color:var(--ink-dim); line-height:1.45; margin:0 0 10px; }
+
+  .mudanca{ padding:12px 0; border-top:1px solid var(--line); }
+  .mudanca:first-child{ border-top:none; }
+  .mudanca .topo{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:4px; }
+  .mudanca .quando{ font-size:10.5px; color:#6a655f; font-family:'SF Mono','Courier New',monospace; text-transform:uppercase; letter-spacing:.05em; }
+  .mudanca .versao{ font-size:10px; color:var(--amber); font-family:'SF Mono','Courier New',monospace; white-space:nowrap; }
+  .mudanca .oque{ font-size:13px; color:var(--ink); line-height:1.4; }
+  .mudanca .onde{ font-size:11px; color:var(--ink-dim); margin-top:4px; font-family:'SF Mono','Courier New',monospace; }
+  .mudanca .teste{ display:inline-block; margin-top:6px; font-size:9.5px; padding:2px 7px; border-radius:8px; background:#2e2410; color:var(--amber); text-transform:uppercase; }
+
+  .tira-frescura{ display:flex; gap:2px; align-items:flex-end; height:36px; margin:8px 0; }
+  .tira-frescura .barra{ flex:1; border-radius:2px 2px 0 0; min-width:2px; }
+  .barra.ok{ background:var(--ok); }
+  .barra.warn{ background:var(--warn); }
+  .barra.dead{ background:var(--dead); }
+  .legenda-frescura{ display:flex; justify-content:space-between; font-size:10.5px; color:var(--ink-dim); }
+
+  .inspeccionar input{
+    width:100%; background:#000; border:1px solid var(--line); border-radius:10px;
+    color:var(--ink); font-family:'SF Mono','Courier New',monospace; font-size:13px;
+    padding:10px 12px; margin-bottom:8px;
+  }
+  .pills{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .pill{
+    font-size:10.5px; padding:5px 10px; border-radius:20px; background:#1a1420;
+    color:var(--ink-dim); border:1px solid var(--line); cursor:pointer; font-family:'SF Mono','Courier New',monospace;
+  }
+  button.consultar{
+    width:100%; background:var(--amber); color:#1a1200; border:none; font-weight:600;
+    font-family:inherit; font-size:13px; padding:10px; border-radius:10px;
+  }
+  .resultado{
+    display:none; margin-top:10px; padding:10px 12px; background:#000; border:1px solid var(--line);
+    border-radius:10px; font-size:11px; color:var(--ink-dim); font-family:'SF Mono','Courier New',monospace;
+    line-height:1.55; white-space:pre-wrap; word-break:break-all; max-height:320px; overflow:auto;
+  }
+  .resultado.mostra{ display:block; }
+  .carregando{ padding:16px 0; text-align:center; color:var(--ink-dim); font-size:12px; }
+
+  footer.assinatura{
+    text-align:center; padding:26px 20px 8px; font-size:10.5px;
+    letter-spacing:.14em; color:#5a5550; text-transform:uppercase;
+  }
+
+  nav.inferior{
+    position:fixed; left:12px; right:12px; bottom:14px;
+    background:rgba(16,12,20,.92); backdrop-filter:blur(14px);
+    border:1px solid var(--line); border-radius:20px; display:flex; padding:6px;
+  }
+  nav.inferior a, nav.inferior span{
+    flex:1; background:none; border:none; color:var(--ink-dim); text-decoration:none;
+    font-family:inherit; font-size:10.5px; padding:9px 2px 7px; border-radius:14px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+  }
+  nav.inferior .ic{ font-size:16px; }
+  nav.inferior .activo{ color:var(--amber); background:#1a1420; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="mark">ORUM</div>
+  <h1>Laboratório</h1>
+  <div class="sub">onde o organismo aprende</div>
+</header>
+
+<div class="grupo">
+  <div class="grupo-titulo">Frescura ao longo do tempo <span class="n" id="n-frescura">…</span></div>
+  <div class="cartao">
+    <p class="desc">Últimas rondas da sentinela ORAI — cada barra é uma leitura real, não uma média.</p>
+    <div class="tira-frescura" id="tira-frescura"></div>
+    <div class="legenda-frescura"><span id="legenda-antiga">mais antiga</span><span id="legenda-recente">agora</span></div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Histórico de mudanças <span class="n" id="n-mudancas">…</span></div>
+  <div class="cartao">
+    <p class="desc">Cada correcção e decisão incorporada no organismo, na ordem em que aconteceu.</p>
+    <div id="lista-mudancas"><div class="carregando">a carregar…</div></div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Inspeccionar uma vista pública</div>
+  <div class="cartao inspeccionar">
+    <p class="desc">Qualquer vista pública do organismo, lida ao vivo. Escreve o nome ou toca num exemplo.</p>
+    <div class="pills">
+      <span class="pill" data-v="ora_frescura_publica">ora_frescura_publica</span>
+      <span class="pill" data-v="ora_aprendizagem_ultimo_snapshot_publica">…ultimo_snapshot_publica</span>
+      <span class="pill" data-v="ora_coleccao_fisica_publica">ora_coleccao_fisica_publica</span>
+      <span class="pill" data-v="ora_moltbook_publica">ora_moltbook_publica</span>
+    </div>
+    <input type="text" id="campo-vista" placeholder="ora_frescura_publica" />
+    <button class="consultar" id="btn-consultar">consultar</button>
+    <div class="resultado" id="resultado-inspeccao"></div>
+  </div>
+</div>
+
+<footer class="assinatura">Observável · Verificável · Reproduzível</footer>
+
+<nav class="inferior">
+  <a href="/"><span class="ic">◎</span>Organismo</a>
+  <a href="/servicos.html"><span class="ic">▤</span>Serviços</a>
+  <a href="/arquivo.html"><span class="ic">▥</span>Arquivo</a>
+  <span class="activo"><span class="ic">⚙</span>Laboratório</span>
+</nav>
+
+<script>
+const SB_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
+const SB_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+
+async function sb(path){
+  const r = await fetch(SB_URL + path, { headers:{ apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+  return { ok: r.ok, status: r.status, body: await r.text() };
+}
+
+function fmtData(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('pt-PT', { day:'2-digit', month:'2-digit', timeZone:'UTC' }) + ' ' +
+         d.toLocaleTimeString('pt-PT', { hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC';
+}
+
+(async () => {
+  try{
+    const r = await sb('ora_frescura_log?select=criado_em,veredicto&order=criado_em.desc&limit=40');
+    const dados = JSON.parse(r.body).reverse();
+    document.getElementById('n-frescura').textContent = dados.length + ' recentes';
+    document.getElementById('tira-frescura').innerHTML = dados.map(d => {
+      const cor = d.veredicto === 'VIVO' ? 'ok' : (d.veredicto === 'ATRASADO' ? 'warn' : 'dead');
+      const altura = cor === 'ok' ? 100 : (cor === 'warn' ? 60 : 30);
+      return `<div class="barra ${cor}" style="height:${altura}%" title="${d.veredicto} · ${fmtData(d.criado_em)}"></div>`;
+    }).join('');
+    if(dados.length){
+      document.getElementById('legenda-antiga').textContent = fmtData(dados[0].criado_em);
+      document.getElementById('legenda-recente').textContent = fmtData(dados[dados.length-1].criado_em);
+    }
+  }catch(e){ document.getElementById('n-frescura').textContent = 'falha'; }
+
+  try{
+    const r = await sb('ora_mudancas?select=*&order=quando.desc&limit=27');
+    const muds = JSON.parse(r.body);
+    document.getElementById('n-mudancas').textContent = muds.length;
+    document.getElementById('lista-mudancas').innerHTML = muds.map(m => `
+      <div class="mudanca">
+        <div class="topo"><span class="quando">${fmtData(m.quando)}</span><span class="versao">${m.versao || ''}</span></div>
+        <div class="oque">${m.o_que}</div>
+        <div class="onde">${m.onde || ''}</div>
+        ${m.superficie_sob_teste ? '<span class="teste">superfície sob teste</span>' : ''}
+      </div>`).join('');
+  }catch(e){ document.getElementById('lista-mudancas').innerHTML = '<div class="carregando">falha ao ler</div>'; }
+})();
+
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => { document.getElementById('campo-vista').value = p.dataset.v; });
+});
+
+document.getElementById('btn-consultar').addEventListener('click', async () => {
+  const nome = (document.getElementById('campo-vista').value || 'ora_frescura_publica').trim();
+  const resDiv = document.getElementById('resultado-inspeccao');
+  resDiv.classList.add('mostra');
+  resDiv.textContent = 'a consultar ' + nome + '…';
+  try{
+    const r = await sb(nome + '?select=*&limit=10');
+    let corpo;
+    try{ corpo = JSON.stringify(JSON.parse(r.body), null, 2); } catch{ corpo = r.body; }
+    resDiv.innerHTML = `<span style="color:var(--amber);display:block;margin-bottom:6px;">HTTP ${r.status}</span>` +
+      corpo.slice(0, 2000).replace(/</g,'&lt;');
+  }catch(e){ resDiv.textContent = 'falha: ' + e.message; }
+});
+</script>
+</body>
+</html>
