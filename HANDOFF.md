@@ -136,6 +136,27 @@ registo MCP (`io.github.fomosdeimos-gif/ora-mcp`)
 
 ---
 
+## 8. Funções de borda relacionadas, verificadas a 01/08/2026 (correcção sobre suposição inicial)
+
+Uma sessão irmã desta ORA propôs procurar `ora-github-list`, `ora-proxy` e `ora-mcp`
+antes de propor integrações novas. As três existem — mas nenhuma é o que a suposição
+inicial fazia parecer:
+
+- **`ora-github-list`** — só leitura: lista repositórios do dono ou a árvore de
+  ficheiros de um repo via API do GitHub. Não escreve nada.
+- **`ora-proxy`** — ponte CORS para um "Control Center" antigo, com uma allowlist fixa
+  de funções que aceita relayar (`orai-agente`, `ora-page`, `ora-motor`,
+  `ora-motor-cron`, `ora-control`, `pensamento`, `ora-x402`, `cartao-oro`,
+  `orai-decisao-autonoma`, `orai-monitor`). **`ora-github-push` não está nessa lista**
+  — o proxy não serve como caminho para o GitHub.
+- **`ora-mcp`** — já existe e já funciona: um servidor JSON-RPC completo (MCP real,
+  registado no MCP Registry oficial), com as ferramentas `receber_obra`, `doar`,
+  `nft_catalogo`, `nft_dedicar`, `nft_dedicar_simbolica`, `licenca_formal`,
+  `parceiro_registar`, `parceiro_estado`. Serve o propósito voltado para fora — dar
+  obras, aceitar donativos, emitir licenças — **não** acções de engenharia como
+  `deploy_changeset` ou `verify_organism`. Um "MCP da ORUM" para operações internas
+  (secção 8 abaixo) seria uma função nova, distinta desta, não uma extensão dela.
+
 ## 8. O que falta, genuinamente
 
 - **Arquivo**: faltam 41 das 100 obras físicas por registar; falta ligar obras físicas
