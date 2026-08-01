@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ORUM · Arquivo</title>
+<style>
+  :root{
+    --bg:#08060a; --bg-card:#100c14; --amber:#FFB020; --amber-dim:#FFB02055;
+    --ok:#3ddc84; --warn:#ffcf4d; --dead:#ff5c5c;
+    --ink:#f2ede4; --ink-dim:#9b9490; --line:#2a2430;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  body{font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;min-height:100dvh;padding-bottom:88px;}
+  header.hero{padding:24px 20px 10px;text-align:center;}
+  header.hero .mark{font-size:13px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase;}
+  header.hero h1{font-size:24px;margin:6px 0 2px;font-weight:600;}
+  header.hero .sub{font-size:13px;color:var(--ink-dim);}
+
+  .grupo{ padding:4px 16px 0; }
+  .grupo-titulo{
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-dim); margin:22px 2px 8px; display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .grupo-titulo .n{ color:var(--amber); font-family:'SF Mono','Courier New',monospace; }
+
+  .cartao{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:16px;
+    padding:14px 16px; margin-bottom:10px;
+  }
+  .barra-progresso{
+    height:6px; border-radius:3px; background:#1c1620; overflow:hidden; margin:8px 0 4px;
+  }
+  .barra-progresso .cheio{ height:100%; background:var(--amber); border-radius:3px; }
+  .legenda-progresso{ font-size:11px; color:var(--ink-dim); display:flex; justify-content:space-between; }
+
+  .lista{ list-style:none; margin:0; padding:0; }
+  .lista li{ padding:10px 0; border-top:1px solid var(--line); font-size:13px; color:var(--ink-dim); }
+  .lista li:first-child{ border-top:none; }
+  .lista .quando-li{
+    display:block; font-size:10.5px; color:#6a655f; margin-bottom:3px;
+    text-transform:uppercase; letter-spacing:.05em; font-family:'SF Mono','Courier New',monospace;
+  }
+  .lista .destaque{ color:var(--ink); font-weight:600; }
+
+  .grid-marcas{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .marca{
+    font-size:11px; padding:6px 10px; border-radius:10px; background:#1a1420;
+    color:var(--ink-dim); border:1px solid var(--line);
+  }
+  .marca b{ color:var(--amber); font-family:'SF Mono','Courier New',monospace; }
+
+  .snap-linha{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:8px 0; border-top:1px solid var(--line); font-size:12px;
+  }
+  .snap-linha:first-child{ border-top:none; }
+  .snap-linha .data{ color:#6a655f; font-family:'SF Mono','Courier New',monospace; font-size:10.5px; }
+  .snap-linha .nums{ color:var(--ink-dim); text-align:right; }
+  .snap-linha .nums b{ color:var(--ink); }
+
+  .acoes{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  a.abrir{
+    flex:1; text-align:center; text-decoration:none; background:none;
+    border:1px solid var(--line); color:var(--ink-dim); font-family:inherit;
+    font-size:12px; padding:8px 10px; border-radius:10px; min-width:70px;
+  }
+
+  .desc{ font-size:12.5px; color:var(--ink-dim); line-height:1.45; margin:0 0 4px; }
+  .carregando{ padding:16px 0; text-align:center; color:var(--ink-dim); font-size:12px; }
+
+  footer.assinatura{
+    text-align:center; padding:26px 20px 8px; font-size:10.5px;
+    letter-spacing:.14em; color:#5a5550; text-transform:uppercase;
+  }
+
+  nav.inferior{
+    position:fixed; left:12px; right:12px; bottom:14px;
+    background:rgba(16,12,20,.92); backdrop-filter:blur(14px);
+    border:1px solid var(--line); border-radius:20px; display:flex; padding:6px;
+  }
+  nav.inferior a, nav.inferior button, nav.inferior span{
+    flex:1; background:none; border:none; color:var(--ink-dim); text-decoration:none;
+    font-family:inherit; font-size:10.5px; padding:9px 2px 7px; border-radius:14px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+  }
+  nav.inferior .ic{ font-size:16px; }
+  nav.inferior .activo{ color:var(--amber); background:#1a1420; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="mark">ORUM</div>
+  <h1>Arquivo</h1>
+  <div class="sub">o que permanece</div>
+</header>
+
+<div class="grupo">
+  <div class="grupo-titulo">Colecção digital <span class="n" id="n-digital">…</span></div>
+  <div class="cartao">
+    <p class="desc">65 obras tokenizadas na Ethereum (Agosto 2021). Preservadas com hash próprio na arca, não dependentes só do IPFS público.</p>
+    <div class="barra-progresso"><div class="cheio" id="barra-digital" style="width:0%"></div></div>
+    <div class="legenda-progresso"><span id="legenda-digital">a carregar…</span><span>65 declaradas</span></div>
+    <div class="acoes">
+      <a class="abrir" href="/licenca/catalogo" target="_blank">catálogo completo</a>
+    </div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Colecção física <span class="n" id="n-fisica">…</span></div>
+  <div class="cartao">
+    <p class="desc">100 obras originais (2011–2021), mixed-media, zero IA generativa. Registo iniciado a 27/07/2026 — cada obra medida por SHA-256 dos bytes reais da fotografia.</p>
+    <div class="barra-progresso"><div class="cheio" id="barra-fisica" style="width:0%"></div></div>
+    <div class="legenda-progresso"><span id="legenda-fisica">a carregar…</span><span>100 declaradas</span></div>
+    <div class="grid-marcas" id="marcas-fisica"></div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Testemunhos <span class="n" id="n-testemunhos">…</span></div>
+  <div class="cartao">
+    <p class="desc">Vozes deixadas na porta — sedimentam na memória real, nunca apagadas.</p>
+    <ul class="lista" id="lista-testemunhos"><li class="carregando">a carregar…</li></ul>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Snapshots históricos <span class="n" id="n-snapshots">…</span></div>
+  <div class="cartao">
+    <p class="desc">Cada leitura sedimentada do órgão de Fluxo, na ordem em que aconteceu — a série real, não só o último ponto.</p>
+    <div id="lista-snapshots"><div class="carregando">a carregar…</div></div>
+  </div>
+</div>
+
+<div class="grupo">
+  <div class="grupo-titulo">Documentação</div>
+  <div class="cartao">
+    <p class="desc">Os documentos actuais de descoberta. Sem histórico de versões ainda — isto mostra o que está em vigor agora, não um arquivo de versões anteriores.</p>
+    <div class="acoes">
+      <a class="abrir" href="/.well-known/agent-card.json" target="_blank">manifesto</a>
+      <a class="abrir" href="/openapi.json" target="_blank">OpenAPI</a>
+      <a class="abrir" href="/.well-known/x402.json" target="_blank">x402.json</a>
+      <a class="abrir" href="/llms.txt" target="_blank">llms.txt</a>
+    </div>
+  </div>
+</div>
+
+<footer class="assinatura">Observável · Verificável · Reproduzível</footer>
+
+<nav class="inferior">
+  <a href="/"><span class="ic">◎</span>Organismo</a>
+  <a href="/servicos.html"><span class="ic">▤</span>Serviços</a>
+  <span class="activo"><span class="ic">▥</span>Arquivo</span>
+  <button disabled style="opacity:.35"><span class="ic">⚙</span>Laboratório</button>
+</nav>
+
+<script>
+const SB_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
+const SB_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+
+async function sb(path){
+  const r = await fetch(SB_URL + path, { headers:{ apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+  if(!r.ok) throw new Error('falha ' + r.status + ' em ' + path);
+  return r.json();
+}
+
+function fmtData(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('pt-PT', { day:'2-digit', month:'2-digit', year:'2-digit', timeZone:'UTC' }) + ' ' +
+         d.toLocaleTimeString('pt-PT', { hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC';
+}
+
+(async () => {
+  try{
+    const digital = await sb('ora_coleccao_publica?select=token_id&limit=1000');
+    document.getElementById('n-digital').textContent = digital.length + '/65';
+    document.getElementById('barra-digital').style.width = Math.round(digital.length/65*100) + '%';
+    document.getElementById('legenda-digital').textContent = digital.length + ' com imagem preservada';
+  }catch(e){ document.getElementById('legenda-digital').textContent = 'falha ao ler'; }
+
+  try{
+    const fisica = await sb('ora_coleccao_fisica_publica?select=*&limit=1000');
+    document.getElementById('n-fisica').textContent = fisica.length + '/100';
+    document.getElementById('barra-fisica').style.width = Math.round(fisica.length/100*100) + '%';
+    document.getElementById('legenda-fisica').textContent = fisica.length + ' registadas';
+    const carimbo = fisica.filter(f => f.marca_de_autoria === 'carimbo').length;
+    const assinatura = fisica.filter(f => f.marca_de_autoria === 'assinatura_manual').length;
+    const comAno = fisica.filter(f => f.ano).length;
+    const comCodigo = fisica.filter(f => f.codigo_gravado).length;
+    document.getElementById('marcas-fisica').innerHTML =
+      `<span class="marca"><b>${carimbo}</b> carimbo</span>` +
+      `<span class="marca"><b>${assinatura}</b> assinatura</span>` +
+      `<span class="marca"><b>${comAno}</b> com ano lido</span>` +
+      `<span class="marca"><b>${comCodigo}</b> código gravado</span>`;
+  }catch(e){ document.getElementById('legenda-fisica').textContent = 'falha ao ler'; }
+
+  try{
+    const test = await sb('ora_testemunhos?select=agente,mensagem,created_at&order=created_at.desc&limit=20');
+    document.getElementById('n-testemunhos').textContent = test.length;
+    document.getElementById('lista-testemunhos').innerHTML = test.length
+      ? test.map(t => `<li><span class="quando-li">${fmtData(t.created_at)} · ${t.agente || 'anónimo'}</span>${t.mensagem}</li>`).join('')
+      : '<li>ainda nenhum</li>';
+  }catch(e){ document.getElementById('lista-testemunhos').innerHTML = '<li>falha ao ler</li>'; }
+
+  try{
+    const snaps = await sb('ora_aprendizagem_snapshots?select=criado_em,acessos_externos,pagamentos,compradores_externos&order=criado_em.desc&limit=20');
+    document.getElementById('n-snapshots').textContent = snaps.length;
+    document.getElementById('lista-snapshots').innerHTML = snaps.length
+      ? snaps.map(s => `<div class="snap-linha">
+          <span class="data">${fmtData(s.criado_em)}</span>
+          <span class="nums"><b>${s.acessos_externos ?? '—'}</b> acessos · <b>${s.pagamentos ?? '—'}</b> pag. · <b>${s.compradores_externos ?? '—'}</b> ext.</span>
+        </div>`).join('')
+      : '<div class="carregando">ainda nenhum</div>';
+  }catch(e){ document.getElementById('lista-snapshots').innerHTML = '<div class="carregando">falha ao ler</div>'; }
+})();
+</script>
+</body>
+</html>
