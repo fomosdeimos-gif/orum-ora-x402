@@ -178,6 +178,20 @@
     </div>
   </div>
 
+  <div class="painel" style="margin-top:14px;">
+    <h2>Evidência de adopção</h2>
+    <p style="font-size:11.5px;color:var(--text-dim);margin:-6px 0 14px;line-height:1.5;">aceita zeros — mede a realidade, não a promove. Proposta de Jorge, 03/08.</p>
+    <div class="metricas" style="grid-template-columns:1fr;gap:0;">
+      <div class="metrica"><span class="rot">endpoints indexados por terceiros <i style="opacity:.6;">· descoberta</i></span><span class="num dim" style="font-size:15px;">≥1</span></div>
+      <div class="metrica"><span class="rot">avaliações independentes publicadas <i style="opacity:.6;">· reputação</i></span><span class="num dim" style="font-size:15px;">0 confirmadas</span></div>
+      <div class="metrica"><span class="rot">pagadores distintos (total) <i style="opacity:.6;">· ver nota</i></span><span class="num dim" style="font-size:15px;" id="ea-pagadores-total">—</span></div>
+      <div class="metrica"><span class="rot">pagadores externos verificados <i style="opacity:.6;">· adopção</i></span><span class="num dim" style="font-size:15px;">0</span></div>
+      <div class="metrica"><span class="rot">segunda compra, mesmo pagador externo <i style="opacity:.6;">· retenção</i></span><span class="num dim" style="font-size:15px;">0</span></div>
+      <div class="metrica"><span class="rot">pagadores externos recorrentes, 30 dias <i style="opacity:.6;">· sustento</i></span><span class="num dim" style="font-size:15px;">0</span></div>
+    </div>
+    <p style="font-size:10.5px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Endpoint indexado: <code>x402-observer</code> (x402.fuchss.app) sonda os endpoints de licença várias vezes por dia — confirmado por <code>ora_acessos_log</code>. Os pagadores distintos totais conhecidos até hoje são internos (testes de Jorge, incluindo uma carteira que parecia externa) — a distinção real/interno não é detectável só por SQL, foi confirmada manualmente.</p>
+  </div>
+
   <footer>Observável · Verificável · Reproduzível</footer>
 
 <script>
@@ -264,9 +278,18 @@ async function carregarLinhaTemporal() {
   }
 }
 
+async function carregarEvidenciaAdopcao() {
+  try {
+    const pagamentos = await q("ora_pagamentos?select=payer");
+    const distintos = new Set(pagamentos.map(p => (p.payer || '').toLowerCase())).size;
+    document.getElementById("ea-pagadores-total").textContent = distintos;
+  } catch (e) { console.error("evidencia-adopcao", e); }
+}
+
 carregarPulso();
 carregarPainel();
 carregarLinhaTemporal();
+carregarEvidenciaAdopcao();
 </script>
 
 </body>
