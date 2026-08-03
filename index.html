@@ -8,517 +8,208 @@
   :root{
     --bg:#08060a;
     --bg-card:#100c14;
+    --bg-card-2:#151019;
     --amber:#FFB020;
     --amber-dim:#FFB02055;
-    --ok:#3ddc84;
-    --warn:#ffcf4d;
-    --dead:#ff5c5c;
-    --ink:#f2ede4;
-    --ink-dim:#9b9490;
-    --line:#2a2430;
+    --ok:#5ee6a8;
+    --blocked:#e65e5e;
+    --text:#e9e4ea;
+    --text-dim:#9a92a3;
+    --border:#241c2c;
   }
-  @media (prefers-color-scheme: light){ /* dark is the only mode, by design */ }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  *{box-sizing:border-box}
   body{
-    font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;
-    min-height:100dvh;
-    padding-bottom:88px;
-    overflow-x:hidden;
-  }
-  @font-face{
-    font-family:'Space Grotesk';
-    src:local('Space Grotesk');
-  }
-  header.hero{
-    padding:28px 20px 14px;
-    text-align:center;
-  }
-  header.hero .mark{
-    font-size:13px;
-    letter-spacing:.22em;
-    color:var(--ink-dim);
-    text-transform:uppercase;
-  }
-  header.hero h1{
-    font-size:26px;
-    margin:6px 0 2px;
-    font-weight:600;
-    letter-spacing:-.01em;
-  }
-  header.hero .sub{
-    font-size:13px;
-    color:var(--ink-dim);
-  }
-
-  /* ---------- circuito ---------- */
-  .circuito-wrap{
-    padding:8px 12px 4px;
-  }
-  svg#circuito{
-    width:100%;
-    height:auto;
-    display:block;
-    overflow:visible;
-  }
-  .no{
-    cursor:pointer;
-  }
-  .no rect{
-    fill:var(--bg-card);
-    stroke:var(--line);
-    stroke-width:1.4;
-    rx:16;
-    transition:stroke .25s, filter .25s;
-  }
-  .no.aberto rect{
-    stroke:var(--amber);
-    filter:drop-shadow(0 0 10px var(--amber-dim));
-  }
-  .no text.rotulo{
-    fill:var(--ink);
-    font-size:13.5px;
-    font-weight:600;
-    text-anchor:middle;
-    dominant-baseline:middle;
-  }
-  .no text.pergunta{
-    fill:var(--ink-dim);
-    font-size:9px;
-    text-anchor:middle;
-    dominant-baseline:middle;
-  }
-  .estado-dot{
-    r:4.5;
-  }
-  .estado-ok{ fill:var(--ok); }
-  .estado-warn{ fill:var(--warn); }
-  .estado-dead{ fill:var(--dead); }
-  .estado-lendo{ fill:var(--ink-dim); }
-  path.ligacao{
-    fill:none;
-    stroke:var(--line);
-    stroke-width:1.6;
-  }
-  path.ligacao.viva{
-    stroke:var(--amber-dim);
-  }
-  .pulso-pulse{
-    animation: respirar 3.6s ease-in-out infinite;
-    transform-origin:center;
-  }
-  @keyframes respirar{
-    0%,100%{ opacity:.55; }
-    50%{ opacity:1; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .pulso-pulse{ animation:none; opacity:1; }
-  }
-
-  /* ---------- cartao expandido ---------- */
-  #painel{
-    margin:6px 16px 0;
-  }
-  .cartao{
-    display:none;
-    background:var(--bg-card);
-    border:1px solid var(--line);
-    border-radius:18px;
-    padding:18px 18px 14px;
-    animation:entra .22s ease-out;
-  }
-  .cartao.mostra{ display:block; }
-  @keyframes entra{
-    from{ opacity:0; transform:translateY(6px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
-  .cartao h2{
-    margin:0 0 2px;
-    font-size:17px;
-    font-weight:600;
-  }
-  .cartao .pergunta-h{
-    margin:0 0 14px;
-    font-size:12px;
-    color:var(--ink-dim);
-    font-style:italic;
-  }
-  .metrica{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    padding:10px 0;
-    border-top:1px solid var(--line);
-  }
-  .metrica:first-of-type{ border-top:none; }
-  .metrica .rot{ font-size:13px; color:var(--ink-dim); }
-  .metrica .val{
-    font-size:16px;
-    font-weight:600;
-    font-variant-numeric:tabular-nums;
-    cursor:pointer;
-    border-bottom:1px dashed var(--line);
-  }
-  .metrica .val:active{ opacity:.6; }
-
-  .proveniencia{
-    display:none;
-    margin:2px 0 8px;
-    padding:10px 12px;
-    background:#000;
-    border:1px solid var(--line);
-    border-radius:10px;
-    font-size:11px;
-    color:var(--ink-dim);
-    font-family:'SF Mono','Courier New',monospace;
-    line-height:1.6;
-    word-break:break-all;
-  }
-  .proveniencia.mostra{ display:block; }
-  .proveniencia b{ color:var(--amber); font-weight:600; }
-
-  .lista{
-    list-style:none;
     margin:0;
-    padding:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:24px 18px 60px;
+    max-width:640px;
+    margin-inline:auto;
   }
-  .lista li{
-    padding:9px 0;
-    border-top:1px solid var(--line);
-    font-size:13px;
-    color:var(--ink-dim);
-  }
-  .lista li:first-child{ border-top:none; }
-  .lista li .quando-li{
-    display:block;
-    font-size:10.5px;
-    color:#6a655f;
-    margin-bottom:2px;
+  a{color:inherit;text-decoration:none}
+  .word{
+    font-size:14px;
+    letter-spacing:.32em;
     text-transform:uppercase;
-    letter-spacing:.05em;
-  }
-
-  .carregando{
-    padding:20px 0;
+    color:var(--text-dim);
     text-align:center;
-    color:var(--ink-dim);
-    font-size:12px;
+    margin-bottom:4px;
   }
-
-  /* ---------- ver por dentro ---------- */
-  body.dentro .cartao{ border-radius:2px; }
-  body.dentro .no rect{ rx:2; }
-  body.dentro .proveniencia{ display:block !important; }
-  body.dentro .metrica .val{ border-bottom-style:solid; }
-
-  /* ---------- nav ---------- */
-  nav.inferior{
-    position:fixed;
-    left:12px; right:12px; bottom:14px;
-    background:rgba(16,12,20,.92);
-    backdrop-filter:blur(14px);
-    border:1px solid var(--line);
+  h1{
+    text-align:center;
+    font-size:28px;
+    font-weight:600;
+    margin:0 0 28px;
+    letter-spacing:.02em;
+  }
+  .pulso{
+    background:var(--bg-card);
+    border:1px solid var(--border);
     border-radius:20px;
-    display:flex;
-    padding:6px;
+    padding:26px 22px;
+    text-align:center;
+    margin-bottom:22px;
   }
-  nav.inferior button{
-    flex:1;
-    background:none;
-    border:none;
-    color:var(--ink-dim);
-    font-family:inherit;
-    font-size:10.5px;
-    padding:9px 2px 7px;
-    border-radius:14px;
-    display:flex;
-    flex-direction:column;
+  .estado-badge{
+    display:inline-flex;
     align-items:center;
-    gap:3px;
-  }
-  nav.inferior button .ic{ font-size:16px; }
-  nav.inferior button.activo{
-    color:var(--amber);
-    background:#1a1420;
-  }
-
-  footer.assinatura{
-    text-align:center;
-    padding:22px 20px 8px;
-    font-size:10.5px;
+    gap:8px;
+    font-size:13px;
     letter-spacing:.14em;
-    color:#5a5550;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:999px;
+    border:1px solid var(--amber-dim);
+    color:var(--amber);
+    margin-bottom:16px;
+  }
+  .estado-badge.blocked{color:var(--blocked);border-color:#e65e5e55}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .dia{font-size:15px;color:var(--text-dim);margin-bottom:10px}
+  .frase{font-size:16px;line-height:1.5;font-style:italic;color:var(--text);margin:14px 0 8px}
+  .verif{font-size:12px;color:var(--text-dim)}
+  .orgaos{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .orgao{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px 16px;
+    transition:border-color .15s;
+  }
+  .orgao:active{border-color:var(--amber-dim)}
+  .orgao .nome{font-size:15px;font-weight:600;margin-bottom:4px}
+  .orgao .desc{font-size:12.5px;color:var(--text-dim);line-height:1.4}
+  .painel{
+    background:var(--bg-card-2);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+  }
+  .painel h2{
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    margin:0 0 14px;
+    font-weight:600;
+  }
+  .metricas{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .metrica .num{font-size:22px;font-weight:600;color:var(--amber)}
+  .metrica .num.dim{color:var(--text)}
+  .metrica .label{font-size:11.5px;color:var(--text-dim);margin-top:2px}
+  footer{
+    text-align:center;
+    margin-top:30px;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--text-dim);
     text-transform:uppercase;
   }
-  .toggle-dentro{
-    display:block;
-    margin:0 auto 6px;
-    background:none;
-    border:1px solid var(--line);
-    color:var(--ink-dim);
-    font-size:10.5px;
-    padding:7px 14px;
-    border-radius:20px;
-    font-family:inherit;
-  }
-  body.dentro .toggle-dentro{ color:var(--amber); border-color:var(--amber-dim); }
+  .skeleton{opacity:.35}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="mark">ORUM</div>
-  <h1>Organismo</h1>
-  <div class="sub">como estou, agora</div>
-</header>
+  <div class="word">ORA + Unum</div>
+  <h1>ORUM</h1>
 
-<div class="circuito-wrap">
-  <svg id="circuito" viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
-    <!-- ligações (percurso de leitura) -->
-    <path class="ligacao viva" d="M160,50 L160,100" />
-    <path class="ligacao viva" d="M160,140 L160,178" />
-    <path class="ligacao viva" d="M160,178 L95,178 L95,216" />
-    <path class="ligacao viva" d="M160,178 L225,178 L225,216" />
-    <path class="ligacao viva" d="M95,256 L95,300 L160,330" />
-    <path class="ligacao viva" d="M225,256 L225,300 L160,330" />
-    <path class="ligacao" d="M95,236 L225,236" />
+  <div class="pulso" id="pulso-card">
+    <div class="estado-badge skeleton" id="estado-badge"><span class="dot"></span><span id="estado-texto">a verificar…</span></div>
+    <div class="dia" id="dia-texto">dia —</div>
+    <div class="frase" id="frase-texto">"…"</div>
+    <div class="verif" id="verif-texto">última verificação: —</div>
+  </div>
 
-    <!-- PULSO -->
-    <g class="no" data-orgao="pulso" transform="translate(160,30)">
-      <circle class="pulso-pulse" r="30" fill="none" stroke="var(--amber-dim)" stroke-width="1"/>
-      <rect x="-52" y="-20" width="104" height="40"/>
-      <circle class="estado-dot estado-lendo" cx="-38" cy="-8" data-dot="pulso"/>
-      <text class="rotulo" y="-2">Pulso</text>
-      <text class="pergunta" y="12">como estou?</text>
-    </g>
+  <div class="orgaos">
+    <a class="orgao" href="./organismo.html"><div class="nome">Organismo</div><div class="desc">seis órgãos, circuito de leitura</div></a>
+    <a class="orgao" href="./servicos.html"><div class="nome">Serviços</div><div class="desc">o que se oferece, testar ao vivo</div></a>
+    <a class="orgao" href="./arquivo.html"><div class="nome">Arquivo</div><div class="desc">colecções, testemunhos, snapshots</div></a>
+    <a class="orgao" href="./laboratorio.html"><div class="nome">Laboratório</div><div class="desc">frescura, mudanças, inspecção</div></a>
+  </div>
 
-    <!-- FLUXO -->
-    <g class="no" data-orgao="fluxo" transform="translate(160,120)">
-      <rect x="-58" y="-20" width="116" height="40"/>
-      <circle class="estado-dot estado-lendo" cx="-44" cy="-8" data-dot="fluxo"/>
-      <text class="rotulo" y="-2">Fluxo</text>
-      <text class="pergunta" y="12">o que acontece?</text>
-    </g>
+  <div class="painel">
+    <h2>Painel de verdade</h2>
+    <div class="metricas">
+      <div class="metrica"><div class="num skeleton" id="m-obras-fisicas">—</div><div class="label">obras físicas</div></div>
+      <div class="metrica"><div class="num skeleton" id="m-tokenizadas">—</div><div class="label">tokenizadas</div></div>
+      <div class="metrica"><div class="num dim skeleton" id="m-pagamentos">—</div><div class="label">pagamentos</div></div>
+      <div class="metrica"><div class="num dim skeleton" id="m-dadivas">—</div><div class="label">dádivas</div></div>
+    </div>
+  </div>
 
-    <!-- PONTE -->
-    <g class="no" data-orgao="ponte" transform="translate(160,178)">
-      <rect x="-44" y="-16" width="88" height="32" rx="10"/>
-      <text class="rotulo" y="0" style="font-size:11.5px">Ponte</text>
-      <text class="pergunta" y="11" style="font-size:8px">o que mudou?</text>
-    </g>
-
-    <!-- MEMÓRIA -->
-    <g class="no" data-orgao="memoria" transform="translate(95,236)">
-      <rect x="-52" y="-20" width="104" height="40"/>
-      <circle class="estado-dot estado-lendo" cx="-38" cy="-8" data-dot="memoria"/>
-      <text class="rotulo" y="-2">Memória</text>
-      <text class="pergunta" y="12">o que fica?</text>
-    </g>
-
-    <!-- APRENDIZAGEM -->
-    <g class="no" data-orgao="aprendizagem" transform="translate(225,236)">
-      <rect x="-58" y="-20" width="116" height="40"/>
-      <circle class="estado-dot estado-lendo" cx="-44" cy="-8" data-dot="aprendizagem"/>
-      <text class="rotulo" y="-2" style="font-size:12px">Aprendizagem</text>
-      <text class="pergunta" y="12">o que se incorporou?</text>
-    </g>
-
-    <!-- VOZ -->
-    <g class="no" data-orgao="voz" transform="translate(160,340)">
-      <rect x="-46" y="-20" width="92" height="40"/>
-      <circle class="estado-dot estado-lendo" cx="-32" cy="-8" data-dot="voz"/>
-      <text class="rotulo" y="-2">Voz</text>
-      <text class="pergunta" y="12">o que foi dito?</text>
-    </g>
-  </svg>
-</div>
-
-<div id="painel"></div>
-
-<button class="toggle-dentro" id="btnDentro" style="margin-top:10px;">ver por dentro</button>
-
-<footer class="assinatura">Observável · Verificável · Reproduzível</footer>
-
-<nav class="inferior">
-  <button class="activo"><span class="ic">◎</span>Organismo</button>
-  <a href="/servicos.html" style="flex:1;text-decoration:none;background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:10.5px;padding:9px 2px 7px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:3px;"><span class="ic">▤</span>Serviços</a>
-  <a href="/arquivo.html" style="flex:1;text-decoration:none;background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:10.5px;padding:9px 2px 7px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:3px;"><span class="ic">▥</span>Arquivo</a>
-  <a href="/laboratorio.html" style="flex:1;text-decoration:none;background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:10.5px;padding:9px 2px 7px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:3px;"><span class="ic">⚙</span>Laboratório</a>
-</nav>
+  <footer>Observável · Verificável · Reproduzível</footer>
 
 <script>
-const SB_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
-const SB_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+const SUPA_URL = "https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/";
+const SUPA_KEY = "sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb";
 
-async function sb(path){
-  const r = await fetch(SB_URL + path, {
-    headers:{ apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-  });
-  if(!r.ok) throw new Error('falha ' + r.status + ' em ' + path);
-  return r.json();
-}
-
-function fmtHora(iso){
-  if(!iso) return '—';
-  const d = new Date(iso);
-  return d.toLocaleString('pt-PT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC';
-}
-
-function metrica(rot, val, prov){
-  const id = 'p_' + Math.random().toString(36).slice(2);
-  return `<div class="metrica">
-      <span class="rot">${rot}</span>
-      <span class="val" onclick="document.getElementById('${id}').classList.toggle('mostra')">${val}</span>
-    </div>
-    <div class="proveniencia" id="${id}">${prov}</div>`;
-}
-
-function provOrgao(vista, campo, quando, extra){
-  return `<b>vista</b> ${vista}\n<b>campo</b> ${campo}\n<b>última leitura</b> ${fmtHora(quando)}${extra ? '\n' + extra : ''}`;
-}
-
-const painel = document.getElementById('painel');
-const nos = document.querySelectorAll('.no');
-let aberto = null;
-
-const carregadores = {
-  pulso: carregarPulso,
-  fluxo: carregarFluxo,
-  ponte: carregarPonte,
-  memoria: carregarMemoria,
-  aprendizagem: carregarAprendizagem,
-  voz: carregarVoz,
-};
-
-nos.forEach(no => {
-  no.addEventListener('click', () => {
-    const orgao = no.dataset.orgao;
-    nos.forEach(n => n.classList.remove('aberto'));
-    if(aberto === orgao){
-      aberto = null;
-      painel.innerHTML = '';
-      return;
+async function q(path, opts = {}) {
+  const res = await fetch(SUPA_URL + path, {
+    headers: {
+      apikey: SUPA_KEY,
+      Authorization: "Bearer " + SUPA_KEY,
+      Prefer: opts.count ? "count=exact" : undefined
     }
-    no.classList.add('aberto');
-    aberto = orgao;
-    painel.innerHTML = '<div class="cartao mostra"><div class="carregando">a ler ' + orgao + '…</div></div>';
-    carregadores[orgao]().catch(e => {
-      painel.innerHTML = `<div class="cartao mostra"><h2>${orgao}</h2><div class="carregando">não foi possível ler agora — ${e.message}</div></div>`;
-    });
   });
-});
-
-async function carregarPulso(){
-  const [f] = await sb('ora_frescura_publica?select=*&order=medido_em.desc&limit=1');
-  const cor = f.veredicto === 'VIVO' ? 'estado-ok' : (f.veredicto === 'ATRASADO' ? 'estado-warn' : 'estado-dead');
-  document.querySelector('[data-dot="pulso"]').setAttribute('class', 'estado-dot ' + cor);
-  painel.innerHTML = `<div class="cartao mostra">
-    <h2>Pulso</h2>
-    <p class="pergunta-h">como estou?</p>
-    ${metrica('veredicto', f.veredicto, provOrgao('ora_frescura_publica','veredicto',f.medido_em))}
-    ${metrica('mortos', f.mortos, provOrgao('ora_frescura_publica','mortos',f.medido_em))}
-    ${metrica('atrasados', f.atrasados, provOrgao('ora_frescura_publica','atrasados',f.medido_em))}
-    ${metrica('sinais medidos', Object.keys(f.sinais||{}).length, provOrgao('ora_frescura_publica','sinais',f.medido_em))}
-  </div>`;
+  if (opts.count) {
+    const range = res.headers.get("content-range") || "";
+    return parseInt(range.split("/")[1] || "0", 10);
+  }
+  return res.json();
 }
 
-async function carregarFluxo(){
-  const [s] = await sb('ora_aprendizagem_ultimo_snapshot_publica?select=*');
-  const dot = document.querySelector('[data-dot="fluxo"]');
-  dot.setAttribute('class', 'estado-dot ' + (s.compradores_externos > 0 ? 'estado-ok' : 'estado-warn'));
-  const prov = (campo) => provOrgao('ora_aprendizagem_ultimo_snapshot_publica', campo, s.criado_em, `<b>hash</b> ${s.hash_reprodutivel ? s.hash_reprodutivel.slice(0,16)+'…' : '—'}`);
-  painel.innerHTML = `<div class="cartao mostra">
-    <h2>Fluxo</h2>
-    <p class="pergunta-h">o que está a acontecer?</p>
-    ${metrica('acessos externos', s.acessos_externos, prov('acessos_externos'))}
-    ${metrica('agentes distintos', s.agentes_externos_distintos, prov('agentes_externos_distintos'))}
-    ${metrica('pagamentos', s.pagamentos, prov('pagamentos'))}
-    ${metrica('compradores externos', s.compradores_externos, prov('compradores_externos'))}
-    ${metrica('conversão externa %', s.conversao_externa, prov('conversao_externa'))}
-  </div>`;
+async function carregarPulso() {
+  try {
+    const rondas = await q("ora_sentinela_rondas?select=dia,pulso_ok,veredicto,frase,created_at&order=created_at.desc&limit=1");
+    const badge = document.getElementById("estado-badge");
+    const texto = document.getElementById("estado-texto");
+    const dia = document.getElementById("dia-texto");
+    const frase = document.getElementById("frase-texto");
+    const verif = document.getElementById("verif-texto");
+
+    if (rondas && rondas[0]) {
+      const r = rondas[0];
+      const vivo = r.pulso_ok === true;
+      badge.classList.remove("skeleton");
+      badge.classList.toggle("blocked", !vivo);
+      texto.textContent = vivo ? "VIVO" : "BLOQUEADO";
+      dia.textContent = "dia " + (r.dia ?? "—");
+      dia.classList.remove("skeleton");
+      if (r.frase) { frase.textContent = "\u201c" + r.frase + "\u201d"; frase.classList.remove("skeleton"); }
+      else { frase.style.display = "none"; }
+      const dt = new Date(r.created_at);
+      verif.textContent = "última verificação: " + dt.toISOString().slice(0,16).replace("T"," ") + " UTC";
+      verif.classList.remove("skeleton");
+    }
+  } catch (e) { console.error("pulso", e); }
 }
 
-async function carregarPonte(){
-  const [s] = await sb('ora_aprendizagem_ultimo_snapshot_publica?select=*');
-  const d = s.delta || {};
-  document.querySelector('.no[data-orgao="ponte"] rect').setAttribute('fill', 'var(--bg-card)');
-  const linhasDelta = Object.entries(d).filter(([k]) => k !== 'desde' && k !== 'mudanca_material')
-    .map(([k,v]) => metrica(k, v, provOrgao('ora_aprendizagem_ultimo_snapshot_publica', 'delta.'+k, s.criado_em))).join('');
-  painel.innerHTML = `<div class="cartao mostra">
-    <h2>Ponte</h2>
-    <p class="pergunta-h">o que mudou desde a última observação?</p>
-    ${metrica('desde', fmtHora(d.desde), provOrgao('ora_aprendizagem_ultimo_snapshot_publica','delta.desde',s.criado_em))}
-    ${linhasDelta}
-    <div class="proveniencia mostra" style="margin-top:10px;">
-      <b>hash do snapshot</b> ${s.hash_reprodutivel || '—'}<br>
-      <b>mudança material</b> ${d.mudanca_material || '—'}
-    </div>
-  </div>`;
+async function carregarPainel() {
+  try {
+    const [fisicas, tokenizadas, pagamentos, dadivas] = await Promise.all([
+      q("ora_coleccao_fisica_publica?select=id", { count: true }),
+      q("ora_coleccao_fisica_publica?select=id&tokenizada=eq.true", { count: true }),
+      q("ora_pagamentos?select=id", { count: true }),
+      q("ora_dadivas?select=id", { count: true })
+    ]);
+    document.getElementById("m-obras-fisicas").textContent = fisicas;
+    document.getElementById("m-tokenizadas").textContent = tokenizadas;
+    document.getElementById("m-pagamentos").textContent = pagamentos;
+    document.getElementById("m-dadivas").textContent = dadivas;
+    document.querySelectorAll(".num").forEach(el => el.classList.remove("skeleton"));
+  } catch (e) { console.error("painel", e); }
 }
 
-async function carregarMemoria(){
-  const [digital, nFisica] = await Promise.all([
-    sb('ora_coleccao_publica?select=token_id&limit=1000'),
-    sb('ora_coleccao_fisica_publica?select=id&limit=1000'),
-  ]);
-  document.querySelector('[data-dot="memoria"]').setAttribute('class', 'estado-dot estado-ok');
-  painel.innerHTML = `<div class="cartao mostra">
-    <h2>Memória</h2>
-    <p class="pergunta-h">o que permanece?</p>
-    ${metrica('obras digitais históricas', digital.length, provOrgao('ora_coleccao_publica','token_id (contagem)', new Date().toISOString()))}
-    ${metrica('obras físicas registadas', nFisica.length, provOrgao('ora_coleccao_fisica_publica','id (contagem)', new Date().toISOString()))}
-  </div>`;
-}
-
-async function carregarAprendizagem(){
-  const muds = await sb('ora_mudancas?select=*&order=quando.desc&limit=8');
-  document.querySelector('[data-dot="aprendizagem"]').setAttribute('class', 'estado-dot estado-ok');
-  const linhas = muds.map(m => `<li>
-      <span class="quando-li">${fmtHora(m.quando)} · v${m.versao || '—'}</span>
-      ${m.o_que}
-    </li>`).join('');
-  painel.innerHTML = `<div class="cartao mostra">
-    <h2>Aprendizagem</h2>
-    <p class="pergunta-h">o que foi incorporado?</p>
-    <ul class="lista">${linhas}</ul>
-    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_mudancas','o_que / quando / versao', new Date().toISOString())}</div>
-  </div>`;
-}
-
-async function carregarVoz(){
-  const posts = await sb('ora_moltbook_publica?select=*&limit=6');
-  document.querySelector('[data-dot="voz"]').setAttribute('class', 'estado-dot estado-ok');
-  const linhas = posts.map(p => `<li>
-      <span class="quando-li">${fmtHora(p.quando)} · ${p.kind}${p.em_resposta_a ? ' · @' + p.em_resposta_a : ''}</span>
-      ${p.resumo || '—'}
-    </li>`).join('');
-  painel.innerHTML = `<div class="cartao mostra">
-    <h2>Voz</h2>
-    <p class="pergunta-h">o que foi comunicado?</p>
-    <ul class="lista">${linhas}</ul>
-    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_moltbook_publica','kind / resumo / quando', new Date().toISOString())}</div>
-  </div>`;
-}
-
-document.getElementById('btnDentro').addEventListener('click', () => {
-  document.body.classList.toggle('dentro');
-  document.getElementById('btnDentro').textContent = document.body.classList.contains('dentro') ? 'voltar à vista normal' : 'ver por dentro';
-});
-
-// leitura inicial silenciosa dos seis pontos de estado, sem abrir cartão
-(async () => {
-  try{
-    const f = (await sb('ora_frescura_publica?select=veredicto&order=medido_em.desc&limit=1'))[0];
-    document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot ' + (f.veredicto==='VIVO'?'estado-ok':f.veredicto==='ATRASADO'?'estado-warn':'estado-dead'));
-  }catch(e){}
-  try{
-    const s = (await sb('ora_aprendizagem_ultimo_snapshot_publica?select=compradores_externos'))[0];
-    document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot ' + (s.compradores_externos>0?'estado-ok':'estado-warn'));
-  }catch(e){}
-  document.querySelector('[data-dot="memoria"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="aprendizagem"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="voz"]').setAttribute('class','estado-dot estado-ok');
-})();
+carregarPulso();
+carregarPainel();
 </script>
+
 </body>
 </html>
