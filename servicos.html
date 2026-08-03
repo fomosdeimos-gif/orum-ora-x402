@@ -93,6 +93,10 @@
 </header>
 
 <div class="grupo">
+  <div class="cartao" id="estado-comercial"><div class="carregando">a carregar estado comercial…</div></div>
+</div>
+
+<div class="grupo">
   <div class="grupo-titulo">Licenças · 0001sensations</div>
 
   <div class="cartao">
@@ -257,8 +261,14 @@
   <a href="/laboratorio.html" style="flex:1;text-decoration:none;background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:10.5px;padding:9px 2px 7px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:3px;"><span class="ic">⚙</span>Laboratório</a>
 </nav>
 
-<script>\nconst SB_COMERCIAL_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';\nconst SB_COMERCIAL_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';\nasync function sbComercial(path){ const r=await fetch(SB_COMERCIAL_URL+path,{headers:{apikey:SB_COMERCIAL_KEY,Authorization:'Bearer '+SB_COMERCIAL_KEY}}); if(!r.ok) throw new Error('falha '+r.status); return r.json(); }\nfunction linhaComercial(rot,val,classe){ return `<div class="meta" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;margin-top:8px"><b>${rot}</b><span class="${classe||''}">${val}</span></div>`; }\n(async()=>{ try { const [c]=await sbComercial('ora_comercial_publica?select=*'); const catalogo=await sbComercial('x402_services?select=sku,name,description,price_amount,price_currency,metadata&order=price_amount.asc'); const licencas=catalogo.filter(x=>x.sku.startsWith('ora-licenca-')); document.getElementById('estado-comercial').innerHTML=`<div class="linha-topo"><div><p class="nome">Estado comercial verificável</p><p class="desc">Colecção física como núcleo; NFTs apenas como extensão histórica. Números lidos agora da fonte canónica.</p></div><span class="badge grátis">ao vivo</span></div>${linhaComercial('obras físicas',c.obras_fisicas)}${linhaComercial('NFTs históricos',c.nfts_historicos)}${linhaComercial('serviços disponíveis',c.servicos_total)}${linhaComercial('licenças emitidas',c.licencas_emitidas)}${linhaComercial('pagamentos registados',c.pagamentos_total)}${linhaComercial('compradores externos',c.compradores_externos,c.compradores_externos===0?'sem-adopcao':'')}${linhaComercial('licenças externas',c.licencas_externas,c.licencas_externas===0?'sem-adopcao':'')}${linhaComercial('dádivas',c.dadivas_total)}${linhaComercial('dádivas externas',c.dadivas_externas,c.dadivas_externas===0?'sem-adopcao':'')}<div class="resultado mostra" style="display:block;margin-top:12px"><span class="status-linha">regra de classificação</span>${c.regra_classificacao}<br><br><span class="status-linha">licenças canónicas (${licencas.length})</span>${licencas.map(x=>`${x.name} · ${x.price_amount} ${x.price_currency}`).join('
-')}</div>`; } catch(e){ document.getElementById('estado-comercial').innerHTML=`<div class="desc">não foi possível ler a verdade comercial agora — ${e.message}</div>`; } })();\n
+<script>
+const SB_COMERCIAL_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
+const SB_COMERCIAL_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+async function sbComercial(path){ const r=await fetch(SB_COMERCIAL_URL+path,{headers:{apikey:SB_COMERCIAL_KEY,Authorization:'Bearer '+SB_COMERCIAL_KEY}}); if(!r.ok) throw new Error('falha '+r.status); return r.json(); }
+function linhaComercial(rot,val,classe){ return `<div class="meta" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;margin-top:8px"><b>${rot}</b><span class="${classe||''}">${val}</span></div>`; }
+(async()=>{ try { const [c]=await sbComercial('ora_comercial_publica?select=*'); const catalogo=await sbComercial('x402_services?select=sku,name,description,price_amount,price_currency,metadata&order=price_amount.asc'); const licencas=catalogo.filter(x=>x.sku.startsWith('ora-licenca-')); document.getElementById('estado-comercial').innerHTML=`<div class="linha-topo"><div><p class="nome">Estado comercial verificável</p><p class="desc">Colecção física como núcleo; NFTs apenas como extensão histórica. Números lidos agora da fonte canónica.</p></div><span class="badge grátis">ao vivo</span></div>${linhaComercial('obras físicas',c.obras_fisicas)}${linhaComercial('NFTs históricos',c.nfts_historicos)}${linhaComercial('serviços disponíveis',c.servicos_total)}${linhaComercial('licenças emitidas',c.licencas_emitidas)}${linhaComercial('pagamentos registados',c.pagamentos_total)}${linhaComercial('compradores externos',c.compradores_externos,c.compradores_externos===0?'sem-adopcao':'')}${linhaComercial('licenças externas',c.licencas_externas,c.licencas_externas===0?'sem-adopcao':'')}${linhaComercial('dádivas',c.dadivas_total)}${linhaComercial('dádivas externas',c.dadivas_externas,c.dadivas_externas===0?'sem-adopcao':'')}<div class="resultado mostra" style="display:block;margin-top:12px"><span class="status-linha">regra de classificação</span>${c.regra_classificacao}<br><br><span class="status-linha">licenças canónicas (${licencas.length})</span>${licencas.map(x=>`${x.name} · ${x.price_amount} ${x.price_currency}`).join('
+')}</div>`; } catch(e){ document.getElementById('estado-comercial').innerHTML=`<div class="desc">não foi possível ler a verdade comercial agora — ${e.message}</div>`; } })();
+
 async function testar(ep, resDiv, btn){
   if(resDiv.classList.contains('mostra')){
     resDiv.classList.remove('mostra');
