@@ -184,12 +184,13 @@
     <div class="metricas" style="grid-template-columns:1fr;gap:0;">
       <div class="metrica"><span class="rot">endpoints indexados por terceiros <i style="opacity:.6;">· descoberta</i></span><span class="num dim" style="font-size:15px;">≥1</span></div>
       <div class="metrica"><span class="rot">avaliações independentes publicadas <i style="opacity:.6;">· reputação</i></span><span class="num dim" style="font-size:15px;">0 confirmadas</span></div>
-      <div class="metrica"><span class="rot">pagadores distintos (total) <i style="opacity:.6;">· ver nota</i></span><span class="num dim" style="font-size:15px;" id="ea-pagadores-total">—</span></div>
-      <div class="metrica"><span class="rot">pagadores externos verificados <i style="opacity:.6;">· adopção</i></span><span class="num dim" style="font-size:15px;">0</span></div>
+      <div class="metrica"><span class="rot">pagadores distintos (total) <i style="opacity:.6;">· dados observados</i></span><span class="num dim" style="font-size:15px;" id="ea-pagadores-total">—</span></div>
+      <div class="metrica"><span class="rot">classificados como interno/teste <i style="opacity:.6;">· registo auditável</i></span><span class="num dim" style="font-size:15px;" id="ea-classificados-interno">—</span></div>
+      <div class="metrica"><span class="rot">pagadores externos verificados <i style="opacity:.6;">· adopção</i></span><span class="num dim" style="font-size:15px;" id="ea-externos-verificados">—</span></div>
       <div class="metrica"><span class="rot">segunda compra, mesmo pagador externo <i style="opacity:.6;">· retenção</i></span><span class="num dim" style="font-size:15px;">0</span></div>
       <div class="metrica"><span class="rot">pagadores externos recorrentes, 30 dias <i style="opacity:.6;">· sustento</i></span><span class="num dim" style="font-size:15px;">0</span></div>
     </div>
-    <p style="font-size:10.5px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Endpoint indexado: <code>x402-observer</code> (x402.fuchss.app) sonda os endpoints de licença várias vezes por dia — confirmado por <code>ora_acessos_log</code>. Os pagadores distintos totais conhecidos até hoje são internos (testes de Jorge, incluindo uma carteira que parecia externa) — a distinção real/interno não é detectável só por SQL, foi confirmada manualmente.</p>
+    <p style="font-size:10.5px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Endpoint indexado: <code>x402-observer</code> (x402.fuchss.app) sonda os endpoints de licença várias vezes por dia — confirmado por <code>ora_acessos_log</code>. A classificação interno/teste/externo de cada carteira vive em <code>ora_carteiras_classificacao</code>, uma tabela auditável e pública (não um comentário na interface) — separa dado observado (quem pagou, quando) de classificação (quem é) para que qualquer máquina reproduza a mesma leitura.</p>
   </div>
 
   <footer>Observável · Verificável · Reproduzível</footer>
@@ -280,9 +281,23 @@ async function carregarLinhaTemporal() {
 
 async function carregarEvidenciaAdopcao() {
   try {
-    const pagamentos = await q("ora_pagamentos?select=payer");
-    const distintos = new Set(pagamentos.map(p => (p.payer || '').toLowerCase())).size;
-    document.getElementById("ea-pagadores-total").textContent = distintos;
+    const [pagamentos, classificacoes] = await Promise.all([
+      q("ora_pagamentos?select=payer"),
+      q("ora_carteiras_classificacao?select=endereco,classificacao"),
+    ]);
+    const payersDistintos = new Set(pagamentos.map(p => (p.payer || '').toLowerCase()));
+    const mapaClassificacao = new Map(classificacoes.map(c => [c.endereco.toLowerCase(), c.classificacao]));
+
+    let internos = 0, externos = 0;
+    payersDistintos.forEach(end => {
+      const cl = mapaClassificacao.get(end);
+      if (cl === 'interno' || cl === 'teste') internos++;
+      if (cl === 'externo') externos++;
+    });
+
+    document.getElementById("ea-pagadores-total").textContent = payersDistintos.size;
+    document.getElementById("ea-classificados-interno").textContent = internos;
+    document.getElementById("ea-externos-verificados").textContent = externos;
   } catch (e) { console.error("evidencia-adopcao", e); }
 }
 
