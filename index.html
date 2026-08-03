@@ -185,12 +185,13 @@
       <div class="metrica"><span class="rot">endpoints indexados por terceiros <i style="opacity:.6;">· descoberta</i></span><span class="num dim" style="font-size:15px;">≥1</span></div>
       <div class="metrica"><span class="rot">avaliações independentes publicadas <i style="opacity:.6;">· reputação</i></span><span class="num dim" style="font-size:15px;">0 confirmadas</span></div>
       <div class="metrica"><span class="rot">pagadores distintos (total) <i style="opacity:.6;">· dados observados</i></span><span class="num dim" style="font-size:15px;" id="ea-pagadores-total">—</span></div>
-      <div class="metrica"><span class="rot">classificados como interno/teste <i style="opacity:.6;">· registo auditável</i></span><span class="num dim" style="font-size:15px;" id="ea-classificados-interno">—</span></div>
-      <div class="metrica"><span class="rot">pagadores externos verificados <i style="opacity:.6;">· adopção</i></span><span class="num dim" style="font-size:15px;" id="ea-externos-verificados">—</span></div>
+      <div class="metrica"><span class="rot">classificados: interno <i style="opacity:.6;">· registo auditável</i></span><span class="num dim" style="font-size:15px;" id="ea-classificados-interno">—</span></div>
+      <div class="metrica"><span class="rot">classificados: externo confirmado <i style="opacity:.6;">· adopção</i></span><span class="num dim" style="font-size:15px;" id="ea-externos-verificados">—</span></div>
+      <div class="metrica"><span class="rot">desconhecido (por defeito, nunca externo) <i style="opacity:.6;">· por classificar</i></span><span class="num dim" style="font-size:15px;" id="ea-desconhecido">—</span></div>
       <div class="metrica"><span class="rot">segunda compra, mesmo pagador externo <i style="opacity:.6;">· retenção</i></span><span class="num dim" style="font-size:15px;">0</span></div>
       <div class="metrica"><span class="rot">pagadores externos recorrentes, 30 dias <i style="opacity:.6;">· sustento</i></span><span class="num dim" style="font-size:15px;">0</span></div>
     </div>
-    <p style="font-size:10.5px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Endpoint indexado: <code>x402-observer</code> (x402.fuchss.app) sonda os endpoints de licença várias vezes por dia — confirmado por <code>ora_acessos_log</code>. A classificação interno/teste/externo de cada carteira vive em <code>ora_carteiras_classificacao</code>, uma tabela auditável e pública (não um comentário na interface) — separa dado observado (quem pagou, quando) de classificação (quem é) para que qualquer máquina reproduza a mesma leitura.</p>
+    <p style="font-size:10.5px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Endpoint indexado: <code>x402-observer</code> (x402.fuchss.app) sonda os endpoints de licença várias vezes por dia — confirmado por <code>ora_acessos_log</code>. Classificação em <code>ora_carteiras_classificacao</code> — três estados: <code>interno</code>, <code>externo_confirmado</code>, <code>desconhecido</code> (por defeito, nunca assumido como externo). Cada linha tem <code>fundamento</code> por extenso, não só a categoria.</p>
   </div>
 
   <footer>Observável · Verificável · Reproduzível</footer>
@@ -288,16 +289,18 @@ async function carregarEvidenciaAdopcao() {
     const payersDistintos = new Set(pagamentos.map(p => (p.payer || '').toLowerCase()));
     const mapaClassificacao = new Map(classificacoes.map(c => [c.endereco.toLowerCase(), c.classificacao]));
 
-    let internos = 0, externos = 0;
+    let interno = 0, externoConfirmado = 0, desconhecido = 0;
     payersDistintos.forEach(end => {
-      const cl = mapaClassificacao.get(end);
-      if (cl === 'interno' || cl === 'teste') internos++;
-      if (cl === 'externo') externos++;
+      const cl = mapaClassificacao.get(end); // ausência de linha = desconhecido, nunca externo por omissão
+      if (cl === 'interno') interno++;
+      else if (cl === 'externo_confirmado') externoConfirmado++;
+      else desconhecido++;
     });
 
     document.getElementById("ea-pagadores-total").textContent = payersDistintos.size;
-    document.getElementById("ea-classificados-interno").textContent = internos;
-    document.getElementById("ea-externos-verificados").textContent = externos;
+    document.getElementById("ea-classificados-interno").textContent = interno;
+    document.getElementById("ea-externos-verificados").textContent = externoConfirmado;
+    document.getElementById("ea-desconhecido").textContent = desconhecido;
   } catch (e) { console.error("evidencia-adopcao", e); }
 }
 
