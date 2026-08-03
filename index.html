@@ -465,8 +465,8 @@ async function carregarMemoria(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Memória</h2>
     <p class="pergunta-h">o que permanece?</p>
-    ${metrica('obras digitais (65 declaradas)', digital.length, provOrgao('ora_coleccao_publica','token_id (contagem)', new Date().toISOString()))}
-    ${metrica('obras físicas registadas (100 declaradas)', nFisica.length, provOrgao('ora_coleccao_fisica_publica','id (contagem)', new Date().toISOString()))}
+    ${metrica('obras digitais históricas', digital.length, provOrgao('ora_coleccao_publica','token_id (contagem)', new Date().toISOString()))}
+    ${metrica('obras físicas registadas', nFisica.length, provOrgao('ora_coleccao_fisica_publica','id (contagem)', new Date().toISOString()))}
   </div>`;
 }
 
