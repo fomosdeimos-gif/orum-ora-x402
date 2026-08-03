@@ -149,6 +149,19 @@
     color:#6a655f;
     font-family:'SF Mono','Courier New',monospace;
   }
+  .nivel{
+    display:inline-block;
+    padding:1px 6px;
+    border-radius:6px;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-right:6px;
+    font-family:-apple-system,sans-serif;
+  }
+  .nivel-vivo{ background:#123d2a; color:var(--ok); }
+  .nivel-derivado{ background:#2a220f; color:var(--warn); }
+  .nivel-estatico{ background:#241f2a; color:var(--ink-dim); }
   .metrica{
     display:flex;
     justify-content:space-between;
@@ -451,7 +464,7 @@ async function carregarPulso(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Pulso</h2>
     <p class="pergunta-h">como estou?</p>
-    <div class="fonte-card">fonte ora_frescura_publica · lido ${fmtHora(f.medido_em)}</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_frescura_publica · lido ${fmtHora(f.medido_em)}</div>
     ${metrica('veredicto', f.veredicto, provOrgao('ora_frescura_publica','veredicto',f.medido_em))}
     ${metrica('mortos', f.mortos, provOrgao('ora_frescura_publica','mortos',f.medido_em))}
     ${metrica('atrasados', f.atrasados, provOrgao('ora_frescura_publica','atrasados',f.medido_em))}
@@ -467,7 +480,7 @@ async function carregarFluxo(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Fluxo</h2>
     <p class="pergunta-h">o que está a acontecer?</p>
-    <div class="fonte-card">fonte ora_aprendizagem_ultimo_snapshot_publica · lido ${fmtHora(s.criado_em)} · hash ${s.hash_reprodutivel ? s.hash_reprodutivel.slice(0,12)+'…' : '—'}</div>
+    <div class="fonte-card"><span class="nivel nivel-derivado">derivado de snapshot</span>fonte ora_aprendizagem_ultimo_snapshot_publica · lido ${fmtHora(s.criado_em)} · hash ${s.hash_reprodutivel ? s.hash_reprodutivel.slice(0,12)+'…' : '—'}</div>
     ${metrica('acessos externos', s.acessos_externos, prov('acessos_externos'))}
     ${metrica('agentes distintos', s.agentes_externos_distintos, prov('agentes_externos_distintos'))}
     ${metrica('pagamentos', s.pagamentos, prov('pagamentos'))}
@@ -485,7 +498,7 @@ async function carregarPonte(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Ponte</h2>
     <p class="pergunta-h">o que mudou desde a última observação?</p>
-    <div class="fonte-card">fonte ora_aprendizagem_ultimo_snapshot_publica.delta · lido ${fmtHora(s.criado_em)} · hash ${s.hash_reprodutivel ? s.hash_reprodutivel.slice(0,12)+'…' : '—'}</div>
+    <div class="fonte-card"><span class="nivel nivel-derivado">derivado de snapshot</span>fonte ora_aprendizagem_ultimo_snapshot_publica.delta · lido ${fmtHora(s.criado_em)} · hash ${s.hash_reprodutivel ? s.hash_reprodutivel.slice(0,12)+'…' : '—'}</div>
     ${metrica('desde', fmtHora(d.desde), provOrgao('ora_aprendizagem_ultimo_snapshot_publica','delta.desde',s.criado_em))}
     ${linhasDelta}
     <div class="proveniencia mostra" style="margin-top:10px;">
@@ -504,7 +517,7 @@ async function carregarMemoria(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Memória</h2>
     <p class="pergunta-h">o que permanece?</p>
-    <div class="fonte-card">fonte ora_coleccao_publica + ora_coleccao_fisica_publica · lido ${fmtHora(new Date().toISOString())}</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_coleccao_publica + ora_coleccao_fisica_publica · lido ${fmtHora(new Date().toISOString())}</div>
     ${metrica('obras digitais históricas', digital.length, provOrgao('ora_coleccao_publica','token_id (contagem)', new Date().toISOString()))}
     ${metrica('obras físicas registadas', nFisica.length, provOrgao('ora_coleccao_fisica_publica','id (contagem)', new Date().toISOString()))}
   </div>`;
@@ -520,7 +533,7 @@ async function carregarAprendizagem(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Aprendizagem</h2>
     <p class="pergunta-h">o que foi incorporado?</p>
-    <div class="fonte-card">fonte ora_mudancas · lido ${fmtHora(new Date().toISOString())} · últimos ${muds.length} registos</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_mudancas · lido ${fmtHora(new Date().toISOString())} · últimos ${muds.length} registos</div>
     <ul class="lista">${linhas}</ul>
     <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_mudancas','o_que / quando / versao', new Date().toISOString())}</div>
   </div>`;
@@ -536,7 +549,7 @@ async function carregarVoz(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Voz</h2>
     <p class="pergunta-h">o que foi comunicado?</p>
-    <div class="fonte-card">fonte ora_moltbook_publica · lido ${fmtHora(new Date().toISOString())} · últimos ${posts.length} registos</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_moltbook_publica · lido ${fmtHora(new Date().toISOString())} · últimos ${posts.length} registos</div>
     <ul class="lista">${linhas}</ul>
     <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_moltbook_publica','kind / resumo / quando', new Date().toISOString())}</div>
   </div>`;
@@ -557,7 +570,7 @@ async function carregarAuditoria(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Auditoria</h2>
     <p class="pergunta-h">está tudo verificável?</p>
-    <div class="fonte-card">fonte ora_frescura_publica + ora_mudancas · lido ${fmtHora(f.medido_em)}</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_frescura_publica + ora_mudancas · lido ${fmtHora(f.medido_em)}</div>
     ${metrica('última verificação da sentinela', fmtHora(f.medido_em), provOrgao('ora_frescura_publica','medido_em',f.medido_em))}
     ${metrica('veredicto', f.veredicto || '—', provOrgao('ora_frescura_publica','veredicto',f.medido_em))}
     ${metrica('registos verificados', verificados.length, provOrgao('ora_mudancas','estado=verificado (contagem)', new Date().toISOString()))}
@@ -589,7 +602,7 @@ async function carregarLicencas(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Licenças</h2>
     <p class="pergunta-h">o que foi licenciado?</p>
-    <div class="fonte-card">fonte licencas_0001 · lido ${fmtHora(new Date().toISOString())} · ${licencas.length} registos</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte licencas_0001 · lido ${fmtHora(new Date().toISOString())} · ${licencas.length} registos</div>
     ${metrica('emitidas', licencas.length, provOrgao('licencas_0001','id (contagem)', new Date().toISOString()))}
     ${metrica('activas', activas, provOrgao('licencas_0001','revogada_em / valida_ate', new Date().toISOString()))}
     ${metrica('expiradas', expiradas, provOrgao('licencas_0001','valida_ate < agora', new Date().toISOString()))}
@@ -611,7 +624,7 @@ async function carregarEcossistema(){
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Ecossistema</h2>
     <p class="pergunta-h">com quem me relaciono?</p>
-    <div class="fonte-card">fonte x402_services + ora_coleccao_fisica_publica + ora_pagamentos + ora_dadivas · lido ${fmtHora(new Date().toISOString())} · integrações abaixo são factos estáticos, não verificados nesta leitura</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte x402_services + ora_coleccao_fisica_publica + ora_pagamentos + ora_dadivas · lido ${fmtHora(new Date().toISOString())} · <span class="nivel nivel-estatico" style="margin:0 4px;">estático</span>integrações abaixo não verificadas nesta leitura</div>
     ${metrica('serviços x402 activos', servicos.length, provOrgao('x402_services','id (contagem)', new Date().toISOString()))}
     ${metrica('obras físicas registadas', fisicas.length, provOrgao('ora_coleccao_fisica_publica','id (contagem)', new Date().toISOString()))}
     ${metrica('obras tokenizadas', tokenizadas.length, provOrgao('ora_coleccao_fisica_publica','tokenizada=true (contagem)', new Date().toISOString()))}
