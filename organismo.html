@@ -587,30 +587,41 @@ function estadoLicenca(l){
   return 'activa';
 }
 
-async function carregarLicencas(){
-  const licencas = await sb('licencas_0001?select=obra_titulo,tipo_licenca,emitida_em,valida_ate,revogada_em,valor_usdc,tx_hash&order=emitida_em.desc');
-  const activas = licencas.filter(l => estadoLicenca(l) === 'activa').length;
-  const expiradas = licencas.filter(l => estadoLicenca(l) === 'expirada').length;
-  const revogadas = licencas.filter(l => estadoLicenca(l) === 'revogada').length;
-  document.querySelector('[data-dot="licencas"]').setAttribute('class', 'estado-dot estado-ok');
-  const linhas = licencas.map(l => {
-    const est = estadoLicenca(l);
-    const tx = l.tx_hash ? l.tx_hash.slice(0,10) + '…' + l.tx_hash.slice(-6) : '—';
-    return `<li>
+function linhaLicenca(l){
+  const est = estadoLicenca(l);
+  const tx = l.tx_hash ? l.tx_hash.slice(0,10) + '…' + l.tx_hash.slice(-6) : '—';
+  return `<li>
       <span class="quando-li">${fmtHora(l.emitida_em)} · ${l.tipo_licenca} · ${est}</span>
       ${l.obra_titulo} — ${l.valor_usdc} USDC — <span style="font-family:'SF Mono','Courier New',monospace;">${tx}</span>
     </li>`;
-  }).join('');
+}
+
+async function carregarLicencas(){
+  const [fisicas, nft] = await Promise.all([
+    sb('ora_licencas_fisicas?select=obra_titulo,tipo_licenca,emitida_em,valida_ate,revogada_em,valor_usdc,tx_hash&order=emitida_em.desc'),
+    sb('licencas_0001?select=obra_titulo,tipo_licenca,emitida_em,valida_ate,revogada_em,valor_usdc,tx_hash&order=emitida_em.desc'),
+  ]);
+  document.querySelector('[data-dot="licencas"]').setAttribute('class', 'estado-dot estado-ok');
+
+  const linhasFisicas = fisicas.map(linhaLicenca).join('');
+  const linhasNft = nft.map(linhaLicenca).join('');
+
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Licenças</h2>
     <p class="pergunta-h">o que foi licenciado?</p>
-    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte licencas_0001 · lido ${fmtHora(new Date().toISOString())} · ${licencas.length} registos</div>
-    ${metrica('emitidas', licencas.length, provOrgao('licencas_0001','id (contagem)', new Date().toISOString()))}
-    ${metrica('activas', activas, provOrgao('licencas_0001','revogada_em / valida_ate', new Date().toISOString()))}
-    ${metrica('expiradas', expiradas, provOrgao('licencas_0001','valida_ate < agora', new Date().toISOString()))}
-    ${metrica('revogadas', revogadas, provOrgao('licencas_0001','revogada_em', new Date().toISOString()))}
-    <ul class="lista" style="margin-top:8px;">${licencas.length ? linhas : '<li>nenhuma licença emitida ainda</li>'}</ul>
-    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('licencas_0001','obra_titulo / tipo_licenca / tx_hash', new Date().toISOString())}</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_licencas_fisicas + licencas_0001 (duas fontes distintas, nunca somadas) · lido ${fmtHora(new Date().toISOString())}</div>
+
+    <h3 style="margin:14px 0 4px;font-size:12.5px;">Catálogo actual — Colecção física</h3>
+    ${metrica('emitidas', fisicas.length, provOrgao('ora_licencas_fisicas','id (contagem)', new Date().toISOString()))}
+    <p style="font-size:11px;color:var(--ink-dim);margin:4px 0 8px;">Catálogo único desde 04/08/2026 (consulta/editorial/treino, 107 obras físicas). O fluxo pós-pagamento (URL assinada entregue após tx real) ainda não foi exercitado com uma compra verdadeira — 0 emitidas não é falha, é ausência real de teste.</p>
+    <ul class="lista" style="margin-top:4px;">${fisicas.length ? linhasFisicas : '<li>nenhuma licença física emitida ainda</li>'}</ul>
+
+    <h3 style="margin:16px 0 4px;font-size:12.5px;">Arquivo histórico NFT — licenças de teste</h3>
+    ${metrica('emitidas (histórico)', nft.length, provOrgao('licencas_0001','id (contagem)', new Date().toISOString()))}
+    <p style="font-size:11px;color:var(--ink-dim);margin:4px 0 8px;">Congelado em 04/08/2026: os 65 NFTs deixaram de ser licenciáveis. Estas ${nft.length} licenças foram todas emitidas pelo próprio Jorge, a testar — nenhum comprador externo real. Preservadas como histórico, não apagadas.</p>
+    <ul class="lista" style="margin-top:4px;">${nft.length ? linhasNft : '<li>nenhuma licença histórica</li>'}</ul>
+
+    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_licencas_fisicas + licencas_0001','obra_titulo / tipo_licenca / tx_hash', new Date().toISOString())}</div>
   </div>`;
 }
 
