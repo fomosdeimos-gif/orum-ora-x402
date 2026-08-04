@@ -1,9 +1,9 @@
 # ORUM Recovery Bundle
 
-`orum-recovery-bundle.json` is a self-contained, content-addressed copy of every
-version-controlled file required to reconstruct this repository. It exists so
-that recovery does not depend on Vercel, a conversational handoff, or an
-unverified deployment artifact.
+The generated `orum-recovery-bundle.json` is a self-contained,
+content-addressed copy of every version-controlled file required to reconstruct
+this repository. It exists so that recovery does not depend on Vercel, a
+conversational handoff, or an unverified deployment artifact.
 
 Build and verify it with:
 
@@ -18,4 +18,6 @@ commit and exact Git tree used to build it, but deliberately contains no
 generation timestamp, so rebuilding the same tree produces the same content.
 
 This is a recovery and replication surface, not a claim that a second public
-host already exists.
+host already exists. The generated bundle is intentionally ignored by Git; a
+second public or decentralized copy must be published only to an explicitly
+approved preservation destination.
