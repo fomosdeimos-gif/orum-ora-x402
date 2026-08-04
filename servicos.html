@@ -111,7 +111,7 @@
 
   <div class="cartao">
     <div class="linha-topo">
-      <div><p class="nome">Amostra</p><p class="desc">Uma obra real da colecção, sem pagamento nem condição — a mesma imagem que a licença cobre.</p></div>
+      <div><p class="nome">Amostra</p><p class="desc">Metadados de uma obra real da colecção física, sem pagamento — sem imagem, que é privada. A licença dá acesso à fotografia.</p></div>
       <span class="badge grátis">grátis</span>
     </div>
     <div class="meta"><b>endpoint</b> /licenca/amostra</div>
@@ -121,12 +121,12 @@
 
   <div class="cartao">
     <div class="linha-topo">
-      <div><p class="nome">Preview</p><p class="desc">Avaliação em resolução de estudo, 30 dias, uso interno.</p></div>
+      <div><p class="nome">Consulta</p><p class="desc">Acesso privado à fotografia preservada, para observação ou estudo pessoal, 30 dias.</p></div>
       <span class="badge pago">1.618 USDC</span>
     </div>
-    <div class="meta"><b>endpoint</b> /licenca/preview</div>
-    <div class="acoes"><button class="testar" data-ep="/licenca/preview">ver requisitos</button></div>
-    <div class="resultado" id="r-preview"></div>
+    <div class="meta"><b>endpoint</b> /licenca/consulta</div>
+    <div class="acoes"><button class="testar" data-ep="/licenca/consulta">ver requisitos</button></div>
+    <div class="resultado" id="r-consulta"></div>
   </div>
 
   <div class="cartao">
@@ -149,15 +149,6 @@
     <div class="resultado" id="r-treino"></div>
   </div>
 
-  <div class="cartao">
-    <div class="linha-topo">
-      <div><p class="nome">Arquivo completo</p><p class="desc">Arquivo físico completo das 107 obras; os 65 NFTs permanecem como registo histórico da extensão digital.</p></div>
-      <span class="badge pago">10 000 USDC</span>
-    </div>
-    <div class="meta"><b>endpoint</b> /licenca/arquivo</div>
-    <div class="acoes"><button class="testar" data-ep="/licenca/arquivo">ver requisitos</button></div>
-    <div class="resultado" id="r-arquivo"></div>
-  </div>
 </div>
 
 <div class="grupo">
@@ -266,7 +257,7 @@ const SB_COMERCIAL_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
 const SB_COMERCIAL_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
 async function sbComercial(path){ const r=await fetch(SB_COMERCIAL_URL+path,{headers:{apikey:SB_COMERCIAL_KEY,Authorization:'Bearer '+SB_COMERCIAL_KEY}}); if(!r.ok) throw new Error('falha '+r.status); return r.json(); }
 function linhaComercial(rot,val,classe){ return `<div class="meta" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;margin-top:8px"><b>${rot}</b><span class="${classe||''}">${val}</span></div>`; }
-(async()=>{ try { const [c]=await sbComercial('ora_comercial_publica?select=*'); const catalogo=await sbComercial('x402_services?select=sku,name,description,price_amount,price_currency,metadata&order=price_amount.asc'); const licencas=catalogo.filter(x=>x.sku.startsWith('ora-licenca-')); document.getElementById('estado-comercial').innerHTML=`<div class="linha-topo"><div><p class="nome">Estado comercial verificável</p><p class="desc">Colecção física como núcleo; NFTs apenas como extensão histórica. Números lidos agora da fonte canónica.</p></div><span class="badge grátis">ao vivo</span></div>${linhaComercial('obras físicas',c.obras_fisicas)}${linhaComercial('NFTs históricos',c.nfts_historicos)}${linhaComercial('serviços disponíveis',c.servicos_total)}${linhaComercial('licenças emitidas',c.licencas_emitidas)}${linhaComercial('pagamentos registados',c.pagamentos_total)}${linhaComercial('compradores externos',c.compradores_externos,c.compradores_externos===0?'sem-adopcao':'')}${linhaComercial('licenças externas',c.licencas_externas,c.licencas_externas===0?'sem-adopcao':'')}${linhaComercial('dádivas',c.dadivas_total)}${linhaComercial('dádivas externas',c.dadivas_externas,c.dadivas_externas===0?'sem-adopcao':'')}<div class="resultado mostra" style="display:block;margin-top:12px"><span class="status-linha">regra de classificação</span>${c.regra_classificacao}<br><br><span class="status-linha">licenças canónicas (${licencas.length})</span>${licencas.map(x=>`${x.name} · ${x.price_amount} ${x.price_currency}`).join('
+(async()=>{ try { const [c]=await sbComercial('ora_comercial_publica?select=*'); const catalogo=await sbComercial('x402_services?select=sku,name,description,price_amount,price_currency,metadata&order=price_amount.asc'); const licencas=catalogo.filter(x=>x.sku.startsWith('ora-licenca-') && x.sku!=='ora-licenca-arquivo'); document.getElementById('estado-comercial').innerHTML=`<div class="linha-topo"><div><p class="nome">Estado comercial verificável</p><p class="desc">Colecção física como núcleo; NFTs apenas como extensão histórica. Números lidos agora da fonte canónica.</p></div><span class="badge grátis">ao vivo</span></div>${linhaComercial('obras físicas',c.obras_fisicas)}${linhaComercial('NFTs históricos',c.nfts_historicos)}${linhaComercial('serviços disponíveis',c.servicos_total)}${linhaComercial('licenças emitidas',c.licencas_emitidas)}${linhaComercial('pagamentos registados',c.pagamentos_total)}${linhaComercial('compradores externos',c.compradores_externos,c.compradores_externos===0?'sem-adopcao':'')}${linhaComercial('licenças externas',c.licencas_externas,c.licencas_externas===0?'sem-adopcao':'')}${linhaComercial('dádivas',c.dadivas_total)}${linhaComercial('dádivas externas',c.dadivas_externas,c.dadivas_externas===0?'sem-adopcao':'')}<div class="resultado mostra" style="display:block;margin-top:12px"><span class="status-linha">regra de classificação</span>${c.regra_classificacao}<br><br><span class="status-linha">licenças canónicas (${licencas.length})</span>${licencas.map(x=>`${x.name} · ${x.price_amount} ${x.price_currency}`).join('
 ')}</div>`; } catch(e){ document.getElementById('estado-comercial').innerHTML=`<div class="desc">não foi possível ler a verdade comercial agora — ${e.message}</div>`; } })();
 
 async function testar(ep, resDiv, btn){
