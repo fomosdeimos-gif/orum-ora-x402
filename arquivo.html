@@ -51,6 +51,12 @@
   }
   .marca b{ color:var(--amber); font-family:'SF Mono','Courier New',monospace; }
 
+  .grid-arca{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:12px; }
+  .grid-arca a{ display:block; aspect-ratio:1; border-radius:8px; overflow:hidden; border:1px solid var(--line); background:#1a1420; }
+  .grid-arca img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .grid-arca .sem-foto{ display:flex; align-items:center; justify-content:center; height:100%; font-size:9px; color:var(--ink-dim); text-align:center; padding:2px; }
+  .arca-legenda{ font-size:10.5px; color:var(--ink-dim); margin-top:8px; text-align:center; }
+
   .snap-linha{
     display:flex; justify-content:space-between; align-items:baseline;
     padding:8px 0; border-top:1px solid var(--line); font-size:12px;
@@ -112,10 +118,12 @@
 <div class="grupo">
   <div class="grupo-titulo">Colecção física <span class="n" id="n-fisica">…</span></div>
   <div class="cartao">
-    <p class="desc">100 obras originais (2011–2021), mixed-media, zero IA generativa. Registo iniciado a 27/07/2026 — cada obra medida por SHA-256 dos bytes reais da fotografia.</p>
+    <p class="desc">107 obras originais (2011–2021), mixed-media, zero IA generativa. Registo iniciado a 27/07/2026 — cada obra medida por SHA-256 dos bytes reais da fotografia. Arca fisica completa desde 04/08/2026.</p>
     <div class="barra-progresso"><div class="cheio" id="barra-fisica" style="width:0%"></div></div>
-    <div class="legenda-progresso"><span id="legenda-fisica">a carregar…</span><span>100 declaradas</span></div>
+    <div class="legenda-progresso"><span id="legenda-fisica">a carregar…</span><span>107 declaradas</span></div>
     <div class="grid-marcas" id="marcas-fisica"></div>
+    <div class="grid-arca" id="grid-fisica-arca"></div>
+    <div class="arca-legenda" id="legenda-grid-arca"></div>
   </div>
 </div>
 
@@ -184,8 +192,8 @@ function fmtData(iso){
 
   try{
     const fisica = await sb('ora_coleccao_fisica_publica?select=*&limit=1000');
-    document.getElementById('n-fisica').textContent = fisica.length + '/100';
-    document.getElementById('barra-fisica').style.width = Math.round(fisica.length/100*100) + '%';
+    document.getElementById('n-fisica').textContent = fisica.length + '/107';
+    document.getElementById('barra-fisica').style.width = Math.round(fisica.length/107*100) + '%';
     document.getElementById('legenda-fisica').textContent = fisica.length + ' registadas';
     const carimbo = fisica.filter(f => f.marca_de_autoria === 'carimbo').length;
     const assinatura = fisica.filter(f => f.marca_de_autoria === 'assinatura_manual').length;
@@ -196,6 +204,17 @@ function fmtData(iso){
       `<span class="marca"><b>${assinatura}</b> assinatura</span>` +
       `<span class="marca"><b>${comAno}</b> com ano lido</span>` +
       `<span class="marca"><b>${comCodigo}</b> código gravado</span>`;
+
+    const ARCA_BASE = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/storage/v1/object/public/arca-0001sensations/';
+    const comFoto = fisica.filter(f => f.bytes_na_arca && f.caminho_arca).length;
+    document.getElementById('legenda-grid-arca').textContent = comFoto + '/' + fisica.length + ' com fotografia preservada na arca — toca para ver em tamanho real';
+    document.getElementById('grid-fisica-arca').innerHTML = fisica.map(f => {
+      if (f.bytes_na_arca && f.caminho_arca) {
+        const url = ARCA_BASE + f.caminho_arca;
+        return `<a href="${url}" target="_blank"><img loading="lazy" src="${url}" alt="obra ${f.id}${f.titulo ? ' · ' + f.titulo : ''}"></a>`;
+      }
+      return `<a href="#" onclick="return false;"><span class="sem-foto">obra ${f.id}<br>sem foto</span></a>`;
+    }).join('');
   }catch(e){ document.getElementById('legenda-fisica').textContent = 'falha ao ler'; }
 
   try{
