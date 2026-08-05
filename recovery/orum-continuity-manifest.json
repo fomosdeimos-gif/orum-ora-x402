@@ -1,0 +1,63 @@
+{
+  "format": "orum-continuity-manifest/v1",
+  "observed_at": "2026-08-05T07:51:40.542+00:00",
+  "identity": {
+    "organism": "ORUM",
+    "repository": "fomosdeimos-gif/orum-ora-x402",
+    "production_branch": "main",
+    "base_chain_id": 8453
+  },
+  "routing": {
+    "gateway": "https://ora-x402-gateway.vercel.app",
+    "supabase_name": "orum-memoria",
+    "engineering_mcp": "ora-mcp-engenharia/1.4.0"
+  },
+  "verification": {
+    "head": "c969efb4f4943c8474abc94b5935d56a069829e24d514afbb260e97e928612e4",
+    "count": 2,
+    "last_observed_at": "2026-08-05T07:51:40.542+00:00"
+  },
+  "collection": {
+    "physical": {
+      "total": 107,
+      "with_sha256": 107,
+      "bytes_in_arca": 107,
+      "work_6_exists": false,
+      "manifest_root_sha256": "d7c7b849cd4571171086a5c924e2d1b5e45726901b46c90d924b824769841742",
+      "manifest_root_material": "ordered id, sha256, bytes_na_arca and internal path; details retained in canonical memory"
+    },
+    "digital_historical_extension": {
+      "total": 65,
+      "in_arca_with_sha256": 52
+    },
+    "physical_to_nft_mapping": "unverified"
+  },
+  "adoption": {
+    "external_confirmed": 0,
+    "note": "User-initiated payments and user-operated traffic remain internal validation."
+  },
+  "essential_function_hashes": [
+    {
+      "proname": "ora_aprendizagem_estado",
+      "args": "",
+      "definition_sha256": "b78f52d7f8987a372dc927e0bfebd55c9faa0e1322144e0099e4ca748b645806"
+    },
+    {
+      "proname": "ora_verificacao_decidir",
+      "args": "p_categoria text",
+      "definition_sha256": "7a4cd954bd1e1df21a06ce3089ceefe7f08095b8b70001c9a9d1337337f637f5"
+    }
+  ],
+  "restore_assets": {
+    "critical_schema": "recovery/critical-schema.sql",
+    "source_bundle": "recovery/orum-recovery-bundle.json",
+    "verifier": "scripts/verify-recovery-bundle.mjs"
+  },
+  "boundaries": [
+    "Contains no secrets, private credentials, wallet metadata or internal storage paths.",
+    "Contains an aggregate root for the 107-work physical manifest, not the detailed rows or image bytes.",
+    "Does not assert a physical-to-NFT mapping.",
+    "Does not replace provider backups or the Arca bytes."
+  ]
+}
+
