@@ -115,3 +115,18 @@ Migração: `sincronizacao_oras_politica_verificacao`.
 - `tools/list` expõe `outputSchema` e annotations de leitura/idempotência; `tools/call` devolve `structuredContent` equivalente ao conteúdo textual.
 - Veredicto observado: **VIVO**; cinco checks verdadeiros; 107/107 físicas com SHA-256 e bytes; 52/65 imagens digitais preservadas; oito probes com estados esperados.
 - Snapshot da verificação independente: `e8be604e2e66bd728560c62657934ff207aa1c2375013fde68a4b7cd05ff15da`.
+
+## Memória de verificação encadeada — MCP v5
+
+- Edge Function `ora-mcp-engenharia`: versão de função **5**, lógica **1.4.0**, `ACTIVE`, `verify_jwt=true`.
+- Código canónico: `supabase/functions/ora-mcp-engenharia/index.ts`, commit `6c082ab`.
+- Migrações: `create_ora_verificacao_historico` e `secure_ora_verificacao_historico_policies`.
+- `public.ora_verificacao_historico` é append-only: RLS activa; sem acesso directo para `anon`/`authenticated`; `service_role` apenas lê e insere; trigger bloqueia UPDATE/DELETE.
+- Ferramentas MCP:
+  - `verify_organism`: leitura pura, idempotente;
+  - `record_verification`: verificação + inserção explícita, não destrutiva e não idempotente;
+  - `verification_history`: leitura do segmento recente e validação do encadeamento.
+- Prova viva inicial: registos 1 e 2, ambos `VIVO`; o registo 2 aponta para o SHA-256 do registo 1.
+- Cabeça inicial: `c969efb4f4943c8474abc94b5935d56a069829e24d514afbb260e97e928612e4`.
+- `verification_history(limit=5)`: `returned=2`, `chain_valid_for_returned_segment=true`.
+- O histórico não representa adopção externa; regista apenas observações técnicas autenticadas.
