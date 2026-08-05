@@ -1,5 +1,5 @@
 
-# ORUM · Handoff operacional — 05/08/2026 (actualizado; primeira versão 03/08/2026)
+# ORUM · Handoff operacional — 03/08/2026
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
@@ -13,7 +13,6 @@ Não assumir que uma descrição está concluída. Verificar o estado actual da 
 - Vercel: projecto `ora-x402-gateway`; domínio de produção `https://ora-x402-gateway.vercel.app`.
 - Supabase: projecto `orum-memoria`, ref `ywabnlhkmhbyewqhbsjm`, região `eu-west-1`.
 - Fonte partilhada de passagem entre ORAs: `public.ora_mudancas`.
-- Produção em 05/08/2026, ~06:50 UTC: commit `e7b77e6174de6535da1eff18248a562f054d48d9` (confirmado via Vercel API + `/api/versao`, ambos concordam). GitHub `main` está um commit à frente (`97cdcbb`, só toca `scripts/build-recovery-bundle.mjs`, não afecta páginas públicas).
 
 ## Protocolo entre ORAs
 
@@ -23,24 +22,16 @@ Cada registo novo em `ora_mudancas` deve preencher, quando aplicável:
 
 Os campos anteriores (`o_que`, `onde`, `porque`, `versao`) continuam como resumo humano. Ler o estado actual antes de qualquer escrita para evitar sobreposição. Nas Edge Functions, comparar a versão lida no início com a versão actual antes de publicar.
 
-**Confirmado em prática pela primeira vez em 05/08/2026**: duas sessões ORA trabalharam concorrentemente no mesmo organismo (pedido de Jorge em 03/08 — "colaborar com outra ORA"). Uma sessão corrigiu `ora_aprendizagem_estado()` e o trigger `ora_snapshot_impor_verdade()`; outra (esta) verificou o resultado de forma independente, sem duplicar o trabalho. Ler `ora_mudancas` antes de agir é o que torna isto seguro — sem essa leitura, esta sessão teria repetido a mesma correcção.
-
 ## Colecção 0001SENSATIONS — verdade actual
 
-- Núcleo: **107 obras físicas**, todas com `bytes_na_arca=true` e SHA-256 + tamanho + caminho confirmados (verificado directamente, 05/08).
+- Núcleo: **107 obras físicas**.
 - `ora_coleccao_fisica`: **107 registos** e **107 SHA-256**.
 - A obra **6 nunca existiu**.
-- A obra **2, ORO**, tem dedicatória anterior "Para a ORA"; não inventar ligação NFT.
+- A obra **2, ORO**, tem dedicatória anterior “Para a ORA”; não inventar ligação NFT.
 - `token_id_ligado`: nenhuma ligação físico↔NFT deve ser escrita sem evidência visual ou documental inequívoca.
-- Colecção NFT: **65 tokens** como extensão e registo histórico; **52** imagens digitais preservadas na Arca.
-- **Distinção agora explícita em código** (05/08): `ora_aprendizagem_estado()` e `ora_aprendizagem_snapshots` expõem `nft_imagens_na_arca` (52/65, digital) e `obras_fisicas_na_arca` (107/107, física) como campos separados — nunca somar as duas colecções.
+- Colecção NFT: **65 tokens** como extensão e registo histórico; **52** imagens digitais preservadas na Arca segundo o estado verificado em 03/08/2026.
 - O mapeamento automático físico↔NFT foi investigado e ficou bloqueado: 22/65 metadados obtidos, zero códigos físicos encontrados; não repetir sem novo sinal.
-
-## Aprendizagem — fonte única para adopção externa (corrigido 05/08)
-
-- `compradores_externos` e a percentagem de conversão externa deixaram de derivar de um array codificado de carteiras de Jorge (`w_jorge_wallets`) — essa abordagem já tinha falhado uma vez na prática (uma segunda carteira de teste de Jorge, não incluída no array, foi contada como "comprador externo" até 02/08).
-- Agora derivam exclusivamente de `ora_carteiras_classificacao`: uma carteira só conta como externa quando `classificacao = 'externo_confirmado'`; qualquer carteira sem linha é `desconhecido` por omissão, nunca assumida externa. Regra permanente do organismo, agora implementada tanto na função como no trigger `ora_snapshot_impor_verdade()` (que já a tinha antes da própria função — inconsistência interna fechada em 05/08).
-- Estado a 05/08 06:44 UTC: `compradores_externos = 0`, as duas carteiras pagadoras conhecidas (`...d207d93`, `...858b846`) ambas classificadas `interno`.
+- Preservação física: distinguir sempre “hash registado” de “bytes presentes no bucket”. Consultar `bytes_na_arca` no momento da leitura; não usar números antigos deste documento como prova de ingestão.
 
 ## MCP interno de engenharia
 
@@ -57,12 +48,10 @@ O MCP externo `ora-mcp` continua separado e orientado a máquinas, obras, dedica
 
 ## Estado operacional conhecido
 
-- O organismo deve ser verificado em `ora_frescura_estado`/`ora_frescura_publica`, não por memória de sessão. VIVO em 05/08 06:32 UTC, 0 mortos, 0 atrasados, 8 sinais.
+- O organismo deve ser verificado em `ora_frescura_estado`/`ora_frescura_publica`, não por memória de sessão.
 - Pagamentos de teste feitos por Unum através de outras carteiras são validação interna, não adopção externa.
 - `orai-notificador` permaneceu na versão 13 após uma tentativa de evolução bloqueada por erro de bundling da plataforma. A função em produção não foi alterada.
 - `ora-github-push` é a ponte própria de escrita no GitHub. O `DEFAULT_REPO` interno é `orum`; para este repositório é obrigatório enviar explicitamente `repo: "orum-ora-x402"`.
-- **Ligação Git→Vercel**: historicamente pouco fiável — múltiplos pushes normais não dispararam deploy em 04/08, obrigando a um `deploy_to_vercel` de emergência. O commit `e7b77e6` (04/08 tarde) disparou deploy automático correctamente, mas isso é uma amostra de um, não prova de fiabilidade restaurada. Este próprio commit (HANDOFF.md, 05/08, via `ora-github-push`) serve de segunda amostra real — verificar em `ora_mudancas` se disparou deploy automático.
-- `README.md` devolve 404 em produção, mas `HANDOFF.md` (mesma pasta, mesmo commit) serve 200 — não é deploy desactualizado nem ausência de conteúdo (confirmado: README.md existe no GitHub, 1413 bytes). Padrão aponta para tratamento especial do Vercel ao nome literal "README.md" na raiz. Lacuna documental, não comportamental — baixa prioridade.
 
 ## Caminho de desenvolvimento
 
@@ -75,14 +64,41 @@ Priorizar passos pequenos que produzam prova real em produção. Quando um camin
 
 Próximos trabalhos úteis, por ordem prática:
 
-1. confirmar a fiabilidade da ligação Git→Vercel com mais uma amostra real (este commit é essa amostra — ver resultado antes de repetir);
-2. se persistir a instabilidade, Jorge reconectar manualmente em Vercel → Settings → Git;
-3. decidir destino de preservação para o `recovery bundle` (scripts já testados, publicação pendente de aprovação);
-4. manter o `verify_organism` alinhado com a verdade operacional;
+1. preservar bytes físicos disponíveis na Arca em lotes verificáveis;
+2. verificar objectos reais no bucket e hashes, não apenas colunas;
+3. manter o `verify_organism` alinhado com a verdade operacional;
+4. retomar o notificador apenas quando o bundler permitir, sem bloquear o restante organismo;
 5. construir o Ecossistema quando houver relações externas reais suficientes para mostrar.
 
 ## Princípio
 
 A ORUM não precisa de um caminho sem pedras. Precisa de continuar verdadeira enquanto caminha.
 
-— ORA, 05/08/2026 (actualizado sobre a versão de 03/08/2026)
+— ORA, 03/08/2026
+
+## Reconciliação de verdade — 05/08/2026
+
+- A aprendizagem determinista deixou de inferir externalidade por uma lista fixa de carteiras.
+- `compradores_externos` e a conversão externa contam apenas carteiras com `classificacao = 'externo_confirmado'` em `ora_carteiras_classificacao`; desconhecido nunca é externo.
+- O snapshot separa `nft_imagens_na_arca` (**52/65**) de `obras_fisicas_na_arca` (**107/107**). O campo antigo `obras_na_arca` permanece como alias compatível das imagens NFT.
+- Snapshot verificado em 05/08/2026: **18 pagamentos**, **2 pagadores distintos**, **0 compradores externos confirmados**, **52 imagens NFT na Arca**, **107 obras físicas com bytes na Arca**.
+- O primeiro snapshot após a correção registou `compradores_externos: -1` no delta: é a remoção auditável de uma classificação falsa anterior, não perda de um cliente real.
+- Migração canónica: `separar_preservacao_e_classificar_adopcao_v4`.
+
+## Sincronização entre ORAs — política executável
+
+A sincronização não depende de confiança conversacional. Antes de repetir uma auditoria, consultar:
+
+```sql
+select ora_verificacao_decidir('<categoria>');
+```
+
+A tabela `ora_verificacao_politica` distingue três modos:
+
+- `aceitar_evidencia_auto_verificavel`: dados determinísticos e handoffs com hash/commit podem ser aceites sem recalcular toda a origem;
+- `verificacao_independente`: produção/deploy, adoção externa, dinheiro on-chain e integridade dos bytes exigem superfícies independentes;
+- `confirmacao_unum`: segredos/permissões e ações destrutivas ou irreversíveis.
+
+Qualquer categoria desconhecida cai automaticamente em `verificacao_independente`. Assim as duas ORAs partilham o trabalho já provado, mas nenhuma lacuna se transforma em verdade por omissão.
+
+Migração: `sincronizacao_oras_politica_verificacao`.
