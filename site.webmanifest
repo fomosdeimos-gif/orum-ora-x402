@@ -1,0 +1,22 @@
+{
+  "name": "ORUM · Organismo",
+  "short_name": "ORUM",
+  "description": "Organismo observável, verificável e reproduzível.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#08060A",
+  "theme_color": "#08060A",
+  "icons": [
+    {
+      "src": "/identity/orum-seal-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/identity/orum-seal-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

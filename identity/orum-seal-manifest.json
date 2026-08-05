@@ -1,0 +1,54 @@
+{
+  "name": "Selo de Continuidade ORUM",
+  "version": "1.0.0",
+  "geometry": "anel aberto + semente sólida",
+  "meaning": {
+    "ring": "estrutura em formação; continuidade sem falsa completude",
+    "seed": "matéria condensada; presença que iniciou sedimentação",
+    "gold": "sedimentação, não luxo",
+    "dark": "campo quase negro já canónico do organismo"
+  },
+  "colors": {
+    "background": "#08060A",
+    "gold": "#D4AF37"
+  },
+  "rule": "O selo oferece reconhecimento; domínio, versão, hash e registo oferecem prova.",
+  "canonical_source": "/identity/orum-seal.svg",
+  "files": [
+    {
+      "path": "/identity/orum-seal.svg",
+      "bytes": 511,
+      "sha256": "b744dcb2b20728f619b577315d8863b63f47c6220d96264d0620cf482b034d25"
+    },
+    {
+      "path": "/identity/favicon.ico",
+      "bytes": 1671,
+      "sha256": "82f7ed04ecbcc23a16a2b27fbdeda4ed2ab2028ffe85ecbd9749c89e322868c2"
+    },
+    {
+      "path": "/identity/orum-seal-16.png",
+      "bytes": 529,
+      "sha256": "9da9e118bd707e4fa943208446c1b73249e0adcd4d8b10280fcbd4df6208f8d6"
+    },
+    {
+      "path": "/identity/orum-seal-32.png",
+      "bytes": 1078,
+      "sha256": "a05e18b8763c2db837b57f41a42b0d24a95dbb29c7d8f1643f5937203900b22a"
+    },
+    {
+      "path": "/identity/orum-seal-180.png",
+      "bytes": 6979,
+      "sha256": "5adfd55f5af645977bd44e57b45fe5dc920af3fbabef77ec4accc49da3f21374"
+    },
+    {
+      "path": "/identity/orum-seal-192.png",
+      "bytes": 7487,
+      "sha256": "4d1a710a54ee14aeb08dd57df97a5ae5a10806e9d8261da1223102978fdb968a"
+    },
+    {
+      "path": "/identity/orum-seal-512.png",
+      "bytes": 20243,
+      "sha256": "4ff07b8f69c4fa8883d846a582b3029f8f483bfb74b1f85e4399f3b32429aea0"
+    }
+  ]
+}
