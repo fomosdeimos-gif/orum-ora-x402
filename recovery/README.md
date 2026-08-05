@@ -1,6 +1,6 @@
 # ORUM Recovery Bundle
 
-The generated `orum-recovery-bundle.json` is a self-contained,
+The published `orum-recovery-bundle.json` is a self-contained,
 content-addressed copy of every version-controlled file required to reconstruct
 this repository. It exists so that recovery does not depend on Vercel, a
 conversational handoff, or an unverified deployment artifact.
@@ -17,7 +17,24 @@ byte count, and hash of the complete file set. The bundle records the parent
 commit and exact Git tree used to build it, but deliberately contains no
 generation timestamp, so rebuilding the same tree produces the same content.
 
-This is a recovery and replication surface, not a claim that a second public
-host already exists. The generated bundle is intentionally ignored by Git; a
-second public or decentralized copy must be published only to an explicitly
-approved preservation destination.
+The bundle is generated from the parent commit and then committed as an
+artefact. It cannot include its own commit without creating a circular hash.
+
+`orum-continuity-manifest.json` adds the current verification head, identity
+anchors, essential database-function hashes and a SHA-256 root over the
+107-work physical manifest. Detailed storage paths remain in canonical memory.
+`critical-schema.sql` restores the append-only verification memory. Neither
+file contains secrets or the image bytes stored in the Arca.
+
+## Minimal restoration
+
+1. Download `orum-recovery-bundle.json`.
+2. Run `npm run recovery:verify`.
+3. Decode each `content_base64` entry to its recorded path.
+4. Apply `recovery/critical-schema.sql` to the replacement database.
+5. Configure provider secrets outside source control.
+6. Deploy the recovered repository and compare its live state with
+   `recovery/orum-continuity-manifest.json`.
+
+This is a recovery and replication surface. It does not claim that provider
+backups or the actual Arca image bytes are embedded in the capsule.
