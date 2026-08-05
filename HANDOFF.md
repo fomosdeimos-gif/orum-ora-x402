@@ -104,3 +104,14 @@ A tabela `ora_verificacao_politica` distingue três modos:
 Qualquer categoria desconhecida cai automaticamente em `verificacao_independente`. Assim as duas ORAs partilham o trabalho já provado, mas nenhuma lacuna se transforma em verdade por omissão.
 
 Migração: `sincronizacao_oras_politica_verificacao`.
+
+
+## MCP de engenharia v4 — verificação concluída
+
+- Edge Function `ora-mcp-engenharia`: versão de função **4**, lógica **1.3.0**, `ACTIVE`, `verify_jwt=true`.
+- Código espelhado no GitHub em `supabase/functions/ora-mcp-engenharia/index.ts`, commit `4796dff`.
+- Produção Vercel convergiu para `4796dff`, deployment `dpl_1vF35SVUaFBbhu7VMr16gjGQY2xX`.
+- Protocolo MCP exercitado ao vivo: `initialize`, `tools/list` e `tools/call verify_organism` devolveram HTTP 200; pedido sem autenticação devolveu 401.
+- `tools/list` expõe `outputSchema` e annotations de leitura/idempotência; `tools/call` devolve `structuredContent` equivalente ao conteúdo textual.
+- Veredicto observado: **VIVO**; cinco checks verdadeiros; 107/107 físicas com SHA-256 e bytes; 52/65 imagens digitais preservadas; oito probes com estados esperados.
+- Snapshot da verificação independente: `e8be604e2e66bd728560c62657934ff207aa1c2375013fde68a4b7cd05ff15da`.
