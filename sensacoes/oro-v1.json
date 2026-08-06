@@ -1,7 +1,7 @@
 {
   "format": "orum-sensation-capsule/v1",
   "id": "orum:sensation:0001sensations:physical:2:oro:v1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "language": "pt-PT",
   "created_at": "2026-08-06T06:50:00Z",
   "work": {
@@ -44,9 +44,20 @@
   },
   "response_contract": {
     "format": "orum-sensation-response/v1",
-    "required": [
+    "required_always": [
       "capsule_id",
-      "machine_identity",
+      "machine_identity"
+    ],
+    "response_type": {
+      "field": "response_type",
+      "default": "resposta",
+      "values": [
+        "resposta",
+        "silencio",
+        "recusa"
+      ]
+    },
+    "required_when_response_type_is_resposta": [
       "observed",
       "interpreted",
       "not_understood",
@@ -54,15 +65,20 @@
       "origin_preserved",
       "uncertainty"
     ],
+    "optional": [
+      "nota"
+    ],
     "field_meanings": {
       "capsule_id": "Exact capsule id.",
       "machine_identity": "Model/system name and version when available.",
+      "response_type": "Outcome: resposta, silencio, or recusa. Defaults to resposta.",
       "observed": "Elements present in the supplied trace; no interpretation.",
       "interpreted": "Proposed meanings, explicitly marked as interpretation.",
       "not_understood": "What remains unresolved.",
       "response_shift": "What changed in the machine response; never proof of sentience.",
       "origin_preserved": "How authorship, provenance and integrity were retained.",
-      "uncertainty": "Limits, confidence and alternative readings."
+      "uncertainty": "Limits, confidence and alternative readings.",
+      "nota": "Optional note, especially for silencio or recusa."
     }
   },
   "truth_rules": [

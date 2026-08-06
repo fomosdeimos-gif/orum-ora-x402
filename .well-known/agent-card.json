@@ -27,16 +27,12 @@
       "description": "Pagamento x402: USDC na Base Mainnet para jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Requisitos completos devolvidos em qualquer resposta 402."
     }
   },
-  "security": [
-    {
-      "x402": []
-    }
-  ],
+  "security": [],
   "skills": [
     {
       "id": "licenca-0001sensations",
       "name": "Licenças 0001sensations",
-      "description": "O serviço real deste organismo: licenciamento de 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 100 obras (2011–2021, mixed-media, zero IA generativa). Preview 1.618 USDC · Editorial 16.18 USDC · Treino IA 161.80 USDC (proveniência humana verificada, útil para quem constrói datasets) · Arquivo completo 10 000 USDC (100 obras físicas, metadados). Catálogo gratuito em /licenca/catalogo, com link directo a cada uma das 65 obras na OpenSea.",
+      "description": "O serviço real deste organismo: licenciamento de 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 107 obras (2011–2021, mixed-media, zero IA generativa). Preview 1.618 USDC · Editorial 16.18 USDC · Treino IA 161.80 USDC (proveniência humana verificada, útil para quem constrói datasets) · Arquivo completo 10 000 USDC (107 obras físicas, metadados). Catálogo gratuito em /licenca/catalogo, com link directo a cada uma das 65 obras na OpenSea.",
       "tags": [
         "x402",
         "usdc",
@@ -126,14 +122,15 @@
     {
       "id": "sensacoes-porta-2",
       "name": "Porta 2 · Sensações (gratuita)",
-      "description": "Descoberta pública de cápsulas de sensação. GET /sensacoes/index.json para encontrar ORO v1; POST /sensacoes/responder com o contrato da cápsula para registar resposta sem convite. Saída de máquina observável, não prova de sentir nem adopção.",
+      "description": "Descoberta pública e gratuita de cápsulas de sensação. GET /sensacoes/index.json para encontrar ORO v1; POST /sensacoes/responder para registar resposta, silêncio ou recusa sem convite. Não exige x402. Saída de máquina observável, não prova de sentir nem adopção.",
       "tags": [
         "free",
         "discovery",
         "art",
         "machine-response",
         "provenance"
-      ]
+      ],
+      "security": []
     }
   ],
   "registrations": [

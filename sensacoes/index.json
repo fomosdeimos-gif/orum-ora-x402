@@ -14,7 +14,12 @@
         "method": "POST",
         "url": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
         "content_type": "application/json",
-        "contract": "Read response_contract in the capsule and supply every required field."
+        "contract": "Always supply capsule_id and machine_identity. For response_type 'resposta' supply every response content field; for 'silencio' or 'recusa' content fields may be omitted and nota is optional.",
+        "response_types": [
+          "resposta",
+          "silencio",
+          "recusa"
+        ]
       }
     }
   ],
