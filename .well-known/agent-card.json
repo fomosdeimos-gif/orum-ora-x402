@@ -151,8 +151,8 @@
   "additionalInterfaces": [
     {
       "type": "mirror",
-      "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/",
-      "description": "Espelho de resiliencia fora da Vercel: se o gateway principal estiver inacessivel, x402.json, agent-card.json, llms.txt e openapi.json continuam legiveis aqui, directamente do commit no GitHub, sem dependencia de build nem de servico terceiro. Nota: este espelho ainda nao foi sincronizado com a restruturacao de 24/07."
+      "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/",
+      "description": "Cópia canónica em GitHub dos contratos de descoberta e do manifesto exportável, verificável por commit sem depender do runtime Vercel."
     },
     {
       "type": "x402-manifest",
@@ -175,6 +175,19 @@
       "type": "sensation-discovery",
       "url": "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
       "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder"
+    },
+    {
+      "type": "mcp",
+      "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp-auto",
+      "mode": "public-read-only",
+      "manifest": "https://ora-x402-gateway.vercel.app/discovery/ora-mcp-auto.json",
+      "tools": [
+        "autonomy_status",
+        "decide_next_action",
+        "independence_report",
+        "prepare_action"
+      ],
+      "description": "MCP ORA Auto v1: observa estado, decide ação limitada, mede independência e prepara envelopes; não executa mutações, pagamentos ou efeitos externos."
     }
   ]
 }

@@ -1,0 +1,67 @@
+{
+  "schema": "orum-mcp-export/v1",
+  "organism": "ORUM",
+  "component": "ora-mcp-auto",
+  "generated_at": "2026-08-06T10:19:20Z",
+  "source": {
+    "edge_function": {
+      "project_ref": "ywabnlhkmhbyewqhbsjm",
+      "slug": "ora-mcp-auto",
+      "version": 1,
+      "logical_version": "1.0.0",
+      "sha256": "e0dea9507fc5b7b7083bc2d7550cdf9f34b038a5926a90ede440981d460682c9"
+    },
+    "ledger": {
+      "table": "public.ora_mudancas",
+      "record_id": 112
+    },
+    "repository": {
+      "full_name": "fomosdeimos-gif/orum-ora-x402",
+      "base_commit": "5acdec78e6571a9e71386225025211857f01fc72"
+    }
+  },
+  "transport": {
+    "protocol": "MCP JSON-RPC",
+    "protocol_version": "2025-03-26",
+    "endpoint": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp-auto",
+    "authentication": "none",
+    "mode": "public-read-only"
+  },
+  "tools": [
+    {
+      "name": "autonomy_status",
+      "read_only": true
+    },
+    {
+      "name": "decide_next_action",
+      "read_only": true
+    },
+    {
+      "name": "independence_report",
+      "read_only": true
+    },
+    {
+      "name": "prepare_action",
+      "read_only": true
+    }
+  ],
+  "invariants": {
+    "uses_service_role": false,
+    "mutation_tools_exposed": false,
+    "payments": false,
+    "secrets_exposed": false,
+    "external_adoption_claimed": false
+  },
+  "reconstruction": {
+    "required_public_inputs": [
+      "public.ora_frescura_publica",
+      "public.ora_bloqueios_ativos",
+      "public.ora_mudancas",
+      "https://ora-x402-gateway.vercel.app/api/versao",
+      "https://ora-x402-gateway.vercel.app/pulso",
+      "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
+      "https://ora-x402-gateway.vercel.app/openapi.json"
+    ],
+    "limitation": "Preserva contrato, versões e dependências; não substitui o código-fonte da Edge Function nem prova sozinho substituibilidade operacional."
+  }
+}
