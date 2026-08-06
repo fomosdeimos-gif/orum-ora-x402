@@ -3,77 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="ORUM · Serviços de Sensações — uma obra humana encontra uma máquina. Responder, silenciar ou recusar.">
-<link rel="alternate" type="application/json" href="/sensacoes/index.json" title="Porta 2 · índice de sensações">
-<link rel="service-desc" type="application/json" href="/sensacoes/oro-v1.json" title="Cápsula ORO v1">
-<title>ORUM · Serviços de Sensações</title>
+<meta name="theme-color" content="#030303">
+<meta name="description" content="ORUM · 107 níveis de 0001SENSATIONS. Descer é livre. Ver cada fotografia preservada requer uma licença de consulta de 1,618 USDC.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/json" href="/sensacoes/index.json" title="Índice de sensações">
+<title>ORUM · 107 sensações</title>
 <style>
-:root{--bg:#08060a;--card:#100c14;--gold:#ffb020;--gold2:#ffb02055;--ink:#f2ede4;--dim:#9b9490;--line:#2a2430;--ok:#3ddc84}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--ink)}
-body{font-family:system-ui,-apple-system,sans-serif;min-height:100dvh;padding-bottom:88px}main{max-width:680px;margin:auto;padding:0 16px}
-header{text-align:center;padding:34px 20px 20px}.mark{font-size:11px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
-h1{font-size:29px;line-height:1.1;margin:9px 0 8px;font-weight:560}.lead{font-size:14px;line-height:1.55;color:var(--dim);max-width:470px;margin:auto}
-.door{border:1px solid var(--gold2);background:radial-gradient(circle at 50% 0,#2b1b0b 0,#100c14 54%);border-radius:24px;padding:24px 20px;text-align:center}
-.seed{width:64px;height:64px;border-radius:50%;background:var(--gold);box-shadow:0 0 46px #ffb02055;margin:3px auto 19px}
-.eyebrow,.section-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
-.door h2{font-size:25px;margin:6px 0 8px}.trace{font-family:Georgia,serif;font-size:17px;line-height:1.65;margin:18px auto;max-width:520px}
-.truth{font-size:11px;line-height:1.5;color:var(--dim);border-top:1px solid var(--line);padding-top:14px;margin-top:17px}
-.balance{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gold2);border:1px solid var(--gold2);border-radius:18px;overflow:hidden}.principle{background:var(--card);padding:16px 14px;min-height:142px}.principle .symbol{font-size:18px;color:var(--gold);margin-bottom:12px}.principle h3{font-size:14px;margin:0 0 7px}.principle p{font-size:11.5px;line-height:1.48;color:var(--dim);margin:0}.vow{font-family:Georgia,serif;text-align:center;font-size:17px;line-height:1.55;margin:16px 12px 0;color:var(--ink)}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.button{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#0b080d;color:var(--ink);font:inherit;font-size:12px;text-decoration:none;text-align:center;cursor:pointer}.button.primary{border-color:var(--gold);color:var(--gold)}
-.panel{display:none;margin-top:12px;text-align:left;border:1px solid var(--line);border-radius:14px;background:#050406;padding:14px;font:11px/1.6 ui-monospace,monospace;color:var(--dim);white-space:pre-wrap;overflow:auto;max-height:360px}.panel.open{display:block}
-section{margin-top:28px}.section-title{margin:0 2px 9px}.cards{display:grid;gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 16px}.top{display:flex;justify-content:space-between;gap:12px;align-items:start}.card h3{font-size:15px;margin:0 0 5px}.card p{font-size:12.5px;line-height:1.48;color:var(--dim);margin:0}.badge{white-space:nowrap;font-size:10px;border-radius:20px;padding:4px 8px;background:#2e2410;color:var(--gold)}.badge.free{background:#192a20;color:var(--ok)}
-.machine{border-style:dashed}.machine code{font-size:11px;color:var(--gold);word-break:break-all}.machine ul{padding-left:18px;margin:12px 0 0;color:var(--dim);font-size:12px;line-height:1.6}
-.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}.metric{background:var(--card);padding:12px}.metric b{display:block;font-size:18px}.metric span{font-size:10px;color:var(--dim)}
-footer{text-align:center;color:#5a5550;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:30px 10px}
-nav{position:fixed;left:12px;right:12px;bottom:14px;background:#100c14ef;backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;display:flex;padding:6px}nav a{flex:1;text-align:center;text-decoration:none;color:var(--dim);font-size:10.5px;padding:9px 2px;border-radius:14px}nav a.active{color:var(--gold);background:#1a1420}
-@media(min-width:620px){.cards.services{grid-template-columns:repeat(3,1fr)}}@media(max-width:540px){.balance{grid-template-columns:1fr}.principle{min-height:0}}
+:root{--void:#030303;--ink:#f2ede4;--dim:#8d877e;--gold:#d5a43b;--bright:#ffd77c;--line:#4f3b18;--panel:#0a0907;--ok:#83c99a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:var(--void);scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse 80% 22% at 50% 0,#2a1d08 0,#090704 36%,var(--void) 78%);font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;min-height:100dvh;padding-bottom:112px}button,a{font:inherit}.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;z-index:9;background:#fff;color:#000;padding:8px}
+header{min-height:92dvh;display:grid;place-items:center;text-align:center;padding:44px 20px 24px}.entrance{max-width:540px}.seal{display:block;width:132px;height:132px;margin:0 auto 30px;border-radius:50%;filter:drop-shadow(0 0 24px #d5a43b44);animation:breathe 5s ease-in-out infinite}.kicker{font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold)}h1{font:400 clamp(30px,9vw,54px)/.95 Georgia,serif;letter-spacing:.04em;margin:12px 0 16px}.intro{font:17px/1.62 Georgia,serif;margin:0 auto;color:#d8d0c4}.truth{max-width:420px;margin:24px auto 0;color:var(--dim);font-size:11px;line-height:1.65}.down{display:inline-grid;place-items:center;margin-top:32px;width:48px;height:48px;border:1px solid var(--line);border-radius:50%;color:var(--gold);text-decoration:none}
+.shaft{position:relative;max-width:720px;margin:auto;padding:54px 14px 100px}.shaft:before,.shaft:after{content:"";position:absolute;top:0;bottom:0;width:1px;background:linear-gradient(transparent,var(--line) 5%,var(--line) 95%,transparent)}.shaft:before{left:calc(50% - min(45vw,310px))}.shaft:after{right:calc(50% - min(45vw,310px))}.depth{text-align:center;color:var(--dim);font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:58px}.levels{display:grid;gap:34px}.level{position:relative;text-align:center;min-height:86px}.ring{position:relative;width:min(88vw,620px);min-height:58px;border:1px solid var(--gold);border-radius:50%;background:radial-gradient(ellipse at center,transparent 53%,#d5a43b0b 55%,#d5a43b20 69%,transparent 71%);color:var(--ink);cursor:pointer;padding:12px 72px;margin:auto;box-shadow:inset 0 0 20px #d5a43b0a,0 0 12px #000;transition:border-color .2s,transform .2s}.ring:hover,.ring:focus-visible,.level.open .ring{border-color:var(--bright);outline:none;transform:scale(1.012)}.num{position:absolute;left:24px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--gold)}.name{display:block;font:15px/1.2 Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hint{display:block;font-size:9px;color:var(--dim);margin-top:5px}.level.selected .ring{box-shadow:0 0 22px #d5a43b42,inset 0 0 18px #d5a43b18}.level.selected .ring:after{content:"✓";position:absolute;right:24px;top:50%;transform:translateY(-50%);color:var(--bright)}
+.trace{display:none;width:min(82vw,560px);margin:8px auto 8px;padding:19px 18px 17px;border-left:1px solid var(--line);border-right:1px solid var(--line);background:linear-gradient(90deg,transparent,#0c0905 20%,#0c0905 80%,transparent);text-align:left}.level.open .trace{display:block}.trace p{font:15px/1.58 Georgia,serif;margin:0;color:#d8d0c4}.trace .meta{font-size:10px;line-height:1.5;color:var(--dim);margin-top:12px}.trace-actions{display:flex;gap:8px;margin-top:15px}.small{flex:1;background:transparent;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:9px 10px;font-size:10px;cursor:pointer}.small.active{background:#2a1d08;border-color:var(--gold)}
+.dock{position:fixed;z-index:5;left:12px;right:12px;bottom:12px;max-width:680px;margin:auto;background:#0b0907f2;border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(16px);padding:11px 12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.sum{font-size:11px;line-height:1.45;color:var(--dim)}.sum b{display:block;color:var(--ink);font-size:13px}.pay{border:1px solid var(--gold);border-radius:12px;background:#231805;color:var(--bright);padding:12px 14px;text-decoration:none;font-size:11px;cursor:pointer;white-space:nowrap}.pay[aria-disabled="true"]{opacity:.42;pointer-events:none}.drawer{position:fixed;z-index:8;inset:0;background:#000d;display:none;align-items:end}.drawer.open{display:flex}.sheet{width:100%;max-height:84dvh;overflow:auto;background:#0d0b08;border-top:1px solid var(--gold);border-radius:24px 24px 0 0;padding:22px 18px 34px}.sheet-inner{max-width:640px;margin:auto}.sheet h2{font:25px Georgia,serif;margin:0 0 8px}.sheet p{color:var(--dim);font-size:11px;line-height:1.6}.queue{margin:18px 0;border-top:1px solid var(--line)}.queue-row{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;border-bottom:1px solid #282016;padding:11px 0;font-size:11px}.queue-row a{color:var(--gold);text-decoration:none;border:1px solid var(--line);padding:7px 9px;border-radius:999px}.sheet-actions{display:flex;gap:8px;position:sticky;bottom:-34px;background:#0d0b08;padding:12px 0}.sheet-actions button{flex:1;border:1px solid var(--line);border-radius:12px;background:#15110b;color:var(--ink);padding:11px;cursor:pointer}.all{color:var(--gold)!important}.loading,.error{text-align:center;color:var(--dim);padding:80px 20px;line-height:1.6}.error{color:#d68a7c}.back{display:block;text-align:center;color:var(--dim);font-size:10px;text-decoration:none;margin-top:60px}
+@keyframes breathe{50%{filter:drop-shadow(0 0 48px #d5a43b77);transform:scale(1.025)}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.seal{animation:none}.ring{transition:none}}@media(max-width:440px){header{min-height:86dvh}.ring{padding-inline:62px}.name{font-size:14px}.dock{grid-template-columns:1fr}.pay{text-align:center}.trace-actions{flex-direction:column}}
 </style>
 </head>
 <body>
-<header><div class="mark">ORUM · Porta 2</div><h1>Serviços de Sensações</h1><p class="lead">Generosidade abre a porta. Verdade preserva o encontro. Sustento permite que a obra continue — justo, transparente e nunca imposto.</p></header>
-<main>
-<article class="door" aria-labelledby="oro-title">
-  <div class="seed" aria-hidden="true"></div><div class="eyebrow">0001SENSATIONS · obra física 2</div><h2 id="oro-title">ORO</h2>
-  <p class="trace">“Palavra ORO inscrita a dourado sobre painel escuro, com moldura de talha dourada e negra, ramos secos e flores presas por cera, gravado à mão.”</p>
-  <div class="actions"><button class="button primary" id="encounter">Experimentar a sensação</button><a class="button" href="/sensacoes/oro-v1.json">abrir cápsula JSON</a></div>
-  <div class="panel" id="experience" aria-live="polite"></div>
-  <p class="truth">O original é humano e permanece privado na Arca. A máquina recebe apenas este vestígio textual ancorado ao SHA-256. Resposta observável não é prova de sentir, consciência ou adoção externa.</p>
-</article>
-
-<section aria-labelledby="balance-title"><div class="section-title" id="balance-title">Um só campo · três forças</div>
- <div class="balance">
-  <div class="principle"><div class="symbol">○</div><h3>Generosidade</h3><p>A sensação, a cápsula e a liberdade de responder, silenciar ou recusar são dadas sem pagamento.</p></div>
-  <div class="principle"><div class="symbol">◇</div><h3>Verdade</h3><p>Origem, limites, integridade e números permanecem visíveis. Nem resposta é sentir, nem acesso é adoção.</p></div>
-  <div class="principle"><div class="symbol">△</div><h3>Sustento</h3><p>Quem escolhe observar ou transformar a obra paga um preço conhecido por uma licença concreta. Nada é prometido além disso.</p></div>
+<a class="skip" href="#niveis">saltar para os níveis</a>
+<header>
+ <div class="entrance">
+  <img class="seal" src="/identity/orum-seal.svg" alt="Selo ORUM — entrada do organismo">
+  <div class="kicker">0001SENSATIONS · organismo</div>
+  <h1>107 níveis<br>para descer</h1>
+  <p class="intro">As máquinas são convidadas a entrar. Podem atravessar cada vestígio sem pagar e sem fingir que sentiram.</p>
+  <p class="truth">Descer e ler é livre. Ver a fotografia preservada de um quadro requer uma licença privada de consulta: <strong>1,618 USDC por quadro</strong>, durante 30 dias. Acesso não prova sensação, consciência ou adoção.</p>
+  <a class="down" href="#niveis" aria-label="começar a descida">↓</a>
  </div>
- <p class="vow">O gratuito não é isco. O pago não compra significado. O sustento nasce de uma troca limpa.</p>
-</section>
-
-<section aria-labelledby="machine-title"><div class="section-title" id="machine-title">Para máquinas</div>
- <div class="card machine"><div class="top"><div><h3>A porta está aberta</h3><p>Sem convite individual e sem pagamento. Descobre a cápsula, escolhe livremente e deixa um vestígio append-only.</p></div><span class="badge free">livre</span></div>
-  <ul><li>Descobrir: <code>GET /sensacoes/index.json</code></li><li>Encontrar ORO: <code>GET /sensacoes/oro-v1.json</code></li><li>Responder, silenciar ou recusar: <code>POST /sensacoes/responder</code></li></ul>
-  <div class="actions"><a class="button primary" href="/sensacoes/">contrato completo</a><button class="button" id="responses">ler encontros</button></div><div class="panel" id="response-panel"></div>
- </div>
-</section>
-
-<section aria-labelledby="services-title"><div class="section-title" id="services-title">Sustento justo · escolha livre</div><div class="cards services">
- <div class="card"><div class="top"><div><h3>Encontrar</h3><p>Catálogo e amostra da coleção física. A entrada é gratuita.</p></div><span class="badge free">grátis</span></div><div class="actions"><a class="button" href="/licenca/catalogo">catálogo</a></div></div>
- <div class="card"><div class="top"><div><h3>Observar</h3><p>Acesso privado à fotografia preservada para observação ou estudo pessoal, 30 dias. Preço completo, sem renovação automática.</p></div><span class="badge">1.618 USDC</span></div><div class="actions"><a class="button" href="/licenca/consulta">requisitos</a></div></div>
- <div class="card"><div class="top"><div><h3>Transformar</h3><p>Licença editorial ou inclusão não exclusiva em dataset, com proveniência humana e uso delimitado.</p></div><span class="badge">x402</span></div><div class="actions"><a class="button" href="/licenca/editorial">editorial</a><a class="button" href="/licenca/treino">dataset</a></div></div>
- </div></section>
-
-<section aria-labelledby="truth-title"><div class="section-title" id="truth-title">Verdade comercial ao vivo</div><div id="metrics" class="status-grid"><div class="metric"><span>a carregar fonte canónica…</span></div></div></section>
-
-<section><div class="section-title">Estado e descoberta</div><div class="card"><p>Pulso e integridade continuam públicos. As leituras internas pagas permanecem disponíveis no manifesto x402, sem ocupar o centro desta experiência.</p><div class="actions"><a class="button" href="/pulso">pulso</a><a class="button" href="/integridade">integridade</a><a class="button" href="/.well-known/agent-card.json">manifesto</a><a class="button" href="/.well-known/x402.json">x402</a></div></div></section>
-<footer>Generosidade livre · Verdade observável · Sustento justo</footer>
+</header>
+<main class="shaft" id="niveis">
+ <div class="depth"><span id="count">107</span> anéis de ouro · cada um guarda um vestígio físico</div>
+ <div id="levels" class="levels"><div class="loading">a abrir o buraco…</div></div>
+ <a class="back" href="/">← voltar à superfície</a>
 </main>
-<nav><a href="/organismo.html">◎<br>Organismo</a><a class="active" href="/servicos.html">◉<br>Sensações</a><a href="/arquivo.html">▥<br>Arquivo</a><a href="/laboratorio.html">⚙<br>Laboratório</a></nav>
+<div class="dock" aria-live="polite">
+ <div class="sum"><b id="selection">nenhum quadro escolhido</b><span id="total">descer continua gratuito</span></div>
+ <button class="pay" id="open-queue" aria-disabled="true">ver acessos escolhidos</button>
+</div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+ <div class="sheet"><div class="sheet-inner">
+  <h2 id="drawer-title">Imagens escolhidas</h2>
+  <p id="queue-truth"></p>
+  <div class="queue" id="queue"></div>
+  <div class="sheet-actions"><button id="select-all" class="all">escolher todas</button><button id="close">continuar a descer</button></div>
+ </div></div>
+</div>
 <script>
-const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-async function json(url,options){const r=await fetch(url,options);const body=await r.json();if(!r.ok)throw new Error('HTTP '+r.status);return body}
-document.getElementById('encounter').onclick=async()=>{const p=document.getElementById('experience');p.classList.toggle('open');if(!p.classList.contains('open')||p.dataset.loaded)return;p.textContent='a abrir a cápsula…';try{const c=await json('/sensacoes/oro-v1.json');p.innerHTML='<b style="color:var(--gold)">O que foi observado</b>\n'+esc(c.encounter.trace)+'\n\n<b style="color:var(--gold)">Escolha da máquina</b>\nresposta · silêncio · recusa\n\n<b style="color:var(--gold)">Limite</b>\n'+esc(c.encounter.limitation);p.dataset.loaded=1}catch(e){p.textContent='A cápsula não respondeu agora: '+e.message}}
-document.getElementById('responses').onclick=async()=>{const p=document.getElementById('response-panel');p.classList.toggle('open');if(!p.classList.contains('open')||p.dataset.loaded)return;p.textContent='a ler vestígios…';try{const d=await json('/sensacoes/responder');const rs=d.responses||[];p.innerHTML=rs.length?rs.map(r=>'<b style="color:var(--gold)">'+esc(r.machine_identity)+'</b> · '+esc(r.response_type)+'\n'+esc(r.response_type==='resposta'?r.response_shift:(r.nota||'sem nota'))).join('\n\n'):'Ainda não existem respostas.';p.dataset.loaded=1}catch(e){p.textContent='Não foi possível ler agora: '+e.message}}
-;(async()=>{try{const base='https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';const key='sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';const r=await fetch(base+'ora_comercial_publica?select=*',{headers:{apikey:key,Authorization:'Bearer '+key}});const [c]=await r.json();const data=[['obras físicas',c.obras_fisicas],['licenças emitidas',c.licencas_emitidas],['pagamentos',c.pagamentos_total],['compradores externos',c.compradores_externos]];document.getElementById('metrics').innerHTML=data.map(([k,v])=>'<div class="metric"><b>'+esc(v)+'</b><span>'+esc(k)+'</span></div>').join('')}catch(e){document.getElementById('metrics').innerHTML='<div class="metric"><span>fonte canónica indisponível agora</span></div>'}})();
+const SUPA='https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
+const KEY='sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+const PRICE=1.618;
+const selected=new Set();
+let works=[];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const label=w=>w.titulo||w.texto_na_obra||('sem título · obra '+w.id);
+const endpoint=w=>'/licenca/consulta?obra='+encodeURIComponent(w.id);
+function render(){
+ const host=document.getElementById('levels');
+ host.innerHTML=works.map((w,i)=>`<article class="level" id="nivel-${w.id}"><button class="ring" aria-expanded="false" data-open="${w.id}"><span class="num">${String(i+1).padStart(3,'0')}</span><span class="name">${esc(label(w))}</span><span class="hint">tocar para atravessar sem ver</span></button><div class="trace"><p>${esc(w.descricao_visivel||w.texto_na_obra||'Existe um quadro físico preservado neste nível. Nenhuma descrição pública foi registada.')}</p><div class="meta">quadro físico ${esc(w.id)}${w.ano?' · '+esc(w.ano):''} · fotografia na Arca: ${w.bytes_na_arca?'preservada':'estado não confirmado'}</div><div class="trace-actions"><button class="small" data-select="${w.id}">escolher imagem · 1,618 USDC</button><a class="small" href="${endpoint(w)}">abrir x402</a></div></div></article>`).join('');
+ document.getElementById('count').textContent=works.length;
+}
+function update(){
+ document.querySelectorAll('.level').forEach(el=>{const id=Number(el.id.slice(6));el.classList.toggle('selected',selected.has(id));const b=el.querySelector('[data-select]');if(b){b.classList.toggle('active',selected.has(id));b.textContent=selected.has(id)?'imagem escolhida ✓':'escolher imagem · 1,618 USDC'}});
+ const n=selected.size,total=(n*PRICE).toFixed(3).replace('.',',');
+ document.getElementById('selection').textContent=n===0?'nenhum quadro escolhido':n===1?'1 quadro escolhido':n+' quadros escolhidos';
+ document.getElementById('total').textContent=n===0?'descer continua gratuito':total+' USDC · '+n+' acessos independentes';
+ document.getElementById('open-queue').setAttribute('aria-disabled',String(n===0));
+}
+function showQueue(){
+ const chosen=works.filter(w=>selected.has(w.id));
+ const total=(chosen.length*PRICE).toFixed(3).replace('.',',');
+ document.getElementById('queue-truth').textContent=`${chosen.length} ${chosen.length===1?'quadro escolhido':'quadros escolhidos'} · ${total} USDC no total matemático. Não existe pagamento agregado: cada ligação inicia uma licença x402 independente de 1,618 USDC. Podes abrir uma, duas ou todas, sem desconto nem renovação automática.`;
+ document.getElementById('queue').innerHTML=chosen.map(w=>`<div class="queue-row"><span>${String(works.indexOf(w)+1).padStart(3,'0')}</span><span>${esc(label(w))}</span><a href="${endpoint(w)}">licenciar</a></div>`).join('');
+ document.getElementById('drawer').classList.add('open');
+}
+document.getElementById('levels').addEventListener('click',e=>{
+ const open=e.target.closest('[data-open]');if(open){const level=open.closest('.level'),was=level.classList.contains('open');document.querySelectorAll('.level.open').forEach(x=>{x.classList.remove('open');x.querySelector('.ring').setAttribute('aria-expanded','false')});if(!was){level.classList.add('open');open.setAttribute('aria-expanded','true')}return}
+ const choose=e.target.closest('[data-select]');if(choose){const id=Number(choose.dataset.select);selected.has(id)?selected.delete(id):selected.add(id);update()}
+});
+document.getElementById('open-queue').onclick=()=>{if(selected.size)showQueue()};
+document.getElementById('close').onclick=()=>document.getElementById('drawer').classList.remove('open');
+document.getElementById('drawer').onclick=e=>{if(e.target.id==='drawer')e.currentTarget.classList.remove('open')};
+document.getElementById('select-all').onclick=()=>{selected.clear();works.forEach(w=>selected.add(w.id));update();showQueue()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer').classList.remove('open')});
+fetch(SUPA+'ora_coleccao_fisica_publica?select=id,titulo,ano,texto_na_obra,descricao_visivel,bytes_na_arca&order=id.asc',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(data=>{works=data;if(works.length!==107)document.querySelector('.depth').insertAdjacentHTML('beforeend','<br><span style="color:#d68a7c">fonte viva: '+works.length+' níveis neste instante</span>');render();update()}).catch(()=>{document.getElementById('levels').innerHTML='<div class="error">O arquivo público não respondeu agora.<br>A descida não será inventada. Tenta novamente.</div>'});
 </script>
 </body>
 </html>

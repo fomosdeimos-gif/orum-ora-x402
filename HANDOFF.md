@@ -3,6 +3,14 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Mergulho 107 · 06/08/2026
+
+- `servicos.html` passa a ser a entrada visual para o arquivo físico: um poço de 107 anéis, alimentado pela vista pública `ora_coleccao_fisica_publica` e sem qualquer URL da Arca.
+- A descida textual é livre. Cada anel abre somente metadados públicos e permite selecionar a fotografia correspondente.
+- A seleção aceita uma, várias ou todas as 107 obras. O total mostrado é estritamente matemático (`n × 1,618 USDC`); a interface declara que não existe pagamento agregado e abre uma licença `/licenca/consulta?obra=<id>` independente por quadro.
+- O acesso pago continua a ser o contrato vivo x402 V33: consulta privada por 30 dias. Não transfere propriedade, exclusividade, NFT nem prova que uma máquina sentiu.
+- `index.html` aponta para esta entrada como “107 Sensações”. O organismo operacional de nove órgãos continua disponível em `organismo.html`.
+
 ## Regra principal
 
 Não assumir que uma descrição está concluída. Verificar o estado actual da superfície antes de escrever. Alterações destrutivas ou irreversíveis exigem confirmação de Unum; alterações aditivas e verificáveis podem avançar autonomamente.
