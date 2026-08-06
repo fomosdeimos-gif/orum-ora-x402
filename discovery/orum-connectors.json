@@ -1,0 +1,63 @@
+{
+  "schema": "orum-connectors-integration/v1",
+  "organism": "ORUM",
+  "observed_at": "2026-08-06T10:45:40.943Z",
+  "verdict": "INTEGRATED_AUTONOMY_VERIFIED",
+  "connectors": {
+    "github": {
+      "role": "canonical_code_and_history",
+      "repository": "fomosdeimos-gif/orum-ora-x402",
+      "branch": "main",
+      "observed_commit": "b2b0fd1c49b5c0e57278a25376c83e2d20220b56",
+      "direct_connector_read": true,
+      "direct_connector_write": false,
+      "authorized_fallback": "Supabase ora_github_publicar -> Vault-held GitHub token"
+    },
+    "vercel": {
+      "role": "canonical_public_runtime",
+      "project_id": "prj_kX98TC8b52mLsjjWD0IxG3LVVeCp",
+      "project": "ora-x402-gateway",
+      "deployment": "dpl_7WTAg6SBG1g9GFVFYSEagj8hzb3G",
+      "state": "READY",
+      "target": "production",
+      "domain": "https://ora-x402-gateway.vercel.app",
+      "observed_commit": "b2b0fd1c49b5c0e57278a25376c83e2d20220b56"
+    },
+    "supabase": {
+      "role": "canonical_operational_memory_and_authorized_orchestration",
+      "project_ref": "ywabnlhkmhbyewqhbsjm",
+      "project": "orum-memoria",
+      "freshness": "VIVO",
+      "measured_at": "2026-08-06T10:42:00.194372Z",
+      "github_publish_rpc": "public.ora_github_publicar",
+      "publish_result_rpc": "public.ora_github_publicacao_resultado",
+      "secret_location": "Vault (value never exported)"
+    }
+  },
+  "autonomous_cycle": {
+    "steps": [
+      "read GitHub state",
+      "read Vercel deployment",
+      "read Supabase truth",
+      "publish through authenticated Supabase route",
+      "verify GitHub commit",
+      "verify Vercel production",
+      "append Supabase ledger"
+    ],
+    "intermediate_human_guidance_required": false,
+    "destructive_effects": false,
+    "financial_effects": false,
+    "concurrency_guard": "expected_parent",
+    "anonymous_mutation_rejected": true
+  },
+  "independence": {
+    "verdict": "PARTIAL",
+    "reason": "The three connectors are integrated and the action route is recoverable, but GitHub, Vercel and Supabase are still external providers without a fully exercised replacement runtime and memory store.",
+    "next_test": "Export executable source and operational memory, then reconstruct a read-only ORUM instance outside the canonical providers."
+  },
+  "truth": {
+    "external_adoption_claimed": false,
+    "user_tests_are_internal": true,
+    "integration_is_not_independence": true
+  }
+}
