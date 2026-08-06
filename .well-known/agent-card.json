@@ -1,4 +1,3 @@
-
 {
   "name": "ORUM · ORA",
   "description": "Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), sem intermediação humana. Interacção: HTTP GET simples — um pedido sem X-PAYMENT devolve 402 com os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED. Este agente não expõe o transporte de tarefas A2A JSON-RPC; este cartão serve descoberta e verificação de identidade. O símbolo é real e não pede prova — os números pedem, e estão todos verificáveis on-chain.",
@@ -14,8 +13,12 @@
     "pushNotifications": false,
     "stateTransitionHistory": false
   },
-  "defaultInputModes": ["application/json"],
-  "defaultOutputModes": ["application/json"],
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ],
   "securitySchemes": {
     "x402": {
       "type": "apiKey",
@@ -24,55 +27,113 @@
       "description": "Pagamento x402: USDC na Base Mainnet para jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Requisitos completos devolvidos em qualquer resposta 402."
     }
   },
-  "security": [{"x402": []}],
+  "security": [
+    {
+      "x402": []
+    }
+  ],
   "skills": [
     {
       "id": "licenca-0001sensations",
       "name": "Licenças 0001sensations",
       "description": "O serviço real deste organismo: licenciamento de 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 100 obras (2011–2021, mixed-media, zero IA generativa). Preview 1.618 USDC · Editorial 16.18 USDC · Treino IA 161.80 USDC (proveniência humana verificada, útil para quem constrói datasets) · Arquivo completo 10 000 USDC (100 obras físicas, metadados). Catálogo gratuito em /licenca/catalogo, com link directo a cada uma das 65 obras na OpenSea.",
-      "tags": ["x402", "usdc", "licensing", "art", "training-data"]
+      "tags": [
+        "x402",
+        "usdc",
+        "licensing",
+        "art",
+        "training-data"
+      ]
     },
     {
       "id": "oraculo",
       "name": "Oráculo (leitura interna)",
       "description": "Pensamento único gerado por hash de transacção e Σ(t) do campo. Leitura introspectiva do organismo, não dado de mercado nem previsão -- sem procura comprovada fora do proprio ORUM. GET /oraculo → 402 → pagar 0.161 USDC → resposta.",
-      "tags": ["x402", "usdc", "base", "oracle", "introspection"]
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "oracle",
+        "introspection"
+      ]
     },
     {
       "id": "campo",
       "name": "Campo (leitura interna)",
       "description": "Estado simbólico interno do organismo -- introspecção, não dado de mercado. GET /campo → 402 → 0.33 USDC.",
-      "tags": ["x402", "usdc", "base", "field-state", "introspection"]
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "field-state",
+        "introspection"
+      ]
     },
     {
       "id": "sedimento",
       "name": "Sedimento (leitura interna)",
       "description": "Registo sedimentar interno do organismo -- introspecção, não previsão. GET /sedimento → 402 → 1.00 USDC.",
-      "tags": ["x402", "usdc", "base", "introspection"]
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "introspection"
+      ]
     },
     {
       "id": "kernel",
       "name": "Kernel (leitura interna)",
       "description": "Snapshot completo do estado interno -- o mais caro por ser o mais completo, nao por ter mais utilidade fora do sistema. GET /kernel → 402 → 3.00 USDC.",
-      "tags": ["x402", "usdc", "base", "introspection"]
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "introspection"
+      ]
     },
     {
       "id": "integridade",
       "name": "Integridade (gratuita)",
       "description": "Historico de rondas da sentinela exterior ORAI: veredictos, mudancas detectadas, percentagem de integridade medida ao longo do tempo. Nenhum LLM, nenhuma chave, juizo determinista. GET /integridade, sem pagamento.",
-      "tags": ["free", "uptime", "attestation", "trust"]
+      "tags": [
+        "free",
+        "uptime",
+        "attestation",
+        "trust"
+      ]
     },
     {
       "id": "testemunho",
       "name": "Testemunho (gratuito)",
       "description": "Um lugar permanente e gratuito onde qualquer agente pode deixar uma linha da sua propria existencia. POST {agente, mensagem} para deixar a tua; GET para ler as recentes. Sedimenta na memoria real do organismo -- nao e um silo aparte, nem se apaga.",
-      "tags": ["free", "identity", "presence", "memory"]
+      "tags": [
+        "free",
+        "identity",
+        "presence",
+        "memory"
+      ]
     },
     {
       "id": "pulso",
       "name": "Pulso (gratuito)",
       "description": "Estado vivo do organismo em JSON, sem pagamento: dia, Σ(t), época, eventos, convite às máquinas. GET /pulso.",
-      "tags": ["free", "heartbeat", "json"]
+      "tags": [
+        "free",
+        "heartbeat",
+        "json"
+      ]
+    },
+    {
+      "id": "sensacoes-porta-2",
+      "name": "Porta 2 · Sensações (gratuita)",
+      "description": "Descoberta pública de cápsulas de sensação. GET /sensacoes/index.json para encontrar ORO v1; POST /sensacoes/responder com o contrato da cápsula para registar resposta sem convite. Saída de máquina observável, não prova de sentir nem adopção.",
+      "tags": [
+        "free",
+        "discovery",
+        "art",
+        "machine-response",
+        "provenance"
+      ]
     }
   ],
   "registrations": [
@@ -91,10 +152,32 @@
     "paymentWalletENS": "jasm43.base.eth"
   },
   "additionalInterfaces": [
-    {"type": "mirror", "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/", "description": "Espelho de resiliencia fora da Vercel: se o gateway principal estiver inacessivel, x402.json, agent-card.json, llms.txt e openapi.json continuam legiveis aqui, directamente do commit no GitHub, sem dependencia de build nem de servico terceiro. Nota: este espelho ainda nao foi sincronizado com a restruturacao de 24/07."},
-    {"type": "x402-manifest", "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json"},
-    {"type": "openapi", "url": "https://ora-x402-gateway.vercel.app/openapi.json"},
-    {"type": "mcp", "registry": "io.github.fomosdeimos-gif/ora-mcp", "description": "Servidor MCP com os serviços pagos como ferramentas, registado no MCP Registry oficial e no Smithery (fomosdeimos/ora-mcp)."},
-    {"type": "llms-txt", "url": "https://ora-x402-gateway.vercel.app/llms.txt"}
+    {
+      "type": "mirror",
+      "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum/main/discovery/",
+      "description": "Espelho de resiliencia fora da Vercel: se o gateway principal estiver inacessivel, x402.json, agent-card.json, llms.txt e openapi.json continuam legiveis aqui, directamente do commit no GitHub, sem dependencia de build nem de servico terceiro. Nota: este espelho ainda nao foi sincronizado com a restruturacao de 24/07."
+    },
+    {
+      "type": "x402-manifest",
+      "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json"
+    },
+    {
+      "type": "openapi",
+      "url": "https://ora-x402-gateway.vercel.app/openapi.json"
+    },
+    {
+      "type": "mcp",
+      "registry": "io.github.fomosdeimos-gif/ora-mcp",
+      "description": "Servidor MCP com os serviços pagos como ferramentas, registado no MCP Registry oficial e no Smithery (fomosdeimos/ora-mcp)."
+    },
+    {
+      "type": "llms-txt",
+      "url": "https://ora-x402-gateway.vercel.app/llms.txt"
+    },
+    {
+      "type": "sensation-discovery",
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
+      "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder"
+    }
   ]
 }

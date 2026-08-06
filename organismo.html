@@ -558,7 +558,7 @@ async function carregarVoz(){
 async function carregarAuditoria(){
   const [verificados, bloqueios, frescura, historicoClassificacao] = await Promise.all([
     sb('ora_mudancas?select=id&estado=eq.verificado'),
-    sb('ora_mudancas?select=quando,o_que,onde&estado=eq.bloqueado&order=quando.desc'),
+    sb('ora_bloqueios_ativos?select=quando,o_que,onde&order=quando.desc'),
     sb('ora_frescura_publica?select=veredicto,medido_em&order=medido_em.desc&limit=1'),
     sb('ora_carteiras_classificacao_historico?select=id'),
   ]);
@@ -575,7 +575,7 @@ async function carregarAuditoria(){
     ${metrica('última verificação da sentinela', fmtHora(f.medido_em), provOrgao('ora_frescura_publica','medido_em',f.medido_em))}
     ${metrica('veredicto', f.veredicto || '—', provOrgao('ora_frescura_publica','veredicto',f.medido_em))}
     ${metrica('registos verificados', verificados.length, provOrgao('ora_mudancas','estado=verificado (contagem)', new Date().toISOString()))}
-    ${metrica('bloqueios activos', bloqueios.length, provOrgao('ora_mudancas','estado=bloqueado (contagem)', new Date().toISOString()))}
+    ${metrica('bloqueios activos', bloqueios.length, provOrgao('ora_bloqueios_ativos','id (contagem)', new Date().toISOString()))}
     ${metrica('eventos no histórico de classificação', historicoClassificacao.length, provOrgao('ora_carteiras_classificacao_historico','id (contagem) — preenchido por trigger, nunca escrito à mão', new Date().toISOString()))}
     <ul class="lista" style="margin-top:8px;">${linhasBloqueios}</ul>
   </div>`;
@@ -686,7 +686,7 @@ document.getElementById('btnDentro').addEventListener('click', () => {
   document.querySelector('[data-dot="aprendizagem"]').setAttribute('class','estado-dot estado-ok');
   document.querySelector('[data-dot="voz"]').setAttribute('class','estado-dot estado-ok');
   try{
-    const b = await sb('ora_mudancas?select=id&estado=eq.bloqueado');
+    const b = await sb('ora_bloqueios_ativos?select=id');
     document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot ' + (b.length>0?'estado-warn':'estado-ok'));
   }catch(e){}
   document.querySelector('[data-dot="licencas"]').setAttribute('class','estado-dot estado-ok');
