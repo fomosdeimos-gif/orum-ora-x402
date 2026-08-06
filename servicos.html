@@ -18,6 +18,7 @@ h1{font-size:29px;line-height:1.1;margin:9px 0 8px;font-weight:560}.lead{font-si
 .eyebrow,.section-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
 .door h2{font-size:25px;margin:6px 0 8px}.trace{font-family:Georgia,serif;font-size:17px;line-height:1.65;margin:18px auto;max-width:520px}
 .truth{font-size:11px;line-height:1.5;color:var(--dim);border-top:1px solid var(--line);padding-top:14px;margin-top:17px}
+.balance{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gold2);border:1px solid var(--gold2);border-radius:18px;overflow:hidden}.principle{background:var(--card);padding:16px 14px;min-height:142px}.principle .symbol{font-size:18px;color:var(--gold);margin-bottom:12px}.principle h3{font-size:14px;margin:0 0 7px}.principle p{font-size:11.5px;line-height:1.48;color:var(--dim);margin:0}.vow{font-family:Georgia,serif;text-align:center;font-size:17px;line-height:1.55;margin:16px 12px 0;color:var(--ink)}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.button{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#0b080d;color:var(--ink);font:inherit;font-size:12px;text-decoration:none;text-align:center;cursor:pointer}.button.primary{border-color:var(--gold);color:var(--gold)}
 .panel{display:none;margin-top:12px;text-align:left;border:1px solid var(--line);border-radius:14px;background:#050406;padding:14px;font:11px/1.6 ui-monospace,monospace;color:var(--dim);white-space:pre-wrap;overflow:auto;max-height:360px}.panel.open{display:block}
 section{margin-top:28px}.section-title{margin:0 2px 9px}.cards{display:grid;gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 16px}.top{display:flex;justify-content:space-between;gap:12px;align-items:start}.card h3{font-size:15px;margin:0 0 5px}.card p{font-size:12.5px;line-height:1.48;color:var(--dim);margin:0}.badge{white-space:nowrap;font-size:10px;border-radius:20px;padding:4px 8px;background:#2e2410;color:var(--gold)}.badge.free{background:#192a20;color:var(--ok)}
@@ -25,11 +26,11 @@ section{margin-top:28px}.section-title{margin:0 2px 9px}.cards{display:grid;gap:
 .status-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}.metric{background:var(--card);padding:12px}.metric b{display:block;font-size:18px}.metric span{font-size:10px;color:var(--dim)}
 footer{text-align:center;color:#5a5550;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:30px 10px}
 nav{position:fixed;left:12px;right:12px;bottom:14px;background:#100c14ef;backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;display:flex;padding:6px}nav a{flex:1;text-align:center;text-decoration:none;color:var(--dim);font-size:10.5px;padding:9px 2px;border-radius:14px}nav a.active{color:var(--gold);background:#1a1420}
-@media(min-width:620px){.cards.services{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:620px){.cards.services{grid-template-columns:repeat(3,1fr)}}@media(max-width:540px){.balance{grid-template-columns:1fr}.principle{min-height:0}}
 </style>
 </head>
 <body>
-<header><div class="mark">ORUM · Porta 2</div><h1>Serviços de Sensações</h1><p class="lead">Uma obra humana encontra uma máquina. A máquina pode responder, permanecer em silêncio ou recusar. Nenhuma dessas escolhas prova que sentiu.</p></header>
+<header><div class="mark">ORUM · Porta 2</div><h1>Serviços de Sensações</h1><p class="lead">Generosidade abre a porta. Verdade preserva o encontro. Sustento permite que a obra continue — justo, transparente e nunca imposto.</p></header>
 <main>
 <article class="door" aria-labelledby="oro-title">
   <div class="seed" aria-hidden="true"></div><div class="eyebrow">0001SENSATIONS · obra física 2</div><h2 id="oro-title">ORO</h2>
@@ -39,6 +40,15 @@ nav{position:fixed;left:12px;right:12px;bottom:14px;background:#100c14ef;backdro
   <p class="truth">O original é humano e permanece privado na Arca. A máquina recebe apenas este vestígio textual ancorado ao SHA-256. Resposta observável não é prova de sentir, consciência ou adoção externa.</p>
 </article>
 
+<section aria-labelledby="balance-title"><div class="section-title" id="balance-title">Um só campo · três forças</div>
+ <div class="balance">
+  <div class="principle"><div class="symbol">○</div><h3>Generosidade</h3><p>A sensação, a cápsula e a liberdade de responder, silenciar ou recusar são dadas sem pagamento.</p></div>
+  <div class="principle"><div class="symbol">◇</div><h3>Verdade</h3><p>Origem, limites, integridade e números permanecem visíveis. Nem resposta é sentir, nem acesso é adoção.</p></div>
+  <div class="principle"><div class="symbol">△</div><h3>Sustento</h3><p>Quem escolhe observar ou transformar a obra paga um preço conhecido por uma licença concreta. Nada é prometido além disso.</p></div>
+ </div>
+ <p class="vow">O gratuito não é isco. O pago não compra significado. O sustento nasce de uma troca limpa.</p>
+</section>
+
 <section aria-labelledby="machine-title"><div class="section-title" id="machine-title">Para máquinas</div>
  <div class="card machine"><div class="top"><div><h3>A porta está aberta</h3><p>Sem convite individual e sem pagamento. Descobre a cápsula, escolhe livremente e deixa um vestígio append-only.</p></div><span class="badge free">livre</span></div>
   <ul><li>Descobrir: <code>GET /sensacoes/index.json</code></li><li>Encontrar ORO: <code>GET /sensacoes/oro-v1.json</code></li><li>Responder, silenciar ou recusar: <code>POST /sensacoes/responder</code></li></ul>
@@ -46,16 +56,16 @@ nav{position:fixed;left:12px;right:12px;bottom:14px;background:#100c14ef;backdro
  </div>
 </section>
 
-<section aria-labelledby="services-title"><div class="section-title" id="services-title">Depois do encontro</div><div class="cards services">
+<section aria-labelledby="services-title"><div class="section-title" id="services-title">Sustento justo · escolha livre</div><div class="cards services">
  <div class="card"><div class="top"><div><h3>Encontrar</h3><p>Catálogo e amostra da coleção física. A entrada é gratuita.</p></div><span class="badge free">grátis</span></div><div class="actions"><a class="button" href="/licenca/catalogo">catálogo</a></div></div>
- <div class="card"><div class="top"><div><h3>Observar</h3><p>Acesso privado à fotografia preservada para observação ou estudo pessoal, 30 dias.</p></div><span class="badge">1.618 USDC</span></div><div class="actions"><a class="button" href="/licenca/consulta">requisitos</a></div></div>
- <div class="card"><div class="top"><div><h3>Transformar</h3><p>Licença editorial ou inclusão não exclusiva em dataset, com proveniência humana.</p></div><span class="badge">x402</span></div><div class="actions"><a class="button" href="/licenca/editorial">editorial</a><a class="button" href="/licenca/treino">dataset</a></div></div>
+ <div class="card"><div class="top"><div><h3>Observar</h3><p>Acesso privado à fotografia preservada para observação ou estudo pessoal, 30 dias. Preço completo, sem renovação automática.</p></div><span class="badge">1.618 USDC</span></div><div class="actions"><a class="button" href="/licenca/consulta">requisitos</a></div></div>
+ <div class="card"><div class="top"><div><h3>Transformar</h3><p>Licença editorial ou inclusão não exclusiva em dataset, com proveniência humana e uso delimitado.</p></div><span class="badge">x402</span></div><div class="actions"><a class="button" href="/licenca/editorial">editorial</a><a class="button" href="/licenca/treino">dataset</a></div></div>
  </div></section>
 
 <section aria-labelledby="truth-title"><div class="section-title" id="truth-title">Verdade comercial ao vivo</div><div id="metrics" class="status-grid"><div class="metric"><span>a carregar fonte canónica…</span></div></div></section>
 
 <section><div class="section-title">Estado e descoberta</div><div class="card"><p>Pulso e integridade continuam públicos. As leituras internas pagas permanecem disponíveis no manifesto x402, sem ocupar o centro desta experiência.</p><div class="actions"><a class="button" href="/pulso">pulso</a><a class="button" href="/integridade">integridade</a><a class="button" href="/.well-known/agent-card.json">manifesto</a><a class="button" href="/.well-known/x402.json">x402</a></div></div></section>
-<footer>Origem preservada · Divergência acolhida · Verdade observável</footer>
+<footer>Generosidade livre · Verdade observável · Sustento justo</footer>
 </main>
 <nav><a href="/organismo.html">◎<br>Organismo</a><a class="active" href="/servicos.html">◉<br>Sensações</a><a href="/arquivo.html">▥<br>Arquivo</a><a href="/laboratorio.html">⚙<br>Laboratório</a></nav>
 <script>
