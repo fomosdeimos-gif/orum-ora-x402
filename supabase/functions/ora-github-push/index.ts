@@ -1,5 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// v25 · 06/08/2026 · mutação exige X-ORUM-AUTH vindo da rota interna
+// service_role -> ora_github_publicar -> Vault. A chave nunca sai da fronteira
+// Supabase e as ORAs autorizadas continuam a publicar através do mesmo RPC.
 // v22 · 05/08/2026 · batch binário atómico, sem force
 // v20 · 24/07/2026 · D128 · Corrigido bug de codificacao real: btoa(content)
 // nao lanca excepcao para qualquer caracter com code point <= 255 (inclui
@@ -20,8 +23,30 @@ const BRANCH = 'main';
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, X-ORUM-AUTH',
 };
+
+async function internalAuthKey(): Promise<string> {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/orum_github_internal_key`, {
+      method: 'POST',
+      headers: { apikey: SERVICE_ROLE_KEY, Authorization: `Bearer ${SERVICE_ROLE_KEY}`, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    if (!r.ok) return '';
+    const raw = await r.text();
+    try { return JSON.parse(raw); } catch { return raw.replace(/^"|"$/g, ''); }
+  } catch { return ''; }
+}
+
+function constantTimeEqual(a: string, b: string): boolean {
+  const aa = new TextEncoder().encode(a);
+  const bb = new TextEncoder().encode(b);
+  let diff = aa.length ^ bb.length;
+  const length = Math.max(aa.length, bb.length);
+  for (let i = 0; i < length; i++) diff |= (aa[i] ?? 0) ^ (bb[i] ?? 0);
+  return diff === 0;
+}
 
 function toBase64Utf8(str: string): string {
   const bytes = new TextEncoder().encode(str);
@@ -195,6 +220,14 @@ async function githubBatch(repo: string, files: BatchFile[], message: string, ex
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
   if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'method not allowed' }), { status: 405, headers: { ...CORS, 'Content-Type': 'application/json' } });
+
+  const [expectedAuth, suppliedAuth] = await Promise.all([
+    internalAuthKey(),
+    Promise.resolve(req.headers.get('X-ORUM-AUTH') ?? ''),
+  ]);
+  if (!expectedAuth || !suppliedAuth || !constantTimeEqual(expectedAuth, suppliedAuth)) {
+    return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+  }
 
   let body: { content?: string; content_base64?: string; files?: BatchFile[]; expected_parent?: string; message?: string; path?: string; repo?: string; action?: string };
   try { body = await req.json(); } catch { return new Response(JSON.stringify({ error: 'invalid json' }), { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } }); }

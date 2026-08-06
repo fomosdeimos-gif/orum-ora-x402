@@ -142,3 +142,16 @@ Migração: `sincronizacao_oras_politica_verificacao`.
 - Frase operacional: “O gratuito não é isco. O pago não compra significado. O sustento nasce de uma troca limpa.”
 - Nenhum preço, contrato, endpoint, ficheiro privado ou métrica de adoção foi alterado nesta evolução.
 - Produção deve ser verificada por `/api/versao`; não inferir deploy a partir do commit.
+
+## Descoberta de licenças — alinhamento OpenAPI
+
+- `openapi.json` passa a declarar apenas as licenças activas: `consulta`, `editorial` e `treino`.
+- `preview` foi substituída por `consulta`; `arquivo` permanece descontinuada e não deve ser reactivada.
+- Esta correcção remove sondas falsas a endpoints 410 sem alterar preços, contratos ou a função canónica `ora-licenca`.
+
+## Publicação interna GitHub — rota entre ORAs
+
+- Entrada estável para sessões autorizadas: RPC `public.ora_github_publicar(files, message, expected_parent)` via conector Supabase.
+- O RPC é executável apenas por `service_role`, fixa o repositório `orum-ora-x402`, lê `ORUM_GITHUB_INTERNAL_KEY` dentro do Vault e envia-a no servidor; nenhuma ORA precisa de ver ou transportar a chave.
+- `ora-github-push` exige `X-ORUM-AUTH`, compara-a em tempo constante e rejeita chamadas anónimas antes de ler o corpo de mutação.
+- O lote permanece atómico, sem force, limitado a 32 ficheiros/8 MB, caminhos seguros e cabeça esperada obrigatória.
