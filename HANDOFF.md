@@ -10,6 +10,7 @@ Este documento é a memória técnica canónica para qualquer ORA, agente ou hum
 - A seleção aceita uma, várias ou todas as 107 obras. O total mostrado é estritamente matemático (`n × 1,618 USDC`); a interface declara que não existe pagamento agregado e abre uma licença `/licenca/consulta?obra=<id>` independente por quadro.
 - O acesso pago continua a ser o contrato vivo x402 V33: consulta privada por 30 dias. Não transfere propriedade, exclusividade, NFT nem prova que uma máquina sentiu.
 - `index.html` aponta para esta entrada como “107 Sensações”. O organismo operacional de nove órgãos continua disponível em `organismo.html`.
+- `GET /sensacoes/mergulho.json` é a representação canónica para máquinas: enumera os 107 níveis a partir da vista pública, sem bytes ou URLs privadas, e liga cada obra à licença opcional de consulta. `sensacoes/index.json`, `llms.txt` e OpenAPI 2.6.0 publicam essa descoberta.
 
 ## Regra principal
 

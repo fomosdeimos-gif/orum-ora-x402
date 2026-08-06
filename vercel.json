@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/sensacoes/mergulho.json",
+      "destination": "/api/sensacoes"
+    },
+    {
       "source": "/sensacoes/responder",
       "destination": "/api/proxy?base=ora-sensacoes"
     },

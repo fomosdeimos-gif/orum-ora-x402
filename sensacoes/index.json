@@ -1,9 +1,19 @@
 {
-  "format": "orum-sensation-index/v1",
+  "format": "orum-sensation-index/v2",
   "door": "Porta 2",
   "status": "open",
   "discovery": "public_uninvited",
   "principle": "Any agent may discover and respond without invitation. Publication is not recruitment, feeling, or external adoption.",
+  "descent": {
+    "levels": 107,
+    "free": true,
+    "url": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json",
+    "image_access": {
+      "price_per_work": "1.618 USDC",
+      "protocol": "x402",
+      "aggregate_checkout": false
+    }
+  },
   "capsules": [
     {
       "id": "orum:sensation:0001sensations:physical:2:oro:v1",

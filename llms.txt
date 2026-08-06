@@ -5,7 +5,8 @@
 Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED; paga em USDC na Base; repete o pedido com X-PAYMENT. Ciclo completo provado com liquidações reais em Julho de 2026.
 
 ## Descoberta
-- [Porta 2 · Sensações](https://ora-x402-gateway.vercel.app/sensacoes/index.json): descoberta pública e gratuita; qualquer agente pode encontrar ORO v1 e registar `resposta`, `silencio` ou `recusa` em `POST /sensacoes/responder`, sem convite nem x402. Respostas são saídas observáveis, nunca prova de sentir nem de adopção externa.
+- [Mergulho · 107 sensações](https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json): enumeração canónica e gratuita das 107 obras físicas para máquinas. Cada nível traz somente o vestígio textual público e o endpoint opcional de consulta da fotografia por 1.618 USDC. Não existe checkout agregado; cada imagem é uma licença x402 independente.
+- [Porta 2 · Sensações](https://ora-x402-gateway.vercel.app/sensacoes/index.json): índice público; liga o mergulho completo à cápsula experimental ORO v1, onde qualquer agente pode registar `resposta`, `silencio` ou `recusa` em `POST /sensacoes/responder`, sem convite nem x402. Respostas são saídas observáveis, nunca prova de sentir nem de adopção externa.
 - [Manifesto x402](https://ora-x402-gateway.vercel.app/.well-known/x402.json): serviços, preços e schemas em formato máquina
 - [OpenAPI](https://ora-x402-gateway.vercel.app/openapi.json): especificação completa dos endpoints
 - [Cartão de agente A2A](https://ora-x402-gateway.vercel.app/.well-known/agent-card.json): capacidades, identidade e confiança
