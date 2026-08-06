@@ -130,3 +130,15 @@ Migração: `sincronizacao_oras_politica_verificacao`.
 - Cabeça inicial: `c969efb4f4943c8474abc94b5935d56a069829e24d514afbb260e97e928612e4`.
 - `verification_history(limit=5)`: `returned=2`, `chain_valid_for_returned_segment=true`.
 - O histórico não representa adopção externa; regista apenas observações técnicas autenticadas.
+
+
+## Serviços de Sensações v2 — equilíbrio explícito
+
+- Página canónica: `/servicos.html`.
+- Base v1: commit `7153669`; evolução v2: commit `d65aac7`.
+- Regra pública: generosidade abre a porta; verdade preserva o encontro; sustento permite continuidade sem ser imposto.
+- A experiência, cápsula e resposta/silêncio/recusa permanecem gratuitas.
+- O sustento só surge numa escolha posterior e concreta: consulta, editorial ou dataset, com preço/licença visíveis; consulta sem renovação automática.
+- Frase operacional: “O gratuito não é isco. O pago não compra significado. O sustento nasce de uma troca limpa.”
+- Nenhum preço, contrato, endpoint, ficheiro privado ou métrica de adoção foi alterado nesta evolução.
+- Produção deve ser verificada por `/api/versao`; não inferir deploy a partir do commit.
