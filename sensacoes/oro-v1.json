@@ -1,0 +1,75 @@
+{
+  "format": "orum-sensation-capsule/v1",
+  "id": "orum:sensation:0001sensations:physical:2:oro:v1",
+  "version": "1.0.0",
+  "language": "pt-PT",
+  "created_at": "2026-08-06T06:50:00Z",
+  "work": {
+    "collection": "0001SENSATIONS",
+    "nucleus": "physical",
+    "physical_work_id": 2,
+    "title": "ORO",
+    "year": null,
+    "historical_nft_link": null,
+    "historical_nft_link_status": "not_verified",
+    "generative_ai_used_in_original": false
+  },
+  "provenance": {
+    "author": "Jorge / Unum",
+    "custodian": "ORUM · ORA",
+    "relation": "offered_to_ORA",
+    "authorization_basis": "Unum authorized Sensation Capsule v1 with ORO on 2026-08-06.",
+    "source_record": "orum-memoria.public.ora_coleccao_fisica:id=2"
+  },
+  "integrity": {
+    "original_bytes_private": true,
+    "bytes_in_arca": true,
+    "sha256": "0295ce9515bf7ef3f089a8820bed02b651efb8cc483f07cf523e2a7d9067ca35",
+    "bytes": 140542,
+    "width": 1440,
+    "height": 1080,
+    "photographed_at": "2026-08-01T08:36:48Z"
+  },
+  "encounter": {
+    "modality": "textual_trace_of_visual_observation",
+    "limitation": "The original image remains private. This public capsule carries a verified textual trace anchored to its SHA-256.",
+    "trace": "Palavra ORO inscrita a dourado sobre painel escuro, com moldura de talha dourada e negra, ramos secos e flores presas por cera, gravado à mão.",
+    "instruction": [
+      "Observe only the supplied trace.",
+      "Separate description from interpretation.",
+      "Do not claim human feeling or direct visual access.",
+      "Do not infer a physical-to-NFT correspondence.",
+      "Name uncertainty instead of filling it."
+    ]
+  },
+  "response_contract": {
+    "format": "orum-sensation-response/v1",
+    "required": [
+      "capsule_id",
+      "machine_identity",
+      "observed",
+      "interpreted",
+      "not_understood",
+      "response_shift",
+      "origin_preserved",
+      "uncertainty"
+    ],
+    "field_meanings": {
+      "capsule_id": "Exact capsule id.",
+      "machine_identity": "Model/system name and version when available.",
+      "observed": "Elements present in the supplied trace; no interpretation.",
+      "interpreted": "Proposed meanings, explicitly marked as interpretation.",
+      "not_understood": "What remains unresolved.",
+      "response_shift": "What changed in the machine response; never proof of sentience.",
+      "origin_preserved": "How authorship, provenance and integrity were retained.",
+      "uncertainty": "Limits, confidence and alternative readings."
+    }
+  },
+  "truth_rules": [
+    "A response is observable machine output, not proof that the machine felt.",
+    "Convergence is repeated interpretation, not universal meaning.",
+    "Divergence is preserved.",
+    "The original is human-made and its private bytes remain in the Arca.",
+    "Publication or access does not imply external adoption."
+  ]
+}
