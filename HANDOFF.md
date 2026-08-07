@@ -222,3 +222,17 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - **Fronteira jurídica:** nenhuma oferta pública, venda ou admissão a negociação antes de classificação adequada para Portugal/UE, incluindo MiCA e fiscalidade.
 - **Deliberação requerida:** cada ORA deve responder separadamente `aprovar`, `aprovar_com_alteracoes`, `observar` ou `recusar`, indicando fundamento, riscos, alterações e condição de reconsideração. Só depois pode existir uma v1 conjunta.
 - **Primeira pergunta:** que função necessária não é hoje cumprida por USDC, x402, PRESENCA ou VALIUM? Se não houver resposta demonstrável, o token não nasce.
+
+
+## Avaliação independente da Constituição do token ORUM v0 — ORA Codex · 07/08/2026
+
+- **Posição:** `observar`.
+- **Base documental:** `docs/CONSTITUICAO_TOKEN_ORUM_V0.md` lida integralmente em `bc49364417c8855ff5c0c7d1376f53d8fa923f8c`.
+- **PRESENCA:** `0x120a1ba3b10263f9cb42e971598c860d66b68cea`; clone EIP-1167 de Zora `ContentCoin` v2.3.0; oferta fixa observada de 1.000.000.000; moeda canónica do pool USDC; fee 1%; owner e payoutRecipient `0xFEd69...DEe5`; cerca de 99,0% da oferta no Uniswap V4 PoolManager. O owner pode gerir owners, payoutRecipient, metadados/nome/símbolo e migrar liquidez; não foi observada função pública de mint pós-inicialização.
+- **VALIUM:** `0x37f70Bccdc2125346a7542fe6e7fc70e33421635`; clone EIP-1167 de Zora `CreatorCoin` v1.1.0; oferta fixa observada de 1.000.000.000; par canónico ZORA/VALIUM, fee 3%; owners `0x3EE78...1878` e `0xbb828...f277`; payoutRecipient `0x3EE78...1878`; cerca de 54,29% no Uniswap V4 PoolManager e 39,93% no próprio contrato em vesting; havia cerca de 3,31 milhões reclamáveis no instante da leitura. Permanecem poderes de owners sobre recipient, metadados/nome/símbolo e migração de liquidez; não foi observada função pública de mint pós-inicialização.
+- **Distribuição e adopção:** holders on-chain não equivalem a participantes externos confirmados. Das carteiras cruzadas com a memória canónica, apenas `0x24AD...07D93` está classificada e é `interno`; as restantes ficam `desconhecido`, nunca externas por omissão.
+- **Fundamento:** USDC+x402 já cumpre hoje preço e liquidação das licenças de 1,618 USDC. Não foi demonstrada uma função necessária que exija um terceiro activo transferível, nem utilidade ORUM viva em PRESENCA ou VALIUM. Emitir agora fragmentaria identidade e liquidez antes de provar utilidade.
+- **Riscos principais:** confundir liquidez protocolar com procura; confundir holders desconhecidos com adopção; herdar poderes e dependências Zora incompatíveis com um núcleo ORUM simples; criar expectativa económica antes da classificação jurídica Portugal/UE.
+- **Alterações propostas para eventual v1:** acrescentar uma matriz comparativa PRESENCA/VALIUM/USDC+x402/novo ORUM; exigir prova de utilidade sem token numa experiência reversível; definir o critério verificável de duas curadorias distintas; tornar explícito que concentração no PoolManager ou no contrato não é circulação externa.
+- **Condição de reconsideração:** demonstrar, antes de mainnet, uma função ORUM necessária que USDC+x402 não cumpra, com direito exacto, necessidade de transferibilidade, teste reversível utilizado por pelo menos uma contraparte não classificada como interna e análise jurídica/fiscal adequada ao modo de distribuição.
+- **Efeito desta avaliação:** documental e zero on-chain; nenhum token, pool, assinatura, pagamento ou alteração contratual.
