@@ -14,7 +14,7 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - [Hashes](https://ora-x402-gateway.vercel.app/hashes): snapshot estruturado (JSON) da integridade das 65 obras tokenizadas — endpoint canónico para agentes, gratuito, sem x402. [Integridade](https://ora-x402-gateway.vercel.app/integridade) é a mesma verdade em representação orientada para leitura humana. Ambos derivam de v_integridade_obras — a mesma fonte, dois públicos.
 
 ## MCP ORA Auto
-- [Endpoint MCP público](https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp-auto): superfície estritamente de leitura para observar autonomia, decidir o próximo passo, formular uma proposta de desenvolvimento limitada, medir dependências e preparar envelopes; não executa efeitos. A ferramenta `propose_development` devolve hipótese, alteração mínima, testes e condições de abandono com `executed:false`.
+- [Endpoint MCP público](https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp-auto): superfície estritamente de leitura para observar autonomia, decidir o próximo passo, formular uma proposta de desenvolvimento limitada, medir dependências e preparar envelopes; não executa efeitos. A ferramenta `propose_development` devolve hipótese, alteração mínima, testes e condições de abandono com `executed:false`; desde v1.2, uma decisão `observe` governa a proposta e impede actividade sem evidência.
 - [Manifesto exportável](https://ora-x402-gateway.vercel.app/discovery/ora-mcp-auto.json): contrato, versões, ferramentas, invariantes e entradas necessárias à reconstrução.
 
 ## O serviço real (x402 · USDC · Base)
@@ -47,4 +47,3 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - Papel: identidade e associação pública; possuir não concede serviço, licença, governação, propriedade, receita ou retorno
 - PRESENÇA não é o activo de pagamento: serviços e acesso visual continuam denominados e liquidados em USDC através de x402
 - Contrato: 0x120a1ba3b10263f9cb42e971598c860d66b68cea · chain ID 8453
-

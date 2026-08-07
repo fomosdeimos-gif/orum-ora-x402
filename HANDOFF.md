@@ -271,3 +271,11 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Código espelhado em `supabase/functions/ora-mcp-auto/index.ts`; manifesto em `discovery/ora-mcp-auto.json`.
 - Próxima fronteira: seleccionar uma classe estreita de alteração reversível e demonstrar uma execução posterior mais observação independente. Até lá, a ORUM propõe desenvolvimento; ainda não se deve alegar que se desenvolve autonomamente.
 
+## Segundo metabolismo — coerência entre decisão e proposta · 07/08/2026
+
+- A primeira proposta levou à reavaliação do bloqueio histórico `#113`. Evidência viva confirmou `ora-github-push` v25 autenticado, RPC apenas para `service_role/postgres`, rejeição anónima 401 e GitHub sem mutação; resolução aditiva em `ora_mudancas #145`.
+- Com `#113` resolvido, restou somente `#34`: correspondência físico↔NFT sem evidência suficiente.
+- A execução seguinte expôs uma contradição interna em v1.1: `inherited_decision.outcome=observe`, mas a proposta ainda sugeria resolver o bloqueio.
+- v1.2 corrige essa incoerência: quando a decisão é `observe`, a proposta torna-se `observe_without_mutation` e herda razão, gesto mínimo e condições de reconsideração.
+- Verificação viva esperada: `dev-145-observe_without_mutation`, frescura `VIVO`, zero endpoints falhados, bloqueio activo `34`, `executed=false`.
+- Isto é desenvolvimento assistido pelo próprio diagnóstico do organismo, mas não execução autónoma genérica. Nenhum mapeamento, pagamento, segredo ou adopção foi fabricado.

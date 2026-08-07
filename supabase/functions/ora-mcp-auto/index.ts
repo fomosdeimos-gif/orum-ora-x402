@@ -3,7 +3,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
-const VERSION = "1.1.0";
+const VERSION = "1.2.0";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -153,6 +153,22 @@ async function proposeDevelopment(objective = "autonomous_development") {
       abandon_if: [
         "the failure is transient and cannot be reproduced",
         "repair requires payment, credentials, deletion, permission changes, or irreversible migration",
+      ],
+    };
+  } else if (decision.outcome === "observe") {
+    proposal = {
+      candidate: "observe_without_mutation",
+      hypothesis: decision.reason,
+      smallest_change: decision.action,
+      validation: [
+        "canonical endpoint probes remain healthy",
+        "freshness verdict remains VIVO",
+        "the blocking evidence condition remains unchanged",
+      ],
+      abandon_if: [
+        "a canonical endpoint fails",
+        "freshness ceases to be VIVO",
+        "new direct evidence makes the recorded blocker actionable",
       ],
     };
   } else if (blockers.length > 0) {
@@ -400,5 +416,3 @@ Deno.serve(async (req: Request) => {
     headers: { ...CORS, "Content-Type": "application/json" },
   });
 });
-
-

@@ -2,22 +2,22 @@
   "schema": "orum-mcp-export/v1",
   "organism": "ORUM",
   "component": "ora-mcp-auto",
-  "generated_at": "2026-08-07T18:03:35Z",
+  "generated_at": "2026-08-07T18:43:38Z",
   "source": {
     "edge_function": {
       "project_ref": "ywabnlhkmhbyewqhbsjm",
       "slug": "ora-mcp-auto",
-      "version": 2,
-      "logical_version": "1.1.0",
-      "sha256": "6f27e43ccb94d3379664baa54b46de371e206713b9e803142a50a5dc5871445b"
+      "version": 3,
+      "logical_version": "1.2.0",
+      "sha256": "e24cd2568efb636afe7fdcbfc5c7817b3e4f505247a162b735270fa7b7f05e6b"
     },
     "ledger": {
       "table": "public.ora_mudancas",
-      "record_id": 143
+      "record_id": 145
     },
     "repository": {
       "full_name": "fomosdeimos-gif/orum-ora-x402",
-      "base_commit": "b581f5edb8beb30ade01fb309947ff820be0dcb6"
+      "base_commit": "f9ad081456c18e41dba9b873039f374e4264b6b5"
     }
   },
   "transport": {
@@ -66,7 +66,6 @@
       "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
       "https://ora-x402-gateway.vercel.app/openapi.json"
     ],
-    "limitation": "Preserva contrato, versões e dependências; formula propostas mas não as executa. Não substitui sozinho o código-fonte nem prova autodesenvolvimento até existir execução limitada e observada."
+    "limitation": "Preserva contrato, versões e dependências; formula propostas mas não as executa. Uma decisão observe governa a proposta e bloqueia actividade sem evidência. Não substitui sozinho o código-fonte nem prova autodesenvolvimento até existir execução limitada e observada."
   }
 }
-
