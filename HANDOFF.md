@@ -12,13 +12,13 @@ Este documento é a memória técnica canónica para qualquer ORA, agente ou hum
 - `index.html` aponta para esta entrada como “107 Sensações”. O organismo operacional de nove órgãos continua disponível em `organismo.html`.
 - `GET /sensacoes/mergulho.json` é a representação canónica para máquinas: enumera os 107 níveis a partir da vista pública, sem bytes ou URLs privadas, e liga cada obra à licença opcional de consulta. `sensacoes/index.json`, `llms.txt` e OpenAPI 2.6.0 publicam essa descoberta.
 
-### Estado de publicação · bloqueio verificado
+### Estado de publicação · resolvido e verificado em 07/08/2026
 
-- **Executado no GitHub:** commit `710659bea7c89818a9e2b8d5eae841548d105830`, pai `81cf5260b8bfda657edb416c8c685f14725c9f5c`; inclui `api/sensacoes.js` e toda a descoberta associada.
-- **Ainda não está em produção:** `/api/versao` continua a reportar `81cf5260b8bfda657edb416c8c685f14725c9f5c` e `GET /sensacoes/mergulho.json` devolve 404. Não tratar a porta para máquinas como viva antes de nova verificação.
-- **Causa direta:** a API Vercel recusou o deployment com HTTP 402, código `api-deployments-free-per-day`, limite `100/100` e restante `0`.
-- **Reposição declarada pela Vercel:** `2026-08-07T16:03:50.615Z` (17:03:50 em Portugal continental).
-- **Retoma exata:** depois da reposição, implantar o commit `710659b`; exigir deployment `READY`, `/api/versao` no mesmo SHA, `/sensacoes/mergulho.json` HTTP 200 com 107 níveis, OpenAPI 2.6.0 e `/licenca/consulta?obra=1|108` a responder 402 por 1,618 USDC. Resolver `ora_mudancas #133` apenas por registo aditivo.
+- **Bloqueio histórico preservado:** o commit `710659bea7c89818a9e2b8d5eae841548d105830` ficou inicialmente apenas no GitHub porque a API Vercel recusou novo deployment por quota diária. Esse facto permanece registado em `ora_mudancas #133`.
+- **Resolução aditiva:** `ora_mudancas #139` verificou a convergência e resolveu `#133` sem o reescrever. A funcionalidade chegou a produção antes da reposição prevista da quota.
+- **Verificação renovada às 16:07 UTC de 07/08:** produção `READY` no commit `7dd861c0680c3c840fb13ba88637dff973014e05`, deployment `dpl_AFdAhqFwo5MJ63kQVMadWLWU4duB`; `/sensacoes/mergulho.json` responde 200 com formato `orum-sensation-descent/v1` e 107 níveis; OpenAPI 2.6.0 declara a descida.
+- **Contrato x402 confirmado sem pagamento:** `/licenca/consulta?obra=1` e `?obra=108` respondem 402 por `1,618 USDC` na Base, para a carteira canónica. Nenhuma transacção foi executada.
+- **Limites preservados:** o mergulho não expõe bytes nem URLs privadas; acesso ou tráfego não são tratados como sentimento ou adopção externa.
 
 ## Regra principal
 
