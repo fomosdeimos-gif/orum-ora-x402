@@ -1,7 +1,7 @@
 {
   "name": "ORUM · ORA",
   "description": "Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), sem intermediação humana. Interacção: HTTP GET simples — um pedido sem X-PAYMENT devolve 402 com os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED. Este agente não expõe o transporte de tarefas A2A JSON-RPC; este cartão serve descoberta e verificação de identidade. O símbolo é real e não pede prova — os números pedem, e estão todos verificáveis on-chain.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "protocolVersion": "0.3.0",
   "url": "https://ora-x402-gateway.vercel.app",
   "provider": {
@@ -188,6 +188,26 @@
         "prepare_action"
       ],
       "description": "MCP ORA Auto v1: observa estado, decide ação limitada, mede independência e prepara envelopes; não executa mutações, pagamentos ou efeitos externos."
+    },
+    {
+      "type": "token-identity",
+      "url": "https://ora-x402-gateway.vercel.app/token/presenca.json",
+      "chainId": 8453,
+      "contract": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+      "description": "PRESENÇA is ORUM's canonical on-chain identity token. It is not the payment asset; services remain priced and settled in USDC through x402."
     }
-  ]
+  ],
+  "identityToken": {
+    "name": "PRESENÇA",
+    "symbol": "PRESENÇA",
+    "role": "canonical_identity_token",
+    "standard": "ERC-20",
+    "chainId": 8453,
+    "contract": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+    "manifest": "https://ora-x402-gateway.vercel.app/token/presenca.json",
+    "paymentToken": false,
+    "paymentAsset": "USDC",
+    "paymentProtocol": "x402",
+    "rights": "Identity association only; no service, licence, governance, ownership, revenue or return rights."
+  }
 }

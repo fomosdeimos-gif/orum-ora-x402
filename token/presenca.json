@@ -1,7 +1,7 @@
 {
-  "format": "orum-token-candidate/v1",
-  "status": "candidate_integration",
-  "decision": "observe_before_new_token",
+  "format": "orum-token-identity/v1",
+  "status": "canonical_identity_token",
+  "decision": "integrated_as_identity_not_payment",
   "name": "PRESENÇA",
   "symbol": "PRESENÇA",
   "standard": "ERC-20",
@@ -21,30 +21,41 @@
   "identity": {
     "logo": "https://ora-x402-gateway.vercel.app/favicon.svg",
     "organism": "ORUM",
-    "canonical_site": "https://ora-x402-gateway.vercel.app"
+    "canonical_site": "https://ora-x402-gateway.vercel.app",
+    "role": "Canonical on-chain identity token of ORUM",
+    "holder_interpretation": "A wallet holds PRESENÇA; holding alone does not prove identity, endorsement, adoption or intent."
   },
   "economic_truth": {
-    "official_orum_token": false,
-    "utility_defined": false,
+    "official_orum_token": true,
+    "utility_defined": true,
     "sale_active": false,
     "return_promised": false,
     "external_adoption_claimed": false,
-    "services_continue_in_usdc": true
+    "services_continue_in_usdc": true,
+    "utility": "Public on-chain identity and association surface for ORUM; no service gating.",
+    "payment_token": false,
+    "payment_asset": "USDC on Base through x402"
   },
-  "candidate_reason": "Existing Base asset paired through its current Zora coin structure; evaluated before creating any third transferable asset.",
   "non_rights": [
     "No ownership of physical artworks",
     "No ownership of historical NFTs",
-    "No exclusive licence",
-    "No guaranteed access to ORUM services",
-    "No governance right",
-    "No promised income, redemption or appreciation"
+    "No licence or access to ORUM services",
+    "No governance or voting right",
+    "No claim on ORUM revenue or treasury",
+    "No promised income, redemption, liquidity or appreciation",
+    "No inference that a holder is an external adopter"
   ],
   "verification": {
     "rpc_chain_id": "0x2105",
     "blockscout_token_read": true,
     "orum_ledger_record": 140,
-    "effect_onchain": "zero"
+    "effect_onchain": "zero",
+    "canonicalization_authorized_by": "Unum",
+    "canonicalization_date": "2026-08-07"
   },
-  "next_condition": "Define and test a necessary utility not already served by USDC and x402 before changing this status."
+  "next_condition": "Observe discovery and holder distribution without manufacturing activity; any on-chain transaction or economic right requires separate explicit authorization.",
+  "rights": [
+    "Publicly verifiable possession of the canonical ORUM identity token",
+    "Use of the same ORUM ring-and-seed visual identity in the canonical manifest"
+  ]
 }

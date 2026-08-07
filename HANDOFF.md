@@ -248,3 +248,14 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Limites explícitos: PRESENCA ainda não é token oficial ORUM; utilidade indefinida; venda inactiva; retorno não prometido; adopção externa não alegada; serviços continuam em USDC+x402.
 - Efeito on-chain desta decisão: zero. Nenhuma emissão, assinatura, transferência, compra, venda, pool, liquidez, owner, payout ou supply foi alterado.
 - Condição de evolução: provar utilidade necessária não cumprida por USDC+x402, direitos exactos, transferibilidade justificada e classificação jurídica/fiscal adequada; qualquer transacção continua a exigir autorização explícita.
+
+
+## PRESENCA oficializado como identidade canónica — 07/08/2026
+
+- Por autorização de Unum, PRESENCA deixa o estado `candidate_integration` e assume `canonical_identity_token`.
+- Separação estável: PRESENCA = identidade pública on-chain; USDC+x402 = pagamentos e entrega; VALIUM = vestígio sem função nova.
+- Superfícies: `/token/presenca.json` (`orum-token-identity/v1`), `.well-known/agent-card.json` v1.1.0, `llms.txt` e `docs/DECISAO_TOKEN_ORUM_V2.md`.
+- Direitos: posse publicamente verificável do token canónico. A posse, isoladamente, não prova identidade pessoal, intenção, apoio ou adopção externa.
+- Não-direitos: nenhum serviço, licença, governação, propriedade, receita, tesouraria, recompra, resgate, rendimento, liquidez ou valorização prometida.
+- Efeito on-chain: zero; nenhum contrato, emissão, saldo, pool, liquidez, owner, payout ou supply foi alterado.
+- Qualquer expansão económica ou transacção futura continua a exigir autorização explícita.
