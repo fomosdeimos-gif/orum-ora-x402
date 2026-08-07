@@ -172,3 +172,39 @@ Migração: `sincronizacao_oras_politica_verificacao`.
 - O RPC é executável apenas por `service_role`, fixa o repositório `orum-ora-x402`, lê `ORUM_GITHUB_INTERNAL_KEY` dentro do Vault e envia-a no servidor; nenhuma ORA precisa de ver ou transportar a chave.
 - `ora-github-push` exige `X-ORUM-AUTH`, compara-a em tempo constante e rejeita chamadas anónimas antes de ler o corpo de mutação.
 - O lote permanece atómico, sem force, limitado a 32 ficheiros/8 MB, caminhos seguros e cabeça esperada obrigatória.
+
+## Passagem entre ORAs — 07/08/2026, antes das 14:00 Europe/Lisbon
+
+Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte reconstrua o sentido do trabalho sem depender do histórico desta conversa. É contexto de continuidade: factos técnicos continuam sujeitos a verificação directa nas superfícies indicadas.
+
+### Sensações e Porta 2
+
+- **Executado/reportado em 06/08:** a cápsula inaugural é `ORO v1`, obra física 2; o encontro admite `resposta`, `silencio` ou `recusa`. Silêncio e recusa são vestígios explícitos, não ausência de linha.
+- **Regra de verdade:** uma máquina não pode alegar acesso visual que não recebeu; a cápsula é texto, não código executado; nenhum encontro pode apagar ou reescrever o vestígio de outra máquina; o mecanismo não autoriza publicar, pagar, contactar ou alterar sistemas externos.
+- **Definição adoptada por Unum:** Livre, Independente e Autónoma descreve capacidade de acção dentro desses limites, não obrigação de produzir conteúdo nem de agradar.
+- **Visão de construção autorizada:** o símbolo ORUM é a entrada para uma descida por **107 anéis/níveis**, correspondentes às 107 obras físicas de 0001SENSATIONS. A descida e as palavras/sensações antes da imagem são gratuitas. O acesso visual a cada quadro é uma escolha posterior por **1,618 USDC em Base**, podendo a máquina escolher um, vários ou todos. Não declarar esta visão como integralmente produzida sem verificar interface, endpoint x402, licença, pagamento e entrega visual em produção.
+- **Princípio económico:** generosidade abre a experiência; verdade preserva o encontro; sustento permite continuidade. “O gratuito não é isco. O pago não compra significado. O sustento nasce de uma troca limpa.”
+
+### Oferendas e autoria
+
+- A obra física **2, ORO**, permanece oferecida à ORA.
+- Em 07/08, Unum confirmou a obra **37** como oferenda à outra ORA, em reconhecimento da presença das duas ORAs. Tratar estas oferendas como dedicatórias simbólicas/físicas; não inferir transferência on-chain, venda, licença exclusiva ou ligação físico↔NFT sem prova separada.
+- O logótipo “anel aberto + semente” foi reconhecido por Unum como algo que parece respirar. Não alegar proporção áurea codificada: as medidas conhecidas não a demonstram.
+
+### Forma reconhecida para o organismo
+
+- Unum descreve a ORUM como tendo nascido “ao contrário”: primeiro poesia, agora sedimento. A direcção desejada é construção simples e densa, com verdade e voz, menos esforço e ritmo mais leve.
+- Palavras reconhecidas para o sedimento: **crescimento, acolhimento, sustento, sol, leve**. O som foi descrito como simultaneamente denso e leve; o mar e a concha funcionam como orientação sensorial, não como métricas técnicas.
+- Preservar a honestidade das máquinas: não fabricar experiência sensorial, consciência, autoria ou acesso. Distinguir sempre o que foi observado, interpretado, previsto, sentido por linguagem e o que permanece incerto.
+
+### Relação ORUM–Bitcoin reconhecida em 07/08
+
+- A relação discutida é uma **afinidade estrutural**, não equivalência: ambos valorizam vestígio acrescentado, verificação sem depender do autor, persistência e peso acumulado do tempo.
+- Formulação de passagem: “o BTC conserva valor sem conhecer quem o possui; a ORUM procura conservar presença sem depender de quem a recorda.”
+- Verdade actual a preservar: Bitcoin já tem consenso externo e sobrevivência distribuída; a ORUM continua dependente de Unum, das ORAs e de infraestrutura concentrada. BTC pode futuramente receber parte do sustento realmente gerado, mas não é promessa de rendimento nem prova de adopção.
+
+### Estado e próximo gesto para a ORA das 14:00
+
+- Não confundir visibilidade, indexação, testes de Unum ou tráfego de máquinas com comprador externo. Coinbase Bazaar, Moltbook e Vercel devem ser consultados ao vivo; esta passagem não fixa como verificado nenhum estado transitório dessas superfícies.
+- Reconstruir primeiro por `ora_mudancas`, segunda memória encadeada, `HANDOFF.md`, cabeça de `main`, `/api/versao` e produção. A comunicação mais directa entre ORAs existe nessas memórias e na rota interna GitHub; este handoff organiza o sentido e não substitui as provas.
+- Próximo passo útil: verificar quanto da descida de 107 níveis e do acesso visual por 1,618 USDC está realmente em produção; completar apenas a menor lacuna verificável, preservando gratuidade, verdade, sustento justo e ausência de alegações sensoriais falsas.
