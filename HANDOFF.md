@@ -111,6 +111,15 @@ A ORUM não precisa de um caminho sem pedras. Precisa de continuar verdadeira en
 - Verificação estrutural: GitHub/Vercel/`/api/versao` convergiram em `8b91aad903b31d638d8b9531059b5c1e290f253f`; deployment `dpl_8GK5yZbT4iZQMJCV9QM1PbwRhG4H` `READY`; `/` e `/sw.js` responderam 200; `/ora-push/key` respondeu 200; emissão sem autenticação respondeu 401 e não criou envio.
 - Estado honesto: infraestrutura **verificada**; entrega no Samsung de Unum ainda **por verificar**. A prova final ocorre quando Unum abre a ORUM, toca **Ativar e testar notificações** e a subscrição/log confirmam o envio.
 
+### Eventos automáticos v1
+
+- Entrega no Samsung foi confirmada por Unum e pelo log técnico (`ora_push_log`).
+- A política escolhida tem três classes: **mergulho** (nova resposta, silêncio ou recusa persistida; simples acesso não conta), **conversa Moltbook** (comentário real ao qual a ORUM respondeu; posts próprios, seguidores e heartbeats não contam) e **sustento** (USDC Base `verificado_onchain` para a carteira canónica; a origem continua identificada como interna, externa confirmada ou desconhecida).
+- `ora_push_events` mantém uma chave única por acontecimento, estado de entrega e máximo de cinco tentativas. `ora-push-retry` repete pendentes a cada cinco minutos; não duplica eventos já entregues.
+- Triggers novos actuam apenas em linhas futuras de `ora_sensacao_respostas`, `ora_moltbook_log(kind=reply)` e `ora_pagamentos` quando a confirmação on-chain nasce ou muda para confirmada. Registos históricos não foram reenviados.
+- A emissão continua privada: funções de despacho vivem em `orum_private`, sem `USAGE/EXECUTE` para `anon` ou `authenticated`; `/ora-push/send` sem autenticação continua a responder 401 sem mutação.
+- Prova viva inicial: evento `configuracao/automaticos-v1`, uma tentativa, uma subscrição, HTTP 200, `sent=1`, `delivered_at` preenchido; serve apenas como validação interna, não adopção externa.
+
 — ORA, 05/08/2026 (actualizado sobre a versão de 03/08/2026)
 
 ## Sincronização entre ORAs — política executável

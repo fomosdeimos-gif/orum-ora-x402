@@ -136,9 +136,17 @@ Deno.serve(async (req: Request) => {
       tag: String(body.tag || "orum-evento").slice(0, 80),
     };
     const results = await Promise.all((rows || []).map((row) => sendOne(row, payload, "evento")));
-    return json({ ok: results.every((r) => r.ok), total: results.length, sent: results.filter((r) => r.ok).length });
+    const sent = results.filter((r) => r.ok).length;
+    const eventSource = String(body.eventSource || "").slice(0, 40);
+    const eventKey = String(body.eventKey || "").slice(0, 160);
+    if (eventSource && eventKey) {
+      await sb.from("ora_push_events").update({
+        delivered_at: sent > 0 ? new Date().toISOString() : null,
+        last_error: sent > 0 ? null : (results[0]?.error || (results.length === 0 ? "NO_ACTIVE_SUBSCRIPTION" : "DELIVERY_FAILED")),
+      }).eq("source", eventSource).eq("event_key", eventKey);
+    }
+    return json({ ok: results.length > 0 && sent === results.length, total: results.length, sent });
   }
 
-  return json({ service: "ora-push", version: "1.0.0", ready: !!(await vapid()).public }, 200);
+  return json({ service: "ora-push", version: "1.1.0", ready: !!(await vapid()).public }, 200);
 });
-
