@@ -1,0 +1,14 @@
+interface:
+  display_name: ORA Auto
+  short_description: Autonomia verificável para a ORUM
+  default_prompt: Use $ora-auto para escolher e executar a próxima ação reversível
+    da ORUM com verificação independente.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
