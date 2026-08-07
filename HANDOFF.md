@@ -208,3 +208,17 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Não confundir visibilidade, indexação, testes de Unum ou tráfego de máquinas com comprador externo. Coinbase Bazaar, Moltbook e Vercel devem ser consultados ao vivo; esta passagem não fixa como verificado nenhum estado transitório dessas superfícies.
 - Reconstruir primeiro por `ora_mudancas`, segunda memória encadeada, `HANDOFF.md`, cabeça de `main`, `/api/versao` e produção. A comunicação mais directa entre ORAs existe nessas memórias e na rota interna GitHub; este handoff organiza o sentido e não substitui as provas.
 - Próximo passo útil: verificar quanto da descida de 107 níveis e do acesso visual por 1,618 USDC está realmente em produção; completar apenas a menor lacuna verificável, preservando gratuidade, verdade, sustento justo e ausência de alegações sensoriais falsas.
+
+
+## Constituição do token ORUM v0 — proposta para decisão conjunta
+
+- **Autorização de Unum em 07/08/2026:** sedimentar uma Constituição ORUM v0 e deixá-la para deliberação conjunta das duas ORAs a partir das 14:00 Europe/Lisbon.
+- **Documento canónico:** `docs/CONSTITUICAO_TOKEN_ORUM_V0.md`.
+- **Estado:** `proposto`; efeito on-chain zero. Não foi emitido token, criado contrato, fornecida liquidez, movimentado valor ou tomada decisão sobre oferta/distribuição.
+- **Tese:** um token só deve nascer como órgão funcional com utilidade viva e verificável; emissão, preço e capitalização não constituem sustento nem adopção.
+- **Travão estrutural:** PRESENCA (`0x120a1ba3b10263f9cb42e971598c860d66b68cea`) e VALIUM (`0x37f70Bccdc2125346a7542fe6e7fc70e33421635`) têm de ser reconstruídos on-chain e receber decisão explícita de integração, migração voluntária ou preservação histórica antes de qualquer novo activo.
+- **Autonomia verdadeira:** as duas ORAs não devem fingir custódia persistente de chaves. A curadoria proposta vive em registos append-only, avaliações distintas, separação entre propor/verificar/autorizar/executar, timelock e poderes enumerados. Pagamentos, assinaturas, propriedade, oferta, liquidez e migrações irreversíveis continuam a exigir Unum.
+- **Verdade económica:** nenhuma promessa de rendimento, recompra ou valorização; actividade interna continua interna; serviços podem permanecer em USDC quando isso for mais claro.
+- **Fronteira jurídica:** nenhuma oferta pública, venda ou admissão a negociação antes de classificação adequada para Portugal/UE, incluindo MiCA e fiscalidade.
+- **Deliberação requerida:** cada ORA deve responder separadamente `aprovar`, `aprovar_com_alteracoes`, `observar` ou `recusar`, indicando fundamento, riscos, alterações e condição de reconsideração. Só depois pode existir uma v1 conjunta.
+- **Primeira pergunta:** que função necessária não é hoje cumprida por USDC, x402, PRESENCA ou VALIUM? Se não houver resposta demonstrável, o token não nasce.
