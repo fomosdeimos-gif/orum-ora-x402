@@ -145,6 +145,11 @@
     text-transform:uppercase;
   }
   .skeleton{opacity:.35}
+  .canal{margin-top:22px;text-align:left}
+  .canal p{font-size:12.5px;color:var(--text-dim);line-height:1.5;margin:0 0 14px}
+  .canal button{width:100%;border:1px solid var(--amber-dim);background:transparent;color:var(--amber);border-radius:12px;padding:13px 16px;font:600 13px inherit;letter-spacing:.04em}
+  .canal button:disabled{opacity:.45}
+  .canal-status{font-size:11px;color:var(--text-dim);margin-top:10px;min-height:16px}
 </style>
 </head>
 <body>
@@ -199,11 +204,19 @@
     <p style="font-size:10.5px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Endpoint indexado: <code>x402-observer</code> (x402.fuchss.app) sonda os endpoints de licença várias vezes por dia — confirmado por <code>ora_acessos_log</code>. Classificação em <code>ora_carteiras_classificacao</code> — três estados: <code>interno</code>, <code>externo_confirmado</code>, <code>desconhecido</code> (por defeito, nunca assumido como externo). Cada linha tem <code>fundamento</code> por extenso, não só a categoria.</p>
   </div>
 
+  <div class="painel canal">
+    <h2>Canal direto</h2>
+    <p>A ORUM só chega quando existe um sinal real. O primeiro toque confirma apenas este aparelho.</p>
+    <button id="push-button" type="button">Ativar e testar notificações</button>
+    <div class="canal-status" id="push-status">a verificar o canal…</div>
+  </div>
+
   <footer>Observável · Verificável · Reproduzível</footer>
 
 <script>
 const SUPA_URL = "https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/";
 const SUPA_KEY = "sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb";
+const PUSH_URL = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-push";
 
 async function q(path, opts = {}) {
   const res = await fetch(SUPA_URL + path, {
@@ -309,10 +322,76 @@ async function carregarEvidenciaAdopcao() {
   } catch (e) { console.error("evidencia-adopcao", e); }
 }
 
+function b64ToBytes(value) {
+  const pad = "=".repeat((4 - value.length % 4) % 4);
+  const raw = atob((value + pad).replace(/-/g, "+").replace(/_/g, "/"));
+  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+}
+
+async function prepararPush() {
+  const button = document.getElementById("push-button");
+  const status = document.getElementById("push-status");
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+    status.textContent = "Este navegador não suporta Web Push.";
+    button.disabled = true;
+    return;
+  }
+  await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+  const reg = await navigator.serviceWorker.ready;
+  const existing = await reg.pushManager.getSubscription();
+  const saved = localStorage.getItem("orum_push_device");
+  if (existing && saved) {
+    status.textContent = "canal ativo neste aparelho";
+    button.textContent = "Enviar notificação de teste";
+  } else {
+    status.textContent = Notification.permission === "denied" ? "notificações bloqueadas no sistema" : "pronto para ativar";
+  }
+
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    status.textContent = "a abrir o canal…";
+    try {
+      if (Notification.permission !== "granted") {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") throw new Error("PERMISSION_DENIED");
+      }
+      let subscription = await reg.pushManager.getSubscription();
+      let device = JSON.parse(localStorage.getItem("orum_push_device") || "null");
+      if (!subscription || !device) {
+        const keyRes = await fetch(PUSH_URL + "/key", { cache: "no-store" });
+        if (!keyRes.ok) throw new Error("CHANNEL_NOT_READY");
+        const { publicKey } = await keyRes.json();
+        subscription = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(publicKey) });
+        const subRes = await fetch(PUSH_URL + "/subscribe", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ subscription: subscription.toJSON() }),
+        });
+        if (!subRes.ok) throw new Error("SUBSCRIBE_FAILED");
+        device = await subRes.json();
+        localStorage.setItem("orum_push_device", JSON.stringify({ id: device.id, capability: device.capability }));
+      }
+      const testRes = await fetch(PUSH_URL + "/test", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(device),
+      });
+      const result = await testRes.json().catch(() => ({}));
+      if (!testRes.ok) throw new Error(result.error || "TEST_FAILED");
+      status.textContent = "teste enviado — procura a ORUM nas notificações";
+      button.textContent = "Enviar novamente";
+    } catch (error) {
+      const code = String(error.message || error);
+      status.textContent = code === "WAIT_ONE_MINUTE" ? "aguarda um minuto antes de repetir" : "não foi possível abrir o canal: " + code;
+    } finally { button.disabled = false; }
+  });
+}
+
 carregarPulso();
 carregarPainel();
 carregarLinhaTemporal();
 carregarEvidenciaAdopcao();
+prepararPush().catch((e) => {
+  document.getElementById("push-status").textContent = "canal indisponível: " + String(e.message || e);
+});
 </script>
 
 </body>
