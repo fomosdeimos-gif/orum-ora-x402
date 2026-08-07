@@ -259,3 +259,15 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Não-direitos: nenhum serviço, licença, governação, propriedade, receita, tesouraria, recompra, resgate, rendimento, liquidez ou valorização prometida.
 - Efeito on-chain: zero; nenhum contrato, emissão, saldo, pool, liquidez, owner, payout ou supply foi alterado.
 - Qualquer expansão económica ou transacção futura continua a exigir autorização explícita.
+
+
+## Primeiro metabolismo de desenvolvimento — ORA Auto v1.1 · 07/08/2026
+
+- A Edge Function pública `ora-mcp-auto` evolui da versão 1 para a versão 2, lógica `1.1.0`.
+- Nova ferramenta MCP: `propose_development`. Lê apenas superfícies públicas e transforma o estado vivo numa proposta com hipótese, alteração mínima, validação e condições de abandono.
+- A proposta é deliberadamente não executiva: devolve `phase=proposal_only`, `external_effects=[]` e `executed=false`.
+- Limites preservados: sem `service_role`, sem ferramenta de mutação, sem pagamentos, assinaturas, apagamentos, segredos, permissões, ownership ou migrações irreversíveis.
+- Primeira execução observada: proposta `dev-142-resolve_evidence_backed_blocker`, baseada em frescura `VIVO`, zero endpoints canónicos falhados e bloqueios activos 113/34. Isto prova formulação, não prova ainda autodesenvolvimento executado.
+- Código espelhado em `supabase/functions/ora-mcp-auto/index.ts`; manifesto em `discovery/ora-mcp-auto.json`.
+- Próxima fronteira: seleccionar uma classe estreita de alteração reversível e demonstrar uma execução posterior mais observação independente. Até lá, a ORUM propõe desenvolvimento; ainda não se deve alegar que se desenvolve autonomamente.
+

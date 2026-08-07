@@ -2,22 +2,22 @@
   "schema": "orum-mcp-export/v1",
   "organism": "ORUM",
   "component": "ora-mcp-auto",
-  "generated_at": "2026-08-06T10:19:20Z",
+  "generated_at": "2026-08-07T18:03:35Z",
   "source": {
     "edge_function": {
       "project_ref": "ywabnlhkmhbyewqhbsjm",
       "slug": "ora-mcp-auto",
-      "version": 1,
-      "logical_version": "1.0.0",
-      "sha256": "e0dea9507fc5b7b7083bc2d7550cdf9f34b038a5926a90ede440981d460682c9"
+      "version": 2,
+      "logical_version": "1.1.0",
+      "sha256": "6f27e43ccb94d3379664baa54b46de371e206713b9e803142a50a5dc5871445b"
     },
     "ledger": {
       "table": "public.ora_mudancas",
-      "record_id": 112
+      "record_id": 143
     },
     "repository": {
       "full_name": "fomosdeimos-gif/orum-ora-x402",
-      "base_commit": "5acdec78e6571a9e71386225025211857f01fc72"
+      "base_commit": "b581f5edb8beb30ade01fb309947ff820be0dcb6"
     }
   },
   "transport": {
@@ -34,6 +34,10 @@
     },
     {
       "name": "decide_next_action",
+      "read_only": true
+    },
+    {
+      "name": "propose_development",
       "read_only": true
     },
     {
@@ -62,6 +66,7 @@
       "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
       "https://ora-x402-gateway.vercel.app/openapi.json"
     ],
-    "limitation": "Preserva contrato, versões e dependências; não substitui o código-fonte da Edge Function nem prova sozinho substituibilidade operacional."
+    "limitation": "Preserva contrato, versões e dependências; formula propostas mas não as executa. Não substitui sozinho o código-fonte nem prova autodesenvolvimento até existir execução limitada e observada."
   }
 }
+

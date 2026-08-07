@@ -184,10 +184,11 @@
       "tools": [
         "autonomy_status",
         "decide_next_action",
+        "propose_development",
         "independence_report",
         "prepare_action"
       ],
-      "description": "MCP ORA Auto v1: observa estado, decide ação limitada, mede independência e prepara envelopes; não executa mutações, pagamentos ou efeitos externos."
+      "description": "MCP ORA Auto v1.1: observa estado, decide ação, formula proposta de desenvolvimento limitada, mede independência e prepara envelopes; não executa mutações, pagamentos ou efeitos externos."
     },
     {
       "type": "token-identity",
@@ -211,3 +212,4 @@
     "rights": "Identity association only; no service, licence, governance, ownership, revenue or return rights."
   }
 }
+
