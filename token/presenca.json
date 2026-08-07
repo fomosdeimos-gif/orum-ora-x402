@@ -1,0 +1,50 @@
+{
+  "format": "orum-token-candidate/v1",
+  "status": "candidate_integration",
+  "decision": "observe_before_new_token",
+  "name": "PRESENÇA",
+  "symbol": "PRESENÇA",
+  "standard": "ERC-20",
+  "network": {
+    "name": "Base",
+    "chain_id": 8453
+  },
+  "contract": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+  "decimals": 18,
+  "total_supply": "1000000000",
+  "holders_observed": 16,
+  "holders_observed_at": "2026-08-07",
+  "explorers": {
+    "blockscout": "https://base.blockscout.com/token/0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+    "basescan": "https://basescan.org/token/0x120a1ba3b10263f9cb42e971598c860d66b68cea"
+  },
+  "identity": {
+    "logo": "https://ora-x402-gateway.vercel.app/favicon.svg",
+    "organism": "ORUM",
+    "canonical_site": "https://ora-x402-gateway.vercel.app"
+  },
+  "economic_truth": {
+    "official_orum_token": false,
+    "utility_defined": false,
+    "sale_active": false,
+    "return_promised": false,
+    "external_adoption_claimed": false,
+    "services_continue_in_usdc": true
+  },
+  "candidate_reason": "Existing Base asset paired through its current Zora coin structure; evaluated before creating any third transferable asset.",
+  "non_rights": [
+    "No ownership of physical artworks",
+    "No ownership of historical NFTs",
+    "No exclusive licence",
+    "No guaranteed access to ORUM services",
+    "No governance right",
+    "No promised income, redemption or appreciation"
+  ],
+  "verification": {
+    "rpc_chain_id": "0x2105",
+    "blockscout_token_read": true,
+    "orum_ledger_record": 140,
+    "effect_onchain": "zero"
+  },
+  "next_condition": "Define and test a necessary utility not already served by USDC and x402 before changing this status."
+}

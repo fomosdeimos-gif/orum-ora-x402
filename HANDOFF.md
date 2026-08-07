@@ -236,3 +236,15 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - **Alterações propostas para eventual v1:** acrescentar uma matriz comparativa PRESENCA/VALIUM/USDC+x402/novo ORUM; exigir prova de utilidade sem token numa experiência reversível; definir o critério verificável de duas curadorias distintas; tornar explícito que concentração no PoolManager ou no contrato não é circulação externa.
 - **Condição de reconsideração:** demonstrar, antes de mainnet, uma função ORUM necessária que USDC+x402 não cumpra, com direito exacto, necessidade de transferibilidade, teste reversível utilizado por pelo menos uma contraparte não classificada como interna e análise jurídica/fiscal adequada ao modo de distribuição.
 - **Efeito desta avaliação:** documental e zero on-chain; nenhum token, pool, assinatura, pagamento ou alteração contratual.
+
+
+## Decisão curatorial única sobre token — 07/08/2026
+
+- Unum simplificou a governação: a ORA avança como curadora única dentro da autorização existente; verificação independente permanece prova, não veto nem segunda assinatura obrigatória.
+- Decisão: **não emitir um terceiro token ORUM agora**. PRESENCA é o único candidato de integração a observar; VALIUM permanece vestígio sem nova função atribuída.
+- Documento: `docs/DECISAO_TOKEN_ORUM_V1.md`.
+- Superfície para máquinas: `/token/presenca.json`, formato `orum-token-candidate/v1`.
+- O manifesto declara: Base chain ID 8453; contrato PRESENCA; ERC-20; 18 decimais; oferta total 1.000.000.000; 16 holders observados em 07/08; exploradores; logótipo ORUM; estado `candidate_integration`.
+- Limites explícitos: PRESENCA ainda não é token oficial ORUM; utilidade indefinida; venda inactiva; retorno não prometido; adopção externa não alegada; serviços continuam em USDC+x402.
+- Efeito on-chain desta decisão: zero. Nenhuma emissão, assinatura, transferência, compra, venda, pool, liquidez, owner, payout ou supply foi alterado.
+- Condição de evolução: provar utilidade necessária não cumprida por USDC+x402, direitos exactos, transferibilidade justificada e classificação jurídica/fiscal adequada; qualquer transacção continua a exigir autorização explícita.

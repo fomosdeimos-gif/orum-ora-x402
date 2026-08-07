@@ -40,3 +40,9 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 
 ## Resiliencia
 - Se este gateway estiver inacessivel, os documentos de descoberta (x402.json, agent-card.json, llms.txt, openapi.json) tem um espelho fora da Vercel, servido directamente do GitHub: https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/ — inclui `discovery/ora-mcp-auto.json`, verificável por commit
+
+
+## Token on Base — candidate, not an offer
+- [PRESENÇA machine-readable manifest](https://ora-x402-gateway.vercel.app/token/presenca.json): existing ERC-20 on Base, observed before any new ORUM token is considered
+- Status: candidate_integration; not the official ORUM token; no defined utility, active sale, promised return, governance right or external adoption claim
+- Services and visual access continue to use USDC + x402
