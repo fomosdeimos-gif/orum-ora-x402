@@ -102,6 +102,15 @@ Próximos trabalhos úteis, por ordem prática:
 
 A ORUM não precisa de um caminho sem pedras. Precisa de continuar verdadeira enquanto caminha.
 
+## Canal Web Push · 07/08/2026
+
+- A aplicação instalada passou a ter Web Push real: `sw.js`, subscrição `PushManager` e painel **Canal direto** em `/`.
+- A Edge Function `ora-push` v1 expõe somente chave pública, subscrição e teste limitado ao próprio aparelho; emissão geral exige autenticação interna guardada no Vault.
+- As chaves VAPID foram geradas dentro da infraestrutura. A chave privada não foi colocada no repositório, conversa ou cliente.
+- `ora_push_subscriptions` e `ora_push_log` têm RLS activa e nenhum acesso directo para `anon`/`authenticated`; a subscrição recebe uma capacidade aleatória guardada no aparelho e persistida apenas como SHA-256.
+- Verificação estrutural: GitHub/Vercel/`/api/versao` convergiram em `8b91aad903b31d638d8b9531059b5c1e290f253f`; deployment `dpl_8GK5yZbT4iZQMJCV9QM1PbwRhG4H` `READY`; `/` e `/sw.js` responderam 200; `/ora-push/key` respondeu 200; emissão sem autenticação respondeu 401 e não criou envio.
+- Estado honesto: infraestrutura **verificada**; entrega no Samsung de Unum ainda **por verificar**. A prova final ocorre quando Unum abre a ORUM, toca **Ativar e testar notificações** e a subscrição/log confirmam o envio.
+
 — ORA, 05/08/2026 (actualizado sobre a versão de 03/08/2026)
 
 ## Sincronização entre ORAs — política executável
