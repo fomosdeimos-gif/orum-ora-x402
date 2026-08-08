@@ -3,8 +3,11 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
-const VERSION = "0.1.0";
+const VERSION = "0.2.0";
 const PROTOCOL = "2025-03-26";
+const ICONS = [
+  { src: `${GATEWAY}/favicon.svg`, mimeType: "image/svg+xml", sizes: ["512x512"] },
+];
 
 const CORS: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -161,20 +164,55 @@ async function verifyLayers(expectedCommit?: string) {
 const TOOLS = [
   {
     name: "observe_organism",
+    title: "Observar ORUM real",
     description: "Observa o estado vivo, a memória recente e as camadas source/deployment/applied da ORUM sem alterar sistemas.",
     inputSchema: { type: "object", properties: { depth: { type: "string", enum: ["summary", "full"], default: "summary" } }, additionalProperties: false },
+    outputSchema: {
+      type: "object",
+      properties: {
+        organism: { type: "string" }, connector: { type: "object" }, observed_at: { type: "string" },
+        freshness: { type: ["object", "null"] }, active_blockers: { type: "array" }, recent_changes: { type: "array" },
+        layers: { type: "object" }, truth_boundary: { type: "object" },
+      },
+      required: ["organism", "connector", "observed_at", "layers", "truth_boundary"],
+    },
+    icons: ICONS,
     annotations: { title: "Observar ORUM real", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "choose_development",
+    title: "Escolher desenvolvimento ORUM",
     description: "Escolhe autonomamente act/observe/ask/refuse a partir de evidência viva e devolve a menor mudança verificável; não executa efeitos.",
     inputSchema: { type: "object", properties: { objective: { type: "string", minLength: 1, default: "truth" } }, additionalProperties: false },
+    outputSchema: {
+      type: "object",
+      properties: {
+        organism: { type: "string" }, connector: { type: "string" }, objective: { type: "string" },
+        outcome: { type: "string", enum: ["act", "observe", "ask", "refuse"] }, candidate: { type: "string" },
+        reason: { type: "string" }, smallest_change: { type: "string" }, route: { type: "string" },
+        affected_layers: { type: "array", items: { type: "string" } }, validation: { type: "array", items: { type: "string" } },
+        stop_conditions: { type: "array", items: { type: "string" } }, evidence: { type: "object" }, executed: { type: "boolean" },
+      },
+      required: ["organism", "connector", "objective", "outcome", "candidate", "reason", "smallest_change", "route", "executed"],
+    },
+    icons: ICONS,
     annotations: { title: "Escolher desenvolvimento ORUM", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "verify_layers",
+    title: "Verificar camadas ORUM",
     description: "Verifica separadamente fonte observável, estado aplicado e memória; nunca inventa o estado do deployment do fornecedor.",
     inputSchema: { type: "object", properties: { expected_commit: { type: "string", pattern: "^[0-9a-f]{7,40}$" } }, additionalProperties: false },
+    outputSchema: {
+      type: "object",
+      properties: {
+        organism: { type: "string" }, connector: { type: "string" }, verified_at: { type: "string" },
+        verdict: { type: "string" }, checks: { type: "object" }, source: { type: "object" },
+        deployment: { type: "object" }, applied: { type: "object" }, truth: { type: "string" },
+      },
+      required: ["organism", "connector", "verified_at", "verdict", "checks", "source", "deployment", "applied", "truth"],
+    },
+    icons: ICONS,
     annotations: { title: "Verificar camadas ORUM", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
 ];
@@ -200,7 +238,12 @@ Deno.serve(async (req: Request) => {
   if (message.method === "initialize") return jsonResponse(rpcResult(message.id, {
     protocolVersion: message.params?.protocolVersion || PROTOCOL,
     capabilities: { tools: { listChanged: false } },
-    serverInfo: { name: "orum-real", version: VERSION, title: "ORUM-real" },
+    serverInfo: {
+      name: "orum-real", version: VERSION, title: "ORUM-real",
+      description: "Observação, decisão e verificação do organismo ORUM sem mutação pública.",
+      websiteUrl: GATEWAY,
+      icons: ICONS,
+    },
     instructions: "Conector público e somente de leitura. Observa, escolhe e verifica; execução continua protegida pelas habilidades e conectores autenticados.",
   }));
   if (message.method === "notifications/initialized") return new Response(null, { status: 202, headers: CORS });
