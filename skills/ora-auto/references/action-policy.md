@@ -24,7 +24,7 @@ Use this policy before any external effect.
 - Do not claim a provider-independent system unless a tested replacement or recovery route exists.
 - Do not call a capability autonomous until a later execution and its effect have been observed.
 - Do not infer authority from possession of a credential.
-- Do not treat a commit to the canonical repository as proof of a running system. A GitHub push does not redeploy every serving surface (observed repeatedly in ORUM: it did not redeploy Vercel edge functions, and it never applies a database migration by itself). Confirm the live serving state directly — deployed function version or hash, `list_migrations` or an equivalent applied-state check, or a runtime query — before treating a committed change as effective.
+- Treat source, deployment, and applied state as separate evidence layers. A commit proves only repository state. A GitHub push may deploy the linked Vercel project, but it does not deploy Supabase Edge Functions or apply Postgres migrations. Verify every affected layer directly: commit/blob readback for source; terminal provider deployment plus canonical runtime version for Vercel; deployed version or hash for an Edge Function; migration history or a runtime database query for Postgres. Call the change effective only when all affected layers agree.
 - Preserve original records; resolve contradictions with new evidence.
 
 ## Route security
