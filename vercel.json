@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/porta-2",
+      "destination": "/api/proxy?base=ora-descoberta"
+    },
+    {
       "source": "/sensacoes/mergulho.json",
       "destination": "/api/sensacoes"
     },

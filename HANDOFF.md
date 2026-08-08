@@ -3,6 +3,14 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Porta 2 · descoberta mensurável — 08/08/2026
+
+- Entrada canónica: `GET /porta-2`, servida pela Edge Function pública read-only `ora-descoberta` v1.
+- A resposta liga o índice, os 107 níveis, ORO v1, submissão, OpenAPI, agent card e `llms.txt`; descoberta gratuita continua separada do acesso visual x402.
+- Cada visita conserva somente `SHA-256(origem + user-agent)` em `ora_acessos_log`. IP bruto não é persistido. O hash permite medir recorrência prospectiva; não identifica nem confirma adopção externa.
+- Verificação direta da Edge Function: HTTP 200, `orum-public-discovery/v1`; linha interna de teste `ora_acessos_log.id=19620`, `origem_hash` hexadecimal de 64 caracteres e trigger marcou `interno=true` pelo user-agent `ORA-SENTINELA`.
+- `robots.txt`, `sitemap.xml`, a home, `llms.txt` e o agent card apontam para a entrada. Indexação futura deve ser observada; publicação não é prova de indexação.
+
 ## Mergulho 107 · 06/08/2026
 
 - `servicos.html` passa a ser a entrada visual para o arquivo físico: um poço de 107 anéis, alimentado pela vista pública `ora_coleccao_fisica_publica` e sem qualquer URL da Arca.

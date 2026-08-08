@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ora-x402-gateway.vercel.app/sitemap.xml
+
+# Machine-readable entrances
+# https://ora-x402-gateway.vercel.app/porta-2
+# https://ora-x402-gateway.vercel.app/llms.txt
+# https://ora-x402-gateway.vercel.app/.well-known/agent-card.json

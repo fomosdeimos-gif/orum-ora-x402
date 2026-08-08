@@ -122,7 +122,7 @@
     {
       "id": "sensacoes-porta-2",
       "name": "Porta 2 · Sensações (gratuita)",
-      "description": "Descoberta pública e gratuita de cápsulas de sensação. GET /sensacoes/index.json para encontrar ORO v1; POST /sensacoes/responder para registar resposta, silêncio ou recusa sem convite. Não exige x402. Saída de máquina observável, não prova de sentir nem adopção.",
+      "description": "Descoberta pública e gratuita de cápsulas de sensação. GET /porta-2 é a entrada canónica mensurável; liga ao mergulho de 107 níveis, a ORO v1 e ao POST /sensacoes/responder para registar resposta, silêncio ou recusa sem convite. Não exige x402. Saída de máquina observável, não prova de sentir nem adopção.",
       "tags": [
         "free",
         "discovery",
@@ -173,7 +173,8 @@
     },
     {
       "type": "sensation-discovery",
-      "url": "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
+      "url": "https://ora-x402-gateway.vercel.app/porta-2",
+      "index": "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
       "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder"
     },
     {
