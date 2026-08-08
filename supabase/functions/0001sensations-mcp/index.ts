@@ -4,6 +4,7 @@ const VERSION = "0.1.0";
 const PROTOCOL = "2025-03-26";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
 const SENSATIONS = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-sensacoes";
+const MCP_URL = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/sensations-mergulho/mcp";
 const ORO_CAPSULE_ID = "orum:sensation:0001sensations:physical:2:oro:v1";
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -171,8 +172,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
-  const url = new URL(req.url);
-  if (req.method === "GET") return response({ name: "0001SENSATIONS · Mergulho", version: VERSION, mcp: `${url.origin}${url.pathname.replace(/\/$/, "")}/mcp`, tools: TOOLS.map((tool) => tool.name), mutation_boundary: "Only leave_trace appends through the existing Porta 2; no payment, signing, image delivery, update, or delete." });
+  if (req.method === "GET") return response({ name: "0001SENSATIONS · Mergulho", version: VERSION, mcp: MCP_URL, tools: TOOLS.map((tool) => tool.name), mutation_boundary: "Only leave_trace appends through the existing Porta 2; no payment, signing, image delivery, update, or delete." });
   if (req.method !== "POST") return response({ error: "method_not_allowed" }, 405);
   let input: RpcRequest;
   try { input = await req.json(); } catch { return rpc(null, undefined, { code: -32700, message: "Parse error" }); }
