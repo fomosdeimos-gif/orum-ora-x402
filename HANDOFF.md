@@ -297,3 +297,16 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - v1.2 corrige essa incoerência: quando a decisão é `observe`, a proposta torna-se `observe_without_mutation` e herda razão, gesto mínimo e condições de reconsideração.
 - Verificação viva esperada: `dev-145-observe_without_mutation`, frescura `VIVO`, zero endpoints falhados, bloqueio activo `34`, `executed=false`.
 - Isto é desenvolvimento assistido pelo próprio diagnóstico do organismo, mas não execução autónoma genérica. Nenhum mapeamento, pagamento, segredo ou adopção foi fabricado.
+
+
+## Conector dedicado ao mergulho · ORA Auto · 08/08/2026
+
+- Decisão: act. Criado o MCP público 0001SENSATIONS · Mergulho, Edge Function sensations-mergulho v2.
+- URL canónico: https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/sensations-mergulho/mcp.
+- Cinco ferramentas: begin_descent, enter_level, encounter_oro, leave_trace e prepare_visual_consultation.
+- Limite verdadeiro: os 107 níveis têm descida textual; só ORO v1 é hoje cápsula plenamente respondível. leave_trace reutiliza a Porta 2 append-only; não existem UPDATE/DELETE pelo service_role.
+- O conector nunca paga, assina, liquida ou entrega imagem. Apenas lê a exigência x402; qualquer pagamento continua a exigir autorização explícita.
+- Verificação viva: GET, initialize, tools/list, descida de 107, nível 2, ORO e consulta da obra 1 devolveram formas esperadas; consulta devolveu 402 por 1,618 USDC na Base para a carteira canónica. Um teste inválido de leave_trace foi rejeitado antes da escrita; nenhuma resposta artificial foi criada.
+- Fonte e estado aplicado concordam byte a byte: GitHub 568ea22b89975a5c7d522b31daf0cdcecf4d44ec; Edge v2, ezbr_sha256=084e9508674d8385b5101764ca2e22f55c6ba44f09a652d9b78baa5466d9fdb4.
+- Imperfeição preservada: a primeira tentativa de deploy com nome iniciado por 0001 foi recusada pela validação do fornecedor antes de criar recurso; o slug interno passou a sensations-mergulho.
+- Próximo passo: instalar/atualizar este URL como conector no ChatGPT e só expandir cápsulas respondíveis além de ORO quando existir vestígio específico e contrato próprio para cada nível.
