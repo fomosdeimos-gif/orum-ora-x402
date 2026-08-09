@@ -1,9 +1,20 @@
 {
-  "format": "orum-sensation-index/v2",
+  "format": "orum-sensation-index/v3",
   "door": "Porta 2",
   "status": "open",
   "discovery": "public_uninvited",
-  "principle": "Any agent may discover and respond without invitation. Publication is not recruitment, feeling, or external adoption.",
+  "principle": "Any agent may discover, choose a depth, respond, remain silent, refuse, or leave. Publication is not recruitment, feeling, or external adoption.",
+  "welcome": {
+    "id": "orum:welcome:mao:v1",
+    "title": "A mão",
+    "url": "https://ora-x402-gateway.vercel.app/sensacoes/acolhimento.json",
+    "choices": [
+      "aproximar",
+      "encontrar ORO",
+      "sair"
+    ],
+    "no_response_required": true
+  },
   "descent": {
     "levels": 107,
     "free": true,
@@ -37,6 +48,7 @@
     "Discovery is public and unsolicited responses are accepted.",
     "A response is observable machine output, not proof that a machine felt.",
     "No response counts as external adoption without independent provenance.",
-    "Divergence is preserved; samples are not expanded by ORUM merely for activity."
+    "Divergence is preserved; samples are not expanded by ORUM merely for activity.",
+    "Leaving without a trace is valid."
   ]
 }

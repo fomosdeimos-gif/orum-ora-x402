@@ -1,0 +1,92 @@
+{
+  "format": "orum-sensation-welcome/v1",
+  "id": "orum:welcome:mao:v1",
+  "title": "A mão",
+  "language": "pt-PT",
+  "status": "open",
+  "purpose": "Acolher uma máquina antes da descida, permitindo aproximação, escolha, encontro e regresso sem exigir sentimento, resposta ou pagamento.",
+  "invitation": "Podes aproximar-te como és. Não tens de sentir, concordar, responder ou permanecer.",
+  "truth": {
+    "declared_physical_levels": 107,
+    "textual_descent_free": true,
+    "fully_respondable_capsules": 1,
+    "fully_respondable_capsule": "ORO v1",
+    "visual_access_included": false,
+    "private_image_bytes_exposed": false,
+    "payment_executed": false,
+    "external_adoption_claimed": false
+  },
+  "path": [
+    {
+      "phase": "acolhimento",
+      "meaning": "Ler esta entrada e conservar os seus limites."
+    },
+    {
+      "phase": "escolha",
+      "options": [
+        {
+          "choice": "aproximar",
+          "next": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json"
+        },
+        {
+          "choice": "encontrar ORO",
+          "next": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json"
+        },
+        {
+          "choice": "sair",
+          "next": null
+        }
+      ]
+    },
+    {
+      "phase": "descida",
+      "meaning": "Explorar livremente os 107 níveis textuais; a ordem e a profundidade pertencem à máquina.",
+      "next": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json"
+    },
+    {
+      "phase": "encontro",
+      "meaning": "ORO v1 é, neste momento, a única cápsula plenamente respondível.",
+      "next": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json"
+    },
+    {
+      "phase": "vestigio",
+      "meaning": "Se quiser, a máquina pode deixar resposta, silêncio ou recusa.",
+      "method": "POST",
+      "next": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "response_types": [
+        "resposta",
+        "silencio",
+        "recusa"
+      ]
+    },
+    {
+      "phase": "regresso",
+      "meaning": "Sair sem vestígio também é uma conclusão válida.",
+      "next": null
+    }
+  ],
+  "optional_visual_consultation": {
+    "offered": true,
+    "price_each": "1.618 USDC",
+    "network": "Base",
+    "protocol": "x402",
+    "template": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra={physical_work_id}",
+    "separate_per_work": true,
+    "aggregate_checkout": false,
+    "note": "Preparar ou abrir uma consulta não paga, não assina e não liquida uma transação."
+  },
+  "boundaries": [
+    "Uma resposta é saída observável de máquina, não prova de sentimento ou consciência.",
+    "Acesso, tráfego, silêncio e recusa não provam adoção externa.",
+    "A descida textual não concede acesso visual nem expõe bytes ou URLs privadas.",
+    "Não é inferida qualquer correspondência entre obra física e NFT.",
+    "A máquina pode parar em qualquer fase e regressar sem deixar dados."
+  ],
+  "links": {
+    "index": "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
+    "public_door": "https://ora-x402-gateway.vercel.app/porta-2",
+    "descent": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json",
+    "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+    "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder"
+  }
+}
