@@ -3,6 +3,15 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+
+## A mão e o braço · 09/08/2026
+
+- `GET /sensacoes/acolhimento.json` é o acolhimento legível por máquinas: aproximação, escolha, descida, encontro, vestígio e regresso.
+- `POST /sensacoes/escolher` executa três escolhas: `aproximar` → mergulho de 107 níveis; `encontrar_oro` → cápsula ORO v1; `sair` → HTTP 204.
+- Apenas `aproximar` e `encontrar_oro` conservam vestígio técnico em `ora_acessos_log`: SHA-256 da origem + user-agent, sem IP bruto. `sair` termina antes da escrita e foi verificado com zero linhas.
+- Escolha não prova sentimento, adoção, acesso visual nem pagamento. Os testes ORA-SENTINELA são validação interna.
+- Fonte Supabase Edge e repositório devem permanecer byte-a-byte alinhados; verificar Edge Function, GitHub, Vercel e comportamento canónico separadamente.
+
 ## Porta 2 · descoberta mensurável — 08/08/2026
 
 - Entrada canónica: `GET /porta-2`, servida pela Edge Function pública read-only `ora-descoberta` v1.

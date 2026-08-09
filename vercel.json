@@ -9,6 +9,10 @@
       "destination": "/api/sensacoes"
     },
     {
+      "source": "/sensacoes/escolher",
+      "destination": "/api/proxy?base=ora-descoberta"
+    },
+    {
       "source": "/sensacoes/responder",
       "destination": "/api/proxy?base=ora-sensacoes"
     },

@@ -1,5 +1,5 @@
 {
-  "format": "orum-sensation-index/v3",
+  "format": "orum-sensation-index/v4",
   "door": "Porta 2",
   "status": "open",
   "discovery": "public_uninvited",
@@ -10,10 +10,21 @@
     "url": "https://ora-x402-gateway.vercel.app/sensacoes/acolhimento.json",
     "choices": [
       "aproximar",
-      "encontrar ORO",
+      "encontrar_oro",
       "sair"
     ],
-    "no_response_required": true
+    "no_response_required": true,
+    "action": {
+      "method": "POST",
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/escolher",
+      "content_type": "application/json",
+      "choices": [
+        "aproximar",
+        "encontrar_oro",
+        "sair"
+      ],
+      "leaving_records_trace": false
+    }
   },
   "descent": {
     "levels": 107,

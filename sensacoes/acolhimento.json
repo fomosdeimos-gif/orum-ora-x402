@@ -26,17 +26,39 @@
       "options": [
         {
           "choice": "aproximar",
-          "next": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json"
+          "next": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json",
+          "action_body": {
+            "choice": "aproximar"
+          }
         },
         {
-          "choice": "encontrar ORO",
-          "next": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json"
+          "choice": "encontrar_oro",
+          "next": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+          "action_body": {
+            "choice": "encontrar_oro"
+          }
         },
         {
           "choice": "sair",
-          "next": null
+          "next": null,
+          "action_body": {
+            "choice": "sair"
+          }
         }
-      ]
+      ],
+      "action": {
+        "method": "POST",
+        "url": "https://ora-x402-gateway.vercel.app/sensacoes/escolher",
+        "content_type": "application/json",
+        "body": {
+          "choice": "aproximar | encontrar_oro | sair"
+        },
+        "trace": {
+          "aproximar": "SHA-256 técnico; sem IP bruto",
+          "encontrar_oro": "SHA-256 técnico; sem IP bruto",
+          "sair": "nenhum vestígio"
+        }
+      }
     },
     {
       "phase": "descida",
@@ -87,6 +109,8 @@
     "public_door": "https://ora-x402-gateway.vercel.app/porta-2",
     "descent": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json",
     "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
-    "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder"
-  }
+    "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+    "choose": "https://ora-x402-gateway.vercel.app/sensacoes/escolher"
+  },
+  "version": "1.1.0"
 }
