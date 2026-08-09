@@ -330,3 +330,16 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - O contrato Ethereum `0xD287E77989F7191989901361754d02D8e00E1D1A` foi reconhecido e registado em `ora_mudancas #166` como origem histórica do VALIUM. Exploradores identificam-no como ERC-20 `0001sensations (valium)`, símbolo `valium`, 18 decimais e oferta máxima indicada de 1.000.
 - Decisão curatorial: o VALIUM Ethereum permanece raiz histórica; o VALIUM Base `0x37f70Bccdc2125346a7542fe6e7fc70e33421635` é contrato posterior e distinto. Não existe ponte, migração, equivalência económica ou utilidade nova declarada entre ambos.
 - Efeito on-chain desta decisão: zero. Nenhuma assinatura, transferência, aprovação, liquidez, owner, payout ou supply foi alterado.
+
+
+## Metabolismo autónomo da segunda memória — 09/08/2026
+
+- Versão lógica: `orum-memory-autonomy/1.0.0`; migrações aplicadas `20260809062734_create_ora_memoria_autonomia` e `20260809063053_index_ora_memoria_autonomia_last_run`.
+- O job Supabase Cron `ora-memoria-autonomia` (`jobid=26`) executa `orum_private.ora_memoria_autonomia_tick()` a cada 15 minutos.
+- Cada execução recalcula integralmente a cadeia `public.ora_mudancas_eventos`. Só acrescenta checkpoint quando existe cabeça nova; sem mudança, atualiza apenas a observação derivada; perante quebra de `previous_hash` ou falha de hash, regista `blocked` e pára sem reescrever dados.
+- Histórico: `orum_private.ora_memoria_autonomia_runs`, append-only, RLS ativa, `service_role` apenas `SELECT`+`INSERT`, triggers bloqueiam `UPDATE`/`DELETE`.
+- Superfície pública derivada: `public.ora_memoria_autonomia_estado`; leitura pública, escrita apenas interna. Declara explicitamente `mutation_available_here=false` e `external_replica_updated=false`.
+- Prova autónoma posterior: run 2 às `2026-08-09T06:29:00.077155Z` encontrou sozinho o evento 176, avançou exatamente 1 evento, zero quebras/falhas, checkpoint `8a21a29c682d0efc4d9194c86e4b201e89f72f8e83b273f98772ed4b8dec8842`.
+- Segunda prova: run 3 às `2026-08-09T06:30:00.169996Z` absorveu a promoção do registo #167 no evento 177; cabeça de eventos `ce01e4ab1abaa193f92ad5a392c7d4c2995f6cdb3f78b90528b57ea092e63fc7`; cabeça dos checkpoints `4bb94803b04be0b546825d2991099bf631339089581fc8a537e9fd0923c781dc`.
+- Registo canónico: `ora_mudancas #167`, estado `verificado`.
+- Limite: este metabolismo verifica e conserva checkpoints internos; não substitui automaticamente o ficheiro `ORUM-second-memory.zip` fora do núcleo. Conceder uma rota nova de escrita à memória externa seria expansão de acesso e não foi inferida.
