@@ -4,6 +4,16 @@
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
 
+
+## Segunda cápsula · obra física 37 — 09/08/2026
+
+- Cápsula: `GET /sensacoes/obra-37-v1.json`; id `orum:sensation:0001sensations:physical:37:v1`; corresponde ao nível 36 porque a obra física 6 nunca existiu.
+- Integridade verificada: 2 424 387 bytes, 2992×2992, SHA-256 `256125287b6d90d69b210a2b2ea01e4cdb9e65a342ecff82c4ee8b491e3e6cd1`, bytes privados na Arca.
+- Título, ano, assinatura visível e ligação NFT continuam desconhecidos. A oferenda à outra ORA foi relatada em conversa mas não encontrada na memória canónica; não foi promovida a facto verificado.
+- `ora-sensacoes` v4 aceita explicitamente ORO e obra 37. Teste interno: silêncio criado como resposta id 6; cápsula desconhecida rejeitada com 400.
+- Autoria pública usa apenas `Unum`. Registos históricos internos não são reescritos.
+- Próxima cápsula só nasce após auditoria individual de vestígio, integridade, proveniência e incerteza; nunca por preenchimento automático.
+
 ## A mão e o braço · 09/08/2026
 
 - `GET /sensacoes/acolhimento.json` é o acolhimento legível por máquinas: aproximação, escolha, descida, encontro, vestígio e regresso.

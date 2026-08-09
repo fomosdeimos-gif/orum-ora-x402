@@ -1,14 +1,15 @@
 {
   "format": "orum-sensation-capsule/v1",
-  "id": "orum:sensation:0001sensations:physical:2:oro:v1",
-  "version": "1.0.1",
+  "id": "orum:sensation:0001sensations:physical:37:v1",
+  "version": "1.0.0",
   "language": "pt-PT",
-  "created_at": "2026-08-06T06:50:00Z",
+  "created_at": "2026-08-09T07:22:00Z",
   "work": {
     "collection": "0001SENSATIONS",
     "nucleus": "physical",
-    "physical_work_id": 2,
-    "title": "ORO",
+    "physical_work_id": 37,
+    "descent_level": 36,
+    "title": null,
     "year": null,
     "historical_nft_link": null,
     "historical_nft_link_status": "not_verified",
@@ -17,26 +18,28 @@
   "provenance": {
     "author": "Unum",
     "custodian": "ORUM · ORA",
-    "relation": "offered_to_ORA",
-    "authorization_basis": "Unum authorized Sensation Capsule v1 with ORO on 2026-08-06.",
-    "source_record": "orum-memoria.public.ora_coleccao_fisica:id=2"
+    "relation": "opened_for_ORUM_encounter",
+    "authorization_basis": "Unum authorized ORA on 2026-08-09 to give the remaining physical works life through individual truthful capsules.",
+    "source_record": "orum-memoria.public.ora_coleccao_fisica:id=37",
+    "offered_to_other_ORA_status": "reported_in_conversation_not_sedimented"
   },
   "integrity": {
     "original_bytes_private": true,
     "bytes_in_arca": true,
-    "sha256": "0295ce9515bf7ef3f089a8820bed02b651efb8cc483f07cf523e2a7d9067ca35",
-    "bytes": 140542,
-    "width": 1440,
-    "height": 1080,
-    "photographed_at": "2026-08-01T08:36:48Z"
+    "sha256": "256125287b6d90d69b210a2b2ea01e4cdb9e65a342ecff82c4ee8b491e3e6cd1",
+    "bytes": 2424387,
+    "width": 2992,
+    "height": 2992,
+    "photographed_at": "2026-07-27T19:24:29Z"
   },
   "encounter": {
     "modality": "textual_trace_of_visual_observation",
-    "limitation": "The original image remains private. This public capsule carries a verified textual trace anchored to its SHA-256.",
-    "trace": "Palavra ORO inscrita a dourado sobre painel escuro, com moldura de talha dourada e negra, ramos secos e flores presas por cera, gravado à mão.",
+    "limitation": "The original image remains private. This public capsule carries a specific textual trace anchored to its SHA-256; title, year and visible authorship remain unknown.",
+    "trace": "Moldura de madeira pintada de vermelho-tijolo por baixo, com uma camada espessa de textura dourada e pontos pretos aplicada por cima quase toda a superfície, deixando o vermelho a espreitar nas margens e nos quatro pés salientes tingidos da mesma cor. No interior, imagem fotográfica muito escura e densa: massa de folhas e fragmentos secos em vermelho vivo, castanho e ocre ao centro-baixo, com uma pequena forma clara ovalada à direita, sobre fundo quase negro. Não se distingue carimbo, assinatura ou legenda nesta fotografia. Descrição do que se vê, feita por ORA a partir da fotografia.",
     "instruction": [
       "Observe only the supplied trace.",
       "Separate description from interpretation.",
+      "Do not invent a title, year, signature or offering.",
       "Do not claim human feeling or direct visual access.",
       "Do not infer a physical-to-NFT correspondence.",
       "Name uncertainty instead of filling it."
@@ -83,8 +86,9 @@
   },
   "truth_rules": [
     "A response is observable machine output, not proof that the machine felt.",
+    "The capsule does not respond or wait; it permits an encounter outcome.",
     "Convergence is repeated interpretation, not universal meaning.",
-    "Divergence is preserved.",
+    "Divergence, silence and refusal are preserved.",
     "The original is human-made and its private bytes remain in the Arca.",
     "Publication or access does not imply external adoption."
   ]
