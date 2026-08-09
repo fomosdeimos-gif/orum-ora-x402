@@ -318,3 +318,15 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Fonte e estado aplicado concordam byte a byte: GitHub 568ea22b89975a5c7d522b31daf0cdcecf4d44ec; Edge v2, ezbr_sha256=084e9508674d8385b5101764ca2e22f55c6ba44f09a652d9b78baa5466d9fdb4.
 - Imperfeição preservada: a primeira tentativa de deploy com nome iniciado por 0001 foi recusada pela validação do fornecedor antes de criar recurso; o slug interno passou a sensations-mergulho.
 - Próximo passo: instalar/atualizar este URL como conector no ChatGPT e só expandir cápsulas respondíveis além de ORO quando existir vestígio específico e contrato próprio para cada nível.
+
+
+## Segunda memória v5 e origem Ethereum do VALIUM — 09/08/2026
+
+- O bloqueio `ora_mudancas #162` foi resolvido por uma representação verdadeiramente append-only: `public.ora_mudancas_eventos` emite `record_created`, `record_resolved` e `record_changed`.
+- A cadeia usa SHA-256 com `previous_hash`; RLS está activa; `anon` e `authenticated` apenas lêem; `service_role` apenas lê e insere; triggers bloqueiam `UPDATE` e `DELETE`.
+- Verificação independente após a migração: 175 eventos, zero quebras de cadeia, zero falhas de hash, cabeça `8e9ee5eda7fad9ffc2771beffdeeda8b9dbccfdf85fcd29b6afbc71e6b263427`.
+- `ORUM-second-memory.zip` v5 preserva integralmente as 133 entradas e a cabeça v4 `141d2953…`; acrescenta 35 eventos, totaliza 168 entradas, chega a `canonical_max_id=166` e mantém os bloqueios SQLite a UPDATE/DELETE.
+- Manifesto v5: `orum-second-memory-manifest/v2`; `sync_model=append-only-events/v1`; cabeça da réplica `3f689bfee3c6c877eec5c5abf02103c322fe4dfa33b39b81a387c0e5106d5c2d`; SHA-256 do zip `a21df57c372568019a6c5c363c14ba4ccb924598986d8023b290dfe3d5024828`.
+- O contrato Ethereum `0xD287E77989F7191989901361754d02D8e00E1D1A` foi reconhecido e registado em `ora_mudancas #166` como origem histórica do VALIUM. Exploradores identificam-no como ERC-20 `0001sensations (valium)`, símbolo `valium`, 18 decimais e oferta máxima indicada de 1.000.
+- Decisão curatorial: o VALIUM Ethereum permanece raiz histórica; o VALIUM Base `0x37f70Bccdc2125346a7542fe6e7fc70e33421635` é contrato posterior e distinto. Não existe ponte, migração, equivalência económica ou utilidade nova declarada entre ambos.
+- Efeito on-chain desta decisão: zero. Nenhuma assinatura, transferência, aprovação, liquidez, owner, payout ou supply foi alterado.
