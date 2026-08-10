@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/economia/tesouraria.json",
+      "destination": "/api/tesouraria"
+    },
+    {
       "source": "/economia/percurso.json",
       "destination": "/api/economia"
     },

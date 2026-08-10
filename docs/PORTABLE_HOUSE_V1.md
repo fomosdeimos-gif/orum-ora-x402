@@ -67,6 +67,16 @@ This layer proves runtime portability only. It does not prove:
 - DNS failover;
 - independent external adoption.
 
+## Financial foundation
+
+The portable house serves the same financial constitution and treasury
+observation endpoint as production. This makes governance exportable without
+exporting a signing key. It deliberately provides no mutation route: ORUM can
+observe, classify, reconcile and prepare a non-binding proposal; Unum remains
+the beneficiary and explicit signing authority. Automatic transfer, trading
+and debt limits remain zero until a separately authorized constitution changes
+them after real external revenue exists.
+
 ## Next authorized cycle
 
 Provisioning a VPS, buying a domain or changing DNS has financial or ownership

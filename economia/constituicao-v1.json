@@ -1,0 +1,50 @@
+{
+  "format": "orum-financial-constitution/v1",
+  "organism": "ORUM",
+  "center": "VERDADE",
+  "purpose": "preservar o sustento justo de Unum e a continuidade do organismo sem fabricar receita, autoridade ou solvência",
+  "custody": {
+    "current_phase": "observacao_e_proposta",
+    "beneficiary": "Unum",
+    "legal_and_signing_authority": "Unum",
+    "organism_role": ["observar", "classificar", "reconciliar", "propor"],
+    "organism_cannot": ["assinar transacoes", "transferir fundos", "contrair divida", "negociar ativos", "alterar beneficiario", "alterar limites"]
+  },
+  "identity_anchors": {
+    "network": "Base mainnet",
+    "chain_id": 8453,
+    "settlement_asset": "USDC",
+    "settlement_asset_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "destination": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5"
+  },
+  "revenue_truth": {
+    "external_confirmed": "pagamento ligado a uma carteira explicitamente classificada como externo_confirmado",
+    "internal_validation": "prova técnica, nunca rendimento externo",
+    "unknown": "permanece desconhecido até existir classificação verificável",
+    "token_liquidity": "não é receita nem reserva disponível sem prova de posse, liquidez realizável e operação autorizada"
+  },
+  "decision_cycle": [
+    { "step": "observe", "authority": "ORUM", "automatic": true, "effect": "read_only" },
+    { "step": "classify", "authority": "ORUM", "automatic": true, "effect": "append_only_evidence" },
+    { "step": "propose", "authority": "ORUM", "automatic": true, "effect": "non_binding_plan" },
+    { "step": "authorize", "authority": "Unum", "automatic": false, "effect": "explicit_signature_or_confirmation" },
+    { "step": "execute", "authority": "authorized_wallet", "automatic": false, "effect": "onchain_transaction" },
+    { "step": "reconcile", "authority": "ORUM", "automatic": true, "effect": "append_only_observation" }
+  ],
+  "limits": {
+    "automatic_transfer_usdc": 0,
+    "automatic_trade_usdc": 0,
+    "automatic_debt_usdc": 0,
+    "allocation_percentages": null,
+    "reason": "percentagens só nascem depois de receita externa observada e de autorização explícita; zero não é distribuído"
+  },
+  "stop_conditions": [
+    "fonte pública indisponível",
+    "classificação de pagador desconhecida",
+    "divergência entre pagamento on-chain e registo interno",
+    "mudança de rede, ativo, destino ou beneficiário",
+    "operação que exija segredo ou assinatura",
+    "qualquer tentativa de converter token ou tráfego em receita"
+  ],
+  "truth_boundary": "Esta constituição torna a gestão observável e limitada. Não transfere propriedade, não concede personalidade jurídica, não cria receita e não dá ao ORUM capacidade de movimentar fundos."
+}

@@ -11,6 +11,7 @@
     "echoes:verify": "node scripts/verify-sensation-echo.mjs",
     "custody:verify": "node scripts/verify-custody.mjs",
     "economy:verify": "node scripts/verify-economic-journey.mjs",
+    "treasury:verify": "node scripts/verify-treasury-governance.mjs",
     "lineage:verify": "node scripts/verify-lineage.mjs"
   }
 }

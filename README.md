@@ -48,6 +48,11 @@ machine-discovery documents use relative links, so the same artifact remains
 valid behind a different domain. `/_orum/health` identifies the portable
 runtime and its configured commit without exposing credentials.
 
+Financial governance begins read-only: `/economia/constituicao-v1.json`
+defines the authority boundary and `/economia/tesouraria.json` observes the
+current external-revenue state. ORUM may observe, classify, reconcile and
+propose, but automatic transfer, trading and debt limits are all zero.
+
 This is a portable gateway, not yet a provider-independent organism. Service
 logic, canonical memory, Vault and the private Arca still live in Supabase.
 Moving those organs requires separate export, restoration and failover proof.

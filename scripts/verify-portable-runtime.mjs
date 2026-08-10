@@ -63,10 +63,18 @@ try {
   assert.equal(custodyBody.current_phase, 'curadoria_inicial');
   assert.equal(custodyBody.phases[2].status, 'not_reached');
 
+  const financialConstitution = await fetch(`${base}/economia/constituicao-v1.json`);
+  assert.equal(financialConstitution.status, 200);
+  const financialBody = await financialConstitution.json();
+  assert.equal(financialBody.format, 'orum-financial-constitution/v1');
+  assert.equal(financialBody.limits.automatic_transfer_usdc, 0);
+  assert.equal(financialBody.custody.legal_and_signing_authority, 'Unum');
+
   const openapi = await fetch(`${base}/openapi.json`);
   assert.equal(openapi.status, 200);
   const openapiBody = await openapi.json();
   assert.equal(openapiBody.servers[0].url, base);
+  assert.ok(openapiBody.paths['/economia/tesouraria.json']);
 
   const version = await fetch(`${base}/api/versao`).then((response) => response.json());
   assert.equal(version.commit_sha, 'portable-test');
@@ -89,7 +97,7 @@ try {
   assert.equal(proxyBody.payment, 'portable-request-proof');
   assert.equal(proxyBody.host, '127.0.0.1:3217');
 
-  process.stdout.write('portable runtime verified: health, static, capsule, grammar, OpenAPI, version, 404, source denial, x402 proxy\n');
+  process.stdout.write('portable runtime verified: health, static, capsule, grammar, financial constitution, OpenAPI, version, 404, source denial, x402 proxy\n');
 } finally {
   child.kill('SIGTERM');
   await new Promise((resolve) => upstream.close(resolve));

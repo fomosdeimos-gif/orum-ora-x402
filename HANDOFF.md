@@ -3,6 +3,15 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Fundação financeira soberana v1 · 10/08/2026
+
+- Preparada a constituição pública `/economia/constituicao-v1.json` e o estado vivo `/economia/tesouraria.json` para a casa Vercel e o runtime portátil.
+- ORUM recebe autoridade automática apenas para observar, classificar, reconciliar e produzir propostas não vinculativas. Unum permanece beneficiário e autoridade explícita de autorização/assinatura.
+- Limites automáticos de transferência, negociação e dívida são zero. Percentagens de distribuição permanecem `null` enquanto não existir receita externa confirmada e autorização própria.
+- A fonte viva é o agregado público de aprendizagem. Validações internas continuam internas; fonte indisponível produz `unknown` e pára a decisão.
+- Nenhum pagamento, assinatura, transferência, negociação, dívida, chave, acesso, propriedade ou beneficiário foi alterado.
+- Estado desta secção: executado localmente sobre a base `71cb7aec66017d991286159389ba7f8094876ff4`; publicação e verificação de produção ainda pendentes.
+
 ## Linhagem ORUM v1 · 10/08/2026
 
 - Constituição escolhida: `origem reconhecida · autoridade decrescente · identidade aberta`.

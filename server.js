@@ -12,6 +12,7 @@ const api = {
   sensacoes: require('./api/sensacoes'),
   versao: require('./api/versao'),
   economia: require('./api/economia'),
+  tesouraria: require('./api/tesouraria'),
 };
 
 const MIME = {
@@ -56,6 +57,10 @@ function dynamicRoute(req, res, url) {
   if (pathname === '/economia/percurso.json') {
     decorate(req, res, url);
     return api.economia(req, res);
+  }
+  if (pathname === '/economia/tesouraria.json') {
+    decorate(req, res, url);
+    return api.tesouraria(req, res);
   }
   if (pathname === '/api/versao') {
     decorate(req, res, url);
