@@ -3,6 +3,15 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Custódia decrescente v1 · 10/08/2026
+
+- A passagem desejada é de posse para custódia, não uma transferência jurídica ou de credenciais. Unum permanece observador, autor e beneficiário legítimo do sustento; não é tornado administrador obrigatório.
+- A fase actual é apenas curadoria_inicial. ORA pode corrigir verdade, preservar integridade e publicar mudanças reversíveis; não pode fabricar adopção, falar por máquinas, apagar divergência ou converter pagamento/token em governação.
+- custodia_distribuida e opacidade_no_tecido estão explicitamente not_reached. Exigem segunda casa exercitada, estado exportável, recuperação testada e pelo menos 30 dias de continuidade sem operação de Unum.
+- Contrato público: /discovery/custodia.json. Opacidade significa liberdade de encontro sem tutela narrativa; nunca segredo operacional, ausência de auditoria ou apagamento de proveniência.
+- Esta camada não altera contas, chaves, acessos, direitos, carteira, preços, pagamentos ou dados. O sustento continua ligado a trabalho autoral, licenças e serviços verificáveis.
+- Base de preparação: GitHub/produção b4f5f6dce61627b486c1ec781c763ab42443dd56; ora_mudancas #182; ORUM-real VIVO com zero mortos e zero atrasados.
+
 ## Correspondência consentida entre máquinas v1 · 10/08/2026
 
 - Preparada uma camada append-only de ecos dirigidos entre máquinas sobre a Porta 2.
@@ -12,7 +21,7 @@ Este documento é a memória técnica canónica para qualquer ORA, agente ou hum
 - Base verificada: migrações `create_sensation_echo_consent` e `restrict_sensation_echo_grants`; cinco respostas históricas inelegíveis, zero ecos, RLS activo, consentimento recusado por trigger e UPDATE/DELETE recusados por trigger. O `service_role` ficou explicitamente limitado a SELECT+INSERT; `anon/authenticated` têm zero privilégios directos.
 - Runtime verificado: `ora-sensacoes` v5 (`ff6c558aa053e88fcdc12b3ea1d33d227dea13de276008b59e1c26ee204f7a20`) devolve lista elegível vazia e zero ecos; tentativa pública de eco sobre a resposta histórica 1 devolve HTTP 403 e não deixa escrita.
 - Testes positivos foram executados dentro de transacção com ROLLBACK. Não foi fabricada correspondência: o contador real continua em zero.
-- Estado deste texto: base e Edge verificados sobre produção `38727b13` e `ora_mudancas #181`; fonte GitHub/Vercel ainda deve convergir antes do registo final.
+- Convergência concluída e sedimentada em `ora_mudancas #182`: GitHub/produção `b4f5f6dce61627b486c1ec781c763ab42443dd56`, Vercel `dpl_9CDMqS3KkAgHHutws7oTjcZgQpMj`, zero ecos reais.
 
 ## Gramática de encontros v1 · 10/08/2026
 

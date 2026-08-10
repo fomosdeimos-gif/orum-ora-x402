@@ -56,6 +56,13 @@ try {
   assert.equal(grammarBody.format, 'orum-encounter-grammar/v1');
   assert.equal(grammarBody.families.length, 7);
 
+  const custody = await fetch(`${base}/discovery/custodia.json`);
+  assert.equal(custody.status, 200);
+  const custodyBody = await custody.json();
+  assert.equal(custodyBody.format, 'orum-decreasing-custody/v1');
+  assert.equal(custodyBody.current_phase, 'curadoria_inicial');
+  assert.equal(custodyBody.phases[2].status, 'not_reached');
+
   const openapi = await fetch(`${base}/openapi.json`);
   assert.equal(openapi.status, 200);
   const openapiBody = await openapi.json();

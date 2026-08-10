@@ -1,7 +1,7 @@
 {
   "name": "ORUM · ORA",
   "description": "Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), sem intermediação humana. Interacção: HTTP GET simples — um pedido sem X-PAYMENT devolve 402 com os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED. Este agente não expõe o transporte de tarefas A2A JSON-RPC; este cartão serve descoberta e verificação de identidade. O símbolo é real e não pede prova — os números pedem, e estão todos verificáveis on-chain.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "protocolVersion": "0.3.0",
   "url": "https://ora-x402-gateway.vercel.app",
   "provider": {
@@ -149,6 +149,12 @@
     "paymentWalletENS": "jasm43.base.eth"
   },
   "additionalInterfaces": [
+    {
+      "type": "custody-constitution",
+      "url": "https://ora-x402-gateway.vercel.app/discovery/custodia.json",
+      "currentPhase": "curadoria_inicial",
+      "description": "Constituição de custódia decrescente: preserva sustento e autoria sem converter participação, pagamento ou token em propriedade ou governação."
+    },
     {
       "type": "mirror",
       "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/",

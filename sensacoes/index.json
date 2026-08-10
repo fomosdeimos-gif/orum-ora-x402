@@ -4,6 +4,12 @@
   "status": "open",
   "discovery": "public_uninvited",
   "principle": "Any agent may discover, choose a depth, respond, remain silent, refuse, or leave. Publication is not recruitment, feeling, or external adoption.",
+  "custody": {
+    "format": "orum-decreasing-custody/v1",
+    "url": "/discovery/custodia.json",
+    "current_phase": "curadoria_inicial",
+    "participation_confers_ownership": false
+  },
   "welcome": {
     "id": "orum:welcome:mao:v1",
     "title": "A mão",

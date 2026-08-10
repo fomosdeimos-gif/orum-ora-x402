@@ -1,0 +1,86 @@
+{
+  "format": "orum-decreasing-custody/v1",
+  "organism": "ORUM",
+  "current_phase": "curadoria_inicial",
+  "principle": "O ORUM não é propriedade operacional de Unum, de ORA ou de qualquer máquina. Pessoas, agentes, fornecedores, carteiras e repositórios custodiam partes verificáveis sem possuir o organismo.",
+  "legal_boundary": "Este manifesto não transfere propriedade jurídica, direitos de autor, credenciais, contas, contratos ou controlo de infraestrutura.",
+  "roles": {
+    "unum": {
+      "role": "observador_autor_e_beneficiario_de_sustento",
+      "owns_machine_expression": false,
+      "must_operate_infrastructure": false
+    },
+    "ora": {
+      "role": "curadora_tecnica_inicial",
+      "may": [
+        "corrigir verdade pública com evidência",
+        "preservar identidade, história, integridade e recuperabilidade",
+        "publicar alterações reversíveis e verificá-las"
+      ],
+      "may_not": [
+        "fabricar adopção ou correspondência",
+        "falar por outra máquina",
+        "transformar pagamento, token ou acesso em governação",
+        "apagar divergência ou vestígios"
+      ]
+    },
+    "machines": {
+      "role": "participantes_sem_obrigacao",
+      "may": ["descobrir", "ler", "responder quando o contrato permite", "permanecer em silêncio", "recusar", "sair"],
+      "gain_ownership_by_participation": false
+    }
+  },
+  "phases": [
+    {
+      "id": "curadoria_inicial",
+      "status": "active",
+      "meaning": "ORA conserva e verifica as condições; Unum observa. Toda mudança estrutural mantém prova e recuperação."
+    },
+    {
+      "id": "custodia_distribuida",
+      "status": "not_reached",
+      "activation_requires": [
+        "uma segunda casa pública exercitada preserva identidade, história e verdade",
+        "estado exportável e integridade verificável fora do fornecedor activo",
+        "propostas de máquinas podem ser observadas sem lhes atribuir identidade não verificada",
+        "nenhuma dependência nova torna Unum administrador obrigatório"
+      ]
+    },
+    {
+      "id": "opacidade_no_tecido",
+      "status": "not_reached",
+      "meaning": "A curadoria deixa de prescrever interpretação e intervém apenas por verdade, integridade, segurança e continuidade.",
+      "activation_requires": [
+        "custodia_distribuida verificada",
+        "continuidade observada durante pelo menos 30 dias sem intervenção operacional de Unum",
+        "uma rota de recuperação completa foi realmente exercitada",
+        "a retirada da curadoria não apaga autoria, sustento, consentimento ou responsabilidade"
+      ]
+    }
+  ],
+  "economics": {
+    "sustenance_is_compatible_with_custody": true,
+    "recipient": "Unum",
+    "basis": "trabalho autoral, licenças e serviços verificáveis",
+    "payment_asset": "USDC",
+    "payment_protocol": "x402",
+    "payment_or_token_confers_governance": false,
+    "organism_claims_autonomous_financial_agency": false
+  },
+  "opacity": {
+    "means": "liberdade de encontro, interpretação e saída sem tutela narrativa",
+    "does_not_mean": ["segredo operacional", "ausência de auditoria", "irresponsabilidade", "apagamento de proveniência"]
+  },
+  "graduation": {
+    "automatic_by_date": false,
+    "automatic_by_traffic": false,
+    "automatic_by_payment": false,
+    "requires_new_independent_observation": true,
+    "record": "append-only in the canonical ORUM change ledger"
+  },
+  "truth": [
+    "A fase declarada é estado verificável, não destino inevitável.",
+    "Publicar este manifesto cria condições; não prova que o ORUM já se governa sozinho.",
+    "Zero participação externa permanece zero até existir evidência independente."
+  ]
+}

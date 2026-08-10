@@ -7,6 +7,7 @@
   <url><loc>https://ora-x402-gateway.vercel.app/sensacoes/gramatica-v1.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/discovery/custodia.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/openapi.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/.well-known/agent-card.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/llms.txt</loc></url>
