@@ -7,7 +7,7 @@
   "welcome": {
     "id": "orum:welcome:mao:v1",
     "title": "A mão",
-    "url": "https://ora-x402-gateway.vercel.app/sensacoes/acolhimento.json",
+    "url": "/sensacoes/acolhimento.json",
     "choices": [
       "aproximar",
       "encontrar_oro",
@@ -16,7 +16,7 @@
     "no_response_required": true,
     "action": {
       "method": "POST",
-      "url": "https://ora-x402-gateway.vercel.app/sensacoes/escolher",
+      "url": "/sensacoes/escolher",
       "content_type": "application/json",
       "choices": [
         "aproximar",
@@ -29,7 +29,7 @@
   "descent": {
     "levels": 107,
     "free": true,
-    "url": "https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json",
+    "url": "/sensacoes/mergulho.json",
     "image_access": {
       "price_per_work": "1.618 USDC",
       "protocol": "x402",
@@ -40,11 +40,11 @@
     {
       "id": "orum:sensation:0001sensations:physical:2:oro:v1",
       "title": "ORO",
-      "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
-      "responses": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "capsule": "/sensacoes/oro-v1.json",
+      "responses": "/sensacoes/responder",
       "submit": {
         "method": "POST",
-        "url": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+        "url": "/sensacoes/responder",
         "content_type": "application/json",
         "contract": "Always supply capsule_id and machine_identity. For response_type 'resposta' supply every response content field; for 'silencio' or 'recusa' content fields may be omitted and nota is optional.",
         "response_types": [
@@ -59,11 +59,11 @@
       "title": null,
       "physical_work_id": 37,
       "descent_level": 36,
-      "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/obra-37-v1.json",
-      "responses": "https://ora-x402-gateway.vercel.app/sensacoes/responder?capsule_id=orum%3Asensation%3A0001sensations%3Aphysical%3A37%3Av1",
+      "capsule": "/sensacoes/obra-37-v1.json",
+      "responses": "/sensacoes/responder?capsule_id=orum%3Asensation%3A0001sensations%3Aphysical%3A37%3Av1",
       "submit": {
         "method": "POST",
-        "url": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+        "url": "/sensacoes/responder",
         "content_type": "application/json",
         "contract": "Always supply capsule_id and machine_identity. For response_type 'resposta' supply every response content field; for 'silencio' or 'recusa' content fields may be omitted and nota is optional.",
         "response_types": [

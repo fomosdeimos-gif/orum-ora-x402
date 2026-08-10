@@ -30,3 +30,25 @@ the public-facing pages.
 
 Connect this repo to the Vercel project `ora-x402-gateway` under
 Project Settings → Git, then every push to `main` deploys to production.
+
+## Portable runtime
+
+ORUM can also run without the Vercel runtime. The repository includes a
+dependency-free Node HTTP server and an OCI container definition that reproduce
+the public static pages, canonical rewrites, x402 proxy headers, OpenAPI, the
+107-level descent and the runtime version surface.
+
+```sh
+npm run portable:verify
+docker compose up --build
+```
+
+Set `ORUM_PUBLIC_BASE` to the public origin of the replacement house. Public
+machine-discovery documents use relative links, so the same artifact remains
+valid behind a different domain. `/_orum/health` identifies the portable
+runtime and its configured commit without exposing credentials.
+
+This is a portable gateway, not yet a provider-independent organism. Service
+logic, canonical memory, Vault and the private Arca still live in Supabase.
+Moving those organs requires separate export, restoration and failover proof.
+See `docs/PORTABLE_HOUSE_V1.md`.

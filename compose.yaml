@@ -1,0 +1,16 @@
+services:
+  orum:
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      PORT: "3000"
+      ORUM_PUBLIC_BASE: "${ORUM_PUBLIC_BASE:-http://localhost:3000}"
+      ORUM_COMMIT_SHA: "${ORUM_COMMIT_SHA:-local}"
+      ORUM_GIT_REF: "${ORUM_GIT_REF:-portable}"
+      ORUM_DEPLOYMENT_ID: "${ORUM_DEPLOYMENT_ID:-portable-local}"
+      ORUM_FUNCTIONS_BASE: "${ORUM_FUNCTIONS_BASE:-https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1}"
+      ORUM_SUPABASE_REST_BASE: "${ORUM_SUPABASE_REST_BASE:-https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/}"
+      ORUM_SUPABASE_PUBLISHABLE_KEY: "${ORUM_SUPABASE_PUBLISHABLE_KEY:-sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb}"
+    ports:
+      - "${ORUM_PORT:-3000}:3000"

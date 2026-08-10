@@ -1,10 +1,15 @@
 // ORUM · mergulho 107 — superfície canónica para máquinas.
 // Expõe apenas a vista pública da colecção física; nunca bytes ou URLs da Arca.
-const SUPA_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/';
-const SUPA_KEY = 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
-const GATEWAY = 'https://ora-x402-gateway.vercel.app';
+const SUPA_URL = (process.env.ORUM_SUPABASE_REST_BASE || 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/').replace(/\/?$/, '/');
+const SUPA_KEY = process.env.ORUM_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+function publicBase(req) {
+  if (req.publicBase) return req.publicBase;
+  const proto = req.headers['x-forwarded-proto'] || 'https';
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'ora-x402-gateway.vercel.app';
+  return `${proto}://${host}`;
+}
 
-module.exports = async (_req, res) => {
+module.exports = async (req, res) => {
   res.setHeader('content-type', 'application/json; charset=utf-8');
   res.setHeader('access-control-allow-origin', '*');
   res.setHeader('cache-control', 'public, s-maxage=300, stale-while-revalidate=600');
@@ -18,6 +23,7 @@ module.exports = async (_req, res) => {
     const works = await source.json();
     if (!Array.isArray(works)) throw new Error('fonte_publica_invalida');
 
+    const gateway = publicBase(req);
     const levels = works.map((work, index) => ({
       level: index + 1,
       physical_work_id: work.id,
@@ -30,7 +36,7 @@ module.exports = async (_req, res) => {
         price: '1.618 USDC',
         duration: '30 days',
         license: 'private consultation',
-        endpoint: GATEWAY + '/licenca/consulta?obra=' + encodeURIComponent(work.id)
+        endpoint: gateway + '/licenca/consulta?obra=' + encodeURIComponent(work.id)
       }
     }));
 

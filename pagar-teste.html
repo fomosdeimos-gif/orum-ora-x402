@@ -40,7 +40,7 @@
 const WALLET_SAGRADA = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const CHAIN_ID_HEX = '0x2105';
-const GATEWAY = 'https://ora-x402-gateway.vercel.app';
+const GATEWAY = location.origin.startsWith('http') ? location.origin : 'https://ora-x402-gateway.vercel.app';
 
 const SERVICOS = {
   oraculo:            { endpoint: '/oraculo', amount: '161000' },

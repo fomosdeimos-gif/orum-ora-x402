@@ -8,10 +8,11 @@ module.exports = (req, res) => {
   res.setHeader('access-control-allow-origin', '*');
   res.setHeader('cache-control', 'no-store');
   res.end(JSON.stringify({
-    commit_sha: process.env.VERCEL_GIT_COMMIT_SHA || null,
-    commit_ref: process.env.VERCEL_GIT_COMMIT_REF || null,
-    commit_message: process.env.VERCEL_GIT_COMMIT_MESSAGE || null,
-    repo_slug: process.env.VERCEL_GIT_REPO_SLUG || null,
-    deployment_id: process.env.VERCEL_DEPLOYMENT_ID || null,
+    commit_sha: process.env.VERCEL_GIT_COMMIT_SHA || process.env.ORUM_COMMIT_SHA || null,
+    commit_ref: process.env.VERCEL_GIT_COMMIT_REF || process.env.ORUM_GIT_REF || null,
+    commit_message: process.env.VERCEL_GIT_COMMIT_MESSAGE || process.env.ORUM_COMMIT_MESSAGE || null,
+    repo_slug: process.env.VERCEL_GIT_REPO_SLUG || 'orum-ora-x402',
+    deployment_id: process.env.VERCEL_DEPLOYMENT_ID || process.env.ORUM_DEPLOYMENT_ID || null,
+    runtime: process.env.VERCEL ? 'vercel' : 'portable-node',
   }));
 };

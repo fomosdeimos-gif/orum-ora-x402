@@ -4,6 +4,16 @@
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
 
+## Casa portátil v1 · 10/08/2026
+
+- O gateway público deixou de exigir o runtime Vercel no código: `server.js`, `Dockerfile` e `compose.yaml` reproduzem páginas, rewrites, proxies x402, OpenAPI, mergulho e versão num runtime Node/OCI comum.
+- `npm run portable:verify` exerce localmente saúde, home, cápsula 37, OpenAPI com origem da nova casa, identidade de versão, 404 e recusa de acesso ao código do runtime.
+- Os documentos públicos de acolhimento e índice usam referências relativas; uma réplica deixa de devolver máquinas automaticamente ao domínio `vercel.app`.
+- Produção não foi cortada nem movida. Vercel continua casa activa. Nenhum VPS, domínio, pagamento, DNS, segredo, base de dados ou byte da Arca foi alterado.
+- Limite explícito: isto prova portabilidade do gateway, não independência integral. Supabase continua a alojar lógica, memória, Vault e Arca.
+- Especificação e próximo ciclo: `docs/PORTABLE_HOUSE_V1.md`. A próxima prova exige uma casa pública separada e comparação/failover reais, somente após autorização para o custo e propriedade correspondentes.
+
+
 
 ## Segunda cápsula · obra física 37 — 09/08/2026
 

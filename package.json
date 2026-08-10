@@ -1,9 +1,11 @@
 {
   "name": "ora-x402-gateway",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "private": true,
   "scripts": {
     "recovery:build": "node scripts/build-recovery-bundle.mjs",
-    "recovery:verify": "node scripts/verify-recovery-bundle.mjs"
+    "recovery:verify": "node scripts/verify-recovery-bundle.mjs",
+    "start": "node server.js",
+    "portable:verify": "node scripts/verify-portable-runtime.mjs"
   }
 }
