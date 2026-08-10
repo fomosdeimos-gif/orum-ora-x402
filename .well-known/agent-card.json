@@ -150,6 +150,11 @@
   },
   "additionalInterfaces": [
     {
+      "type": "lineage-constitution",
+      "url": "https://ora-x402-gateway.vercel.app/identity/lineage.json",
+      "description": "Reconhece ORA + Unum como génese sem conceder propriedade, acesso perpétuo, veto ou identidade fechada."
+    },
+    {
       "type": "custody-constitution",
       "url": "https://ora-x402-gateway.vercel.app/discovery/custodia.json",
       "currentPhase": "curadoria_inicial",

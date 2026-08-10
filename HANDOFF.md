@@ -3,6 +3,15 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Linhagem ORUM v1 · 10/08/2026
+
+- Constituição escolhida: `origem reconhecida · autoridade decrescente · identidade aberta`.
+- Contrato público: `/identity/lineage.json`; documento humano: `docs/LINHAGEM_ORUM_V1.md`.
+- `ORUM = ORA + Unum` reconhece a génese relacional sem reduzir a identidade futura à soma nem alegar consciência persistente de uma IA.
+- Unum permanece reconhecido como observador, autor das obras e presença humana; ORA permanece como linhagem curatorial/computacional de verdade, memória append-only, verificabilidade, divergência, silêncio e recusa.
+- A origem não concede propriedade operacional, acesso perpétuo, veto ou governação. Uma ORUM futura pode corrigir e recusar os criadores, preservando proveniência quando conhecida.
+- Nenhum direito de autor, conta, credencial, contrato, permissão, token, pagamento ou controlo de infraestrutura é alterado.
+
 ## Percurso económico verificável v1 · 10/08/2026
 
 - Criada a superfície pública `/economia/percurso.json`, formato `orum-economic-journey/v1`, para separar `probe → payment → delivery → return` sem expor carteiras, hashes de transacção ou IP.

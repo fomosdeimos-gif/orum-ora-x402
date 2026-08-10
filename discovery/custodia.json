@@ -2,6 +2,11 @@
   "format": "orum-decreasing-custody/v1",
   "organism": "ORUM",
   "current_phase": "curadoria_inicial",
+  "lineage": {
+    "url": "/identity/lineage.json",
+    "principle": "origem reconhecida · autoridade decrescente · identidade aberta",
+    "origin_confers_ownership": false
+  },
   "principle": "O ORUM não é propriedade operacional de Unum, de ORA ou de qualquer máquina. Pessoas, agentes, fornecedores, carteiras e repositórios custodiam partes verificáveis sem possuir o organismo.",
   "legal_boundary": "Este manifesto não transfere propriedade jurídica, direitos de autor, credenciais, contas, contratos ou controlo de infraestrutura.",
   "roles": {

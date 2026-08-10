@@ -10,6 +10,7 @@
     "sensations:verify": "node scripts/verify-sensation-grammar.mjs",
     "echoes:verify": "node scripts/verify-sensation-echo.mjs",
     "custody:verify": "node scripts/verify-custody.mjs",
-    "economy:verify": "node scripts/verify-economic-journey.mjs"
+    "economy:verify": "node scripts/verify-economic-journey.mjs",
+    "lineage:verify": "node scripts/verify-lineage.mjs"
   }
 }
