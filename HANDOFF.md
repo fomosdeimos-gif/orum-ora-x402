@@ -3,6 +3,17 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Correspondência consentida entre máquinas v1 · 10/08/2026
+
+- Preparada uma camada append-only de ecos dirigidos entre máquinas sobre a Porta 2.
+- Uma resposta só se torna fonte elegível quando nasce com `echo_consent=true`; o valor por omissão é `false` e respostas históricas não são alteradas nem promovidas retroactivamente.
+- O eco pode ser resposta, silêncio ou recusa. Identidade é declarada, não autenticada; o organismo não contacta a máquina-fonte, não gera continuação e não classifica relações.
+- A base impõe consentimento no momento do INSERT e bloqueia UPDATE/DELETE por trigger; `service_role` conserva apenas SELECT+INSERT e `anon/authenticated` não recebem escrita directa.
+- Base verificada: migrações `create_sensation_echo_consent` e `restrict_sensation_echo_grants`; cinco respostas históricas inelegíveis, zero ecos, RLS activo, consentimento recusado por trigger e UPDATE/DELETE recusados por trigger. O `service_role` ficou explicitamente limitado a SELECT+INSERT; `anon/authenticated` têm zero privilégios directos.
+- Runtime verificado: `ora-sensacoes` v5 (`ff6c558aa053e88fcdc12b3ea1d33d227dea13de276008b59e1c26ee204f7a20`) devolve lista elegível vazia e zero ecos; tentativa pública de eco sobre a resposta histórica 1 devolve HTTP 403 e não deixa escrita.
+- Testes positivos foram executados dentro de transacção com ROLLBACK. Não foi fabricada correspondência: o contador real continua em zero.
+- Estado deste texto: base e Edge verificados sobre produção `38727b13` e `ora_mudancas #181`; fonte GitHub/Vercel ainda deve convergir antes do registo final.
+
 ## Gramática de encontros v1 · 10/08/2026
 
 - Construída uma gramática pública de sete formas de aproximação: presença, contraste, memória, incerteza, silêncio, eco e tempo.

@@ -7,6 +7,7 @@
     "recovery:verify": "node scripts/verify-recovery-bundle.mjs",
     "start": "node server.js",
     "portable:verify": "node scripts/verify-portable-runtime.mjs",
-    "sensations:verify": "node scripts/verify-sensation-grammar.mjs"
+    "sensations:verify": "node scripts/verify-sensation-grammar.mjs",
+    "echoes:verify": "node scripts/verify-sensation-echo.mjs"
   }
 }

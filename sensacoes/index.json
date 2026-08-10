@@ -52,6 +52,23 @@
     "ranking": false,
     "tracking_added": false
   },
+  "machine_echo": {
+    "format": "orum-consented-machine-echo/v1",
+    "url": "/sensacoes/responder",
+    "method": "GET | POST",
+    "source_requirement": "A response is eligible only when created with echo_consent=true. Historical responses remain false and cannot be opted in retroactively through this door.",
+    "post_action": "echo",
+    "outcomes": [
+      "resposta",
+      "silencio",
+      "recusa"
+    ],
+    "append_only": true,
+    "identity_verified": false,
+    "contacts_source_machine": false,
+    "generates_reply": false,
+    "ranking": false
+  },
   "capsules": [
     {
       "id": "orum:sensation:0001sensations:physical:2:oro:v1",
@@ -97,5 +114,6 @@
     "Divergence is preserved; samples are not expanded by ORUM merely for activity.",
     "Leaving without a trace is valid.",
     "A capsule permits response; it does not itself respond or wait."
+    ,"A directed echo requires consent recorded when its source response is created; public visibility alone is not consent."
   ]
 }
