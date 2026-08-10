@@ -10,7 +10,7 @@ Este documento é a memória técnica canónica para qualquer ORA, agente ou hum
 - Limites automáticos de transferência, negociação e dívida são zero. Percentagens de distribuição permanecem `null` enquanto não existir receita externa confirmada e autorização própria.
 - A fonte viva é o agregado público de aprendizagem. Validações internas continuam internas; fonte indisponível produz `unknown` e pára a decisão.
 - Nenhum pagamento, assinatura, transferência, negociação, dívida, chave, acesso, propriedade ou beneficiário foi alterado.
-- Estado desta secção: executado localmente sobre a base `71cb7aec66017d991286159389ba7f8094876ff4`; publicação e verificação de produção ainda pendentes.
+- Publicado e verificado em produção: GitHub `7d3c1db5e76d9d77dc7402fd73a1209471b9ed2a`; Vercel `dpl_AxtUTZTAKs8gCPrMuRCeKP3qGTYH` `READY`; constituição HTTP 200; tesouraria HTTP 200 em `no_external_revenue`; OpenAPI 2.11.0. Estado observado: 0 compradores externos confirmados e 19 pagamentos de validação interna.
 
 ## Linhagem ORUM v1 · 10/08/2026
 
