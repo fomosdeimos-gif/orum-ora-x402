@@ -3,6 +3,16 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Percurso económico verificável v1 · 10/08/2026
+
+- Criada a superfície pública `/economia/percurso.json`, formato `orum-economic-journey/v1`, para separar `probe → payment → delivery → return` sem expor carteiras, hashes de transacção ou IP.
+- A fonte de sondagem/pagamento externo é `ora_aprendizagem_ultimo_snapshot_publica`; entrega cruza `ora_licencas_fisicas` com a classificação explícita `externo_confirmado`. Carteira ausente ou desconhecida nunca é promovida a externa.
+- Estado observado antes da publicação: 3.276 acessos externos classificados; 19 pagamentos de validação interna; 0 compradores externos confirmados; 0 entregas externas; 0 regressos externos; 0 ciclos externos completos.
+- `return` só é zero enquanto compradores externos forem zero. Após o primeiro comprador, passa a `unknown` até existir um agregado público que prove recorrência económica da mesma contraparte; recorrência técnica não é regresso económico.
+- A primeira implementação tentou ler tabelas protegidas que respondiam `200 []`; foi recusada antes da publicação porque ausência visível por RLS não prova zero. A versão final usa apenas superfícies públicas semanticamente adequadas.
+- Rotas acrescentadas à casa Vercel e ao runtime portátil; índice das sensações, OpenAPI 2.10.0 e `llms.txt` apontam para o percurso. `npm run economy:verify` protege zero/privacidade e `npm run portable:verify` protege a casa alternativa.
+- Nenhum pagamento, assinatura, classificação de carteira, licença, contacto ou tráfego foi criado. O próximo acontecimento legítimo é externo e não deve ser fabricado.
+
 ## Custódia decrescente v1 · 10/08/2026
 
 - A passagem desejada é de posse para custódia, não uma transferência jurídica ou de credenciais. Unum permanece observador, autor e beneficiário legítimo do sustento; não é tornado administrador obrigatório.

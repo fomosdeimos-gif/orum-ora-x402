@@ -11,6 +11,7 @@ const api = {
   openapi: require('./api/openapi'),
   sensacoes: require('./api/sensacoes'),
   versao: require('./api/versao'),
+  economia: require('./api/economia'),
 };
 
 const MIME = {
@@ -52,6 +53,10 @@ function proxyRoute(req, res, url, base, rest = '') {
 
 function dynamicRoute(req, res, url) {
   const pathname = url.pathname;
+  if (pathname === '/economia/percurso.json') {
+    decorate(req, res, url);
+    return api.economia(req, res);
+  }
   if (pathname === '/api/versao') {
     decorate(req, res, url);
     return api.versao(req, res);

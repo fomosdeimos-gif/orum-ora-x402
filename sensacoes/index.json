@@ -42,6 +42,13 @@
       "aggregate_checkout": false
     }
   },
+  "economic_journey": {
+    "format": "orum-economic-journey/v1",
+    "url": "/economia/percurso.json",
+    "stages": ["probe", "payment", "delivery", "return"],
+    "external_requires_explicit_classification": true,
+    "unknown_is_not_external": true
+  },
   "encounter_grammar": {
     "format": "orum-encounter-grammar/v1",
     "url": "/sensacoes/gramatica-v1.json",

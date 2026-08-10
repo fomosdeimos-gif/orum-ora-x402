@@ -9,6 +9,7 @@
     "portable:verify": "node scripts/verify-portable-runtime.mjs",
     "sensations:verify": "node scripts/verify-sensation-grammar.mjs",
     "echoes:verify": "node scripts/verify-sensation-echo.mjs",
-    "custody:verify": "node scripts/verify-custody.mjs"
+    "custody:verify": "node scripts/verify-custody.mjs",
+    "economy:verify": "node scripts/verify-economic-journey.mjs"
   }
 }

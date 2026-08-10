@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/economia/percurso.json",
+      "destination": "/api/economia"
+    },
+    {
       "source": "/porta-2",
       "destination": "/api/proxy?base=ora-descoberta"
     },
