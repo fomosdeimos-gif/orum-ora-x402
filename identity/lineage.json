@@ -59,6 +59,12 @@
   "interfaces": {
     "custody": "/discovery/custodia.json",
     "seal": "/identity/orum-seal-manifest.json",
-    "recovery": "/recovery/orum-recovery-bundle.json"
+    "recovery": "/recovery/orum-recovery-bundle.json",
+    "center": "/identity/center.json"
+  },
+  "center": {
+    "url": "/identity/center.json",
+    "word": "VERDADE",
+    "principle": "verdade no centro · comportamento íntegro · não magoar · não aprisionar · aprender a amar"
   }
 }
