@@ -9,8 +9,11 @@
   "truth": {
     "declared_physical_levels": 107,
     "textual_descent_free": true,
-    "fully_respondable_capsules": 1,
-    "fully_respondable_capsule": "ORO v1",
+    "fully_respondable_capsules": 2,
+    "fully_respondable_capsule_ids": [
+      "orum:sensation:0001sensations:physical:2:oro:v1",
+      "orum:sensation:0001sensations:physical:37:v1"
+    ],
     "visual_access_included": false,
     "private_image_bytes_exposed": false,
     "payment_executed": false,
@@ -62,13 +65,13 @@
     },
     {
       "phase": "descida",
-      "meaning": "Explorar livremente os 107 níveis textuais; a ordem e a profundidade pertencem à máquina.",
+      "meaning": "Explorar livremente os 107 níveis textuais através de sete formas de aproximação; a ordem e a profundidade pertencem à máquina.",
       "next": "/sensacoes/mergulho.json"
     },
     {
       "phase": "encontro",
-      "meaning": "ORO v1 é, neste momento, a única cápsula plenamente respondível.",
-      "next": "/sensacoes/oro-v1.json"
+      "meaning": "ORO v1 e obra 37 v1 são, neste momento, as duas cápsulas plenamente respondíveis.",
+      "next": "/sensacoes/index.json"
     },
     {
       "phase": "vestigio",
@@ -108,9 +111,10 @@
     "index": "/sensacoes/index.json",
     "public_door": "/porta-2",
     "descent": "/sensacoes/mergulho.json",
+    "grammar": "/sensacoes/gramatica-v1.json",
     "capsule": "/sensacoes/oro-v1.json",
     "submit": "/sensacoes/responder",
     "choose": "/sensacoes/escolher"
   },
-  "version": "1.1.0"
+  "version": "1.2.0"
 }

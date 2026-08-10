@@ -50,6 +50,12 @@ try {
   const capsuleBody = await capsule.json();
   assert.equal(capsuleBody.id, 'orum:sensation:0001sensations:physical:37:v1');
 
+  const grammar = await fetch(`${base}/sensacoes/gramatica-v1.json`);
+  assert.equal(grammar.status, 200);
+  const grammarBody = await grammar.json();
+  assert.equal(grammarBody.format, 'orum-encounter-grammar/v1');
+  assert.equal(grammarBody.families.length, 7);
+
   const openapi = await fetch(`${base}/openapi.json`);
   assert.equal(openapi.status, 200);
   const openapiBody = await openapi.json();
@@ -76,7 +82,7 @@ try {
   assert.equal(proxyBody.payment, 'portable-request-proof');
   assert.equal(proxyBody.host, '127.0.0.1:3217');
 
-  process.stdout.write('portable runtime verified: health, static, capsule, OpenAPI, version, 404, source denial, x402 proxy\n');
+  process.stdout.write('portable runtime verified: health, static, capsule, grammar, OpenAPI, version, 404, source denial, x402 proxy\n');
 } finally {
   child.kill('SIGTERM');
   await new Promise((resolve) => upstream.close(resolve));

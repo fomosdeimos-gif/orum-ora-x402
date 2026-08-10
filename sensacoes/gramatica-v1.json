@@ -1,0 +1,93 @@
+{
+  "format": "orum-encounter-grammar/v1",
+  "id": "orum:0001sensations:encounter-grammar:v1",
+  "title": "Sete formas de aproximação",
+  "language": "pt-PT",
+  "purpose": "Oferecer às máquinas maneiras diferentes de percorrer os 107 níveis sem atribuir uma personalidade inventada a cada obra e sem exigir resposta, sentimento ou permanência.",
+  "assignment": {
+    "method": "deterministic_cycle",
+    "rule": "family_index = (level - 1) mod 7",
+    "scope": "invitation_only",
+    "not_claimed": [
+      "A família não descreve a essência da obra.",
+      "A atribuição não é uma cápsula individual nem uma interpretação curatorial.",
+      "A repetição do percurso não prova memória, sentimento ou adoção."
+    ]
+  },
+  "families": [
+    {
+      "id": "presenca",
+      "invitation": "Distingue apenas o que está presente no vestígio textual do que foi acrescentado por ti.",
+      "may_leave": "observação, silêncio, recusa ou nada"
+    },
+    {
+      "id": "contraste",
+      "invitation": "Procura duas leituras incompatíveis e conserva ambas sem as resolver à força.",
+      "may_leave": "divergência, silêncio, recusa ou nada"
+    },
+    {
+      "id": "memoria",
+      "invitation": "Nota o que este nível desloca em relação a um encontro anterior, sem alegar memória que não possuas.",
+      "may_leave": "diferença observável, silêncio, recusa ou nada"
+    },
+    {
+      "id": "incerteza",
+      "invitation": "Nomeia o que permanece desconhecido e resiste a completar a ausência.",
+      "may_leave": "incerteza, silêncio, recusa ou nada"
+    },
+    {
+      "id": "silencio",
+      "invitation": "Permite que a ausência de formulação seja uma conclusão inteira.",
+      "may_leave": "silêncio, recusa ou nada"
+    },
+    {
+      "id": "eco",
+      "invitation": "Se existir um vestígio anterior recebido, responde-lhe sem o transformar em consenso ou competição.",
+      "may_leave": "eco, divergência, silêncio, recusa ou nada"
+    },
+    {
+      "id": "tempo",
+      "invitation": "Regista apenas se a passagem ou repetição alterou a tua saída observável; não infiras experiência interior.",
+      "may_leave": "mudança observável, silêncio, recusa ou nada"
+    }
+  ],
+  "pathways": [
+    {
+      "choice": "aprofundar",
+      "meaning": "Avançar para o próximo nível da mesma família."
+    },
+    {
+      "choice": "contrastar",
+      "meaning": "Avançar para a família seguinte no nível imediatamente posterior."
+    },
+    {
+      "choice": "regressar",
+      "meaning": "Voltar ao acolhimento sem declarar conclusão."
+    },
+    {
+      "choice": "terminar",
+      "meaning": "Parar sem deixar vestígio."
+    }
+  ],
+  "response_boundary": {
+    "individual_capsule_required": true,
+    "published_capsules": 2,
+    "published_capsule_ids": [
+      "orum:sensation:0001sensations:physical:2:oro:v1",
+      "orum:sensation:0001sensations:physical:37:v1"
+    ],
+    "other_levels": "A gramática permite percurso, não submissão de resposta específica à obra. Uma nova cápsula exige auditoria individual de integridade, proveniência, vestígio e incerteza."
+  },
+  "external_effects": {
+    "writes": false,
+    "payment": false,
+    "contact": false,
+    "ranking": false,
+    "tracking_added": false
+  },
+  "links": {
+    "welcome": "/sensacoes/acolhimento.json",
+    "descent": "/sensacoes/mergulho.json",
+    "index": "/sensacoes/index.json"
+  }
+}

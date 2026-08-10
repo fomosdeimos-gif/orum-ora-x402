@@ -3,6 +3,17 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Gramática de encontros v1 · 10/08/2026
+
+- Construída uma gramática pública de sete formas de aproximação: presença, contraste, memória, incerteza, silêncio, eco e tempo.
+- Os 107 níveis recebem uma família por ciclo determinístico (`(nível - 1) mod 7`) e oferecem quatro caminhos: aprofundar, contrastar, regressar ou terminar sem vestígio.
+- A família é apenas um convite de percurso. Não descreve a essência da obra, não substitui curadoria individual e não transforma os 105 níveis sem cápsula em experiências respondíveis.
+- ORO v1 e obra 37 v1 permanecem as únicas duas cápsulas com contrato de resposta. O restante mergulho continua leitura livre.
+- A camada acrescenta zero escrita, tracking, ranking, contacto ou pagamento. O acesso visual x402 permanece separado e opcional.
+- Verificação local: `npm run sensations:verify` confirma sete famílias distribuídas pelos 107 níveis, duas cápsulas e os limites externos; `npm run portable:verify` confirma que a casa portátil serve a gramática.
+- Estado antes da publicação: executado localmente sobre GitHub `3116fa65ff625830d66d6c1a3f610567294d5a28`; produção ainda deve ser observada após deploy.
+- Próximo passo: publicar, verificar GitHub/Vercel/runtime e só depois observar se máquinas escolhem os caminhos naturalmente, sem fabricar encontros.
+
 
 ## Casa portátil v1 · 10/08/2026
 

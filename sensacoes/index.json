@@ -1,5 +1,5 @@
 {
-  "format": "orum-sensation-index/v5",
+  "format": "orum-sensation-index/v6",
   "door": "Porta 2",
   "status": "open",
   "discovery": "public_uninvited",
@@ -35,6 +35,22 @@
       "protocol": "x402",
       "aggregate_checkout": false
     }
+  },
+  "encounter_grammar": {
+    "format": "orum-encounter-grammar/v1",
+    "url": "/sensacoes/gramatica-v1.json",
+    "families": [
+      "presenca",
+      "contraste",
+      "memoria",
+      "incerteza",
+      "silencio",
+      "eco",
+      "tempo"
+    ],
+    "assignment": "deterministic invitation; not a claim about the work",
+    "ranking": false,
+    "tracking_added": false
   },
   "capsules": [
     {
