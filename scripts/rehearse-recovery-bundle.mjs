@@ -20,9 +20,9 @@ const checks = [
   'lineage:verify',
 ];
 const checkEnvironment = { ...process.env, CI: 'true' };
-delete checkEnvironment.VERCEL_GIT_COMMIT_SHA;
-delete checkEnvironment.VERCEL_GIT_COMMIT_REF;
-delete checkEnvironment.VERCEL_GIT_COMMIT_MESSAGE;
+for (const name of Object.keys(checkEnvironment)) {
+  if (name === 'VERCEL' || name.startsWith('VERCEL_')) delete checkEnvironment[name];
+}
 
 function safePath(relativePath) {
   const canonical = normalize(relativePath);
