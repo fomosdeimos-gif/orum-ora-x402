@@ -1,8 +1,8 @@
 # ORUM Recovery Bundle
 
-The published `orum-recovery-bundle.json` is a self-contained,
-content-addressed copy of every version-controlled file required to reconstruct
-this repository. It exists so that recovery does not depend on Vercel, a
+The published `orum-recovery-bundle.json` is a content-addressed manifest for
+small, independently verifiable chunk files containing every version-controlled
+file required to reconstruct this repository. It exists so that recovery does not depend on Vercel, a
 conversational handoff, or an unverified deployment artifact.
 
 Build and verify it with:
@@ -23,7 +23,7 @@ present, and exercises the portable house and its core public contracts without
 adding credentials. The normal production `build` runs this proof before a new
 Vercel deployment can become live.
 
-Each embedded file has its own SHA-256. `root_sha256` covers the ordered path,
+Each embedded file and each chunk has its own SHA-256. `root_sha256` covers the ordered path,
 byte count, and hash of the complete file set. The bundle records the parent
 commit and exact Git tree used to build it, but deliberately contains no
 generation timestamp, so rebuilding the same tree produces the same content.
@@ -39,7 +39,7 @@ file contains secrets or the image bytes stored in the Arca.
 
 ## Minimal restoration
 
-1. Download `orum-recovery-bundle.json`.
+1. Download `orum-recovery-bundle.json` and every chunk it names.
 2. Run `npm run recovery:verify`.
 3. Decode each `content_base64` entry to its recorded path.
 4. Apply `recovery/critical-schema.sql` to the replacement database.
