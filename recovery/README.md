@@ -12,6 +12,17 @@ npm run recovery:build
 npm run recovery:verify
 ```
 
+Reconstruct and exercise it in a temporary empty directory with:
+
+```sh
+npm run recovery:rehearse
+```
+
+The rehearsal verifies every embedded hash, confirms that no Git metadata is
+present, and exercises the portable house and its core public contracts without
+adding credentials. The normal production `build` runs this proof before a new
+Vercel deployment can become live.
+
 Each embedded file has its own SHA-256. `root_sha256` covers the ordered path,
 byte count, and hash of the complete file set. The bundle records the parent
 commit and exact Git tree used to build it, but deliberately contains no

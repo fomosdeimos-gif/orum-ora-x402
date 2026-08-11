@@ -3,8 +3,10 @@
   "version": "2.6.0",
   "private": true,
   "scripts": {
+    "build": "npm run recovery:verify && npm run recovery:rehearse",
     "recovery:build": "node scripts/build-recovery-bundle.mjs",
     "recovery:verify": "node scripts/verify-recovery-bundle.mjs",
+    "recovery:rehearse": "node scripts/rehearse-recovery-bundle.mjs",
     "start": "node server.js",
     "portable:verify": "node scripts/verify-portable-runtime.mjs",
     "sensations:verify": "node scripts/verify-sensation-grammar.mjs",
