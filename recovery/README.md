@@ -20,8 +20,8 @@ npm run recovery:rehearse
 
 The rehearsal verifies every embedded hash, confirms that no Git metadata is
 present, and exercises the portable house and its core public contracts without
-adding credentials. The normal production `build` runs this proof before a new
-Vercel deployment can become live.
+adding credentials. The normal dependency installation runs this proof before a
+new Vercel deployment can become live, without changing the house's output layout.
 
 Each embedded file and each chunk has its own SHA-256. `root_sha256` covers the ordered path,
 byte count, and hash of the complete file set. The bundle records the parent
