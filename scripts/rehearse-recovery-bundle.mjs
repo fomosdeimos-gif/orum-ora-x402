@@ -19,6 +19,10 @@ const checks = [
   'treasury:verify',
   'lineage:verify',
 ];
+const checkEnvironment = { ...process.env, CI: 'true' };
+delete checkEnvironment.VERCEL_GIT_COMMIT_SHA;
+delete checkEnvironment.VERCEL_GIT_COMMIT_REF;
+delete checkEnvironment.VERCEL_GIT_COMMIT_MESSAGE;
 
 function safePath(relativePath) {
   const canonical = normalize(relativePath);
@@ -59,7 +63,7 @@ try {
   for (const check of checks) {
     execFileSync('npm', ['run', check], {
       cwd: rehearsalRoot,
-      env: { ...process.env, CI: 'true' },
+      env: checkEnvironment,
       stdio: 'inherit',
     });
   }
