@@ -63,11 +63,13 @@ try {
   assert.equal(custodyBody.current_phase, 'curadoria_inicial');
   assert.equal(custodyBody.phases[2].status, 'not_reached');
 
-  const financialConstitution = await fetch(`${base}/economia/constituicao-v1.json`);
+  const financialConstitution = await fetch(`${base}/economia/constituicao-v2.json`);
   assert.equal(financialConstitution.status, 200);
   const financialBody = await financialConstitution.json();
-  assert.equal(financialBody.format, 'orum-financial-constitution/v1');
-  assert.equal(financialBody.limits.automatic_transfer_usdc, 0);
+  assert.equal(financialBody.format, 'orum-financial-constitution/v2');
+  assert.equal(financialBody.operating_permission.maximum_usdc_per_month, 5);
+  assert.equal(financialBody.operating_permission.effective_transfer_limit_usdc, 0);
+  assert.deepEqual(financialBody.operating_permission.allowed_destinations, []);
   assert.equal(financialBody.custody.legal_and_signing_authority, 'Unum');
 
   const openapi = await fetch(`${base}/openapi.json`);
