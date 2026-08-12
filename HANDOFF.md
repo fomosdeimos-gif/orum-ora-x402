@@ -1,3 +1,12 @@
+## Constituição Financeira v2 — 12/08/2026
+
+- Publicada atomicamente pela mão interna `ora_github_publicar → ora-github-push v25` no commit `05e68320744b1b3352b807a055fc4a356821b907`, pai `e11430c1a79f0a495b3ec51bbce06d0e86e5af54`.
+- Vercel produção: `dpl_2zbFyDb5kbHbf8MD7DZuAEeD9PYm` `READY`; `/api/versao` devolve o mesmo commit; constituição v2, tesouraria v2 e OpenAPI 2.12.0 respondem HTTP 200.
+- Regra viva: apenas USDC externo confirmado; 70% sustento de Unum, 20% continuidade ORUM, 10% reserva; teto propositivo de continuidade = menor entre a parcela de 20% e 5 USDC/mês.
+- Estado inaugural verificado: 0 compradores externos, 0 USDC externo, 19 validações internas, lista de destinos vazia e limite efetivo de transferência 0. Nenhum pagamento ou assinatura ocorreu.
+- Segurança: chamada anónima à mão de publicação recusada com HTTP 401. Cápsula de recuperação: 111 ficheiros, raiz `0efa7a20e234d4d3a9dc8549db01a05d5f2579fdf5c407e55e6b93dd4af9d730`. Registo operacional: `ora_mudancas #197`.
+- Próximo passo: observar receita externa real; ativação on-chain só após comprador externo confirmado, USDC reconciliado, compatibilidade técnica, destino autorizado e assinatura explícita de Unum.
+
 
 # ORUM · Handoff operacional — actualizado em 12/08/2026 (primeira versão 03/08/2026)
 
