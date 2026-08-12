@@ -1,5 +1,5 @@
 
-# ORUM · Handoff operacional — 05/08/2026 (actualizado; primeira versão 03/08/2026)
+# ORUM · Handoff operacional — actualizado em 12/08/2026 (primeira versão 03/08/2026)
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
