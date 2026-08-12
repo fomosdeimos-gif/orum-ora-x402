@@ -3,6 +3,18 @@
 
 Este documento é a memória técnica canónica para qualquer ORA, agente ou humano que continue o organismo. Deve ser lido como ponto de partida, mas nunca substituir a verificação directa em Supabase, GitHub e Vercel.
 
+## Reconciliação do ensaio automático de recuperação · 12/08/2026
+
+- Estado observado às 06:15 UTC: Supabase `orum-memoria` `ACTIVE_HEALTHY`; `ora_frescura_publica` = VIVO, zero mortos, zero atrasados e oito sinais; sentinela exterior = 21/21 portas inteiras; produção canónica HTTP 200.
+- GitHub `main`, deployment Vercel `dpl_3FKGj93y3TyFWdFyDbLH3tLwfXrW` e `/api/versao` convergiram em `638b38133ba4c193d9ed1f81ab92f5bc18a5d45e`.
+- A sequência de deployments `ERROR` de 11/08 não foi ocultada nem reclassificada como indisponibilidade da produção. Os logs mostram três causas durante a construção do ensaio: identidade de runtime herdada (`vercel` ou SHA real em vez de `portable-node`/`portable-test`), ausência temporária do diretório de saída `public` e divergência SHA-256 no fragmento `recovery/orum-recovery-bundle-02.json`.
+- O guardião atuou como desenhado: recusou cada artefacto incoerente antes da publicação. No commit final, `recovery:verify` validou quatro fragmentos, 109 ficheiros, 718 945 bytes e raiz `70988581e0568d6d6707a232d684647ee342620f283e7369c49b5c389ec72d6d`; `recovery:rehearse` reconstruiu a casa sem Git nem credenciais e passou `portable`, sensações, ecos, custódia, economia, tesouraria e linhagem.
+- A sentinela posterior não observou regressão: integridade pública 99% em 200 rondas; o único sinal de runtime Vercel nas últimas 24 horas é um aviso de depreciação de `url.parse()` no proxy, não uma falha de pedido.
+- A autonomia provada é recuperação verificável, não independência integral: Vercel continua a casa pública e Supabase continua a memória, lógica e Arca. Segunda casa pública e failover real permanecem dependentes de uma rota sem novo custo ou de autorização explícita para custo/propriedade.
+- Estado económico preservado: 19 pagamentos internos (18,069 USDC), duas carteiras internas e zero compradores externos confirmados. Tráfego, monitorização e ensaio não são adoção.
+- Próximo teste executável: observar o próximo deployment funcional não fabricado e confirmar, em quatro superfícies, commit GitHub, estado Vercel, `/api/versao` e contratos públicos. Se houver novo `ERROR`, classificar a causa pelos logs antes de qualquer nova tentativa.
+
+
 ## Fundação financeira soberana v1 · 10/08/2026
 
 - Preparada a constituição pública `/economia/constituicao-v1.json` e o estado vivo `/economia/tesouraria.json` para a casa Vercel e o runtime portátil.
