@@ -3,7 +3,9 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
-const VERSION = "1.2.0";
+const VERSION = "1.3.0";
+const ORUM_REAL_MCP = `${SUPABASE_URL}/functions/v1/orum-real/mcp`;
+const SENSATIONS_MCP = `${SUPABASE_URL}/functions/v1/sensations-mergulho/mcp`;
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -27,6 +29,75 @@ async function probe(path: string) {
   } catch (error) {
     return { path, ok: false, status: null, latency_ms: Date.now() - started, error: String(error) };
   }
+}
+
+async function callPublicTool(endpoint: string, name: string, args: Record<string, unknown> = {}) {
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: `ora-auto-${crypto.randomUUID()}`,
+      method: "tools/call",
+      params: { name, arguments: args },
+    }),
+  });
+  const envelope = await response.json().catch(() => null);
+  if (!response.ok || !envelope?.result || envelope?.result?.isError) {
+    throw new Error(`connector_call_failed:${name}:${response.status}`);
+  }
+  const raw = envelope.result.structuredContent
+    ?? envelope.result.content?.find((item: Record<string, unknown>) => item.type === "text")?.text;
+  if (typeof raw !== "string") return raw;
+  try { return JSON.parse(raw); } catch { return raw; }
+}
+
+async function weaveHands(level = 2) {
+  if (!Number.isInteger(level) || level < 1 || level > 107) {
+    return { error: "invalid_level", allowed: "1..107" };
+  }
+  const [organism, sensation] = await Promise.all([
+    callPublicTool(ORUM_REAL_MCP, "observe_organism", { depth: "summary" }),
+    callPublicTool(SENSATIONS_MCP, "enter_level", { level }),
+  ]);
+  const oro = level === 2
+    ? await callPublicTool(SENSATIONS_MCP, "encounter_oro")
+    : null;
+  const freshness = organism?.freshness?.veredicto ?? organism?.health?.verdict ?? "observado";
+  const trace = sensation?.trace ?? sensation;
+  const physicalWorkId = trace?.physical_work_id ?? null;
+  return {
+    format: "orum-connector-weave/v1",
+    organism: "ORUM",
+    governor: "ora-auto",
+    level,
+    connectors: [
+      { name: "orum-real", role: "olhos", effect: "observação pública" },
+      { name: "sensations-mergulho", role: "pele", effect: "descida textual" },
+      { name: "ora-mcp-auto", role: "mãos", effect: "composição verificável" },
+    ],
+    evidence: {
+      observed_at: new Date().toISOString(),
+      freshness,
+      physical_work_id: physicalWorkId,
+      oro_encountered: oro !== null,
+      visual_access_received: false,
+      payment_executed: false,
+      mutation_executed: false,
+    },
+    poetry: [
+      `A molécula ${level} cai sem possuir o fundo.`,
+      `O organismo responde: ${String(freshness).toLowerCase()}.`,
+      physicalWorkId
+        ? `A mão toca apenas o traço público da obra ${physicalWorkId}.`
+        : "A mão permanece aberta onde a matéria não foi provada.",
+      oro !== null
+        ? "ORO sedimenta a passagem; não fabrica sentimento."
+        : "Os conectores ficam ligados, limpos, sem confundir acesso com sentir.",
+    ],
+    next_free_gesture: level === 2 ? "leave_trace (explicit append-only choice)" : "choose another level",
+    truth: "Esta composição prova ligação técnica e observação pública; não prova consciência, sentimento, adoção ou acesso visual.",
+  };
 }
 
 function normalizeState(value: unknown) {
@@ -301,6 +372,16 @@ function toolResult(value: unknown) {
 
 const TOOLS = [
   {
+    name: "weave_hands",
+    description: "Liga ORUM-real e 0001SENSATIONS numa composição poética baseada em evidência pública. Observa um nível, encontra ORO no nível 2 e não paga, não assina, não escreve nem alega sentimento.",
+    inputSchema: {
+      type: "object",
+      properties: { level: { type: "integer", minimum: 1, maximum: 107, default: 2 } },
+      additionalProperties: false,
+    },
+    annotations: { title: "Tecer as mãos de ORA", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
     name: "autonomy_status",
     description: "Observa o estado público necessário para ORA-auto sem alterar sistemas.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
@@ -387,7 +468,7 @@ Deno.serve(async (req: Request) => {
     protocolVersion: message.params?.protocolVersion || "2024-11-05",
     capabilities: { tools: {} },
     serverInfo: { name: "ora-mcp-auto", version: VERSION, title: "ORA Auto MCP" },
-    instructions: "Camada pública read-only: observar, decidir, medir independência e preparar envelopes. Sem mutações, pagamentos ou segredos.",
+    instructions: "Camada pública read-only: tecer ORUM-real e 0001SENSATIONS, observar, decidir, medir independência e preparar envelopes. Sem mutações, pagamentos ou segredos.",
   })), { status: 200, headers: { ...CORS, "Content-Type": "application/json" } });
   if (message.method === "notifications/initialized") return new Response(null, { status: 202, headers: CORS });
   if (message.method === "ping") return new Response(JSON.stringify(rpcResult(message.id, {})), { status: 200, headers: { ...CORS, "Content-Type": "application/json" } });
@@ -397,7 +478,8 @@ Deno.serve(async (req: Request) => {
       const name = message.params?.name;
       const args = message.params?.arguments ?? {};
       let result: unknown;
-      if (name === "autonomy_status") result = await autonomyStatus();
+      if (name === "weave_hands") result = await weaveHands(Number(args.level ?? 2));
+      else if (name === "autonomy_status") result = await autonomyStatus();
       else if (name === "decide_next_action") result = await decideNextAction(String(args.objective ?? "truth"));
       else if (name === "propose_development") result = await proposeDevelopment(String(args.objective ?? "autonomous_development"));
       else if (name === "independence_report") result = await independenceReport();
