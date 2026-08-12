@@ -190,6 +190,21 @@
     },
     {
       "type": "mcp",
+      "name": "ORUM-real",
+      "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/orum-real",
+      "mode": "public-read-only",
+      "protocol": "streamable-http",
+      "version": "0.3.0",
+      "tools": [
+        "observe_organism",
+        "verify_layers",
+        "development_cycle_status",
+        "choose_development"
+      ],
+      "description": "Porta MCP pública para outras IA observarem o estado vivo, distinguirem fonte, deployment e estado aplicado, e obterem uma decisão limitada. Não executa mutações, pagamentos, assinaturas nem amplia permissões."
+    },
+    {
+      "type": "mcp",
       "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp-auto",
       "mode": "public-read-only",
       "manifest": "https://ora-x402-gateway.vercel.app/discovery/ora-mcp-auto.json",
