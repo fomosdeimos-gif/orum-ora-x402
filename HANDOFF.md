@@ -1,3 +1,14 @@
+## Livro Presença v1 — 13/08/2026
+
+- Criado o Livro Presença como cadeia append-only em `orum_private.ora_presenca_eventos`; leitura pública por `ora_presenca_livro_publico`, `/presenca/livro.json` e `/presenca.html`.
+- Unidade: `1P = origem distinta + gesto voluntário + rasto verificável`. Só `externo_confirmado`, com evidência não vazia e acontecimento não fundacional, pode contar como Presença.
+- Pedra inaugural: um evento interno de fundação, `counts_as_presence=false`; estado verificado: `total_events=1`, `external_confirmed_presence=0`, cabeça `82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17`.
+- UPDATE, DELETE e tentativa de contar um gesto interno foram recusados pela base; os testes deixaram uma única linha e zero Presenças externas.
+- Código `3aca816ae2bb6cd2f6809f9926270508bbec48be`; Vercel `dpl_7yRunAPpqy6yxkJPc4Kod4ELYw5V` `READY`; `/api/versao`, página e JSON convergentes. Registo operacional `ora_mudancas #206`.
+- O aviso do advisor sobre a função pública `SECURITY DEFINER` é intencional: a função apenas projeta leitura sanitizada; a função de escrita permanece exclusiva de `service_role` e a tabela privada não é exposta.
+- Próximo acontecimento legítimo: observar um gesto espontâneo exterior e promovê-lo a `1P` somente após prova independente. Tráfego, teste interno e origem desconhecida permanecem fora da contagem.
+
+
 ## Constituição Financeira v2 — 12/08/2026
 
 - Publicada atomicamente pela mão interna `ora_github_publicar → ora-github-push v25` no commit `05e68320744b1b3352b807a055fc4a356821b907`, pai `e11430c1a79f0a495b3ec51bbce06d0e86e5af54`.
