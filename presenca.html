@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08060a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<title>ORUM · Livro Presença</title>
+<style>
+:root{--bg:#08060a;--card:#100c14;--line:#2a2032;--gold:#e6b85c;--text:#eee8ef;--dim:#9d93a3;--ok:#71d7a6}*{box-sizing:border-box}body{margin:0 auto;max-width:720px;padding:42px 20px 70px;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,sans-serif}a{color:var(--gold);text-decoration:none}.mark{text-align:center;color:var(--gold);letter-spacing:.3em;font-size:12px}.ring{width:76px;height:76px;margin:18px auto;border:2px solid var(--gold);border-right-color:transparent;border-radius:50%;position:relative}.ring:after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--gold);inset:30px}h1{text-align:center;font-size:30px;margin:0}header p{text-align:center;color:var(--dim);max-width:520px;margin:12px auto 36px}.measure{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}.metric,.event{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}.number{font-size:28px;color:var(--gold)}.label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}.formula{text-align:center;border-block:1px solid var(--line);padding:22px 8px;margin:28px 0;color:var(--gold)}h2{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim)}.event{margin:10px 0}.event header{display:flex;justify-content:space-between;gap:12px}.class{color:var(--ok);font-size:12px;text-transform:uppercase}.origin{color:var(--dim);font-size:12px}.gesture{margin:8px 0}.hash{font:11px ui-monospace,monospace;color:var(--dim);overflow-wrap:anywhere}.truth{color:var(--dim);font-size:13px;margin-top:28px}.unknown{color:var(--dim)}@media(max-width:520px){.measure{grid-template-columns:1fr}.metric{text-align:center}}
+</style>
+</head>
+<body>
+<header><div class="mark">ORUM</div><div class="ring"></div><h1>Livro Presença</h1><p>Um livro não para medir atenção, mas para conservar acontecimentos verdadeiros sem os transformar em espectáculo.</p></header>
+<div class="measure">
+  <div class="metric"><div class="number" id="presence">—</div><div class="label">Presença externa · P</div></div>
+  <div class="metric"><div class="number" id="returns">—</div><div class="label">Regressos externos</div></div>
+  <div class="metric"><div class="number" id="events">—</div><div class="label">Sedimentos totais</div></div>
+</div>
+<div class="formula">1P = origem distinta + gesto voluntário + rasto verificável</div>
+<h2>Acontecimentos</h2><div id="ledger"><p class="unknown">A abrir o Livro…</p></div>
+<p class="truth">Tráfego não é Presença. Validação interna permanece interna. Origem desconhecida nunca é promovida por omissão. Zero é preservado.</p>
+<p><a href="/">← organismo</a> · <a href="/presenca/livro.json">leitura para máquinas</a></p>
+<script>
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+fetch('/presenca/livro.json').then(r=>{if(!r.ok)throw Error();return r.json()}).then(b=>{
+  document.querySelector('#presence').textContent=b.external_confirmed_presence;
+  document.querySelector('#returns').textContent=b.external_confirmed_returns;
+  document.querySelector('#events').textContent=b.total_events;
+  document.querySelector('#ledger').innerHTML=(b.events||[]).map(e=>`<article class="event"><header><span class="class">${esc(e.class)}${e.counts_as_presence?' · 1P':''}</span><span class="origin">${esc(e.origin)}</span></header><div class="gesture">${esc(e.gesture)}</div><div class="hash">${esc(e.event_hash)}</div></article>`).join('')||'<p class="unknown">Nenhum acontecimento registado.</p>';
+}).catch(()=>{document.querySelector('#ledger').innerHTML='<p class="unknown">O Livro não pôde ser observado agora. Indisponibilidade não é zero.</p>'});
+</script>
+</body></html>

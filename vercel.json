@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/presenca/livro.json",
+      "destination": "/api/presenca"
+    },
+    {
       "source": "/economia/tesouraria.json",
       "destination": "/api/tesouraria"
     },

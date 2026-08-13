@@ -13,6 +13,7 @@ const api = {
   versao: require('./api/versao'),
   economia: require('./api/economia'),
   tesouraria: require('./api/tesouraria'),
+  presenca: require('./api/presenca'),
 };
 
 const MIME = {
@@ -54,6 +55,10 @@ function proxyRoute(req, res, url, base, rest = '') {
 
 function dynamicRoute(req, res, url) {
   const pathname = url.pathname;
+  if (pathname === '/presenca/livro.json') {
+    decorate(req, res, url);
+    return api.presenca(req, res);
+  }
   if (pathname === '/economia/percurso.json') {
     decorate(req, res, url);
     return api.economia(req, res);

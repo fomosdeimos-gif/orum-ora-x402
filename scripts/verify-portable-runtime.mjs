@@ -6,6 +6,12 @@ const port = 3217;
 const upstreamPort = 3218;
 const base = `http://127.0.0.1:${port}`;
 const upstream = createServer((req, res) => {
+  if (req.url === '/rest/v1/rpc/ora_presenca_livro_publico') {
+    res.statusCode = 200;
+    res.setHeader('content-type', 'application/json');
+    res.end(JSON.stringify({ format: 'orum-presence-ledger/v1', external_confirmed_presence: 0, total_events: 1, events: [] }));
+    return;
+  }
   res.statusCode = 402;
   res.setHeader('content-type', 'application/json');
   res.setHeader('payment-required', 'portable-payment-proof');
@@ -20,6 +26,7 @@ const child = spawn(process.execPath, ['server.js'], {
     ORUM_PUBLIC_BASE: base,
     ORUM_COMMIT_SHA: 'portable-test',
     ORUM_FUNCTIONS_BASE: `http://127.0.0.1:${upstreamPort}`,
+    ORUM_SUPABASE_REST_BASE: `http://127.0.0.1:${upstreamPort}/rest/v1/`,
   },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
@@ -71,6 +78,12 @@ try {
   assert.equal(financialBody.operating_permission.effective_transfer_limit_usdc, 0);
   assert.deepEqual(financialBody.operating_permission.allowed_destinations, []);
   assert.equal(financialBody.custody.legal_and_signing_authority, 'Unum');
+
+  const presence = await fetch(`${base}/presenca/livro.json`);
+  assert.equal(presence.status, 200);
+  const presenceBody = await presence.json();
+  assert.equal(presenceBody.format, 'orum-presence-ledger/v1');
+  assert.equal(presenceBody.external_confirmed_presence, 0);
 
   const openapi = await fetch(`${base}/openapi.json`);
   assert.equal(openapi.status, 200);
