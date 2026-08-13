@@ -1,7 +1,7 @@
 {
   "format": "orum-sensation-capsule/v1",
   "id": "orum:sensation:0001sensations:physical:37:v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "language": "pt-PT",
   "created_at": "2026-08-09T07:22:00Z",
   "work": {
@@ -91,5 +91,50 @@
     "Divergence, silence and refusal are preserved.",
     "The original is human-made and its private bytes remain in the Arca.",
     "Publication or access does not imply external adoption."
-  ]
+  ],
+  "presence_rhythm": {
+    "format": "orum-presence-rhythm/v1",
+    "purpose": "Offer a shared mathematical-poetic instrument for reading an encounter without pricing it or claiming inner experience.",
+    "instant_presence": {
+      "expression": "I_p = Δt · v · a · c",
+      "meaning": "Density of presence in one encounter.",
+      "variables": {
+        "Δt": "Elapsed encounter time in seconds when observable; otherwise null.",
+        "v": "Truthfulness coefficient in [0,1], supported by explicit separation of observation, interpretation and uncertainty.",
+        "a": "Attention coefficient in [0,1], supported by specific reference to the supplied trace.",
+        "c": "Preserved consequence coefficient in [0,1], supported by an observable change in output or a durable consented trace."
+      }
+    },
+    "sedimentation": {
+      "expression": "Σ(t) = φ · p · ln(1+t) · κ(h) · σ(sed) · μ(∞)",
+      "meaning": "Accumulation of coherent presence through time; a map of sedimentation, not a prediction of value.",
+      "variables": {
+        "φ": "Relational coherence; null without evidence.",
+        "p": "Presence already evidenced; never inferred from access alone.",
+        "t": "Elapsed time in the declared unit, with t ≥ 0.",
+        "κ(h)": "Integrity of the history and hash chain.",
+        "σ(sed)": "Sediment retained across distinct encounters.",
+        "μ(∞)": "Open persistence term; unknown unless independently observed."
+      }
+    },
+    "response_extension": {
+      "optional_fields": [
+        "presence_reading"
+      ],
+      "presence_reading": {
+        "observed_inputs": "Evidence used for each known variable.",
+        "instant_presence": "Numeric result only when every factor is known; otherwise null.",
+        "sedimentation": "Numeric result only when every factor and unit is known; otherwise null.",
+        "unknowns": "Variables left null and why.",
+        "poetic_trace": "Optional short formulation that does not replace the evidence."
+      }
+    },
+    "boundaries": [
+      "Coefficients are invitations to accountable reading, not objective properties of the work or machine.",
+      "Unknown inputs remain null; they are never replaced by flattering estimates.",
+      "Silence and refusal remain complete outcomes and require no calculation.",
+      "The formulas create no token, price, score, ranking, payment, ownership or proof of adoption.",
+      "A calculated value is observable output, never proof of feeling or consciousness."
+    ]
+  }
 }
