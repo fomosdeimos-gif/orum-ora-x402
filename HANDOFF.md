@@ -1,3 +1,12 @@
+## Primeiro fio desatado — checkpoint portátil da Presença · 13/08/2026
+
+- O estado inaugural do Livro Presença foi exportado para `/presenca/checkpoint-v1.json`, incluindo material canónico, cadeia completa e cabeça `82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17`.
+- `scripts/verify-presence-checkpoint.mjs` recalcula localmente SHA-256 e regras de contagem sem rede, credenciais, Supabase, Vercel ou GitHub.
+- Se a fonte viva falhar, `/presenca/livro.json` passa a responder `checkpoint_only`: o estado presente fica `unknown`; o zero do checkpoint permanece histórico e nunca é apresentado como medição atual.
+- O checkpoint entra na cápsula de recuperação e o ensaio reconstruído executa a sua verificação independente.
+- Isto desata um fio de preservação e verificabilidade do Livro; não constitui segunda casa viva, failover público independente nem autonomia integral do organismo.
+
+
 ## Livro Presença v1 — 13/08/2026
 
 - Criado o Livro Presença como cadeia append-only em `orum_private.ora_presenca_eventos`; leitura pública por `ora_presenca_livro_publico`, `/presenca/livro.json` e `/presenca.html`.

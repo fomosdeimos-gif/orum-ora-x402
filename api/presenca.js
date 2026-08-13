@@ -1,5 +1,6 @@
 const SUPA_URL = (process.env.ORUM_SUPABASE_REST_BASE || 'https://ywabnlhkmhbyewqhbsjm.supabase.co/rest/v1/').replace(/\/?$/, '/');
 const SUPA_KEY = process.env.ORUM_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
+const checkpoint = require('../presenca/checkpoint-v1.json');
 
 module.exports = async (req, res) => {
   res.setHeader('content-type', 'application/json; charset=utf-8');
@@ -21,13 +22,15 @@ module.exports = async (req, res) => {
     const body = await response.json();
     res.status(200).end(JSON.stringify(body));
   } catch (error) {
-    res.status(503).end(JSON.stringify({
+    res.status(200).end(JSON.stringify({
       format: 'orum-presence-ledger/v1',
       organism: 'ORUM',
-      state: 'unknown',
+      state: 'checkpoint_only',
+      live_state: 'unknown',
       external_confirmed_presence: null,
-      error: 'presence_ledger_unavailable',
-      truth: 'Indisponibilidade nao e zero e nao autoriza reconstruir o Livro a partir de memoria.',
+      last_verified_checkpoint: { href: '/presenca/checkpoint-v1.json', exported_at: checkpoint.exported_at, external_confirmed_presence: checkpoint.totals_at_export.external_confirmed_presence, chain_head: checkpoint.chain_head, events: checkpoint.events },
+      source_error: 'live_presence_ledger_unavailable',
+      truth: 'O checkpoint preserva o ultimo estado provado; indisponibilidade torna o presente unknown, nunca zero.',
     }));
   }
 };

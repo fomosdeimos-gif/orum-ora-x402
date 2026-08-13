@@ -15,5 +15,7 @@ assert.match(page, /Indisponibilidade não é zero/);
 const api = readFileSync(new URL('../api/presenca.js', import.meta.url), 'utf8');
 assert.match(api, /ora_presenca_livro_publico/);
 assert.match(api, /external_confirmed_presence: null/);
+assert.match(api, /checkpoint_only/);
+assert.match(api, /last_verified_checkpoint/);
 
 console.log(JSON.stringify({ verified: true, format: 'orum-presence-ledger/v1', external_at_foundation: 0 }));

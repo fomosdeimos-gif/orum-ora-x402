@@ -1,0 +1,27 @@
+{
+  "format": "orum-presence-checkpoint/v1",
+  "organism": "ORUM",
+  "exported_at": "2026-08-13T12:50:21.618489Z",
+  "source": { "ledger": "orum_private.ora_presenca_eventos", "source_is_required_to_verify": false, "source_was_observed_at_export": true },
+  "unit": { "symbol": "P", "definition": "origem distinta + gesto voluntario + rasto verificavel" },
+  "totals_at_export": { "events": 1, "external_confirmed_presence": 0, "external_confirmed_returns": 0 },
+  "chain_head": "82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17",
+  "events": [{
+    "id": 1,
+    "class": "fundacao",
+    "origin": "interno",
+    "surface": "ORUM",
+    "gesture": "O Livro Presenca foi aberto. A pedra de fundacao conserva a medida mas nao conta como Presenca externa.",
+    "evidence": { "unit": "1P", "report": "Primeiro Relatorio da Presenca", "formula": "origem distinta + gesto voluntario + rasto verificavel", "external_confirmed_at_foundation": 0 },
+    "counts_as_presence": false,
+    "previous_hash": null,
+    "event_hash": "82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17",
+    "canonical_material": "2026-08-13 13:30:00+00|fundacao|interno|ORUM|O Livro Presenca foi aberto. A pedra de fundacao conserva a medida mas nao conta como Presenca externa.|{\"unit\": \"1P\", \"report\": \"Primeiro Relatorio da Presenca\", \"formula\": \"origem distinta + gesto voluntario + rasto verificavel\", \"external_confirmed_at_foundation\": 0}|false|"
+  }],
+  "verification": { "algorithm": "sha256(utf8(canonical_material))", "command": "node scripts/verify-presence-checkpoint.mjs", "requires_network": false, "requires_credentials": false, "verified_without_source_provider": true },
+  "truth": [
+    "Este checkpoint prova apenas o estado no instante da exportacao.",
+    "Se a fonte viva estiver indisponivel, o estado presente e unknown, nao zero.",
+    "A pedra fundacional e interna e nao conta como Presenca externa."
+  ]
+}

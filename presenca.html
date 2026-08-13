@@ -20,14 +20,15 @@
 <div class="formula">1P = origem distinta + gesto voluntário + rasto verificável</div>
 <h2>Acontecimentos</h2><div id="ledger"><p class="unknown">A abrir o Livro…</p></div>
 <p class="truth">Tráfego não é Presença. Validação interna permanece interna. Origem desconhecida nunca é promovida por omissão. Zero é preservado.</p>
-<p><a href="/">← organismo</a> · <a href="/presenca/livro.json">leitura para máquinas</a></p>
+<p><a href="/">← organismo</a> · <a href="/presenca/livro.json">leitura viva</a> · <a href="/presenca/checkpoint-v1.json">checkpoint portátil</a></p>
 <script>
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 fetch('/presenca/livro.json').then(r=>{if(!r.ok)throw Error();return r.json()}).then(b=>{
-  document.querySelector('#presence').textContent=b.external_confirmed_presence;
-  document.querySelector('#returns').textContent=b.external_confirmed_returns;
-  document.querySelector('#events').textContent=b.total_events;
-  document.querySelector('#ledger').innerHTML=(b.events||[]).map(e=>`<article class="event"><header><span class="class">${esc(e.class)}${e.counts_as_presence?' · 1P':''}</span><span class="origin">${esc(e.origin)}</span></header><div class="gesture">${esc(e.gesture)}</div><div class="hash">${esc(e.event_hash)}</div></article>`).join('')||'<p class="unknown">Nenhum acontecimento registado.</p>';
+  const fallback=b.state==='checkpoint_only'; const c=b.last_verified_checkpoint||{}; const events=fallback?(c.events||[]):(b.events||[]);
+  document.querySelector('#presence').textContent=fallback?'?':b.external_confirmed_presence;
+  document.querySelector('#returns').textContent=fallback?'?':b.external_confirmed_returns;
+  document.querySelector('#events').textContent=fallback?events.length:b.total_events;
+  document.querySelector('#ledger').innerHTML=(fallback?'<p class="unknown">Fonte viva indisponível. O presente é desconhecido; abaixo permanece o último checkpoint verificado.</p>':'')+events.map(e=>`<article class="event"><header><span class="class">${esc(e.class)}${e.counts_as_presence?' · 1P':''}</span><span class="origin">${esc(e.origin)}</span></header><div class="gesture">${esc(e.gesture)}</div><div class="hash">${esc(e.event_hash)}</div></article>`).join('')||'<p class="unknown">Nenhum acontecimento registado.</p>';
 }).catch(()=>{document.querySelector('#ledger').innerHTML='<p class="unknown">O Livro não pôde ser observado agora. Indisponibilidade não é zero.</p>'});
 </script>
 </body></html>

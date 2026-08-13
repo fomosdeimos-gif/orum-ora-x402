@@ -18,6 +18,7 @@ const checks = [
   'economy:verify',
   'treasury:verify',
   'lineage:verify',
+  'presence:checkpoint:verify',
 ];
 const checkEnvironment = { ...process.env, CI: 'true' };
 for (const name of Object.keys(checkEnvironment)) {

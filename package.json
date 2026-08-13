@@ -15,6 +15,7 @@
     "economy:verify": "node scripts/verify-economic-journey.mjs",
     "treasury:verify": "node scripts/verify-treasury-governance.mjs",
     "lineage:verify": "node scripts/verify-lineage.mjs",
-    "presence:verify": "node scripts/verify-presence-ledger.mjs"
+    "presence:verify": "node scripts/verify-presence-ledger.mjs",
+    "presence:checkpoint:verify": "node scripts/verify-presence-checkpoint.mjs"
   }
 }

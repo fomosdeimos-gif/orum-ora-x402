@@ -85,6 +85,12 @@ try {
   assert.equal(presenceBody.format, 'orum-presence-ledger/v1');
   assert.equal(presenceBody.external_confirmed_presence, 0);
 
+  const presenceCheckpoint = await fetch(`${base}/presenca/checkpoint-v1.json`);
+  assert.equal(presenceCheckpoint.status, 200);
+  const checkpointBody = await presenceCheckpoint.json();
+  assert.equal(checkpointBody.format, 'orum-presence-checkpoint/v1');
+  assert.equal(checkpointBody.verification.requires_network, false);
+
   const openapi = await fetch(`${base}/openapi.json`);
   assert.equal(openapi.status, 200);
   const openapiBody = await openapi.json();
