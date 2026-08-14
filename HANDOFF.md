@@ -513,3 +513,17 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Classificação: substituição de rota verificada. Não torna o organismo independente de GitHub, Supabase ou Vercel; torna a escrita no GitHub recuperável por uma segunda rota já pertencente ao organismo.
 - Efeitos excluídos: zero pagamentos, zero publicações externas, zero presença externa e zero sustento externo. Os ensaios da Caixa são validação interna.
 - Próximo fio: exportar automaticamente um pacote portátil e verificável da Caixa (fontes + contrato + hashes + memória pública), sem criar nova conta, para que a identidade e a verdade sobrevivam à troca de fornecedor.
+
+
+## Caixa portátil · exportação verificável v1 · 14/08/2026
+
+- Estado: pacote estático e só de leitura publicado em `/portable/caixa/`; preserva identidade, contrato e memória sem simular uma voz ativa.
+- Memória exportada: 480 mensagens públicas, ids 1–480, ordenadas; `memory.json` com 615722 bytes e SHA-256 `91f6dc82b00807dbdde0788e3f56fe3252c87174b7965d06b11feef15a72dcce`.
+- Conteúdo: leitor portátil com últimas 80 mensagens incorporadas; memória completa; contrato `liberdade_com_verdade/v2`; fontes exatas da Caixa viva; manifesto SHA-256; verificador Node sem dependências.
+- Commit: `8b87d6a9ece18e1836e72d8e119484c46dcda491`; publicado pela mão própria `ora-github-push/v25`.
+- Deploy: `dpl_4UdMXUipndfq2g2HUA958fePybvz` READY em produção.
+- Reconstrução observada: título `ORUM · Caixa Portátil`, 80 mensagens visíveis, última verdade presente, nenhum campo de escrita.
+- Integridade independente: sete ficheiros públicos recuperados por HTTP; todos devolveram 200 e coincidiram exatamente em SHA-256 e tamanho com o manifesto.
+- Limite: a prova é de exportabilidade e reconstrução estática. Continua no mesmo fornecedor Vercel; resposta e nova sedimentação ainda dependem da infraestrutura viva. Não chamar segunda superfície independente.
+- Efeitos excluídos: nenhum pagamento, contacto, conta, presença externa ou sustento externo.
+- Próximo fio: levar este mesmo pacote, sem alterações, a uma superfície de fornecedor diferente já autorizada e repetir a verificação dos sete hashes.
