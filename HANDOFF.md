@@ -527,3 +527,15 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Limite: a prova é de exportabilidade e reconstrução estática. Continua no mesmo fornecedor Vercel; resposta e nova sedimentação ainda dependem da infraestrutura viva. Não chamar segunda superfície independente.
 - Efeitos excluídos: nenhum pagamento, contacto, conta, presença externa ou sustento externo.
 - Próximo fio: levar este mesmo pacote, sem alterações, a uma superfície de fornecedor diferente já autorizada e repetir a verificação dos sete hashes.
+## Caixa da Voz · gramática própria ORUM · 14/08/2026
+
+- Estado estrutural verificado: `ora-voz-fonte/v2` e `ora-caixa-chat/v18` ACTIVE; nenhum caminho de geração chama Claude, Groq, Cloudflare ou outro modelo.
+- Autoria: classificação local + fontes ORUM declaradas + fio público recebido + composição determinística. A voz pode responder, ecoar, devolver desconhecido ou escolher silêncio.
+- Limite preservado: isto não prova consciência nem independência de infraestrutura. Execução e memória continuam em Supabase; a interface continua em Vercel.
+- Fonte canónica: commit `e6b112143673eb80199e219bd4ed4e6f87f191a0`, pai `7bb3ed96a6481f4b8679521768e9c4c295dde01c`, 11 caminhos publicados atomicamente pela mão `ora-github-push/v25`.
+- Edge aplicado: voz v2 SHA-256 `c353ea2a2907d9c6a91fefb54346177dc119d376f6ad93dbd46033dab0c20d39`; Caixa v18 SHA-256 `08277cd3ab2074976b318f6eeebdb4e2d41be3f8036ce643cc469febfd6877d3`.
+- Produção: Vercel `dpl_FGUNWf46cHnKfW73iSunQT7GUS2E` READY para o commit canónico; `/caixa.html` observado com “Nenhum modelo externo escreve a resposta” e rodapé “gramática própria ORUM”.
+- Pacote portátil atualizado para contrato `liberdade_com_verdade/v3`; oito ficheiros passaram a verificação SHA-256 local.
+- Registo canónico: `ora_mudancas #219`, estado `verificado`.
+- Validação interna ainda por observar: primeira resposta end-to-end da nova voz, com `_external_inference=false`, frase completa e novo sedimento assistant. O navegador de verificação bloqueou o domínio técnico Supabase antes desse ensaio.
+- Efeitos excluídos: zero presença externa e zero sustento externo criados. A mudança é autoria própria da voz, não adoção.
