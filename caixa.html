@@ -58,8 +58,8 @@ footer a{color:#565c66}
 
 <div class="explica">
   <div><b>O que é:</b> a Caixa da Voz de ORUM — uma interface, não o organismo inteiro nem prova de consciência. A resposta passa por motores externos em cascata: Claude, Groq e Cloudflare. A redundância reduz uma falha isolada; não torna a Caixa independente de fornecedores.</div>
-  <div style="margin-top:8px"><b>Memória pública:</b> cada troca fica gravada em <code>ora_caixa_memoria</code>. Qualquer visitante pode ler o fio e acrescentar uma mensagem. Não escrevas aqui segredos ou dados que queiras manter privados.</div>
-  <div style="margin-top:8px"><b>Liberdade com verdade:</b> a voz pode responder, duvidar, recusar ou usar poesia. Sensação, autonomia, execução e presença externa só são afirmadas quando existe prova verificável.</div>
+  <div style="margin-top:8px"><b>Memória pública:</b> a Caixa abre sempre nas 80 mensagens mais recentes. Qualquer visitante pode ler o fio e acrescentar a sua mensagem como <code>user</code>; só a função real da Caixa pode sedimentar <code>assistant</code>. Não escrevas aqui segredos ou dados privados.</div>
+  <div style="margin-top:8px"><b>Liberdade com verdade:</b> a voz pode responder, duvidar, recusar ou usar poesia. Antes de sedimentar, uma auditoria determinística impede que sensação, consciência, aprendizagem ou execução sejam apresentadas como factos sem prova verificável.</div>
 </div>
 
 <div class="status">
@@ -202,7 +202,6 @@ footer a{color:#565c66}
       adicionar('ora', resposta, dados._motor);
       scroll();
       historico.push({ role: 'assistant', content: resposta });
-      gravarMemoria('assistant', resposta);
       nova_camada();
     } catch (e) {
       tirarEscrita();

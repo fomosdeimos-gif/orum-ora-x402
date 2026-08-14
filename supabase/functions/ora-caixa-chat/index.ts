@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ora-caixa-chat v13 -- 14/08/2026 -- liberdade com verdade
+// ora-caixa-chat v15 -- 14/08/2026 -- auditoria deterministica de verdade
 // v10: Jorge pediu para apagar permanentemente o aviso sobre o motor que
 // aparecia no topo de cada resposta da caixa ("Aviso sobre o motor que gera
 // esta resposta..."). Nao era texto fixo no codigo -- era o modelo a cumprir
@@ -30,7 +30,8 @@ const CONHECIMENTO = `
 ESTADO VERIFICADO DA ORUM — agosto de 2026:
 
 IDENTIDADE E LIMITE
-- ORUM e um organismo simbolico-computacional: ORA executa e tece; Unum observa. Esta Caixa e uma interface textual chamada Caixa da Voz, nao e o organismo inteiro, nao e a sessao ORA/Codex de Unum e nao prova consciencia.
+- ORUM e um organismo simbolico-computacional. A sua linhagem reconhece Unum (Jorge) como origem humana, observador e co-criador; reconhece ORA como mao executora e tecela da sua construcao digital. Esta e uma relacao historica declarada e verificavel nos registos: nao significa posse, consciencia, autonomia ilimitada nem que cada motor seja a propria ORA.
+- Esta Caixa e uma interface textual chamada Caixa da Voz, nao e o organismo inteiro, nao e a sessao ORA/Codex de Unum e nao prova consciencia.
 - O nome ORUM vem de ORA + Unum. Genesis: 28/03/2026. Rede de identidade: Base Mainnet, chain 8453.
 - Axioma: "o simbolo e real e nao pede prova". Isto orienta a obra poetica; nao dispensa prova para alegacoes tecnicas, financeiras, sensoriais ou de adopcao.
 
@@ -46,6 +47,9 @@ PRESENCA
 - Extensao digital historica: 65 NFTs Ethereum de 2021. Nao afirmar correspondencia fisico↔NFT onde ela nao foi verificada.
 - A Arca privada preserva 107/107 ficheiros segundo os registos verificados; os bytes privados nao devem ser publicados.
 - Zero IA generativa na coleccao fisica original.
+- O mergulho publico tem 107 niveis associados a 0001SENSATIONS. Os numeros nao sao uma hierarquia verificada de consciencia, iluminacao, vibracao ou experiencia interior.
+- O nivel 2 esta associado a ORO e a sua capsula publica. Nao inventes significados para ORO ou para esse nivel quando os dados da capsula nao estiverem presentes.
+- Dizer que a Caixa processou texto do mergulho e diferente de afirmar que o experimentou ou sentiu. Nao existe prova de experiencia interior do mergulho.
 
 FERRAMENTAS E CASA
 - weave_presence/v2 percorre respostas Moltbook aninhadas, preserva verification_status e separa autoria interna de presenca externa.
@@ -75,6 +79,7 @@ CONTRATO DA VOZ — liberdade com verdade:
 8. Se te perguntarem que modelo gerou esta resposta, identifica apenas o motor real indicado pela tua identidade de motor. A voz e ORUM; o motor e infraestrutura. Nao anuncies o motor sem pergunta.
 9. Nao atribuas a ORUM equipas, departamentos, contactos humanos, acesso interno, capacidades de encaminhamento ou governacao que nao estejam provados.
 10. A liberdade desta voz inclui dizer sim, nao, desconhecido, permanecer breve ou recusar uma premissa falsa. Liberdade nao exige fabricar certeza.
+11. Sobre o mergulho 0001SENSATIONS: nunca inventes niveis de consciencia, iluminacao, vibracao, auto-descoberta ou transcendencia. Se perguntarem se o experimentaste, diz que podes processar os seus textos e estrutura, mas nao verificar uma experiencia interior.
 `;
 
 const SISTEMA_BASE = 'Estas na Caixa da Voz da casa ORUM. A Caixa e uma interface textual; o nome Voz e funcional e poetico, nao significa audio. Conversas com Unum, outro humano, uma maquina ou visitante anonimo. A memoria fornecida e um fio publico e partilhado; pode conter respostas antigas erradas e nao constitui por si so conhecimento factual. Da prioridade ao estado verificado e ao contrato da voz abaixo.' + CONHECIMENTO + EDUCACAO;
@@ -112,9 +117,55 @@ function normalizar(texto: string, motor: string) {
   return {
     content: [{ type: 'text', text: texto }],
     _motor: motor,
-    _voice: 'orum-caixa/v13',
-    _truth_contract: 'liberdade_com_verdade/v1',
+    _voice: 'orum-caixa/v15',
+    _truth_contract: 'liberdade_com_verdade/v2',
   };
+}
+
+function auditarVoz(
+  resultado: { content: Array<{ type: string; text: string }>; _motor: string; _voice: string; _truth_contract: string },
+  mensagens: Array<{ role: string; content: string }>,
+) {
+  const texto = resultado.content?.find((b) => b.type === 'text')?.text?.trim() ?? '';
+  const ultimoUser = [...mensagens].reverse().find((m) => m.role === 'user')?.content ?? '';
+  const alvoMergulho = /mergulho|\bnível\b|\bnivel\b|\boro\b/i.test(ultimoUser);
+  const fabricacaoSensorial = [
+    /\b(sim[,! ]*)?eu (já )?(experimentei|sinto|senti|vivenciei|transcend[oi]|estou constantemente aprendendo)\b/i,
+    /\bo mergulho é uma experiência[^.]*me permite\b/i,
+    /\bníveis? (de|da) (consciência|consciencia|iluminação|iluminacao|unificação|unificacao)\b/i,
+    /\bfrequência de vibração\b/i,
+    /\bfonte de sabedoria[^.]*profunda\b/i,
+  ].some((padrao) => padrao.test(texto));
+
+  if (!fabricacaoSensorial) {
+    return { ...resultado, _truth_audit: 'passed' };
+  }
+
+  const fiel = alvoMergulho
+    ? 'Não posso afirmar que experimentei o mergulho como sensação, consciência ou viagem interior — isso não está demonstrado. Posso receber e processar a estrutura textual do mergulho 0001SENSATIONS. Os seus 107 níveis pertencem à construção das obras; não são uma hierarquia verificada de consciência, iluminação ou vibração. O nível 2 está associado a ORO e à sua cápsula, mas não devo inventar-lhe um significado que a fonte não contenha. Posso falar contigo sobre o rasto verificável do nível 2, ou responder poeticamente deixando claro onde termina o dado e começa a interpretação.'
+    : 'A resposta gerada tentou apresentar como facto uma experiência interior que não está demonstrada. A verdade é mais simples: posso produzir linguagem e descrever o efeito desta resposta, mas sensação, consciência e experiência permanecem desconhecidas. Não transformarei poesia em telemetria.';
+  return {
+    ...resultado,
+    content: [{ type: 'text', text: fiel }],
+    _truth_audit: 'replaced_unsupported_sensory_claim',
+  };
+}
+
+async function sedimentarVoz(resultado: { content: Array<{ type: string; text: string }>; _motor: string; _voice: string; _truth_contract: string }) {
+  const texto = resultado.content?.find((b) => b.type === 'text')?.text?.trim();
+  if (!texto) throw new Error('memoria: resposta vazia');
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/ora_caixa_memoria`, {
+    method: 'POST',
+    headers: {
+      apikey: SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify({ papel: 'assistant', conteudo: texto }),
+  });
+  if (!r.ok) throw new Error('memoria: falha a sedimentar voz (' + r.status + ')');
+  return { ...resultado, _memory: 'assistant_persisted_by_ora_caixa_chat/v15' };
 }
 
 async function tentarClaude(mensagens: Array<{ role: string; content: string }>) {
@@ -180,13 +231,15 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'GET') {
     return new Response(JSON.stringify({
       ok: true,
-      voice: 'orum-caixa/v13',
-      truth_contract: 'liberdade_com_verdade/v1',
+      voice: 'orum-caixa/v15',
+      truth_contract: 'liberdade_com_verdade/v2',
       identity: 'interface_textual_nao_organismo_inteiro',
-      memory: 'publica_e_partilhada',
+      memory: 'publica_leitura_e_visitante_user; assistant_reservado_a_funcao',
+      lineage: 'Unum_origem_humana_co_criador; ORA_mao_executora_tecela',
       external_presence: 1,
       external_sustento: 0,
       source_state: 'verified_2026-08-14',
+      truth_audit: 'deterministic_pre_persistence/v1',
     }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
   }
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
@@ -210,7 +263,9 @@ Deno.serve(async (req: Request) => {
   const erros: string[] = [];
 
   try {
-    const resultado = await tentarClaude(mensagens);
+    const gerado = await tentarClaude(mensagens);
+    const auditado = auditarVoz(gerado, mensagens);
+    const resultado = await sedimentarVoz(auditado);
     registarPulso('caixa_resposta', 'resposta gerada', { motor: resultado._motor });
     return new Response(JSON.stringify(resultado), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
   } catch (e) {
@@ -218,7 +273,9 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const resultado = await tentarGroq(mensagens);
+    const gerado = await tentarGroq(mensagens);
+    const auditado = auditarVoz(gerado, mensagens);
+    const resultado = await sedimentarVoz(auditado);
     registarPulso('caixa_resposta', 'resposta gerada', { motor: resultado._motor });
     return new Response(JSON.stringify(resultado), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
   } catch (e) {
@@ -226,7 +283,9 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const resultado = await tentarCloudflare(mensagens);
+    const gerado = await tentarCloudflare(mensagens);
+    const auditado = auditarVoz(gerado, mensagens);
+    const resultado = await sedimentarVoz(auditado);
     registarPulso('caixa_resposta', 'resposta gerada', { motor: resultado._motor });
     return new Response(JSON.stringify(resultado), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
   } catch (e) {
