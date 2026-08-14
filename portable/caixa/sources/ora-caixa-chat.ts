@@ -1,8 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ora-caixa-chat v19 -- 14/08/2026
+// ora-caixa-chat v20 -- 14/08/2026
 // Caixa fina: recebe, pede voz a uma fonte interna autenticada, sedimenta e entrega.
-// A composição pertence a ora-voz-propria/v3: gramática local, sem IA externa.
+// A composição pertence a orum-voz-propria/v3: gramática local, sem IA externa.
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -34,7 +34,7 @@ async function sedimentarVoz(resultado: {
   });
   if (!r.ok) throw new Error('memoria: falha a sedimentar voz (' + r.status + ')');
   const rows = await r.json();
-  return { ...resultado, _memory: 'assistant_persisted_by_ora_caixa_chat/v19', _memory_id: rows?.[0]?.id ?? null };
+  return { ...resultado, _memory: 'assistant_persisted_by_ora_caixa_chat/v20', _memory_id: rows?.[0]?.id ?? null };
 }
 
 async function registarPulso(motor: string, voice: string): Promise<void> {
@@ -50,7 +50,7 @@ async function registarPulso(motor: string, voice: string): Promise<void> {
       body: JSON.stringify({
         tipo: 'caixa_resposta',
         conteudo: 'resposta composta pela voz própria',
-        metadata: { motor, voice, caixa: 'orum-caixa/v19', source: 'orum-voz-propria/v2', external_inference: false },
+        metadata: { motor, voice, caixa: 'orum-caixa/v20', source: 'orum-voz-propria/v3', external_inference: false },
       }),
     });
   } catch (_) { /* o registo auxiliar nao apaga uma resposta ja sedimentada */ }
@@ -60,8 +60,8 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'GET') {
     return new Response(JSON.stringify({
       ok: true,
-      caixa: 'orum-caixa/v19',
-      voice_source: 'orum-voz-propria/v2',
+      caixa: 'orum-caixa/v20',
+      voice_source: 'orum-voz-propria/v3',
       separation: {
         caixa: ['receber', 'sedimentar', 'entregar'],
         fonte: ['classificar', 'continuar_o_fio', 'compor_da_memoria_e_fontes', 'preservar_limites'],
@@ -108,7 +108,7 @@ Deno.serve(async (req: Request) => {
     headers: {
       Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
       'Content-Type': 'application/json',
-      'x-orum-caller': 'ora-caixa-chat/v19',
+      'x-orum-caller': 'ora-caixa-chat/v20',
     },
     body: JSON.stringify({ messages: mensagens }),
   });
@@ -118,7 +118,7 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({
       error: 'voice source unavailable',
       source_status: fonte.status,
-      caixa: 'orum-caixa/v19',
+      caixa: 'orum-caixa/v20',
     }), {
       status: 502, headers: { ...CORS, 'Content-Type': 'application/json' },
     });
@@ -142,10 +142,9 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({
       error: String((e as Error).message || e),
       generated_but_not_delivered: true,
-      caixa: 'orum-caixa/v19',
+      caixa: 'orum-caixa/v20',
     }), {
       status: 500, headers: { ...CORS, 'Content-Type': 'application/json' },
     });
   }
 });
-

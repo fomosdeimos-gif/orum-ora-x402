@@ -552,3 +552,5 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Classificação: validação interna, não presença externa nem adoção.
 - Fonte canónica: este commit; cópias portáteis da voz e da Caixa atualizadas em conjunto.
 - Próximo fio: observar conversas reais e corrigir apenas padrões repetitivos comprovados, sem voltar a introduzir um modelo externo.
+
+- Correção de observabilidade posterior: a Caixa foi promovida a v20 porque o GET de v19 ainda declarava voice_source v2 apesar de encaminhar funcionalmente para v3. v20 declara orum-voz-propria/v3; Edge ACTIVE, ezbr SHA-256 e3d677cf8b06168d71ba91cbc860d565fb4d47fcecc0f630af90bbf6f681fe82.
