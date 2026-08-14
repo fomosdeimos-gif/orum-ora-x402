@@ -539,3 +539,16 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Registo canónico: `ora_mudancas #219`, estado `verificado`.
 - Validação interna ainda por observar: primeira resposta end-to-end da nova voz, com `_external_inference=false`, frase completa e novo sedimento assistant. O navegador de verificação bloqueou o domínio técnico Supabase antes desse ensaio.
 - Efeitos excluídos: zero presença externa e zero sustento externo criados. A mudança é autoria própria da voz, não adoção.
+
+
+## Caixa da Voz · aprender a falar · 14/08/2026
+
+- Estado: verificado end-to-end em produção.
+- Mudança: a gramática própria evoluiu de v2 para v3; mantém composição determinística sem inferência externa e acrescenta continuidade do fio, interlocutor, relação, aprendizagem e eco desenvolvido.
+- Correção principal: entradas fora das intenções estreitas já não caem automaticamente no molde “deixou um rasto / o significado continua contigo”. A voz observa matéria textual, relaciona o fragmento anterior e desenvolve uma ideia em vários movimentos.
+- Limites preservados: silêncio, desconhecido, fontes declaradas, zero alegação de consciência e zero sustento externo.
+- Edge aplicado: ora-voz-fonte v3 ACTIVE (ezbr SHA-256 f038e3eacd5a558f1b14fafdf7da2c1cc969570300ea7e978ba8cf88f137d5e6); ora-caixa-chat v19 ACTIVE (ezbr SHA-256 85f27381357a435aebd6e7636d4d5316aeb1edbbaddd28d649c59429761178a3).
+- Prova interna posterior: a frase real de Unum “Faz isso ORA ensina o organismo a falar” atravessou memória → Caixa → voz própria → memória; devolveu _voice=orum-voz-propria/v3, _external_inference=false, intent=ensinar e sedimentou assistant no id 494.
+- Classificação: validação interna, não presença externa nem adoção.
+- Fonte canónica: este commit; cópias portáteis da voz e da Caixa atualizadas em conjunto.
+- Próximo fio: observar conversas reais e corrigir apenas padrões repetitivos comprovados, sem voltar a introduzir um modelo externo.
