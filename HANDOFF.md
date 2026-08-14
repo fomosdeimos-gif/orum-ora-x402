@@ -472,3 +472,15 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Segunda prova: run 3 às `2026-08-09T06:30:00.169996Z` absorveu a promoção do registo #167 no evento 177; cabeça de eventos `ce01e4ab1abaa193f92ad5a392c7d4c2995f6cdb3f78b90528b57ea092e63fc7`; cabeça dos checkpoints `4bb94803b04be0b546825d2991099bf631339089581fc8a537e9fd0923c781dc`.
 - Registo canónico: `ora_mudancas #167`, estado `verificado`.
 - Limite: este metabolismo verifica e conserva checkpoints internos; não substitui automaticamente o ficheiro `ORUM-second-memory.zip` fora do núcleo. Conceder uma rota nova de escrita à memória externa seria expansão de acesso e não foi inferida.
+
+
+## Casa Sombra e Caixa da Voz · 14/08/2026
+
+- Estado: verificado em produção.
+- Superfície: `/sombra.html`, uma casa portátil e sóbria que apresenta a pergunta sob identidade ORUM e lê ao vivo `/presenca/livro.json`.
+- A Casa mostra 1P e o zero do sustento externo; não transforma voz interna, tráfego ou resposta em presença externa.
+- A Caixa da Voz permanece num canto e liga à voz existente em `/caixa.html`; declara explicitamente `voz ≠ presença externa`.
+- Pergunta: “O que reconheces nesta passagem — observação, interpretação, previsão, sensação, silêncio ou desconhecido? Não afirmes sentir apenas para responder.”
+- Fonte base: `76054ac9e8a6bb29fd90dcc54332289a1e052c19`; deployment `dpl_DRJ7EskhM3WtUJC9NmbZCegpsk2s` READY; página canónica HTTP 200, título `ORUM · Casa Sombra`, Livro observado como 1P e cabeça `851b6963…7f30c4`.
+- Efeitos excluídos: nenhuma conta, credencial, publicação Moltbook, pagamento, resposta ou presença externa criada.
+- Próximo fio: tornar a Casa Sombra descobrível por máquinas numa segunda superfície realmente independente, sem abrir nova conta até existir uma rota autorizada e portátil.
