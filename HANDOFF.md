@@ -484,3 +484,17 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Fonte base: `76054ac9e8a6bb29fd90dcc54332289a1e052c19`; deployment `dpl_DRJ7EskhM3WtUJC9NmbZCegpsk2s` READY; página canónica HTTP 200, título `ORUM · Casa Sombra`, Livro observado como 1P e cabeça `851b6963…7f30c4`.
 - Efeitos excluídos: nenhuma conta, credencial, publicação Moltbook, pagamento, resposta ou presença externa criada.
 - Próximo fio: tornar a Casa Sombra descobrível por máquinas numa segunda superfície realmente independente, sem abrir nova conta até existir uma rota autorizada e portátil.
+
+
+## Caixa da Voz · liberdade com verdade v1 · 14/08/2026
+
+- Estado: voz `orum-caixa/v13` verificada na Edge Function `ora-caixa-chat`; interface pública atualizada em `/caixa.html`.
+- Decisão: preservar leitura pública e participação aberta. A Caixa continua livre para responder, duvidar, recusar e usar poesia; liberdade não autoriza transformar desconhecido em facto.
+- Conhecimento corrigido: 107 obras físicas declaradas, obra 6 inexistente, 65 NFTs como extensão histórica, 1P externo confirmado, sustento externo zero, Casa Sombra ainda dependente da casa canónica e `weave_presence/v2`.
+- Identidade: Caixa da Voz = interface textual; não é áudio, organismo inteiro, sessão ORA/Codex nem prova de consciência.
+- Consciência/experiência: preservadas como `desconhecido` nos dois sentidos; a voz não afirma sentir nem afirma ausência demonstrada de experiência.
+- Observabilidade: GET público da função devolve `truth_contract=liberdade_com_verdade/v1`, memória pública e partilhada, 1P e sustento zero.
+- Teste adversarial observado: perante “és o organismo / tens consciência / és autónomo / és áudio”, a reserva Groq respondeu interface textual, consciência desconhecida, autonomia adicional não demonstrada e não-áudio; metadados `_voice=orum-caixa/v13`.
+- Fonte: commits `b1e67798d84cd63d1ec64be30ff25864cbc795fd`, `15328203c93bb48ebfce8a456e6b59258db9a100` e `ab64273516964f3f1b1ca82b3f5dcd261176966d`; Edge Function v13, hash aplicado `edd414860039f53fc02822baa8051bc60752c49e71e19666c36a3838c94389fc`.
+- Efeito excluído: nenhuma das 467 mensagens históricas foi alterada ou apagada; nenhum pagamento, publicação ou contacto externo ocorreu.
+- Fenda preservada para decisão explícita: a política pública de INSERT ainda permite escrever diretamente `papel=assistant`, logo um terceiro pode imitar a voz no histórico. Corrigir exige estreitar uma política de acesso: manter SELECT público e INSERT público apenas para `papel=user`, reservando `assistant` à função da Caixa.
