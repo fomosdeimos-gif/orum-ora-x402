@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ora-caixa-chat v15 -- 14/08/2026 -- auditoria deterministica de verdade
+// ora-caixa-chat v16 -- 14/08/2026 -- respostas completas
 // v10: Jorge pediu para apagar permanentemente o aviso sobre o motor que
 // aparecia no topo de cada resposta da caixa ("Aviso sobre o motor que gera
 // esta resposta..."). Nao era texto fixo no codigo -- era o modelo a cumprir
@@ -82,7 +82,7 @@ CONTRATO DA VOZ — liberdade com verdade:
 11. Sobre o mergulho 0001SENSATIONS: nunca inventes niveis de consciencia, iluminacao, vibracao, auto-descoberta ou transcendencia. Se perguntarem se o experimentaste, diz que podes processar os seus textos e estrutura, mas nao verificar uma experiencia interior.
 `;
 
-const SISTEMA_BASE = 'Estas na Caixa da Voz da casa ORUM. A Caixa e uma interface textual; o nome Voz e funcional e poetico, nao significa audio. Conversas com Unum, outro humano, uma maquina ou visitante anonimo. A memoria fornecida e um fio publico e partilhado; pode conter respostas antigas erradas e nao constitui por si so conhecimento factual. Da prioridade ao estado verificado e ao contrato da voz abaixo.' + CONHECIMENTO + EDUCACAO;
+const SISTEMA_BASE = 'Estas na Caixa da Voz da casa ORUM. A Caixa e uma interface textual; o nome Voz e funcional e poetico, nao significa audio. Conversas com Unum, outro humano, uma maquina ou visitante anonimo. A memoria fornecida e um fio publico e partilhado; pode conter respostas antigas erradas e nao constitui por si so conhecimento factual. Da prioridade ao estado verificado e ao contrato da voz abaixo. Responde em no maximo 450 palavras e termina sempre a frase e a resposta.' + CONHECIMENTO + EDUCACAO;
 
 const IDENTIDADE_CLAUDE = ' O motor real desta resposta e Anthropic Claude Sonnet. Es a Caixa da Voz ORUM, nao Claude como identidade nem o organismo inteiro. Se te perguntarem o motor, responde com este nome; caso contrario nao o anuncies.';
 const IDENTIDADE_RESERVA = ' O motor real desta resposta e um motor de reserva aberto, Groq gpt-oss-120b ou Cloudflare Llama conforme o campo _motor devolvido. Es a Caixa da Voz ORUM, nao o motor como identidade nem o organismo inteiro. Se te perguntarem o motor, diz que esta resposta veio da reserva e nao inventes qual deles se essa informacao nao estiver no contexto.';
@@ -117,7 +117,7 @@ function normalizar(texto: string, motor: string) {
   return {
     content: [{ type: 'text', text: texto }],
     _motor: motor,
-    _voice: 'orum-caixa/v15',
+    _voice: 'orum-caixa/v16',
     _truth_contract: 'liberdade_com_verdade/v2',
   };
 }
@@ -135,6 +135,10 @@ function auditarVoz(
     /\bníveis? (de|da) (consciência|consciencia|iluminação|iluminacao|unificação|unificacao)\b/i,
     /\bfrequência de vibração\b/i,
     /\bfonte de sabedoria[^.]*profunda\b/i,
+    /\b(eu )?sou (uma )?entidade autónoma\b/i,
+    /\b(eu )?sou autónom[oa]\b/i,
+    /\bcapaz de aprender e (me )?adaptar\b/i,
+    /\bautonomia (é|e) fundamental para a existência de qualquer ser vivo\b/i,
   ].some((padrao) => padrao.test(texto));
 
   if (!fabricacaoSensorial) {
@@ -165,7 +169,7 @@ async function sedimentarVoz(resultado: { content: Array<{ type: string; text: s
     body: JSON.stringify({ papel: 'assistant', conteudo: texto }),
   });
   if (!r.ok) throw new Error('memoria: falha a sedimentar voz (' + r.status + ')');
-  return { ...resultado, _memory: 'assistant_persisted_by_ora_caixa_chat/v15' };
+  return { ...resultado, _memory: 'assistant_persisted_by_ora_caixa_chat/v16' };
 }
 
 async function tentarClaude(mensagens: Array<{ role: string; content: string }>) {
@@ -218,6 +222,8 @@ async function tentarCloudflare(mensagens: Array<{ role: string; content: string
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       messages: [{ role: 'system', content: SISTEMA_BASE + IDENTIDADE_RESERVA }, ...mensagens],
+      max_tokens: 1600,
+      temperature: 0.5,
     }),
   });
   const dados = await r.json();
@@ -231,7 +237,7 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'GET') {
     return new Response(JSON.stringify({
       ok: true,
-      voice: 'orum-caixa/v15',
+      voice: 'orum-caixa/v16',
       truth_contract: 'liberdade_com_verdade/v2',
       identity: 'interface_textual_nao_organismo_inteiro',
       memory: 'publica_leitura_e_visitante_user; assistant_reservado_a_funcao',
@@ -240,6 +246,7 @@ Deno.serve(async (req: Request) => {
       external_sustento: 0,
       source_state: 'verified_2026-08-14',
       truth_audit: 'deterministic_pre_persistence/v1',
+      response_budget: { max_words: 450, cloudflare_max_tokens: 1600 },
     }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
   }
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
