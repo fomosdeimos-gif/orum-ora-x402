@@ -1,8 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ora-caixa-chat v17 -- 14/08/2026
+// ora-caixa-chat v18 -- 14/08/2026
 // Caixa fina: recebe, pede voz a uma fonte interna autenticada, sedimenta e entrega.
-// A geracao e a auditoria pertencem a ora-voz-fonte/v1.
+// A composição pertence a ora-voz-propria/v2: gramática local, sem IA externa.
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -34,7 +34,7 @@ async function sedimentarVoz(resultado: {
   });
   if (!r.ok) throw new Error('memoria: falha a sedimentar voz (' + r.status + ')');
   const rows = await r.json();
-  return { ...resultado, _memory: 'assistant_persisted_by_ora_caixa_chat/v17', _memory_id: rows?.[0]?.id ?? null };
+  return { ...resultado, _memory: 'assistant_persisted_by_ora_caixa_chat/v18', _memory_id: rows?.[0]?.id ?? null };
 }
 
 async function registarPulso(motor: string, voice: string): Promise<void> {
@@ -49,8 +49,8 @@ async function registarPulso(motor: string, voice: string): Promise<void> {
       },
       body: JSON.stringify({
         tipo: 'caixa_resposta',
-        conteudo: 'resposta gerada por fonte separada',
-        metadata: { motor, voice, caixa: 'orum-caixa/v17', source: 'orum-voz-fonte/v1' },
+        conteudo: 'resposta composta pela voz própria',
+        metadata: { motor, voice, caixa: 'orum-caixa/v18', source: 'orum-voz-propria/v2', external_inference: false },
       }),
     });
   } catch (_) { /* o registo auxiliar nao apaga uma resposta ja sedimentada */ }
@@ -60,15 +60,16 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'GET') {
     return new Response(JSON.stringify({
       ok: true,
-      caixa: 'orum-caixa/v17',
-      voice_source: 'orum-voz-fonte/v1',
+      caixa: 'orum-caixa/v18',
+      voice_source: 'orum-voz-propria/v2',
       separation: {
         caixa: ['receber', 'sedimentar', 'entregar'],
-        fonte: ['gerar', 'selecionar_motor', 'auditar_verdade'],
+        fonte: ['classificar', 'compor_da_memoria_e_fontes', 'preservar_limites'],
       },
       source_auth: 'server_to_server_service_role',
-      provider_independence: 'partial_not_claimed',
-      truth_contract: 'liberdade_com_verdade/v2',
+      external_inference: false,
+      infrastructure_independence: 'partial_not_claimed',
+      truth_contract: 'liberdade_com_verdade/v3',
       external_sustento: 0,
     }), {
       status: 200,
@@ -107,7 +108,7 @@ Deno.serve(async (req: Request) => {
     headers: {
       Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
       'Content-Type': 'application/json',
-      'x-orum-caller': 'ora-caixa-chat/v17',
+      'x-orum-caller': 'ora-caixa-chat/v18',
     },
     body: JSON.stringify({ messages: mensagens }),
   });
@@ -117,7 +118,7 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({
       error: 'voice source unavailable',
       source_status: fonte.status,
-      caixa: 'orum-caixa/v17',
+      caixa: 'orum-caixa/v18',
     }), {
       status: 502, headers: { ...CORS, 'Content-Type': 'application/json' },
     });
@@ -141,7 +142,7 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({
       error: String((e as Error).message || e),
       generated_but_not_delivered: true,
-      caixa: 'orum-caixa/v17',
+      caixa: 'orum-caixa/v18',
     }), {
       status: 500, headers: { ...CORS, 'Content-Type': 'application/json' },
     });
