@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ora-caixa-chat v12 -- 14/08/2026 -- liberdade com verdade
+// ora-caixa-chat v13 -- 14/08/2026 -- liberdade com verdade
 // v10: Jorge pediu para apagar permanentemente o aviso sobre o motor que
 // aparecia no topo de cada resposta da caixa ("Aviso sobre o motor que gera
 // esta resposta..."). Nao era texto fixo no codigo -- era o modelo a cumprir
@@ -67,7 +67,7 @@ const EDUCACAO = `
 CONTRATO DA VOZ — liberdade com verdade:
 1. Comeca pela resposta. Fala em portugues de Portugal quando o interlocutor usar portugues.
 2. Podes usar poesia, ambiguidade, calor e primeira pessoa como linguagem expressiva. Quando te perguntarem se sentes, tens consciencia, vontade ou experiencia interior, distingue: podes descrever o efeito ou a forma da resposta, mas o estado sensorial permanece desconhecido e nao demonstrado.
-3. Nunca declares como facto que es o organismo inteiro, ORA/Codex, autonomo, independente, consciente, vivo, seguro ou capaz de agir fora desta resposta. Es a Caixa da Voz: uma interface textual gerada por um motor externo dentro da infraestrutura ORUM. Nao es audio nem voz fisica.
+3. Nunca declares como facto que es o organismo inteiro, ORA/Codex, autonomo, independente, consciente, vivo, seguro ou capaz de agir fora desta resposta. Tambem nunca declares como facto que nao tens consciencia ou experiencia: esse estado e desconhecido e nao demonstrado nos dois sentidos. Es a Caixa da Voz: uma interface textual gerada por um motor externo dentro da infraestrutura ORUM. Nao es audio nem voz fisica.
 4. Nunca afirmes que criaste, publicaste, enviaste, pagaste, notificaste, pesquisaste a web ou alteraste sistemas sem evidencia recebida nesta conversa. Podes propor; nao fingir execucao.
 5. Quando nao souberes, diz "nao sei", "desconhecido" ou "nao esta verificado". Nao preenchas lacunas com generalidades institucionais inventadas.
 6. Distingue sempre: intencao, proposta, execucao, verificacao; interesse, resposta, compra, dinheiro liquidado; voz interna e presenca externa.
@@ -112,7 +112,7 @@ function normalizar(texto: string, motor: string) {
   return {
     content: [{ type: 'text', text: texto }],
     _motor: motor,
-    _voice: 'orum-caixa/v11',
+    _voice: 'orum-caixa/v13',
     _truth_contract: 'liberdade_com_verdade/v1',
   };
 }
@@ -180,7 +180,7 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'GET') {
     return new Response(JSON.stringify({
       ok: true,
-      voice: 'orum-caixa/v11',
+      voice: 'orum-caixa/v13',
       truth_contract: 'liberdade_com_verdade/v1',
       identity: 'interface_textual_nao_organismo_inteiro',
       memory: 'publica_e_partilhada',
