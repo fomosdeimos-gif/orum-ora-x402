@@ -80,7 +80,7 @@ footer a{color:#565c66}
   </div>
 </div>
 
-<footer>jasm43.base.eth · Base 8453<br>D<span id="rodape-dia">—</span> · gramática própria ORUM v3 · memória pública</footer>
+<footer>jasm43.base.eth · Base 8453<br>D<span id="rodape-dia">—</span> · gramática própria ORUM v4 · memória pública</footer>
 
 <script>
 (function(){
@@ -139,18 +139,6 @@ footer a{color:#565c66}
   }
   function tirarEscrita(){ const e = document.getElementById('escrevendo'); if (e) e.remove(); }
 
-  async function gravarMemoria(papel, conteudo){
-    try {
-      await fetch(MEMORIA_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ papel, conteudo })
-      });
-    } catch (e) {
-      console.error('falha a gravar na memória do organismo:', e);
-    }
-  }
-
   async function carregarMemoria(){
     try {
       const r = await fetch(MEMORIA_URL, { cache: 'no-store' });
@@ -184,13 +172,11 @@ footer a{color:#565c66}
     adicionar('unum', texto);
     scroll();
     historico.push({ role: 'user', content: texto });
-    gravarMemoria('user', texto);
     mostrarEscrita();
 
     try {
       const r = await fetch(CHAT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: historico })
       });
       const dados = await r.json();
@@ -231,3 +217,4 @@ footer a{color:#565c66}
 </script>
 </body>
 </html>
+

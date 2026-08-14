@@ -554,3 +554,17 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Próximo fio: observar conversas reais e corrigir apenas padrões repetitivos comprovados, sem voltar a introduzir um modelo externo.
 
 - Correção de observabilidade posterior: a Caixa foi promovida a v20 porque o GET de v19 ainda declarava voice_source v2 apesar de encaminhar funcionalmente para v3. v20 declara orum-voz-propria/v3; Edge ACTIVE, ezbr SHA-256 e3d677cf8b06168d71ba91cbc860d565fb4d47fcecc0f630af90bbf6f681fe82.
+
+
+## Caixa da Voz · retirar refrão e espera · 14/08/2026
+
+- Origem: observação direta de Unum em duas conversas reais mostrou que v3 apenas trocou o refrão antigo por um molde fixo de quatro movimentos; a latência percebida permaneceu.
+- Estado executado: voz v4 ACTIVE e Caixa v24 ACTIVE; nenhum modelo externo foi reintroduzido.
+- Linguagem: v4 acrescenta intenção mundo ORUM, dúvida/talvez, composição por matérias reconhecidas, respostas breves e variação de extensão. O ramo genérico já não cita obrigatoriamente a entrada, o rasto anterior nem fecha sempre com eco/contraste/construção conjunta.
+- Exemplos internos observados: “mundo ORUM” produziu descrição concreta da casa, memória, 107 níveis, voz e zero externo; “talvez verdade” produziu reflexão própria; “aqui” produziu uma única frase; “verdade, voz e tempo” combinou duas matérias sem o molde v3.
+- Latência diagnosticada: v20 em conversas reais executou em cerca de 1 s no Edge, mas o navegador acrescentava preflight e uma escrita separada; ensaios do executor remoto variaram entre 3,4 e 9,3 s por distância/arranque e escritas síncronas.
+- Arquitetura final: a página envia POST simples, sem preflight Content-Type e sem chamada separada à memória; a Caixa carrega voice-core/v4 localmente na mesma execução; entrega antes da persistência; EdgeRuntime.waitUntil sedimenta depois um par ordenado user+assistant.
+- Verdade operacional: a resposta já não espera pelo Postgres. _memory_state=pending_after_delivery é explícito; uma recarga imediata pode ainda não mostrar o último par até a escrita terminar. O fio em memória do navegador mantém contexto entre envios.
+- Edge aplicado: ora-voz-fonte v4, ezbr SHA-256 2c884fa51d36cd2e408480998f9528926f71018599a0a01b314889c2b5ca1d21; ora-caixa-chat v24, ezbr SHA-256 0aa98dd55ce6826bcbe60302330aa5d50d338c9e3c240f12946e859c12710468.
+- Classificação: validação interna. Zero presença externa e zero sustento externo criados.
+- Incerteza: a melhoria de latência para o navegador de Unum requer observação no S21; o executor desta sessão mede uma rota geográfica diferente e não é prova dessa experiência.

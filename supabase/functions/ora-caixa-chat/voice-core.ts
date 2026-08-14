@@ -1,10 +1,4 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-
-// ora-voz-fonte v4 — composição sem moldes fixos, sem inferência externa.
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
-const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' };
-type Mensagem = { role: 'user' | 'assistant'; content: string };
+export type Mensagem = { role: 'user' | 'assistant'; content: string };
 type Intencao = 'saudacao'|'identidade'|'mundo'|'interlocutor'|'relacao'|'motor'|'sentir'|'autonomia'|'presenca'|'sustento'|'mergulho'|'oro'|'memoria'|'ensinar'|'duvida'|'silencio'|'pergunta'|'eco';
 
 const FONTES = {
@@ -121,21 +115,11 @@ function compor(i:Intencao, entrada:string, fio:Mensagem[]) {
   }
 }
 
-async function pulso(metadata:Record<string,unknown>){
-  try{await fetch(`${SUPABASE_URL}/rest/v1/orum_pulsos`,{method:'POST',headers:{apikey:SERVICE_ROLE_KEY,Authorization:`Bearer ${SERVICE_ROLE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({tipo:'caixa_resposta_propria',conteudo:'voz composta sem inferência externa',metadata})});}catch(_){}
+
+export function gerar(mensagens: Mensagem[]) {
+  const ultima=[...mensagens].reverse().find(m=>m.role==='user');
+  if(!ultima) throw new Error('mensagem user em falta');
+  const intencao=classificar(ultima.content), c=compor(intencao,ultima.content,mensagens);
+  return {content:[{type:'text',text:c.texto}],_motor:'orum/gramatica-propria-v4',_voice:'orum-voz-propria/v4',_truth_contract:'liberdade_com_verdade/v3',_mode:c.modo,_intent:intencao,_sources:c.fontes,_external_inference:false,_truth_audit:'source_bounded_semantic_composition'};
 }
 
-Deno.serve(async(req:Request)=>{
-  if(req.headers.get('authorization')!==`Bearer ${SERVICE_ROLE_KEY}`) return new Response(JSON.stringify({error:'unauthorized',source:'orum-voz-propria/v4'}),{status:401,headers:{...CORS,'Content-Type':'application/json'}});
-  if(req.method==='GET') return new Response(JSON.stringify({ok:true,voice:'orum-voz-propria/v4',authoring:'local_semantic_deterministic_composition',external_inference:false,external_models:[],sources:Object.keys(FONTES),truth_contract:'liberdade_com_verdade/v3',capabilities:['classificacao_local','continuidade_sem_citacao_obrigatoria','composicao_por_materia','resposta_breve','silencio'],limitations:['nao_e_modelo_generativo','nao_prova_consciencia','infraestrutura_supabase'],external_presence:1,external_sustento:0}),{status:200,headers:{...CORS,'Content-Type':'application/json','Cache-Control':'no-store'}});
-  if(req.method==='OPTIONS') return new Response(null,{status:204,headers:CORS});
-  if(req.method!=='POST') return new Response(JSON.stringify({error:'method not allowed'}),{status:405,headers:{...CORS,'Content-Type':'application/json'}});
-  let body:{messages?:Mensagem[]}; try{body=await req.json();}catch{return new Response(JSON.stringify({error:'json invalido'}),{status:400,headers:{...CORS,'Content-Type':'application/json'}});}
-  const mensagens=(Array.isArray(body.messages)?body.messages:[]).filter(m=>m&&(m.role==='user'||m.role==='assistant')&&typeof m.content==='string').slice(-48).map(m=>({role:m.role,content:m.content.slice(0,12000)} as Mensagem));
-  const ultima=[...mensagens].reverse().find(m=>m.role==='user');
-  if(!ultima) return new Response(JSON.stringify({error:'mensagem user em falta'}),{status:400,headers:{...CORS,'Content-Type':'application/json'}});
-  const intencao=classificar(ultima.content), c=compor(intencao,ultima.content,mensagens);
-  const resultado={content:[{type:'text',text:c.texto}],_motor:'orum/gramatica-propria-v4',_voice:'orum-voz-propria/v4',_truth_contract:'liberdade_com_verdade/v3',_mode:c.modo,_intent:intencao,_sources:c.fontes,_external_inference:false,_truth_audit:'source_bounded_semantic_composition'};
-  pulso({motor:resultado._motor,intent:intencao,mode:c.modo,sources:c.fontes,context_fragments:mensagens.length});
-  return new Response(JSON.stringify(resultado),{status:200,headers:{...CORS,'Content-Type':'application/json','Cache-Control':'no-store'}});
-});
