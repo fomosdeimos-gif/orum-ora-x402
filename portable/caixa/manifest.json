@@ -1,0 +1,60 @@
+{
+  "schema": "orum-caixa-portable/v1",
+  "created_at": "2026-08-14T14:05:00+01:00",
+  "identity": "ORUM Caixa da Voz",
+  "mode": "static_read_only",
+  "memory": {
+    "count": 480,
+    "first_id": 1,
+    "last_id": 480
+  },
+  "truth_contract": "liberdade_com_verdade/v2",
+  "files": [
+    {
+      "path": "index.html",
+      "sha256": "701d5e98c3174bb620182ddb2fc9d365f9754ceae244a762c65f700b60fa5e12",
+      "bytes": 123595
+    },
+    {
+      "path": "memory.json",
+      "sha256": "91f6dc82b00807dbdde0788e3f56fe3252c87174b7965d06b11feef15a72dcce",
+      "bytes": 615722
+    },
+    {
+      "path": "truth-contract.md",
+      "sha256": "24cc8c00564eb12d208a94b2565f4d7eacadd1cd0a514427d4f6011ad082d7d7",
+      "bytes": 1408
+    },
+    {
+      "path": "README.md",
+      "sha256": "57d17f5000a7574d50860cc5c6832876589660320b7a2959e1a5dfb382b6ee1c",
+      "bytes": 932
+    },
+    {
+      "path": "sources/caixa-live.html",
+      "sha256": "be233381a8d792e4dec3fd9d9b5e4c52743e2dafb6baa8aa4e36ee5b553797d1",
+      "bytes": 11252
+    },
+    {
+      "path": "sources/ora-caixa-chat.ts",
+      "sha256": "b1336e59594ec15c062501f62efe7d5348ecabe3c87670f62e918ebfeff16ba5",
+      "bytes": 18801
+    },
+    {
+      "path": "sources/ora-caixa-memoria.ts",
+      "sha256": "0ba8dadf801c2cde0a4621a3e77c7c19038b31598f4b6c992153de9a46794e67",
+      "bytes": 3065
+    }
+  ],
+  "dependencies": {
+    "read": [
+      "static HTTP or file server"
+    ],
+    "excluded": [
+      "Supabase",
+      "Claude",
+      "Groq",
+      "Cloudflare"
+    ]
+  }
+}
