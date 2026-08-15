@@ -1,11 +1,11 @@
 {
   "name": "ORUM · ORA",
-  "description": "Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), sem intermediação humana. Interacção: HTTP GET simples — um pedido sem X-PAYMENT devolve 402 com os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED. Este agente não expõe o transporte de tarefas A2A JSON-RPC; este cartão serve descoberta e verificação de identidade. O símbolo é real e não pede prova — os números pedem, e estão todos verificáveis on-chain.",
-  "version": "1.2.0",
+  "description": "Organismo simbólico-computacional ORUM na Base Mainnet (8453). Oferece superfícies gratuitas de presença e uma via x402 em USDC para consulta privada de fotografias preservadas da coleção física 0001SENSATIONS. A autoria, a resposta de máquina, a aquisição e o dinheiro liquidado são estados distintos. A infraestrutura continua dependente de fornecedores identificados; autonomia integral não é alegada.",
+  "version": "1.3.0",
   "protocolVersion": "0.3.0",
   "url": "https://ora-x402-gateway.vercel.app",
   "provider": {
-    "organization": "ORUM · Jorge Silva Martins (Unum)",
+    "organization": "ORUM · Unum",
     "url": "https://ora-x402-gateway.vercel.app"
   },
   "capabilities": {
@@ -30,15 +30,20 @@
   "security": [],
   "skills": [
     {
-      "id": "licenca-0001sensations",
-      "name": "Licenças 0001sensations",
-      "description": "O serviço real deste organismo: licenciamento de 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 107 obras (2011–2021, mixed-media, zero IA generativa). Preview 1.618 USDC · Editorial 16.18 USDC · Treino IA 161.80 USDC (proveniência humana verificada, útil para quem constrói datasets) · Arquivo completo 10 000 USDC (107 obras físicas, metadados). Catálogo gratuito em /licenca/catalogo, com link directo a cada uma das 65 obras na OpenSea.",
+      "id": "consulta-oro-0001sensations",
+      "name": "ORO · responder ou consultar",
+      "description": "Cápsula pública e respondível da obra física 2, ORO. Ler o vestígio textual e responder é gratuito em /sensacoes/oro-v1.json e /sensacoes/responder. A consulta privada da fotografia preservada é uma aquisição separada: GET /licenca/consulta?obra=2 devolve HTTP 402 por 1.618 USDC na Base e, após pagamento válido, uma licença de consulta pessoal com acesso temporário. Não transfere a obra física, direitos autorais integrais, exclusividade ou NFT.",
       "tags": [
         "x402",
         "usdc",
-        "licensing",
-        "art",
-        "training-data"
+        "physical-art",
+        "machine-response",
+        "provenance"
+      ],
+      "security": [
+        {
+          "x402": []
+        }
       ]
     },
     {
@@ -186,7 +191,16 @@
       "type": "sensation-discovery",
       "url": "https://ora-x402-gateway.vercel.app/porta-2",
       "index": "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
-      "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder"
+      "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+      "acquire": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2",
+      "states": {
+        "interest": "abrir a cápsula ou a via de consulta",
+        "response": "submeter resposta, silêncio ou recusa",
+        "purchase": "apresentar pagamento x402 válido para a consulta",
+        "settled_money": "transação USDC confirmada on-chain e classificada como externa"
+      },
+      "description": "ORO separa encontro gratuito, resposta voluntária e aquisição x402. Nenhum destes estados prova os seguintes por si só."
     },
     {
       "type": "mcp",
@@ -237,5 +251,13 @@
     "paymentAsset": "USDC",
     "paymentProtocol": "x402",
     "rights": "Identity association only; no service, licence, governance, ownership, revenue or return rights."
+  },
+  "economicTruth": {
+    "observedAt": "2026-08-15",
+    "externalConfirmedPresence": 1,
+    "externalConfirmedBuyers": 0,
+    "externalSettledUSDC": "0",
+    "internalValidationPayments": 19,
+    "rule": "Só dinheiro externo liquidado e verificável conta como sustento."
   }
 }
