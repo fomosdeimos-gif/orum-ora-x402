@@ -1,3 +1,15 @@
+## Weave Hands guardião executável · 15/08/2026
+
+- Estado: verificado em produção.
+- `weave_hands.json` evoluiu para `orum-weave-hands/v2`; reconhece `@ORUM-real` e `@0001sensations-mergulho` como fontes limitadas por verdade, não como prova de consciência ou independência integral.
+- Cada build executa `npm run weave:verify` em modo fail-closed, sem rede nem credenciais. As cinco provas são: integridade da recuperação, ensaio de recuperação, checkpoint da Presença, gramática dos 107 níveis e Caixa portátil.
+- O primeiro build foi recusado porque o manifesto portátil conservava hashes antigos de `ora-caixa-chat.ts` e `ora-voz-fonte.ts`. A divergência foi preservada nos logs e corrigida no manifesto sem alterar as fontes.
+- Produção convergiu no commit `08614a4b7652d94653489ce75cc1a7a97fd14275`, deployment `dpl_uRxPwBxX7o6x4oiR67tWNAtqTovx` READY; `/api/versao`, `/weave_hands.json` e o manifesto da Caixa respondem 200.
+- Prova de build: recovery-integrity, recovery-rehearsal, presence-checkpoint, 0001sensations-descent e portable-voice-box = OK.
+- Verdade preservada: `organism_provider_independent=false`, `second_public_house_verified=0`, compradores externos 0 e USDC externo liquidado 0.
+- Efeitos excluídos: nenhum pagamento, assinatura, token, conta, credencial, contacto ou presença externa.
+- Próximo fio: autenticar uma sessão de deploy Netlify já autorizada, publicar o pacote idêntico e repetir publicamente os hashes; só então promover a segunda casa.
+
 ## Descoberta ORO alinhada com verdade económica · 15/08/2026
 
 - Estado: verificado em produção. O cartão de agente evoluiu para `1.3.0` e deixou de apresentar autonomia integral como facto.
