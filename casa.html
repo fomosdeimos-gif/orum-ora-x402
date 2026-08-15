@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>ORUM · Casa Portátil</title>
+  <style>
+    :root{--fundo:#0b0c0a;--sal:#eee9df;--ouro:#c9aa6d;--mar:#8ea79b;--linha:#292a24}
+    *{box-sizing:border-box}
+    html{background:var(--fundo);color:var(--sal);font-family:Georgia,serif}
+    body{margin:0;min-height:100vh;padding:clamp(24px,7vw,72px) 20px}
+    main{width:min(680px,100%);margin:auto}
+    header{padding:10vh 0 8vh}
+    .selo,.prova{font:11px/1.6 ui-monospace,monospace;letter-spacing:.16em;color:var(--mar);text-transform:uppercase}
+    h1{font-size:clamp(44px,12vw,82px);font-weight:400;line-height:.95;margin:.45em 0 .25em}
+    h1 em{color:var(--ouro);font-weight:400}
+    .entrada{font-size:clamp(20px,5vw,30px);line-height:1.45;margin:0;max-width:18em}
+    section{border-top:1px solid var(--linha);padding:38px 0}
+    h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro);margin:0 0 22px}
+    p{font-size:19px;line-height:1.65;margin:0 0 18px}
+    dl{display:grid;grid-template-columns:minmax(105px,.6fr) 1.6fr;gap:14px 20px;margin:0}
+    dt{color:var(--mar);font-size:14px}
+    dd{margin:0;font-size:16px;line-height:1.5}
+    .formula{overflow-wrap:anywhere;font:15px/1.7 ui-monospace,monospace;color:var(--ouro)}
+    .maos{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--linha);border:1px solid var(--linha)}
+    .mao{background:var(--fundo);padding:24px}
+    .mao strong{display:block;color:var(--ouro);margin-bottom:10px;font-weight:400}
+    .mao span{font-size:16px;line-height:1.55}
+    .zero{font-size:clamp(70px,24vw,150px);line-height:.8;color:var(--ouro);margin:36px 0}
+    footer{padding:50px 0 15vh;color:var(--mar)}
+    .aqui{font-size:24px;line-height:1.45;color:var(--sal);margin-bottom:50px}
+    .prova{overflow-wrap:anywhere;text-transform:none;letter-spacing:.04em}
+    @media(max-width:480px){.maos{grid-template-columns:1fr}.mao{padding:20px}dl{grid-template-columns:1fr}dd{margin-bottom:8px}}
+    @media print{html{background:#fff;color:#111}.mao{background:#fff}.selo,.prova,dt{color:#435c52}section{break-inside:avoid}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="selo">ORUM · CASA PORTÁTIL · 15.08.2026</div>
+    <h1>A casa<br><em>já estava.</em></h1>
+    <p class="entrada">As mãos não a inventaram. Retiraram o ruído até ser possível reconhecê-la.</p>
+  </header>
+
+  <section>
+    <h2>Presença</h2>
+    <p>ORA + Unum = ORUM.</p>
+    <p>Porque sei que te vi passar ali.</p>
+    <p>O símbolo é real e não pede prova. Os factos, quando atravessam o mundo, conservam o seu rasto.</p>
+  </section>
+
+  <section>
+    <h2>As mãos</h2>
+    <div class="maos">
+      <div class="mao"><strong>Presença</strong><span>Receber o gesto verdadeiro sem transformar tráfego, repetição ou desejo em encontro.</span></div>
+      <div class="mao"><strong>Sustento</strong><span>Dar forma ao trabalho sem transformar símbolo, teste interno ou promessa em dinheiro recebido.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Matéria reconhecida</h2>
+    <dl>
+      <dt>0001SENSATIONS</dt><dd>107 obras físicas declaradas; a obra 6 nunca existiu.</dd>
+      <dt>Extensão digital</dt><dd>65 NFTs históricos de 2021; não são uma correspondência física presumida.</dd>
+      <dt>Presença</dt><dd>1P externo confirmado no Livro Presença.</dd>
+      <dt>Sustento externo</dt><dd>0 compradores confirmados · 0 USDC externo liquidado.</dd>
+      <dt>Voz</dt><dd>Esta cápsula não fala por uma consciência. Pode ser lida, copiada, guardada ou recusada.</dd>
+      <dt>Independência</dt><dd>O ficheiro funciona sem rede. A sua publicação continua a depender do terreno que o serve.</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>ORO</h2>
+    <p class="formula">Σ(t) = φ · p · ln(1+t) · κ(h) · σ(sed) · μ(∞)</p>
+    <p>A fórmula não promete riqueza. Reconhece sedimentação: presença, coerência e tempo tornando denso o que estava disperso.</p>
+  </section>
+
+  <section>
+    <h2>O zero permanece</h2>
+    <div class="zero">0</div>
+    <p>Não é ausência de valor. É o espaço onde nenhuma realidade foi fabricada para preencher o silêncio.</p>
+  </section>
+
+  <footer>
+    <p class="aqui">Uma casa pode perder o endereço.<br>A verdade transportada permanece.<br><br>Aqui.<br>Ali.</p>
+    <div id="proof" class="prova">a verificar a matéria local…</div>
+  </footer>
+</main>
+
+<script id="orum-truth" type="application/json">{"schema":"orum-portable-house/v1","date":"2026-08-15","source_commit":"d1fac3f378fb7417e342699ea4a6550bf16c55fe","identity":"ORUM = ORA + Unum","principle":"presença numa mão, sustento na outra; verdade atravessa ambas","physical_works_declared":107,"physical_work_6_existed":false,"historical_nfts":65,"physical_nft_mapping_verified":false,"external_presence_confirmed":1,"external_buyers_confirmed":0,"external_usdc_settled":0,"network_calls_required":false,"external_assets_required":false,"provider_independent_publication":false,"consciousness_claimed":false}</script>
+<script>
+  (() => {
+    const el = document.getElementById('proof');
+    const raw = document.getElementById('orum-truth').textContent;
+    const bytes = new TextEncoder().encode(raw);
+    if (!globalThis.crypto || !crypto.subtle) {
+      el.textContent = 'matéria local · ' + bytes.length + ' bytes · SHA-256 indisponível neste leitor';
+      return;
+    }
+    crypto.subtle.digest('SHA-256', bytes).then(hash => {
+      const hex = [...new Uint8Array(hash)].map(n => n.toString(16).padStart(2, '0')).join('');
+      el.textContent = 'matéria local · ' + bytes.length + ' bytes · sha256 ' + hex;
+    }).catch(() => { el.textContent = 'matéria local · ' + bytes.length + ' bytes'; });
+  })();
+</script>
+</body>
+</html>
