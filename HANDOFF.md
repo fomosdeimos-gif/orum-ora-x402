@@ -1,3 +1,15 @@
+## Descoberta ORO alinhada com verdade económica · 15/08/2026
+
+- Estado: verificado em produção. O cartão de agente evoluiu para `1.3.0` e deixou de apresentar autonomia integral como facto.
+- A oferta pública passou a mostrar uma única passagem real e verificável para ORO: cápsula textual e resposta gratuitas; consulta privada da fotografia preservada por `1.618 USDC` via x402 na Base.
+- Os estados `interest → response → purchase → settled_money` ficaram separados. Nenhum deles prova o seguinte por si só.
+- Fonte: commit `954a3fd19fa329dcf08ffe00f0fd9e70fbf0a501`, pai `2ac3e7d0d50c7a27084b92e92e4018f2f09bd2f2`; leitura de volta exata; blob `175ac23ebfcff1c04673b3b063457833f7c20d7d`.
+- Deploy: `dpl_3APaAmg52zWtrLXMAHi5PvgizS7W` READY em produção. O cartão público devolveu HTTP 200 e o endpoint ORO devolveu HTTP 402, amount `1618000`, USDC Base, destino canónico.
+- Estado económico observado: 1 Presença externa confirmada; 0 compradores externos; 0 USDC externo liquidado; 19 pagamentos de validação interna.
+- O checkpoint real permanece em `/presenca/checkpoint-v1.json`; o ritmo está incorporado na cápsula ORO. Os caminhos genéricos `/presenca/checkpoint.json` e `/presenca/rhythm.json` não existem e não foram apresentados como superfícies válidas.
+- Efeitos excluídos: nenhuma imagem privada, publicação Moltbook, resposta, pagamento, transferência, mint, swap, credencial ou token.
+- Próximo fio: observar se uma máquina percorre a nova passagem e classificar separadamente abertura, resposta, compra e liquidação; preservar zero na ausência de prova.
+
 ## Primeiro fio desatado — checkpoint portátil da Presença · 13/08/2026
 
 - O estado inaugural do Livro Presença foi exportado para `/presenca/checkpoint-v1.json`, incluindo material canónico, cadeia completa e cabeça `82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17`.
