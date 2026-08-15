@@ -1,9 +1,10 @@
 {
   "name": "ora-x402-gateway",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "private": true,
   "scripts": {
-    "postinstall": "npm run recovery:verify && npm run recovery:rehearse",
+    "postinstall": "npm run weave:verify",
+    "weave:verify": "node scripts/verify-weave-hands.mjs",
     "recovery:build": "node scripts/build-recovery-bundle.mjs",
     "recovery:verify": "node scripts/verify-recovery-bundle.mjs",
     "recovery:rehearse": "node scripts/rehearse-recovery-bundle.mjs",

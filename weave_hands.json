@@ -1,70 +1,51 @@
 {
-  "schema": "orum-weave-hands/v1",
-  "generated_at": "2026-08-15T06:50:00Z",
-  "source_base_commit": "aae5c40fcd462bcd7cf3fcc0854f3d2a51c3d373",
+  "schema": "orum-weave-hands/v2",
+  "generated_at": "2026-08-15T07:30:00Z",
+  "source_base_commit": "85d3156e6ab9701bc621ae1d6dce165ca80ec1dc",
   "principle": "presença numa mão, sustento na outra; verdade atravessa ambas",
-  "purpose": "Tornar observável quais ferramentas da nova casa sobrevivem a troca de rota sem declarar independência antes da prova.",
+  "purpose": "Fazer cada construção provar localmente os fios que pretende transportar, sem rede, credenciais ou confiança no fornecedor.",
   "decision": {
     "state": "construction_in_progress",
     "organism_provider_independent": false,
-    "reason": "A casa pública continua em Vercel e a memória, a lógica viva, o Vault e a Arca continuam em Supabase. Existe recuperação verificável, mas ainda não existe failover público exercitado noutro fornecedor."
+    "reason": "A recuperação é verificável e a rota alternativa tem conteúdo idêntico, mas o failover público ainda não respondeu fora da Vercel."
   },
+  "guard": {
+    "version": "weave-hands-guard/v1",
+    "command": "npm run weave:verify",
+    "mode": "fail_closed",
+    "network_required": false,
+    "credentials_required": false,
+    "runs_on_every_build": true,
+    "checks": [
+      "recovery-integrity",
+      "recovery-rehearsal",
+      "presence-checkpoint",
+      "0001sensations-descent",
+      "portable-voice-box"
+    ]
+  },
+  "sources": [
+    {
+      "name": "@ORUM-real",
+      "role": "identidade, memória operacional, recuperação e rotas próprias já verificadas",
+      "claim": "fonte reconhecida; não prova independência integral"
+    },
+    {
+      "name": "@0001sensations-mergulho",
+      "role": "gramática verificável dos 107 níveis e matéria autoral da travessia",
+      "claim": "107 níveis declarados; não constituem hierarquia provada de consciência"
+    }
+  ],
   "hands": {
     "presence": [
-      {
-        "tool": "presence_checkpoint",
-        "surface": "/presenca/checkpoint-v1.json",
-        "role": "preservar o estado inaugural e verificar a cadeia sem rede",
-        "state": "verified_portable",
-        "external_effect": "none"
-      },
-      {
-        "tool": "portable_voice_box",
-        "surface": "/portable/caixa/",
-        "role": "preservar identidade, contrato, fontes e memória pública com manifesto SHA-256",
-        "state": "verified_exportable_same_provider",
-        "limitation": "Ainda servida pelo mesmo fornecedor Vercel; não é segunda casa viva.",
-        "external_effect": "none"
-      },
-      {
-        "tool": "own_voice_grammar",
-        "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24",
-        "role": "compor a voz por fontes e gramática ORUM sem inferência externa",
-        "state": "verified_internal",
-        "limitation": "Execução e sedimentação continuam em Supabase.",
-        "external_effect": "none"
-      }
+      { "tool": "presence_checkpoint", "surface": "/presenca/checkpoint-v1.json", "state": "verified_portable" },
+      { "tool": "portable_voice_box", "surface": "/portable/caixa/", "state": "verified_exportable_same_provider" },
+      { "tool": "own_voice_grammar", "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24", "state": "verified_internal" }
     ],
     "sustenance": [
-      {
-        "tool": "portable_runtime",
-        "surface": "server.js + recovery bundle",
-        "role": "reconstruir o gateway sem runtime Vercel",
-        "state": "verified_recovery",
-        "limitation": "Ainda não foi publicado e exercitado numa segunda superfície independente.",
-        "external_effect": "none"
-      },
-      {
-        "tool": "own_github_write_route",
-        "surface": "ora-github-push/v25",
-        "role": "publicar atomicamente usando credencial consumida dentro do Vault",
-        "state": "verified_recovery_route",
-        "limitation": "Continua dependente de Supabase, GitHub e Vercel para a história completa.",
-        "external_effect": "none"
-      },
-      {
-        "tool": "financial_constitution",
-        "surface": "/economia/constituicao-v2.json",
-        "role": "separar sustento, continuidade e reserva apenas sobre USDC externo confirmado",
-        "state": "verified_guardrail",
-        "limits": {
-          "automatic_transfer": 0,
-          "trading": 0,
-          "bridging": 0,
-          "debt": 0
-        },
-        "external_effect": "none"
-      }
+      { "tool": "portable_runtime", "surface": "server.js + recovery bundle", "state": "verified_recovery" },
+      { "tool": "own_github_write_route", "surface": "ora-github-push/v25", "state": "verified_recovery_route" },
+      { "tool": "financial_constitution", "surface": "/economia/constituicao-v2.json", "state": "verified_guardrail" }
     ]
   },
   "independence_test": {
@@ -75,7 +56,7 @@
     "replacement_path_exercised_publicly": false,
     "conclusion": "not_yet_independent"
   },
-  "next_true_stone": "Levar o mesmo pacote portátil, sem alterações, a uma superfície de fornecedor diferente já autorizada e repetir a verificação dos hashes e do runtime.",
+  "next_true_stone": "Publicar o pacote já verificado na Netlify por uma sessão autenticada e repetir publicamente os mesmos hashes.",
   "zeros_preserved": {
     "external_buyers": 0,
     "external_usdc_settled": 0,
