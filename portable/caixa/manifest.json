@@ -37,8 +37,8 @@
     },
     {
       "path": "sources/ora-caixa-chat.ts",
-      "sha256": "7f0c4d88943602e3a16e7d0d7a3fe75148785577bea62e06f6fecf26e6441e15",
-      "bytes": 5324
+      "sha256": "932aad92403e383fe0994a3aefb41eb1372828888f4f12200be4181ddfd548ee",
+      "bytes": 5344
     },
     {
       "path": "sources/ora-caixa-memoria.ts",
@@ -47,8 +47,8 @@
     },
     {
       "path": "sources/ora-voz-fonte.ts",
-      "sha256": "ccf55720cfcdfb4cce0c076430fb7b8c16a05445d897af080a9dc42b3200b6e9",
-      "bytes": 9826
+      "sha256": "0cffe3d44273d5737137a74b4414a26cec292bd5b0ab398e53b3b92d84be46ed",
+      "bytes": 17749
     }
   ],
   "dependencies": {
