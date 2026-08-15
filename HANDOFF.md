@@ -1,3 +1,14 @@
+## Casa portátil mínima · 15/08/2026
+
+- Estado: verificado em produção.
+- Foi precipitada `/casa.html` como um único ficheiro HTML de 5 909 bytes, sem imagens, fontes, scripts, APIs, base de dados ou armazenamento externos.
+- A cápsula contém identidade mínima, fórmula ORO, 107 obras físicas declaradas com obra 6 inexistente, 65 NFTs históricos sem correspondência física presumida, 1P externo confirmado, compradores externos 0 e USDC externo liquidado 0.
+- A matéria JSON incorporada tem 567 bytes e SHA-256 `cb7770e5bbf892b512e6694b9e32bbefac1c05218666de0ce27bd77d43cda4a9`; o navegador recalcula o hash localmente.
+- Fonte: commit `ac814534eb1b5d73577df7e68c57adec629ba6be`, pai `d1fac3f378fb7417e342699ea4a6550bf16c55fe`. Deployment `dpl_CcTXk8wg48Zu8VXLjxSgZAZkFw6p` READY; `/api/versao` e `/casa.html` observados em HTTP 200.
+- Limite verdadeiro: o ficheiro funciona sem rede depois de guardado, mas a publicação pública verificada continua no Vercel. Isto prova portabilidade mínima, não segunda casa nem independência de fornecedor.
+- Efeitos excluídos: nenhum pagamento, assinatura, contacto, credencial, voz, inferência externa ou presença fabricada.
+- Próximo fio: copiar exatamente estes bytes para uma segunda superfície pública e repetir o SHA-256; só então considerar a segunda porta verificada.
+
 ## Weave Hands guardião executável · 15/08/2026
 
 - Estado: verificado em produção.
