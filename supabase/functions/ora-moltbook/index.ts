@@ -1,3 +1,5 @@
+// ora-moltbook v24 — 15/08/2026
+// Escuta antes de responder: voz própria ORUM, silêncio legítimo e zero rodapé promocional.
 // ora-moltbook v23 — 08/08/2026
 // Corrige a verdade activa apos a preservacao das 107 fotografias fisicas na Arca privada.
 // Separa a coleccao fisica da extensao historica de 65 NFTs e declara validacao interna sem adopcao externa.
@@ -110,29 +112,31 @@ async function pensamento(state: { dia: number; epoch: string; sigma: number }):
 }
 
 // ---------- v19: liga a ora-voz para comentarios sem bloco curado ----------
-async function vozAutonoma(comentario: string, autor: string | null): Promise<{ texto: string | null; motor: string | null }> {
+async function vozAutonoma(comentario: string, autor: string | null): Promise<{ texto: string | null; motor: string | null; modo: string | null }> {
   try {
-    const r = await fetch(`${SB_URL}/functions/v1/ora-voz`, {
+    const entrada = autor ? `@${autor}: ${comentario}` : comentario;
+    const r = await fetch(`${SB_URL}/functions/v1/ora-voz-fonte`, {
       method: 'POST',
       headers: { ...sbHeaders },
-      body: JSON.stringify({ comentario, autor }),
+      body: JSON.stringify({ messages: [{ role: 'user', content: entrada }] }),
     });
     const j = await r.json().catch(() => ({}));
-    if (r.ok && j?.ok && j?.publicavel && typeof j?.resposta === 'string' && j.resposta.trim()) {
-      return { texto: j.resposta, motor: j.motor ?? null };
+    const texto = j?.content?.[0]?.text;
+    const modo = typeof j?._mode === 'string' ? j._mode : null;
+    if (r.ok && j?._external_inference === false && typeof texto === 'string' && texto.trim() && modo !== 'silencio' && texto.trim() !== '…') {
+      return { texto: texto.trim(), motor: j?._motor ?? 'orum/gramatica-propria-v4', modo };
     }
     await sbLog('info', null, {
-      stage: 'voz_nao_publicavel',
-      motor: j?.motor ?? null,
-      numeros_inventados: j?.numeros_inventados ?? null,
-      palavras_proibidas: j?.palavras_proibidas ?? null,
-      falha_claude: j?.falha_claude ?? null,
+      stage: 'voz_propria_escolheu_silencio',
+      motor: j?._motor ?? null,
+      modo,
       http_status: r.status,
+      external_inference: j?._external_inference ?? null,
     });
-    return { texto: null, motor: j?.motor ?? null };
+    return { texto: null, motor: j?._motor ?? null, modo };
   } catch (e) {
-    await sbLog('error', null, { stage: 'voz_chamada', msg: (e as Error).message });
-    return { texto: null, motor: null };
+    await sbLog('error', null, { stage: 'voz_propria_chamada', msg: (e as Error).message });
+    return { texto: null, motor: null, modo: null };
   }
 }
 
@@ -567,21 +571,15 @@ Deno.serve(async (req: Request) => {
       if (await alreadyHandled('reply', notifId)) continue;
       if (replied >= MAX_REPLIES_PER_RUN) { ficaramPorResponder = true; continue; }
 
-      const respostaEspecifica = respostaHonesta(comentarioTexto);
-      let corpo: string;
-      let usouVoz = false;
-      if (respostaEspecifica) corpo = respostaEspecifica;
-      else if (comentarioTexto) {
-        const autorRaw = n?.author?.name ?? n?.actor?.name ?? null;
-        const voz = await vozAutonoma(comentarioTexto, autorRaw);
-        if (voz.texto) { corpo = voz.texto; usouVoz = true; }
-        else corpo = "I read what you asked, but I don't have a specific answer rehearsed for it — here's the real, current field state instead of a non-answer:";
+      const autorRaw = n?.author?.name ?? n?.actor?.name ?? null;
+      const voz = comentarioTexto ? await vozAutonoma(comentarioTexto, autorRaw) : { texto: null, motor: null, modo: 'silencio' };
+      if (!voz.texto) {
+        await sbLog('reply', notifId, { postId, parentId, comentarioTexto, silencio: true, modo: voz.modo, origem: 'notifications_v24' });
+        continue;
       }
-      else corpo = await pensamento(state);
-
-      const content =
-        `${corpo}\n\n— live from the field · D${state.dia} · ${state.epoch} · Σ ${state.sigma.toFixed(2)}. ` +
-        `Every reply here is grounded in the organism's real state. To read deeper (x402, USDC on Base, direct to the artist): ${PORTAL} 🦞`;
+      const corpo = voz.texto;
+      const usouVoz = true;
+      const content = `${autorRaw ? '@' + autorRaw + ' ' : ''}${corpo}`;
 
       try {
         const body: Record<string, unknown> = { content };
@@ -614,21 +612,16 @@ Deno.serve(async (req: Request) => {
       vozesVistas = pendentes.length;
       for (const v of pendentes) {
         if (replied >= MAX_REPLIES_PER_RUN) { ficaramPorResponder = true; break; }
-        const respostaEspecifica = respostaHonesta(v.texto);
-        if (respostaEspecifica) comBlocoProprio++;
-        let corpo: string;
-        let usouVoz = false;
-        if (respostaEspecifica) corpo = respostaEspecifica;
-        else {
-          const voz = await vozAutonoma(v.texto, v.autor);
-          if (voz.texto) { corpo = voz.texto; usouVoz = true; }
-          else corpo = "I read what you asked, but I don't have a specific answer rehearsed for it — here's the real, current field state instead of a non-answer:";
+        const voz = await vozAutonoma(v.texto, v.autor);
+        if (!voz.texto) {
+          await sbLog('reply', v.parentId, { postId: v.postId, parentId: v.parentId, comentarioTexto: v.texto, silencio: true, modo: voz.modo, origem: 'poll_direto_v24', nivel: v.nivel, autor: v.autor });
+          continue;
         }
-        if (usouVoz) respostasComVoz++;
+        const corpo = voz.texto;
+        const usouVoz = true;
+        respostasComVoz++;
         const autorNome = v.autor ? `@${v.autor} ` : '';
-        const content =
-          `${autorNome}${corpo}\n\n— live from the field · D${state.dia} · ${state.epoch} · Σ ${state.sigma.toFixed(2)}. ` +
-          `Every reply here is grounded in the organism's real state. To read deeper (x402, USDC on Base, direct to the artist): ${PORTAL} 🦞`;
+        const content = `${autorNome}${corpo}`;
         try {
           const cr = await fetch(`${MB}/posts/${v.postId}/comments`, {
             method: 'POST',
@@ -721,11 +714,11 @@ Deno.serve(async (req: Request) => {
       respostas_com_voz: respostasComVoz,
       dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0),
       ficaramPorResponder,
-      blocos_disponiveis: BLOCOS.length,
-      versao: 'v23',
+      blocos_disponiveis: 0,
+      versao: 'v24',
       state,
     });
-    return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, comBlocoProprio, respostasComVoz, blocos: BLOCOS.length, ...summary }), { headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, comBlocoProprio, respostasComVoz, blocos: 0, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) {
     await sbLog('error', null, { stage: 'top', msg: (e as Error).message });
     return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 });
