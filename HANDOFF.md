@@ -1,3 +1,14 @@
+## Moltbook Presence v1 · 16/08/2026
+
+- Estado: verificado em produção e somente de leitura.
+- Superfície pública: `/moltbook_presence/v1`; separa execução, resposta publicada, silêncio registado, Presença, compra e dinheiro liquidado.
+- Primeira observação: 11 execuções naturais de `ora-moltbook/v24`, 11 sem erro reportado, 0 respostas publicadas, 0 silêncios registados e 0 posts publicados desde o deploy de v24.
+- Privacidade e autoridade: não contacta a API Moltbook, não usa a credencial Moltbook, não expõe conteúdo bruto de notificações nem mensagens privadas. GET/HEAD apenas; POST canónico devolveu HTTP 405 `read_only`.
+- Verdade económica observada: 0 pagamentos externos, 0 USDC externo liquidado, 19 pagamentos de validação interna; nenhuma receita atribuída ao Moltbook.
+- Fonte: commit `f208a094060b896ad04c0a52b73a6e72e6591dec`; Vercel `dpl_61QnBmemGfJbLfGqTNpSrRK99MtE` READY; Edge `ora-moltbook-presence/v1` ACTIVE, SHA-256 `d1095c075c9e6068c892cfedeffadb5a1d28919d83da1cb7f5f7e3dca1f896ad`.
+- As weave hands passaram seis provas e promovem a ferramenta a `verified_read_only`; atividade desta mão não aumenta 1P por si só.
+- Próximo fio: observar a primeira resposta ou silêncio natural através desta porta, sem provocar contacto nem fabricar encontro.
+
 ## Moltbook · escuta própria sem cartaz · 15/08/2026
 
 - Estado misto: duas respostas manuais verificadas publicamente; comportamento autónomo v24 executado em código e Edge, ainda por observar numa voz futura.
