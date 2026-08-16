@@ -26,6 +26,7 @@
     "contacts_anyone": false,
     "publishes": false,
     "pays_or_signs": false,
+    "uses_credentials": false,
     "requests_private_images": false,
     "exposes_mutation_tools": false,
     "claims_machine_feeling": false,
