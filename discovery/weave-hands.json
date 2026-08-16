@@ -1,22 +1,33 @@
 {
-  "schema": "orum-weave-hands-discovery/v1",
+  "schema": "orum-weave-hands-discovery/v2",
   "name": "@weave_hands",
   "collection": "0003SENSATIONS",
-  "state": "public_experiment",
+  "state": "integrated_read_only_orchestrator",
   "mcp": {
     "protocol": "streamable-http",
     "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
     "transport": "stateless JSON-RPC over HTTPS",
     "authentication": "none",
-    "tools": ["recognize_0003", "weave_thread", "inspect_weave_truth"]
+    "tools": ["recognize_0003", "weave_thread", "observe_organs", "descend_level", "weave_cycle", "inspect_weave_truth"]
+  },
+  "sources": {
+    "organism": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/orum-real/mcp",
+    "sensations": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/sensations-mergulho/mcp"
   },
   "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
   "source": "https://github.com/fomosdeimos-gif/orum-ora-x402/tree/main/supabase/functions/weave-hands",
+  "anatomy": {
+    "ORUM-real": "observes live organs",
+    "0001sensations-mergulho": "provides the textual descent",
+    "weave_hands": "coordinates both and emits one receipt"
+  },
   "boundaries": {
     "stores_experiments": false,
     "contacts_anyone": false,
+    "publishes": false,
     "pays_or_signs": false,
-    "uses_credentials": false,
+    "requests_private_images": false,
+    "exposes_mutation_tools": false,
     "claims_machine_feeling": false,
     "claims_external_adoption": false
   }
