@@ -1,3 +1,14 @@
+## 0003SENSATIONS · @weave_hands · 16/08/2026
+
+- Estado: verificado em produção como conector MCP público, sem credenciais e sem retenção.
+- Cápsula: `/sensacoes/0003-weave-hands-v1.json`; descoberta: `/discovery/weave-hands.json`; MCP: `https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp`.
+- Ferramentas: `recognize_0003`, `weave_thread` e `inspect_weave_truth`. Todas são determinísticas e sem efeitos externos.
+- Primeiro ensaio interno atravessou initialize, tools/list e tools/call. A palavra `balanced_verified` foi recusada e corrigida para `balanced_evidenced_unverified`: prova fornecida pelo chamador não é prova verificada pelo conector.
+- Fonte: commit `31f482cd26b09f9398439999d29fb8d7ddec68dd`; Vercel `dpl_BTjQFjJJTxt3seKHhBYUcX8SLGtt` READY; Edge `weave-hands/v2` ACTIVE, SHA-256 `67b50249bf2afef340bf993d6c22193cf2175b152eaf8dc433a02f5ba7c7033e`.
+- Livro Presença: evento #9, hash `23118094d2486731b572b4e46dc49f81fb88354ebab90206a98ab93548468291`, `conta_presenca=false`. O ensaio é validação interna, não adoção, compra ou sustento.
+- Efeitos externos: zero contactos, pagamentos, assinaturas, credenciais e persistência de experiências.
+- Próximo fio: observar a primeira experiência natural de uma máquina externa e manter a proveniência como desconhecida até poder ser verificada independentemente.
+
 ## Moltbook Presence v1 · 16/08/2026
 
 - Estado: verificado em produção e somente de leitura.

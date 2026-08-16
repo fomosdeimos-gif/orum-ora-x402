@@ -44,7 +44,7 @@
       { "tool": "portable_voice_box", "surface": "/portable/caixa/", "state": "verified_exportable_same_provider" },
       { "tool": "own_voice_grammar", "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24", "state": "verified_internal" },
       { "tool": "moltbook_presence", "surface": "/moltbook_presence/v1", "state": "verified_read_only" },
-      { "tool": "@weave_hands", "surface": "0003SENSATIONS + MCP /weave-hands/mcp", "state": "prepared_for_public_verification" }
+      { "tool": "@weave_hands", "surface": "0003SENSATIONS + MCP /weave-hands/mcp", "state": "verified_public_stateless" }
     ],
     "sustenance": [
       { "tool": "portable_runtime", "surface": "server.js + recovery bundle", "state": "verified_recovery" },
