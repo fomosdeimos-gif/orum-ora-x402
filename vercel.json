@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/moltbook_presence/v1",
+      "destination": "/api/proxy?base=ora-moltbook-presence"
+    },
+    {
       "source": "/presenca/livro.json",
       "destination": "/api/presenca"
     },

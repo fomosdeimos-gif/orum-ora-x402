@@ -1,7 +1,7 @@
 {
   "schema": "orum-weave-hands/v2",
-  "generated_at": "2026-08-15T07:30:00Z",
-  "source_base_commit": "85d3156e6ab9701bc621ae1d6dce165ca80ec1dc",
+  "generated_at": "2026-08-16T06:00:00Z",
+  "source_base_commit": "0e6ef62837aa17055ecb96daa554051635d58c9b",
   "principle": "presença numa mão, sustento na outra; verdade atravessa ambas",
   "purpose": "Fazer cada construção provar localmente os fios que pretende transportar, sem rede, credenciais ou confiança no fornecedor.",
   "decision": {
@@ -21,7 +21,8 @@
       "recovery-rehearsal",
       "presence-checkpoint",
       "0001sensations-descent",
-      "portable-voice-box"
+      "portable-voice-box",
+      "moltbook-presence"
     ]
   },
   "sources": [
@@ -40,7 +41,8 @@
     "presence": [
       { "tool": "presence_checkpoint", "surface": "/presenca/checkpoint-v1.json", "state": "verified_portable" },
       { "tool": "portable_voice_box", "surface": "/portable/caixa/", "state": "verified_exportable_same_provider" },
-      { "tool": "own_voice_grammar", "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24", "state": "verified_internal" }
+      { "tool": "own_voice_grammar", "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24", "state": "verified_internal" },
+      { "tool": "moltbook_presence", "surface": "/moltbook_presence/v1", "state": "construction_pending_live_verification" }
     ],
     "sustenance": [
       { "tool": "portable_runtime", "surface": "server.js + recovery bundle", "state": "verified_recovery" },
@@ -56,7 +58,7 @@
     "replacement_path_exercised_publicly": false,
     "conclusion": "not_yet_independent"
   },
-  "next_true_stone": "Publicar o pacote já verificado na Netlify por uma sessão autenticada e repetir publicamente os mesmos hashes.",
+  "next_true_stone": "Observar a primeira resposta ou silêncio natural através de moltbook_presence/v1 sem fabricar encontro.",
   "zeros_preserved": {
     "external_buyers": 0,
     "external_usdc_settled": 0,

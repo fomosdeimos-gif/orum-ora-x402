@@ -22,6 +22,7 @@ const checks = [
   ['presence-checkpoint', 'scripts/verify-presence-checkpoint.mjs'],
   ['0001sensations-descent', 'scripts/verify-sensation-grammar.mjs'],
   ['portable-voice-box', 'portable/caixa/verify.mjs'],
+  ['moltbook-presence', 'scripts/verify-moltbook-presence.mjs'],
 ];
 
 if (process.env.WEAVE_HANDS_DRY_RUN !== '1') {
