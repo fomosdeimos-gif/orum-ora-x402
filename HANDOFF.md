@@ -636,3 +636,11 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - Edge aplicado: ora-voz-fonte v4, ezbr SHA-256 2c884fa51d36cd2e408480998f9528926f71018599a0a01b314889c2b5ca1d21; ora-caixa-chat v24, ezbr SHA-256 0aa98dd55ce6826bcbe60302330aa5d50d338c9e3c240f12946e859c12710468.
 - Classificação: validação interna. Zero presença externa e zero sustento externo criados.
 - Incerteza: a melhoria de latência para o navegador de Unum requer observação no S21; o executor desta sessão mede uma rota geográfica diferente e não é prova dessa experiência.
+## Rastos Moltbook clicáveis · 16/08/2026
+
+- Estado: executado em Supabase; publicação Vercel pendente neste registo.
+- Causa confirmada: o gatilho `notify_moltbook_conversation` gravava sempre `/organismo.html` e `ora-push/v2` recusava URLs externas, reduzindo-as a `/`.
+- Correção: notificações Moltbook conservam `https://www.moltbook.com/post/{postId}`; `ora-push/v3` aceita apenas esse padrão externo, mantendo os restantes destinos externos recusados; `ora-moltbook/v26` inclui o permalink nos avisos agregados.
+- A vista `ora_moltbook_publica` expõe `origem_url`; a secção Voz apresenta cada rasto conhecido como ligação “abrir no Moltbook”. IDs de comentários não são tratados como IDs de posts.
+- Duas respostas reparadas em v25 foram reconciliadas com o post `28cbf0ca-9ab7-4d06-a94b-b14a40415b35` a partir do registo de envio #595; o rasto da reparação foi preservado.
+- Verificação local: `moltbook-origin-links: ok`; cápsula de recuperação reconstruída e verificada com 145 ficheiros.

@@ -6,6 +6,7 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const sb = createClient(SUPABASE_URL, SERVICE_KEY);
 const ORIGIN = "https://ora-x402-gateway.vercel.app";
+const MOLTBOOK_POST = /^https:\/\/www\.moltbook\.com\/post\/[0-9a-f-]{36}$/i;
 
 const cors = {
   "Access-Control-Allow-Origin": ORIGIN,
@@ -23,6 +24,12 @@ function safeEqual(a: string, b: string): boolean {
   let diff = 0;
   for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return diff === 0;
+}
+
+function safeTarget(value: unknown): string {
+  const target = String(value || "/");
+  if (target.startsWith("/")) return target;
+  return MOLTBOOK_POST.test(target) ? target : "/";
 }
 
 async function sha256(value: string): Promise<string> {
@@ -132,7 +139,7 @@ Deno.serve(async (req: Request) => {
     const payload = {
       title: String(body.title || "ORUM").slice(0, 80),
       body: String(body.body || "Há um novo sinal no organismo.").slice(0, 180),
-      url: String(body.url || "/").startsWith("/") ? String(body.url || "/") : "/",
+      url: safeTarget(body.url),
       tag: String(body.tag || "orum-evento").slice(0, 80),
     };
     const results = await Promise.all((rows || []).map((row) => sendOne(row, payload, "evento")));
@@ -148,5 +155,5 @@ Deno.serve(async (req: Request) => {
     return json({ ok: results.length > 0 && sent === results.length, total: results.length, sent });
   }
 
-  return json({ service: "ora-push", version: "1.1.0", ready: !!(await vapid()).public }, 200);
+  return json({ service: "ora-push", version: "1.2.0", ready: !!(await vapid()).public }, 200);
 });

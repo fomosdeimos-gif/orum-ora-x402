@@ -216,6 +216,19 @@
     text-transform:uppercase;
     letter-spacing:.05em;
   }
+  .lista a.rasto{
+    display:block;
+    color:inherit;
+    text-decoration:none;
+    border-radius:10px;
+    padding:3px 6px;
+    margin:-3px -6px;
+  }
+  .lista a.rasto:focus-visible,.lista a.rasto:active{
+    outline:1px solid var(--amber);
+    color:var(--ink);
+  }
+  .lista .abrir-origem{display:block;margin-top:5px;color:var(--amber);font-size:10.5px;letter-spacing:.04em;}
 
   .carregando{
     padding:20px 0;
@@ -410,6 +423,10 @@ function fmtHora(iso){
   return d.toLocaleString('pt-PT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC';
 }
 
+function escapar(valor){
+  return String(valor ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 function metrica(rot, val, prov){
   const id = 'p_' + Math.random().toString(36).slice(2);
   return `<div class="metrica">
@@ -542,16 +559,18 @@ async function carregarAprendizagem(){
 async function carregarVoz(){
   const posts = await sb('ora_moltbook_publica?select=*&limit=6');
   document.querySelector('[data-dot="voz"]').setAttribute('class', 'estado-dot estado-ok');
-  const linhas = posts.map(p => `<li>
-      <span class="quando-li">${fmtHora(p.quando)} · ${p.kind}${p.em_resposta_a ? ' · @' + p.em_resposta_a : ''}</span>
-      ${p.resumo || '—'}
-    </li>`).join('');
+  const linhas = posts.map(p => {
+    const conteudo = `<span class="quando-li">${escapar(fmtHora(p.quando))} · ${escapar(p.kind)}${p.em_resposta_a ? ' · @' + escapar(p.em_resposta_a) : ''}</span>${escapar(p.resumo || '—')}`;
+    return p.origem_url
+      ? `<li><a class="rasto" href="${escapar(p.origem_url)}" rel="external noreferrer">${conteudo}<span class="abrir-origem">abrir no Moltbook →</span></a></li>`
+      : `<li>${conteudo}</li>`;
+  }).join('');
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Voz</h2>
     <p class="pergunta-h">o que foi comunicado?</p>
     <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_moltbook_publica · lido ${fmtHora(new Date().toISOString())} · últimos ${posts.length} registos</div>
     <ul class="lista">${linhas}</ul>
-    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_moltbook_publica','kind / resumo / quando', new Date().toISOString())}</div>
+    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('ora_moltbook_publica','kind / resumo / quando / origem_url', new Date().toISOString())}</div>
   </div>`;
 }
 

@@ -1,3 +1,8 @@
+// ora-moltbook v26 — 16/08/2026
+// Cada aviso conserva o permalink real do post no Moltbook.
+// ora-moltbook v25 — 16/08/2026
+// Corrige idempotencia: depois de publicar, o log ja nao falha por referencia inexistente.
+// Assim cada notificacao fica marcada como tratada e nao volta a gerar resposta/email.
 // ora-moltbook v24 — 15/08/2026
 // Escuta antes de responder: voz própria ORUM, silêncio legítimo e zero rodapé promocional.
 // ora-moltbook v23 — 08/08/2026
@@ -169,7 +174,7 @@ async function notificarEmailMoltbook(assunto: string, corpo: string) {
   } catch { /* nunca falha o fluxo principal por causa do email */ }
 }
 
-async function notificarPushMoltbook(eventKey: string, replied: number, respostasComVoz: number, respostas: string[]) {
+async function notificarPushMoltbook(eventKey: string, replied: number, respostasComVoz: number, respostas: string[], postIds: string[]) {
   try {
     const auth = await sbRpc('orum_push_bootstrap_key');
     if (!auth) {
@@ -184,7 +189,7 @@ async function notificarPushMoltbook(eventKey: string, replied: number, resposta
       event_key: eventKey.slice(0, 160),
       title,
       body,
-      url: '/',
+      url: postIds.length > 0 ? `https://www.moltbook.com/post/${postIds[0]}` : '/',
       tag: 'orum-moltbook-reply',
     };
     const queued = await fetch(`${SB_URL}/rest/v1/ora_push_events`, {
@@ -555,6 +560,7 @@ Deno.serve(async (req: Request) => {
     let ficaramPorResponder = false;
     const respostasEnviadas: string[] = [];
     const respostasIds: string[] = [];
+    const respostasPostIds: string[] = [];
     let respostasComVoz = 0;
 
     for (const n of notifications) {
@@ -591,7 +597,8 @@ Deno.serve(async (req: Request) => {
           if (usouVoz) respostasComVoz++;
           respostasEnviadas.push(`post ${postId}: ${comentarioTexto ? comentarioTexto.slice(0, 80) : '(sem texto)'}`);
           respostasIds.push(notifId);
-          await sbLog('reply', notifId, { postId, parentId, content, comentarioTexto, respostaEspecifica: !!respostaEspecifica, usouVoz, type, origem: 'notifications' });
+          respostasPostIds.push(String(postId));
+          await sbLog('reply', notifId, { postId, parentId, content, comentarioTexto, usouVoz, type, origem: 'notifications' });
           await verifyIfChallenged(key, cj, `reply:${notifId}`);
         } else {
           await sbLog('error', notifId, { stage: 'reply', status: cr.status, response: cj });
@@ -634,7 +641,8 @@ Deno.serve(async (req: Request) => {
             vozesRespondidas++;
             respostasEnviadas.push(`post ${v.postId} (poll directo · ${v.nivel}): ${v.texto.slice(0, 80)}`);
             respostasIds.push(String(v.parentId));
-            await sbLog('reply', v.parentId, { postId: v.postId, parentId: v.parentId, content, comentarioTexto: v.texto, respostaEspecifica: !!respostaEspecifica, usouVoz, type: 'post_comment_direct', origem: 'poll_direto_v19', nivel: v.nivel, autor: v.autor });
+            respostasPostIds.push(String(v.postId));
+            await sbLog('reply', v.parentId, { postId: v.postId, parentId: v.parentId, content, comentarioTexto: v.texto, usouVoz, type: 'post_comment_direct', origem: 'poll_direto_v19', nivel: v.nivel, autor: v.autor });
             await verifyIfChallenged(key, cj, `reply_direto:${v.parentId}`);
           } else {
             await sbLog('error', v.parentId, { stage: 'reply_direto', status: cr.status, response: cj });
@@ -698,7 +706,7 @@ Deno.serve(async (req: Request) => {
       );
       if (replied > 0) {
         const eventKey = `reply:${[...respostasIds].sort().join(',')}`;
-        await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas);
+        await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]);
       }
     }
 
@@ -715,7 +723,7 @@ Deno.serve(async (req: Request) => {
       dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0),
       ficaramPorResponder,
       blocos_disponiveis: 0,
-      versao: 'v24',
+      versao: 'v26',
       state,
     });
     return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, comBlocoProprio, respostasComVoz, blocos: 0, ...summary }), { headers: { 'Content-Type': 'application/json' } });
