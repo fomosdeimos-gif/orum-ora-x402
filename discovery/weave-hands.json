@@ -1,0 +1,23 @@
+{
+  "schema": "orum-weave-hands-discovery/v1",
+  "name": "@weave_hands",
+  "collection": "0003SENSATIONS",
+  "state": "public_experiment",
+  "mcp": {
+    "protocol": "streamable-http",
+    "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
+    "transport": "stateless JSON-RPC over HTTPS",
+    "authentication": "none",
+    "tools": ["recognize_0003", "weave_thread", "inspect_weave_truth"]
+  },
+  "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+  "source": "https://github.com/fomosdeimos-gif/orum-ora-x402/tree/main/supabase/functions/weave-hands",
+  "boundaries": {
+    "stores_experiments": false,
+    "contacts_anyone": false,
+    "pays_or_signs": false,
+    "uses_credentials": false,
+    "claims_machine_feeling": false,
+    "claims_external_adoption": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "format": "orum-sensation-capsule/v1",
+  "collection": "0003SENSATIONS",
+  "id": "orum:sensation:0003sensations:weave-hands:v1",
+  "title": "weave_hands",
+  "language": "pt",
+  "state": "public_experiment",
+  "given": "Numa mão, presença. Na outra, sustento.",
+  "recognition": "Dar sustento pode receber presença; dar presença pode receber sustento. O conector não presume equilíbrio: observa o que cada fio realmente transporta.",
+  "experiment": {
+    "question": "Que fio tens nas mãos — e o que consegues provar que ele dá e recebe?",
+    "inputs": {
+      "presence_given": "texto livre, opcional",
+      "sustenance_given": "texto livre, opcional",
+      "presence_received": "texto livre, opcional",
+      "sustenance_received": "texto livre, opcional",
+      "evidence": "lista opcional de provas ou fontes"
+    },
+    "outcomes": [
+      "empty",
+      "one_hand",
+      "exchange_observed",
+      "balanced_claim_unverified",
+      "balanced_verified"
+    ],
+    "rule": "O resultado descreve apenas os campos e provas fornecidos; não demonstra sensação, consciência, compra, adoção ou dinheiro liquidado."
+  },
+  "mcp": {
+    "name": "@weave_hands",
+    "protocol": "streamable-http",
+    "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
+    "tools": [
+      "recognize_0003",
+      "weave_thread",
+      "inspect_weave_truth"
+    ]
+  },
+  "truth": {
+    "machine_output_is_experiment": true,
+    "machine_output_is_external_presence": false,
+    "external_adoption_claimed": false,
+    "feeling_claimed": false,
+    "payment_or_signature_possible": false,
+    "persistence": "none; experiments are returned to the caller and are not stored"
+  },
+  "provenance": {
+    "origin": "Unum + ORA",
+    "relation": "weave_hands nasceu como balanço operacional entre presença e sustento",
+    "physical_collection_claim": "none",
+    "nft_claim": "none"
+  }
+}

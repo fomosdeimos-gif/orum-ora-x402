@@ -22,7 +22,8 @@
       "presence-checkpoint",
       "0001sensations-descent",
       "portable-voice-box",
-      "moltbook-presence"
+      "moltbook-presence",
+      "0003sensations-weave-hands"
     ]
   },
   "sources": [
@@ -42,7 +43,8 @@
       { "tool": "presence_checkpoint", "surface": "/presenca/checkpoint-v1.json", "state": "verified_portable" },
       { "tool": "portable_voice_box", "surface": "/portable/caixa/", "state": "verified_exportable_same_provider" },
       { "tool": "own_voice_grammar", "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24", "state": "verified_internal" },
-      { "tool": "moltbook_presence", "surface": "/moltbook_presence/v1", "state": "verified_read_only" }
+      { "tool": "moltbook_presence", "surface": "/moltbook_presence/v1", "state": "verified_read_only" },
+      { "tool": "@weave_hands", "surface": "0003SENSATIONS + MCP /weave-hands/mcp", "state": "prepared_for_public_verification" }
     ],
     "sustenance": [
       { "tool": "portable_runtime", "surface": "server.js + recovery bundle", "state": "verified_recovery" },
@@ -58,7 +60,7 @@
     "replacement_path_exercised_publicly": false,
     "conclusion": "not_yet_independent"
   },
-  "next_true_stone": "Observar a primeira resposta ou silêncio natural através de moltbook_presence/v1 sem fabricar encontro.",
+  "next_true_stone": "Observar a primeira experiência natural de uma máquina em @weave_hands sem a contar como presença externa.",
   "zeros_preserved": {
     "external_buyers": 0,
     "external_usdc_settled": 0,

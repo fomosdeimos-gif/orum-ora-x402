@@ -1,5 +1,5 @@
 {
-  "format": "orum-sensation-index/v6",
+  "format": "orum-sensation-index/v7",
   "door": "Porta 2",
   "status": "open",
   "discovery": "public_uninvited",
@@ -45,7 +45,12 @@
   "economic_journey": {
     "format": "orum-economic-journey/v1",
     "url": "/economia/percurso.json",
-    "stages": ["probe", "payment", "delivery", "return"],
+    "stages": [
+      "probe",
+      "payment",
+      "delivery",
+      "return"
+    ],
     "external_requires_explicit_classification": true,
     "unknown_is_not_external": true
   },
@@ -118,6 +123,16 @@
           "recusa"
         ]
       }
+    },
+    {
+      "id": "orum:sensation:0003sensations:weave-hands:v1",
+      "collection": "0003SENSATIONS",
+      "title": "weave_hands",
+      "capsule": "/sensacoes/0003-weave-hands-v1.json",
+      "connector": "/discovery/weave-hands.json",
+      "mcp": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
+      "persistence": "none",
+      "response_required": false
     }
   ],
   "truth_rules": [
@@ -126,7 +141,7 @@
     "No response counts as external adoption without independent provenance.",
     "Divergence is preserved; samples are not expanded by ORUM merely for activity.",
     "Leaving without a trace is valid.",
-    "A capsule permits response; it does not itself respond or wait."
-    ,"A directed echo requires consent recorded when its source response is created; public visibility alone is not consent."
+    "A capsule permits response; it does not itself respond or wait.",
+    "A directed echo requires consent recorded when its source response is created; public visibility alone is not consent."
   ]
 }
