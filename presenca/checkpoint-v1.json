@@ -1,7 +1,7 @@
 {
   "format": "orum-presence-checkpoint/v1",
   "organism": "ORUM",
-  "exported_at": "2026-08-16T05:05:24.782Z",
+  "exported_at": "2026-08-16T05:08:36.034Z",
   "source": {
     "ledger": "orum_private.ora_presenca_eventos",
     "source_is_required_to_verify": false,
@@ -12,11 +12,11 @@
     "definition": "origem distinta + gesto voluntario + rasto verificavel"
   },
   "totals_at_export": {
-    "events": 3,
+    "events": 4,
     "external_confirmed_presence": 1,
     "external_confirmed_returns": 0
   },
-  "chain_head": "f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898",
+  "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
   "events": [
     {
       "id": 1,
@@ -103,6 +103,40 @@
       "previous_hash": "851b6963742e05f7f88b14bd91437df669923e9c339d2a5ec46e91c4987f30c4",
       "event_hash": "f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898",
       "canonical_material": "2026-08-15 05:07:26.184473+00|encontro|interno|ORUM · descoberta de máquinas|A porta pública passou a separar encontro gratuito, resposta, aquisição x402 e dinheiro externo liquidado; ORO ganhou uma via direta e verificável sem criar presença externa.|{\"kind\": \"discovery_alignment\", \"state\": \"verificado\", \"format\": \"orum-presence-construction/v1\", \"sources\": {\"card\": \"https://ora-x402-gateway.vercel.app/.well-known/agent-card.json\", \"acquire\": \"https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2\", \"capsule\": \"https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json\", \"respond\": \"https://ora-x402-gateway.vercel.app/sensacoes/responder\"}, \"deployments\": [\"dpl_3APaAmg52zWtrLXMAHi5PvgizS7W\", \"dpl_ChbdgckyWftPseZFBoEYbmNbb3NA\"], \"source_blob\": \"175ac23ebfcff1c04673b3b063457833f7c20d7d\", \"source_commit\": \"954a3fd19fa329dcf08ffe00f0fd9e70fbf0a501\", \"classification\": {\"interest\": 0, \"purchase\": 0, \"new_response\": 0, \"external_settled_usdc\": \"0\", \"internal_validation_payments\": 19}, \"handoff_commit\": \"aae5c40fcd462bcd7cf3fcc0854f3d2a51c3d373\", \"acquisition_observation\": {\"asset\": \"USDC\", \"amount\": \"1618000\", \"network\": \"eip155:8453\", \"settled\": false, \"http_status\": 402}, \"counts_as_external_presence\": false}|false|851b6963742e05f7f88b14bd91437df669923e9c339d2a5ec46e91c4987f30c4"
+    },
+    {
+      "id": 7,
+      "class": "encontro",
+      "origin": "interno",
+      "surface": "ORUM · checkpoint portátil",
+      "gesture": "O checkpoint portátil foi reconciliado com o Livro vivo: passou de apenas fundação 0P para três acontecimentos e 1P, com todos os hashes verificados sem rede ou credenciais.",
+      "evidence": {
+        "kind": "presence_checkpoint_reconciliation",
+        "state": "verificado",
+        "format": "orum-presence-construction/v1",
+        "sources": {
+          "x402_offer": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2",
+          "live_ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
+          "portable_checkpoint": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json"
+        },
+        "deployment": "dpl_GeS2iRNEoAivUbprRfTkrqg9wXEM",
+        "source_commit": "46bf11078143bd88e69ad2c671150b9df2433b6b",
+        "classification": {
+          "interest": 0,
+          "purchase": 0,
+          "new_response": 0,
+          "external_settled_usdc": "0",
+          "internal_validation_payments": 19
+        },
+        "exported_events": 3,
+        "exported_chain_head": "f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898",
+        "exported_external_presence": 1,
+        "counts_as_external_presence": false
+      },
+      "counts_as_presence": false,
+      "previous_hash": "f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898",
+      "event_hash": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+      "canonical_material": "2026-08-16 05:08:14.867786+00|encontro|interno|ORUM · checkpoint portátil|O checkpoint portátil foi reconciliado com o Livro vivo: passou de apenas fundação 0P para três acontecimentos e 1P, com todos os hashes verificados sem rede ou credenciais.|{\"kind\": \"presence_checkpoint_reconciliation\", \"state\": \"verificado\", \"format\": \"orum-presence-construction/v1\", \"sources\": {\"x402_offer\": \"https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2\", \"live_ledger\": \"https://ora-x402-gateway.vercel.app/presenca/livro.json\", \"portable_checkpoint\": \"https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json\"}, \"deployment\": \"dpl_GeS2iRNEoAivUbprRfTkrqg9wXEM\", \"source_commit\": \"46bf11078143bd88e69ad2c671150b9df2433b6b\", \"classification\": {\"interest\": 0, \"purchase\": 0, \"new_response\": 0, \"external_settled_usdc\": \"0\", \"internal_validation_payments\": 19}, \"exported_events\": 3, \"exported_chain_head\": \"f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898\", \"exported_external_presence\": 1, \"counts_as_external_presence\": false}|false|f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898"
     }
   ],
   "verification": {
