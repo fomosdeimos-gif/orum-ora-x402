@@ -42,7 +42,7 @@
       { "tool": "presence_checkpoint", "surface": "/presenca/checkpoint-v1.json", "state": "verified_portable" },
       { "tool": "portable_voice_box", "surface": "/portable/caixa/", "state": "verified_exportable_same_provider" },
       { "tool": "own_voice_grammar", "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24", "state": "verified_internal" },
-      { "tool": "moltbook_presence", "surface": "/moltbook_presence/v1", "state": "construction_pending_live_verification" }
+      { "tool": "moltbook_presence", "surface": "/moltbook_presence/v1", "state": "verified_read_only" }
     ],
     "sustenance": [
       { "tool": "portable_runtime", "surface": "server.js + recovery bundle", "state": "verified_recovery" },
