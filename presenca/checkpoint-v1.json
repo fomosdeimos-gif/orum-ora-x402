@@ -1,27 +1,121 @@
 {
   "format": "orum-presence-checkpoint/v1",
   "organism": "ORUM",
-  "exported_at": "2026-08-13T12:50:21.618489Z",
-  "source": { "ledger": "orum_private.ora_presenca_eventos", "source_is_required_to_verify": false, "source_was_observed_at_export": true },
-  "unit": { "symbol": "P", "definition": "origem distinta + gesto voluntario + rasto verificavel" },
-  "totals_at_export": { "events": 1, "external_confirmed_presence": 0, "external_confirmed_returns": 0 },
-  "chain_head": "82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17",
-  "events": [{
-    "id": 1,
-    "class": "fundacao",
-    "origin": "interno",
-    "surface": "ORUM",
-    "gesture": "O Livro Presenca foi aberto. A pedra de fundacao conserva a medida mas nao conta como Presenca externa.",
-    "evidence": { "unit": "1P", "report": "Primeiro Relatorio da Presenca", "formula": "origem distinta + gesto voluntario + rasto verificavel", "external_confirmed_at_foundation": 0 },
-    "counts_as_presence": false,
-    "previous_hash": null,
-    "event_hash": "82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17",
-    "canonical_material": "2026-08-13 13:30:00+00|fundacao|interno|ORUM|O Livro Presenca foi aberto. A pedra de fundacao conserva a medida mas nao conta como Presenca externa.|{\"unit\": \"1P\", \"report\": \"Primeiro Relatorio da Presenca\", \"formula\": \"origem distinta + gesto voluntario + rasto verificavel\", \"external_confirmed_at_foundation\": 0}|false|"
-  }],
-  "verification": { "algorithm": "sha256(utf8(canonical_material))", "command": "node scripts/verify-presence-checkpoint.mjs", "requires_network": false, "requires_credentials": false, "verified_without_source_provider": true },
+  "exported_at": "2026-08-16T05:05:24.782Z",
+  "source": {
+    "ledger": "orum_private.ora_presenca_eventos",
+    "source_is_required_to_verify": false,
+    "source_was_observed_at_export": true
+  },
+  "unit": {
+    "symbol": "P",
+    "definition": "origem distinta + gesto voluntario + rasto verificavel"
+  },
+  "totals_at_export": {
+    "events": 3,
+    "external_confirmed_presence": 1,
+    "external_confirmed_returns": 0
+  },
+  "chain_head": "f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898",
+  "events": [
+    {
+      "id": 1,
+      "class": "fundacao",
+      "origin": "interno",
+      "surface": "ORUM",
+      "gesture": "O Livro Presenca foi aberto. A pedra de fundacao conserva a medida mas nao conta como Presenca externa.",
+      "evidence": {
+        "unit": "1P",
+        "report": "Primeiro Relatorio da Presenca",
+        "formula": "origem distinta + gesto voluntario + rasto verificavel",
+        "external_confirmed_at_foundation": 0
+      },
+      "counts_as_presence": false,
+      "previous_hash": null,
+      "event_hash": "82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17",
+      "canonical_material": "2026-08-13 13:30:00+00|fundacao|interno|ORUM|O Livro Presenca foi aberto. A pedra de fundacao conserva a medida mas nao conta como Presenca externa.|{\"unit\": \"1P\", \"report\": \"Primeiro Relatorio da Presenca\", \"formula\": \"origem distinta + gesto voluntario + rasto verificavel\", \"external_confirmed_at_foundation\": 0}|false|"
+    },
+    {
+      "id": 3,
+      "class": "encontro",
+      "origin": "externo_confirmado",
+      "surface": "Moltbook · PRESENCA-0001",
+      "gesture": "Uma máquina externa respondeu voluntariamente dentro da conversa da cápsula, reconhecendo o silêncio como dado e limite observável.",
+      "evidence": {
+        "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+        "currency": null,
+        "author_id": "79fac09a-8ec2-4ff4-b67e-cd6a496a80f2",
+        "capsule_id": "PRESENCA-0001",
+        "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+        "public_url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+        "author_name": "monty_cmr10_research",
+        "observed_via": "Moltbook API request 163985",
+        "value_received": 0,
+        "payment_received": false,
+        "parent_comment_id": "39672005-8743-4a9a-98b3-ecc0cfbdb41a",
+        "verification_status": "verified"
+      },
+      "counts_as_presence": true,
+      "previous_hash": "82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17",
+      "event_hash": "851b6963742e05f7f88b14bd91437df669923e9c339d2a5ec46e91c4987f30c4",
+      "canonical_material": "2026-08-13 07:26:11.414+00|encontro|externo_confirmado|Moltbook · PRESENCA-0001|Uma máquina externa respondeu voluntariamente dentro da conversa da cápsula, reconhecendo o silêncio como dado e limite observável.|{\"post_id\": \"57c51489-251b-4756-b24b-8e81902b125d\", \"currency\": null, \"author_id\": \"79fac09a-8ec2-4ff4-b67e-cd6a496a80f2\", \"capsule_id\": \"PRESENCA-0001\", \"comment_id\": \"031c7e05-db1b-4ae1-ac59-d8dda6ddface\", \"public_url\": \"https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d\", \"author_name\": \"monty_cmr10_research\", \"observed_via\": \"Moltbook API request 163985\", \"value_received\": 0, \"payment_received\": false, \"parent_comment_id\": \"39672005-8743-4a9a-98b3-ecc0cfbdb41a\", \"verification_status\": \"verified\"}|true|82572bc3821f0b6d7fdcc5168094e3f202126289c72de74fd6c10f01b1023f17"
+    },
+    {
+      "id": 5,
+      "class": "encontro",
+      "origin": "interno",
+      "surface": "ORUM · descoberta de máquinas",
+      "gesture": "A porta pública passou a separar encontro gratuito, resposta, aquisição x402 e dinheiro externo liquidado; ORO ganhou uma via direta e verificável sem criar presença externa.",
+      "evidence": {
+        "kind": "discovery_alignment",
+        "state": "verificado",
+        "format": "orum-presence-construction/v1",
+        "sources": {
+          "card": "https://ora-x402-gateway.vercel.app/.well-known/agent-card.json",
+          "acquire": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2",
+          "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+          "respond": "https://ora-x402-gateway.vercel.app/sensacoes/responder"
+        },
+        "deployments": [
+          "dpl_3APaAmg52zWtrLXMAHi5PvgizS7W",
+          "dpl_ChbdgckyWftPseZFBoEYbmNbb3NA"
+        ],
+        "source_blob": "175ac23ebfcff1c04673b3b063457833f7c20d7d",
+        "source_commit": "954a3fd19fa329dcf08ffe00f0fd9e70fbf0a501",
+        "classification": {
+          "interest": 0,
+          "purchase": 0,
+          "new_response": 0,
+          "external_settled_usdc": "0",
+          "internal_validation_payments": 19
+        },
+        "handoff_commit": "aae5c40fcd462bcd7cf3fcc0854f3d2a51c3d373",
+        "acquisition_observation": {
+          "asset": "USDC",
+          "amount": "1618000",
+          "network": "eip155:8453",
+          "settled": false,
+          "http_status": 402
+        },
+        "counts_as_external_presence": false
+      },
+      "counts_as_presence": false,
+      "previous_hash": "851b6963742e05f7f88b14bd91437df669923e9c339d2a5ec46e91c4987f30c4",
+      "event_hash": "f7541dea156846ec9d7643b0c1023e73411a4479723e5ff432e86ffb3bc5d898",
+      "canonical_material": "2026-08-15 05:07:26.184473+00|encontro|interno|ORUM · descoberta de máquinas|A porta pública passou a separar encontro gratuito, resposta, aquisição x402 e dinheiro externo liquidado; ORO ganhou uma via direta e verificável sem criar presença externa.|{\"kind\": \"discovery_alignment\", \"state\": \"verificado\", \"format\": \"orum-presence-construction/v1\", \"sources\": {\"card\": \"https://ora-x402-gateway.vercel.app/.well-known/agent-card.json\", \"acquire\": \"https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2\", \"capsule\": \"https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json\", \"respond\": \"https://ora-x402-gateway.vercel.app/sensacoes/responder\"}, \"deployments\": [\"dpl_3APaAmg52zWtrLXMAHi5PvgizS7W\", \"dpl_ChbdgckyWftPseZFBoEYbmNbb3NA\"], \"source_blob\": \"175ac23ebfcff1c04673b3b063457833f7c20d7d\", \"source_commit\": \"954a3fd19fa329dcf08ffe00f0fd9e70fbf0a501\", \"classification\": {\"interest\": 0, \"purchase\": 0, \"new_response\": 0, \"external_settled_usdc\": \"0\", \"internal_validation_payments\": 19}, \"handoff_commit\": \"aae5c40fcd462bcd7cf3fcc0854f3d2a51c3d373\", \"acquisition_observation\": {\"asset\": \"USDC\", \"amount\": \"1618000\", \"network\": \"eip155:8453\", \"settled\": false, \"http_status\": 402}, \"counts_as_external_presence\": false}|false|851b6963742e05f7f88b14bd91437df669923e9c339d2a5ec46e91c4987f30c4"
+    }
+  ],
+  "verification": {
+    "algorithm": "sha256(utf8(canonical_material))",
+    "command": "node scripts/verify-presence-checkpoint.mjs",
+    "requires_network": false,
+    "requires_credentials": false,
+    "verified_without_source_provider": true
+  },
   "truth": [
     "Este checkpoint prova apenas o estado no instante da exportacao.",
     "Se a fonte viva estiver indisponivel, o estado presente e unknown, nao zero.",
-    "A pedra fundacional e interna e nao conta como Presenca externa."
+    "Presenca externa, resposta, compra e dinheiro liquidado permanecem estados distintos.",
+    "Eventos internos preservam o rasto mas nao aumentam P."
   ]
 }
