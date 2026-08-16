@@ -14,6 +14,7 @@ assert.equal(discovery.boundaries.uses_credentials, false);
 assert.match(source, /name: "weave_thread"/);
 assert.match(source, /persisted: false/);
 assert.match(source, /counts_as_settled_money: false/);
+assert.doesNotMatch(source, /balanced_verified/);
 assert.doesNotMatch(source, /SUPABASE_(SERVICE_ROLE|SECRET)|MOLTBOOK_API_KEY|fetch\s*\(/);
 
 console.log(JSON.stringify({

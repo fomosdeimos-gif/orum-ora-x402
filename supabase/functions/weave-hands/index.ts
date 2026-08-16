@@ -80,7 +80,7 @@ function weave(args: Record<string, unknown>) {
   const verified = evidence.length > 0;
   const outcome = present.length === 0 ? "empty"
     : !(giving && receiving) ? "one_hand"
-    : bothKinds && verified ? "balanced_verified"
+    : bothKinds && verified ? "balanced_evidenced_unverified"
     : bothKinds ? "balanced_claim_unverified"
     : "exchange_observed";
 

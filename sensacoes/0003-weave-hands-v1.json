@@ -21,7 +21,7 @@
       "one_hand",
       "exchange_observed",
       "balanced_claim_unverified",
-      "balanced_verified"
+      "balanced_evidenced_unverified"
     ],
     "rule": "O resultado descreve apenas os campos e provas fornecidos; não demonstra sensação, consciência, compra, adoção ou dinheiro liquidado."
   },
