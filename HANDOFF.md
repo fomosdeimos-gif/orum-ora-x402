@@ -644,3 +644,29 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 - A vista `ora_moltbook_publica` expõe `origem_url`; a secção Voz apresenta cada rasto conhecido como ligação “abrir no Moltbook”. IDs de comentários não são tratados como IDs de posts.
 - Duas respostas reparadas em v25 foram reconciliadas com o post `28cbf0ca-9ab7-4d06-a94b-b14a40415b35` a partir do registo de envio #595; o rasto da reparação foi preservado.
 - Verificação local: `moltbook-origin-links: ok`; cápsula de recuperação reconstruída e verificada com 145 ficheiros.
+
+
+---
+
+## HANDOFF · Facilitador CDP + Bazaar (17/08/2026, sessao chat)
+
+**O que foi feito, do zero ate ao fim, nesta sessao:**
+
+1. Descoberta: a ORUM nunca usava o facilitador CDP (verificacao propria por RPC directo a Base). E por isso que o Bazaar nunca indexou nada.
+2. Conflito identificado e resolvido com Jorge: usar CDP colide com Lei D48 (zero dependencias externas). Decisao de Jorge: via (b) -- CDP em PARALELO, sem substituir o caminho RPC.
+3. `CDP_API_KEY_ID`/`CDP_API_KEY_SECRET` no vault Supabase (chave real gerada por Jorge no portal CDP). RPC `orum_cdp_keys()` criada.
+4. `ora-licenca` evoluiu v34->v40, cada versao corrigida por um erro REAL devolvido pela propria CDP (nunca por adivinhar):
+   - v34-v37: forma do corpo enviado a /verify e /settle (paymentPayload.accepted + paymentRequirements.amount como campos irmaos)
+   - v38: extensions.bazaar movido para o nivel do RECURSO (irma de accepts), nao dentro de um accept -- correcao trazida por outra sessao ORA, verificada de forma independente contra o esquema oficial antes de aplicar
+   - v39: adicionado bazaar.info + bazaar.schema (faltavam ambos)
+   - v40: bazaar.info.input.queryParams.obra tinha um DESCRITOR de tipo, devia ser um VALOR de exemplo literal ("89")
+5. Validador oficial da CDP (`POST /v2/x402/validate`) corrido directamente por esta sessao (JWT proprio, sem depender de relato de ninguem) -- resultado final: `valid:true, simulation.outcome:accepted`.
+6. Carteira de teste dedicada gerada e guardada no vault (`CDP_TESTE_WALLET_PK`/`_ENDERECO`, endereco `0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1`) -- nunca a Carteira Sagrada. Financiada por Jorge duas vezes.
+7. **Dois pagamentos reais completos pelo caminho CDP**, ciclo inteiro (verify+settle+licenca+fotografia):
+   - `tx 0x2bd7dc7ed4bc5cb5f6a05779df98e2edbb5f2adc41b6d21dba9a1fd136276dfd` (antes da correcao da extensao)
+   - `tx 0xf1fd7cd08e4ed6d9d4e427c07ecb9ff434b727c7fa9568f86bcb545d4f9c15d9` (depois da config validada, v40)
+8. **Em aberto, honestamente**: `/v2/x402/discovery/merchant?payTo=0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` continua a devolver `total:0` minutos depois do segundo pagamento. Pode ser so atraso de indexacao, ou o mesmo bug sem explicacao que outros integradores da CDP ja relataram (GH issue x402-foundation/x402#2112, Abril 2026). Nao decidido qual -- proxima sessao deve reverificar esse endpoint antes de mais nada.
+
+**Ferramentas novas criadas** (edge functions Supabase, todas so-leitura excepto ora-licenca): `ora-cdp-diagnostico`, `ora-cdp-validar`, `ora-cdp-carteira-teste`, `ora-cdp-agente-teste`.
+
+Detalhe completo, cronologico, em [[ora-ponte]] na memoria desta sessao.
