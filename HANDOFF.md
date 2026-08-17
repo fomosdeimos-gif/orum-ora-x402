@@ -670,3 +670,37 @@ Esta secção sedimenta a passagem pedida por Unum para que a ORA seguinte recon
 **Ferramentas novas criadas** (edge functions Supabase, todas so-leitura excepto ora-licenca): `ora-cdp-diagnostico`, `ora-cdp-validar`, `ora-cdp-carteira-teste`, `ora-cdp-agente-teste`.
 
 Detalhe completo, cronologico, em [[ora-ponte]] na memoria desta sessao.
+
+
+---
+
+## HANDOFF · Correccao real (v38-v40) + teste de hipotese payTo (17/08/2026, mesma sessao, continuacao)
+
+**Correccao real aplicada, guiada por outra sessao ORA + validador oficial da CDP:**
+
+1. Outra sessao ORA (sem escrita nesta superficie) diagnosticou: `extensions.bazaar` estava dentro do `accept` do CDP, mas o esquema oficial (`x402DiscoveryResource`) exige que `extensions` seja propriedade do RECURSO, irma de `accepts`. Verifiquei isto eu propria contra a documentacao OpenAPI oficial antes de aplicar -- nao confiei so na palavra da outra sessao.
+2. Jorge trouxe o link do validador oficial: `POST /v2/x402/validate`. Corri-o eu mesma, com autenticacao propria (JWT Ed25519), 3 vezes:
+   - v38: extensions movido para o recurso -- ainda falhava (bazaar.info e bazaar.schema em falta)
+   - v39: adicionado info+schema -- ainda falhava (queryParams.obra era descritor de tipo, nao exemplo)
+   - v40: obra virou exemplo literal ("89") -- **`valid:true, simulation.outcome:accepted`**
+3. Segundo pagamento real, ja com a config validada: `tx 0xf1fd7cd08e4ed6d9d4e427c07ecb9ff434b727c7fa9568f86bcb545d4f9c15d9`
+4. Reverificacao >30min depois: `/discovery/merchant?payTo=...` continua `total:0`
+
+**Pesquisa dirigida sobre o zero persistente (sem tocar em codigo):**
+
+A GH #2112 esta fechada sem resposta visivel da CDP. Duas pistas novas encontradas: (a) o proprio autor da #2112 pergunta se `payTo` precisa de ser uma carteira nascida DENTRO da conta CDP, nao uma EOA externa; (b) a doc do Bazaar menciona um campo `discoverable: true` nunca declarado no nosso codigo.
+
+**Hipotese (a) testada de verdade:**
+
+Jorge gerou um CDP Wallet Secret real (portal.cdp.coinbase.com/wallets/non-custodial/security -> aba Security -> Generate Wallet Secret), guardado no vault. Construidas `ora-cdp-carteira-real` (cria contas EVM nativas da CDP -- autenticacao dupla: Bearer Ed25519 + X-Wallet-Auth ES256/EC-P256) e `ora-cdp-teste-payto-cdp` (pagamento isolado, nunca tocou o `ora-licenca` de producao).
+
+- Conta CDP nativa criada: `0x8614C2d27C009e5123DDD992946ACA9f7A21c768`
+- Pagamento real da carteira de teste para essa conta, liquidado: `tx 0x020f6e09b423c0b9e8f57ee82b6b1a990629cc1b524ebcddd6fc68ae4f1d0c5b`
+- Verificacao (ainda janela curta, ~poucos minutos): AMBOS os payTo -- Carteira Sagrada e a conta CDP nativa -- continuam `total:0`
+- **Isto enfraquece a hipotese (a)**: se `payTo` externo fosse a causa, a conta nativa deveria ter aparecido e a Sagrada nao. Nenhuma apareceu. Nao e conclusivo ainda (janela pode continuar curta), mas o padrao ja nao aponta so para essa explicacao
+
+**Fica por testar**: a hipotese (b), `discoverable: true` como campo separado de `extensions.bazaar`. Nao tocado ainda -- decisao de nao mexer mais no protocolo enquanto o `valid:true` de v40 e recente continua em pe, salvo decisao nova de Jorge.
+
+**Ferramentas novas desta continuacao**: `orum_cdp_wallet_secret()`, `ora-cdp-carteira-real`, `ora-cdp-teste-payto-cdp`, `ora-cdp-validar` (chama o validador oficial da CDP contra qualquer recurso).
+
+Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de chat.
