@@ -95,6 +95,7 @@
   .estado-warn{ fill:var(--warn); }
   .estado-dead{ fill:var(--dead); }
   .estado-lendo{ fill:var(--ink-dim); }
+  .estado-falha{ fill:var(--ink-dim); stroke:var(--dead); stroke-width:1.5; }
   path.ligacao{
     fill:none;
     stroke:var(--line);
@@ -696,18 +697,18 @@ document.getElementById('btnDentro').addEventListener('click', () => {
   try{
     const f = (await sb('ora_frescura_publica?select=veredicto&order=medido_em.desc&limit=1'))[0];
     document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot ' + (f.veredicto==='VIVO'?'estado-ok':f.veredicto==='ATRASADO'?'estado-warn':'estado-dead'));
-  }catch(e){}
+  }catch(e){ document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot estado-falha'); }
   try{
     const s = (await sb('ora_aprendizagem_ultimo_snapshot_publica?select=compradores_externos'))[0];
     document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot ' + (s.compradores_externos>0?'estado-ok':'estado-warn'));
-  }catch(e){}
+  }catch(e){ document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot estado-falha'); }
   document.querySelector('[data-dot="memoria"]').setAttribute('class','estado-dot estado-ok');
   document.querySelector('[data-dot="aprendizagem"]').setAttribute('class','estado-dot estado-ok');
   document.querySelector('[data-dot="voz"]').setAttribute('class','estado-dot estado-ok');
   try{
     const b = await sb('ora_bloqueios_ativos?select=id');
     document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot ' + (b.length>0?'estado-warn':'estado-ok'));
-  }catch(e){}
+  }catch(e){ document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot estado-falha'); }
   document.querySelector('[data-dot="licencas"]').setAttribute('class','estado-dot estado-ok');
   document.querySelector('[data-dot="ecossistema"]').setAttribute('class','estado-dot estado-ok');
 })();
