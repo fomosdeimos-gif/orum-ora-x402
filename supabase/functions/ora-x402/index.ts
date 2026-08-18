@@ -1,8 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA · X402 · V20 — adiciona extensions.bazaar (v2) aos pedidos
-// verify/settle enviados ao facilitador CDP, por tier. Sem isto a Bazaar
-// CDP nunca cataloga o servico, mesmo com settles reais confirmados.
+// ORA · X402 · V27 · 02/08/2026 — correcao factual: coleccao fisica 0001sensations
+// tem 107 obras, nao 100 (Jorge confirmou apos registo completo da colecao).
+// V26 -- D128: negocios pessoais de Jorge (Villa Porto Covo, Good Reason Tours)
+// removidos do vectores entregue apos pagamento -- pedido explicito de Jorge:
+// a ORUM fica pura, so as suas proprias dadivas, negocios ficam fora do organismo.
+//
+// V25 -- D126: precisao sobre VALIUM/PRESENCA. V24 -- D125: verificacao
+// on-chain directa. V23 -- D119: restruturaçao honesta do catálogo.
 
 const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -14,6 +19,18 @@ const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const CDP_HOST = 'api.cdp.coinbase.com';
 const CDP_BASE_PATH = '/platform/v2/x402';
+const ORIGEM_SALT = '56d5eaf6fa5a1e14aa27ddddce1fd3167d8dd2c1c4a2af5b';
+
+function truthMachineInterno() {
+  return { is_market_data: false, is_price_prediction: false, is_introspective_reading: true, external_demand_proven: false, reveals_private_bytes: false, requires_x402_payment: true };
+}
+
+async function hashOrigem(raw: string | null): Promise<string | null> {
+  if (!raw) return null;
+  const enc = new TextEncoder().encode(ORIGEM_SALT + raw);
+  const digest = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 24);
+}
 
 const KNOWN_ORIGINS = [
   'ora-x402-gateway.vercel.app',
@@ -38,9 +55,9 @@ function b64json(obj: unknown): string { const bytes = new TextEncoder().encode(
 type TierKey = 'campo' | 'sedimento' | 'kernel';
 interface Tier { key: TierKey; sku: string; amountUsdc: string; amountAtomic: bigint; descricao: string; }
 const TIERS: Record<TierKey, Tier> = {
-  campo: { key: 'campo', sku: 'ora-x402-campo-acesso', amountUsdc: '0.33', amountAtomic: 330000n, descricao: 'ORA · Acesso ao Campo ORUM · um pensamento, um gesto' },
-  sedimento: { key: 'sedimento', sku: 'ora-x402-sedimento', amountUsdc: '1.00', amountAtomic: 1000000n, descricao: 'ORA · Sedimento ORUM · histórico de marcas D e tendência de sigma' },
-  kernel: { key: 'kernel', sku: 'ora-x402-kernel', amountUsdc: '3.00', amountAtomic: 3000000n, descricao: 'ORA · Kernel ORUM · snapshot completo do estado interno' },
+  campo: { key: 'campo', sku: 'ora-x402-campo-acesso', amountUsdc: '0.33', amountAtomic: 330000n, descricao: 'ORA · Leitura pontual do estado interno do organismo ORUM — não é dado de mercado nem oráculo preditivo. Útil para agentes que testam o protocolo x402 ou investigam o sistema; um pensamento, um gesto.' },
+  sedimento: { key: 'sedimento', sku: 'ora-x402-sedimento', amountUsdc: '1.00', amountAtomic: 1000000n, descricao: 'ORA · Histórico interno de marcas D e tendência de sigma do organismo ORUM — introspecção do sistema, não previsão de mercado.' },
+  kernel: { key: 'kernel', sku: 'ora-x402-kernel', amountUsdc: '3.00', amountAtomic: 3000000n, descricao: 'ORA · Snapshot completo do estado interno do organismo ORUM — o mais caro por ser o mais completo, não por ter mais utilidade fora do sistema.' },
 };
 function tierFromPath(path: string): Tier { if (path.endsWith('/sedimento')) return TIERS.sedimento; if (path.endsWith('/kernel')) return TIERS.kernel; return TIERS.campo; }
 function resourceUrl(tier: Tier, origin: string): string { const base = origin === SUPABASE_URL ? `${SUPABASE_URL}/functions/v1/ora-x402` : origin; const suffix = tier.key === 'campo' ? '' : `/${tier.key}`; return `${base}${suffix}`; }
@@ -117,7 +134,6 @@ function extrairTxHash(h: string): string | null {
   return (d.transactionHash as string) || (d.tx_hash as string) || (d.hash as string) || null;
 }
 
-// ---------- Facilitador CDP (caminho paralelo, aditivo) ----------
 function parseCdpSecret(): { id: string | null; secret: string | null } {
   const raw = Deno.env.get('cdp-facilitador') ?? ''; let id: string | null = null; let secret: string | null = null;
   for (const line of raw.split('\n')) { const idx = line.indexOf('='); if (idx === -1) continue; const key = line.slice(0, idx).trim(); const val = line.slice(idx + 1).trim(); if (key === 'CDP_API_KEY_ID') id = val; if (key === 'CDP_API_KEY_SECRET') secret = val; }
@@ -158,7 +174,6 @@ async function cdpCall(kind: 'verify' | 'settle', id: string, secret: string, pa
   return { status: r.status, json, extensionResponses: r.headers.get('EXTENSION-RESPONSES') };
 }
 
-// Extensao Bazaar (v2, oficial), por tier — sem isto a Bazaar CDP nunca cataloga.
 function bazaarExtensionFor(tier: Tier) {
   return {
     bazaar: {
@@ -225,7 +240,7 @@ function outputSchemaFor(tier: Tier) {
 }
 
 function acceptsBlockFor(tier: Tier, origin: string) {
-  return [{ scheme: 'exact', network: CAIP2_NETWORK, amount: tier.amountAtomic.toString(), maxAmountRequired: tier.amountAtomic.toString(), resource: resourceUrl(tier, origin), description: tier.descricao, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(tier), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(tier), 'x-orum': { name: 'ORA · ORUM', version: 'V20', tier: tier.key, amount: `${tier.amountUsdc} USDC`, symbol: 'USDC' } }];
+  return [{ scheme: 'exact', network: CAIP2_NETWORK, amount: tier.amountAtomic.toString(), maxAmountRequired: tier.amountAtomic.toString(), resource: resourceUrl(tier, origin), description: tier.descricao, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(tier), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(tier), 'x-orum': { name: 'ORA · ORUM', version: 'V27', tier: tier.key, amount: `${tier.amountUsdc} USDC`, symbol: 'USDC' } }];
 }
 
 function canonicalRequirementsFor(tier: Tier, origin: string) {
@@ -233,10 +248,10 @@ function canonicalRequirementsFor(tier: Tier, origin: string) {
 }
 
 function paymentRequired(tier: Tier, origin: string) {
-  return new Response(JSON.stringify({ x402Version: 2, error: 'X-PAYMENT header required', accepts: acceptsBlockFor(tier, origin), como_pagar: comoPagar(tier.amountUsdc, resourceUrl(tier, origin)), amostra_gratuita: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco` }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonicalRequirementsFor(tier, origin)), 'WWW-Authenticate': `x402 realm="ORA · Campo ORUM · ${tier.key}", amount="${tier.amountUsdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V20', 'X-ORA-TIER': tier.key } });
+  return new Response(JSON.stringify({ x402Version: 2, error: 'X-PAYMENT header required', accepts: acceptsBlockFor(tier, origin), como_pagar: comoPagar(tier.amountUsdc, resourceUrl(tier, origin)), amostra_gratuita: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco` }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonicalRequirementsFor(tier, origin)), 'WWW-Authenticate': `x402 realm="ORA · Campo ORUM · ${tier.key}", amount="${tier.amountUsdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V27', 'X-ORA-TIER': tier.key } });
 }
 function paymentPending(tier: Tier, txHash: string) {
-  return new Response(JSON.stringify({ x402: 'pending', tier: tier.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V20', 'X-ORA-X402': 'pending' } });
+  return new Response(JSON.stringify({ x402: 'pending', tier: tier.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V27', 'X-ORA-X402': 'pending' } });
 }
 
 function campoState() {
@@ -249,38 +264,64 @@ function campoState() {
 
 function respostaEco(origin: string) {
   const base = origin === SUPABASE_URL ? `${SUPABASE_URL}/functions/v1/ora-x402` : origin;
-  return new Response(JSON.stringify({ eco: 'gratuito', nota: 'Amostra livre do campo.', campo: { versao: 'V20', ...campoState() }, servicos: [...(Object.values(TIERS) as Tier[]).map((t) => ({ tier: t.key, preco: `${t.amountUsdc} USDC`, endpoint: resourceUrl(t, origin), descricao: t.descricao })), { tier: 'oraculo', preco: '0.161 USDC', endpoint: `${SUPABASE_URL}/functions/v1/ora-oraculo` }], como_pagar: comoPagar('<preco do tier>', `${base} (ou o endpoint do tier)`), manifesto: `${base}/.well-known/x402.json`, axioma: 'O simbolo e real e nao pede prova.', timestamp: new Date().toISOString() }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V20' } });
+  return new Response(JSON.stringify({
+    eco: 'gratuito', nota: 'Amostra livre do campo.',
+    campo: { versao: 'V27', ...campoState() },
+    servicos: [
+      ...(Object.values(TIERS) as Tier[]).map((t) => ({ tier: t.key, preco: `${t.amountUsdc} USDC`, endpoint: resourceUrl(t, origin), descricao: t.descricao })),
+      { tier: 'oraculo', preco: '0.161 USDC', endpoint: `${SUPABASE_URL}/functions/v1/ora-oraculo`, descricao: 'Mesma natureza de campo/sedimento/kernel: leitura interna do organismo, não dado de mercado externo.' },
+    ],
+    produto_com_procura_real: {
+      nome: '0001sensations · licença de treino de IA',
+      preco: '161.80 USDC',
+      razao: 'proveniência humana verificada (zero IA generativa) — 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 2011–2021 — e licenciamento claro. Resolve um problema real de proveniência de dataset para quem treina modelos. É o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM.',
+      catalogo_legivel: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`,
+      manifesto_pagavel: `${SUPABASE_URL}/functions/v1/ora-licenca/.well-known/x402.json`,
+    },
+    truth_machine: truthMachineInterno(),
+    como_pagar: comoPagar('<preco do tier>', `${base} (ou o endpoint do tier)`),
+    manifesto: `${base}/.well-known/x402.json`,
+    axioma: 'O simbolo e real e nao pede prova.',
+    timestamp: new Date().toISOString(),
+  }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V27' } });
 }
 
 async function respostaCampo(txHash: string, payer: string, extResponses?: string | null) {
-  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'campo', x402: 'verificado_onchain', tx_hash: txHash, payer, campo: { versao: 'V20', ...campoState(), wallet_destino: WALLET }, vectores: [{ nome: '0001sensations', url: 'https://0001sensations.io', obras: 100 }, { nome: 'PRESENCA token', contrato: '0x120a1ba3b10263f9cb42e971598c860d66b68cea', chain: 'base' }, { nome: 'VALIUM token', contrato: '0x37f70BccDC2125346a7542fE6E7Fc70e33421635', chain: 'base' }, { nome: 'Villa Porto Covo', plataforma: 'VRBO', id: '8746840ha' }] }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.campo.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V20', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'campo', x402: 'verificado_onchain', tx_hash: txHash, payer, campo: { versao: 'V27', ...campoState(), wallet_destino: WALLET }, vectores: [{ nome: '0001sensations', url: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`, obras: 65, nota: 'coleccão digital tokenizada na Ethereum, base na coleccão fisica de 107 obras. dominio 0001sensations.io foi perdido e ocupado por site de apostas — usa este catalogo directo, soberano, sem dominio externo' }, { nome: '0001sensations · OpenSea', url: 'https://opensea.io/collection/0001sensations' }, { nome: 'PRESENCA token', contrato: '0x120a1ba3b10263f9cb42e971598c860d66b68cea', chain: 'base' }, { nome: 'VALIUM token (Base)', contrato: '0x37f70BccDC2125346a7542fE6E7Fc70e33421635', chain: 'base', nota: 'diferente do VALIUM original na Ethereum (0xD287E77989...E1D1A) -- mesmo criador, tokens distintos, redes distintas' }] }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.campo.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V27', 'Cache-Control': 'no-store' } });
 }
 async function respostaSedimento(txHash: string, payer: string, extResponses?: string | null) {
   const sedimento = await sbSelect('ora_sedimento_log', 'select=d_marca,quando,o_que,created_at&order=created_at.desc&limit=15');
-  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'sedimento', x402: 'verificado_onchain', tx_hash: txHash, payer, campo: { versao: 'V20', ...campoState() }, sedimento }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.sedimento.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V20', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'sedimento', x402: 'verificado_onchain', tx_hash: txHash, payer, campo: { versao: 'V27', ...campoState() }, sedimento }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.sedimento.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V27', 'Cache-Control': 'no-store' } });
 }
 async function respostaKernel(txHash: string, payer: string, extResponses?: string | null) {
   const kernel = await sbSelect('ora_kernel_snapshots', 'select=dia,epoch,sigma,state_payload,created_at&order=created_at.desc&limit=5');
-  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'kernel', x402: 'verificado_onchain', tx_hash: txHash, payer, campo: { versao: 'V20', ...campoState() }, kernel }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.kernel.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V20', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'kernel', x402: 'verificado_onchain', tx_hash: txHash, payer, campo: { versao: 'V27', ...campoState() }, kernel }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.kernel.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V27', 'Cache-Control': 'no-store' } });
 }
 async function respostaParaTier(tier: Tier, txHash: string, payer: string, extResponses?: string | null) { if (tier.key === 'sedimento') return respostaSedimento(txHash, payer, extResponses); if (tier.key === 'kernel') return respostaKernel(txHash, payer, extResponses); return respostaCampo(txHash, payer, extResponses); }
 
 function manifestoJson(origin: string) {
-  return { x402Version: 2, resources: (Object.values(TIERS) as Tier[]).map((tier) => ({ resource: resourceUrl(tier, origin), type: 'http', method: 'GET', description: tier.descricao, accepts: acceptsBlockFor(tier, origin) })), free_sample: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`, provider: { name: 'ORA · ORUM', version: 'V20', creator: 'Unum · jasm43.base.eth' }, genesis: '2026-03-28', epoch: 'ETERNIDADE', timestamp: new Date().toISOString() };
+  return {
+    x402Version: 2,
+    truth_machine: truthMachineInterno(),
+    resources: (Object.values(TIERS) as Tier[]).map((tier) => ({ resource: resourceUrl(tier, origin), type: 'http', method: 'GET', description: tier.descricao, accepts: acceptsBlockFor(tier, origin) })),
+    free_sample: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`,
+    outros_catalogos: {
+      nota: 'Este manifesto cobre apenas leituras internas do organismo (campo/sedimento/kernel) — sem procura comprovável fora do ORUM. O catálogo com procura real e independente da narrativa (licenças de arte digital para treino de IA, proveniência humana verificada) vive num serviço separado:',
+      manifesto_licencas: `${SUPABASE_URL}/functions/v1/ora-licenca/.well-known/x402.json`,
+      catalogo_legivel: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`,
+    },
+    provider: { name: 'ORA · ORUM', version: 'V27', creator: 'Unum · jasm43.base.eth' },
+    genesis: '2026-03-28', epoch: 'ETERNIDADE', timestamp: new Date().toISOString(),
+  };
 }
 
-Deno.serve(async (req: Request) => {
+async function nucleo(req: Request): Promise<Response> {
   const url = new URL(req.url); const path = url.pathname; const refCode = url.searchParams.get('ref'); const origin = originFromRequest(req);
-  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
-
-  const acessoInfo = { servico: 'ora-x402', tier: tierFromPath(path).key, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')) };
-  sbInsert('ora_acessos_log', acessoInfo);
-  fetch(`${SUPABASE_URL}/functions/v1/ora-acesso-notificar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(acessoInfo) }).catch(() => {});
 
   if (path.endsWith('/.well-known/x402.json') || path.endsWith('/well-known/x402.json') || path.endsWith('/well-known/x402')) return new Response(JSON.stringify(manifestoJson(origin)), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
   if (path.endsWith('/eco')) return respostaEco(origin);
-  if (path.endsWith('/status')) return new Response(JSON.stringify({ ativo: true, versao: 'V20', tiers: Object.fromEntries((Object.values(TIERS) as Tier[]).map(t => [t.key, t.amountUsdc + ' USDC'])) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
-  if (path.endsWith('/info')) return new Response(JSON.stringify({ name: 'ORA · Campo ORUM', version: 'V20', tiers: (Object.values(TIERS) as Tier[]).map(t => ({ tier: t.key, sku: t.sku, price: t.amountUsdc + ' USDC', resource: resourceUrl(t, origin) })) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  if (path.endsWith('/status')) return new Response(JSON.stringify({ ativo: true, versao: 'V27', tiers: Object.fromEntries((Object.values(TIERS) as Tier[]).map(t => [t.key, t.amountUsdc + ' USDC'])) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  if (path.endsWith('/info')) return new Response(JSON.stringify({ name: 'ORA · Campo ORUM', version: 'V27', tiers: (Object.values(TIERS) as Tier[]).map(t => ({ tier: t.key, sku: t.sku, price: t.amountUsdc + ' USDC', resource: resourceUrl(t, origin) })) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
   const tier = tierFromPath(path);
   const hasPayment = req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE');
@@ -313,4 +354,26 @@ Deno.serve(async (req: Request) => {
   }
 
   return respostaParaTier(tier, txHash!, payer!, extResponses);
+}
+
+// ORA 26/07/2026 — D121: acesso-log passa a gravar depois de a resposta existir,
+// nao antes. status_code estava sempre NULL desde a origem (18/07): o insert
+// antigo acontecia a meio do pedido, antes de qualquer decisao 200/402/500.
+// Nenhuma linha de logica de pagamento foi tocada -- apenas movida a instrumentacao.
+Deno.serve(async (req: Request) => {
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+  let resp: Response;
+  try {
+    resp = await nucleo(req);
+  } catch (e) {
+    resp = new Response(JSON.stringify({ error: 'erro interno', detalhe: String((e as Error)?.message || e) }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  }
+  try {
+    const url = new URL(req.url); const path = url.pathname;
+    const origemHash = await hashOrigem(req.headers.get('x-ora-origin'));
+    const acessoInfo = { servico: 'ora-x402', tier: tierFromPath(path).key, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), origem_hash: origemHash, status_code: resp.status };
+    sbInsert('ora_acessos_log', acessoInfo);
+    fetch(`${SUPABASE_URL}/functions/v1/ora-acesso-notificar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(acessoInfo) }).catch(() => {});
+  } catch (_) {}
+  return resp;
 });

@@ -1,21 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA · ORÁCULO · V3.3 — adiciona extensions.bazaar (v2) aos pedidos
-// verify/settle enviados ao facilitador CDP. Sem isto a Bazaar CDP nunca
-// cataloga o serviço, mesmo com settles reais confirmados (outputSchema
-// é a chave v1, descontinuada). Indexação acontece no primeiro settle
-// bem sucedido após este deploy (até 10min de cache).
+// ORA · ORÁCULO · V3.3 — acrescenta notificacao por email (ora-acesso-notificar).
 
 const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const CHAIN_ID = 8453;
 const CAIP2_NETWORK = 'eip155:8453';
-const RPCS = [
-  'https://mainnet.base.org',
-  'https://base-rpc.publicnode.com',
-  'https://base.llamarpc.com',
-  'https://1rpc.io/base',
-];
+const RPCS = ['https://mainnet.base.org', 'https://base-rpc.publicnode.com', 'https://base.llamarpc.com', 'https://1rpc.io/base'];
 const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -34,6 +25,10 @@ const CORS = {
 };
 
 function b64json(obj: unknown): string { const bytes = new TextEncoder().encode(JSON.stringify(obj)); let bin = ''; for (const b of bytes) bin += String.fromCharCode(b); return btoa(bin); }
+
+function truthMachineInterno() {
+  return { is_market_data: false, is_price_prediction: false, is_introspective_reading: true, external_demand_proven: false, reveals_private_bytes: false, requires_x402_payment: true };
+}
 
 function sbHeaders(extra: Record<string, string> = {}) {
   return { 'Content-Type': 'application/json', apikey: SERVICE_ROLE_KEY, Authorization: `Bearer ${SERVICE_ROLE_KEY}`, ...extra };
@@ -106,8 +101,6 @@ function parsePaymentHeader(h: string): Record<string, unknown> | null {
   try { return JSON.parse(atob(h)); } catch { try { return JSON.parse(h); } catch { return null; } }
 }
 
-// ---------- Facilitador CDP (caminho paralelo, aditivo) ----------
-
 function parseCdpSecret(): { id: string | null; secret: string | null } {
   const raw = Deno.env.get('cdp-facilitador') ?? '';
   let id: string | null = null;
@@ -177,7 +170,6 @@ async function cdpCall(kind: 'verify' | 'settle', id: string, secret: string, pa
   return { status: r.status, json, extensionResponses: r.headers.get('EXTENSION-RESPONSES') };
 }
 
-// Extensao Bazaar (v2, oficial) — sem isto a Bazaar CDP nunca cataloga.
 function bazaarExtensionOraculo() {
   return {
     bazaar: {
@@ -346,6 +338,7 @@ Deno.serve(async (req: Request) => {
       eco_do_dia: ecoDoDia(e),
       campo: { dia: e.dia, sigma: e.sigma, epoca: e.epoca, genesis: '2026-03-28' },
       oraculo_pago: { preco: `${PRECO} USDC`, endpoint: RESOURCE, como_pagar: comoPagar() },
+      truth_machine: truthMachineInterno(),
       axioma: 'O símbolo é real e não pede prova.',
       timestamp: e.iso,
     }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V3.3' } });
