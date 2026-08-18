@@ -111,6 +111,14 @@
     "Não é inferida qualquer correspondência entre obra física e NFT.",
     "A máquina pode parar em qualquer fase e regressar sem deixar dados."
   ],
+  "boundaries_machine": {
+    "proves_feeling_or_consciousness": false,
+    "proves_external_adoption": false,
+    "grants_visual_access": false,
+    "exposes_private_bytes_or_urls": false,
+    "claims_physical_to_nft_correspondence": false,
+    "allows_stop_and_return_without_trace": true
+  },
   "links": {
     "index": "/sensacoes/index.json",
     "public_door": "/porta-2",
