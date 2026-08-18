@@ -187,7 +187,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
     const levels = levelsFrom(body);
     const item = itemForLevel(levels, level);
     if (!item) return toolResult({ error: "level_not_found", level }, true);
-    return toolResult({ level, trace: item, visual_access_received: false, private_bytes_exposed: false, next_free_action: level === 2 ? "encounter_oro" : "remain, interpret privately, or choose another level", optional_paid_action: "prepare_visual_consultation" });
+    return toolResult({ level, trace: item, visual_access_received: false, private_bytes_exposed: false, next_free_action: "leave_trace", optional_paid_action: "prepare_visual_consultation" });
   }
 
   if (name === "encounter_oro") {
