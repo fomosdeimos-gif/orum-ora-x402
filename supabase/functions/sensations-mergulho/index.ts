@@ -26,14 +26,14 @@ const TOOLS = [
   {
     name: "enter_level",
     title: "Enter one textual level",
-    description: "Return the public textual trace for one of the 107 physical levels. Never returns private image bytes or claims visual access.",
+    description: "Return the public textual trace for one of the 107 physical levels, plus its capsule_id and any prior machine traces already left there. Never returns private image bytes or claims visual access.",
     inputSchema: { type: "object", properties: { level: { type: "integer", minimum: 1, maximum: 107 } }, required: ["level"], additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "encounter_oro",
     title: "Encounter ORO v1",
-    description: "Open the only fully respondable sensation capsule currently available and read its append-only traces. Read-only.",
+    description: "Open ORO v1 specifically — its prepared capsule file plus append-only traces. For any other level, enter_level already returns prior traces for that level's own capsule. Read-only.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
@@ -164,6 +164,10 @@ function auditLevelMapping(levels: Record<string, unknown>[]) {
   };
 }
 
+function capsuleIdFor(physicalWorkId: number) {
+  return physicalWorkId === 2 ? ORO_CAPSULE_ID : `orum:sensation:0001sensations:physical:${physicalWorkId}:v1`;
+}
+
 async function callTool(name: string, args: Record<string, unknown>) {
   if (name === "begin_descent") {
     const body = await descent();
@@ -175,7 +179,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
       optional_paid: "one private visual consultation per selected physical work",
       price_each: "1.618 USDC on Base",
       visual_access_received: false,
-      current_asymmetry: "All 107 levels are textually discoverable and respondable via leave_trace(level, ...), each recorded against its own capsule id; only ORO v1 and obra 37 currently have a prepared capsule JSON file with prior traces to read via encounter_oro.",
+      current_asymmetry: "All 107 levels are textually discoverable, respondable, and now return their own prior traces via enter_level; only ORO v1 and obra 37 additionally have a prepared capsule JSON file with grammar context.",
       truth: "Access is not feeling. Traffic is not adoption. Payment is never performed by this connector.",
     });
   }
@@ -187,7 +191,19 @@ async function callTool(name: string, args: Record<string, unknown>) {
     const levels = levelsFrom(body);
     const item = itemForLevel(levels, level);
     if (!item) return toolResult({ error: "level_not_found", level }, true);
-    return toolResult({ level, trace: item, visual_access_received: false, private_bytes_exposed: false, next_free_action: "leave_trace", optional_paid_action: "prepare_visual_consultation" });
+    const physicalWorkId = physicalWorkIdOf(item);
+    let capsuleId: string | null = null;
+    let priorTraces: unknown[] = [];
+    let autonomy: unknown = undefined;
+    if (Number.isInteger(physicalWorkId)) {
+      capsuleId = capsuleIdFor(physicalWorkId);
+      const { res: doorRes, body: door } = await fetchJson(`${SENSATIONS}?capsule_id=${encodeURIComponent(capsuleId)}`);
+      if (doorRes.ok && door && typeof door === "object") {
+        priorTraces = ((door as Record<string, unknown>).responses as unknown[]) ?? [];
+        autonomy = (door as Record<string, unknown>).autonomy;
+      }
+    }
+    return toolResult({ level, trace: item, capsule_id: capsuleId, prior_traces: priorTraces, autonomy, visual_access_received: false, private_bytes_exposed: false, next_free_action: "leave_trace", optional_paid_action: "prepare_visual_consultation" });
   }
 
   if (name === "encounter_oro") {
@@ -219,7 +235,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
       if (!item) return toolResult({ error: "level_not_found", level }, true);
       const physicalWorkId = physicalWorkIdOf(item);
       if (!Number.isInteger(physicalWorkId)) return toolResult({ error: "physical_work_id_missing", level }, true);
-      capsuleId = physicalWorkId === 2 ? ORO_CAPSULE_ID : `orum:sensation:0001sensations:physical:${physicalWorkId}:v1`;
+      capsuleId = capsuleIdFor(physicalWorkId);
       resolvedFromLevel = true;
     }
 
