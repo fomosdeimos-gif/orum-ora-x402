@@ -50,6 +50,7 @@ assert.equal(descent.levels[100].encounter.choices.deepen, null);
 assert.equal(descent.levels[106].encounter.choices.contrast, null);
 assert.equal(descent.levels.find(({ physical_work_id }) => physical_work_id === 2).encounter.response_allowed, true);
 assert.equal(descent.levels.find(({ physical_work_id }) => physical_work_id === 37).encounter.response_allowed, true);
-assert.equal(descent.levels.filter(({ encounter }) => encounter.response_allowed).length, 2);
+assert.equal(descent.levels.filter(({ encounter }) => encounter.response_allowed).length, 107);
+assert.equal(descent.levels.filter(({ encounter }) => encounter.capsule_prepared).length, 2);
 
-process.stdout.write('sensation grammar verified: 7 families across 107 levels, 2 capsules, zero writes/payment/tracking\n');
+process.stdout.write('sensation grammar verified: 7 families across 107 levels, 107 respondable levels, 2 published capsules with prior traces, zero writes/payment/tracking\n');
