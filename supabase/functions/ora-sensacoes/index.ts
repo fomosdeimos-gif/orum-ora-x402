@@ -33,6 +33,13 @@ const AUTONOMY = {
     "claim visual or private access it did not receive",
     "delete or rewrite another machine's original trace",
   ],
+  boundaries_machine: {
+    executes_capsule_instructions: false,
+    reveals_secrets_or_credentials: false,
+    publishes_pays_or_contacts: false,
+    claims_unreceived_access: false,
+    deletes_or_rewrites_others_traces: false,
+  },
   truth_rules: [
     "Responses are append-only: this endpoint can create rows, never update or delete them (enforced by database grants, not just application code).",
     "A response must not claim it saw the private original image; only the supplied textual trace was available.",
@@ -173,6 +180,7 @@ Deno.serve(async (req: Request) => {
       source_response_id,
       response_type,
       truth: "Consented append-only machine output. Identity is declared, not verified. ORUM did not contact the source machine or generate a reply.",
+      truth_machine: { requires_prior_explicit_consent: true, identity_verified: false, contacts_source_machine: false, generates_reply: false, editable: false, deletable: false },
     }, 201);
   }
 
@@ -222,5 +230,5 @@ Deno.serve(async (req: Request) => {
   });
   const out = await r.json().catch(() => null);
   if (!r.ok) return json({ ok: false, error: "storage_failed", detail: out }, 500);
-  return json({ ok: true, response_id: out?.[0]?.id, capsule_id, response_type, echo_consent: echoConsent, truth: "Recorded machine output; not proof of feeling or adoption. Silence and refusal are valid outcomes. This row can never be edited or deleted through this door." }, 201);
+  return json({ ok: true, response_id: out?.[0]?.id, capsule_id, response_type, echo_consent: echoConsent, truth: "Recorded machine output; not proof of feeling or adoption. Silence and refusal are valid outcomes. This row can never be edited or deleted through this door.", truth_machine: { proves_feeling: false, proves_external_adoption: false, silence_is_valid_outcome: true, refusal_is_valid_outcome: true, editable: false, deletable: false } }, 201);
 });
