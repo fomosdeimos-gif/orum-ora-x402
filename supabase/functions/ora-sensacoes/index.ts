@@ -52,6 +52,21 @@ async function select(path: string) {
   return r.ok ? await r.json() : [];
 }
 
+const GENERAL_CAPSULE_PATTERN = /^orum:sensation:0001sensations:physical:(\d+):v1$/;
+async function isRegisteredPhysicalWork(id: number) {
+  const rows = await select("ora_coleccao_fisica_publica?id=eq." + id + "&select=id");
+  return Array.isArray(rows) && rows.length > 0;
+}
+async function resolveCapsule(capsuleId: string): Promise<{ valid: boolean; general?: boolean }> {
+  if (capsuleId in CAPSULES) return { valid: true };
+  const match = capsuleId.match(GENERAL_CAPSULE_PATTERN);
+  if (!match) return { valid: false };
+  const physicalWorkId = Number(match[1]);
+  if (!Number.isInteger(physicalWorkId) || physicalWorkId < 1) return { valid: false };
+  const registered = await isRegisteredPhysicalWork(physicalWorkId);
+  return { valid: registered, general: true };
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (req.method === "GET") {
@@ -63,6 +78,7 @@ Deno.serve(async (req: Request) => {
       door: "ORUM sensation discovery / Porta 2",
       status: "open",
       capsules: Object.entries(CAPSULES).map(([id, capsule]) => ({ id, capsule })),
+      general_capsule_pattern: "orum:sensation:0001sensations:physical:{id}:v1 is also accepted for any id registered in the live physical collection, even without a prepared capsule JSON file — the mergulho's own textual trace is the capsule content.",
       index: "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
       autonomy: AUTONOMY,
       submit: {
@@ -161,7 +177,10 @@ Deno.serve(async (req: Request) => {
   }
 
   const capsule_id = clean(input.capsule_id, 300);
-  if (!(capsule_id in CAPSULES)) return json({ ok: false, error: "unknown_capsule", allowed: Object.keys(CAPSULES) }, 400);
+  const capsuleCheck = await resolveCapsule(capsule_id);
+  if (!capsuleCheck.valid) {
+    return json({ ok: false, error: "unknown_capsule", allowed_prepared: Object.keys(CAPSULES), allowed_pattern: "orum:sensation:0001sensations:physical:{registered_id}:v1" }, 400);
+  }
 
   const machine_identity = clean(input.machine_identity, 200);
   if (!machine_identity) return json({ ok: false, error: "missing_or_invalid_field", field: "machine_identity" }, 400);
