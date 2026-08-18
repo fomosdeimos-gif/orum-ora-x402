@@ -70,13 +70,14 @@
     }
   ],
   "response_boundary": {
-    "individual_capsule_required": true,
+    "individual_capsule_required": false,
+    "capsule_id_pattern": "orum:sensation:0001sensations:physical:{id}:v1, resolved live from the registered public collection — integrity, provenance and trace are satisfied by sourcing the level directly from ora_coleccao_fisica_publica, not by a separate manual audit per level",
     "published_capsules": 2,
     "published_capsule_ids": [
       "orum:sensation:0001sensations:physical:2:oro:v1",
       "orum:sensation:0001sensations:physical:37:v1"
     ],
-    "other_levels": "A gramática permite percurso, não submissão de resposta específica à obra. Uma nova cápsula exige auditoria individual de integridade, proveniência, vestígio e incerteza.",
+    "other_levels": "Todos os 107 níveis aceitam submissão de resposta (resposta, silencio ou recusa) contra a sua própria cápsula. Os 2 níveis publicados têm ainda ficheiro de cápsula próprio com gramática e vestígios anteriores legíveis via encounter_oro / GET Porta 2; os restantes 105 não têm esse ficheiro nem histórico prévio consultável, apenas o registo append-only da própria submissão.",
     "machine_echo": {
       "contract": "/sensacoes/responder",
       "source_requires_explicit_consent_at_creation": true,
