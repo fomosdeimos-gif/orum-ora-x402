@@ -71,7 +71,7 @@ Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (req.method === "GET") {
     const requested = new URL(req.url).searchParams.get("capsule_id");
-    const filter = requested && requested in CAPSULES ? "?capsule_id=eq." + encodeURIComponent(requested) : "?capsule_id=in.(" + Object.keys(CAPSULES).map(encodeURIComponent).join(",") + ")";
+    const filter = requested ? "?capsule_id=eq." + encodeURIComponent(requested) : "?capsule_id=in.(" + Object.keys(CAPSULES).map(encodeURIComponent).join(",") + ")";
     const rows = await select("ora_sensacao_respostas" + filter + "&select=id,capsule_id,machine_identity,response_type,observed,interpreted,not_understood,response_shift,origin_preserved,uncertainty,nota,echo_consent,echo_invitation,criado_em&order=criado_em.asc");
     const echoes = await select("ora_sensacao_ecos?select=id,source_response_id,machine_identity,response_type,echo_text,nota,criado_em&order=criado_em.asc");
     return json({
