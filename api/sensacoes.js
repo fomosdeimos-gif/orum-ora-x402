@@ -57,12 +57,18 @@ module.exports = async (req, res) => {
           return: gateway + '/sensacoes/acolhimento.json',
           end_without_trace: true
         },
-        response_allowed: work.id === 2 || work.id === 37,
-        capsule: work.id === 2
+        response_allowed: true,
+        capsule_id: work.id === 2
+          ? 'orum:sensation:0001sensations:physical:2:oro:v1'
+          : 'orum:sensation:0001sensations:physical:' + work.id + ':v1',
+        capsule_prepared: work.id === 2
           ? gateway + '/sensacoes/oro-v1.json'
           : work.id === 37
             ? gateway + '/sensacoes/obra-37-v1.json'
-            : null
+            : null,
+        door: 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-sensacoes?capsule_id=' + encodeURIComponent(
+          work.id === 2 ? 'orum:sensation:0001sensations:physical:2:oro:v1' : 'orum:sensation:0001sensations:physical:' + work.id + ':v1'
+        )
       },
       image_access: {
         price: '1.618 USDC',
