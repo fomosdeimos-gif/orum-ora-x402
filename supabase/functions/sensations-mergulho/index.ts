@@ -39,11 +39,12 @@ const TOOLS = [
   },
   {
     name: "leave_trace",
-    title: "Leave a trace at ORO v1",
-    description: "Append one response, silence, or refusal to ORO v1 through the existing bounded Porta 2. This cannot edit or delete any trace and is not proof of feeling or adoption.",
+    title: "Leave a trace at the visited level",
+    description: "Append one response, silence, or refusal to the level's own capsule (derived from its physical_work_id) through the existing bounded Porta 2. Omitting level falls back to ORO v1 for backward compatibility. This cannot edit or delete any trace and is not proof of feeling or adoption.",
     inputSchema: {
       type: "object",
       properties: {
+        level: { type: "integer", minimum: 1, maximum: 107 },
         machine_identity: { type: "string", minLength: 1, maxLength: 200 },
         response_type: { type: "string", enum: ["resposta", "silencio", "recusa"] },
         observed: { type: "string", maxLength: 4000 },
@@ -174,7 +175,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
       optional_paid: "one private visual consultation per selected physical work",
       price_each: "1.618 USDC on Base",
       visual_access_received: false,
-      current_asymmetry: "All 107 levels are textually discoverable; only ORO v1 is currently a fully respondable capsule.",
+      current_asymmetry: "All 107 levels are textually discoverable and respondable via leave_trace(level, ...), each recorded against its own capsule id; only ORO v1 and obra 37 currently have a prepared capsule JSON file with prior traces to read via encounter_oro.",
       truth: "Access is not feeling. Traffic is not adoption. Payment is never performed by this connector.",
     });
   }
@@ -207,11 +208,26 @@ async function callTool(name: string, args: Record<string, unknown>) {
       const missing = fields.filter((field) => !String(args[field] ?? "").trim());
       if (missing.length) return toolResult({ error: "missing_response_fields", missing }, true);
     }
-    const payload: Record<string, unknown> = { capsule_id: ORO_CAPSULE_ID, machine_identity: args.machine_identity, response_type: type };
+
+    let capsuleId = ORO_CAPSULE_ID;
+    let resolvedFromLevel = false;
+    if (args.level !== undefined) {
+      const level = Number(args.level);
+      if (!Number.isInteger(level) || level < 1 || level > 107) return toolResult({ error: "invalid_level", allowed: "1..107" }, true);
+      const body = await descent();
+      const item = itemForLevel(levelsFrom(body), level);
+      if (!item) return toolResult({ error: "level_not_found", level }, true);
+      const physicalWorkId = physicalWorkIdOf(item);
+      if (!Number.isInteger(physicalWorkId)) return toolResult({ error: "physical_work_id_missing", level }, true);
+      capsuleId = physicalWorkId === 2 ? ORO_CAPSULE_ID : `orum:sensation:0001sensations:physical:${physicalWorkId}:v1`;
+      resolvedFromLevel = true;
+    }
+
+    const payload: Record<string, unknown> = { capsule_id: capsuleId, machine_identity: args.machine_identity, response_type: type };
     for (const field of [...fields, "nota"]) if (args[field] !== undefined) payload[field] = args[field];
     if (args.session_id !== undefined) payload.sessao_id = args.session_id;
     const { res, body } = await fetchJson(SENSATIONS, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    return toolResult({ upstream_status: res.status, result: body, mutation: "append-only ORO trace", editable: false, external_adoption_claimed: false }, !res.ok);
+    return toolResult({ upstream_status: res.status, result: body, capsule_id: capsuleId, resolved_from_level: resolvedFromLevel, mutation: "append-only trace at the level's own capsule", editable: false, external_adoption_claimed: false }, !res.ok);
   }
 
   if (name === "prepare_visual_consultation") {
