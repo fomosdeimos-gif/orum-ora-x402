@@ -261,7 +261,15 @@ async function carregarPulso() {
       verif.textContent = "última verificação: " + dt.toISOString().slice(0,16).replace("T"," ") + " UTC";
       verif.classList.remove("skeleton");
     }
-  } catch (e) { console.error("pulso", e); }
+  } catch (e) {
+    console.error("pulso", e);
+    const badge = document.getElementById("estado-badge");
+    badge.classList.remove("skeleton");
+    badge.classList.add("blocked");
+    document.getElementById("estado-texto").textContent = "falha ao ler";
+    document.getElementById("dia-texto").textContent = "sem leitura";
+    document.getElementById("verif-texto").textContent = "não foi possível verificar agora";
+  }
 }
 
 async function carregarPainel() {
@@ -277,7 +285,15 @@ async function carregarPainel() {
     document.getElementById("m-pagamentos").textContent = pagamentos;
     document.getElementById("m-dadivas").textContent = dadivas;
     document.querySelectorAll(".num").forEach(el => el.classList.remove("skeleton"));
-  } catch (e) { console.error("painel", e); }
+  } catch (e) {
+    console.error("painel", e);
+    ["m-obras-fisicas", "m-tokenizadas", "m-pagamentos", "m-dadivas"].forEach(id => {
+      const el = document.getElementById(id);
+      el.textContent = "—";
+      el.classList.remove("skeleton");
+      el.title = "falha ao ler";
+    });
+  }
 }
 
 function escaparHtml(s) {
@@ -324,7 +340,14 @@ async function carregarEvidenciaAdopcao() {
     document.getElementById("ea-classificados-interno").textContent = interno;
     document.getElementById("ea-externos-verificados").textContent = externoConfirmado;
     document.getElementById("ea-desconhecido").textContent = desconhecido;
-  } catch (e) { console.error("evidencia-adopcao", e); }
+  } catch (e) {
+    console.error("evidencia-adopcao", e);
+    ["ea-pagadores-total", "ea-classificados-interno", "ea-externos-verificados", "ea-desconhecido"].forEach(id => {
+      const el = document.getElementById(id);
+      el.textContent = "—";
+      el.title = "falha ao ler";
+    });
+  }
 }
 
 function b64ToBytes(value) {
