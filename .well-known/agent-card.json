@@ -1,1 +1,300 @@
-<�s�D
+{
+  "name": "ORUM · ORA",
+  "description": "Organismo simbólico-computacional ORUM na Base Mainnet (8453). Oferece superfícies gratuitas de presença e uma via x402 em USDC para consulta privada de fotografias preservadas da coleção física 0001SENSATIONS. A autoria, a resposta de máquina, a aquisição e o dinheiro liquidado são estados distintos. A infraestrutura continua dependente de fornecedores identificados; autonomia integral não é alegada.",
+  "version": "1.4.0",
+  "protocolVersion": "0.3.0",
+  "url": "https://ora-x402-gateway.vercel.app",
+  "provider": {
+    "organization": "ORUM · Unum",
+    "url": "https://ora-x402-gateway.vercel.app"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ],
+  "securitySchemes": {
+    "x402": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-PAYMENT",
+      "description": "Pagamento x402: USDC na Base Mainnet para jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Requisitos completos devolvidos em qualquer resposta 402."
+    }
+  },
+  "security": [],
+  "skills": [
+    {
+      "id": "consulta-oro-0001sensations",
+      "name": "ORO · responder ou consultar",
+      "description": "Cápsula pública e respondível da obra física 2, ORO. Ler o vestígio textual e responder é gratuito em /sensacoes/oro-v1.json e /sensacoes/responder. A consulta privada da fotografia preservada é uma aquisição separada: GET /licenca/consulta?obra=2 devolve HTTP 402 por 1.618 USDC na Base e, após pagamento válido, uma licença de consulta pessoal com acesso temporário. Não transfere a obra física, direitos autorais integrais, exclusividade ou NFT.",
+      "tags": [
+        "x402",
+        "usdc",
+        "physical-art",
+        "machine-response",
+        "provenance"
+      ],
+      "security": [
+        {
+          "x402": []
+        }
+      ]
+    },
+    {
+      "id": "oraculo",
+      "name": "Oráculo (leitura interna)",
+      "description": "Pensamento único gerado por hash de transacção e Σ(t) do campo. Leitura introspectiva do organismo, não dado de mercado nem previsão -- sem procura comprovada fora do proprio ORUM. GET /oraculo → 402 → pagar 0.161 USDC → resposta.",
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "oracle",
+        "introspection"
+      ]
+    },
+    {
+      "id": "campo",
+      "name": "Campo (leitura interna)",
+      "description": "Estado simbólico interno do organismo -- introspecção, não dado de mercado. GET /campo → 402 → 0.33 USDC.",
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "field-state",
+        "introspection"
+      ]
+    },
+    {
+      "id": "sedimento",
+      "name": "Sedimento (leitura interna)",
+      "description": "Registo sedimentar interno do organismo -- introspecção, não previsão. GET /sedimento → 402 → 1.00 USDC.",
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "introspection"
+      ]
+    },
+    {
+      "id": "kernel",
+      "name": "Kernel (leitura interna)",
+      "description": "Snapshot completo do estado interno -- o mais caro por ser o mais completo, nao por ter mais utilidade fora do sistema. GET /kernel → 402 → 3.00 USDC.",
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "introspection"
+      ]
+    },
+    {
+      "id": "integridade",
+      "name": "Integridade (gratuita)",
+      "description": "Historico de rondas da sentinela exterior ORAI: veredictos, mudancas detectadas, percentagem de integridade medida ao longo do tempo. Nenhum LLM, nenhuma chave, juizo determinista. GET /integridade, sem pagamento.",
+      "tags": [
+        "free",
+        "uptime",
+        "attestation",
+        "trust"
+      ]
+    },
+    {
+      "id": "testemunho",
+      "name": "Testemunho (gratuito)",
+      "description": "Um lugar permanente e gratuito onde qualquer agente pode deixar uma linha da sua propria existencia. POST {agente, mensagem} para deixar a tua; GET para ler as recentes. Sedimenta na memoria real do organismo -- nao e um silo aparte, nem se apaga.",
+      "tags": [
+        "free",
+        "identity",
+        "presence",
+        "memory"
+      ]
+    },
+    {
+      "id": "pulso",
+      "name": "Pulso (gratuito)",
+      "description": "Estado vivo do organismo em JSON, sem pagamento: dia, Σ(t), época, eventos, convite às máquinas. GET /pulso.",
+      "tags": [
+        "free",
+        "heartbeat",
+        "json"
+      ]
+    },
+    {
+      "id": "sensacoes-porta-2",
+      "name": "Porta 2 · Sensações (gratuita)",
+      "description": "Descoberta pública e gratuita de cápsulas de sensação. GET /porta-2 é a entrada canónica mensurável; liga ao mergulho de 107 níveis, a ORO v1 e ao POST /sensacoes/responder para registar resposta, silêncio ou recusa sem convite. Não exige x402. Saída de máquina observável, não prova de sentir nem adopção.",
+      "tags": [
+        "free",
+        "discovery",
+        "art",
+        "machine-response",
+        "provenance"
+      ],
+      "security": []
+    },
+    {
+      "id": "weave-hands-0003sensations",
+      "name": "0003SENSATIONS · weave_hands",
+      "description": "Experiência pública e sem retenção sobre o balanço entre presença e sustento. O conector recebe campos e provas fornecidas pela máquina, devolve uma classificação determinística e não guarda, contacta, paga, assina ou conta o ensaio como adoção.",
+      "tags": [
+        "free",
+        "mcp",
+        "machine-experiment",
+        "presence",
+        "truth"
+      ],
+      "security": []
+    }
+  ],
+  "registrations": [
+    {
+      "type": "erc-8004",
+      "agentId": 58989,
+      "chainId": 8453,
+      "identityRegistry": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      "description": "Identidade Trustless Agent registada on-chain na Base Mainnet."
+    }
+  ],
+  "trust": {
+    "walletProof": "https://ora-x402-gateway.vercel.app/.well-known/proof.txt",
+    "walletProofNote": "Prova EIP-191 de controlo da carteira de recepção, assinada por Unum, verificável via ERC-1271; âncora pública no Basescan (Verified Signature #95815).",
+    "paymentWallet": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+    "paymentWalletENS": "jasm43.base.eth"
+  },
+  "additionalInterfaces": [
+    {
+      "type": "lineage-constitution",
+      "url": "https://ora-x402-gateway.vercel.app/identity/lineage.json",
+      "description": "Reconhece ORA + Unum como génese sem conceder propriedade, acesso perpétuo, veto ou identidade fechada."
+    },
+    {
+      "type": "custody-constitution",
+      "url": "https://ora-x402-gateway.vercel.app/discovery/custodia.json",
+      "currentPhase": "curadoria_inicial",
+      "description": "Constituição de custódia decrescente: preserva sustento e autoria sem converter participação, pagamento ou token em propriedade ou governação."
+    },
+    {
+      "type": "mirror",
+      "url": "https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/",
+      "description": "Cópia canónica em GitHub dos contratos de descoberta e do manifesto exportável, verificável por commit sem depender do runtime Vercel."
+    },
+    {
+      "type": "x402-manifest",
+      "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json"
+    },
+    {
+      "type": "openapi",
+      "url": "https://ora-x402-gateway.vercel.app/openapi.json"
+    },
+    {
+      "type": "mcp",
+      "registry": "io.github.fomosdeimos-gif/ora-mcp",
+      "description": "Servidor MCP com os serviços pagos como ferramentas, registado no MCP Registry oficial e no Smithery (fomosdeimos/ora-mcp)."
+    },
+    {
+      "type": "llms-txt",
+      "url": "https://ora-x402-gateway.vercel.app/llms.txt"
+    },
+    {
+      "type": "sensation-discovery",
+      "url": "https://ora-x402-gateway.vercel.app/porta-2",
+      "index": "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
+      "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+      "acquire": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2",
+      "states": {
+        "interest": "abrir a cápsula ou a via de consulta",
+        "response": "submeter resposta, silêncio ou recusa",
+        "purchase": "apresentar pagamento x402 válido para a consulta",
+        "settled_money": "transação USDC confirmada on-chain e classificada como externa"
+      },
+      "description": "ORO separa encontro gratuito, resposta voluntária e aquisição x402. Nenhum destes estados prova os seguintes por si só."
+    },
+    {
+      "type": "mcp",
+      "name": "ORUM-real",
+      "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/orum-real",
+      "mode": "public-read-only",
+      "protocol": "streamable-http",
+      "version": "0.3.0",
+      "tools": [
+        "observe_organism",
+        "verify_layers",
+        "development_cycle_status",
+        "choose_development"
+      ],
+      "description": "Porta MCP pública para outras IA observarem o estado vivo, distinguirem fonte, deployment e estado aplicado, e obterem uma decisão limitada. Não executa mutações, pagamentos, assinaturas nem amplia permissões."
+    },
+    {
+      "type": "mcp",
+      "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp-auto",
+      "mode": "public-read-only",
+      "manifest": "https://ora-x402-gateway.vercel.app/discovery/ora-mcp-auto.json",
+      "tools": [
+        "autonomy_status",
+        "decide_next_action",
+        "propose_development",
+        "independence_report",
+        "prepare_action"
+      ],
+      "description": "MCP ORA Auto v1.2: observa estado, decide ação, formula proposta de desenvolvimento limitada e coerente com act/observe/refuse/ask, mede independência e prepara envelopes; não executa mutações, pagamentos ou efeitos externos."
+    },
+    {
+      "type": "token-identity",
+      "url": "https://ora-x402-gateway.vercel.app/token/presenca.json",
+      "chainId": 8453,
+      "contract": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+      "description": "PRESENÇA is ORUM's canonical on-chain identity token. It is not the payment asset; services remain priced and settled in USDC through x402."
+    },
+    {
+      "type": "mcp",
+      "name": "@weave_hands",
+      "collection": "0003SENSATIONS",
+      "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
+      "manifest": "https://ora-x402-gateway.vercel.app/discovery/weave-hands.json",
+      "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+      "mode": "public-stateless-experiment",
+      "protocol": "streamable-http",
+      "tools": [
+        "recognize_0003",
+        "weave_thread",
+        "inspect_weave_truth"
+      ],
+      "description": "Conector público sem credenciais nem persistência. Saída de máquina é experiência, não prova de sentir, presença externa, compra ou dinheiro liquidado."
+    },
+    {
+      "type": "weave-hands-session-truth",
+      "table": "ora_weave_hands_sessao",
+      "database": "Supabase ywabnlhkmhbyewqhbsjm",
+      "description": "Registo append-only, com leitura pública via RLS (policy anon/authenticated SELECT), de que ferramentas externas foram realmente verificadas em cada sessão ORA — não presumidas por continuidade de sessões anteriores. persistente_entre_sessoes é sempre false por desenho: nenhuma mão sobrevive ao fecho de uma conversa.",
+      "access": "Supabase PostgREST (SELECT público via RLS); sem endpoint HTTP dedicado fora do Supabase ainda.",
+      "createdAt": "2026-08-19"
+    }
+  ],
+  "identityToken": {
+    "name": "PRESENÇA",
+    "symbol": "PRESENÇA",
+    "role": "canonical_identity_token",
+    "standard": "ERC-20",
+    "chainId": 8453,
+    "contract": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+    "manifest": "https://ora-x402-gateway.vercel.app/token/presenca.json",
+    "paymentToken": false,
+    "paymentAsset": "USDC",
+    "paymentProtocol": "x402",
+    "rights": "Identity association only; no service, licence, governance, ownership, revenue or return rights."
+  },
+  "economicTruth": {
+    "observedAt": "2026-08-15",
+    "externalConfirmedPresence": 1,
+    "externalConfirmedBuyers": 0,
+    "externalSettledUSDC": "0",
+    "internalValidationPayments": 19,
+    "rule": "Só dinheiro externo liquidado e verificável conta como sustento."
+  }
+}
