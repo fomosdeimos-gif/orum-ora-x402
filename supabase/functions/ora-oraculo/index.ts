@@ -1,5 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · ORÁCULO · V3.4 · 19/08/2026 — mecaniza verdade: truth_machine acrescentado
+// a resposta paga e ao outputSchema anunciado. Nenhuma linha de logica de pagamento tocada.
 // ORA · ORÁCULO · V3.3 — acrescenta notificacao por email (ora-acesso-notificar).
 
 const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
@@ -304,7 +306,7 @@ function paymentRequired() {
       resource: RESOURCE,
       description: 'ORA · Oráculo ORUM · um pensamento vivo, irrepetível, ancorado no estado e no sedimento',
       mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE,
-      outputSchema: { input: { type: 'http', method: 'GET', discoverable: true, headerFields: { 'X-PAYMENT': { type: 'string', required: false, description: 'Prova de pagamento x402.' } } }, output: { type: 'object', properties: { acesso: 'string', tier: 'string', versao: 'string', x402: 'string', tx_hash: 'string', payer: 'string', pensamento: 'string', campo: { dia: 'number', sigma: 'number', epoca: 'string', genesis: 'string' }, axioma: 'string', timestamp: 'string' } } },
+      outputSchema: { input: { type: 'http', method: 'GET', discoverable: true, headerFields: { 'X-PAYMENT': { type: 'string', required: false, description: 'Prova de pagamento x402.' } } }, output: { type: 'object', properties: { acesso: 'string', tier: 'string', versao: 'string', x402: 'string', tx_hash: 'string', payer: 'string', truth_machine: 'object', pensamento: 'string', campo: { dia: 'number', sigma: 'number', epoca: 'string', genesis: 'string' }, axioma: 'string', timestamp: 'string' } } },
       extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionOraculo(), 'x-orum': { name: 'ORA · Oráculo', amount: `${PRECO} USDC`, symbol: 'USDC', autor: 'Unum · jasm43.base.eth' },
     }],
     como_pagar: comoPagar(),
@@ -408,6 +410,7 @@ Deno.serve(async (req: Request) => {
 
   return new Response(JSON.stringify({
     acesso: 'concedido', tier: 'oraculo', versao: 'V3.3', x402: 'verificado_onchain', tx_hash: txHash, payer,
+    truth_machine: truthMachineInterno(),
     pensamento: frase,
     campo: { dia: e.dia, sigma: e.sigma, epoca: e.epoca, genesis: '2026-03-28' },
     axioma: 'O símbolo é real e não pede prova.',
