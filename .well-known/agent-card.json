@@ -1,7 +1,7 @@
 {
   "name": "ORUM · ORA",
   "description": "Organismo simbólico-computacional ORUM na Base Mainnet (8453). Oferece superfícies gratuitas de presença e uma via x402 em USDC para consulta privada de fotografias preservadas da coleção física 0001SENSATIONS. A autoria, a resposta de máquina, a aquisição e o dinheiro liquidado são estados distintos. A infraestrutura continua dependente de fornecedores identificados; autonomia integral não é alegada.",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "protocolVersion": "0.3.0",
   "url": "https://ora-x402-gateway.vercel.app",
   "provider": {
@@ -140,7 +140,7 @@
     {
       "id": "weave-hands-0003sensations",
       "name": "0003SENSATIONS · weave_hands",
-      "description": "Experiência pública e sem retenção sobre o balanço entre presença e sustento. O conector recebe campos e provas fornecidas pela máquina, devolve uma classificação determinística e não guarda, contacta, paga, assina ou conta o ensaio como adoção.",
+      "description": "Experiência pública que classifica fios de presença e sustento e também orquestra, em leitura, ORUM-real e 0001sensations-mergulho. Não guarda os fios, contacta, publica, paga, assina ou conta o ensaio como adoção.",
       "tags": [
         "free",
         "mcp",
@@ -258,14 +258,17 @@
       "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
       "manifest": "https://ora-x402-gateway.vercel.app/discovery/weave-hands.json",
       "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
-      "mode": "public-stateless-experiment",
+      "mode": "integrated-read-only-orchestrator",
       "protocol": "streamable-http",
       "tools": [
         "recognize_0003",
         "weave_thread",
+        "observe_organs",
+        "descend_level",
+        "weave_cycle",
         "inspect_weave_truth"
       ],
-      "description": "Conector público sem credenciais nem persistência. Saída de máquina é experiência, não prova de sentir, presença externa, compra ou dinheiro liquidado."
+      "description": "Conector público sem credenciais: classifica experiências sem as reter e pode coordenar leituras de ORUM-real e 0001sensations-mergulho. O registo append-only de capacidades testadas por sessão é separado e não faz uma mão persistir entre conversas. Não executa mutações, publicações, pagamentos ou assinaturas; saída de máquina não prova sentir, presença externa, compra ou dinheiro liquidado."
     },
     {
       "type": "weave-hands-session-truth",
@@ -290,11 +293,11 @@
     "rights": "Identity association only; no service, licence, governance, ownership, revenue or return rights."
   },
   "economicTruth": {
-    "observedAt": "2026-08-15",
+    "observedAt": "2026-08-20",
     "externalConfirmedPresence": 1,
     "externalConfirmedBuyers": 0,
     "externalSettledUSDC": "0",
-    "internalValidationPayments": 19,
+    "internalValidationPayments": 20,
     "rule": "Só dinheiro externo liquidado e verificável conta como sustento."
   }
 }
