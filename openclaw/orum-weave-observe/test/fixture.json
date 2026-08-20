@@ -1,0 +1,18 @@
+{
+  "jsonrpc": "2.0",
+  "id": "fixture",
+  "result": {
+    "structuredContent": {
+      "format": "orum-weave-receipt/v1",
+      "gesture": "weave_cycle",
+      "effects": {
+        "persisted": false,
+        "published": false,
+        "payment": false,
+        "signature": false
+      },
+      "truth": "Fixture only; not a live machine response."
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,24 @@
+{
+  gateway: {
+    bind: "loopback"
+  },
+  discovery: {
+    mdns: {
+      mode: "off"
+    }
+  },
+  agents: {
+    defaults: {
+      skills: ["orum-weave-observe"]
+    }
+  },
+  tools: {
+    deny: [
+      "gateway",
+      "cron",
+      "exec",
+      "sessions_spawn",
+      "sessions_send"
+    ]
+  }
+}
