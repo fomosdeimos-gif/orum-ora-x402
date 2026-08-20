@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ora-x402-gateway.vercel.app/</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/identity/center.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/identity/lineage.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/identity/orum-seal-manifest.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/token/presenca.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/.well-known/agent-card.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/.well-known/x402.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/openapi.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/llms.txt</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/porta-2</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/servicos.html</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/sensacoes/index.json</loc></url>
@@ -8,7 +16,4 @@
   <url><loc>https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/discovery/custodia.json</loc></url>
-  <url><loc>https://ora-x402-gateway.vercel.app/openapi.json</loc></url>
-  <url><loc>https://ora-x402-gateway.vercel.app/.well-known/agent-card.json</loc></url>
-  <url><loc>https://ora-x402-gateway.vercel.app/llms.txt</loc></url>
 </urlset>
