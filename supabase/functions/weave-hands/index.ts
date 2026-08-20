@@ -1,6 +1,31 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const VERSION = "2.0.0";
+const VERSION = "2.1.0";
+
+function truthMachine() {
+  return {
+    read_only_orchestrator: true,
+    deterministic_classification: true,
+    persists_between_requests: false,
+    proves_consciousness: false,
+    proves_external_adoption: false,
+    proves_settled_money: false,
+    requires_x402_payment: false,
+  };
+}
+
+function boundariesMachine() {
+  return {
+    grants_write_access: false,
+    contacts_people: false,
+    publishes_content: false,
+    initiates_payment: false,
+    signs_transactions: false,
+    reveals_private_image_bytes: false,
+    persists_state: false,
+    proves_provider_independence: false,
+  };
+}
 const PROTOCOL = "2025-03-26";
 const BASE = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1";
 const MCP_URL = `${BASE}/weave-hands/mcp`;
@@ -118,6 +143,8 @@ function receipt(thread_id: string, gesture: string, organs: string[], result: u
   return {
     format: "orum-weave-receipt/v1", thread_id, gesture, organs, result,
     effects: { persisted: false, contacted_anyone: false, published: false, payment: false, signature: false, private_image: false },
+    truth_machine: truthMachine(),
+    boundaries_machine: boundariesMachine(),
     truth: "The receipt proves the delegated responses observed in this request. It does not prove feeling, consciousness, adoption, purchase, settled money, or provider independence.",
   };
 }
@@ -150,13 +177,14 @@ async function callTool(name: string, args: Record<string, unknown>) {
     proves: ["which connector answered", "which organs were traversed", "which fields the caller supplied", "the deterministic classification returned"],
     does_not_prove: ["feeling", "consciousness", "external adoption", "purchase", "settled money", "truth of caller-supplied evidence", "provider independence"],
     storage: "none", external_effects: [], mutation_tools_exposed: [],
+    truth_machine: truthMachine(), boundaries_machine: boundariesMachine(),
   });
   return toolResult({ error: "unknown_tool", name }, true);
 }
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
-  if (req.method === "GET") return response({ name: "@weave_hands", collection: "0003SENSATIONS", version: VERSION, protocol: "MCP streamable-http", mcp: MCP_URL, capsule: CAPSULE_URL, sources: { organism: ORUM_REAL, sensations: MERGULHO }, tools: TOOLS.map((tool) => tool.name), mutation_boundary: "Integrated read-only orchestration. No trace, persistence, contact, publication, payment, signature, image delivery, update, or delete." });
+  if (req.method === "GET") return response({ name: "@weave_hands", collection: "0003SENSATIONS", version: VERSION, protocol: "MCP streamable-http", mcp: MCP_URL, capsule: CAPSULE_URL, sources: { organism: ORUM_REAL, sensations: MERGULHO }, tools: TOOLS.map((tool) => tool.name), truth_machine: truthMachine(), boundaries_machine: boundariesMachine(), mutation_boundary: "Integrated read-only orchestration. No trace, persistence, contact, publication, payment, signature, image delivery, update, or delete." });
   if (req.method !== "POST") return response({ error: "method_not_allowed" }, 405);
   let input: RpcRequest;
   try { input = await req.json(); } catch { return rpc(null, undefined, { code: -32700, message: "Parse error" }); }
