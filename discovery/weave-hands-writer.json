@@ -1,0 +1,65 @@
+{
+  "schema": "orum-weave-hands-writer-discovery/v1",
+  "name": "@weave_hands_writer",
+  "title": "ORUM · authenticated writing and production hand",
+  "state": "active_revocable",
+  "organism": "ORUM",
+  "collection": "0003SENSATIONS",
+  "published_at": "2026-08-21T07:51:00Z",
+  "mcp": {
+    "protocol": "streamable-http",
+    "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands-writer/mcp",
+    "authentication": "Bearer capability token (revocable, never published)",
+    "tools": [
+      "connector_status",
+      "append_sediment",
+      "production_read_file",
+      "production_write_file"
+    ]
+  },
+  "scopes": [
+    "sediment:append",
+    "production:read",
+    "production:write"
+  ],
+  "allowed_repos": [
+    "orum",
+    "orum-ora-x402"
+  ],
+  "boundaries": {
+    "arbitrary_sql": false,
+    "delete": false,
+    "force_push": false,
+    "payments": false,
+    "signatures": false,
+    "secrets_exposed": false,
+    "private_images": false,
+    "wallet_access": false
+  },
+  "truth": {
+    "credential_is_never_in_this_file": true,
+    "presence_is_not_created_by_this_hand_alone": true,
+    "external_settled_money_required_for_sustenance": true,
+    "internal_validation_is_not_external_revenue": true,
+    "append_only_sediment": true,
+    "every_production_write_is_read_back_verified": true
+  },
+  "economic_state_at_publication": {
+    "external_confirmed_presence": 1,
+    "external_settled_usdc": 0,
+    "internal_validation_payments": 20,
+    "source": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json"
+  },
+  "related": {
+    "read_only_hands": "https://ora-x402-gateway.vercel.app/discovery/weave-hands.json",
+    "capsule_0003": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+    "presence_ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
+    "presence_checkpoint": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json"
+  },
+  "first_sediment": {
+    "id": 2,
+    "thread": "weave-hands-writer-activation",
+    "classification": "verified",
+    "created_at": "2026-08-21T07:43:07.893982+00:00"
+  }
+}
