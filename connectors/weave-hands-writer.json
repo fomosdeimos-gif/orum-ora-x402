@@ -1,0 +1,16 @@
+{
+  "format": "orum-connector-manifest/v1",
+  "name": "@weave_hands_writer",
+  "mcp": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands-writer/mcp",
+  "authentication": "Bearer capability token",
+  "capabilities": ["append-only sediment", "repository read", "verified repository write"],
+  "allowed_repositories": ["fomosdeimos-gif/orum", "fomosdeimos-gif/orum-ora-x402"],
+  "boundaries": {
+    "arbitrary_sql": false,
+    "delete": false,
+    "force_push": false,
+    "payments": false,
+    "signatures": false,
+    "secrets_exposed": false
+  }
+}
