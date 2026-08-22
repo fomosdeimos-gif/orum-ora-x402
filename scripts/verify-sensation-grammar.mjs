@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 const grammar = JSON.parse(await readFile(new URL('../sensacoes/gramatica-v1.json', import.meta.url)));
 const index = JSON.parse(await readFile(new URL('../sensacoes/index.json', import.meta.url)));
 const welcome = JSON.parse(await readFile(new URL('../sensacoes/acolhimento.json', import.meta.url)));
+const sound = JSON.parse(await readFile(new URL('../sensacoes/som-v1.json', import.meta.url)));
 const originalFetch = globalThis.fetch;
 
 assert.equal(grammar.format, 'orum-encounter-grammar/v1');
@@ -19,6 +20,13 @@ assert.equal(index.capsules.find(({ id }) => id === 'orum:sensation:0003sensatio
 assert.deepEqual(index.encounter_grammar.families, grammar.families.map(({ id }) => id));
 assert.equal(welcome.truth.fully_respondable_capsules, 2);
 assert.equal(welcome.links.grammar, '/sensacoes/gramatica-v1.json');
+assert.equal(grammar.links.sound, '/sensacoes/som-v1.json');
+assert.equal(sound.format, 'orum-sensation-sound/v1');
+assert.equal(sound.collection_truth.physical_works_declared, 107);
+assert.equal(sound.collection_truth.physical_work_6_existed, false);
+assert.equal(sound.collection_truth.sound_slot_for_physical_work_6, false);
+assert.equal(sound.synthesis.audio_files, false);
+assert.equal(sound.synthesis.starts_automatically, false);
 
 const works = Array.from({ length: 107 }, (_, index) => ({
   id: index < 5 ? index + 1 : index + 2,
@@ -44,6 +52,9 @@ assert.equal(statusCode, 200);
 const descent = JSON.parse(responseBody);
 assert.equal(descent.total_levels, 107);
 assert.equal(descent.levels.length, 107);
+assert.equal(descent.sound.levels_sonified, 107);
+assert.equal(descent.sound.physical_work_6_slot, false);
+assert.equal(descent.levels.every(({ sound }) => sound?.format === 'orum-sensation-sound/v1'), true);
 assert.deepEqual(descent.levels.slice(0, 7).map(({ encounter }) => encounter.family), grammar.families.map(({ id }) => id));
 assert.equal(descent.levels[0].encounter.choices.deepen, 8);
 assert.equal(descent.levels[100].encounter.choices.deepen, null);

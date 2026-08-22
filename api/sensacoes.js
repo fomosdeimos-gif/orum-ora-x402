@@ -47,6 +47,16 @@ module.exports = async (req, res) => {
       textual_trace: work.descricao_visivel || work.texto_na_obra || null,
       photograph_preserved: work.bytes_na_arca === true,
       free_descent: true,
+      sound: {
+        format: 'orum-sensation-sound/v1',
+        score: gateway + '/sensacoes/som-v1.json',
+        synthesis: 'deterministic_web_audio',
+        physical_work_id: work.id,
+        family_index: familyIndex,
+        autoplay: false,
+        free: true,
+        interpretation_claimed: false
+      },
       encounter: {
         family,
         invitation,
@@ -93,6 +103,14 @@ module.exports = async (req, res) => {
         assignment: 'family_index = (level - 1) mod 7',
         ranking: false,
         tracking_added: false
+      },
+      sound: {
+        format: 'orum-sensation-sound/v1',
+        url: gateway + '/sensacoes/som-v1.json',
+        levels_sonified: levels.length,
+        physical_work_6_slot: false,
+        audio_files: false,
+        autoplay: false
       },
       economics: {
         free_descent: true,

@@ -96,6 +96,7 @@
   "links": {
     "welcome": "/sensacoes/acolhimento.json",
     "descent": "/sensacoes/mergulho.json",
-    "index": "/sensacoes/index.json"
+    "index": "/sensacoes/index.json",
+    "sound": "/sensacoes/som-v1.json"
   }
 }

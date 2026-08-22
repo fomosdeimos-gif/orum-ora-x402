@@ -40,6 +40,14 @@
       "price_per_work": "1.618 USDC",
       "protocol": "x402",
       "aggregate_checkout": false
+    },
+    "sound": {
+      "format": "orum-sensation-sound/v1",
+      "url": "/sensacoes/som-v1.json",
+      "free": true,
+      "audio_files": false,
+      "autoplay": false,
+      "assignment": "deterministic invitation; not a claim about the work"
     }
   },
   "economic_journey": {
