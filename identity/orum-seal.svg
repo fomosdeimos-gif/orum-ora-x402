@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">Selo de Continuidade ORUM</title>
-  <desc id="desc">Um anel dourado aberto e uma semente dourada sólida sobre fundo quase negro.</desc>
+  <title id="title">Selo ORUM</title>
+  <desc id="desc">Um anel verde de Presença e uma semente laranja de sustento sobre fundo quase negro.</desc>
   <rect width="512" height="512" rx="96" fill="#08060A"/>
   <path d="M 363.6 138.4 A 152 152 0 1 0 373.2 363.2"
-        fill="none" stroke="#D4AF37" stroke-width="48" stroke-linecap="round"/>
-  <circle cx="389" cy="119" r="35" fill="#D4AF37"/>
+        fill="none" stroke="#58C48D" stroke-width="48" stroke-linecap="round"/>
+  <circle cx="389" cy="119" r="35" fill="#F7931A"/>
 </svg>

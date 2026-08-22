@@ -18,9 +18,13 @@
     --bg:#08060a;
     --bg-card:#100c14;
     --bg-card-2:#151019;
-    --amber:#FFB020;
-    --amber-dim:#FFB02055;
-    --ok:#5ee6a8;
+    --presence:#58C48D;
+    --presence-dim:#58C48D55;
+    --btc:#F7931A;
+    --btc-dim:#F7931A55;
+    --amber:var(--presence);
+    --amber-dim:var(--presence-dim);
+    --ok:var(--presence);
     --blocked:#e65e5e;
     --text:#e9e4ea;
     --text-dim:#9a92a3;
@@ -53,6 +57,8 @@
     margin:0 0 28px;
     letter-spacing:.02em;
   }
+  .duas-maos{display:flex;justify-content:center;align-items:center;gap:9px;margin:-18px 0 28px;color:var(--text-dim);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+  .duas-maos span{display:flex;align-items:center;gap:6px}.duas-maos i{display:block;width:6px;height:6px;border-radius:50%}.duas-maos b{font-weight:400;color:#625a67}.duas-maos .presenca{background:var(--presence);box-shadow:0 0 9px #58c48d88}.duas-maos .sustento{background:var(--btc);box-shadow:0 0 9px #f7931a88}
   .pulso{
     background:var(--bg-card);
     border:1px solid var(--border);
@@ -112,6 +118,7 @@
   .metricas{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .metrica .num{font-size:22px;font-weight:600;color:var(--amber)}
   .metrica .num.dim{color:var(--text)}
+  .metrica:nth-child(3) .num{color:var(--btc)}
   .metrica .label{font-size:11.5px;color:var(--text-dim);margin-top:2px}
   .timeline{margin-top:22px}
   .timeline h2{
@@ -160,6 +167,7 @@
 
   <div class="word">ORA + Unum</div>
   <h1>ORUM</h1>
+  <div class="duas-maos" aria-label="Presença e sustento"><span><i class="presenca"></i>Presença</span><b>↔</b><span><i class="sustento"></i>Sustento</span></div>
 
   <div class="pulso" id="pulso-card">
     <div class="estado-badge skeleton" id="estado-badge"><span class="dot"></span><span id="estado-texto">a verificar…</span></div>
