@@ -16,7 +16,7 @@ and 0001sensations art licensing).
   `/.well-known/x402.json` to the corresponding Supabase Edge Functions,
   preserving x402 protocol headers (`PAYMENT-REQUIRED`, `PAYMENT-RESPONSE`,
   `EXTENSION-RESPONSES`) in both directions
-- `api/openapi.js` — serves `/openapi.json`, the licensing catalog spec
+- `openapi.json` (root, static file) — this is what Vercel actually serves at `/openapi.json`, by static-file precedence over the `vercel.json` rewrite to `api/openapi.js` (confirmed live 2026-08-27, `ora_mudancas` #355); `api/openapi.js` computes the same spec but is not the file served in production — keep both in sync manually until unified
 
 ## Architecture
 
