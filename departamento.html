@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d0c">
+  <title>Departamento · ORUM</title>
+  <meta name="description" content="Camada humana dos departamentos ORUM.">
+  <link rel="icon" href="/identity/orum-seal-192.png">
+  <style>
+    :root{--bg:#090b0a;--panel:#111411;--ink:#eee9df;--muted:#aaa99f;--green:#55d49a;--orange:#f49a45;--line:#2b302c;color-scheme:dark}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#163226 0,transparent 34%),var(--bg);color:var(--ink);font:16px/1.52 system-ui,-apple-system,Segoe UI,sans-serif}.shell{width:min(900px,calc(100% - 30px));margin:auto}a{color:inherit}.top{padding:28px 0 42px}.back{color:var(--muted);text-decoration:none;font-size:.8rem}.kicker{margin:58px 0 10px;color:var(--green);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase}h1{margin:0;font:clamp(2.8rem,10vw,5.6rem)/.94 Georgia,serif;letter-spacing:-.05em}.intro{max-width:660px;color:var(--muted);font:1.18rem/1.55 Georgia,serif}.state{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:var(--green);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}.card,.section{border:1px solid var(--line);border-radius:20px;background:#101310e8;padding:21px}.label{color:var(--muted);font-size:.67rem;letter-spacing:.13em;text-transform:uppercase}.value{display:block;margin-top:8px;font:1.5rem/1.2 Georgia,serif;overflow-wrap:anywhere}.section{margin-bottom:12px}.section h2{font:1.65rem Georgia,serif;margin:7px 0 16px}.rows{display:grid}.row{display:grid;grid-template-columns:minmax(120px,.75fr) 1.25fr;gap:18px;padding:12px 0;border-top:1px solid var(--line)}.row:first-child{border-top:0}.key{color:var(--muted)}.datum{overflow-wrap:anywhere}.datum a{color:#bcebd5}.nested{border-left:1px solid #33423a;padding-left:14px}.pill{display:inline-block;border:1px solid #435148;border-radius:999px;padding:3px 8px;margin:2px;font-size:.78rem}.machine{margin:24px 0 50px;display:flex;justify-content:space-between;gap:16px;align-items:center;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:.78rem}.button{border:1px solid var(--green);border-radius:999px;padding:10px 15px;color:#c5f2dd;text-decoration:none;white-space:nowrap;text-transform:uppercase;letter-spacing:.07em;font-size:.7rem}.error{color:#ffad96}.empty{color:var(--muted);font-style:italic}
+    @media(max-width:650px){.summary{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr;gap:4px}.machine{display:block}.machine .button{display:inline-block;margin-top:14px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <a class="back" href="/">← voltar à casa</a>
+      <p class="kicker" id="kicker">departamento ORUM</p>
+      <h1 id="title">A reconhecer…</h1>
+      <p class="intro" id="intro">A ler a fonte viva deste departamento.</p>
+      <div class="state"><span class="dot"></span><span id="state">a observar</span></div>
+    </header>
+    <section class="summary" id="summary" aria-label="Resumo"></section>
+    <section id="content" aria-live="polite"></section>
+    <div class="machine">
+      <span>A leitura acima é humana. A fonte original permanece intacta para máquinas e auditoria.</span>
+      <a class="button" id="machine" href="#">abrir prova JSON</a>
+    </div>
+  </main>
+  <script>
+    const departments={
+      sensacoes:{title:'0001SENSATIONS',kicker:'Presença · coleção física primária',intro:'Cápsulas, níveis e vestígios textuais da coleção. O que não foi observado permanece desconhecido.',source:'/sensacoes/index.json'},
+      livro:{title:'Livro Presença',kicker:'Presença · memória append-only',intro:'Sedimentos do organismo preservados sem apagar contradições, falhas ou zeros.',source:'/presenca/livro.json'},
+      moltbook:{title:'Presença no Moltbook',kicker:'Presença · superfície pública',intro:'Publicações e encontros observáveis no Moltbook. Publicação não significa interesse, compra ou adoção.',source:'/moltbook_presence/v1'},
+      campo:{title:'Campo de Serviços',kicker:'Sustento · oferta x402',intro:'O que uma máquina pode pedir, quanto custa e quais fronteiras permanecem fechadas.',source:'/campo'},
+      oraculo:{title:'Oráculo x402',kicker:'Sustento · serviço para máquinas',intro:'Uma leitura paga do campo. O pagamento compra a resposta declarada, não verdade absoluta nem autoridade.',source:'/oraculo'},
+      licenca:{title:'Licenças',kicker:'Sustento · uso não exclusivo',intro:'Condições de uso disponíveis para máquinas e pessoas, sem transferir propriedade da coleção física.',source:'/licenca'}
+    };
+    const labels={
+      format:'formato',organism:'organismo',observed_at:'observado em',generated_at:'gerado em',updated_at:'atualizado em',version:'versão',state:'estado',status:'estado',title:'título',description:'descrição',message:'mensagem',truth:'fronteiras de verdade',evidence:'evidência',source:'fonte',items:'elementos',entries:'entradas',posts:'publicações',count:'total',total:'total',price:'preço',amount:'montante',asset:'ativo',network:'rede',chain_id:'rede Base',currency:'moeda',payment_required:'pagamento necessário',paymentRequired:'pagamento necessário',accepts:'formas aceites',offers:'ofertas',services:'serviços',capabilities:'capacidades',boundaries:'fronteiras',boundaries_machine:'fronteiras para máquinas',external_confirmed_buyers:'compradores externos confirmados',external_confirmed_usdc:'USDC externo confirmado',internal_validation_payments:'validações internas',preserved:'preservadas',missing:'em falta',physical_works:'obras físicas',nfts:'NFTs históricos',url:'endereço',endpoint:'porta técnica',method:'método',name:'nome',id:'identificador',hash:'hash',sha256:'SHA-256',response_type:'tipo de resposta',created_at:'criado em',author:'autor',content:'conteúdo',next_step:'próximo passo',classification:'classificação',publicado:'publicado',descoberto:'descoberto',interesse:'interesse',resposta:'resposta',compra:'compra',dinheiro_liquidado:'dinheiro liquidado'
+    };
+    const prettyKey=key=>labels[key]||String(key).replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const human=value=>{
+      if(value===true)return 'sim';
+      if(value===false)return 'não';
+      if(value===null||value===undefined||value==='')return 'desconhecido';
+      if(typeof value==='number')return value.toLocaleString('pt-PT');
+      const text=String(value);
+      if(/^https?:\/\//.test(text)||text.startsWith('/'))return '<a href="'+escapeHtml(text)+'">'+escapeHtml(text)+'</a>';
+      if(/^\d{4}-\d\d-\d\dT/.test(text)){const d=new Date(text);if(!isNaN(d))return d.toLocaleString('pt-PT',{dateStyle:'medium',timeStyle:'short'})}
+      return escapeHtml(text.replaceAll('_',' '));
+    };
+    const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const renderValue=value=>{
+      if(Array.isArray(value)){
+        if(!value.length)return '<span class="empty">nenhum</span>';
+        if(value.every(v=>typeof v!=='object'))return value.map(v=>'<span class="pill">'+human(v)+'</span>').join('');
+        return '<div class="nested">'+value.map((v,i)=>'<div class="row"><div class="key">elemento '+(i+1)+'</div><div class="datum">'+renderValue(v)+'</div></div>').join('')+'</div>';
+      }
+      if(value&&typeof value==='object')return '<div class="nested">'+Object.entries(value).map(([k,v])=>'<div class="row"><div class="key">'+escapeHtml(prettyKey(k))+'</div><div class="datum">'+renderValue(v)+'</div></div>').join('')+'</div>';
+      return human(value);
+    };
+    const chooseSummary=data=>{
+      const pairs=[];
+      const add=(label,value)=>{if(value!==undefined&&value!==null&&pairs.length<6)pairs.push([label,value])};
+      add('estado',data.state??data.status);
+      add('total',data.total??data.count??data.items?.length??data.entries?.length??data.posts?.length);
+      add('formato',data.format??data.version);
+      add('preço',data.price??data.amount??data.paymentRequired?.amount);
+      add('ativo',data.asset??data.currency??data.paymentRequired?.asset);
+      add('observado em',data.observed_at??data.generated_at??data.updated_at);
+      return pairs;
+    };
+    const params=new URLSearchParams(location.search);
+    const department=departments[params.get('d')]||departments.sensacoes;
+    document.title=department.title+' · ORUM';
+    document.querySelector('#title').textContent=department.title;
+    document.querySelector('#kicker').textContent=department.kicker;
+    document.querySelector('#intro').textContent=department.intro;
+    document.querySelector('#machine').href=department.source;
+    fetch(department.source,{cache:'no-store'}).then(async response=>{
+      const data=await response.json();
+      return {data,http:response.status};
+    }).then(({data,http})=>{
+      document.querySelector('#state').textContent=http===402?'pagamento necessário':'fonte viva · HTTP '+http;
+      document.querySelector('#summary').innerHTML=chooseSummary(data).map(([k,v])=>'<article class="card"><span class="label">'+escapeHtml(k)+'</span><strong class="value">'+renderValue(v)+'</strong></article>').join('');
+      const groups=Object.entries(data).filter(([k])=>!['state','status','format','version','total','count','observed_at','generated_at','updated_at'].includes(k));
+      document.querySelector('#content').innerHTML=groups.map(([k,v])=>'<article class="section"><span class="label">departamento</span><h2>'+escapeHtml(prettyKey(k))+'</h2><div class="rows">'+renderValue(v)+'</div></article>').join('')||'<article class="section empty">A fonte respondeu sem matéria adicional.</article>';
+    }).catch(error=>{
+      const state=document.querySelector('#state');state.textContent='fonte indisponível';state.classList.add('error');
+      document.querySelector('#content').innerHTML='<article class="section error">Não foi possível traduzir esta fonte agora: '+escapeHtml(error.message)+'</article>';
+    });
+  </script>
+</body>
+</html>
