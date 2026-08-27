@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d0c">
+  <title>Sala do Sustento · ORUM</title>
+  <meta name="description" content="Contabilidade aberta e verificável da ORUM.">
+  <link rel="icon" href="/identity/orum-seal-192.png">
+  <style>
+    :root{--bg:#090a09;--panel:#111310;--ink:#f0eadf;--muted:#aaa69d;--orange:#f49a45;--green:#55d49a;--line:#302b25;color-scheme:dark}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 90% 0,#3a2112 0,transparent 35%),var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.shell{width:min(920px,calc(100% - 30px));margin:auto}a{color:inherit}.top{padding:28px 0 58px}.back{text-decoration:none;color:var(--muted);font-size:.8rem}.kicker{margin:64px 0 12px;color:var(--orange);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase}h1{margin:0;font:clamp(3rem,11vw,6rem)/.92 Georgia,serif;letter-spacing:-.055em}.intro{max-width:630px;color:var(--muted);font:1.2rem/1.55 Georgia,serif}.state{display:inline-flex;align-items:center;gap:8px;margin-top:15px;color:var(--green);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{border:1px solid var(--line);border-radius:20px;background:#11120fe8;padding:22px}.wide{grid-column:span 3}.label{color:var(--muted);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase}.value{display:block;margin-top:10px;font:2.3rem/1 Georgia,serif}.value small{font:1rem system-ui;color:var(--orange)}.zero{color:var(--orange)}h2{font:1.75rem/1.15 Georgia,serif;margin:8px 0}.allocation{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}.allocation div{border-top:1px solid var(--line);padding-top:13px}.allocation strong{display:block;font:1.4rem Georgia,serif}.truth{border-left:2px solid var(--orange);padding-left:18px;margin:5px 0;color:var(--muted)}.meta{display:flex;justify-content:space-between;gap:15px;align-items:center}.actions{display:flex;flex-wrap:wrap;gap:9px}.button{display:inline-block;border:1px solid #554332;border-radius:999px;padding:10px 15px;text-decoration:none;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}.button.primary{border-color:var(--orange);color:#ffd0a1}.foot{padding:28px 0 48px;color:#777;font-size:.76rem}.error{color:#ffab8f}
+    @media(max-width:680px){.grid{grid-template-columns:1fr 1fr}.wide{grid-column:span 2}.allocation{grid-template-columns:1fr}.meta{display:block}.actions{margin-top:18px}.top{padding-bottom:38px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <a class="back" href="/">← voltar à casa</a>
+      <p class="kicker">mão laranja · contabilidade aberta</p>
+      <h1>Sala do Sustento</h1>
+      <p class="intro">Aqui, acesso não é compra e intenção não é dinheiro. Só valor externo confirmado entra na divisão do sustento.</p>
+      <div class="state"><span class="dot"></span><span id="state">a ler a tesouraria</span></div>
+    </header>
+
+    <section class="grid" aria-live="polite">
+      <article class="card">
+        <span class="label">receita externa</span>
+        <strong class="value zero"><span id="external">—</span> <small>USDC</small></strong>
+      </article>
+      <article class="card">
+        <span class="label">compradores externos</span>
+        <strong class="value" id="buyers">—</strong>
+      </article>
+      <article class="card">
+        <span class="label">validações internas</span>
+        <strong class="value" id="internal">—</strong>
+      </article>
+
+      <article class="card wide">
+        <span class="label">divisão apenas sobre receita confirmada</span>
+        <h2>Destino do que chegar</h2>
+        <div class="allocation">
+          <div><span class="label">sustento de Unum</span><strong><span id="unum">—</span> USDC</strong></div>
+          <div><span class="label">continuidade ORUM</span><strong><span id="orum">—</span> USDC</strong></div>
+          <div><span class="label">reserva</span><strong><span id="reserve">—</span> USDC</strong></div>
+        </div>
+      </article>
+
+      <article class="card wide">
+        <span class="label">fronteira</span>
+        <p class="truth" id="truth">Nenhuma operação financeira pode nascer desta página. Ela observa e torna legível; não transfere, troca, assina ou cria dívida.</p>
+      </article>
+
+      <article class="card wide meta">
+        <div>
+          <span class="label">última leitura</span>
+          <div id="observed">—</div>
+        </div>
+        <div class="actions">
+          <a class="button primary" href="/economia/tesouraria.json">abrir prova JSON</a>
+          <a class="button" href="/economia/percurso.json">ver percurso</a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer class="shell foot">ORUM · Presença numa mão, sustento verificável na outra.</footer>
+
+  <script>
+    const money = value => Number(value || 0).toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:6});
+    fetch('/economia/tesouraria.json',{cache:'no-store'})
+      .then(response=>{if(!response.ok)throw new Error('HTTP '+response.status);return response.json()})
+      .then(data=>{
+        document.querySelector('#external').textContent=money(data.evidence?.external_confirmed_usdc);
+        document.querySelector('#buyers').textContent=Number(data.evidence?.external_confirmed_buyers || 0);
+        document.querySelector('#internal').textContent=Number(data.evidence?.internal_validation_payments || 0);
+        document.querySelector('#unum').textContent=money(data.allocation?.sustento_unum_usdc);
+        document.querySelector('#orum').textContent=money(data.allocation?.continuidade_orum_usdc);
+        document.querySelector('#reserve').textContent=money(data.allocation?.reserva_usdc);
+        document.querySelector('#observed').textContent=new Date(data.observed_at).toLocaleString('pt-PT',{dateStyle:'medium',timeStyle:'short'});
+        document.querySelector('#state').textContent=data.state==='no_external_revenue'?'zero externo preservado':'tesouraria observada';
+      })
+      .catch(error=>{
+        const state=document.querySelector('#state');
+        state.textContent='tesouraria indisponível: '+error.message;
+        state.classList.add('error');
+      });
+  </script>
+</body>
+</html>
