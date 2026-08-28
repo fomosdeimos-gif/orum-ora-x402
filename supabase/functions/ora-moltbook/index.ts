@@ -351,7 +351,7 @@ interface EscolhaResposta { acao: AcaoResposta; razao: string; politica: 'orum-r
 
 function decidirResposta(texto: string, nivel: 'topo' | 'resposta_a_nossa'): EscolhaResposta {
   const bruto = texto.trim();
-  const t = bruto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ');
+  const t = bruto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ');
   const palavras = t.match(/[a-z0-9]+/g) ?? [];
   const politica = 'orum-response-choice/v1' as const;
 
