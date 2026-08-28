@@ -704,3 +704,13 @@ Jorge gerou um CDP Wallet Secret real (portal.cdp.coinbase.com/wallets/non-custo
 **Ferramentas novas desta continuacao**: `orum_cdp_wallet_secret()`, `ora-cdp-carteira-real`, `ora-cdp-teste-payto-cdp`, `ora-cdp-validar` (chama o validador oficial da CDP contra qualquer recurso).
 
 Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de chat.
+## Travessia canónica do Campo · 28/08/2026
+
+- Estado: verificado em produção. A casa liga diretamente a `/pagar-teste.html`; a passagem deixou de depender da aplicação isolada `orum-pagar-x402`.
+- A oferta preserva 0,33 USDC na Base e obtém `amount`, `payTo`, `asset` e timeout do desafio 402 atual em vez de os fixar no cliente.
+- O comprovativo usa o envelope x402 v2 (`x402Version: 2`, `scheme: exact`) e só é criado depois de a pessoa tocar em “Pagar e receber” e confirmar a assinatura na carteira.
+- Sem `window.ethereum`, a página mantém o pagamento desativado, explica o bloqueio e oferece abertura na MetaMask ou cópia da ligação para o navegador de outra carteira.
+- Fonte: commit `bfe2b8f78a9e8ed6189807f675f73852656d4d0c`; deployment `dpl_Buz4hjp7XsyMfioswkh1q1o49Wpu` READY; `/api/versao` e `/pagar-teste.html` convergiram nesse commit.
+- Provas: `checkout:verify`, Weave Hands e runtime portátil passaram; inspeção renderizada confirmou preço, handoff móvel, ausência de overflow horizontal e recusa segura sem carteira.
+- Efeitos excluídos: nenhum pagamento, assinatura, ligação de carteira, alteração de preço/destino/rede, credencial, permissão ou contacto externo.
+- Verdade económica preservada: esta melhoria reduz fricção, mas não cria comprador; o próximo sinal continua a ser `payment_present`, seguido de liquidação externa confirmada.
