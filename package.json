@@ -18,6 +18,7 @@
     "lineage:verify": "node scripts/verify-lineage.mjs",
     "presence:verify": "node scripts/verify-presence-ledger.mjs",
     "presence:checkpoint:verify": "node scripts/verify-presence-checkpoint.mjs",
-    "moltbook:links:verify": "node scripts/verify-moltbook-origin-links.mjs"
+    "moltbook:links:verify": "node scripts/verify-moltbook-origin-links.mjs",
+    "checkout:verify": "node scripts/verify-campo-checkout.mjs"
   }
 }

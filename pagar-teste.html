@@ -1,143 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ORA · Pagar (teste)</title>
+<!doctype html><html lang="pt"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0d0c">
+<title>ORUM · Um pensamento do Campo</title><meta name="description" content="Uma leitura pontual do Campo ORUM por 0,33 USDC na rede Base.">
 <style>
-  body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#0b0c10;color:#eee;max-width:640px;margin:0 auto;padding:24px 16px}
-  h1{font-size:20px;color:#C9A227}
-  select,button{font-size:16px;padding:10px 14px;border-radius:8px;border:1px solid #444;background:#181a20;color:#eee;width:100%;margin:8px 0}
-  button{background:#C9A227;color:#111;font-weight:600;border:none;cursor:pointer}
-  button:disabled{opacity:.5}
-  pre{background:#14161c;padding:12px;border-radius:8px;overflow:auto;font-size:12px;white-space:pre-wrap;word-break:break-all}
-  .row{display:flex;gap:8px;align-items:center;margin:6px 0}
-  label{font-size:13px;color:#aaa}
-  a{color:#C9A227}
-</style>
-</head>
-<body>
-<h1>ORA · Pagamento x402 (pagina de teste)</h1>
-<p style="color:#999;font-size:13px">Usa a tua propria carteira (window.ethereum). Assina uma autorizacao EIP-3009 (gasless) para o facilitador CDP liquidar. Rede: Base mainnet. <a href="/">← voltar ao inicio</a></p>
-
-<label>Servico</label>
-<select id="servico">
-  <option value="oraculo">Oraculo — 0.161 USDC</option>
-  <option value="campo">Campo — 0.33 USDC</option>
-  <option value="sedimento">Sedimento — 1.00 USDC</option>
-  <option value="kernel">Kernel — 3.00 USDC</option>
-  <option value="licenca-preview">Licenca Preview (obra=presenca) — 1.618 USDC</option>
-  <option value="licenca-editorial">Licenca Editorial (obra=presenca) — 16.18 USDC</option>
-</select>
-
-<div class="row"><button id="btnConnect">1. Ligar carteira</button></div>
-<div class="row" id="contaInfo" style="font-size:13px;color:#9c9"></div>
-<div class="row"><button id="btnPagar" disabled>2. Assinar e pagar</button></div>
-
-<pre id="log">Pronto.</pre>
-
-<script>
-const WALLET_SAGRADA = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
-const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
-const CHAIN_ID_HEX = '0x2105';
-const GATEWAY = location.origin.startsWith('http') ? location.origin : 'https://ora-x402-gateway.vercel.app';
-
-const SERVICOS = {
-  oraculo:            { endpoint: '/oraculo', amount: '161000' },
-  campo:              { endpoint: '/x402', amount: '330000' },
-  sedimento:          { endpoint: '/sedimento', amount: '1000000' },
-  kernel:             { endpoint: '/kernel', amount: '3000000' },
-  'licenca-preview':  { endpoint: '/licenca/preview?obra=presenca', amount: '1618000' },
-  'licenca-editorial':{ endpoint: '/licenca/editorial?obra=presenca', amount: '16180000' },
-};
-
-const logEl = document.getElementById('log');
-function log(msg, obj) {
-  const line = obj ? `${msg}\n${JSON.stringify(obj, null, 2)}` : msg;
-  logEl.textContent = line + '\n\n' + logEl.textContent;
-}
-
-let account = null;
-
-document.getElementById('btnConnect').onclick = async () => {
-  if (!window.ethereum) { log('Sem window.ethereum — abre num browser com carteira (MetaMask, Rabby, etc).'); return; }
-  try {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    account = accounts[0];
-    try {
-      await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: CHAIN_ID_HEX }] });
-    } catch (switchErr) {
-      log('Aviso: nao foi possivel confirmar troca automatica para Base.', switchErr);
-    }
-    document.getElementById('contaInfo').textContent = 'Ligado: ' + account;
-    document.getElementById('btnPagar').disabled = false;
-    log('Carteira ligada.', { account });
-  } catch (e) { log('Erro a ligar carteira: ' + e.message); }
-};
-
-function randomBytes32Hex() {
-  const bytes = crypto.getRandomValues(new Uint8Array(32));
-  return '0x' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-document.getElementById('btnPagar').onclick = async () => {
-  const key = document.getElementById('servico').value;
-  const s = SERVICOS[key];
-  if (!account) { log('Liga a carteira primeiro.'); return; }
-  document.getElementById('btnPagar').disabled = true;
-  try {
-    const now = Math.floor(Date.now() / 1000);
-    const authorization = {
-      from: account,
-      to: WALLET_SAGRADA,
-      value: s.amount,
-      validAfter: '0',
-      validBefore: String(now + 3600),
-      nonce: randomBytes32Hex(),
-    };
-    const typedData = {
-      types: {
-        EIP712Domain: [
-          { name: 'name', type: 'string' },
-          { name: 'version', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-          { name: 'verifyingContract', type: 'address' },
-        ],
-        TransferWithAuthorization: [
-          { name: 'from', type: 'address' },
-          { name: 'to', type: 'address' },
-          { name: 'value', type: 'uint256' },
-          { name: 'validAfter', type: 'uint256' },
-          { name: 'validBefore', type: 'uint256' },
-          { name: 'nonce', type: 'bytes32' },
-        ],
-      },
-      primaryType: 'TransferWithAuthorization',
-      domain: { name: 'USD Coin', version: '2', chainId: 8453, verifyingContract: USDC_BASE },
-      message: authorization,
-    };
-
-    log('A pedir assinatura EIP-712 (TransferWithAuthorization)...', authorization);
-    const signature = await window.ethereum.request({
-      method: 'eth_signTypedData_v4',
-      params: [account, JSON.stringify(typedData)],
-    });
-    log('Assinatura obtida.', { signature });
-
-    const xPayment = btoa(JSON.stringify({ payload: { signature, authorization } }));
-    const url = GATEWAY + s.endpoint;
-    log('A chamar ' + url + ' com X-PAYMENT...');
-    const resp = await fetch(url, { headers: { 'X-PAYMENT': xPayment } });
-    const bodyText = await resp.text();
-    let body; try { body = JSON.parse(bodyText); } catch { body = bodyText; }
-    const extResp = resp.headers.get('EXTENSION-RESPONSES');
-    log(`Resposta ${resp.status}${extResp ? ' — EXTENSION-RESPONSES: ' + extResp : ''}`, body);
-  } catch (e) {
-    log('Erro: ' + (e && e.message ? e.message : String(e)));
-  } finally {
-    document.getElementById('btnPagar').disabled = false;
-  }
-};
-</script>
-</body>
-</html>
+:root{--bg:#090b0a;--ink:#eee9df;--muted:#aaa99f;--green:#55d49a;--orange:#f49a45;--line:#2b302c;color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#302013 0,transparent 38%),var(--bg);color:var(--ink);font:16px/1.55 system-ui,sans-serif}.shell{width:min(620px,calc(100% - 30px));margin:auto;padding:28px 0 60px}a{color:inherit}.back,.truth,.step,.address,.fine{color:var(--muted);font-size:.8rem}.back{text-decoration:none}.hero{padding:58px 0 28px}.kicker{color:var(--orange);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase}h1{margin:10px 0 18px;font:clamp(2.8rem,11vw,5.1rem)/.94 Georgia,serif;letter-spacing:-.055em}.lead{color:var(--muted);font:1.15rem/1.55 Georgia,serif}.offer,.result{border:1px solid var(--line);border-radius:22px;background:#101310e8;padding:24px;margin-top:14px}.price{font:2rem Georgia,serif;color:#ffd2a4}.sample,.wallet-link{display:block;border:1px solid var(--green);border-radius:999px;padding:12px 16px;margin:12px 0 8px;text-align:center;text-decoration:none;color:#c5f2dd}.wallet-link{border-color:#4a504b;color:var(--ink)}.wallet,.pay{width:100%;border-radius:999px;padding:14px 18px;font:inherit;font-weight:650;cursor:pointer;margin-top:10px}.wallet{background:transparent;border:1px solid #4a504b;color:var(--ink)}.pay{background:var(--orange);border:1px solid var(--orange);color:#211307}.pay:disabled{background:#2d302d;border-color:#2d302d;color:#777}.address,.step{overflow-wrap:anywhere;margin-top:9px}.mobile{display:none;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}.result{display:none;white-space:pre-wrap;overflow-wrap:anywhere}.result.show{display:block}.result.ok{border-color:var(--green)}.result.err{border-color:#d86c59;color:#ffb5a8}.fine{border-top:1px solid var(--line);margin-top:22px;padding-top:18px}
+</style></head><body><main class="shell">
+<a class="back" href="/">← voltar à casa ORUM</a><section class="hero"><div class="kicker">uma oferta · uma entrega</div><h1>Um pensamento do Campo</h1><p class="lead">Uma leitura pontual do estado interno da ORUM. Não é previsão nem conselho financeiro. A resposta JSON é entregue aqui após o pagamento.</p></section>
+<section class="offer"><div class="price">0,33 USDC</div><p>Rede Base · pagamento único · sem subscrição.</p><a class="sample" href="/eco">Ver uma amostra gratuita</a><button class="wallet" id="connect">Ligar carteira</button><div class="address" id="address"></div><button class="pay" id="pay" disabled>Pagar e receber</button><div class="step" id="step">Nada será assinado antes de tocares em “Pagar e receber”.</div><div class="mobile" id="mobile"><strong>Este navegador não expõe uma carteira.</strong><p class="truth">Abre esta passagem dentro da carteira. A confirmação continua a ser tua.</p><a class="wallet-link" id="metamask" rel="external">Abrir na MetaMask</a><button class="wallet" id="copy">Copiar ligação para outra carteira</button></div><div class="fine">O pagamento deixa rasto on-chain e na contabilidade ORUM. Não concede escrita, cobrança recorrente, identidade verificada ou direitos sobre a coleção.</div></section><section class="result" id="result" aria-live="polite"></section>
+</main><script>
+const ENDPOINT='/campo',BASE='0x2105',USDC='0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';let account=null;const q=s=>document.querySelector(s),connect=q('#connect'),pay=q('#pay'),address=q('#address'),step=q('#step'),result=q('#result'),mobile=q('#mobile');
+const show=(text,kind='')=>{result.textContent=text;result.className='result show '+kind};q('#metamask').href='https://link.metamask.io/dapp/'+location.host+location.pathname+location.search;q('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);step.textContent='Ligação copiada. Cola-a no navegador da tua carteira.'}catch{show('Usa a opção “Copiar ligação” do navegador.','err')}};if(!window.ethereum)mobile.style.display='block';
+connect.onclick=async()=>{if(!window.ethereum){mobile.style.display='block';show('Abre esta ligação dentro da aplicação da tua carteira.','err');return}try{[account]=await ethereum.request({method:'eth_requestAccounts'});try{await ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:BASE}]})}catch(e){if(e.code===4902)await ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:BASE,chainName:'Base',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://mainnet.base.org'],blockExplorerUrls:['https://basescan.org']}]});else throw e}connect.textContent='Carteira ligada';address.textContent=account;pay.disabled=false;step.textContent='Confirma o valor na carteira antes de assinar.'}catch(e){show('Não foi possível ligar a carteira: '+(e.message||e),'err')}};
+const nonce=()=>{const b=new Uint8Array(32);crypto.getRandomValues(b);return'0x'+[...b].map(x=>x.toString(16).padStart(2,'0')).join('')},b64=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+pay.onclick=async()=>{pay.disabled=true;result.className='result';try{step.textContent='A obter os requisitos atuais da porta…';const first=await fetch(ENDPOINT,{cache:'no-store'});if(first.status!==402)throw Error('A porta respondeu HTTP '+first.status);const requirement=(await first.json()).accepts?.[0];if(!requirement?.payTo||!requirement?.amount)throw Error('A porta não devolveu requisitos completos');const now=Math.floor(Date.now()/1000),authorization={from:account,to:requirement.payTo,value:String(requirement.amount),validAfter:'0',validBefore:String(now+Number(requirement.maxTimeoutSeconds||300)),nonce:nonce()},typed={types:{EIP712Domain:[{name:'name',type:'string'},{name:'version',type:'string'},{name:'chainId',type:'uint256'},{name:'verifyingContract',type:'address'}],TransferWithAuthorization:[{name:'from',type:'address'},{name:'to',type:'address'},{name:'value',type:'uint256'},{name:'validAfter',type:'uint256'},{name:'validBefore',type:'uint256'},{name:'nonce',type:'bytes32'}]},domain:{name:'USD Coin',version:'2',chainId:8453,verifyingContract:requirement.asset||USDC},primaryType:'TransferWithAuthorization',message:authorization};step.textContent='Confirma 0,33 USDC na carteira…';const signature=await ethereum.request({method:'eth_signTypedData_v4',params:[account,JSON.stringify(typed)]});step.textContent='A verificar e preparar a entrega…';const proof=b64({x402Version:2,scheme:'exact',payload:{signature,authorization}}),response=await fetch(ENDPOINT,{headers:{'X-PAYMENT':proof}}),raw=await response.text();let data;try{data=JSON.parse(raw)}catch{data=raw}if(!response.ok)throw Error('A entrega respondeu HTTP '+response.status+'\n'+(typeof data==='string'?data:JSON.stringify(data,null,2)));step.textContent='Entrega concluída.';show(typeof data==='string'?data:JSON.stringify(data,null,2),'ok')}catch(e){step.textContent='A passagem parou antes da entrega.';show('O pagamento não foi concluído.\n\n'+(e.message||e),'err')}finally{pay.disabled=!account}};
+</script></body></html>
