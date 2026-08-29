@@ -1,0 +1,33 @@
+{
+  "format": "orum-presence-construction/v1",
+  "cycle": "2026-08-29",
+  "state": "executado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "advance": "portable_checkpoint_and_weave_presence_observer",
+  "classification": {
+    "interest": 0,
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money": 0,
+    "internal_validation_payments_last_recorded": 20
+  },
+  "treasury_state": "no_external_revenue",
+  "production": {
+    "commit_observed": "67c8d11a4b3ac8bfc149e02fce898f2fdf4db758",
+    "deployment_observed": "dpl_HD4YD2MQdywuBimnUcVpF9GyQAav"
+  },
+  "live_ledger": {
+    "format": "orum-presence-ledger/v1",
+    "total_events": 8,
+    "external_confirmed_presence": 1,
+    "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+    "last_sedimentation_at": "2026-08-20T06:19:00.324114+00:00"
+  },
+  "hashes": {
+    "nota_sha256": "20e347dbf0fdabff69894c27e9d08ca689d60a6a007237e642003f93fa2f3219",
+    "weave_presence_sha256": "5de4364d8991864e6234bb32c11c125525cd714cbf4ad3b50a6863a521fce745",
+    "observer_sha256": "3da68ca1c70def3c9284108ba64e35d802aa4aed199cd1154a174857165bfcfe",
+    "checkpoint_export_sha256": "75a61173931f91881a6354d856adab6e2cde4ab0fa45ff9121e61d3d02615d79"
+  }
+}
