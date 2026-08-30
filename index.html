@@ -18,9 +18,9 @@
     .lead{max-width:560px;margin:20px auto 0;color:var(--muted);font:clamp(1.05rem,2.6vw,1.25rem)/1.55 Georgia,serif}
     .truth{margin:22px auto 0;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#858b85}
 
-    .scale{padding:48px 0 40px;display:grid;place-items:center}
+    .scale{padding:48px 0 32px;display:grid;place-items:center}
     .scale-status{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:26px;text-align:center;min-height:1.4em}
-    .rig{position:relative;width:min(100%,560px);height:150px}
+    .rig{position:relative;width:min(100%,560px);height:205px}
     .post{position:absolute;left:50%;top:0;bottom:14px;width:3px;background:var(--line);transform:translateX(-50%)}
     .fulcrum{position:absolute;left:50%;bottom:8px;width:0;height:0;transform:translateX(-50%);border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:14px solid var(--line)}
     .beam{position:absolute;left:50%;top:26px;width:88%;height:3px;background:var(--muted);transform-origin:50% 50%;transition:transform 1.1s cubic-bezier(.2,.7,.2,1);transform:translateX(-50%) rotate(0deg)}
@@ -35,7 +35,8 @@
     .green .pan-label{color:var(--green)}.orange .pan-label{color:var(--orange)}
     .pan-num{display:block;font:1.7rem/1.1 Georgia,serif;margin:4px 0}
     .pan-sub{display:block;font-size:.68rem;color:var(--muted)}
-    .ticker{margin-top:8px;text-align:center;color:#7c827c;font-size:.76rem;min-height:1.4em}
+    .ticker{width:min(100%,560px);margin:12px 0 0;padding:10px 14px;border:1px solid var(--line);border-radius:12px;text-align:center;color:#8b918b;font-size:.74rem;min-height:1.4em}
+    .ticker:empty{display:none}
 
     .hands{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-bottom:16px}
     .hand{border:1px solid var(--line);border-radius:20px;background:#101310dd;padding:22px}
@@ -57,7 +58,7 @@
     .foot{border-top:1px solid var(--line);padding:24px 0 46px;color:#777;font-size:.76rem;display:flex;justify-content:space-between;gap:20px}
     .foot a{color:#aaa}
 
-    @media(max-width:680px){.hands,.core{grid-template-columns:1fr}.rig{height:158px}.pan{width:120px}}
+    @media(max-width:680px){.hands,.core{grid-template-columns:1fr}.scale{padding-bottom:30px}.rig{height:222px}.beam{top:32px}.pan{width:118px}.ticker{margin-top:2px;font-size:.7rem}}
   </style>
 </head>
 <body>
@@ -93,7 +94,7 @@
           </div>
         </div>
       </div>
-      <p class="ticker" id="ticker"></p>
+      <p class="ticker" id="ticker" role="status" aria-live="polite"></p>
     </section>
 
     <section class="hands" aria-label="As duas mãos da ORUM">
@@ -144,14 +145,15 @@
       document.getElementById('numPresenca').textContent = presenca.toLocaleString('pt-PT');
       document.getElementById('numSustento').textContent = sustento.toLocaleString('pt-PT');
       var ratio = Math.log10(presenca + 1) - Math.log10(sustento + 1);
-      var angle = Math.max(-14, Math.min(14, ratio * 6));
+      var limit = window.matchMedia('(max-width:680px)').matches ? 9 : 14;
+      var angle = Math.max(-limit, Math.min(limit, ratio * 6));
       document.getElementById('beam').style.transform = 'translateX(-50%) rotate(' + (-angle) + 'deg)';
       var partes = [];
       if (p.campo) partes.push('dia ' + p.campo.dia + ' · ' + p.campo.epoca);
       if (p.sentinela) partes.push(p.sentinela.veredicto);
       document.getElementById('state').textContent = partes.length ? partes.join(' · ') : 'organismo vivo';
       var ev = p.eventos && p.eventos[0];
-      document.getElementById('ticker').textContent = ev ? ev.detalhe : '';
+      document.getElementById('ticker').textContent = ev ? 'último sinal · ' + ev.detalhe : '';
     }).catch(function(){
       document.getElementById('state').textContent = 'estado não confirmado agora';
     });
