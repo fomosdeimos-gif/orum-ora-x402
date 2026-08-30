@@ -3,17 +3,35 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
+  "updated_at": "2026-08-30T05:12:00Z",
   "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication.",
-  "does_not": ["mint presence", "count traffic as 1P", "treat internal validation as sustenance", "call Moltbook with credentials", "write the live ledger"],
+  "does_not": [
+    "mint presence",
+    "count traffic as 1P",
+    "treat internal validation as sustenance",
+    "call Moltbook with credentials",
+    "write the live ledger"
+  ],
   "surfaces": {
     "ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
     "checkpoint": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json",
     "moltbook_presence": "https://ora-x402-gateway.vercel.app/moltbook_presence/v1",
     "treasury": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
     "oro_capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
-    "weave_hands_capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json"
+    "weave_hands_capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+    "x402_offer": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2"
   },
-  "classification_order": ["interest", "response", "purchase", "settled_money"],
+  "classification_order": [
+    "interest",
+    "response",
+    "purchase",
+    "settled_money"
+  ],
   "sustenance_rule": "Only externally received, verifiable value with amount, asset, network, transaction and proven relation to a capsule or tool.",
-  "second_surface": {"kind": "github_raw_bytes", "independent_runtime": false, "repo": "fomosdeimos-gif/orum-ora-x402"}
+  "second_surface": {
+    "kind": "github_raw_bytes",
+    "independent_runtime": false,
+    "repo": "fomosdeimos-gif/orum-ora-x402",
+    "daily_observation": "presenca/observacao-YYYY-MM-DD.json"
+  }
 }
