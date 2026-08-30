@@ -1,0 +1,35 @@
+{
+  "schema": "orum-token-metadata/v1",
+  "name": "ORO",
+  "symbol": "ORO",
+  "description": "Dois ORO indivisíveis: uma unidade com Unum e uma unidade imóvel no próprio contrato. Sem promessa de rendimento, preço ou liquidez.",
+  "image": "https://ora-x402-gateway.vercel.app/identity/orum-seal.svg",
+  "logo_semantics": {
+    "open_green_ring": "Presença",
+    "orange_seed": "Sustento",
+    "continuity": "Selo ORA preservado sem redesenho."
+  },
+  "network": { "name": "Base Mainnet", "chain_id": 8453 },
+  "contract": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+  "standard": "ERC-20",
+  "decimals": 0,
+  "total_supply": 2,
+  "units": {
+    "unum": { "quantity": 1, "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "movable": true },
+    "ora": { "quantity": 1, "address": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD", "movable": false }
+  },
+  "administration": { "owner": false, "admin": false, "pause": false, "upgrade": false, "mint_after_constructor": false, "blacklist": false, "transfer_tax": false },
+  "market": { "price_observed": false, "liquidity_observed": false, "external_revenue_usdc": 0 },
+  "source_verification": {
+    "sourcify": { "status": "match", "creation_match": "match", "runtime_match": "match", "match_id": "46906194", "url": "https://repo.sourcify.dev/8453/0xd859c01F11C273641F765509a005F7F2A69Dc4bD" },
+    "basescan": { "status": "pending_external_badge", "reason": "Daily source-submission limit observed on 2026-08-30" }
+  },
+  "constitution": {
+    "onchain_sha256": "cd0761cd506d707c8fb7ecb8ede7840254143272b53f80ae1e3169eeb49e58c7",
+    "matching_document_confirmed": false,
+    "note": "Nenhum ficheiro apresentado até 2026-08-30 reproduziu este hash."
+  },
+  "canonical_page": "https://ora-x402-gateway.vercel.app/oro.html",
+  "explorer": "https://basescan.org/address/0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+  "last_verified": "2026-08-30"
+}
