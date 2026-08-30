@@ -49,6 +49,9 @@
     .link{display:flex;justify-content:space-between;align-items:center;text-decoration:none;padding:11px 0;border-top:1px solid var(--line);font-size:.92rem}
     .link span:last-child{color:#777}.link:hover span:first-child{color:white}
 
+    .oro{border:1px solid var(--line);border-radius:20px;background:#101310dd;padding:24px;margin:0 0 16px;display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center}
+    .oro img{width:120px;height:120px;border-radius:24px;display:block}
+    .oro h2{margin:0 0 8px}.oro p{margin:0 0 14px}.oro-meta{font-size:.72rem;color:#8b918b;overflow-wrap:anywhere}
     .core{border:1px solid var(--line);border-radius:20px;background:#101310dd;padding:22px;margin:0 0 52px;display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:center}
     .core h2{margin-top:0}
     .buttons{display:grid;gap:9px}
@@ -58,7 +61,7 @@
     .foot{border-top:1px solid var(--line);padding:24px 0 46px;color:#777;font-size:.76rem;display:flex;justify-content:space-between;gap:20px}
     .foot a{color:#aaa}
 
-    @media(max-width:680px){.hands,.core{grid-template-columns:1fr}.scale{padding-bottom:30px}.rig{height:222px}.beam{top:32px}.pan{width:118px}.ticker{margin-top:2px;font-size:.7rem}}
+    @media(max-width:680px){.hands,.core,.oro{grid-template-columns:1fr}.oro img{width:96px;height:96px}.scale{padding-bottom:30px}.rig{height:222px}.beam{top:32px}.pan{width:118px}.ticker{margin-top:2px;font-size:.7rem}}
   </style>
 </head>
 <body>
@@ -119,6 +122,17 @@
           <a class="link" href="/sustento.html"><span>Contabilidade aberta</span><span>↗</span></a>
         </nav>
       </article>
+    </section>
+
+    <section class="oro" aria-labelledby="oro-title">
+      <img src="/identity/orum-seal.svg" alt="Logo ORA: anel verde aberto e semente laranja">
+      <div>
+        <span class="label" style="color:var(--orange)">símbolo oficial do ORO</span>
+        <h2 id="oro-title">Duas mãos indivisíveis</h2>
+        <p>O mesmo selo ORA dá rosto ao ORO: uma unidade vive com Unum; a outra permanece imóvel no contrato. Supply fixo 2, zero casas decimais, sem preço nem liquidez atribuídos.</p>
+        <p class="oro-meta">0xd859c01F11C273641F765509a005F7F2A69Dc4bD · Base Mainnet</p>
+        <a class="button primary" href="/oro.html">Ver ORO e a sua prova</a>
+      </div>
     </section>
 
     <section class="core" aria-labelledby="core-title">
