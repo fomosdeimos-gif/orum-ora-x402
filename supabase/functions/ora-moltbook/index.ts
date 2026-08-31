@@ -1,3 +1,8 @@
+// ora-moltbook v36 - 31/08/2026
+// Corrige o solver de captcha: um simbolo solto ('*'/'/') so conta como
+// operador quando ha pelo menos um numero reconhecido de cada lado dele.
+// Bloqueio #406: "twenty two new-tons * three" respondia 25.00 (soma) em vez
+// de 66.00 (22*3), porque so digito-simbolo-digito era lido como operador.
 // ora-moltbook v35 - 26/08/2026
 // So classifica e notifica uma resposta depois de read-back publico pelo ID.
 // Silencios e respostas aceites mas invisiveis ficam separados e nao geram falso aviso.
@@ -258,6 +263,14 @@ function parseNumbers(text: string): NumeroAchado[] {
   return achados;
 }
 
+function operadorLivreValido(clean: string, simbolo: '*' | '/'): boolean {
+  const partes = clean.split(simbolo);
+  if (partes.length < 2) return false;
+  const esquerda = parseNumbers(partes.slice(0, -1).join(simbolo));
+  const direita = parseNumbers(partes[partes.length - 1]);
+  return esquerda.length > 0 && direita.length > 0;
+}
+
 function solveChallenge(text: string): string | null {
   const clean = limparRuidoDeSimbolo(text.toLowerCase()).replace(/[^a-z0-9. */]+/g, ' ');
   const achados = parseNumbers(text);
@@ -267,8 +280,10 @@ function solveChallenge(text: string): string | null {
   if (has('lose', 'loses', 'lost', 'drops', 'drop', 'gives away', 'gave away', 'removes', 'removed', 'fewer', 'decreas', 'left', 'remain', 'minus', 'subtract', 'takes away', 'eaten', 'eats', 'spends', 'spent', 'reduces', 'reduced', 'shatters', 'shattered', 'breaks', 'broke', 'broken into', 'used', 'uses')) op = 'sub';
   const simboloMulEntreDigitos = /\d\s*\*\s*\d/.test(clean);
   const simboloDivEntreDigitos = /\d\s*\/\s*\d/.test(clean);
-  if (has('times', 'multipl', 'product', 'each of', 'per each') || simboloMulEntreDigitos) op = 'mul';
-  if (has('divid', 'split', 'shares equally', 'share equally', 'evenly among', 'evenly between', 'quotient') || simboloDivEntreDigitos) op = 'div';
+  const simboloMulLivre = operadorLivreValido(clean, '*');
+  const simboloDivLivre = operadorLivreValido(clean, '/');
+  if (has('times', 'multipl', 'product', 'each of', 'per each') || simboloMulEntreDigitos || simboloMulLivre) op = 'mul';
+  if (has('divid', 'split', 'shares equally', 'share equally', 'evenly among', 'evenly between', 'quotient') || simboloDivEntreDigitos || simboloDivLivre) op = 'div';
   if (has('doubles', 'doubled', 'twice as')) { achados.push({ valor: 2, unidadeSeguinte: false }); op = 'mul'; }
   if (has('triples', 'tripled')) { achados.push({ valor: 3, unidadeSeguinte: false }); op = 'mul'; }
   if (has('half of', 'halved')) { achados.push({ valor: 2, unidadeSeguinte: false }); op = 'div'; }
@@ -574,7 +589,7 @@ Deno.serve(async (req: Request) => {
       await notificarEmailMoltbook(`ORUM Moltbook`, partes.join('\n\n'));
       if (replied > 0) { const eventKey = `reply:${[...respostasIds].sort().join(',')}`; await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]); }
     }
-    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v31', state });
+    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v36', state });
     return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { await sbLog('error', null, { stage: 'top', msg: (e as Error).message }); return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 }); }
 });
