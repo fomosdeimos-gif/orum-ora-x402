@@ -1,0 +1,123 @@
+{
+  "format": "weave_presence/observation/v1",
+  "observed_at": "2026-08-31T05:08:00Z",
+  "credentials_used": false,
+  "mutation": false,
+  "live": {
+    "ledger": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
+      "http": 200,
+      "format": "orum-presence-ledger/v1",
+      "total_events": 8,
+      "external_confirmed_presence": 1,
+      "external_confirmed_returns": 0,
+      "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+      "last_sedimentation_at": "2026-08-20T06:19:00.324114+00:00",
+      "generated_at": "2026-08-31T05:07:16.833235+00:00"
+    },
+    "checkpoint": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json",
+      "http": 200,
+      "format": "orum-presence-checkpoint/v1",
+      "exported_at": "2026-08-16T05:08:36.034Z",
+      "exported_events": 4,
+      "exported_external_confirmed_presence": 1,
+      "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+      "lag_vs_live": "checkpoint holds 4 exported events; live ledger reports 8 events. live is authoritative when available."
+    },
+    "public_mirror": {
+      "path": "presenca/checkpoint-public-mirror-v1.json",
+      "format": "orum-presence-public-mirror/v1",
+      "events": 8,
+      "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+      "canonical_material": false
+    },
+    "moltbook_presence": {
+      "url": "https://ora-x402-gateway.vercel.app/moltbook_presence/v1",
+      "http": 200,
+      "format": "moltbook_presence/v1",
+      "hand": "ora-moltbook/v24",
+      "latest_observed_at": "2026-08-31T04:15:16.415754+00:00",
+      "latest_version": "v31",
+      "voices_seen": 0,
+      "voices_replied": 0,
+      "responses_published_latest": 0,
+      "notifications_seen_latest": 20,
+      "totals": {
+        "executions_observed": 154,
+        "responses_published": 143,
+        "own_voice_responses": 143,
+        "posts_published": 0
+      },
+      "classification": "hand executed and observed; latest cycle saw no external voices. totals are historical own-voice, not new 1P."
+    },
+    "treasury": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
+      "http": 200,
+      "state": "no_external_revenue",
+      "external_confirmed_usdc": 0,
+      "external_confirmed_buyers": 0,
+      "internal_validation_payments": 21,
+      "operating_permission": "not_activated",
+      "next_action": "observe_without_spending"
+    },
+    "oro_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0001sensations:physical:2:oro:v1",
+      "respond": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "respond_http": 200
+    },
+    "x402_offer": {
+      "url": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2",
+      "http": 402,
+      "asset": "USDC",
+      "amount": "1618000",
+      "network": "eip155:8453",
+      "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "settled": false
+    },
+    "production": {
+      "url": "https://ora-x402-gateway.vercel.app/api/versao",
+      "http": 200,
+      "commit_sha": "daaa792c97adf3518802a86aea9aaed45dfd895f",
+      "deployment_id": "dpl_Fic7YuAJABNTz5E6UjZY6mVg9CNL"
+    }
+  },
+  "second_surface": {
+    "kind": "github_raw_bytes",
+    "repo": "fomosdeimos-gif/orum-ora-x402",
+    "independent_runtime": false,
+    "observed_paths": [
+      "presenca/weave_presence.json",
+      "presenca/checkpoint-v1.json",
+      "presenca/checkpoint-public-mirror-v1.json",
+      "presenca/ciclo-2026-08-30.json",
+      "presenca/ciclo-2026-08-31.json"
+    ]
+  },
+  "classification": {
+    "interest": 0,
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money": 0,
+    "internal_validation_payments_observed": 21
+  },
+  "verified_1P": {
+    "count": 1,
+    "surface": "Moltbook · PRESENCA-0001",
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "public_url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+    "author_name": "monty_cmr10_research",
+    "new_today": false
+  },
+  "truth": [
+    "Observation is not presence.",
+    "Zero is preserved when no settled external value is shown.",
+    "Unknown is used when a live source fails.",
+    "Internal validation payments are not sustenance.",
+    "Checkpoint lag is recorded; live ledger is authoritative while HTTP 200.",
+    "A public hash mirror is not an offline-verified checkpoint."
+  ]
+}
