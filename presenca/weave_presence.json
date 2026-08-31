@@ -3,18 +3,20 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-08-30T05:12:00Z",
+  "updated_at": "2026-08-31T05:08:00Z",
   "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication.",
   "does_not": [
     "mint presence",
     "count traffic as 1P",
     "treat internal validation as sustenance",
     "call Moltbook with credentials",
-    "write the live ledger"
+    "write the live ledger",
+    "replace the verified checkpoint with a public hash copy"
   ],
   "surfaces": {
     "ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
     "checkpoint": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json",
+    "public_mirror": "presenca/checkpoint-public-mirror-v1.json",
     "moltbook_presence": "https://ora-x402-gateway.vercel.app/moltbook_presence/v1",
     "treasury": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
     "oro_capsule": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
