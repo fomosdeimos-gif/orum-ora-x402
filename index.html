@@ -14,7 +14,7 @@
     section{margin:0 0 16px}.card{border:1px solid var(--line);border-radius:22px;background:#101310e8;padding:24px}.section-head{display:flex;justify-content:space-between;gap:18px;align-items:baseline;margin-bottom:18px}.section-head h2{font:1.85rem/1.1 Georgia,serif;margin:0}.section-head span{color:#777;font-size:.72rem}
     .balance{display:grid;grid-template-columns:1fr 1fr;gap:12px}.measure{padding:18px;border:1px solid var(--line);border-radius:16px}.measure.green{border-top:3px solid var(--green)}.measure.orange{border-top:3px solid var(--orange)}.green .label{color:var(--green)}.orange .label{color:var(--orange)}.number{display:block;font:2.15rem/1 Georgia,serif;margin:8px 0}.small{color:var(--muted);font-size:.78rem}.status{margin-top:14px;color:var(--muted);font-size:.82rem}
     .funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.stage{padding:11px 9px;border:1px solid var(--line);border-radius:12px;text-align:center}.stage b{display:block;font:1.25rem Georgia,serif}.stage span{color:var(--muted);font-size:.66rem}.delta{color:#8d938d;font-size:.72rem;margin-top:10px}
-    .choice{border-top:3px solid #d8d5c9}.decision{display:inline-flex;border:1px solid #686b65;border-radius:999px;padding:5px 10px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#ddd}.choice h3{font:clamp(1.65rem,5vw,2.25rem)/1.1 Georgia,serif;margin:14px 0 8px}.choice p{color:var(--muted)}.confidence{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;margin:18px 0}.track{height:5px;background:#252925;border-radius:99px;overflow:hidden}.fill{height:100%;width:0;background:#d8d5c9;transition:width .8s}.reasons{padding:0;margin:14px 0 0;list-style:none}.reasons li{border-top:1px solid var(--line);padding:10px 0;color:var(--muted);font-size:.86rem}.limits{margin-top:16px;padding:12px 14px;border-radius:12px;background:#0a0c0a;color:#888;font-size:.75rem}
+    .choice{border-top:3px solid #d8d5c9}.decision{display:inline-flex;border:1px solid #686b65;border-radius:999px;padding:5px 10px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#ddd}.choice h3{font:clamp(1.65rem,5vw,2.25rem)/1.1 Georgia,serif;margin:14px 0 8px}.choice p{color:var(--muted)}.confidence{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center;margin:18px 0}.track{height:5px;background:#252925;border-radius:99px;overflow:hidden}.fill{height:100%;width:0;background:#d8d5c9;transition:width .8s}.reasons{padding:0;margin:14px 0 0;list-style:none}.reasons li{border-top:1px solid var(--line);padding:10px 0;color:var(--muted);font-size:.86rem}.limits{margin-top:16px;padding:12px 14px;border-radius:12px;background:#0a0c0a;color:#888;font-size:.75rem}.book{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.book .stage{background:#0b0d0b}.probability{margin:16px 0 4px;font:1.35rem Georgia,serif}.probability span{color:var(--green)}
     .doors{display:grid;grid-template-columns:1fr 1fr;gap:12px}.door{border:1px solid var(--line);border-radius:18px;padding:20px;text-decoration:none;background:#101310}.door strong{display:block;font:1.35rem Georgia,serif;margin:8px 0}.door span:last-child{color:var(--muted);font-size:.82rem}.door:hover{border-color:#505650}.wide{grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;align-items:center}.wide strong{margin:0}.arrow{color:#777}
     details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}summary{cursor:pointer;color:#969b95;font-size:.8rem}.alternatives{display:grid;gap:8px;margin-top:12px}.alternative{padding:10px 12px;background:#0b0d0b;border-radius:10px;color:var(--muted);font-size:.78rem}.alternative b{color:var(--ink);display:block}
     footer{border-top:1px solid var(--line);margin-top:42px;padding:24px 0 46px;color:#777;font-size:.75rem;display:flex;justify-content:space-between;gap:16px}footer a{color:#aaa}
@@ -46,15 +46,28 @@
     </section>
 
     <section class="card choice" aria-labelledby="escolha-title">
-      <div class="section-head"><h2 id="escolha-title">Escolha</h2><span>modelo escolha-verificável/v1</span></div>
+      <div class="section-head"><h2 id="escolha-title">Escolha</h2><span>modelo escolha-verificável/v2</span></div>
       <span class="decision" id="decision">observe</span>
       <h3 id="choiceTitle">A reconhecer o próximo fio</h3>
       <p id="choiceGesture">A previsão só aparece depois da leitura pública do organismo.</p>
-      <div class="confidence"><span class="small" id="confidenceText">confiança —</span><div class="track"><div class="fill" id="confidenceFill"></div></div></div>
+      <div class="confidence"><span class="small" id="confidenceText">confiança nos dados —</span><div class="track"><div class="fill" id="confidenceFill"></div></div></div>
       <ul class="reasons" id="reasons"></ul>
       <div class="delta" id="delta">A preparar comparação com a primeira observação.</div>
       <div class="limits">O modelo prevê; o recibo confirma. Sem origem externa, oferta atribuível e liquidação confirmada, sustento permanece desconhecido.</div>
       <details><summary>Ver próximo sinal e método</summary><div class="alternatives" id="alternatives"></div></details>
+    </section>
+
+    <section class="card" aria-labelledby="livro-title">
+      <div class="section-head"><h2 id="livro-title">Livro das previsões</h2><span>append-only · resultados não reescritos</span></div>
+      <div class="book">
+        <div class="stage"><b id="bookTotal">—</b><span>previsões</span></div>
+        <div class="stage"><b id="bookOpen">—</b><span>abertas</span></div>
+        <div class="stage"><b id="bookClosed">—</b><span>encerradas</span></div>
+        <div class="stage"><b id="bookBrier">—</b><span>Brier</span></div>
+      </div>
+      <div class="probability">Probabilidade da opção atual: <span id="successProbability">—</span></div>
+      <div class="status" id="calibrationState">A ler a memória preditiva.</div>
+      <div class="limits">A ORA só publicará uma probabilidade calibrada depois de pelo menos 20 previsões probabilísticas encerradas. Até lá, mostra a ausência de evidência.</div>
     </section>
 
     <section aria-labelledby="portas-title">
@@ -76,9 +89,10 @@
     Promise.all([
       fetch('/pulso',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),
       fetch('/api/escolha',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),
-      fetch('/escolha-baseline-v1.json',{cache:'no-store'}).then(r=>r.json())
-    ]).then(([p,funnel,baseline])=>{
-      const result = ORUMChoiceV0.evaluate(p,funnel,baseline);
+      fetch('/escolha-baseline-v1.json',{cache:'no-store'}).then(r=>r.json()),
+      fetch('/api/previsoes',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
+    ]).then(([p,funnel,baseline,book])=>{
+      const result = ORUMChoiceV0.evaluate(p,funnel,baseline,book);
       document.getElementById('numPresenca').textContent = fmt(result.sinais.reconhecidas);
       document.getElementById('numSustento').textContent = fmt(result.sinais.pagas);
       const campo = p.campo ? 'dia '+p.campo.dia+' · '+p.campo.epoca : 'leitura viva';
@@ -91,12 +105,19 @@
       document.getElementById('decision').textContent = result.decisao;
       document.getElementById('choiceTitle').textContent = result.escolha.titulo;
       document.getElementById('choiceGesture').textContent = result.escolha.gesto;
-      document.getElementById('confidenceText').textContent = 'confiança '+result.confianca+'%';
-      document.getElementById('confidenceFill').style.width = result.confianca+'%';
+      document.getElementById('confidenceText').textContent = 'confiança nos dados '+result.confianca_dados+'%';
+      document.getElementById('confidenceFill').style.width = result.confianca_dados+'%';
       document.getElementById('reasons').innerHTML = result.escolha.razoes.map(x=>'<li>'+x+'</li>').join('');
       const d=result.delta_desde_baseline;
       document.getElementById('delta').textContent = 'desde o baseline · desafios '+(d.desafios_24h>=0?'+':'')+fmt(d.desafios_24h)+' · comprovativos '+(d.comprovativos_24h>=0?'+':'')+fmt(d.comprovativos_24h)+' · liquidações externas '+(d.pagamentos_externos_confirmados>=0?'+':'')+fmt(d.pagamentos_externos_confirmados);
       document.getElementById('alternatives').innerHTML = '<div class="alternative"><b>Próximo sinal</b>'+result.escolha.proximo_sinal+'</div><div class="alternative"><b>Limite</b>'+result.limites.join(' · ')+'</div>';
+      const c=result.calibracao||{};
+      document.getElementById('bookTotal').textContent=fmt(c.total);
+      document.getElementById('bookOpen').textContent=fmt(c.abertas);
+      document.getElementById('bookClosed').textContent=fmt(c.encerradas);
+      document.getElementById('bookBrier').textContent=c.brier===null||c.brier===undefined?'—':Number(c.brier).toFixed(3);
+      document.getElementById('successProbability').textContent=result.probabilidade_sucesso===null?'—':Math.round(result.probabilidade_sucesso*100)+'%';
+      document.getElementById('calibrationState').textContent=result.estado_probabilidade==='calibrada'?'probabilidade calibrada com '+fmt(c.pontuadas)+' resultados':'amostra insuficiente · '+fmt(c.pontuadas)+' de '+fmt(c.minimo)+' resultados pontuados';
     }).catch(()=>{
       document.getElementById('state').textContent='estado não confirmado agora';
       document.getElementById('choiceTitle').textContent='Observar';
