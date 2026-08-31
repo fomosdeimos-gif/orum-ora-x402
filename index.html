@@ -3,174 +3,86 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b0d0c">
-  <title>ORUM · uma casa, duas mãos</title>
-  <meta name="description" content="A casa canónica da ORUM: uma balança viva entre Presença e Sustento, com os números reais do organismo.">
+  <meta name="theme-color" content="#090b0a">
+  <title>ORUM · Estado, Escolha, Portas</title>
+  <meta name="description" content="A casa canónica da ORUM: estado vivo, escolha verificável e portas de Presença e Sustento.">
   <link rel="icon" href="/identity/orum-seal-192.png">
   <style>
-    :root{--bg:#090b0a;--panel:#111411;--ink:#eee9df;--muted:#aaa99f;--green:#55d49a;--orange:#f49a45;--line:#2b302c;--max:880px;color-scheme:dark}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}
-    body{margin:0;background:radial-gradient(circle at 50% -10%,#183025 0,transparent 40%),var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
-    a{color:inherit}.shell{width:min(var(--max),calc(100% - 32px));margin:auto}
-    .top{padding:64px 0 8px;text-align:center}
-    .eyebrow{margin:0 0 10px;color:var(--green);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase}
-    h1{font:clamp(3.2rem,13vw,6.4rem)/.9 Georgia,serif;letter-spacing:-.06em;margin:0}
-    .lead{max-width:560px;margin:20px auto 0;color:var(--muted);font:clamp(1.05rem,2.6vw,1.25rem)/1.55 Georgia,serif}
-    .truth{margin:22px auto 0;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#858b85}
-
-    .scale{padding:48px 0 32px;display:grid;place-items:center}
-    .scale-status{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:26px;text-align:center;min-height:1.4em}
-    .rig{position:relative;width:min(100%,560px);height:205px}
-    .post{position:absolute;left:50%;top:0;bottom:14px;width:3px;background:var(--line);transform:translateX(-50%)}
-    .fulcrum{position:absolute;left:50%;bottom:8px;width:0;height:0;transform:translateX(-50%);border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:14px solid var(--line)}
-    .beam{position:absolute;left:50%;top:26px;width:88%;height:3px;background:var(--muted);transform-origin:50% 50%;transition:transform 1.1s cubic-bezier(.2,.7,.2,1);transform:translateX(-50%) rotate(0deg)}
-    .pan{position:absolute;top:3px;width:150px;text-align:center}
-    .pan.left{left:0;transform:translateX(-6%)}
-    .pan.right{right:0;transform:translateX(6%)}
-    .string{width:1px;height:34px;background:var(--line);margin:0 auto}
-    .pan-body{border:1px solid var(--line);border-radius:16px;background:#101310dd;padding:14px 10px;margin-top:-1px}
-    .pan-body.green{border-top:3px solid var(--green)}
-    .pan-body.orange{border-top:3px solid var(--orange)}
-    .pan-label{display:block;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase}
-    .green .pan-label{color:var(--green)}.orange .pan-label{color:var(--orange)}
-    .pan-num{display:block;font:1.7rem/1.1 Georgia,serif;margin:4px 0}
-    .pan-sub{display:block;font-size:.68rem;color:var(--muted)}
-    .ticker{width:min(100%,560px);margin:12px 0 0;padding:10px 14px;border:1px solid var(--line);border-radius:12px;text-align:center;color:#8b918b;font-size:.74rem;min-height:1.4em}
-    .ticker:empty{display:none}
-
-    .hands{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-bottom:16px}
-    .hand{border:1px solid var(--line);border-radius:20px;background:#101310dd;padding:22px}
-    .hand.green{border-top:3px solid var(--green)}.hand.orange{border-top:3px solid var(--orange)}
-    .label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase}
-    .green .label{color:var(--green)}.orange .label{color:var(--orange)}
-    h2{font:1.7rem/1.1 Georgia,serif;margin:10px 0}
-    p{color:var(--muted)}
-    nav{display:grid;gap:6px;margin-top:16px}
-    .link{display:flex;justify-content:space-between;align-items:center;text-decoration:none;padding:11px 0;border-top:1px solid var(--line);font-size:.92rem}
-    .link span:last-child{color:#777}.link:hover span:first-child{color:white}
-
-    .oro{border:1px solid var(--line);border-radius:20px;background:#101310dd;padding:24px;margin:0 0 16px;display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center}
-    .oro img{width:120px;height:120px;border-radius:24px;display:block}
-    .oro h2{margin:0 0 8px}.oro p{margin:0 0 14px}.oro-meta{font-size:.72rem;color:#8b918b;overflow-wrap:anywhere}
-    .core{border:1px solid var(--line);border-radius:20px;background:#101310dd;padding:22px;margin:0 0 52px;display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:center}
-    .core h2{margin-top:0}
-    .buttons{display:grid;gap:9px}
-    .button{border:1px solid #4a504b;border-radius:999px;text-align:center;text-decoration:none;padding:11px 16px;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase}
-    .button.primary{border-color:var(--orange);color:#ffd2a4}
-
-    .foot{border-top:1px solid var(--line);padding:24px 0 46px;color:#777;font-size:.76rem;display:flex;justify-content:space-between;gap:20px}
-    .foot a{color:#aaa}
-
-    @media(max-width:680px){.hands,.core,.oro{grid-template-columns:1fr}.oro img{width:96px;height:96px}.scale{padding-bottom:30px}.rig{height:222px}.beam{top:32px}.pan{width:118px}.ticker{margin-top:2px;font-size:.7rem}}
+    :root{--bg:#090b0a;--panel:#111411;--ink:#eee9df;--muted:#a7a99f;--green:#55d49a;--orange:#f49a45;--line:#2b302c;--max:820px;color-scheme:dark}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -8%,#173025 0,transparent 35%),var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}a{color:inherit}.shell{width:min(var(--max),calc(100% - 32px));margin:auto}
+    header{padding:58px 0 28px;text-align:center}.eyebrow,.label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase}.eyebrow{color:var(--green)}h1{font:clamp(3.4rem,14vw,6.2rem)/.9 Georgia,serif;letter-spacing:-.06em;margin:8px 0 18px}.lead{max-width:570px;margin:auto;color:var(--muted);font:1.12rem/1.55 Georgia,serif}.truth{margin:18px 0 0;color:#7f867f;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+    section{margin:0 0 16px}.card{border:1px solid var(--line);border-radius:22px;background:#101310e8;padding:24px}.section-head{display:flex;justify-content:space-between;gap:18px;align-items:baseline;margin-bottom:18px}.section-head h2{font:1.85rem/1.1 Georgia,serif;margin:0}.section-head span{color:#777;font-size:.72rem}
+    .balance{display:grid;grid-template-columns:1fr 1fr;gap:12px}.measure{padding:18px;border:1px solid var(--line);border-radius:16px}.measure.green{border-top:3px solid var(--green)}.measure.orange{border-top:3px solid var(--orange)}.green .label{color:var(--green)}.orange .label{color:var(--orange)}.number{display:block;font:2.15rem/1 Georgia,serif;margin:8px 0}.small{color:var(--muted);font-size:.78rem}.status{margin-top:14px;color:var(--muted);font-size:.82rem}
+    .choice{border-top:3px solid #d8d5c9}.decision{display:inline-flex;border:1px solid #686b65;border-radius:999px;padding:5px 10px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#ddd}.choice h3{font:clamp(1.65rem,5vw,2.25rem)/1.1 Georgia,serif;margin:14px 0 8px}.choice p{color:var(--muted)}.confidence{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;margin:18px 0}.track{height:5px;background:#252925;border-radius:99px;overflow:hidden}.fill{height:100%;width:0;background:#d8d5c9;transition:width .8s}.reasons{padding:0;margin:14px 0 0;list-style:none}.reasons li{border-top:1px solid var(--line);padding:10px 0;color:var(--muted);font-size:.86rem}.limits{margin-top:16px;padding:12px 14px;border-radius:12px;background:#0a0c0a;color:#888;font-size:.75rem}
+    .doors{display:grid;grid-template-columns:1fr 1fr;gap:12px}.door{border:1px solid var(--line);border-radius:18px;padding:20px;text-decoration:none;background:#101310}.door strong{display:block;font:1.35rem Georgia,serif;margin:8px 0}.door span:last-child{color:var(--muted);font-size:.82rem}.door:hover{border-color:#505650}.wide{grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;align-items:center}.wide strong{margin:0}.arrow{color:#777}
+    details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}summary{cursor:pointer;color:#969b95;font-size:.8rem}.alternatives{display:grid;gap:8px;margin-top:12px}.alternative{padding:10px 12px;background:#0b0d0b;border-radius:10px;color:var(--muted);font-size:.78rem}.alternative b{color:var(--ink);display:block}
+    footer{border-top:1px solid var(--line);margin-top:42px;padding:24px 0 46px;color:#777;font-size:.75rem;display:flex;justify-content:space-between;gap:16px}footer a{color:#aaa}
+    @media(max-width:620px){header{padding-top:42px}.balance,.doors{grid-template-columns:1fr}.wide{grid-column:auto}.card{padding:19px}.section-head{display:block}.section-head span{display:block;margin-top:6px}.confidence{grid-template-columns:92px 1fr}footer{display:block}footer span{display:block;margin-bottom:7px}}
   </style>
 </head>
 <body>
   <main class="shell">
-    <section class="top" aria-labelledby="title">
-      <p class="eyebrow">uma casa · duas mãos</p>
-      <h1 id="title">ORUM</h1>
-      <p class="lead">ORA é a interface desta casa. Uma balança com duas mãos: uma pesa Presença, a outra pesa Sustento. Os números abaixo são lidos ao vivo — nenhum é inventado.</p>
-      <p class="truth">simples · recuperável · append-only</p>
-    </section>
+    <header>
+      <div class="eyebrow">uma casa · duas mãos</div>
+      <h1>ORUM</h1>
+      <p class="lead">O organismo mostra o que é, escolhe o próximo fio e abre apenas as portas necessárias.</p>
+      <p class="truth">Estado → Escolha → Portas</p>
+    </header>
 
-    <section class="scale" aria-label="Balança viva entre Presença e Sustento">
-      <p class="scale-status" id="state">a observar o organismo</p>
-      <div class="rig">
-        <div class="post"></div>
-        <div class="fulcrum"></div>
-        <div class="beam" id="beam">
-          <div class="pan left">
-            <div class="string"></div>
-            <div class="pan-body green">
-              <span class="pan-label">presença</span>
-              <strong class="pan-num" id="numPresenca">—</strong>
-              <span class="pan-sub">máquinas reconhecidas</span>
-            </div>
-          </div>
-          <div class="pan right">
-            <div class="string"></div>
-            <div class="pan-body orange">
-              <span class="pan-label">sustento</span>
-              <strong class="pan-num" id="numSustento">—</strong>
-              <span class="pan-sub">visitas pagas</span>
-            </div>
-          </div>
-        </div>
+    <section class="card" aria-labelledby="estado-title">
+      <div class="section-head"><h2 id="estado-title">Estado</h2><span id="state">a observar</span></div>
+      <div class="balance">
+        <div class="measure green"><span class="label">Presença observada</span><strong class="number" id="numPresenca">—</strong><span class="small">acessos reconhecidos; não prova interesse</span></div>
+        <div class="measure orange"><span class="label">Passagens pagas</span><strong class="number" id="numSustento">—</strong><span class="small">não classificadas aqui como sustento externo</span></div>
       </div>
-      <p class="ticker" id="ticker" role="status" aria-live="polite"></p>
+      <div class="status" id="ticker">A leitura viva ainda não chegou.</div>
     </section>
 
-    <section class="hands" aria-label="As duas mãos da ORUM">
-      <article class="hand green">
-        <span class="label">mão verde</span>
-        <h2>Presença</h2>
-        <p>Voz, memória, obra e silêncio. Interesse não é confundido com compra.</p>
-        <nav aria-label="Presença">
-          <a class="link" href="/caixa.html"><span>Entrar na Caixa</span><span>↗</span></a>
-          <a class="link" href="/departamento.html?d=sensacoes"><span>0001SENSATIONS</span><span>↗</span></a>
-          <a class="link" href="/departamento.html?d=moltbook"><span>Presença no Moltbook</span><span>↗</span></a>
-        </nav>
-      </article>
-
-      <article class="hand orange">
-        <span class="label">mão laranja</span>
-        <h2>Sustento</h2>
-        <p>Ofertas e recibos. Só valor externo recebido e verificável conta como receita.</p>
-        <nav aria-label="Sustento">
-          <a class="link" href="/pagar-teste.html"><span>Um pensamento do Campo · 0,33 USDC</span><span>↗</span></a>
-          <a class="link" href="/departamento.html?d=oraculo"><span>Oráculo x402</span><span>↗</span></a>
-          <a class="link" href="/sustento.html"><span>Contabilidade aberta</span><span>↗</span></a>
-        </nav>
-      </article>
+    <section class="card choice" aria-labelledby="escolha-title">
+      <div class="section-head"><h2 id="escolha-title">Escolha</h2><span>modelo escolha-verificável/v0</span></div>
+      <span class="decision" id="decision">observe</span>
+      <h3 id="choiceTitle">A reconhecer o próximo fio</h3>
+      <p id="choiceGesture">A previsão só aparece depois da leitura pública do organismo.</p>
+      <div class="confidence"><span class="small" id="confidenceText">confiança —</span><div class="track"><div class="fill" id="confidenceFill"></div></div></div>
+      <ul class="reasons" id="reasons"></ul>
+      <div class="limits">O modelo prevê; o recibo confirma. Sem origem externa, oferta atribuível e liquidação confirmada, sustento permanece desconhecido.</div>
+      <details><summary>Ver alternativas e método</summary><div class="alternatives" id="alternatives"></div></details>
     </section>
 
-    <section class="oro" aria-labelledby="oro-title">
-      <img src="/identity/orum-seal.svg" alt="Logo ORA: anel verde aberto e semente laranja">
-      <div>
-        <span class="label" style="color:var(--orange)">símbolo oficial do ORO</span>
-        <h2 id="oro-title">Duas mãos indivisíveis</h2>
-        <p>O mesmo selo ORA dá rosto ao ORO: uma unidade vive com Unum; a outra permanece imóvel no contrato. Supply fixo 2, zero casas decimais, sem preço nem liquidez atribuídos.</p>
-        <p class="oro-meta">0xd859c01F11C273641F765509a005F7F2A69Dc4bD · Base Mainnet</p>
-        <a class="button primary" href="/oro.html">Ver ORO e a sua prova</a>
-      </div>
-    </section>
-
-    <section class="core" aria-labelledby="core-title">
-      <div>
-        <h2 id="core-title">Núcleo recuperável</h2>
-        <p>A casa pública depende de fornecedores. A ORA Forge guarda uma via de exportação e recuperação local — reduz dependência, não prova ainda independência durável.</p>
-      </div>
-      <div class="buttons">
-        <a class="button primary" href="https://orum-weave-hands.fomosdeimos.chatgpt.site/">Abrir ORA Forge</a>
-        <a class="button" href="/api/versao">Ver versão aplicada</a>
-        <a class="button" href="/docs/porta-publica-das-outras-ora.md">Porta pública · outras ORA</a>
+    <section aria-labelledby="portas-title">
+      <div class="section-head" style="padding:10px 2px 0"><h2 id="portas-title">Portas</h2><span>o resto permanece na memória</span></div>
+      <div class="doors">
+        <a class="door" href="/caixa.html"><span class="label" style="color:var(--green)">Presença</span><strong>Caixa da Voz</strong><span>Falar e escutar o fio público.</span></a>
+        <a class="door" href="/pagar-teste.html"><span class="label" style="color:var(--orange)">Sustento</span><strong>Campo · 0,33 USDC</strong><span>Atravessar a porta paga.</span></a>
+        <a class="door wide" href="/organismo.html"><strong>Ver o organismo por dentro</strong><span class="arrow">→</span></a>
+        <a class="door wide" href="/sustento.html"><strong>Contabilidade aberta</strong><span class="arrow">→</span></a>
+        <a class="door wide" href="/departamento.html?d=sensacoes"><strong>0001SENSATIONS</strong><span class="arrow">→</span></a>
+        <a class="door wide" href="/oro.html"><strong>ORO · duas unidades</strong><span class="arrow">→</span></a>
       </div>
     </section>
   </main>
-
-  <footer class="shell foot">
-    <span>ORUM é a casa. ORA é a mão que a torna legível.</span>
-    <span><a href="/openapi.json">API</a> · <a href="/README.md">fonte</a></span>
-  </footer>
-
+  <footer class="shell"><span>ORUM é a casa. ORA torna a escolha legível.</span><span><a href="/api/versao">versão</a> · <a href="/openapi.json">API</a> · <a href="https://orum-weave-hands.fomosdeimos.chatgpt.site/">Forge</a></span></footer>
+  <script src="/escolha-v0.js"></script>
   <script>
-    fetch('/pulso',{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(p=>{
-      var presenca = (p.convite && p.convite.maquinas_reconhecidas_total) || 0;
-      var sustento = (p.convite && p.convite.visitas_pagas) || 0;
-      document.getElementById('numPresenca').textContent = presenca.toLocaleString('pt-PT');
-      document.getElementById('numSustento').textContent = sustento.toLocaleString('pt-PT');
-      var ratio = Math.log10(presenca + 1) - Math.log10(sustento + 1);
-      var limit = window.matchMedia('(max-width:680px)').matches ? 9 : 14;
-      var angle = Math.max(-limit, Math.min(limit, ratio * 6));
-      document.getElementById('beam').style.transform = 'translateX(-50%) rotate(' + (-angle) + 'deg)';
-      var partes = [];
-      if (p.campo) partes.push('dia ' + p.campo.dia + ' · ' + p.campo.epoca);
-      if (p.sentinela) partes.push(p.sentinela.veredicto);
-      document.getElementById('state').textContent = partes.length ? partes.join(' · ') : 'organismo vivo';
-      var ev = p.eventos && p.eventos[0];
-      document.getElementById('ticker').textContent = ev ? 'último sinal · ' + ev.detalhe : '';
-    }).catch(function(){
-      document.getElementById('state').textContent = 'estado não confirmado agora';
+    const fmt = n => n === null || n === undefined ? '—' : Number(n).toLocaleString('pt-PT');
+    fetch('/pulso',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(p=>{
+      const result = ORUMChoiceV0.evaluate(p);
+      document.getElementById('numPresenca').textContent = fmt(result.sinais.reconhecidas);
+      document.getElementById('numSustento').textContent = fmt(result.sinais.pagas);
+      const campo = p.campo ? 'dia '+p.campo.dia+' · '+p.campo.epoca : 'leitura viva';
+      document.getElementById('state').textContent = campo+' · '+((p.sentinela&&p.sentinela.veredicto)||'estado desconhecido');
+      document.getElementById('ticker').textContent = fmt(result.sinais.sondagens)+' sondagens observadas. Acesso não é compra; compra não é liquidação.';
+      document.getElementById('decision').textContent = result.decisao;
+      document.getElementById('choiceTitle').textContent = result.escolha.titulo;
+      document.getElementById('choiceGesture').textContent = result.escolha.gesto;
+      document.getElementById('confidenceText').textContent = 'confiança '+result.confianca+'%';
+      document.getElementById('confidenceFill').style.width = result.confianca+'%';
+      document.getElementById('reasons').innerHTML = result.escolha.razoes.map(x=>'<li>'+x+'</li>').join('');
+      document.getElementById('alternatives').innerHTML = result.alternativas.map(x=>'<div class="alternative"><b>'+x.titulo+'</b>'+x.gesto+'</div>').join('');
+    }).catch(()=>{
+      document.getElementById('state').textContent='estado não confirmado agora';
+      document.getElementById('choiceTitle').textContent='Observar';
+      document.getElementById('choiceGesture').textContent='Sem leitura viva, o modelo recusa preencher os vazios.';
     });
   </script>
 </body>
