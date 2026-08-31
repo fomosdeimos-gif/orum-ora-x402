@@ -3,7 +3,7 @@
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
   const number = value => Number.isFinite(Number(value)) ? Number(value) : null;
   const stage = (funnel, key) => number(funnel && funnel.attempts && funnel.attempts.by_stage && funnel.attempts.by_stage[key] && funnel.attempts.by_stage[key].non_internal_or_unknown);
-  function evaluate(pulse, funnel, baseline) {
+  function evaluate(pulse, funnel, baseline, predictionBook) {
     const convite = pulse && pulse.convite || {};
     const sentinela = pulse && pulse.sentinela || {};
     const eventos = Array.isArray(pulse && pulse.eventos) ? pulse.eventos : [];
@@ -24,7 +24,13 @@
     const completos=Object.values(sinais).filter(v=>v!==null).length;
     const base=baseline&&baseline.signals||{}, delta={};
     for(const [key,value] of Object.entries(sinais)) delta[key]=value!==null&&Number.isFinite(Number(base[key]))?value-Number(base[key]):null;
-    return {modelo:'escolha-verificavel/v1',observado_em:funnel&&funnel.observed_at||pulse&&pulse.timestamp||null,janela_horas:number(funnel&&funnel.window_hours),decisao:escolhida.decisao,escolha:escolhida,confianca:clamp(28+completos*4+(funnel&&funnel.schema?8:0),0,82),sinais,delta_desde_baseline:delta,baseline_em:baseline&&baseline.observed_at||null,independencia:funnel&&funnel.independence?{claimed:funnel.independence.claimed,scope:funnel.independence.scope,provider_independent:funnel.independence.provider_independent}:null,limites:['Previsão não é prova.','Origem desconhecida não é externa.','Aceitação HTTP não é liquidação.','Sustento exige origem externa e liquidação confirmadas.'],fallback:!funnel,eventos_recentes:eventos.length,sentinela:sentinela.veredicto||null};
+    const dataConfidence=clamp(28+completos*4+(funnel&&funnel.schema?8:0),0,82);
+    const stats=predictionBook&&predictionBook.stats||null;
+    const calibrationReady=Boolean(stats&&stats.calibration_ready&&Number(stats.scored)>=Number(stats.minimum_for_calibration||20));
+    const latest=predictionBook&&predictionBook.latest||null;
+    const sameOption=latest&&latest.option_key===escolhida.id;
+    const predictedProbability=calibrationReady&&sameOption&&number(latest.predicted_probability)!==null?number(latest.predicted_probability):null;
+    return {modelo:'escolha-verificavel/v2',observado_em:funnel&&funnel.observed_at||pulse&&pulse.timestamp||null,janela_horas:number(funnel&&funnel.window_hours),decisao:escolhida.decisao,escolha:escolhida,confianca_dados:dataConfidence,probabilidade_sucesso:predictedProbability,estado_probabilidade:predictedProbability===null?'amostra_insuficiente':'calibrada',calibracao:stats?{total:number(stats.total),abertas:number(stats.open),encerradas:number(stats.closed),pontuadas:number(stats.scored),minimo:number(stats.minimum_for_calibration),brier:number(stats.brier_score)}:null,sinais,delta_desde_baseline:delta,baseline_em:baseline&&baseline.observed_at||null,independencia:funnel&&funnel.independence?{claimed:funnel.independence.claimed,scope:funnel.independence.scope,provider_independent:funnel.independence.provider_independent}:null,limites:['Confiança nos dados não é probabilidade de sucesso.','Previsão não é prova.','Origem desconhecida não é externa.','Aceitação HTTP não é liquidação.','Sustento exige origem externa e liquidação confirmadas.'],fallback:!funnel,eventos_recentes:eventos.length,sentinela:sentinela.veredicto||null};
   }
   root.ORUMChoiceV0=Object.freeze({evaluate});
 })(typeof window!=='undefined'?window:globalThis);
