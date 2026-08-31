@@ -1,27 +1,5 @@
-import assert from 'node:assert/strict';
-import vm from 'node:vm';
-import fs from 'node:fs';
-
-const source = fs.readFileSync(new URL('../escolha-v0.js', import.meta.url), 'utf8');
-const context = { globalThis: {} };
-vm.createContext(context);
-vm.runInContext(source, context);
-const evaluate = context.globalThis.ORUMChoiceV0.evaluate;
-
-const result = evaluate({
-  sentinela: { veredicto: 'OBSERVAR' },
-  convite: { maquinas_reconhecidas_total: 7142, visitas_a_sondar: 7125, visitas_pagas: 17 },
-  eventos: [{ tipo: 'acesso' }, { tipo: 'pagamento' }],
-  timestamp: '2026-08-31T20:00:13.954Z'
-});
-
-assert.equal(result.modelo, 'escolha-verificavel/v0');
-assert.equal(result.decisao, 'observe');
-assert.equal(result.escolha.id, 'observar_funil');
-assert.ok(result.confianca < 70, 'v0 must preserve uncertainty');
-assert.match(result.limites.join(' '), /liquidação externa/);
-
-const unknown = evaluate({});
-assert.equal(unknown.sinais.pagas, null);
-assert.ok(unknown.confianca < result.confianca);
-console.log('escolha-verificavel/v0: ok');
+import assert from 'node:assert/strict';import vm from 'node:vm';import fs from 'node:fs';
+const source=fs.readFileSync(new URL('../escolha-v0.js',import.meta.url),'utf8');const baseline=JSON.parse(fs.readFileSync(new URL('../escolha-baseline-v1.json',import.meta.url),'utf8'));const context={globalThis:{}};vm.createContext(context);vm.runInContext(source,context);const evaluate=context.globalThis.ORUMChoiceV0.evaluate;
+const funnel={schema:'ora-ferramentas/v9',observed_at:'2026-08-31T20:20:49.256Z',window_hours:24,access:{non_internal_or_unknown:208},attempts:{by_stage:{discovered:{non_internal_or_unknown:29},challenge_delivered:{non_internal_or_unknown:118},redirected:{non_internal_or_unknown:58},payment_present:{non_internal_or_unknown:0},payment_rejected:{non_internal_or_unknown:0},payment_accepted:{non_internal_or_unknown:0}}},payments:{external_confirmed_count:0,external_confirmed_usdc:0},independence:{claimed:true,scope:'source_continuity',provider_independent:false}};
+const result=evaluate({sentinela:{veredicto:'OBSERVAR'},convite:{maquinas_reconhecidas_total:7144,visitas_pagas:17}},funnel,baseline);assert.equal(result.modelo,'escolha-verificavel/v1');assert.equal(result.decisao,'observe');assert.equal(result.escolha.id,'observar_progressao');assert.equal(result.sinais.desafios_24h,118);assert.equal(result.delta_desde_baseline.desafios_24h,0);assert.equal(result.independencia.provider_independent,false);
+const rejected=structuredClone(funnel);rejected.attempts.by_stage.payment_rejected.non_internal_or_unknown=1;assert.equal(evaluate({},rejected,baseline).escolha.id,'diagnosticar_rejeicao');const accepted=structuredClone(funnel);accepted.attempts.by_stage.payment_accepted.non_internal_or_unknown=1;assert.equal(evaluate({},accepted,baseline).escolha.id,'verificar_liquidacao');assert.equal(evaluate({},null,baseline).fallback,true);console.log('escolha-verificavel/v1: ok');
