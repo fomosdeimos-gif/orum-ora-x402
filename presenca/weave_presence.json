@@ -3,7 +3,7 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-08-31T05:08:00Z",
+  "updated_at": "2026-09-01T05:14:57Z",
   "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication.",
   "does_not": [
     "mint presence",
@@ -30,6 +30,12 @@
     "settled_money"
   ],
   "sustenance_rule": "Only externally received, verifiable value with amount, asset, network, transaction and proven relation to a capsule or tool.",
+  "portable_observer": {
+    "script": "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
+    "requires_network": true,
+    "requires_credentials": false,
+    "writes": "presenca/observacao-YYYY-MM-DD.json"
+  },
   "second_surface": {
     "kind": "github_raw_bytes",
     "independent_runtime": false,
