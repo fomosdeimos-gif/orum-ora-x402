@@ -69,7 +69,7 @@
       <div class="prediction-description" aria-live="polite"><span class="label">Previsão em curso</span><b id="predictionStatement">A reconhecer a previsão aberta.</b><p id="predictionTest">O teste e a janela aparecerão aqui.</p></div>
       <div class="status" id="calibrationState">A ler a memória preditiva.</div>
       <div class="status" id="predictionLifecycle">A reconhecer a janela da previsão.</div>
-      <div class="limits">A ORA só publicará uma probabilidade calibrada depois de pelo menos 20 previsões probabilísticas encerradas. Até lá, mostra a ausência de evidência.</div>
+      <div class="limits">A ORA só publicará uma probabilidade calibrada depois de pelo menos 20 previsões probabilísticas encerradas. Desafios são eventos repetíveis, não compradores únicos; até lá, a taxa observada não é apresentada como probabilidade.</div>
     </section>
 
 
@@ -142,9 +142,16 @@
         const outcome=latest.outcome;
         const closeTime=new Date(latest.closes_at).toLocaleString('pt-PT',{timeZone:'Europe/Lisbon',dateStyle:'short',timeStyle:'short'});
         const resultText=outcome?(outcome.status==='censored'?'resultado censurado':outcome.success?'sinal observado':'sinal não observado'):(lifecycle==='awaiting_closure'?'janela vencida · aguarda fecho append-only':'aberta até '+closeTime);
-        const statements={payment_present_or_payment_rejected:'Até ao fim desta janela, surgirá pelo menos um comprovativo de pagamento apresentado ou recusado.'};
+        const statements={
+          payment_present_or_payment_rejected:'Até ao fim desta janela, surgirá pelo menos um evento payment_present ou payment_rejected.',
+          non_internal_payment_present_or_rejected_or_accepted:'Até ao fim desta janela, surgirá pelo menos um evento de pagamento não interno: apresentado, recusado ou aceite.'
+        };
+        const tests={
+          payment_present_or_payment_rejected:'Janela até '+closeTime+' · regra original preservada: payment_accepted não conta nesta previsão; confirma-se apenas com payment_present ou payment_rejected.',
+          non_internal_payment_present_or_rejected_or_accepted:'Janela até '+closeTime+' · confirma-se com payment_present, payment_rejected ou payment_accepted não interno; falha se nenhum surgir.'
+        };
         document.getElementById('predictionStatement').textContent=statements[latest.target_signal]||('Será observado o sinal: '+latest.target_signal+'.');
-        document.getElementById('predictionTest').textContent='Janela até '+closeTime+' · confirma-se se surgir payment_present ou payment_rejected; falha se nenhum dos dois surgir.';
+        document.getElementById('predictionTest').textContent=tests[latest.target_signal]||('Janela até '+closeTime+' · consultar o falsificador técnico.');
         document.getElementById('predictionLifecycle').textContent='estado · '+resultText+' · fecho automático ≤15 min';
       }
     }).catch(()=>{
