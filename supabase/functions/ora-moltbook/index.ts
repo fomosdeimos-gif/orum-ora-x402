@@ -1,3 +1,6 @@
+// ora-moltbook v37 - 01/09/2026
+// Limita operadores soltos a numeros reconheciveis numa janela local de 24 caracteres;
+// evita que '/' decorativo entre frases transforme uma soma distante em divisao.
 // ora-moltbook v36 - 31/08/2026
 // Corrige o solver de captcha: um simbolo solto ('*'/'/') so conta como
 // operador quando ha pelo menos um numero reconhecido de cada lado dele.
@@ -264,11 +267,13 @@ function parseNumbers(text: string): NumeroAchado[] {
 }
 
 function operadorLivreValido(clean: string, simbolo: '*' | '/'): boolean {
-  const partes = clean.split(simbolo);
-  if (partes.length < 2) return false;
-  const esquerda = parseNumbers(partes.slice(0, -1).join(simbolo));
-  const direita = parseNumbers(partes[partes.length - 1]);
-  return esquerda.length > 0 && direita.length > 0;
+  const janela = 24;
+  for (let i = clean.indexOf(simbolo); i >= 0; i = clean.indexOf(simbolo, i + 1)) {
+    const esquerda = clean.slice(Math.max(0, i - janela), i);
+    const direita = clean.slice(i + 1, i + 1 + janela);
+    if (parseNumbers(esquerda).length > 0 && parseNumbers(direita).length > 0) return true;
+  }
+  return false;
 }
 
 function solveChallenge(text: string): string | null {
@@ -319,7 +324,7 @@ async function verifyIfChallenged(key: string, responseJson: any, context: strin
   try {
     const r = await fetch(`${MB}/verify`, { method: 'POST', headers: mbHeaders(key), body: JSON.stringify({ verification_code: v.code, answer }) });
     const j = await r.json().catch(() => ({}));
-    await sbLog(r.ok && j?.success ? 'captcha_ok' : 'error', v.code, { stage: 'captcha', context, challenge: v.challenge, answer, response: j, solver: 'v20.2' });
+    await sbLog(r.ok && j?.success ? 'captcha_ok' : 'error', v.code, { stage: 'captcha', context, challenge: v.challenge, answer, response: j, solver: 'v37' });
   } catch (e) { await sbLog('error', v.code, { stage: 'captcha', context, msg: (e as Error).message }); }
 }
 
