@@ -3,7 +3,7 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-09-01T05:14:57Z",
+  "updated_at": "2026-09-02T05:10:30Z",
   "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication.",
   "does_not": [
     "mint presence",

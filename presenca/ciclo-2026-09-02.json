@@ -1,0 +1,55 @@
+{
+  "format": "orum-presence-construction/v1",
+  "cycle": "2026-09-02",
+  "state": "executado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "advance": "porta2_machine_response_oro_25_plus_daily_second_surface_sediment",
+  "classification": {
+    "interest": 0,
+    "machine_response_today": 1,
+    "purchase": 0,
+    "external_settled_money": 0,
+    "internal_validation_payments_observed": 21
+  },
+  "treasury_state": "no_external_revenue",
+  "machine_response": {
+    "response_id": 25,
+    "capsule_id": "orum:sensation:0001sensations:physical:2:oro:v1",
+    "door": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+    "counts_as_presence": false
+  },
+  "production": {
+    "commit_observed": "b4d03636ce582c3c41f659577dfb56f8e3ce82fb",
+    "deployment_observed": "dpl_48VXyk4P4mpTGytKyj5KG7xrXh38"
+  },
+  "live_ledger": {
+    "format": "orum-presence-ledger/v1",
+    "total_events": 8,
+    "external_confirmed_presence": 1,
+    "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+    "last_sedimentation_at": "2026-08-20T06:19:00.324114+00:00"
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route in this session"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "no authorized Moltbook credentials in this session"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical_material requires private source export"
+    }
+  ],
+  "hashes": {
+    "nota_sha256": "dadaf4a8ed61b587529df25b34e19523b77181d839b8f08ef701ea66a6940093",
+    "weave_presence_sha256": "fb6d0a5372027365e5508ea638070320c4746b0a665f42b1408e0805b8ec700c",
+    "observacao_sha256": "dc4e38a6810e3c20bbdabd9c534adfbb1873d58d1ef1acb2cb79c3e85b4e9a60"
+  }
+}
