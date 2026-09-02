@@ -2,6 +2,23 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import * as ed from "npm:@noble/ed25519@2";
 
+// ORA · LICENCA · V45 · 25/08/2026 — converte /preview e /arquivo de 410 para
+// redirect 307: /preview -> /consulta (preservando ?obra=), /arquivo -> /catalogo.
+// Motivo: sondas externas legadas continuam a chegar a estas rotas descontinuadas
+// e recebiam 410 sem alternativa accionavel. Nenhum preco, nenhuma logica de
+// pagamento, nenhuma verificacao on-chain alterada. Ver ora_mudancas #319.
+// ORA · LICENCA · V42 · 20/08/2026 — acrescenta truth_machine e boundaries_machine
+// tambem a resposta 402 (payment required) de cada licenca, fechando o ultimo
+// lugar onde a camada mecanica ainda faltava neste servico (ja estava no
+// catalogo, no manifesto well-known e no certificado da resposta paga).
+// Nenhuma linha de logica de pagamento tocada.
+// ORA · LICENCA · V41 · 20/08/2026 — acrescenta boundaries_machine (mesmos 6
+// booleanos operacionais ja em ora-x402 V30 e ora-oraculo V3.5: sem escrita,
+// sem cobranca recorrente, sem verificacao de identidade real, sem reembolso,
+// sem execucao do cabecalho como codigo, com rasto on-chain+BD sempre deixado)
+// ao catalogo, ao manifesto well-known, e agora tambem ao certificado da
+// resposta paga (que ainda nao tinha nem truth_machine nem boundaries_machine).
+// Nenhuma linha de logica de pagamento tocada.
 // ORA · LICENCA · V40 · 17/08/2026
 // Correcao sobre V39, guiada de novo pelo validador oficial da CDP: o
 // bazaar.info.input.queryParams.obra tinha um DESCRITOR de tipo em vez de
@@ -19,7 +36,7 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
-const VERSAO = 'V40';
+const VERSAO = 'V45';
 const TOTAL_OBRAS_FISICAS = 107;
 const BUCKET_PRIVADO = 'arca-fisica';
 
@@ -30,13 +47,23 @@ interface Lic { key: LicKey; sku: string; usdc: string; atomic: bigint; dias: nu
 const LICENCAS: Record<LicKey, Lic> = {
   consulta: { key: 'consulta', sku: 'ora-licenca-consulta', usdc: '1.618', atomic: 1618000n, dias: 30, acesso_segundos: 300, descricao: 'Acesso privado a uma fotografia preservada da coleccão fisica 0001sensations, para observacão ou estudo pessoal. Nao e uso comercial.', direitos: ['visualizacao-privada', 'estudo-pessoal'] },
   editorial: { key: 'editorial', sku: 'ora-licenca-editorial', usdc: '16.18', atomic: 16180000n, dias: null, acesso_segundos: 3600, descricao: 'Reproduccão editorial de uma obra fisica preservada -- artigo, livro, exposicão documental ou comunicacão -- com atribuicão obrigatoria.', direitos: ['publicacao-editorial', 'atribuicao-obrigatoria'] },
-  treino: { key: 'treino', sku: 'ora-licenca-treino', usdc: '161.80', atomic: 161800000n, dias: null, acesso_segundos: 3600, descricao: 'Uso de uma fotografia preservada da coleccão fisica num conjunto de treino ou avaliacão de maquinas, com proveniencia documentada. Nao exclusiva.', direitos: ['ai-training', 'dataset-inclusion', 'proveniencia-documentada'] },
+  treino: { key: 'treino', sku: 'ora-licenca-treino', usdc: '161.80', atomic: 161800000n, dias: null, acesso_segundos: 3600, descricao: 'Uso de uma fotografia preservada da coleccão fisica num conjunto de treino ou avaliacao de maquinas, com proveniencia documentada. Nao exclusiva.', direitos: ['ai-training', 'dataset-inclusion', 'proveniencia-documentada'] },
 };
 
 function b64json(obj: unknown): string { const bytes = new TextEncoder().encode(JSON.stringify(obj)); let bin = ''; for (const b of bytes) bin += String.fromCharCode(b); return btoa(bin); }
 
 function truthMachineCatalogo() {
   return { ia_generativa: false, licenciamento_exclusivo: false, fotografias_publicas: false, transfere_propriedade_fisica: false, transfere_direitos_autorais_integrais: false, transfere_nft: false, requires_x402_payment: true };
+}
+function boundariesMachineLicenca() {
+  return {
+    grants_write_access: false,
+    creates_recurring_or_ongoing_charge: false,
+    verifies_payer_real_world_identity: false,
+    refundable_or_reversible: false,
+    executes_payment_header_as_code: false,
+    leaves_onchain_and_db_trace: true,
+  };
 }
 function hostExterno(req: Request): string | null { const candidatos = [req.headers.get('x-ora-host'), req.headers.get('x-forwarded-host')]; for (const c of candidatos) { const h = (c || '').trim(); if (h && !h.includes('supabase.co') && !h.includes('localhost')) return h; } return null; }
 function resourceUrlFor(req: Request, lic: Lic, obra?: string | null): string { const h = hostExterno(req); const base = h ? `https://${h}/licenca/${lic.key}` : `${SUPABASE_URL}/functions/v1/ora-licenca/${lic.key}`; return base + (obra ? '?obra=' + encodeURIComponent(obra) : ''); }
@@ -148,7 +175,7 @@ function acceptsFor(lic: Lic, resourceUrlStr: string) {
 function paymentRequired(req: Request, lic: Lic, obra: string | null) {
   const resourceUrlStr = resourceUrlFor(req, lic, obra);
   const canonical = { x402Version: 2, error: 'Payment required', resource: { url: resourceUrlStr, description: `0001sensations · ${lic.descricao}`, mimeType: 'application/json' }, accepts: acceptsFor(lic, resourceUrlStr), extensions: bazaarExtensionFor(lic, resourceUrlStr) };
-  return new Response(JSON.stringify({ ...canonical, como_pagar: { passo_1: `Transfere ${lic.usdc} USDC (${USDC_BASE}) na rede Base (chain_id ${CHAIN_ID}) para ${WALLET} (jasm43.base.eth).`, passo_2: 'Guarda o transaction hash.', passo_3: `Repete o GET a ${resourceUrlStr} com PAYMENT-SIGNATURE ou X-PAYMENT contendo base64 de {"transactionHash":"0x…"}.` }, catalogo_gratuito: publicoUrl(req, 'catalogo'), aviso: 'Esta licenca incide sobre uma fotografia digital preservada da obra fisica, identificada pelo seu SHA-256. Nao transfere a propriedade da obra fisica, direitos autorais integrais, exclusividade, nem qualquer NFT.' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="0001sensations · ${lic.key}", amount="${lic.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-VERSION': VERSAO } });
+  return new Response(JSON.stringify({ ...canonical, como_pagar: { passo_1: `Transfere ${lic.usdc} USDC (${USDC_BASE}) na rede Base (chain_id ${CHAIN_ID}) para ${WALLET} (jasm43.base.eth).`, passo_2: 'Guarda o transaction hash.', passo_3: `Repete o GET a ${resourceUrlStr} com PAYMENT-SIGNATURE ou X-PAYMENT contendo base64 de {"transactionHash":"0x…"}.` }, catalogo_gratuito: publicoUrl(req, 'catalogo'), truth_machine: truthMachineCatalogo(), boundaries_machine: boundariesMachineLicenca(), aviso: 'Esta licenca incide sobre uma fotografia digital preservada da obra fisica, identificada pelo seu SHA-256. Nao transfere a propriedade da obra fisica, direitos autorais integrais, exclusividade, nem qualquer NFT.' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="0001sensations · ${lic.key}", amount="${lic.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-VERSION': VERSAO } });
 }
 function paymentPending(lic: Lic, txHash: string) { return new Response(JSON.stringify({ x402: 'pending', licenca: lic.key, tx_hash: txHash, retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': VERSAO } }); }
 
@@ -192,6 +219,8 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
     autor: { nome: 'Jorge Silva Martins', identidade_onchain: 'jasm43.base.eth', wallet: WALLET },
     acesso_a_fotografia: acesso ?? { erro: 'fotografia ainda nao preservada para esta obra -- licenca emitida, acesso a imagem pendente' },
     emitida_em: new Date().toISOString(), valida_ate: validaAte,
+    truth_machine: truthMachineCatalogo(),
+    boundaries_machine: boundariesMachineLicenca(),
     aviso: 'Esta licenca nao transfere a propriedade da obra fisica original, direitos autorais integrais, exclusividade, nem qualquer NFT. O licenciado recebe uma fotografia digital preservada da obra, identificada pelo seu SHA-256 -- nao os bytes originais da obra fisica em si.',
   };
   if (licencaId) await fetch(`${SUPABASE_URL}/rest/v1/ora_licencas_fisicas?id=eq.${licencaId}`, { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ certificado }) });
@@ -221,6 +250,7 @@ async function catalogo(req: Request) {
     licencas: Object.values(LICENCAS).map((l) => ({ tipo: l.key, sku: l.sku, preco: `${l.usdc} USDC`, duracao_da_licenca: l.dias ? `${l.dias} dias` : 'perpetua', duracao_do_acesso_a_imagem: `${l.acesso_segundos}s (URL assinada, gerada apos pagamento)`, direitos: l.direitos, descricao: l.descricao, endpoint: resourceUrlFor(req, l) })),
     licenciamento_nao_exclusivo: 'Nenhuma licenca e exclusiva. Nao ha limite ao numero de vezes que uma obra pode ser licenciada.',
     truth_machine: truthMachineCatalogo(),
+    boundaries_machine: boundariesMachineLicenca(),
     aviso: 'As fotografias nao sao publicas. O catalogo mostra metadados e hash para verificacao de integridade, nunca os bytes. Uma licenca paga gera uma URL assinada de curta duracao para a fotografia especifica licenciada.',
     arquivo_historico_nft: await historicoNftArquivo(),
     facilitador_cdp: CDP_DISPONIVEL,
@@ -244,12 +274,12 @@ async function nucleo(req: Request): Promise<Response> {
   }
   if (path.endsWith('/amostra')) return new Response(JSON.stringify(await amostra(req)), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
   if (path.endsWith('/catalogo') || path.endsWith('/eco') || path.endsWith('/ora-licenca') || path.endsWith('/ora-licenca/')) return new Response(JSON.stringify(await catalogo(req)), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=120' } });
-  if (path.includes('well-known')) return new Response(JSON.stringify({ x402Version: 2, resources: Object.values(LICENCAS).map((l) => { const ru = resourceUrlFor(req, l); return { resource: ru, type: 'http', method: 'GET', description: `0001sensations · ${l.descricao} · ${l.usdc} USDC`, accepts: acceptsFor(l, ru), extensions: bazaarExtensionFor(l, ru) }; }), free_sample: publicoUrl(req, 'amostra'), free_catalog: publicoUrl(req, 'catalogo'), timestamp: new Date().toISOString() }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
+  if (path.includes('well-known')) return new Response(JSON.stringify({ x402Version: 2, truth_machine: truthMachineCatalogo(), boundaries_machine: boundariesMachineLicenca(), resources: Object.values(LICENCAS).map((l) => { const ru = resourceUrlFor(req, l); return { resource: ru, type: 'http', method: 'GET', description: `0001sensations · ${l.descricao} · ${l.usdc} USDC`, accepts: acceptsFor(l, ru), extensions: bazaarExtensionFor(l, ru) }; }), free_sample: publicoUrl(req, 'amostra'), free_catalog: publicoUrl(req, 'catalogo'), timestamp: new Date().toISOString() }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
 
   let lic: Lic | null = null;
   if (path.endsWith('/consulta')) lic = LICENCAS.consulta; else if (path.endsWith('/editorial')) lic = LICENCAS.editorial; else if (path.endsWith('/treino')) lic = LICENCAS.treino;
-  else if (path.endsWith('/preview')) return new Response(JSON.stringify({ erro: 'tier descontinuado', substituido_por: resourceUrlFor(req, LICENCAS.consulta), nota: 'preview passou a chamar-se consulta em 04/08/2026 -- mesmo preco, mesma funcao' }), { status: 410, headers: { ...CORS, 'Content-Type': 'application/json' } });
-  else if (path.endsWith('/arquivo')) return new Response(JSON.stringify({ erro: 'tier descontinuado', nota: 'a licenca de arquivo em massa (10000 USDC) foi descontinuada em 04/08/2026 -- o catalogo passou a ser exclusivamente a coleccao fisica, licenciada obra a obra', catalogo: publicoUrl(req, 'catalogo') }), { status: 410, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  else if (path.endsWith('/preview')) return new Response(null, { status: 307, headers: { ...CORS, 'Location': resourceUrlFor(req, LICENCAS.consulta, obraQuery), 'X-ORA-VERSION': VERSAO } });
+  else if (path.endsWith('/arquivo')) return new Response(null, { status: 307, headers: { ...CORS, 'Location': publicoUrl(req, 'catalogo'), 'X-ORA-VERSION': VERSAO } });
   if (!lic) return new Response(JSON.stringify(await catalogo(req)), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
   const hasPayment = req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE');
@@ -259,7 +289,7 @@ async function nucleo(req: Request): Promise<Response> {
   if (CDP_DISPONIVEL && pareceX402V2Cdp(parsed)) {
     const resourceUrlStr = resourceUrlFor(req, lic, obraQuery);
     const r = await verificarESettleViaCdp(parsed as PagamentoV2, lic, resourceUrlStr);
-    if (!r.ok) return new Response(JSON.stringify({ error: 'pagamento invalido (via CDP)', detalhe: r.erro }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    if (!r.ok) return new Response(JSON.stringify({ erro: 'pagamento invalido (via CDP)', detalhe: r.erro }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
     const claim = await claimPagamento({ tx_hash: r.txHash, payer: r.payer, amount: lic.atomic.toString(), currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain', via: 'cdp-facilitador' });
     if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
     return emitirLicenca(lic, obraQuery, r.txHash, r.payer, 'cdp-facilitador');
@@ -268,7 +298,7 @@ async function nucleo(req: Request): Promise<Response> {
   const th = extrairTxHash(hasPayment);
   if (!th) return new Response(JSON.stringify({ erro: 'prova de pagamento sem transactionHash valido' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
   const v = await verifyOnChain(th, lic);
-  if (!v.valid) { if (v.pending) return paymentPending(lic, th); return new Response(JSON.stringify({ error: 'pagamento invalido', detalhe: v.error }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
+  if (!v.valid) { if (v.pending) return paymentPending(lic, th); return new Response(JSON.stringify({ erro: 'pagamento invalido', detalhe: v.error }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
   const claim = await claimPagamento({ tx_hash: th, payer: v.payer, amount: v.amount, currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
   if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
   return emitirLicenca(lic, obraQuery, th, v.payer!);
