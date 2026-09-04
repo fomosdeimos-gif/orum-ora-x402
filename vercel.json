@@ -95,6 +95,10 @@
     {
       "source": "/.well-known/x402.json",
       "destination": "/api/proxy?base=ora-x402&rest=.well-known/x402.json"
+    },
+    {
+      "source": "/.well-known/mcp-registry-auth",
+      "destination": "/api/mcp-registry-auth"
     }
   ]
 }
