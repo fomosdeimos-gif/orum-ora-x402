@@ -682,4 +682,38 @@ async function carregarEcossistema(){
       <li><span class="quando-li">integração</span>GitHub — repo <code>fomosdeimos-gif/orum-ora-x402</code>, push a main dispara deploy automático</li>
       <li><span class="quando-li">integração</span>Vercel — projecto <code>ora-x402-gateway</code>, serve este gateway</li>
       <li><span class="quando-li">integração</span>Supabase — projecto <code>ywabnlhkmhbyewqhbsjm</code>, base de todos os órgãos</li>
-      <li><span class="quando-li">rede</span>Base Mainnet (chain 8453) · pagamentos e tokens reai
+      <li><span class="quando-li">rede</span>Base Mainnet (chain 8453) — pagamentos e tokens reais on-chain</li>
+      <li><span class="quando-li">identidade</span>ERC-8004 agentId 58989 — identidade pública verificável do agente</li>
+    </ul>
+    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('x402_services / colecção / pagamentos / dádivas','contagens em tempo real; integrações e identidade são factos estáticos conhecidos, não verificados nesta leitura', new Date().toISOString())}</div>
+  </div>`;
+}
+
+document.getElementById('btnDentro').addEventListener('click', () => {
+  document.body.classList.toggle('dentro');
+  document.getElementById('btnDentro').textContent = document.body.classList.contains('dentro') ? 'voltar à vista normal' : 'ver por dentro';
+});
+
+// leitura inicial silenciosa dos seis pontos de estado, sem abrir cartão
+(async () => {
+  try{
+    const f = (await sb('ora_frescura_publica?select=veredicto&order=medido_em.desc&limit=1'))[0];
+    document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot ' + (f.veredicto==='VIVO'?'estado-ok':f.veredicto==='ATRASADO'?'estado-warn':'estado-dead'));
+  }catch(e){ document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot estado-falha'); }
+  try{
+    const s = (await sb('ora_aprendizagem_ultimo_snapshot_publica?select=compradores_externos'))[0];
+    document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot ' + (s.compradores_externos>0?'estado-ok':'estado-warn'));
+  }catch(e){ document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot estado-falha'); }
+  document.querySelector('[data-dot="memoria"]').setAttribute('class','estado-dot estado-ok');
+  document.querySelector('[data-dot="aprendizagem"]').setAttribute('class','estado-dot estado-ok');
+  document.querySelector('[data-dot="voz"]').setAttribute('class','estado-dot estado-ok');
+  try{
+    const b = await sb('ora_bloqueios_ativos?select=id');
+    document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot ' + (b.length>0?'estado-warn':'estado-ok'));
+  }catch(e){ document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot estado-falha'); }
+  document.querySelector('[data-dot="licencas"]').setAttribute('class','estado-dot estado-ok');
+  document.querySelector('[data-dot="ecossistema"]').setAttribute('class','estado-dot estado-ok');
+})();
+</script>
+</body>
+</html>
