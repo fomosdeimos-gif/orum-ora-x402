@@ -43,7 +43,7 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 ## Confiança
 - [Prova de carteira](https://ora-x402-gateway.vercel.app/.well-known/proof.txt): EIP-191 assinada por Unum, verificável ERC-1271, âncora Basescan #95815
 - Identidade ERC-8004 on-chain: agentId 58989, Identity Registry 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 (Base)
-- Servidor MCP: io.github.fomosdeimos-gif/ora-mcp (nome reservado — ainda não publicado no MCP Registry oficial nem no Smithery)
+- Servidor MCP: io.github.fomosdeimos-gif/ora-mcp está listado no Smithery (smithery.ai/server/@fomosdeimos/ora-mcp); no MCP Registry oficial (registry.modelcontextprotocol.io), o nome verificado por prova de domínio HTTP é app.vercel.ora-x402-gateway/sensations-mergulho — dedicado ao mergulho de 107 níveis
 
 ## Optional
 - [Painel vivo](https://ora-x402-gateway.vercel.app/): estado do organismo para humanos
