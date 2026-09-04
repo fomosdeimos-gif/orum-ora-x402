@@ -303,7 +303,7 @@ async function amostra(req: Request) {
 /* ORA · HAL PROVIDER · V1 · 04/09/2026
    Rota irmã pós-marketplace. Não altera nem se apresenta como liquidação x402. */
 const HAL_VERSION = 'orum-hal-provider/v1';
-const HAL_KEY_ID = 'orum-hal-v1';
+const HAL_KEY_ID = 'provided-privately-by-hal';
 const HAL_PRICE_SATS = 1618;
 const HAL_MAX_SKEW_SECONDS = 300;
 const HAL_LICENSE_LIMITS = Object.freeze({
@@ -381,6 +381,10 @@ async function halSecret(): Promise<string | null> {
   const { data, error } = await sb.rpc('orum_hal_provider_secret');
   return !error && typeof data === 'string' && data.length >= 32 ? data : null;
 }
+async function halProviderKey(): Promise<string | null> {
+  const { data, error } = await sb.rpc('orum_hal_provider_key');
+  return !error && typeof data === 'string' && data.length >= 16 ? data : null;
+}
 async function halSignatureValid(secret: string, canonical: string, signatureHex: string) {
   const signature = halFromHex(signatureHex.replace(/^sha256=/i, ''));
   if (!signature) return false;
@@ -406,7 +410,9 @@ async function halProvider(req: Request): Promise<Response> {
   const signature = usingHal ? halSignature : req.headers.get('x-orum-signature');
   if (!keyId || !timestamp || !signature || (usingHal && !halNonce)) return halFail('auth_missing', 'Required HMAC headers are absent.');
   if (usingHal && !/^[0-9a-f]{32}$/i.test(halNonce!)) return halFail('auth_nonce_invalid', 'Nonce must be exactly 32 hexadecimal characters.');
-  if (keyId !== HAL_KEY_ID) return halFail('auth_key_unknown', 'The provider key id is not recognised.');
+  const expectedProviderKey = usingHal ? await halProviderKey() : 'orum-hal-v1';
+  if (!expectedProviderKey) return halFail('server_misconfigured', 'The provider key is unavailable.');
+  if (keyId !== expectedProviderKey) return halFail('auth_key_unknown', 'The provider key id is not recognised.');
   if (!/^\d{10}$/.test(timestamp)) return halFail('auth_timestamp_invalid', 'Timestamp must be Unix seconds.');
   if (Math.abs(Math.floor(Date.now() / 1000) - Number(timestamp)) > HAL_MAX_SKEW_SECONDS) return halFail('auth_stale', 'Timestamp exceeds the five-minute verification window.');
   const rawBody = await req.text();
