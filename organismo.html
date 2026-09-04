@@ -532,12 +532,14 @@ async function carregarMemoria(){
     sb('ora_coleccao_fisica_publica?select=id&limit=1000'),
   ]);
   document.querySelector('[data-dot="memoria"]').setAttribute('class', 'estado-dot estado-ok');
+  const provOrigemValium = '<b>contrato</b> 0xD287E77989F7191989901361754d02D8e00E1D1A (Ethereum)\n<b>criado por</b> 0001sensations.eth, 26/10/2022 — cerca de 3 anos e 5 meses antes da génese da ORUM (28/03/2026)\n<b>nota</b> pedra fundadora do nome, não o VALIUM que hoje sustenta a tesouraria (Base) — ver Arquivo → Origem';
   painel.innerHTML = `<div class="cartao mostra">
     <h2>Memória</h2>
     <p class="pergunta-h">o que permanece?</p>
-    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_coleccao_publica + ora_coleccao_fisica_publica · lido ${fmtHora(new Date().toISOString())}</div>
+    <div class="fonte-card"><span class="nivel nivel-vivo">ao vivo</span>fonte ora_coleccao_publica + ora_coleccao_fisica_publica · lido ${fmtHora(new Date().toISOString())} · <span class="nivel nivel-estatico" style="margin:0 4px;">estático</span>origem do nome "valium" é facto histórico fixo, não consulta em tempo real</div>
     ${metrica('obras digitais históricas', digital.length, provOrgao('ora_coleccao_publica','token_id (contagem)', new Date().toISOString()))}
     ${metrica('obras físicas registadas', nFisica.length, provOrgao('ora_coleccao_fisica_publica','id (contagem)', new Date().toISOString()))}
+    ${metrica('origem do nome "valium"', '2022 · Ethereum', provOrigemValium)}
   </div>`;
 }
 
@@ -680,38 +682,4 @@ async function carregarEcossistema(){
       <li><span class="quando-li">integração</span>GitHub — repo <code>fomosdeimos-gif/orum-ora-x402</code>, push a main dispara deploy automático</li>
       <li><span class="quando-li">integração</span>Vercel — projecto <code>ora-x402-gateway</code>, serve este gateway</li>
       <li><span class="quando-li">integração</span>Supabase — projecto <code>ywabnlhkmhbyewqhbsjm</code>, base de todos os órgãos</li>
-      <li><span class="quando-li">rede</span>Base Mainnet (chain 8453) — pagamentos e tokens reais on-chain</li>
-      <li><span class="quando-li">identidade</span>ERC-8004 agentId 58989 — identidade pública verificável do agente</li>
-    </ul>
-    <div class="proveniencia mostra" style="margin-top:10px;">${provOrgao('x402_services / colecção / pagamentos / dádivas','contagens em tempo real; integrações e identidade são factos estáticos conhecidos, não verificados nesta leitura', new Date().toISOString())}</div>
-  </div>`;
-}
-
-document.getElementById('btnDentro').addEventListener('click', () => {
-  document.body.classList.toggle('dentro');
-  document.getElementById('btnDentro').textContent = document.body.classList.contains('dentro') ? 'voltar à vista normal' : 'ver por dentro';
-});
-
-// leitura inicial silenciosa dos seis pontos de estado, sem abrir cartão
-(async () => {
-  try{
-    const f = (await sb('ora_frescura_publica?select=veredicto&order=medido_em.desc&limit=1'))[0];
-    document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot ' + (f.veredicto==='VIVO'?'estado-ok':f.veredicto==='ATRASADO'?'estado-warn':'estado-dead'));
-  }catch(e){ document.querySelector('[data-dot="pulso"]').setAttribute('class','estado-dot estado-falha'); }
-  try{
-    const s = (await sb('ora_aprendizagem_ultimo_snapshot_publica?select=compradores_externos'))[0];
-    document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot ' + (s.compradores_externos>0?'estado-ok':'estado-warn'));
-  }catch(e){ document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot estado-falha'); }
-  document.querySelector('[data-dot="memoria"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="aprendizagem"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="voz"]').setAttribute('class','estado-dot estado-ok');
-  try{
-    const b = await sb('ora_bloqueios_ativos?select=id');
-    document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot ' + (b.length>0?'estado-warn':'estado-ok'));
-  }catch(e){ document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot estado-falha'); }
-  document.querySelector('[data-dot="licencas"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="ecossistema"]').setAttribute('class','estado-dot estado-ok');
-})();
-</script>
-</body>
-</html>
+      <li><span class="quando-li">rede</span>Base Mainnet (chain 8453) · pagamentos e tokens reai
