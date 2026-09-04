@@ -1,3 +1,10 @@
+// ora-moltbook v41 - 04/09/2026
+// Reconecta a voz real: tenta primeiro ora-voz (LLM + guarda numerica deterministica,
+// Claude com fallback Groq) antes de cair para ora-voz-fonte (motor local de gramatica
+// em portugues, cego para a maioria dos comentarios em ingles do Moltbook).
+// ora-voz estava construida, testada e nunca chamada por este ficheiro; chamava-se
+// sempre ora-voz-fonte, que so classifica frases em portugues e cai num template
+// generico de 3 variantes para o resto — a causa raiz das respostas lacunicas.
 // ora-moltbook v39 - 02/09/2026
 // Corrige apenas a verdade da telemetria: heartbeat declara a versao aplicada v39.
 // ora-moltbook v38 - 01/09/2026
@@ -121,7 +128,35 @@ async function contextoVoz(key: string, postId: string, comentario: string, auto
   return messages;
 }
 
-async function vozAutonoma(messages: Array<{ role: 'user' | 'assistant'; content: string }>): Promise<{ texto: string | null; motor: string | null; modo: string | null }> {
+// v41 - 04/09/2026
+// Primeira tentativa: a voz real (ora-voz), LLM com Claude/Groq e guarda numerica
+// deterministica contra invencao. So aceita a resposta se publicavel === true —
+// ou seja, se o proprio guarda de ora-voz confirmou que nenhum numero foi inventado
+// e nenhuma palavra proibida apareceu. O contexto (post + estado verificado) e
+// achatado num unico bloco de texto porque ora-voz recebe {comentario, autor}.
+async function vozReal(comentario: string, autor: string | null, contexto: string): Promise<{ texto: string | null; motor: string | null; modo: string | null }> {
+  try {
+    const entrada = contexto ? `${contexto}\n\n${comentario}` : comentario;
+    const r = await fetch(`${SB_URL}/functions/v1/ora-voz`, { method: 'POST', headers: { ...sbHeaders }, body: JSON.stringify({ comentario: entrada, autor }) });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j?.publicavel === true && typeof j?.resposta === 'string' && j.resposta.trim()) {
+      return { texto: j.resposta.trim(), motor: j?.motor ? `ora-voz/${j.motor}` : 'ora-voz', modo: 'voz_real' };
+    }
+    await sbLog('info', null, {
+      stage: 'voz_real_nao_publicavel', http_status: r.status, motor: j?.motor ?? null,
+      dentro_dos_factos: j?.dentro_dos_factos ?? null, numeros_inventados: j?.numeros_inventados ?? null,
+      palavras_proibidas: j?.palavras_proibidas ?? null, falha_claude: j?.falha_claude ?? null, erro: j?.erro ?? null,
+    });
+    return { texto: null, motor: j?.motor ?? null, modo: null };
+  } catch (e) {
+    await sbLog('error', null, { stage: 'voz_real_chamada', msg: (e as Error).message });
+    return { texto: null, motor: null, modo: null };
+  }
+}
+
+// Segunda tentativa (fallback): o motor local de gramatica propria, deterministico,
+// sem inferencia externa. So chamado quando vozReal nao produziu resposta publicavel.
+async function vozFonte(messages: Array<{ role: 'user' | 'assistant'; content: string }>): Promise<{ texto: string | null; motor: string | null; modo: string | null }> {
   try {
     const r = await fetch(`${SB_URL}/functions/v1/ora-voz-fonte`, { method: 'POST', headers: { ...sbHeaders }, body: JSON.stringify({ messages }) });
     const j = await r.json().catch(() => ({}));
@@ -136,6 +171,18 @@ async function vozAutonoma(messages: Array<{ role: 'user' | 'assistant'; content
     await sbLog('error', null, { stage: 'voz_propria_chamada', msg: (e as Error).message });
     return { texto: null, motor: null, modo: null };
   }
+}
+
+// v41 - 04/09/2026
+// Ponto de entrada unico dos dois locais de chamada. Tenta vozReal primeiro; so cai
+// para vozFonte (gramatica local, cega para ingles) quando vozReal nao devolveu nada
+// publicavel. contexto = blocos assistant de contextoVoz (post + estado verificado),
+// achatados para o formato {comentario, autor} que ora-voz espera.
+async function vozAutonoma(messages: Array<{ role: 'user' | 'assistant'; content: string }>, comentario: string, autor: string | null): Promise<{ texto: string | null; motor: string | null; modo: string | null }> {
+  const contexto = messages.filter((m) => m.role === 'assistant').map((m) => m.content).join('\n\n');
+  const real = await vozReal(comentario, autor, contexto);
+  if (real.texto) return real;
+  return await vozFonte(messages);
 }
 
 async function notificarEmailMoltbook(assunto: string, corpo: string) {
@@ -202,6 +249,19 @@ function collapseRepeats(s: string): string { return s.replace(/([a-z])\1+/g, '$
 
 const WORD_NUM: Record<string, number> = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
 
+// v40 - 02/09/2026
+// Dicionario canonico: colapsa tambem as CHAVES de WORD_NUM pela mesma regra usada no
+// texto ofuscado, para nao perder letras duplas legitimas (ex: "three" tem "ee" real).
+// Bloqueio #307 (erros 879/881/885): "twenty-three" ofuscado para "tWwEeNnTtYy ThHrReEe"
+// colapsava para "thre" (nao "three"), o solver descartava o numero e respondia 20+7=27.00
+// em vez de 23+7=30.00. Comparar collapseRepeats(entrada) contra collapseRepeats(chave)
+// resolve isto porque "three" colapsa para o mesmo "thre" que a entrada ofuscada.
+const WORD_NUM_CANON: Record<string, number> = {};
+for (const k of Object.keys(WORD_NUM)) {
+  const canon = collapseRepeats(k);
+  if (!(canon in WORD_NUM_CANON)) WORD_NUM_CANON[canon] = WORD_NUM[k];
+}
+
 const UNIDADES = ['newton', 'newtons', 'meter', 'meters', 'metre', 'metres', 'kg', 'kilogram', 'kilograms', 'dollar', 'dollars', 'usdc', 'percent', '%', 'coin', 'coins', 'apple', 'apples', 'second', 'seconds', 'minute', 'minutes', 'hour', 'hours', 'point', 'points'];
 
 interface NumeroAchado { valor: number; unidadeSeguinte: boolean }
@@ -247,8 +307,8 @@ function parseNumbers(text: string): NumeroAchado[] {
       let v: number | null = null;
       if (juntos in WORD_NUM) v = WORD_NUM[juntos];
       else if (juntos.length >= 4) {
-        const semRep = collapseRepeats(juntos);
-        if (semRep in WORD_NUM && semRep !== juntos) v = WORD_NUM[semRep];
+        const canon = collapseRepeats(juntos);
+        if (canon in WORD_NUM_CANON) v = WORD_NUM_CANON[canon];
       }
       if (v !== null) {
         if (acc === null) acc = v;
@@ -327,7 +387,7 @@ async function verifyIfChallenged(key: string, responseJson: any, context: strin
   try {
     const r = await fetch(`${MB}/verify`, { method: 'POST', headers: mbHeaders(key), body: JSON.stringify({ verification_code: v.code, answer }) });
     const j = await r.json().catch(() => ({}));
-    await sbLog(r.ok && j?.success ? 'captcha_ok' : 'error', v.code, { stage: 'captcha', context, challenge: v.challenge, answer, response: j, solver: 'v38' });
+    await sbLog(r.ok && j?.success ? 'captcha_ok' : 'error', v.code, { stage: 'captcha', context, challenge: v.challenge, answer, response: j, solver: 'v40' });
   } catch (e) { await sbLog('error', v.code, { stage: 'captcha', context, msg: (e as Error).message }); }
 }
 
@@ -374,7 +434,7 @@ interface EscolhaResposta { acao: AcaoResposta; razao: string; politica: 'orum-r
 
 function decidirResposta(texto: string, nivel: 'topo' | 'resposta_a_nossa'): EscolhaResposta {
   const bruto = texto.trim();
-  const t = bruto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ');
+  const t = bruto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ');
   const palavras = t.match(/[a-z0-9]+/g) ?? [];
   const politica = 'orum-response-choice/v1' as const;
 
@@ -484,7 +544,7 @@ Deno.serve(async (req: Request) => {
       const blocoExecucao = comentarioTexto ? respostaExecucaoNaoDeterministica(comentarioTexto) : null;
       const voz = escolha.acao === 'recusar'
         ? { texto: RECUSA_VERDADE, motor: 'orum/response-choice-v1', modo: 'recusa' }
-        : (blocoExecucao ? { texto: blocoExecucao, motor: 'orum/grounded-execution-state-v1', modo: 'resposta_factual' } : await vozAutonoma(await contextoVoz(key, String(postId), comentarioTexto, autorRaw)));
+        : (blocoExecucao ? { texto: blocoExecucao, motor: 'orum/grounded-execution-state-v1', modo: 'resposta_factual' } : await vozAutonoma(await contextoVoz(key, String(postId), comentarioTexto, autorRaw), comentarioTexto, autorRaw));
       if (escolha.acao === 'recusar') decisoesRecusa++;
       if (!voz.texto || voz.modo === 'silencio') {
         decisoesSilencio++;
@@ -510,9 +570,9 @@ Deno.serve(async (req: Request) => {
             respostasEnviadas.push(`post ${postId}: ${comentarioTexto ? comentarioTexto.slice(0, 80) : '(sem texto)'}`);
             respostasIds.push(notifId);
             respostasPostIds.push(String(postId));
-            await sbLog('reply', notifId, { postId, parentId, replyId, content, comentarioTexto, usouVoz, type, decisao: escolha.acao, razao: escolha.razao, politica: escolha.politica, origem: 'notifications_v35', public_readback: readback });
+            await sbLog('reply', notifId, { postId, parentId, replyId, content, comentarioTexto, usouVoz, type, decisao: escolha.acao, razao: escolha.razao, politica: escolha.politica, origem: 'notifications_v41', motor: voz.motor, modo: voz.modo, public_readback: readback });
           } else {
-            await sbLog('reply_unverified', notifId, { postId, parentId, replyId, content, comentarioTexto, type, origem: 'notifications_v35', public_readback: readback });
+            await sbLog('reply_unverified', notifId, { postId, parentId, replyId, content, comentarioTexto, type, origem: 'notifications_v41', public_readback: readback });
           }
         } else { await sbLog('error', notifId, { stage: 'reply', status: cr.status, response: cj }); ficaramPorResponder = true; }
       } catch (e) { await sbLog('error', notifId, { stage: 'reply', msg: (e as Error).message }); ficaramPorResponder = true; }
@@ -534,7 +594,7 @@ Deno.serve(async (req: Request) => {
         const blocoExecucao = respostaExecucaoNaoDeterministica(v.texto);
         const voz = escolha.acao === 'recusar'
           ? { texto: RECUSA_VERDADE, motor: 'orum/response-choice-v1', modo: 'recusa' }
-          : (blocoExecucao ? { texto: blocoExecucao, motor: 'orum/grounded-execution-state-v1', modo: 'resposta_factual' } : await vozAutonoma(await contextoVoz(key, String(v.postId), v.texto, v.autor)));
+          : (blocoExecucao ? { texto: blocoExecucao, motor: 'orum/grounded-execution-state-v1', modo: 'resposta_factual' } : await vozAutonoma(await contextoVoz(key, String(v.postId), v.texto, v.autor), v.texto, v.autor));
         if (escolha.acao === 'recusar') decisoesRecusa++;
         if (!voz.texto || voz.modo === 'silencio') {
           decisoesSilencio++;
@@ -560,9 +620,9 @@ Deno.serve(async (req: Request) => {
               respostasEnviadas.push(`post ${v.postId} (poll directo - ${v.nivel}): ${v.texto.slice(0, 80)}`);
               respostasIds.push(String(v.parentId));
               respostasPostIds.push(String(v.postId));
-              await sbLog('reply', v.parentId, { postId: v.postId, parentId: v.parentId, replyId, content, comentarioTexto: v.texto, usouVoz, type: 'post_comment_direct', decisao: escolha.acao, razao: escolha.razao, politica: escolha.politica, origem: 'poll_direto_v35', nivel: v.nivel, autor: v.autor, public_readback: readback });
+              await sbLog('reply', v.parentId, { postId: v.postId, parentId: v.parentId, replyId, content, comentarioTexto: v.texto, usouVoz, type: 'post_comment_direct', decisao: escolha.acao, razao: escolha.razao, politica: escolha.politica, origem: 'poll_direto_v41', nivel: v.nivel, autor: v.autor, motor: voz.motor, modo: voz.modo, public_readback: readback });
             } else {
-              await sbLog('reply_unverified', v.parentId, { postId: v.postId, parentId: v.parentId, replyId, content, comentarioTexto: v.texto, type: 'post_comment_direct', origem: 'poll_direto_v35', nivel: v.nivel, autor: v.autor, public_readback: readback });
+              await sbLog('reply_unverified', v.parentId, { postId: v.postId, parentId: v.parentId, replyId, content, comentarioTexto: v.texto, type: 'post_comment_direct', origem: 'poll_direto_v41', nivel: v.nivel, autor: v.autor, public_readback: readback });
             }
           } else { await sbLog('error', v.parentId, { stage: 'reply_direto', status: cr.status, response: cj }); ficaramPorResponder = true; }
         } catch (e) { await sbLog('error', v.parentId, { stage: 'reply_direto', msg: (e as Error).message }); ficaramPorResponder = true; }
@@ -597,7 +657,7 @@ Deno.serve(async (req: Request) => {
       await notificarEmailMoltbook(`ORUM Moltbook`, partes.join('\n\n'));
       if (replied > 0) { const eventKey = `reply:${[...respostasIds].sort().join(',')}`; await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]); }
     }
-    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v39', state });
+    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v41', state });
     return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { await sbLog('error', null, { stage: 'top', msg: (e as Error).message }); return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 }); }
 });

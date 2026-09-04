@@ -10,24 +10,24 @@ This route is an isolated seller adapter for private Hal Marketplace validation.
 
 ## Authenticated delivery
 
+`GET /functions/v1/ora-licenca/hal/v1/license` is a public health check and returns readiness metadata. Delivery remains POST-only.
+
 `POST /functions/v1/ora-licenca/hal/v1/license`
 
 Headers:
 
-- `x-orum-key-id: orum-hal-v1`
-- `x-orum-timestamp: <unix-seconds>`
-- `x-orum-signature: <lowercase HMAC-SHA256 hex>`
+- `x-hal-provider-key: orum-hal-v1`
+- `x-hal-timestamp: <unix-seconds>`
+- `x-hal-nonce: <32 hexadecimal characters>`
+- `x-hal-signature: sha256=<lowercase HMAC-SHA256 hex>`
 
 Canonical string:
 
 ```text
-<unix-seconds>
-POST
-/hal/v1/license
-<sha256-hex(raw-body)>
+<unix-seconds>.<32-hex-nonce>.<raw-body>
 ```
 
-The timestamp must be within five minutes of server time. The HMAC secret remains inside Supabase Vault and must be conveyed to Hal only through an authorised private credential exchange.
+The timestamp must be within five minutes of server time. The provider key and HMAC signing secret remain inside Supabase Vault and must be conveyed to Hal only through an authorised private credential exchange. The earlier `x-orum-*` dialect remains accepted temporarily for compatibility with the already-published fixture.
 
 Exact request body:
 

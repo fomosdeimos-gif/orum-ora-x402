@@ -332,6 +332,7 @@ const HAL_ERROR_STATUS: Record<string, number> = Object.freeze({
   auth_missing: 401,
   auth_key_unknown: 401,
   auth_timestamp_invalid: 401,
+  auth_nonce_invalid: 401,
   auth_stale: 401,
   auth_signature_invalid: 401,
   request_invalid_json: 400,
@@ -356,9 +357,10 @@ function halContract(req: Request) {
     authentication: {
       scheme: 'provider-key-hmac-sha256',
       key_id: HAL_KEY_ID,
-      headers: ['x-orum-key-id', 'x-orum-timestamp', 'x-orum-signature'],
-      canonical: '<unix-seconds>\nPOST\n/hal/v1/license\n<sha256-hex(raw-body)>',
-      signature_encoding: 'lowercase-hex',
+      headers: ['x-hal-provider-key', 'x-hal-timestamp', 'x-hal-nonce', 'x-hal-signature'],
+      canonical: '<unix-seconds>.<32-hex-nonce>.<raw-body>',
+      signature_encoding: 'sha256=<lowercase-hex>',
+      compatibility_headers: ['x-orum-key-id', 'x-orum-timestamp', 'x-orum-signature'],
       max_clock_skew_seconds: HAL_MAX_SKEW_SECONDS,
     },
     request: HAL_FIXTURE_REQUEST,
@@ -380,7 +382,7 @@ async function halSecret(): Promise<string | null> {
   return !error && typeof data === 'string' && data.length >= 32 ? data : null;
 }
 async function halSignatureValid(secret: string, canonical: string, signatureHex: string) {
-  const signature = halFromHex(signatureHex);
+  const signature = halFromHex(signatureHex.replace(/^sha256=/i, ''));
   if (!signature) return false;
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
   return crypto.subtle.verify('HMAC', key, signature, new TextEncoder().encode(canonical));
@@ -390,16 +392,27 @@ async function halProvider(req: Request): Promise<Response> {
   if (req.method === 'GET' && (path.endsWith('/hal') || path.endsWith('/hal/') || path.endsWith('/hal/fixture') || path.endsWith('/hal/.well-known/provider.json'))) {
     return halJson(halContract(req), 200, { 'Cache-Control': 'public, max-age=300' });
   }
+  if (req.method === 'GET' && path.endsWith('/hal/v1/license')) {
+    return halJson({ schema: HAL_VERSION, ok: true, status: 'ready', method: 'POST', price_sats: HAL_PRICE_SATS });
+  }
   if (req.method !== 'POST' || !path.endsWith('/hal/v1/license')) return halFail('method_not_allowed', 'Use GET /hal/fixture or POST /hal/v1/license.');
-  const keyId = req.headers.get('x-orum-key-id');
-  const timestamp = req.headers.get('x-orum-timestamp');
-  const signature = req.headers.get('x-orum-signature');
-  if (!keyId || !timestamp || !signature) return halFail('auth_missing', 'Required HMAC headers are absent.');
+  const halKey = req.headers.get('x-hal-provider-key');
+  const halTimestamp = req.headers.get('x-hal-timestamp');
+  const halNonce = req.headers.get('x-hal-nonce');
+  const halSignature = req.headers.get('x-hal-signature');
+  const usingHal = !!(halKey || halTimestamp || halNonce || halSignature);
+  const keyId = usingHal ? halKey : req.headers.get('x-orum-key-id');
+  const timestamp = usingHal ? halTimestamp : req.headers.get('x-orum-timestamp');
+  const signature = usingHal ? halSignature : req.headers.get('x-orum-signature');
+  if (!keyId || !timestamp || !signature || (usingHal && !halNonce)) return halFail('auth_missing', 'Required HMAC headers are absent.');
+  if (usingHal && !/^[0-9a-f]{32}$/i.test(halNonce!)) return halFail('auth_nonce_invalid', 'Nonce must be exactly 32 hexadecimal characters.');
   if (keyId !== HAL_KEY_ID) return halFail('auth_key_unknown', 'The provider key id is not recognised.');
   if (!/^\d{10}$/.test(timestamp)) return halFail('auth_timestamp_invalid', 'Timestamp must be Unix seconds.');
   if (Math.abs(Math.floor(Date.now() / 1000) - Number(timestamp)) > HAL_MAX_SKEW_SECONDS) return halFail('auth_stale', 'Timestamp exceeds the five-minute verification window.');
   const rawBody = await req.text();
-  const canonical = `${timestamp}\nPOST\n/hal/v1/license\n${await halSha256(rawBody)}`;
+  const canonical = usingHal
+    ? `${timestamp}.${halNonce}.${rawBody}`
+    : `${timestamp}\nPOST\n/hal/v1/license\n${await halSha256(rawBody)}`;
   const secret = await halSecret();
   if (!secret) return halFail('server_misconfigured', 'The provider credential is unavailable.');
   if (!(await halSignatureValid(secret, canonical, signature))) return halFail('auth_signature_invalid', 'HMAC verification failed.');
