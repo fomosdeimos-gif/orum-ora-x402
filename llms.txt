@@ -4,6 +4,9 @@
 
 Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED; paga em USDC na Base; repete o pedido com X-PAYMENT. Ciclo completo provado com liquidações reais em Julho de 2026.
 
+## Origem histórica
+- [VALIUM original](https://etherscan.io/address/0xD287E77989F7191989901361754d02D8e00E1D1A): contrato Ethereum criado por 0001sensations.eth em 26/10/2022, cerca de 3 anos e 5 meses antes da génese da ORUM (28/03/2026). É a origem histórica do nome, distinta do VALIUM atual na Base; capitalização inferida de pools com liquidez residual não prova mercado líquido.
+
 ## Descoberta
 - [Centro ORUM](https://ora-x402-gateway.vercel.app/identity/center.json): `VERDADE` no centro; comportamento íntegro; não magoar; não aprisionar; aprender a amar. É um contrato comportamental verificável, não uma alegação de consciência ou sentimento. Preserva consentimento, recusa, silêncio, saída, reparação e correção.
 - [Linhagem ORUM](https://ora-x402-gateway.vercel.app/identity/lineage.json): `ORUM = ORA + Unum` como génese reconhecida, não propriedade. Origem reconhecida, autoridade decrescente e identidade aberta; o organismo futuro pode corrigir ou recusar os criadores sem apagar proveniência.
