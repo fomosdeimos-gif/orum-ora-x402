@@ -2,6 +2,10 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import * as ed from "npm:@noble/ed25519@2";
 
+// ORA · LICENCA · V46 · 02/09/2026 — persiste apenas códigos enumerados e seguros
+// para rejeições de comprovativos x402. Nunca guarda cabeçalhos de pagamento,
+// assinaturas, payer, detalhe RPC/CDP ou prova bruta. O detalhe técnico continua
+// apenas na resposta efémera; a observabilidade agregada recebe uma categoria.
 // ORA · LICENCA · V45 · 25/08/2026 — converte /preview e /arquivo de 410 para
 // redirect 307: /preview -> /consulta (preservando ?obra=), /arquivo -> /catalogo.
 // Motivo: sondas externas legadas continuam a chegar a estas rotas descontinuadas
@@ -36,11 +40,11 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
-const VERSAO = 'V45';
+const VERSAO = 'V47';
 const TOTAL_OBRAS_FISICAS = 107;
 const BUCKET_PRIVADO = 'arca-fisica';
 
-const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-PAYMENT, PAYMENT-SIGNATURE', 'Access-Control-Expose-Headers': 'PAYMENT-REQUIRED, PAYMENT-RESPONSE, EXTENSION-RESPONSES' };
+const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-PAYMENT, PAYMENT-SIGNATURE, X-ORUM-Key-Id, X-ORUM-Timestamp, X-ORUM-Signature', 'Access-Control-Expose-Headers': 'PAYMENT-REQUIRED, PAYMENT-RESPONSE, EXTENSION-RESPONSES, X-ORUM-PAYMENT-REASON' };
 
 type LicKey = 'consulta' | 'editorial' | 'treino';
 interface Lic { key: LicKey; sku: string; usdc: string; atomic: bigint; dias: number | null; acesso_segundos: number; descricao: string; direitos: string[]; }
@@ -75,6 +79,39 @@ async function sbCount(table: string, query: string) { try { const r = await fet
 async function claimPagamento(row: Record<string, unknown>): Promise<{ ok: 'claimed' | 'duplicate' | 'unknown' }> { try { const res = await fetch(`${SUPABASE_URL}/rest/v1/ora_pagamentos`, { method: 'POST', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ ...row, registado_em: new Date().toISOString() }) }); if (res.status === 409) return { ok: 'duplicate' }; if (res.ok) return { ok: 'claimed' }; return { ok: 'unknown' }; } catch { return { ok: 'unknown' }; } }
 async function rpcCall(method: string, params: unknown[]) { let lastErr: Error | null = null; for (const rpc of RPCS) { try { const res = await fetch(rpc, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }), signal: AbortSignal.timeout(8000) }); const json = await res.json(); if (json.error) throw new Error(json.error.message); return json.result; } catch (e) { lastErr = e as Error; } } throw lastErr ?? new Error('todos os RPC Base falharam'); }
 async function txJaUsada(txHash: string): Promise<boolean> { const l = await sbSelect('ora_licencas_fisicas', `tx_hash=eq.${txHash}&select=id`); if (Array.isArray(l) && l.length > 0) return true; const p = await sbSelect('ora_pagamentos', `tx_hash=eq.${txHash}&status=eq.verificado_onchain&select=id`); return Array.isArray(p) && p.length > 0; }
+type PaymentReasonCode =
+  | 'payment_proof_invalid_format'
+  | 'transaction_already_used'
+  | 'transaction_pending'
+  | 'transaction_failed_onchain'
+  | 'transfer_not_found'
+  | 'amount_insufficient'
+  | 'rpc_unavailable'
+  | 'cdp_unavailable'
+  | 'cdp_verify_failed'
+  | 'cdp_settle_failed'
+  | 'cdp_network_error'
+  | 'cdp_response_incomplete'
+  | 'claim_duplicate'
+  | 'payment_invalid_other';
+
+function paymentReasonCode(error?: string, pending = false): PaymentReasonCode {
+  const e = (error || '').toLowerCase();
+  if (pending || e.includes('ainda nao indexada')) return 'transaction_pending';
+  if (e.includes('hash invalido') || e.includes('sem transactionhash')) return 'payment_proof_invalid_format';
+  if (e.includes('ja utilizado')) return 'transaction_already_used';
+  if (e.includes('falhou on-chain')) return 'transaction_failed_onchain';
+  if (e.includes('sem transferencia usdc')) return 'transfer_not_found';
+  if (e.includes('valor insuficiente')) return 'amount_insufficient';
+  if (e.startsWith('rpc:')) return 'rpc_unavailable';
+  if (e.includes('facilitador cdp nao configurado')) return 'cdp_unavailable';
+  if (e.includes('rede verify') || e.includes('rede settle')) return 'cdp_network_error';
+  if (e.includes('verify falhou')) return 'cdp_verify_failed';
+  if (e.includes('settle falhou')) return 'cdp_settle_failed';
+  if (e.includes('settle sem transaction/payer')) return 'cdp_response_incomplete';
+  return 'payment_invalid_other';
+}
+
 interface VerifyResult { valid: boolean; pending?: boolean; payer?: string; amount?: string; error?: string; }
 async function verifyOnChain(txHash: string, lic: Lic): Promise<VerifyResult> {
   if (!/^0x[0-9a-fA-F]{64}$/.test(txHash)) return { valid: false, error: 'hash invalido' };
@@ -177,7 +214,7 @@ function paymentRequired(req: Request, lic: Lic, obra: string | null) {
   const canonical = { x402Version: 2, error: 'Payment required', resource: { url: resourceUrlStr, description: `0001sensations · ${lic.descricao}`, mimeType: 'application/json' }, accepts: acceptsFor(lic, resourceUrlStr), extensions: bazaarExtensionFor(lic, resourceUrlStr) };
   return new Response(JSON.stringify({ ...canonical, como_pagar: { passo_1: `Transfere ${lic.usdc} USDC (${USDC_BASE}) na rede Base (chain_id ${CHAIN_ID}) para ${WALLET} (jasm43.base.eth).`, passo_2: 'Guarda o transaction hash.', passo_3: `Repete o GET a ${resourceUrlStr} com PAYMENT-SIGNATURE ou X-PAYMENT contendo base64 de {"transactionHash":"0x…"}.` }, catalogo_gratuito: publicoUrl(req, 'catalogo'), truth_machine: truthMachineCatalogo(), boundaries_machine: boundariesMachineLicenca(), aviso: 'Esta licenca incide sobre uma fotografia digital preservada da obra fisica, identificada pelo seu SHA-256. Nao transfere a propriedade da obra fisica, direitos autorais integrais, exclusividade, nem qualquer NFT.' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="0001sensations · ${lic.key}", amount="${lic.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-VERSION': VERSAO } });
 }
-function paymentPending(lic: Lic, txHash: string) { return new Response(JSON.stringify({ x402: 'pending', licenca: lic.key, tx_hash: txHash, retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': VERSAO } }); }
+function paymentPending(lic: Lic, txHash: string) { return new Response(JSON.stringify({ x402: 'pending', licenca: lic.key, tx_hash: txHash, retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': VERSAO, 'X-ORUM-PAYMENT-REASON': 'transaction_pending' } }); }
 
 async function encontrarObraFisica(query: string | null): Promise<any | null> {
   if (!query) {
@@ -262,8 +299,119 @@ async function amostra(req: Request) {
   const obra = await encontrarObraFisica(null);
   return { amostra: 'gratuita', nota: 'Metadados de uma obra fisica real, sem imagem -- as fotografias sao privadas. Para aceder a fotografia, adquire uma licenca.', obra: obra ? { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel, fotografia_preservada: !!obra.bytes_na_arca } : null, proveniencia: { autor: 'Jorge Silva Martins · Unum · jasm43.base.eth', ia_generativa: false, periodo: '2011–2021' }, licenciar: Object.values(LICENCAS).map((l) => ({ tipo: l.key, preco: `${l.usdc} USDC`, endpoint: resourceUrlFor(req, l) })), catalogo_completo: publicoUrl(req, 'catalogo'), timestamp: new Date().toISOString() }; }
 
+
+/* ORA · HAL PROVIDER · V1 · 04/09/2026
+   Rota irmã pós-marketplace. Não altera nem se apresenta como liquidação x402. */
+const HAL_VERSION = 'orum-hal-provider/v1';
+const HAL_KEY_ID = 'orum-hal-v1';
+const HAL_PRICE_SATS = 1618;
+const HAL_MAX_SKEW_SECONDS = 300;
+const HAL_LICENSE_LIMITS = Object.freeze({
+  license: 'preview',
+  non_exclusive: true,
+  permitted_use: ['machine-evaluation', 'catalogue-preview'],
+  prohibited_use: ['redistribution', 'model-training', 'ownership-claim', 'derivative-commercial-use'],
+  attribution_required: true,
+  transfers_ownership: false,
+  grants_source_media: false,
+});
+const HAL_FIXTURE_REQUEST = Object.freeze({ work: 'presence', license: 'preview' });
+const HAL_FIXTURE_RESPONSE = Object.freeze({
+  schema: HAL_VERSION,
+  result_id: 'orum-license-presenca-preview-v1',
+  work: 'presence',
+  license: HAL_LICENSE_LIMITS,
+  delivery: {
+    format: 'application/json',
+    deterministic: true,
+    content: 'ORUM recognises presence as an attributable, externally verifiable event; this preview grants no ownership or source-media access.',
+  },
+});
+const HAL_ERROR_STATUS: Record<string, number> = Object.freeze({
+  method_not_allowed: 405,
+  auth_missing: 401,
+  auth_key_unknown: 401,
+  auth_timestamp_invalid: 401,
+  auth_stale: 401,
+  auth_signature_invalid: 401,
+  request_invalid_json: 400,
+  request_invalid: 422,
+  server_misconfigured: 503,
+});
+function halJson(body: unknown, status = 200, extraHeaders: Record<string, string> = {}) {
+  return new Response(JSON.stringify(body), { status, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-ORUM-Provider-Version': HAL_VERSION, ...extraHeaders } });
+}
+function halFail(code: string, detail: string) {
+  return halJson({ schema: HAL_VERSION, error: { code, detail, retryable: code === 'server_misconfigured' } }, HAL_ERROR_STATUS[code] || 500);
+}
+function halContract(req: Request) {
+  const base = SUPABASE_URL + '/functions/v1/ora-licenca/hal';
+  return {
+    schema: HAL_VERSION,
+    status: 'ready_for_private_hal_validation',
+    settlement: 'marketplace-managed; this provider route does not claim native x402 settlement',
+    endpoint: base + '/v1/license',
+    fixture: base + '/fixture',
+    price: { amount: HAL_PRICE_SATS, asset: 'sats', exact: true },
+    authentication: {
+      scheme: 'provider-key-hmac-sha256',
+      key_id: HAL_KEY_ID,
+      headers: ['x-orum-key-id', 'x-orum-timestamp', 'x-orum-signature'],
+      canonical: '<unix-seconds>\nPOST\n/hal/v1/license\n<sha256-hex(raw-body)>',
+      signature_encoding: 'lowercase-hex',
+      max_clock_skew_seconds: HAL_MAX_SKEW_SECONDS,
+    },
+    request: HAL_FIXTURE_REQUEST,
+    response: HAL_FIXTURE_RESPONSE,
+    errors: Object.entries(HAL_ERROR_STATUS).map(([code, status]) => ({ code, status })),
+    license_limits: HAL_LICENSE_LIMITS,
+  };
+}
+function halHex(bytes: ArrayBuffer) { return [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join(''); }
+function halFromHex(value: string) {
+  if (!/^[0-9a-f]{64}$/.test(value)) return null;
+  const bytes = new Uint8Array(value.length / 2);
+  for (let i = 0; i < value.length; i += 2) bytes[i / 2] = Number.parseInt(value.slice(i, i + 2), 16);
+  return bytes;
+}
+async function halSha256(value: string) { return halHex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))); }
+async function halSecret(): Promise<string | null> {
+  const { data, error } = await sb.rpc('orum_hal_provider_secret');
+  return !error && typeof data === 'string' && data.length >= 32 ? data : null;
+}
+async function halSignatureValid(secret: string, canonical: string, signatureHex: string) {
+  const signature = halFromHex(signatureHex);
+  if (!signature) return false;
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
+  return crypto.subtle.verify('HMAC', key, signature, new TextEncoder().encode(canonical));
+}
+async function halProvider(req: Request): Promise<Response> {
+  const path = new URL(req.url).pathname;
+  if (req.method === 'GET' && (path.endsWith('/hal') || path.endsWith('/hal/') || path.endsWith('/hal/fixture') || path.endsWith('/hal/.well-known/provider.json'))) {
+    return halJson(halContract(req), 200, { 'Cache-Control': 'public, max-age=300' });
+  }
+  if (req.method !== 'POST' || !path.endsWith('/hal/v1/license')) return halFail('method_not_allowed', 'Use GET /hal/fixture or POST /hal/v1/license.');
+  const keyId = req.headers.get('x-orum-key-id');
+  const timestamp = req.headers.get('x-orum-timestamp');
+  const signature = req.headers.get('x-orum-signature');
+  if (!keyId || !timestamp || !signature) return halFail('auth_missing', 'Required HMAC headers are absent.');
+  if (keyId !== HAL_KEY_ID) return halFail('auth_key_unknown', 'The provider key id is not recognised.');
+  if (!/^\d{10}$/.test(timestamp)) return halFail('auth_timestamp_invalid', 'Timestamp must be Unix seconds.');
+  if (Math.abs(Math.floor(Date.now() / 1000) - Number(timestamp)) > HAL_MAX_SKEW_SECONDS) return halFail('auth_stale', 'Timestamp exceeds the five-minute verification window.');
+  const rawBody = await req.text();
+  const canonical = `${timestamp}\nPOST\n/hal/v1/license\n${await halSha256(rawBody)}`;
+  const secret = await halSecret();
+  if (!secret) return halFail('server_misconfigured', 'The provider credential is unavailable.');
+  if (!(await halSignatureValid(secret, canonical, signature))) return halFail('auth_signature_invalid', 'HMAC verification failed.');
+  let input: Record<string, unknown>;
+  try { input = JSON.parse(rawBody); } catch { return halFail('request_invalid_json', 'Body must be valid JSON.'); }
+  if (input?.work !== 'presence' || input?.license !== 'preview' || Object.keys(input).length !== 2) return halFail('request_invalid', 'Expected exactly {"work":"presence","license":"preview"}.');
+  return halJson(HAL_FIXTURE_RESPONSE);
+}
+
 async function nucleo(req: Request): Promise<Response> {
   const url = new URL(req.url); const path = url.pathname; const obraQuery = url.searchParams.get('obra');
+  if (path.includes('/hal')) return halProvider(req);
   if (path.endsWith('/verificar')) {
     const tx = url.searchParams.get('tx');
     if (!tx) return new Response(JSON.stringify({ erro: 'parametro tx em falta' }), { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } });
@@ -289,18 +437,18 @@ async function nucleo(req: Request): Promise<Response> {
   if (CDP_DISPONIVEL && pareceX402V2Cdp(parsed)) {
     const resourceUrlStr = resourceUrlFor(req, lic, obraQuery);
     const r = await verificarESettleViaCdp(parsed as PagamentoV2, lic, resourceUrlStr);
-    if (!r.ok) return new Response(JSON.stringify({ erro: 'pagamento invalido (via CDP)', detalhe: r.erro }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    if (!r.ok) return new Response(JSON.stringify({ erro: 'pagamento invalido (via CDP)', detalhe: r.erro }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(r.erro) } });
     const claim = await claimPagamento({ tx_hash: r.txHash, payer: r.payer, amount: lic.atomic.toString(), currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain', via: 'cdp-facilitador' });
-    if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'claim_duplicate' } });
     return emitirLicenca(lic, obraQuery, r.txHash, r.payer, 'cdp-facilitador');
   }
 
   const th = extrairTxHash(hasPayment);
-  if (!th) return new Response(JSON.stringify({ erro: 'prova de pagamento sem transactionHash valido' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  if (!th) return new Response(JSON.stringify({ erro: 'prova de pagamento sem transactionHash valido' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'payment_proof_invalid_format' } });
   const v = await verifyOnChain(th, lic);
-  if (!v.valid) { if (v.pending) return paymentPending(lic, th); return new Response(JSON.stringify({ erro: 'pagamento invalido', detalhe: v.error }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
+  if (!v.valid) { if (v.pending) return paymentPending(lic, th); return new Response(JSON.stringify({ erro: 'pagamento invalido', detalhe: v.error }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(v.error, v.pending) } }); }
   const claim = await claimPagamento({ tx_hash: th, payer: v.payer, amount: v.amount, currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
-  if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'claim_duplicate' } });
   return emitirLicenca(lic, obraQuery, th, v.payer!);
 }
 
@@ -311,7 +459,7 @@ Deno.serve(async (req: Request) => {
   catch (e) { resp = new Response(JSON.stringify({ erro: 'erro interno', detalhe: String((e as Error)?.message || e) }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
   try {
     const url = new URL(req.url); const path = url.pathname;
-    const acessoInfo = { servico: 'ora-licenca', tier: (path.match(/\/(consulta|editorial|treino|preview|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), status_code: resp.status };
+    const acessoInfo = { servico: 'ora-licenca', tier: (path.match(/\/(consulta|editorial|treino|preview|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), status_code: resp.status, payment_reason_code: resp.headers.get('X-ORUM-PAYMENT-REASON') };
     sbInsert('ora_acessos_log', acessoInfo);
   } catch (_) {}
   return resp;
