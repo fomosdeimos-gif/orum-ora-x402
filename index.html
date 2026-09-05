@@ -132,7 +132,7 @@
       document.getElementById('bookClosed').textContent=fmt(c.encerradas);
       document.getElementById('bookBrier').textContent=c.brier===null||c.brier===undefined?'—':Number(c.brier).toFixed(3);
       document.getElementById('successProbability').textContent=result.probabilidade_sucesso===null?'—':Math.round(result.probabilidade_sucesso*100)+'%';
-      document.getElementById('calibrationState').textContent=result.estado_probabilidade==='calibrada'?'probabilidade calibrada com '+fmt(c.pontuadas)+' resultados':'amostra insuficiente · '+fmt(c.pontuadas)+' de '+fmt(c.minimo)+' resultados pontuados';
+      document.getElementById('calibrationState').textContent=result.estado_probabilidade==='calibrada'?'probabilidade calibrada · '+fmt(c.comparaveis_8h)+' de '+fmt(c.minimo_comparaveis_8h)+' resultados comparáveis de 8 horas · '+fmt(c.pontuadas)+' previsões pontuadas':'amostra insuficiente · '+fmt(c.comparaveis_8h)+' de '+fmt(c.minimo_comparaveis_8h)+' resultados comparáveis de 8 horas · '+fmt(c.pontuadas)+' de '+fmt(c.minimo)+' previsões pontuadas';
       document.getElementById('horizonTrajectories').innerHTML=horizon.trajectories.map(x=>'<div class="trajectory"><b>'+x.title+'</b><em>'+x.status+'</em><p>'+x.condition+'</p></div>').join('');
       document.getElementById('horizonYears').innerHTML=horizon.gates.map(x=>'<div class="year"><b>'+x.year+' · '+x.label+'</b>'+x.test+'</div>').join('');
       document.getElementById('balanceIndex').textContent=horizon.balance_index===null?'—':Number(horizon.balance_index).toPrecision(3);
