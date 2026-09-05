@@ -1,7 +1,7 @@
 (function (root) {
   'use strict';
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-  const number = value => Number.isFinite(Number(value)) ? Number(value) : null;
+  const number = value => value === null || value === undefined || value === '' ? null : Number.isFinite(Number(value)) ? Number(value) : null;
   const stage = (funnel, key) => number(funnel && funnel.attempts && funnel.attempts.by_stage && funnel.attempts.by_stage[key] && funnel.attempts.by_stage[key].non_internal_or_unknown);
   function evaluate(pulse, funnel, baseline, predictionBook) {
     const convite = pulse && pulse.convite || {};
@@ -30,7 +30,7 @@
     const latest=predictionBook&&predictionBook.latest||null;
     const sameOption=latest&&latest.option_key===escolhida.id;
     const predictedProbability=calibrationReady&&sameOption&&number(latest.predicted_probability)!==null?number(latest.predicted_probability):null;
-    return {modelo:'escolha-verificavel/v2',observado_em:funnel&&funnel.observed_at||pulse&&pulse.timestamp||null,janela_horas:number(funnel&&funnel.window_hours),decisao:escolhida.decisao,escolha:escolhida,confianca_dados:dataConfidence,probabilidade_sucesso:predictedProbability,estado_probabilidade:predictedProbability===null?'amostra_insuficiente':'calibrada',calibracao:stats?{total:number(stats.total),abertas:number(stats.open),encerradas:number(stats.closed),pontuadas:number(stats.scored),minimo:number(stats.minimum_for_calibration),brier:number(stats.brier_score)}:null,sinais,delta_desde_baseline:delta,baseline_em:baseline&&baseline.observed_at||null,independencia:funnel&&funnel.independence?{claimed:funnel.independence.claimed,scope:funnel.independence.scope,provider_independent:funnel.independence.provider_independent}:null,limites:['Confiança nos dados não é probabilidade de sucesso.','Previsão não é prova.','Origem desconhecida não é externa.','Aceitação HTTP não é liquidação.','Sustento exige origem externa e liquidação confirmadas.'],fallback:!funnel,eventos_recentes:eventos.length,sentinela:sentinela.veredicto||null};
+    return {modelo:'escolha-verificavel/v2',observado_em:funnel&&funnel.observed_at||pulse&&pulse.timestamp||null,janela_horas:number(funnel&&funnel.window_hours),decisao:escolhida.decisao,escolha:escolhida,confianca_dados:dataConfidence,probabilidade_sucesso:predictedProbability,estado_probabilidade:predictedProbability===null?'amostra_insuficiente':'calibrada',calibracao:stats?{total:number(stats.total),abertas:number(stats.open),encerradas:number(stats.closed),comparaveis_8h:number(stats.comparable_outcomes_8h),minimo_comparaveis_8h:number(stats.minimum_comparable_outcomes),pontuadas:number(stats.scored),minimo:number(stats.minimum_for_calibration),brier:number(stats.brier_score)}:null,sinais,delta_desde_baseline:delta,baseline_em:baseline&&baseline.observed_at||null,independencia:funnel&&funnel.independence?{claimed:funnel.independence.claimed,scope:funnel.independence.scope,provider_independent:funnel.independence.provider_independent}:null,limites:['Confiança nos dados não é probabilidade de sucesso.','Previsão não é prova.','Origem desconhecida não é externa.','Aceitação HTTP não é liquidação.','Sustento exige origem externa e liquidação confirmadas.'],fallback:!funnel,eventos_recentes:eventos.length,sentinela:sentinela.veredicto||null};
   }
   root.ORUMChoiceV0=Object.freeze({evaluate});
 })(typeof window!=='undefined'?window:globalThis);
