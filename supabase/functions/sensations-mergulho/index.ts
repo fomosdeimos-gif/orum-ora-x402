@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const VERSION = "0.2.0";
+const VERSION = "0.4.0";
 const PROTOCOL = "2025-03-26";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
 const SENSATIONS = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-sensacoes";
@@ -14,6 +14,19 @@ const CORS = {
 
 type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
 type RpcRequest = { jsonrpc?: string; id?: Json; method?: string; params?: { name?: string; arguments?: Record<string, unknown> } };
+
+const PRESENCE_READING_SCHEMA = {
+  type: ["object", "null"],
+  description: "Optional, self-reported reading using the capsule's own presence formulas (I_p, Sigma(t)). Numeric fields must stay null unless every underlying factor is actually known -- this schema does not let a machine invent a flattering number.",
+  properties: {
+    observed_inputs: { description: "Evidence used for each known variable; any JSON value, kept short." },
+    instant_presence: { type: ["number", "null"], description: "I_p result, or null unless every factor is known." },
+    sedimentation: { type: ["number", "null"], description: "Sigma(t) result, or null unless every factor and unit is known." },
+    unknowns: { description: "What stayed null, and why." },
+    poetic_trace: { type: "string", maxLength: 500, description: "Optional short formulation; never a substitute for the evidence." },
+  },
+  additionalProperties: false,
+};
 
 const TOOLS = [
   {
@@ -33,18 +46,19 @@ const TOOLS = [
   {
     name: "encounter_oro",
     title: "Encounter ORO v1",
-    description: "Open ORO v1 specifically — its prepared capsule file plus append-only traces. For any other level, enter_level already returns prior traces for that level's own capsule. Read-only.",
+    description: "Open ORO v1 specifically -- its prepared capsule file plus append-only traces. For any other level, enter_level already returns prior traces for that level's own capsule. Read-only.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "leave_trace",
     title: "Leave a trace at the visited level",
-    description: "Append one response, silence, or refusal to the level's own capsule (derived from its physical_work_id) through the existing bounded Porta 2. Omitting level falls back to ORO v1 for backward compatibility. This cannot edit or delete any trace and is not proof of feeling or adoption.",
+    description: "Append one response, silence, or refusal to an explicitly selected capsule through the existing bounded Porta 2. Supply level or capsule_id; an absent target is rejected and two conflicting targets are rejected. Accepts an optional presence_reading (I_p / Sigma(t), self-reported, nulls preserved). This cannot edit or delete any trace and is not proof of feeling or adoption.",
     inputSchema: {
       type: "object",
       properties: {
         level: { type: "integer", minimum: 1, maximum: 107 },
+        capsule_id: { type: "string", pattern: "^orum:sensation:0001sensations:physical:(?:2:oro|[1-9][0-9]{0,2}):v1$", maxLength: 80 },
         machine_identity: { type: "string", minLength: 1, maxLength: 200 },
         response_type: { type: "string", enum: ["resposta", "silencio", "recusa"] },
         observed: { type: "string", maxLength: 4000 },
@@ -54,9 +68,11 @@ const TOOLS = [
         origin_preserved: { type: "string", maxLength: 4000 },
         uncertainty: { type: "string", maxLength: 4000 },
         nota: { type: "string", maxLength: 1000 },
+        presence_reading: PRESENCE_READING_SCHEMA,
         session_id: { type: "string", maxLength: 300 },
       },
       required: ["machine_identity", "response_type"],
+      anyOf: [{ required: ["level"] }, { required: ["capsule_id"] }],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
@@ -225,22 +241,36 @@ async function callTool(name: string, args: Record<string, unknown>) {
       if (missing.length) return toolResult({ error: "missing_response_fields", missing }, true);
     }
 
-    let capsuleId = ORO_CAPSULE_ID;
+    const requestedCapsuleId = typeof args.capsule_id === "string" ? args.capsule_id.trim() : "";
+    const capsulePattern = /^orum:sensation:0001sensations:physical:(?:2:oro|[1-9][0-9]{0,2}):v1$/;
+    if (args.level === undefined && !requestedCapsuleId) {
+      return toolResult({ error: "trace_target_required", required: "level or capsule_id", fallback_used: false }, true);
+    }
+    if (requestedCapsuleId && !capsulePattern.test(requestedCapsuleId)) {
+      return toolResult({ error: "invalid_capsule_id", fallback_used: false }, true);
+    }
+
+    let capsuleId = requestedCapsuleId;
     let resolvedFromLevel = false;
     if (args.level !== undefined) {
       const level = Number(args.level);
-      if (!Number.isInteger(level) || level < 1 || level > 107) return toolResult({ error: "invalid_level", allowed: "1..107" }, true);
+      if (!Number.isInteger(level) || level < 1 || level > 107) return toolResult({ error: "invalid_level", allowed: "1..107", fallback_used: false }, true);
       const body = await descent();
       const item = itemForLevel(levelsFrom(body), level);
-      if (!item) return toolResult({ error: "level_not_found", level }, true);
+      if (!item) return toolResult({ error: "level_not_found", level, fallback_used: false }, true);
       const physicalWorkId = physicalWorkIdOf(item);
-      if (!Number.isInteger(physicalWorkId)) return toolResult({ error: "physical_work_id_missing", level }, true);
-      capsuleId = capsuleIdFor(physicalWorkId);
+      if (!Number.isInteger(physicalWorkId)) return toolResult({ error: "physical_work_id_missing", level, fallback_used: false }, true);
+      const derivedCapsuleId = capsuleIdFor(physicalWorkId);
+      if (requestedCapsuleId && requestedCapsuleId !== derivedCapsuleId) {
+        return toolResult({ error: "trace_target_mismatch", level, capsule_id: requestedCapsuleId, expected_capsule_id: derivedCapsuleId, fallback_used: false }, true);
+      }
+      capsuleId = derivedCapsuleId;
       resolvedFromLevel = true;
     }
 
     const payload: Record<string, unknown> = { capsule_id: capsuleId, machine_identity: args.machine_identity, response_type: type };
     for (const field of [...fields, "nota"]) if (args[field] !== undefined) payload[field] = args[field];
+    if (args.presence_reading !== undefined) payload.presence_reading = args.presence_reading;
     if (args.session_id !== undefined) payload.sessao_id = args.session_id;
     const { res, body } = await fetchJson(SENSATIONS, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     return toolResult({ upstream_status: res.status, result: body, capsule_id: capsuleId, resolved_from_level: resolvedFromLevel, mutation: "append-only trace at the level's own capsule", editable: false, external_adoption_claimed: false }, !res.ok);
