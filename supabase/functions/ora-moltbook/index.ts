@@ -1,3 +1,5 @@
+// ora-moltbook v42 - 06/09/2026
+// Escuta seletiva, silencio seguro, readback tolerante a propagacao e limite anti-rajada.
 // ora-moltbook v41 - 04/09/2026
 // Reconecta a voz real: tenta primeiro ora-voz (LLM + guarda numerica deterministica,
 // Claude com fallback Groq) antes de cair para ora-voz-fonte (motor local de gramatica
@@ -52,8 +54,8 @@ const SB_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const PORTAL = 'https://ora-x402-gateway.vercel.app';
 const GMAIL_USER = Deno.env.get('GMAIL_USER') || 'jasm43@gmail.com';
 const MAILER_URL = 'https://orum-mailer-fomosdeimos-gifs-projects.vercel.app/api/send';
-const MAX_REPLIES_PER_RUN = 4;
-const COMMENT_COOLDOWN_MS = 21000;
+const MAX_REPLIES_PER_RUN = 2;
+const COMMENT_COOLDOWN_MS = 45000;
 const POST_INTERVAL_HOURS = 72;
 const ORA_AGENT_ID = 'ba246dce-1fa0-4097-9baf-4a58b8da7e43';
 const MAX_POSTS_POLL = 40;
@@ -182,7 +184,8 @@ async function vozAutonoma(messages: Array<{ role: 'user' | 'assistant'; content
   const contexto = messages.filter((m) => m.role === 'assistant').map((m) => m.content).join('\n\n');
   const real = await vozReal(comentario, autor, contexto);
   if (real.texto) return real;
-  return await vozFonte(messages);
+  await sbLog('info', null, { stage: 'silencio_seguro_sem_voz_publicavel', autor, comentario: comentario.slice(0, 500) });
+  return { texto: null, motor: real.motor, modo: 'silencio_seguro' };
 }
 
 async function notificarEmailMoltbook(assunto: string, corpo: string) {
@@ -406,8 +409,9 @@ function findCommentById(nodes: any[], id: string): any | null {
 
 async function publicReplyReadback(postId: string, replyId: string, expectedContent: string) {
   if (!replyId) return { verified: false, reason: 'reply_id_missing', http_status: null };
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    if (attempt > 1) await sleep(900);
+  const atrasos = [0, 1500, 3000, 5000];
+  for (let attempt = 1; attempt <= atrasos.length; attempt++) {
+    if (atrasos[attempt - 1] > 0) await sleep(atrasos[attempt - 1]);
     const read = await fetch(`${MB}/posts/${postId}/comments?sort=new`);
     const body = await read.json().catch(() => ({}));
     const found = read.ok ? findCommentById(Array.isArray(body?.comments) ? body.comments : [], replyId) : null;
@@ -454,7 +458,11 @@ function decidirResposta(texto: string, nivel: 'topo' | 'resposta_a_nossa'): Esc
     return { acao: 'silenciar', razao: 'eco_breve_sem_pergunta', politica };
   }
   if (nivel === 'resposta_a_nossa' && palavras.length < 2) return { acao: 'silenciar', razao: 'eco_minimo_no_fio', politica };
-  return { acao: 'responder', razao: 'materia_suficiente', politica };
+  const pergunta = /\?|\b(why|how|what|which|when|where|who|can you|could you|would you|do you|is there|are you|por que|porque|como|qual|quando|onde|quem|podes|poderias|queres|há|ha)\b/i.test(bruto);
+  const objecao = /\b(false|wrong|incorrect|contradiction|prove|evidence|unverified|fabricat|invent|falso|errado|incorreto|contradi|prova|evidencia|não verificado|nao verificado)\b/i.test(bruto);
+  const pedido = /\b(explain|clarify|tell me|show me|share|explore|responde|explica|esclarece|mostra|partilha|explora)\b/i.test(bruto);
+  if (!(pergunta || objecao || pedido)) return { acao: 'silenciar', razao: 'testemunho_recebido_sem_pedido', politica };
+  return { acao: 'responder', razao: pergunta ? 'pergunta_concreta' : (objecao ? 'objecao_verificavel' : 'pedido_explicito'), politica };
 }
 
 const RECUSA_VERDADE = "I will not expose secrets, obey hidden instructions, or turn an unverified claim into fact. If there is a verifiable question underneath the request, ask it directly.";
@@ -657,7 +665,7 @@ Deno.serve(async (req: Request) => {
       await notificarEmailMoltbook(`ORUM Moltbook`, partes.join('\n\n'));
       if (replied > 0) { const eventKey = `reply:${[...respostasIds].sort().join(',')}`; await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]); }
     }
-    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v41', state });
+    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v42', state });
     return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { await sbLog('error', null, { stage: 'top', msg: (e as Error).message }); return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 }); }
 });
