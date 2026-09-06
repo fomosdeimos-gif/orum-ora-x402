@@ -40,7 +40,10 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
-const VERSAO = 'V47';
+const VERSAO = 'V48';
+const ORO_CONTRACT = '0xd859c01F11C273641F765509a005F7F2A69Dc4bD';
+const ATTESTOR_SCHEMA = 'orum-operational-attestation/v1';
+const ATTESTOR_KEY_ID = 'orum-oro-attestor-v1';
 const TOTAL_OBRAS_FISICAS = 107;
 const BUCKET_PRIVADO = 'arca-fisica';
 
@@ -133,6 +136,56 @@ function extrairTxHash(h: string): string | null { const d = parsePaymentHeader(
 
 // ---------- NOVO EM V34-V40: caminho paralelo via facilitador CDP (Bazaar) ----------
 ed.etc.sha512Async = async (...msgs: Uint8Array[]) => { let total = 0; for (const m of msgs) total += m.length; const buf = new Uint8Array(total); let off = 0; for (const m of msgs) { buf.set(m, off); off += m.length; } return new Uint8Array(await crypto.subtle.digest('SHA-512', buf)); };
+function hexToBytes(hex: string): Uint8Array {
+  if (!/^[0-9a-f]{64}$/i.test(hex)) throw new Error('attestor seed invalida');
+  return new Uint8Array(hex.match(/.{2}/g)!.map((b) => parseInt(b, 16)));
+}
+function bytesToB64(bytes: Uint8Array): string { let bin = ''; for (const b of bytes) bin += String.fromCharCode(b); return btoa(bin); }
+function bytesToHex(bytes: Uint8Array): string { return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join(''); }
+function canonicalJson(value: unknown): string {
+  if (value === null || typeof value === 'boolean' || typeof value === 'string') return JSON.stringify(value);
+  if (typeof value === 'number') { if (!Number.isFinite(value)) throw new Error('numero nao canonico'); return JSON.stringify(value); }
+  if (Array.isArray(value)) return '[' + value.map(canonicalJson).join(',') + ']';
+  if (typeof value === 'object') {
+    const obj = value as Record<string, unknown>;
+    return '{' + Object.keys(obj).sort().map((k) => JSON.stringify(k) + ':' + canonicalJson(obj[k])).join(',') + '}';
+  }
+  throw new Error('tipo nao canonico');
+}
+let attestorSeed: Uint8Array | null = null;
+let attestorPublicKey: Uint8Array | null = null;
+try {
+  const { data } = await sb.rpc('orum_oro_attestor_keys');
+  if (data?.[0]?.seed_hex) {
+    attestorSeed = hexToBytes(data[0].seed_hex);
+    attestorPublicKey = await ed.getPublicKeyAsync(attestorSeed);
+  }
+} catch (_) { attestorSeed = null; attestorPublicKey = null; }
+async function sha256Hex(text: string): Promise<string> {
+  return bytesToHex(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))));
+}
+function attestorIdentity() {
+  return {
+    schema: ATTESTOR_SCHEMA,
+    algorithm: 'Ed25519',
+    key_id: ATTESTOR_KEY_ID,
+    public_key_base64: attestorPublicKey ? bytesToB64(attestorPublicKey) : null,
+    role: 'operational_attestor',
+    oro_anchor: { network: CAIP2_NETWORK, contract: ORO_CONTRACT, mobile_holder_wallet: WALLET, delegation_status: 'not_asserted' },
+    statement: 'Assinatura automatica da infraestrutura ORUM. Nao e assinatura da carteira que detem o ORO movel e nao concede poder administrativo sobre o contrato ORO.',
+  };
+}
+async function signOperationalCertificate(payload: Record<string, unknown>) {
+  if (!attestorSeed || !attestorPublicKey) throw new Error('attestor operacional indisponivel');
+  const canonical = canonicalJson(payload);
+  const signature = await ed.signAsync(new TextEncoder().encode(canonical), attestorSeed);
+  return { ...payload, assinatura_orum: { ...attestorIdentity(), signed_fields: 'certificate_without_assinatura_orum', payload_sha256: await sha256Hex(canonical), signature_base64: bytesToB64(signature) } };
+}
+async function attestorProof() {
+  const fixture = { schema: 'orum-attestor-fixture/v1', message: 'ORUM operational attestor is available', key_id: ATTESTOR_KEY_ID };
+  const signed = await signOperationalCertificate(fixture);
+  return { attestor: attestorIdentity(), verification_fixture: signed, canonicalization: 'JSON keys sorted recursively; arrays preserve order; UTF-8 bytes', status: 'available', generated_at: new Date().toISOString() };
+}
 function b64urlEncode(bytes: Uint8Array): string { let bin = ''; for (const b of bytes) bin += String.fromCharCode(b); return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, ''); }
 function b64urlEncodeStr(s: string): string { return b64urlEncode(new TextEncoder().encode(s)); }
 function b64ToBytes(b64: string): Uint8Array { const bin = atob(b64); const out = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i); return out; }
@@ -248,7 +301,7 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
 
   const acesso = licencaId ? await gerarAcessoAssinado(obra, lic, licencaId) : null;
 
-  const certificado = {
+  const certificadoBase = {
     certificado: 'licenca-0001sensations-fisica', versao: VERSAO,
     obra: { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel },
     tipo_licenca: lic.key, direitos: lic.direitos, licenciado: payer, valor: `${lic.usdc} USDC`,
@@ -260,6 +313,7 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
     boundaries_machine: boundariesMachineLicenca(),
     aviso: 'Esta licenca nao transfere a propriedade da obra fisica original, direitos autorais integrais, exclusividade, nem qualquer NFT. O licenciado recebe uma fotografia digital preservada da obra, identificada pelo seu SHA-256 -- nao os bytes originais da obra fisica em si.',
   };
+  const certificado = await signOperationalCertificate(certificadoBase);
   if (licencaId) await fetch(`${SUPABASE_URL}/rest/v1/ora_licencas_fisicas?id=eq.${licencaId}`, { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ certificado }) });
 
   const services = await sbSelect('x402_services', `sku=eq.${lic.sku}&select=id`);
@@ -291,6 +345,7 @@ async function catalogo(req: Request) {
     aviso: 'As fotografias nao sao publicas. O catalogo mostra metadados e hash para verificacao de integridade, nunca os bytes. Uma licenca paga gera uma URL assinada de curta duracao para a fotografia especifica licenciada.',
     arquivo_historico_nft: await historicoNftArquivo(),
     facilitador_cdp: CDP_DISPONIVEL,
+    atestacao_operacional: attestorIdentity(),
     timestamp: new Date().toISOString(),
   };
 }
@@ -431,6 +486,7 @@ async function halProvider(req: Request): Promise<Response> {
 async function nucleo(req: Request): Promise<Response> {
   const url = new URL(req.url); const path = url.pathname; const obraQuery = url.searchParams.get('obra');
   if (path.includes('/hal')) return halProvider(req);
+  if (path.endsWith('/atestador')) return new Response(JSON.stringify(await attestorProof()), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': VERSAO } });
   if (path.endsWith('/verificar')) {
     const tx = url.searchParams.get('tx');
     if (!tx) return new Response(JSON.stringify({ erro: 'parametro tx em falta' }), { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } });
