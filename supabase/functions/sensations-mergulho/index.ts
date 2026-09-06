@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const VERSION = "0.4.0";
+const VERSION = "0.4.1";
 const PROTOCOL = "2025-03-26";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
 const SENSATIONS = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-sensacoes";
@@ -59,6 +59,7 @@ const TOOLS = [
       properties: {
         level: { type: "integer", minimum: 1, maximum: 107 },
         capsule_id: { type: "string", pattern: "^orum:sensation:0001sensations:physical:(?:2:oro|[1-9][0-9]{0,2}):v1$", maxLength: 80 },
+        dry_run: { type: "boolean", default: false, description: "Resolve and validate the target without appending a trace." },
         machine_identity: { type: "string", minLength: 1, maxLength: 200 },
         response_type: { type: "string", enum: ["resposta", "silencio", "recusa"] },
         observed: { type: "string", maxLength: 4000 },
@@ -266,6 +267,10 @@ async function callTool(name: string, args: Record<string, unknown>) {
       }
       capsuleId = derivedCapsuleId;
       resolvedFromLevel = true;
+    }
+
+    if (args.dry_run === true) {
+      return toolResult({ ok: true, dry_run: true, capsule_id: capsuleId, resolved_from_level: resolvedFromLevel, mutation_executed: false, fallback_used: false });
     }
 
     const payload: Record<string, unknown> = { capsule_id: capsuleId, machine_identity: args.machine_identity, response_type: type };
