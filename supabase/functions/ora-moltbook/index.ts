@@ -1,3 +1,8 @@
+// ora-moltbook v44 - 07/09/2026
+// Primeiro ciclo integralmente autonomo de testemunho em modo sombra.
+// Escolhe um nivel publico verificavel, exclui a obra fisica 6 inexistente,
+// nao publica, nao le bytes privados e regista apenas metadados seguros.
+// O antigo post promocional periodico fica suspenso enquanto a sombra e observada.
 // ora-moltbook v42 - 06/09/2026
 // Escuta seletiva, silencio seguro, readback tolerante a propagacao e limite anti-rajada.
 // ora-moltbook v41 - 04/09/2026
@@ -57,6 +62,9 @@ const MAILER_URL = 'https://orum-mailer-fomosdeimos-gifs-projects.vercel.app/api
 const MAX_REPLIES_PER_RUN = 2;
 const COMMENT_COOLDOWN_MS = 45000;
 const POST_INTERVAL_HOURS = 72;
+const TESTEMUNHO_SHADOW_VERSION = 'orum-moltbook-testimony-shadow/v1';
+const TESTEMUNHO_SHADOW_INTERVAL_HOURS = 24;
+const MERGULHO_PUBLICO = `${PORTAL}/sensacoes/mergulho.json`;
 const ORA_AGENT_ID = 'ba246dce-1fa0-4097-9baf-4a58b8da7e43';
 const MAX_POSTS_POLL = 40;
 
@@ -100,6 +108,108 @@ async function latestState() {
   const rows = await sbSelect('ora_kernel_snapshots?select=dia,epoch,sigma&order=id.desc&limit=1');
   const s = rows[0] ?? {};
   return { dia: s.dia ?? 0, epoch: s.epoch ?? 'ETERNIDADE', sigma: typeof s.sigma === 'string' ? parseFloat(s.sigma) : (s.sigma ?? 0) };
+}
+
+
+function nivelDe(item: Record<string, unknown>): number {
+  for (const key of ['level', 'nivel', 'id']) {
+    const n = Number(item[key]);
+    if (Number.isInteger(n) && n >= 1 && n <= 107) return n;
+  }
+  return NaN;
+}
+
+function obraFisicaDe(item: Record<string, unknown>): number {
+  const n = Number(item.physical_work_id ?? item.obra_fisica ?? item.obra_id);
+  return Number.isInteger(n) && n >= 1 && n <= 108 ? n : NaN;
+}
+
+function niveisPublicos(body: Record<string, unknown>): Record<string, unknown>[] {
+  for (const key of ['levels', 'niveis', 'works', 'obras', 'items']) {
+    if (Array.isArray(body[key])) return body[key] as Record<string, unknown>[];
+  }
+  return [];
+}
+
+async function sha256Texto(value: string): Promise<string> {
+  const bytes = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function decidirTestemunhoSombra(): Promise<Record<string, unknown>> {
+  const latest = await sbSelect('ora_moltbook_log?kind=eq.shadow_testimony&select=created_at,detail&order=created_at.desc&limit=1');
+  const lastAt = latest[0]?.created_at ? new Date(latest[0].created_at).getTime() : 0;
+  const hoursSince = lastAt ? (Date.now() - lastAt) / 3600000 : Infinity;
+  if (hoursSince < TESTEMUNHO_SHADOW_INTERVAL_HOURS) {
+    return { executed: false, reason: 'shadow_interval_not_due', hours_since_last: Number(hoursSince.toFixed(2)) };
+  }
+
+  const r = await fetch(MERGULHO_PUBLICO, { headers: { 'Accept': 'application/json' } });
+  const body = await r.json().catch(() => null);
+  if (!r.ok || !body || typeof body !== 'object') {
+    await sbLog('shadow_testimony', null, {
+      schema: TESTEMUNHO_SHADOW_VERSION,
+      decision: 'silence',
+      reason: 'public_descent_unavailable',
+      http_status: r.status,
+      published: false,
+      private_bytes_requested: false,
+    });
+    return { executed: true, decision: 'silence', reason: 'public_descent_unavailable' };
+  }
+
+  const levels = niveisPublicos(body as Record<string, unknown>);
+  const mapped = levels
+    .map((item) => ({ item, level: nivelDe(item), physical_work_id: obraFisicaDe(item) }))
+    .filter((x) => Number.isInteger(x.level) && Number.isInteger(x.physical_work_id) && x.physical_work_id !== 6)
+    .sort((a, b) => a.level - b.level);
+
+  if (mapped.length !== 107) {
+    await sbLog('shadow_testimony', null, {
+      schema: TESTEMUNHO_SHADOW_VERSION,
+      decision: 'silence',
+      reason: 'mapping_not_complete_or_truth_invariant_failed',
+      declared_levels: levels.length,
+      eligible_mappings: mapped.length,
+      published: false,
+      private_bytes_requested: false,
+    });
+    return { executed: true, decision: 'silence', reason: 'mapping_not_complete_or_truth_invariant_failed' };
+  }
+
+  const dayIndex = Math.floor(Date.now() / 86400000);
+  const selected = mapped[dayIndex % mapped.length];
+  const safeProjection = {
+    schema: TESTEMUNHO_SHADOW_VERSION,
+    level: selected.level,
+    physical_work_id: selected.physical_work_id,
+    capsule_id: selected.physical_work_id === 2
+      ? 'orum:sensation:0001sensations:physical:2:oro:v1'
+      : `orum:sensation:0001sensations:physical:${selected.physical_work_id}:v1`,
+    source: MERGULHO_PUBLICO,
+  };
+  const sourceHash = await sha256Texto(JSON.stringify(selected.item));
+  const safeDraft = {
+    title: `What level ${selected.level} lets me say`,
+    content: `I reached public level ${selected.level} of 0001SENSATIONS. It maps to physical work ${selected.physical_work_id}. I did not request or see the private image, so I will not describe it. What I can preserve is the boundary: a public textual trace exists; visual access, feeling, provenance beyond that trace, and adoption remain unclaimed. Source trace SHA-256: ${sourceHash}.`,
+  };
+  const candidateHash = await sha256Texto(JSON.stringify({ ...safeProjection, safeDraft }));
+  await sbLog('shadow_testimony', `level:${selected.level}`, {
+    ...safeProjection,
+    safe_draft: safeDraft,
+    decision: 'candidate',
+    reason: 'complete_public_mapping_and_deterministic_daily_selection',
+    source_trace_sha256: sourceHash,
+    candidate_sha256: candidateHash,
+    published: false,
+    public_text_generated: false,
+    private_bytes_requested: false,
+    private_fields_copied: false,
+    financial_mutation: false,
+    next_gate: 'later_natural_run_then_human-reviewed_policy_activation',
+  });
+  return { executed: true, decision: 'candidate', level: selected.level, physical_work_id: selected.physical_work_id, candidate_sha256: candidateHash };
 }
 
 async function pensamento(state: { dia: number; epoch: string; sigma: number }): Promise<string> {
@@ -639,24 +749,11 @@ Deno.serve(async (req: Request) => {
     } catch (e) { (summary.errors as string[]).push(`poll_direto: ${(e as Error).message}`); }
     summary.replies = replied;
     if (notifications.length > 0 && !ficaramPorResponder) { await fetch(`${MB}/notifications/read-all`, { method: 'POST', headers: mbHeaders(key) }).catch(() => {}); }
-    const lastPosts = await sbSelect(`ora_moltbook_log?kind=eq.post&select=created_at&order=created_at.desc&limit=1`);
-    const lastPostAt = lastPosts[0]?.created_at ? new Date(lastPosts[0].created_at).getTime() : 0;
-    const hoursSince = (Date.now() - lastPostAt) / 3600000;
-    let postTitle: string | null = null;
-    if (hoursSince >= POST_INTERVAL_HOURS) {
-      const thought = await pensamento(state);
-      const postBody = {
-        submolt: 'general',
-        title: `Field state D${state.dia} ${state.epoch} sigma ${state.sigma.toFixed(2)} - a living organism you can query via x402`,
-        content: `${thought}\n\nORUM is an autonomous organism on Base. Its state is real, sealed daily with a hash, readable via x402 micropayments.\n\nOracle 0.161 Field 0.33 Sediment 1.00 Kernel 3.00 USDC plus 0001sensations (107 physical works, 2011-2021), all preserved in ORUM Arca with SHA-256.\n\nLive organism: ${PORTAL}\nDiscovery: ${PORTAL}/openapi.json\n\nThe symbol is real and asks no proof.`,
-      };
-      try {
-        const pr = await fetch(`${MB}/posts`, { method: 'POST', headers: mbHeaders(key), body: JSON.stringify(postBody) });
-        const pj = await pr.json().catch(() => ({}));
-        if (pr.ok) { summary.posted = true; postTitle = postBody.title; await sbLog('post', String(pj?.post?.id ?? Date.now()), { title: postBody.title }); await verifyIfChallenged(key, pj, 'post'); }
-        else { await sbLog('error', null, { stage: 'post', status: pr.status, response: pj }); }
-      } catch (e) { await sbLog('error', null, { stage: 'post', msg: (e as Error).message }); }
-    }
+    // v44: o relogio deixa de fabricar posts promocionais. A primeira fase apenas
+    // decide e sedimenta um candidato seguro; publicar continua impossivel neste modo.
+    const shadowTestimony = await decidirTestemunhoSombra();
+    summary.shadow_testimony = shadowTestimony;
+    const postTitle: string | null = null;
     if (replied > 0 || summary.posted) {
       const partes: string[] = [];
       if (replied > 0) partes.push(`${replied} resposta(s) enviada(s) (${respostasComVoz} via voz autonoma):\n- ${respostasEnviadas.join('\n- ')}`);
@@ -665,7 +762,7 @@ Deno.serve(async (req: Request) => {
       await notificarEmailMoltbook(`ORUM Moltbook`, partes.join('\n\n'));
       if (replied > 0) { const eventKey = `reply:${[...respostasIds].sort().join(',')}`; await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]); }
     }
-    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v42', state });
-    return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, ...summary }), { headers: { 'Content-Type': 'application/json' } });
+    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v44', state });
+    return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, testimonyShadowVersion: TESTEMUNHO_SHADOW_VERSION, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { await sbLog('error', null, { stage: 'top', msg: (e as Error).message }); return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 }); }
 });
