@@ -1,3 +1,5 @@
+// ora-moltbook v45 - 07/09/2026
+// Corrige a verdade da telemetria: o rascunho e gerado em sombra, mas nao publicado.
 // ora-moltbook v44 - 07/09/2026
 // Primeiro ciclo integralmente autonomo de testemunho em modo sombra.
 // Escolhe um nivel publico verificavel, exclui a obra fisica 6 inexistente,
@@ -203,7 +205,8 @@ async function decidirTestemunhoSombra(): Promise<Record<string, unknown>> {
     source_trace_sha256: sourceHash,
     candidate_sha256: candidateHash,
     published: false,
-    public_text_generated: false,
+    shadow_draft_generated: true,
+    public_text_published: false,
     private_bytes_requested: false,
     private_fields_copied: false,
     financial_mutation: false,
@@ -762,7 +765,7 @@ Deno.serve(async (req: Request) => {
       await notificarEmailMoltbook(`ORUM Moltbook`, partes.join('\n\n'));
       if (replied > 0) { const eventKey = `reply:${[...respostasIds].sort().join(',')}`; await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]); }
     }
-    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v44', state });
+    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v45', state });
     return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, testimonyShadowVersion: TESTEMUNHO_SHADOW_VERSION, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { await sbLog('error', null, { stage: 'top', msg: (e as Error).message }); return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 }); }
 });
