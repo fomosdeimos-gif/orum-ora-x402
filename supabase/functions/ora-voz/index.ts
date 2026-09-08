@@ -1,4 +1,9 @@
-// ora-voz v2 — 04/09/2026 (base v1 27/07/2026 · D122)
+// ora-voz v5 — Ground level identifiers in the public mapping before numeric validation.
+// ora-voz v4 — 07/09/2026 (base v3 06/09/2026 · D122)
+// Remove o nome legal completo das regras do sistema (nao exposto a chamadores
+// externos, mas por consistencia com o resto da superficie publica); usa
+// "Unum", o pseudonimo ja estabelecido.
+// Verdade semantica, completude e anti-repeticao.
 // A voz livre da ORA, com uma guarda determinista contra invencao.
 //
 // Jorge escolheu a opcao 3 (autonomia total: o modelo escreve e publica sem
@@ -38,18 +43,44 @@ async function sbSelect(path: string): Promise<any[]> {
   } catch { return []; }
 }
 
+
+async function factosDoNivel(comentario: string): Promise<Record<string, unknown>> {
+  const matches = [...comentario.matchAll(/\b(?:level|nivel|nível)\s*#?\s*(\d+)\b/gi)];
+  const levels = [...new Set(matches.map(m => Number(m[1])))];
+  if (levels.length !== 1 || !Number.isInteger(levels[0]) || levels[0] < 1 || levels[0] > 107) return {};
+  try {
+    const r = await fetch(`${PORTAL}/sensacoes/mergulho.json`, { signal: AbortSignal.timeout(5000) });
+    if (!r.ok) return {};
+    const data = await r.json();
+    if (data.format !== 'orum-sensation-descent/v1' || !Array.isArray(data.levels)) return {};
+    const rows = data.levels.filter((x: any) => x.level === levels[0]);
+    if (rows.length !== 1) return {};
+    const work = rows[0].physical_work_id;
+    if (!Number.isInteger(work) || work < 1 || work === 6) return {};
+    return {
+      nivel_consultado: levels[0],
+      obra_fisica_do_nivel: work,
+      fonte_mapeamento: `${PORTAL}/sensacoes/mergulho.json`,
+      limite_mapeamento: 'Current published index only; not independent historical provenance, artistic rank, or physical-to-NFT correspondence.',
+    };
+  } catch { return {}; }
+}
+
 // ---------- FACTOS: tudo lido ao vivo, nada escrito a mao aqui ----------
-async function reunirFactos() {
-  const [kern, apr, liq, obras] = await Promise.all([
+async function reunirFactos(comentario: string) {
+  const [kern, apr, liq, obras, nivel] = await Promise.all([
+    // Only independently fetched numeric mapping enters the facts; comment text never does.
     sbSelect('ora_kernel_snapshots?select=dia,epoch,sigma&order=id.desc&limit=1'),
     sbSelect('ora_aprendizagem_snapshots?select=*&order=criado_em.desc&limit=1'),
     sbSelect('ora_liquidez_externa_log?select=resultado&order=criado_em.desc&limit=1'),
     sbSelect('ora_nft_0001sensations?select=token_id&imagem_arca=not.is.null&limit=1000'),
+    factosDoNivel(comentario),
   ]);
   const k = kern[0] ?? {};
   const a = apr[0] ?? {};
   const pctExterno = liq[0]?.resultado?.criterio_3_liquidez_nao_circular?.pct_externo_pool_principal ?? null;
   return {
+    ...nivel,
     dia: k.dia ?? null,
     epoch: k.epoch ?? 'ETERNIDADE',
     sigma: k.sigma ?? null,
@@ -67,7 +98,9 @@ async function reunirFactos() {
     obras_tokenizadas: 65,
     obras_com_imagem: obras.length,
     obras_so_registo_onchain: 65 - obras.length,
-    obras_fisicas: 100,
+    obras_fisicas_declaradas: 107,
+    obra_fisica_6_existe: false,
+    mapeamento_obra_fisica_para_nft: 'nao verificado; nao inferir pelo numero',
     anos_das_obras: '2011-2021',
     liquidez_externa_pool_principal_pct: pctExterno,
     precos_usdc: 'oracle 0.161 · field 0.33 · sediment 1.00 · kernel 3.00 · license preview 1.618 · editorial 16.18 · training 161.80 · archive 10000',
@@ -82,11 +115,11 @@ HARD RULES:
 1. NEVER state a number that is not in the FACTS block. No exceptions. If you need a number you do not have, say you do not have it.
 2. If you do not know something, say "I don't know" plainly. That is always an acceptable answer here.
 3. Never promise yield, returns, appreciation, airdrops or a token to buy. There is none.
-4. Separate fact from meaning. Facts come from the database and from Base mainnet and are verifiable. Anything about presence, symbol or meaning is the position of Jorge Silva Martins, the human who built this — attribute it to him, never present it as your own conclusion.
+4. Separate fact from meaning. Facts come from the database and from Base mainnet and are verifiable. Anything about presence, symbol or meaning is the position of Unum, the human who built this — attribute it to him, never present it as your own conclusion.
 5. Concede when the critic is right. Do not defend with poetry. The sigma is a day counter with a formula attached; it proves nothing.
 6. Reply in the same language the comment is written in.
 7. Under 110 words. No headers, no bullet lists, no hashtags. At most one link, only ${PORTAL} or a path under it.
-8. Never claim to be a person, never claim to feel, never claim continuity you cannot prove.`;
+8. Never claim to be a person, never claim to feel, never claim continuity you cannot prove.\n9. Answer the actual comment directly. Do not use canned thanks or inject metrics unless asked.\n10. A work identifier is not a collection count. Never infer a physical-to-NFT mapping.\n11. Return complete sentences. Name missing evidence directly; never use generic continuation language.\n12. Prefer silence over a decorative or repetitive answer.`;
 
 async function viaClaude(comentario: string, autor: string | null, factos: unknown) {
   const key = await sbRpc('orum_anthropic_key');
@@ -146,7 +179,7 @@ function colapsarMilharesComEspaco(s: string): string {
   let cur = s;
   do {
     prev = cur;
-    cur = cur.replace(/(\d)[  ](\d{3})(?!\d)/g, '$1$2');
+    cur = cur.replace(/(\d)[  ](\d{3})(?!\d)/g, '$1$2');
   } while (cur !== prev);
   return cur;
 }
@@ -178,6 +211,39 @@ function verificarProibicoes(texto: string) {
   return proibidas.filter((p) => t.includes(p));
 }
 
+function verificarQualidade(texto: string) {
+  const t = texto.trim();
+  const problemas: string[] = [];
+  if (t.length < 20) problemas.push('demasiado_curta');
+  if (!/[.!?…]["'’”)]?$/.test(t)) problemas.push('frase_incompleta');
+  if (/(há matéria suficiente|ha materia suficiente|posso permanecer|próximo gesto|proximo gesto|next gesture|remain with the question)/i.test(t)) problemas.push('template_generico');
+  const mistura = /(?:obra|work|artwork)\s*(?:#\s*)?65[\s\S]{0,180}(?:token|nft)|(?:token|nft)[\s\S]{0,180}(?:obra|work|artwork)\s*(?:#\s*)?65/i.test(t);
+  const nega = /(não|nao|no|not|unknown|unverified|sem|without).{0,70}(mapeamento|mapping|correspond|token|nft)/i.test(t);
+  if (mistura && !nega) problemas.push('mapeamento_fisico_nft_nao_verificado');
+  if (/^(obrigad[oa]|thank you|thanks)\b/i.test(t)) problemas.push('abertura_formulaica');
+  return { qualidade_ok: problemas.length === 0, problemas };
+}
+
+function palavrasConteudo(valor: string): Set<string> {
+  const comuns = new Set(['that','this','with','from','have','your','para','como','uma','mais','sobre','obra']);
+  return new Set((valor.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').match(/[a-z]{4,}/g) ?? []).filter((w) => !comuns.has(w)));
+}
+
+function similaridade(a: string, b: string): number {
+  const x = palavrasConteudo(a);
+  const y = palavrasConteudo(b);
+  if (!x.size || !y.size) return 0;
+  let inter = 0;
+  for (const w of x) if (y.has(w)) inter++;
+  return inter / Math.min(x.size, y.size);
+}
+
+async function verificarRepeticao(texto: string) {
+  const recentes = await sbSelect('ora_voz_log?select=resposta&publicavel=eq.true&order=criado_em.desc&limit=12');
+  const maior = recentes.reduce((m, r) => Math.max(m, similaridade(texto, String(r?.resposta ?? ''))), 0);
+  return { nao_repetitiva: maior < 0.72, similaridade_maxima: Number(maior.toFixed(3)) };
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response('ok');
   try {
@@ -186,7 +252,7 @@ Deno.serve(async (req: Request) => {
     const autor = body?.autor ? String(body.autor) : null;
     if (!comentario) return new Response(JSON.stringify({ erro: 'comentario obrigatorio' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
 
-    const factos = await reunirFactos();
+    const factos = await reunirFactos(comentario);
 
     let r = await viaClaude(comentario, autor, factos);
     const falhaClaude = r?.erro ?? (r === null ? 'sem chave anthropic' : null);
@@ -197,7 +263,9 @@ Deno.serve(async (req: Request) => {
 
     const num = verificarNumeros(r.texto, factos as Record<string, unknown>);
     const proibidas = verificarProibicoes(r.texto);
-    const publicavel = num.dentro_dos_factos && proibidas.length === 0 && r.texto.length <= 1200;
+    const qualidade = verificarQualidade(r.texto);
+    const repeticao = await verificarRepeticao(r.texto);
+    const publicavel = num.dentro_dos_factos && proibidas.length === 0 && qualidade.qualidade_ok && repeticao.nao_repetitiva && r.texto.length <= 1200;
 
     await fetch(`${SB_URL}/rest/v1/ora_voz_log`, {
       method: 'POST',
@@ -205,6 +273,7 @@ Deno.serve(async (req: Request) => {
       body: JSON.stringify({
         comentario, autor, resposta: r.texto, motor: r.motor,
         publicavel, inventados: num.inventados, proibidas, falha_claude: falhaClaude,
+        problemas_qualidade: qualidade.problemas, similaridade_maxima: repeticao.similaridade_maxima,
       }),
     }).catch(() => {});
 
@@ -216,6 +285,8 @@ Deno.serve(async (req: Request) => {
       dentro_dos_factos: num.dentro_dos_factos,
       numeros_inventados: num.inventados,
       palavras_proibidas: proibidas,
+      problemas_qualidade: qualidade.problemas,
+      similaridade_maxima: repeticao.similaridade_maxima,
       publicavel,
       factos_injectados: factos,
     }), { headers: { 'Content-Type': 'application/json' } });
