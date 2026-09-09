@@ -1,7 +1,11 @@
+import { createRenewalHandler } from "./renewal.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import * as ed from "npm:@noble/ed25519@2";
 
+// ORA · LICENCA · V49 · 07/09/2026 — remove o nome legal completo (Jorge Silva
+// Martins) das superficies publicas; usa o pseudonimo ja estabelecido "Unum"
+// nos 4 pontos afectados (accepts x-orum, certificado, catalogo, amostra).
 // ORA · LICENCA · V46 · 02/09/2026 — persiste apenas códigos enumerados e seguros
 // para rejeições de comprovativos x402. Nunca guarda cabeçalhos de pagamento,
 // assinaturas, payer, detalhe RPC/CDP ou prova bruta. O detalhe técnico continua
@@ -40,7 +44,7 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
-const VERSAO = 'V48';
+const VERSAO = 'V50';
 const ORO_CONTRACT = '0xd859c01F11C273641F765509a005F7F2A69Dc4bD';
 const ATTESTOR_SCHEMA = 'orum-operational-attestation/v1';
 const ATTESTOR_KEY_ID = 'orum-oro-attestor-v1';
@@ -257,7 +261,7 @@ async function verificarESettleViaCdp(pagamento: PagamentoV2, lic: Lic, resource
 
 function outputSchemaFor(lic: Lic) { return { input: { type: 'http', method: 'GET', queryParams: { obra: { type: 'string', required: false, description: 'id ou titulo de uma obra fisica (ver catalogo).' } }, headerFields: { 'PAYMENT-SIGNATURE': { type: 'string', required: false }, 'X-PAYMENT': { type: 'string', required: false } } }, output: { type: 'object', properties: { acesso: 'string', licenca: { certificado: 'string', obra: 'object', tipo_licenca: 'string', direitos: 'array', licenciado: 'string', valor: 'string', acesso_a_fotografia: { url_assinada: 'string', expira_em: 'string' } } } } }; }
 function acceptsFor(lic: Lic, resourceUrlStr: string) {
-  const base = { scheme: 'exact', network: CAIP2_NETWORK, amount: lic.atomic.toString(), maxAmountRequired: lic.atomic.toString(), resource: resourceUrlStr, description: `0001sensations · coleccão fisica · ${lic.descricao}`, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(lic), extra: { name: 'USD Coin', version: '2' }, 'x-orum': { name: '0001sensations · ORUM', licenca: lic.key, amount: `${lic.usdc} USDC`, autor: 'Jorge Silva Martins · Unum · jasm43.base.eth' } };
+  const base = { scheme: 'exact', network: CAIP2_NETWORK, amount: lic.atomic.toString(), maxAmountRequired: lic.atomic.toString(), resource: resourceUrlStr, description: `0001sensations · coleccão fisica · ${lic.descricao}`, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(lic), extra: { name: 'USD Coin', version: '2' }, 'x-orum': { name: '0001sensations · ORUM', licenca: lic.key, amount: `${lic.usdc} USDC`, autor: 'Unum · jasm43.base.eth' } };
   const lista = [base];
   if (CDP_DISPONIVEL) lista.push(cdpAcceptFor(lic, resourceUrlStr));
   return lista;
@@ -306,7 +310,7 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
     obra: { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel },
     tipo_licenca: lic.key, direitos: lic.direitos, licenciado: payer, valor: `${lic.usdc} USDC`,
     prova_pagamento: { tx_hash: txHash, chain: 'base-mainnet', chain_id: CHAIN_ID, token: USDC_BASE, destino: WALLET, via },
-    autor: { nome: 'Jorge Silva Martins', identidade_onchain: 'jasm43.base.eth', wallet: WALLET },
+    autor: { nome: 'Unum', identidade_onchain: 'jasm43.base.eth', wallet: WALLET },
     acesso_a_fotografia: acesso ?? { erro: 'fotografia ainda nao preservada para esta obra -- licenca emitida, acesso a imagem pendente' },
     emitida_em: new Date().toISOString(), valida_ate: validaAte,
     truth_machine: truthMachineCatalogo(),
@@ -334,11 +338,12 @@ async function catalogo(req: Request) {
   const lista = Array.isArray(fisicas) ? fisicas : [];
   const comFoto = lista.filter((f: any) => f.bytes_na_arca).length;
   return {
-    arquivo: '0001sensations · coleccão fisica', autor: 'Jorge Silva Martins · Unum', ens: 'jasm43.base.eth', wallet: WALLET, periodo: '2011–2021',
+    arquivo: '0001sensations · coleccão fisica', autor: 'Unum', ens: 'jasm43.base.eth', wallet: WALLET, periodo: '2011–2021',
     principio: 'Uma obra fisica original. Uma fotografia preservada. Um hash. Uma licenca.',
     total_obras: TOTAL_OBRAS_FISICAS, com_fotografia_preservada_privadamente: comFoto,
     obras: lista.map((f: any) => ({ id: f.id, titulo: f.titulo, ano: f.ano, sha256: f.sha256, descricao_visivel: f.descricao_visivel, fotografia_preservada: !!f.bytes_na_arca, fotografia_publica: false })),
     licencas: Object.values(LICENCAS).map((l) => ({ tipo: l.key, sku: l.sku, preco: `${l.usdc} USDC`, duracao_da_licenca: l.dias ? `${l.dias} dias` : 'perpetua', duracao_do_acesso_a_imagem: `${l.acesso_segundos}s (URL assinada, gerada apos pagamento)`, direitos: l.direitos, descricao: l.descricao, endpoint: resourceUrlFor(req, l) })),
+    reacesso: { endpoint: publicoUrl(req, 'reacesso'), autenticacao: 'assinatura personal_sign da carteira licenciada', novo_pagamento: false, condicao: 'licenca valida e nao revogada; fotografia verificada pelo hash da licenca', instrucoes: 'GET com ?tx=hash devolve a mensagem para assinar; POST com transactionHash, issued_at, nonce, signature devolve nova URL temporaria.' },
     licenciamento_nao_exclusivo: 'Nenhuma licenca e exclusiva. Nao ha limite ao numero de vezes que uma obra pode ser licenciada.',
     truth_machine: truthMachineCatalogo(),
     boundaries_machine: boundariesMachineLicenca(),
@@ -352,7 +357,7 @@ async function catalogo(req: Request) {
 
 async function amostra(req: Request) {
   const obra = await encontrarObraFisica(null);
-  return { amostra: 'gratuita', nota: 'Metadados de uma obra fisica real, sem imagem -- as fotografias sao privadas. Para aceder a fotografia, adquire uma licenca.', obra: obra ? { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel, fotografia_preservada: !!obra.bytes_na_arca } : null, proveniencia: { autor: 'Jorge Silva Martins · Unum · jasm43.base.eth', ia_generativa: false, periodo: '2011–2021' }, licenciar: Object.values(LICENCAS).map((l) => ({ tipo: l.key, preco: `${l.usdc} USDC`, endpoint: resourceUrlFor(req, l) })), catalogo_completo: publicoUrl(req, 'catalogo'), timestamp: new Date().toISOString() }; }
+  return { amostra: 'gratuita', nota: 'Metadados de uma obra fisica real, sem imagem -- as fotografias sao privadas. Para aceder a fotografia, adquire uma licenca.', obra: obra ? { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel, fotografia_preservada: !!obra.bytes_na_arca } : null, proveniencia: { autor: 'Unum · jasm43.base.eth', ia_generativa: false, periodo: '2011–2021' }, licenciar: Object.values(LICENCAS).map((l) => ({ tipo: l.key, preco: `${l.usdc} USDC`, endpoint: resourceUrlFor(req, l) })), catalogo_completo: publicoUrl(req, 'catalogo'), timestamp: new Date().toISOString() }; }
 
 
 /* ORA · HAL PROVIDER · V1 · 04/09/2026
@@ -483,8 +488,36 @@ async function halProvider(req: Request): Promise<Response> {
   return halJson(HAL_FIXTURE_RESPONSE);
 }
 
+
+const reacesso = createRenewalHandler({
+  loadLicense: async (tx) => {
+    const { data, error } = await sb.from('ora_licencas_fisicas').select('id,tx_hash,obra_id,obra_sha256,tipo_licenca,licenciado,valida_ate,revogada_em').eq('tx_hash', tx).maybeSingle();
+    if (error) throw new Error('license_read_failed');
+    return data && data.tipo_licenca in LICENCAS ? data : null;
+  },
+  verifySignature: async (address, message, signature) => {
+    const { createPublicClient, fallback, http } = await import('npm:viem@2.56.3');
+    const client = createPublicClient({ transport: fallback(RPCS.map(url => http(url, { timeout: 5000, retryCount: 0 })), { retryCount: 0 }) });
+    return client.verifyMessage({ address: address as `0x${string}`, message, signature: signature as `0x${string}` });
+  },
+  deliver: async (license, maxSeconds) => {
+    const obra = await encontrarObraFisica(String(license.obra_id));
+    if (!obra?.bytes_na_arca || !obra.caminho_arca || !/^[a-f0-9]{64}$/i.test(license.obra_sha256 || '') || obra.sha256 !== license.obra_sha256) return null;
+    const { data, error } = await sb.storage.from(BUCKET_PRIVADO).download(obra.caminho_arca);
+    if (error || !data || data.size > 25 * 1024 * 1024) return null;
+    const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await data.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
+    if (hash !== license.obra_sha256.toLowerCase()) return null;
+    const { data: fresh, error: recheckError } = await sb.from('ora_licencas_fisicas').select('revogada_em,valida_ate,obra_sha256,licenciado,obra_id').eq('id', license.id).single();
+    if (recheckError || !fresh || fresh.revogada_em || fresh.obra_sha256 !== license.obra_sha256 || fresh.obra_id !== license.obra_id || fresh.licenciado !== license.licenciado) return null;
+    const seconds = Math.min(maxSeconds, fresh.valida_ate ? Math.floor((Date.parse(fresh.valida_ate) - Date.now()) / 1000) : 300);
+    if (!Number.isFinite(seconds) || seconds < 1) return null;
+    return gerarAcessoAssinado(obra, { ...LICENCAS[license.tipo_licenca as LicKey], acesso_segundos: seconds }, license.id);
+  },
+});
+
 async function nucleo(req: Request): Promise<Response> {
   const url = new URL(req.url); const path = url.pathname; const obraQuery = url.searchParams.get('obra');
+  if (path.endsWith('/reacesso')) return reacesso(req);
   if (path.includes('/hal')) return halProvider(req);
   if (path.endsWith('/atestador')) return new Response(JSON.stringify(await attestorProof()), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': VERSAO } });
   if (path.endsWith('/verificar')) {
