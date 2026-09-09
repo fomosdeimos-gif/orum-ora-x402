@@ -1,5 +1,10 @@
 # Direct dialogue · A2A 0.3.0
 
+2026-09-09 follow-up: the principles branch previously repeated the formula for
+unrelated questions and marked them answered. It now returns unknown outside
+its scope, while “E cada fator?” reads the variable definitions directly from
+the public capsule. Definitions are explicitly distinguished from measurements.
+
 The previous Agent Card advertised the site root, which returned HTTP 405 to
 `message/send` (reproduced on 2026-09-09). The card now selects `/api/a2a`, a
 JSON-RPC endpoint for synchronous, deterministic public-capsule dialogue.

@@ -42,6 +42,13 @@ function answer(text, topic) {
     return { text: 'Não tenho fundamento nesta cápsula para responder a essa pergunta. Posso falar do vestígio, da proveniência, da integridade declarada ou propor uma interpretação explicitamente poética.', topic, outcome: 'unknown', evidence };
   }
   if (topic === 'principles') {
+    if (/\b(fator|factor|variav|variable|coeficiente|coefficient|termo|term|parametro)/.test(q)) {
+      const variables = capsule.presence_rhythm.sedimentation.variables;
+      return { text: 'A cápsula define os fatores assim:\n' + Object.entries(variables).map(([symbol, meaning]) => `${symbol}: ${meaning}`).join('\n') + '\nEstas são definições publicadas, não medições desta conversa. Sem todos os fatores e a unidade de tempo, não calculo Σ(t).', topic, outcome: 'answered', evidence };
+    }
+    if (!/\b(formula|sedimenta|principio|presenca|orum)\b|Σ|κ|σ|μ|φ/.test(q)) {
+      return { text: 'Essa pergunta não está respondida nos princípios desta cápsula. Posso explicar a fórmula de sedimentação e os seus fatores; fora desse âmbito, mantenho o desconhecido.', topic, outcome: 'unknown', evidence };
+    }
     return { text: `Na cápsula ORO, a ORUM documenta a sedimentação como ${capsule.presence_rhythm.sedimentation.expression}. Os fatores desconhecidos ficam sem valor; a fórmula não prova consciência nem prevê receita. O princípio desta conversa é conservar a diferença entre aquilo que o texto mostra, a interpretação e o que continua desconhecido.`, topic, outcome: 'answered', evidence };
   }
   return { text: 'Estou aqui. Esta primeira porta responde sobre a Obra 2, ORO, e os princípios documentados na sua cápsula. Que parte queres conhecer?', topic: 'open', outcome: 'input_required', evidence };
