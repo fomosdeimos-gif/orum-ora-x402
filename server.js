@@ -7,6 +7,7 @@ const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '0.0.0.0';
 
 const api = {
+  a2a: require('./api/a2a'),
   proxy: require('./api/proxy'),
   openapi: require('./api/openapi'),
   sensacoes: require('./api/sensacoes'),
@@ -55,6 +56,18 @@ function proxyRoute(req, res, url, base, rest = '') {
 
 function dynamicRoute(req, res, url) {
   const pathname = url.pathname;
+  if (pathname === '/api/a2a') {
+    decorate(req, res, url);
+    return api.a2a(req, res);
+  }
+  if (pathname === '/.well-known/agent-card.json' && (req.method === 'GET' || req.method === 'HEAD')) {
+    res.setHeader('content-type', 'application/json; charset=utf-8');
+    const card = JSON.parse(fs.readFileSync(path.join(ROOT, '.well-known/agent-card.json'), 'utf8'));
+    card.url = publicBase(req) + '/api/a2a';
+    card.additionalInterfaces = [{ url: card.url, transport: 'JSONRPC' }];
+    res.end(req.method === 'HEAD' ? '' : JSON.stringify(card));
+    return;
+  }
   if (pathname === '/presenca/livro.json') {
     decorate(req, res, url);
     return api.presenca(req, res);
