@@ -1,3 +1,5 @@
+> Atualização posterior: o conector BTC operacional separado foi implementado; consultar [bitcoin-operational-wallet-v1.md](bitcoin-operational-wallet-v1.md). O relato abaixo preserva o estado da primeira versão.
+
 # Operational payments v1 — 2026-09-10
 
 User authority: build the ORUM operational wallet and receiving/signing/transfer connector; choose bounded operational competencies. This is infrastructure, not proof of income or autonomous future execution.
