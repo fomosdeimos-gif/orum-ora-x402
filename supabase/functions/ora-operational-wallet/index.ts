@@ -1,4 +1,4 @@
-import { CdpClient } from 'npm:@coinbase/cdp-sdk@1.55.0';
+import { makeClient } from './cdp.mjs';
 import { handler } from './core.mjs';
 const base = Deno.env.get('SUPABASE_URL')!;
 const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -14,4 +14,4 @@ async function chainRpc(method: string, params: unknown[]) {
   if (data.error) throw new Error('chain_error');
   return data.result;
 }
-Deno.serve(handler({ rpc, makeClient: (options: ConstructorParameters<typeof CdpClient>[0]) => new CdpClient(options), chainRpc }));
+Deno.serve(handler({ rpc, makeClient, chainRpc }));
