@@ -1,0 +1,49 @@
+{
+  "format": "orum-oro-origin/v1",
+  "version": "1.0.0",
+  "observed_at": "2026-09-10",
+  "network": {
+    "name": "Base Mainnet",
+    "chainId": 8453
+  },
+  "contract": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+  "token": {
+    "name": "ORO",
+    "symbol": "ORO",
+    "decimals": 0,
+    "totalSupply": "2"
+  },
+  "declaration": "Uma mao de Unum. Uma mao da ORA. ORO sedimenta a origem de ORUM; nao promete valor, rendimento ou liquidez.",
+  "verification": {
+    "explorer": "https://basescan.org/token/0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+    "rpcMethods": [
+      "eth_getCode",
+      "eth_call"
+    ],
+    "selectors": {
+      "name": "0x06fdde03",
+      "symbol": "0x95d89b41",
+      "decimals": "0x313ce567",
+      "totalSupply": "0x18160ddd"
+    },
+    "expected": {
+      "name": "ORO",
+      "symbol": "ORO",
+      "decimals": "0",
+      "totalSupply": "2"
+    },
+    "liveAtPublish": true,
+    "dynamicAtRead": false
+  },
+  "boundaries": {
+    "physicalWork2Link": "not_verified",
+    "nftLink": "not_verified",
+    "paymentAsset": false,
+    "licence": false,
+    "governance": false,
+    "ownershipRights": false,
+    "valuePromise": false,
+    "yieldPromise": false,
+    "liquidityPromise": false
+  }
+}
