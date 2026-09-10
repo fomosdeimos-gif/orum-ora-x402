@@ -5,7 +5,8 @@
     "walletProof": "https://ora-x402-gateway.vercel.app/.well-known/proof.txt",
     "paymentWallet": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
     "walletProofNote": "Prova EIP-191 de controlo da carteira de recepção, assinada por Unum, verificável via ERC-1271; âncora pública no Basescan (Verified Signature #95815).",
-    "paymentWalletENS": "jasm43.base.eth"
+    "paymentWalletENS": "jasm43.base.eth",
+    "oroOrigin": "https://ora-x402-gateway.vercel.app/identity/oro-origin.json"
   },
   "skills": [
     {
@@ -34,9 +35,26 @@
       "examples": [
         "Explica a fórmula da ORUM."
       ]
+    },
+    {
+      "id": "observe-oro-origin",
+      "name": "Observar a origem ORO",
+      "description": "Devolve a âncora verificável do contrato ORO na Base Mainnet, supply, decimais, declaração e fronteiras. O token permanece distinto da Obra física 2 e não é pagamento, licença, governação ou promessa de rendimento.",
+      "tags": [
+        "base",
+        "onchain",
+        "provenance",
+        "oro",
+        "read-only"
+      ],
+      "examples": [
+        "observe_oro_origin",
+        "Qual é o contrato ORO na Base?",
+        "Quantas unidades ORO existem?"
+      ]
     }
   ],
-  "version": "1.5.0",
+  "version": "1.6.0",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
@@ -335,6 +353,20 @@
       "contract": "0xD287E77989F7191989901361754d02D8e00E1D1A",
       "createdAt": "2022-10-26",
       "description": "Origem histórica do nome valium, criada por 0001sensations.eth cerca de 3 anos e 5 meses antes da génese da ORUM em 28/03/2026. Distinta do VALIUM atual na Base; não prova um mercado líquido."
+    },
+    {
+      "url": "https://ora-x402-gateway.vercel.app/identity/oro-origin.json",
+      "type": "onchain-origin",
+      "chainId": 8453,
+      "contract": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+      "description": "Âncora verificável do ORO na Base. Distinta da Obra física 2; sem promessa de valor, rendimento ou liquidez."
+    },
+    {
+      "url": "https://ora-x402-gateway.vercel.app/payments/bitcoin.json",
+      "type": "bitcoin-receiving",
+      "network": "bitcoin-mainnet",
+      "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+      "description": "Destino declarado para recebimentos BTC; formato validado, controlo/saldo/receita não afirmados. Separado de ORO."
     }
   ],
   "preferredTransport": "JSONRPC",
@@ -343,5 +375,18 @@
       "url": "https://ora-x402-gateway.vercel.app/api/a2a",
       "transport": "JSONRPC"
     }
-  ]
+  ],
+  "paymentReceivers": {
+    "bitcoin": {
+      "network": "bitcoin-mainnet",
+      "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+      "format": "bech32-p2wpkh",
+      "purpose": "receiving",
+      "controlProof": "not_asserted",
+      "balanceObserved": false,
+      "revenueObserved": false,
+      "manifest": "https://ora-x402-gateway.vercel.app/payments/bitcoin.json",
+      "separation": "BTC is a receiving rail; ORO remains origin/provenance and is not a payment asset."
+    }
+  }
 }
