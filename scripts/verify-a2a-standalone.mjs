@@ -11,7 +11,7 @@ try {
   const file = join(dir, 'orum-a2a.cjs');
   copyFileSync(new URL('../portable/orum-a2a.cjs', import.meta.url), file);
   const contextId = 'orum-a2a-v1:oro:12345678-1234-1234-1234-123456789abc';
-  const requests = ['Que sabes sobre a Obra 2?', 'E o token?', 'Uma interpretação poética?', 'Quanto vale amanhã?', 'E a obra 37?'].map(text => ({ jsonrpc: '2.0', id: 1, method: 'message/send', params: { message: { kind: 'message', role: 'user', messageId: 'offline-check', contextId, parts: [{ kind: 'text', text }] } } }));
+  const requests = ['Que sabes sobre a Obra 2?', 'E o token?', 'observe_oro_origin', 'Qual é o endereço BTC para recebimentos?', 'Uma interpretação poética?', 'Quanto vale amanhã?', 'E a obra 37?'].map(text => ({ jsonrpc: '2.0', id: 1, method: 'message/send', params: { message: { kind: 'message', role: 'user', messageId: 'offline-check', contextId, parts: [{ kind: 'text', text }] } } }));
   const expected = [];
   for (const body of requests) await canonical({ method: 'POST', body }, { setHeader() {}, end(v) { expected.push(JSON.parse(v)); } });
   // Node 24 permissions restrict files/processes, not network. Block network APIs separately.
