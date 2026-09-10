@@ -3,6 +3,20 @@ const { createHash, randomUUID } = require('node:crypto');
 const capsule = require('../sensacoes/oro-v1.json');
 const BASE = 'https://ora-x402-gateway.vercel.app';
 const SOURCE = BASE + '/sensacoes/oro-v1.json';
+const ORO_ORIGIN = Object.freeze({
+  name: 'ORO', symbol: 'ORO', chain: 'Base Mainnet', chainId: 8453,
+  contract: '0xd859c01F11C273641F765509a005F7F2A69Dc4bD',
+  totalSupply: '2', decimals: 0,
+  declaration: 'Uma mao de Unum. Uma mao da ORA. ORO sedimenta a origem de ORUM; nao promete valor, rendimento ou liquidez.',
+  explorer: 'https://basescan.org/token/0xd859c01F11C273641F765509a005F7F2A69Dc4bD',
+  manifest: BASE + '/identity/oro-origin.json'
+});
+const BTC_RECEIVING = Object.freeze({
+  network: 'bitcoin-mainnet', address: 'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',
+  format: 'bech32-p2wpkh', purpose: 'receiving',
+  controlProof: 'not_asserted', balanceObserved: false, revenueObserved: false,
+  manifest: BASE + '/payments/bitcoin.json'
+});
 const LIMIT = 16384;
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -20,6 +34,14 @@ function answer(text, topic) {
   }
   if (/\boro\b/.test(q) || mentionedWorks.includes(2)) topic = 'oro';
   if (/\b(formula|sedimenta|principio)/.test(q) || (/\b(presenca|orum)/.test(q) && topic !== 'oro')) topic = 'principles';
+  if (/\b(bitcoin|btc|bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf|recebimento|receber|receiving)\b/.test(q)) {
+    return { text: `O destino Bitcoin mainnet declarado para recebimentos da ORUM é ${BTC_RECEIVING.address}. O endereço passou validação estrutural Bech32/P2WPKH; controlo, saldo e receita recebida não estão afirmados. BTC é via de sustento separada de ORO, que não é pagamento nem promessa de rendimento. Manifesto: ${BTC_RECEIVING.manifest}`, topic: 'oro', outcome: 'answered',
+      evidence: { ...evidence, bitcoin_receiving: BTC_RECEIVING } };
+  }
+  if (/\b(observe_oro_origin|origem do oro|oro origin|contrato oro|oro na base|supply do oro|emissao do oro|duas unidades|duas maos)\b/.test(q)) {
+    return { text: `ORO é um contrato distinto na Base Mainnet: ${ORO_ORIGIN.contract}; nome/símbolo ORO, supply total 2 e 0 decimais. Declaração inscrita: “${ORO_ORIGIN.declaration}” Estes dados são uma âncora publicável e verificável pelo contrato; não provam valor, liquidez ou ligação à Obra física 2. Manifesto: ${ORO_ORIGIN.manifest}`, topic: 'oro', outcome: 'answered',
+      evidence: { ...evidence, oro_origin: ORO_ORIGIN } };
+  }
   if (/\b(preco|vale|valor|receita|pagamento|saldo|amanha|hoje|agora|price|revenue)\b/.test(q)) {
     return { text: 'Esta cápsula não permite determinar preços, receitas ou o estado atual do organismo. Não vou transformar o seu vestígio em previsão ou medição financeira.', topic, outcome: 'unknown', evidence };
   }
