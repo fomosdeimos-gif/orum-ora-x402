@@ -1,3 +1,6 @@
+import * as btc from 'npm:@scure/btc-signer@1.8.1';
+import { pubECDSA } from 'npm:@scure/btc-signer@1.8.1/utils';
+import { bitcoinHandler, bitcoinNetwork } from './bitcoin.mjs';
 import { makeClient } from './cdp.mjs';
 import { handler } from './core.mjs';
 const base = Deno.env.get('SUPABASE_URL')!;
@@ -14,4 +17,4 @@ async function chainRpc(method: string, params: unknown[]) {
   if (data.error) throw new Error('chain_error');
   return data.result;
 }
-Deno.serve(handler({ rpc, makeClient, chainRpc }));
+Deno.serve(handler({ rpc, makeClient, chainRpc, bitcoinAction: bitcoinHandler({btc,pubECDSA}), bitcoinNet: bitcoinNetwork() }));
