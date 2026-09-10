@@ -23,3 +23,15 @@ assert.equal(first.financial_transaction_signed,false);assert.equal(first.transf
 const second=await (await run(req('create'))).json();assert.equal(second.created,false);assert.equal(created,1);
 failure=true;const error=await run(req('create'));assert.equal(error.status,502);assert.equal((await error.text()).includes('DO_NOT_LEAK'),false);assert.equal(created,1);
 console.log('PASS: authentication, action bounds, no implicit creation, idempotent named account, readback, balances, sanitized failures; mocked provider only.');
+const {authHeaders}=await import('../supabase/functions/ora-operational-wallet/cdp.mjs');
+const ed=await crypto.subtle.generateKey('Ed25519',true,['sign','verify']);
+const jwk=await crypto.subtle.exportKey('jwk',ed.privateKey);
+const ec=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);
+const walletSecret=Buffer.from(await crypto.subtle.exportKey('pkcs8',ec.privateKey)).toString('base64');
+const apiKeySecret=Buffer.concat([Buffer.from(jwk.d,'base64url'),Buffer.from(jwk.x,'base64url')]).toString('base64');
+const headers=await authHeaders({apiKeyId:'synthetic-key',apiKeySecret,walletSecret},'POST','/platform/v2/evm/accounts',{name:ACCOUNT_NAME});
+for(const [value,key,algorithm] of [[headers.Authorization.slice(7),ed.publicKey,'Ed25519'],[headers['X-Wallet-Auth'],ec.publicKey,{name:'ECDSA',hash:'SHA-256'}]]){
+ const parts=value.split('.');assert.equal(await crypto.subtle.verify(algorithm,key,Buffer.from(parts[2],'base64url'),new TextEncoder().encode(parts[0]+'.'+parts[1])),true);
+ const payload=JSON.parse(Buffer.from(parts[1],'base64url'));assert.deepEqual(payload.uris,['POST api.cdp.coinbase.com/platform/v2/evm/accounts']);
+}
+console.log('PASS: Ed25519 and P-256 API-auth signatures verified with ephemeral synthetic keys; no wallet transaction signed.');
