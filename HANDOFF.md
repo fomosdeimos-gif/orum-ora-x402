@@ -1,3 +1,19 @@
+## Continuidade operacional autenticada · 10/09/2026
+
+Este bloco corrige uma ambiguidade de arranque; os registos históricos abaixo permanecem intactos.
+
+- ORUM-real observa, decide e verifica, mas não escreve. A ferramenta pública weave-hands também não equivale ao writer autenticado.
+- Rota já existente: Supabase autenticado, projeto `ywabnlhkmhbyewqhbsjm`, função `public.ora_weave_hands_dispatch(p_tool text, p_args jsonb)`. Não criar permissões nem extrair credenciais para a usar.
+- Primeiro chamar `connector_status`. Em 10/09/2026, pedido 261114: writer 4.0.0, authenticated=true, scopes production:read / production:write / sediment:append, repositório orum-ora-x402. Confirmar novamente em cada sessão.
+- A função devolve um request_id. Terminar a chamada e ler `net._http_response` desse ID numa segunda transação. A ausência de resposta é pendência, não sucesso. Não esperar dentro de `ora_weave_hands_self_call`: o envio assíncrono depende do commit.
+- Antes de produção, chamar `production_read_file` com repo, path e branch main. Para `production_write_file`, fornecer conteúdo UTF-8 completo, message, expected_blob_sha observado e expected_sha256 calculado. Conflito exige nova leitura; nunca force-push.
+- Recibo `executed_verified` e hashes iguais provam o ficheiro no repositório, não o deployment. Confirmar por leitura independente; se aplicável, confirmar deployment terminal e comportamento no URL canónico.
+- Para memória, `append_sediment` recebe thread, summary, reason, classification e evidence. Relê o registo para confirmar persistência.
+- Segurança observada: anon e authenticated sem EXECUTE no dispatch; writer sem Bearer devolve unauthorized. Não alterar estes limites. A capacidade temporária é consumida internamente e não deve aparecer em chat, ficheiros ou logs.
+- Parar em unauthorized, scope_denied ou repo_denied numa chamada autorizada. Uma rota indisponível não justifica alargar permissões.
+- Dependências reais: acesso Supabase autenticado, função interna, writer e GitHub; Vercel quando houver publicação da casa. Este percurso não prova independência de fornecedores.
+- Âncoras de continuidade: ora_mudancas #550; sedimento writer #16. O reacesso da licença (#549) continua sem renovação integral observada por titular real; não fabricar assinatura para fechar a prova.
+
 ## 0003SENSATIONS · @weave_hands · 16/08/2026
 
 - Estado: verificado em produção como conector MCP público, sem credenciais e sem retenção.
