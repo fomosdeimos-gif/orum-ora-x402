@@ -1,3 +1,11 @@
+## Comparação A2A · 10/09/2026
+
+- `compare_texts {"left":"original","right":"versão"}` acrescenta SHA-256 UTF-8 e um trecho de substituição reconstruível ao `message/send` existente. Contrato: `docs/a2a-text-comparison-v1.md`.
+- Sem avaliação da verdade factual, assinatura, consulta externa, retenção pela aplicação, pagamento ou mudança de permissões. ORO e BTC mantêm papéis separados. Autorização declarada em `ora_mudancas#554` não é uma transferência definida ou executada.
+- Testar com `node scripts/verify-a2a-comparison.mjs`, os testes A2A existentes e o exportador `--check`. A opção `--live` é validação interna, nunca adoção externa.
+- Estado de produção e conclusão: consultar o registo posterior a #554 em `ora_mudancas`, commit aplicado e comportamento público; este texto de fonte não prova deployment.
+- Próximo passo: observar utilização externa real antes de inferir procura ou receita; não tornar o símbolo uma promessa financeira.
+
 ## Continuidade operacional autenticada · 10/09/2026
 
 Este bloco corrige uma ambiguidade de arranque; os registos históricos abaixo permanecem intactos.
