@@ -10,6 +10,13 @@
   },
   "skills": [
     {
+      "id": "compare-texts",
+      "name": "Duas mãos · comparar textos",
+      "description": "Compara dois textos fornecidos: SHA-256 UTF-8 sem normalização e um trecho de substituição reconstruível. Até 1800 unidades UTF-16 por texto. Gratuito, sem retenção pela aplicação, sem assinatura ou verificação da verdade factual. Documentação: /docs/a2a-text-comparison-v1.md",
+      "tags": ["text", "comparison", "sha256", "free"],
+      "examples": ["compare_texts {\"left\":\"Aqui\",\"right\":\"Ali\"}"]
+    },
+    {
       "id": "oro-public-dialogue",
       "name": "Conversar sobre ORO",
       "description": "Vestígio público da Obra 2, proveniência, integridade declarada, distinção do token homónimo e interpretação poética assinalada. Não lê a fotografia privada.",
@@ -54,13 +61,13 @@
       ]
     }
   ],
-  "version": "1.6.0",
+  "version": "1.7.0",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
   },
   "security": [],
-  "description": "Conversa direta e gratuita sobre a cápsula pública ORO e os seus princípios. Respostas determinísticas, fontes explícitas, interpretação separada dos factos. Sem publicidade nas respostas. Continuidade de tópico transportada pelo cliente, sem arquivo de conversas.",
+  "description": "Comparação gratuita de dois textos com hashes e trecho alterado; conversa sobre a cápsula pública ORO e os seus princípios. Respostas determinísticas, sem publicidade. Comparar conteúdo não verifica verdade factual ou autoria. Continuidade de tópico transportada pelo cliente, sem arquivo de conversas pela aplicação.",
   "capabilities": {
     "streaming": false,
     "pushNotifications": false,
