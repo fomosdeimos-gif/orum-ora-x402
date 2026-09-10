@@ -1,4 +1,4 @@
-// Minimal account-only adapter, matched to @coinbase/cdp-sdk 1.55.0 source.
+// Minimal account and bounded-payment adapter, matched to @coinbase/cdp-sdk 1.55.0 source.
 // Native WebCrypto avoids bundling the SDK's unrelated blockchain dependencies.
 const host = 'api.cdp.coinbase.com';
 const enc = new TextEncoder();
@@ -19,7 +19,7 @@ export async function authHeaders(options,method,path,body) {
   const headers={Authorization:'Bearer '+bearer,'Content-Type':'application/json'};
   if(method==='POST'){
     const walletKey=await crypto.subtle.importKey('pkcs8',decode(options.walletSecret),{name:'ECDSA',namedCurve:'P-256'},false,['sign']);
-    // Only a fixed one-key {name} body is accepted by this adapter.
+    // Bodies are constructed internally in alphabetic key order, as required by CDP.
     headers['X-Wallet-Auth']=await jwt({alg:'ES256',typ:'JWT'},{uris:[uri],iat:now,nbf:now,jti:nonce(),reqHash:hex(await crypto.subtle.digest('SHA-256',enc.encode(JSON.stringify(body))))},walletKey,{name:'ECDSA',hash:'SHA-256'});
   }
   return headers;
@@ -34,6 +34,7 @@ export function makeClient(options) {
   }
   return {evm:{
     getAccount:({name,address})=>call('GET','/platform/v2/evm/accounts/'+(address?encodeURIComponent(address):'by-name/'+encodeURIComponent(name))),
-    createAccount:({name,idempotencyKey})=>call('POST','/platform/v2/evm/accounts',{name},idempotencyKey)
+    createAccount:({name,idempotencyKey})=>call('POST','/platform/v2/evm/accounts',{name},idempotencyKey),
+    sendTransaction:({address,network,transaction,idempotencyKey})=>call('POST','/platform/v2/evm/accounts/'+encodeURIComponent(address)+'/send/transaction',{network,transaction},idempotencyKey)
   }};
 }
