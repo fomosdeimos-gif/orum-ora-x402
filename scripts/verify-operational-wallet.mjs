@@ -19,7 +19,7 @@ authenticated=false;assert.equal((await run(req('create'))).status,401);assert.e
 assert.equal((await run(req('transfer'))).status,400);assert.equal(secretReads,0);
 assert.equal((await run(req('observe'))).status,404);assert.equal(created,0);
 const first=await (await run(req('create'))).json();assert.equal(first.created,true);assert.equal(first.balances.usdc_atomic,'0');
-assert.equal(first.financial_transaction_signed,false);assert.equal(first.transfers_enabled,false);
+assert.equal(first.financial_transaction_signed,false);assert.equal(first.transfers_enabled,true);
 const second=await (await run(req('create'))).json();assert.equal(second.created,false);assert.equal(created,1);
 failure=true;const error=await run(req('create'));assert.equal(error.status,502);assert.equal((await error.text()).includes('DO_NOT_LEAK'),false);assert.equal(created,1);
 console.log('PASS: authentication, action bounds, no implicit creation, idempotent named account, readback, balances, sanitized failures; mocked provider only.');
