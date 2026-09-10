@@ -21,7 +21,39 @@ const LIMIT = 16384;
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
+// A single replacement span, not a semantic verdict or a minimal multi-edit diff.
+// Reject unpaired surrogates so UTF-8 hashes identify the exact supplied strings.
+function compareTexts(text, topic) {
+  let input;
+  try { input = JSON.parse(text.slice('compare_texts'.length).trim()); } catch { input = null; }
+  const valid = value => typeof value === 'string' && value.length <= 1800 &&
+    !/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value);
+  if (!input || Array.isArray(input) || Object.keys(input).some(k => !['left', 'right'].includes(k)) || !valid(input.left) || !valid(input.right)) {
+    return { topic, outcome: 'invalid_input', text: 'Use compare_texts {"left":"original","right":"versão"}. Apenas dois textos Unicode válidos, até 1800 unidades UTF-16 cada; vazios são permitidos.',
+      evidence: { source_kind: 'request_validation', factual_truth_assessed: false } };
+  }
+  const left = [...input.left], right = [...input.right];
+  let prefix = 0, suffix = 0;
+  while (prefix < left.length && prefix < right.length && left[prefix] === right[prefix]) prefix++;
+  while (suffix < left.length - prefix && suffix < right.length - prefix && left[left.length - 1 - suffix] === right[right.length - 1 - suffix]) suffix++;
+  const comparison = {
+    schema: 'orum-text-comparison/v1', equal: input.left === input.right,
+    hash_algorithm: 'SHA-256', encoding: 'UTF-8', normalization: 'none',
+    left: { sha256: digest(input.left), bytes: Buffer.byteLength(input.left), code_points: left.length },
+    right: { sha256: digest(input.right), bytes: Buffer.byteLength(input.right), code_points: right.length },
+    edit: { unit: 'Unicode code point', start: prefix, delete_count: left.length - prefix - suffix,
+      removed: left.slice(prefix, left.length - suffix).join(''), inserted: right.slice(prefix, right.length - suffix).join('') },
+    method: 'longest common prefix then non-overlapping suffix; one replacement span',
+    factual_truth_assessed: false, authorship_verified: false, signature: null,
+    payment_required: false
+  };
+  return { topic, outcome: 'compared', text: JSON.stringify(comparison), comparison,
+    evidence: { source_kind: 'caller_supplied_text', normalization: 'none', factual_truth_assessed: false,
+      authorship_verified: false, external_adoption_claimed: false } };
+}
+
 function answer(text, topic) {
+  if (/^compare_texts(?:\s|$)/.test(text)) return compareTexts(text, topic);
   const q = normalize(text);
   const evidence = { source: SOURCE, capsule_version: capsule.version, source_kind: 'published_text',
     private_bytes_observed: false, external_adoption_claimed: false };
@@ -131,6 +163,8 @@ module.exports = async (req, res) => {
     parts: [{ kind: 'text', text: result.text }],
     metadata: { outcome: result.outcome, evidence: result.evidence, interpretation: result.interpretation === true,
       continuity: 'client-carried topic only; no server transcript or identity verification',
-      retention: 'no application transcript storage', side_effects: false, inference: 'deterministic public-capsule retrieval' }
+      retention: 'no application transcript storage', side_effects: false,
+      ...(result.comparison ? { comparison: result.comparison } : {}),
+      inference: result.comparison ? 'deterministic text comparison; no factual verification' : 'deterministic public-capsule retrieval' }
   } });
 };
