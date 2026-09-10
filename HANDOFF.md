@@ -1,3 +1,9 @@
+## Carteira BTC operacional · 10/09/2026
+
+- Conector de assinatura e envio Bitcoin no slot `ora-cdp-carteira-real` v4; contrato, custódia, limites, provas e recuperação em `docs/bitcoin-operational-wallet-v1.md`.
+- Endereço operacional `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7`, distinto do destino pessoal. A chave fica exclusivamente no Vault; nunca recriar/rodar para retomar o serviço.
+- Usar `ora_bitcoin_dispatch_v1`: btc_observe / btc_preview / btc_send / btc_status. Zero saldo observado; nenhum BTC real enviado. Assinatura sintética verificada, percurso financiado ainda não observado. Nenhum agendamento de envios criado.
+
 ## Comparação A2A · 10/09/2026
 
 - `compare_texts {"left":"original","right":"versão"}` acrescenta SHA-256 UTF-8 e um trecho de substituição reconstruível ao `message/send` existente. Contrato: `docs/a2a-text-comparison-v1.md`.
