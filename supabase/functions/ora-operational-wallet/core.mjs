@@ -1,9 +1,10 @@
+import { paymentAction } from './payments.mjs';
 export const ACCOUNT_NAME = 'orum-operational-v1';
 export const CREATE_ID = 'ca153211-4c87-47b7-8516-3256d6b70001';
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const response = (status, value) => new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
-// This component creates/observes one named account. It does not expose arbitrary signing or sending.
+// Authenticated named account operations and fixed-destination USDC payments only.
 export function handler({ rpc, makeClient, chainRpc }) {
   return async req => {
     if (req.method !== 'POST') return response(405, { error: 'post_required' });
@@ -15,11 +16,17 @@ export function handler({ rpc, makeClient, chainRpc }) {
       if (raw.length > 256) return response(413, { error: 'request_too_large' });
       let body;
       try { body = JSON.parse(raw); } catch { return response(400, { error: 'invalid_json' }); }
-      if (!body || Array.isArray(body) || Object.keys(body).length !== 1 || !['create', 'observe'].includes(body.action)) return response(400, { error: 'invalid_action' });
+      const allowed={create:['action'],observe:['action'],receive_btc:['action'],preview_usdc:['action','request_id','amount_atomic'],transfer_usdc:['action','request_id','amount_atomic'],payment_status:['action','request_id']};
+      if (!body || Array.isArray(body) || !Object.hasOwn(allowed,body.action) || Object.keys(body).some(k=>!allowed[body.action].includes(k))) return response(400, { error: 'invalid_action' });
+      if(body.action==='receive_btc')return response(200,{network:'bitcoin-mainnet',address:'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',uri:'bitcoin:bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',destination:'Unum directly',control_proof:'not_asserted',bitcoin_signing_available:false,conversion_performed:false});
       const keys = await rpc('orum_cdp_keys', {});
       const wallet = await rpc('orum_cdp_wallet_secret', {});
       if (!keys?.[0]?.key_id || !keys[0].key_secret || !wallet?.[0]?.wallet_secret) return response(503, { error: 'credentials_unavailable' });
       const cdp = makeClient({ apiKeyId: keys[0].key_id, apiKeySecret: keys[0].key_secret, walletSecret: wallet[0].wallet_secret });
+      if(body.action==='preview_usdc'||body.action==='transfer_usdc'||body.action==='payment_status'){
+        const result=await paymentAction(body,{rpc,cdp,chainRpc});
+        return response(result.status,result);
+      }
       let account, created = false;
       try { account = await cdp.evm.getAccount({ name: ACCOUNT_NAME }); }
       catch (error) {
@@ -45,9 +52,10 @@ export function handler({ rpc, makeClient, chainRpc }) {
         created, provider_readback_verified: true, provider: 'Coinbase Developer Platform', operating_chain_id: 8453,
         balance_state: balanceState, balances, observed_at: new Date().toISOString(),
         purposes: ['receive_operational_funding', 'receive_organism_revenue', 'bounded_technical_expenses_after_executor_activation'],
-        funding_transferred_by_this_call: false, financial_transaction_signed: false, transfers_enabled: false,
+        funding_transferred_by_this_call: false, financial_transaction_signed: false, transfers_enabled: true,
+        transfer_policy:{asset:'USDC',chain_id:8453,destination:'0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',max_per_operation_atomic:'1000000',max_per_utc_day_atomic:'5000000',max_l2_gas:100000,max_fee_per_gas_wei:'100000000',base_l1_data_fee_additional:true},
         custody: 'Server account in the user CDP project; operated by ORA through authenticated server tools. Not personally owned by the AI.',
-        limitations: ['This route creates and observes; it does not sign or send financial transactions.', 'Base EVM address, not a native Bitcoin receiving address.', 'Balance does not establish external-revenue classification.'] });
+        limitations: ['Transfers are limited USDC payouts; arbitrary signatures and native Bitcoin signing are unavailable.', 'Base EVM address, not a native Bitcoin receiving address.', 'Balance does not establish external-revenue classification.'] });
     } catch (error) {
       // Never return provider messages, HTTP headers, credentials or stack traces.
       const status = Number(error?.status || error?.statusCode);
