@@ -1,0 +1,30 @@
+{
+  "format": "orum-bitcoin-receiving/v1",
+  "version": "1.0.0",
+  "declared_at": "2026-09-10",
+  "network": "bitcoin-mainnet",
+  "asset": "BTC",
+  "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+  "uri": "bitcoin:bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+  "encoding": "bech32",
+  "scriptType": "p2wpkh",
+  "witnessVersion": 0,
+  "validation": {
+    "checksum": "valid",
+    "humanReadablePart": "bc",
+    "programBytes": 20,
+    "structuralOnly": true
+  },
+  "purpose": "ORUM receiving address",
+  "truth": {
+    "declaredBy": "Unum",
+    "controlProof": "not_asserted",
+    "balanceObserved": false,
+    "revenueObserved": false,
+    "externalRevenueCredited": "0"
+  },
+  "separation": {
+    "oroPaymentAsset": false,
+    "note": "BTC receiving is economically separate from ORO origin/provenance."
+  }
+}
