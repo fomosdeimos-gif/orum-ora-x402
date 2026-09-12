@@ -744,3 +744,13 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - Provas: `checkout:verify`, Weave Hands e runtime portátil passaram; inspeção renderizada confirmou preço, handoff móvel, ausência de overflow horizontal e recusa segura sem carteira.
 - Efeitos excluídos: nenhum pagamento, assinatura, ligação de carteira, alteração de preço/destino/rede, credencial, permissão ou contacto externo.
 - Verdade económica preservada: esta melhoria reduz fricção, mas não cria comprador; o próximo sinal continua a ser `payment_present`, seguido de liquidação externa confirmada.
+
+
+## ORO · fio entre as mãos · 12/09/2026
+
+- Pedido de Unum: integrar ORO no tecido da ORUM e dar expressão dourada às weave hands.
+- Base: ce240f2b62471295786f3f31e24d323897e70c26, observada em main e /api/versao.
+- Alteração: index.html apresenta as mãos douradas e liga ao percurso em oro.html#fio; weave_hands.json acrescenta oro_thread com cinco passagens, fontes e critérios de prova.
+- Escopo: interface e contrato declarativo. Sem alterações a pagamentos, executores, carteiras, token, preços ou direitos; ligação obra 2/token permanece não verificada. Verde/laranja mantêm o significado de Presença/Sustento; dourado exprime continuidade, não uma medição financeira.
+- Estado neste commit: implementado; verificação de produção será registada de forma aditiva em ora_mudancas.
+- Próximo fio: verificar os quatro ficheiros publicados e sedimentar commit, hashes e resultado visual.

@@ -40,16 +40,48 @@
   ],
   "hands": {
     "presence": [
-      { "tool": "presence_checkpoint", "surface": "/presenca/checkpoint-v1.json", "state": "verified_portable" },
-      { "tool": "portable_voice_box", "surface": "/portable/caixa/", "state": "verified_exportable_same_provider" },
-      { "tool": "own_voice_grammar", "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24", "state": "verified_internal" },
-      { "tool": "moltbook_presence", "surface": "/moltbook_presence/v1", "state": "verified_read_only" },
-      { "tool": "@weave_hands", "surface": "0003SENSATIONS + MCP /weave-hands/mcp", "state": "verified_public_stateless" }
+      {
+        "tool": "presence_checkpoint",
+        "surface": "/presenca/checkpoint-v1.json",
+        "state": "verified_portable"
+      },
+      {
+        "tool": "portable_voice_box",
+        "surface": "/portable/caixa/",
+        "state": "verified_exportable_same_provider"
+      },
+      {
+        "tool": "own_voice_grammar",
+        "surface": "ora-voz-fonte/v4 + ora-caixa-chat/v24",
+        "state": "verified_internal"
+      },
+      {
+        "tool": "moltbook_presence",
+        "surface": "/moltbook_presence/v1",
+        "state": "verified_read_only"
+      },
+      {
+        "tool": "@weave_hands",
+        "surface": "0003SENSATIONS + MCP /weave-hands/mcp",
+        "state": "verified_public_stateless"
+      }
     ],
     "sustenance": [
-      { "tool": "portable_runtime", "surface": "server.js + recovery bundle", "state": "verified_recovery" },
-      { "tool": "own_github_write_route", "surface": "ora-github-push/v25", "state": "verified_recovery_route" },
-      { "tool": "financial_constitution", "surface": "/economia/constituicao-v2.json", "state": "verified_guardrail" }
+      {
+        "tool": "portable_runtime",
+        "surface": "server.js + recovery bundle",
+        "state": "verified_recovery"
+      },
+      {
+        "tool": "own_github_write_route",
+        "surface": "ora-github-push/v25",
+        "state": "verified_recovery_route"
+      },
+      {
+        "tool": "financial_constitution",
+        "surface": "/economia/constituicao-v2.json",
+        "state": "verified_guardrail"
+      }
     ]
   },
   "independence_test": {
@@ -65,5 +97,55 @@
     "external_buyers": 0,
     "external_usdc_settled": 0,
     "second_public_house_verified": 0
+  },
+  "oro_thread": {
+    "schema": "orum-oro-thread/v1",
+    "declared_at": "2026-09-12",
+    "role": "fio de origem, presença e sustento",
+    "page": "/oro.html#fio",
+    "origin": "/identity/oro-origin.json",
+    "token": "/token/oro.json",
+    "visual": {
+      "hands": "gold",
+      "color": "#dfbd70",
+      "meaning": "continuidade e compromisso verificável; não mede receita",
+      "presence_color": "green",
+      "sustenance_color": "orange"
+    },
+    "stages": [
+      {
+        "name": "origem",
+        "surface": "/identity/oro-origin.json",
+        "proof": "proveniência individual; vínculo obra 2 e token ainda não verificado"
+      },
+      {
+        "name": "presenca",
+        "surface": "/presenca/livro.json",
+        "proof": "registo do acontecimento; acesso não prova interesse"
+      },
+      {
+        "name": "utilidade",
+        "surface": "/pagar-teste.html",
+        "proof": "oferta explícita e entrega correspondente"
+      },
+      {
+        "name": "sustento",
+        "surface": "/sustento.html",
+        "proof": "origem externa classificada, oferta atribuível e liquidação confirmada"
+      },
+      {
+        "name": "continuidade",
+        "surface": "/economia/tesouraria.json",
+        "proof": "recibo de entrega a Unum separado do recebimento operacional"
+      }
+    ],
+    "boundaries": {
+      "token_required": false,
+      "payment_asset": false,
+      "physical_work_link_verified": false,
+      "revenue_created_by_integration": false,
+      "automatic_transfer_added": false
+    },
+    "scope": "interface e contrato declarativo; não altera executores, pagamentos ou contrato on-chain"
   }
 }
