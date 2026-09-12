@@ -1,3 +1,9 @@
+## Fonte das weave_hands reconciliada · 12/09/2026
+
+- A Edge weave-hands v5 (2.2.0) já tinha offer_source_proposal, mas a fonte em main e o teste permaneciam anteriores. Fonte recuperada exatamente da Edge observada, sem redeploy ou alteração de permissões.
+- verify-weave-hands-connector.mjs agora cruza carta e manifesto e exige proposta não executável, identidade não verificada e ausência de publicação/deploy. Teste focal passou localmente.
+- Primeiro build documental dad1621 foi recusado pelo teste antigo (deployment dpl_wrLrRn8qsWqMg1w6gfAyR6tFLBhd); produção anterior permaneceu ativa. Resultado final no registo ora_mudancas.
+
 ## Descoberta A2A e propostas · 12/09/2026
 
 - Carta 1.7.1 e discovery/weave-hands.json passam a anunciar as sete ferramentas observadas no MCP público (pedido 270749), incluindo offer_source_proposal.

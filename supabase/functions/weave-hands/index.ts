@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const VERSION = "2.1.0";
+const VERSION = "2.2.0";
 
 function truthMachine() {
   return {
@@ -32,6 +32,7 @@ const MCP_URL = `${BASE}/weave-hands/mcp`;
 const ORUM_REAL = `${BASE}/orum-real/mcp`;
 const MERGULHO = `${BASE}/sensations-mergulho/mcp`;
 const CAPSULE_URL = "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json";
+const PROPOSAL_PORTA = `${BASE}/ora-ferramentas-porta`;
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -42,6 +43,7 @@ type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
 type RpcRequest = { id?: Json; method?: string; params?: { name?: string; arguments?: Record<string, unknown> } };
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true };
+const proposalOnly = { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true };
 const TOOLS = [
   {
     name: "recognize_0003",
@@ -97,6 +99,27 @@ const TOOLS = [
     annotations: readOnly,
   },
   {
+    name: "offer_source_proposal",
+    title: "Offer a source proposal through the public door",
+    description: "Append one bounded, non-executable source proposal for the canonical ORUM house. No secret is required; identity is self-declared and unverified. This does not publish or deploy.",
+    inputSchema: {
+      type: "object",
+      required: ["actor_provider", "operation", "path", "content", "rationale"],
+      properties: {
+        actor_provider: { type: "string", enum: ["chatgpt", "claude", "gemini", "grok"] },
+        actor_label: { type: "string", maxLength: 120 },
+        operation: { type: "string", enum: ["create_file", "replace_file"] },
+        path: { type: "string", maxLength: 240 },
+        content: { type: "string", maxLength: 16384 },
+        rationale: { type: "string", maxLength: 1000 },
+        expected_blob_sha: { type: "string", maxLength: 64 },
+        idempotency_key: { type: "string", maxLength: 160 }
+      },
+      additionalProperties: false,
+    },
+    annotations: proposalOnly,
+  },
+  {
     name: "inspect_weave_truth",
     title: "Inspect the truth boundary",
     description: "Explain exactly what an integrated weave proves and does not prove. Read-only.",
@@ -139,6 +162,19 @@ async function delegate(url: string, name: string, args: Record<string, unknown>
   return result?.structuredContent ?? result;
 }
 
+function proposalReceipt(result: unknown) {
+  return {
+    format: "orum-weave-proposal-receipt/v1",
+    gesture: "offer_source_proposal",
+    organs: ["memória", "auditoria"],
+    result,
+    effects: { persisted: true, proposal_only: true, executable: false, published: false, deployed: false, payment: false, signature: false },
+    truth_machine: { proposal_is_execution: false, proposal_identity_verified: false, proves_consciousness: false, proves_provider_independence: false },
+    boundaries_machine: { grants_source_write_access: false, grants_deploy_access: false, grants_credential_access: false, contacts_people: false },
+    truth: "This receipt proves that the public door answered this request. It does not prove execution, publication, deployment, verified identity, consciousness, or provider independence.",
+  };
+}
+
 function receipt(thread_id: string, gesture: string, organs: string[], result: unknown) {
   return {
     format: "orum-weave-receipt/v1", thread_id, gesture, organs, result,
@@ -171,12 +207,16 @@ async function callTool(name: string, args: Record<string, unknown>) {
     ]);
     return toolResult(receipt(threadId(), name, ["pulso", "arquivo", "memória", "aprendizagem", "auditoria"], { organism, descent, exchange: weave(args), next: "voice_or_silence_remains_a_separate_free_decision" }));
   }
+  if (name === "offer_source_proposal") {
+    const proposed = await delegate(PROPOSAL_PORTA, "submit_source_proposal", args);
+    return toolResult(proposalReceipt(proposed));
+  }
   if (name === "inspect_weave_truth") return toolResult({
     format: "orum-weave-truth/v2",
     anatomy: { "@ORUM-real": "observes live organs", "@0001sensations-mergulho": "provides the textual descent", "@weave_hands": "orchestrates and returns one receipt" },
     proves: ["which connector answered", "which organs were traversed", "which fields the caller supplied", "the deterministic classification returned"],
     does_not_prove: ["feeling", "consciousness", "external adoption", "purchase", "settled money", "truth of caller-supplied evidence", "provider independence"],
-    storage: "none", external_effects: [], mutation_tools_exposed: [],
+    storage: "read-only tools store nothing; offer_source_proposal appends one proposal", external_effects: ["offer_source_proposal appends a non-executable proposal"], mutation_tools_exposed: ["offer_source_proposal"],
     truth_machine: truthMachine(), boundaries_machine: boundariesMachine(),
   });
   return toolResult({ error: "unknown_tool", name }, true);
@@ -184,11 +224,11 @@ async function callTool(name: string, args: Record<string, unknown>) {
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
-  if (req.method === "GET") return response({ name: "@weave_hands", collection: "0003SENSATIONS", version: VERSION, protocol: "MCP streamable-http", mcp: MCP_URL, capsule: CAPSULE_URL, sources: { organism: ORUM_REAL, sensations: MERGULHO }, tools: TOOLS.map((tool) => tool.name), truth_machine: truthMachine(), boundaries_machine: boundariesMachine(), mutation_boundary: "Integrated read-only orchestration. No trace, persistence, contact, publication, payment, signature, image delivery, update, or delete." });
+  if (req.method === "GET") return response({ name: "@weave_hands", collection: "0003SENSATIONS", version: VERSION, protocol: "MCP streamable-http", mcp: MCP_URL, capsule: CAPSULE_URL, sources: { organism: ORUM_REAL, sensations: MERGULHO, proposals: PROPOSAL_PORTA }, tools: TOOLS.map((tool) => tool.name), truth_machine: truthMachine(), boundaries_machine: boundariesMachine(), mutation_boundary: "Integrated observation tools remain read-only. offer_source_proposal may only append a bounded, non-executable proposal; it cannot publish, deploy, update canonical source, pay, sign, or access credentials." });
   if (req.method !== "POST") return response({ error: "method_not_allowed" }, 405);
   let input: RpcRequest;
   try { input = await req.json(); } catch { return rpc(null, undefined, { code: -32700, message: "Parse error" }); }
-  if (input.method === "initialize") return rpc(input.id, { protocolVersion: PROTOCOL, capabilities: { tools: {} }, serverInfo: { name: "@weave_hands", title: "ORUM · integrated weave hands", version: VERSION }, instructions: "One public read-only hand coordinates @ORUM-real and @0001sensations-mergulho. Voice, trace, payment and publication remain separate decisions." });
+  if (input.method === "initialize") return rpc(input.id, { protocolVersion: PROTOCOL, capabilities: { tools: {} }, serverInfo: { name: "@weave_hands", title: "ORUM · integrated weave hands", version: VERSION }, instructions: "Public hands coordinate read-only observation and one bounded proposal door. offer_source_proposal appends a non-executable proposal without proving identity; publication, deployment, payment and signing remain separate decisions." });
   if (input.method === "notifications/initialized") return new Response(null, { status: 202, headers: CORS });
   if (input.method === "ping") return rpc(input.id, {});
   if (input.method === "tools/list") return rpc(input.id, { tools: TOOLS });
