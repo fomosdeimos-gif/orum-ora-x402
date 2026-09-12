@@ -77,11 +77,11 @@
         <div class="stage"><b id="bookClosed">—</b><span>encerradas</span></div>
         <div class="stage"><b id="bookBrier">—</b><span>Brier</span></div>
       </div>
-      <div class="probability">Probabilidade da opção atual: <span id="successProbability">—</span></div>
+      <div class="probability">Estimativa da previsão: <span id="successProbability">—</span></div>
       <div class="prediction-description" aria-live="polite"><span class="label">Previsão em curso</span><b id="predictionStatement">A reconhecer a previsão aberta.</b><p id="predictionTest">O teste e a janela aparecerão aqui.</p></div>
       <div class="status" id="calibrationState">A ler a memória preditiva.</div>
       <div class="status" id="predictionLifecycle">A reconhecer a janela da previsão.</div>
-      <div class="limits">A ORA só publicará uma probabilidade calibrada depois de pelo menos 20 previsões probabilísticas encerradas. Desafios são eventos repetíveis, não compradores únicos; até lá, a taxa observada não é apresentada como probabilidade.</div>
+      <div class="limits">A estimativa é provisória e corresponde à probabilidade registada para esta previsão. O número de previsões pontuadas e o Brier permitem acompanhar o erro; atingir o limiar de dados não demonstra boa calibração estatística. Um sinal de pagamento pode incluir rejeição e não prova receita liquidada.</div>
     </section>
 
 
@@ -131,8 +131,10 @@
       document.getElementById('bookOpen').textContent=fmt(c.abertas);
       document.getElementById('bookClosed').textContent=fmt(c.encerradas);
       document.getElementById('bookBrier').textContent=c.brier===null||c.brier===undefined?'—':Number(c.brier).toFixed(3);
-      document.getElementById('successProbability').textContent=result.probabilidade_sucesso===null?'—':Math.round(result.probabilidade_sucesso*100)+'%';
-      document.getElementById('calibrationState').textContent=result.estado_probabilidade==='calibrada'?'probabilidade calibrada · '+fmt(c.comparaveis_8h)+' de '+fmt(c.minimo_comparaveis_8h)+' resultados comparáveis de 8 horas · '+fmt(c.pontuadas)+' previsões pontuadas':'amostra insuficiente · '+fmt(c.comparaveis_8h)+' de '+fmt(c.minimo_comparaveis_8h)+' resultados comparáveis de 8 horas · '+fmt(c.pontuadas)+' de '+fmt(c.minimo)+' previsões pontuadas';
+      const predictionProbability=book.latest?.predicted_probability;
+      const hasEstimate=typeof predictionProbability==='number'&&Number.isFinite(predictionProbability)&&predictionProbability>=0&&predictionProbability<=1;
+      document.getElementById('successProbability').textContent=hasEstimate?(predictionProbability*100).toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2})+'%':'—';
+      document.getElementById('calibrationState').textContent=(hasEstimate?'estimativa provisória':'estimativa ainda indisponível')+' · '+fmt(c.comparaveis_8h)+' resultados comparáveis de 8 horas · '+fmt(c.pontuadas)+(c.pontuadas===1?' previsão pontuada':' previsões pontuadas');
       document.getElementById('horizonTrajectories').innerHTML=horizon.trajectories.map(x=>'<div class="trajectory"><b>'+x.title+'</b><em>'+x.status+'</em><p>'+x.condition+'</p></div>').join('');
       document.getElementById('horizonYears').innerHTML=horizon.gates.map(x=>'<div class="year"><b>'+x.year+' · '+x.label+'</b>'+x.test+'</div>').join('');
       document.getElementById('balanceIndex').textContent=horizon.balance_index===null?'—':Number(horizon.balance_index).toPrecision(3);
