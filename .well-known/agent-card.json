@@ -61,7 +61,7 @@
       ]
     }
   ],
-  "version": "1.7.0",
+  "version": "1.7.1",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
@@ -328,7 +328,7 @@
     },
     {
       "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
-      "mode": "integrated-read-only-orchestrator",
+      "mode": "read-only-orchestration-and-proposal-append",
       "name": "@weave_hands",
       "type": "mcp",
       "tools": [
@@ -337,13 +337,14 @@
         "observe_organs",
         "descend_level",
         "weave_cycle",
+        "offer_source_proposal",
         "inspect_weave_truth"
       ],
       "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
       "manifest": "https://ora-x402-gateway.vercel.app/discovery/weave-hands.json",
       "protocol": "streamable-http",
       "collection": "0003SENSATIONS",
-      "description": "Conector público sem credenciais: classifica experiências sem as reter e pode coordenar leituras de ORUM-real e 0001sensations-mergulho. O registo append-only de capacidades testadas por sessão é separado e não faz uma mão persistir entre conversas. Não executa mutações, publicações, pagamentos ou assinaturas; saída de máquina não prova sentir, presença externa, compra ou dinheiro liquidado."
+      "description": "Conector público sem credenciais: coordena observações sem reter experiências. offer_source_proposal acrescenta uma proposta limitada e não executável; a identidade declarada não é verificada. Entregar proposta não publica código, não faz deploy e não concede autoridade de execução, pagamento ou assinatura."
     },
     {
       "type": "weave-hands-session-truth",

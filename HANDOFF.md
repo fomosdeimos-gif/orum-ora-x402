@@ -1,3 +1,10 @@
+## Descoberta A2A e propostas · 12/09/2026
+
+- Carta 1.7.1 e discovery/weave-hands.json passam a anunciar as sete ferramentas observadas no MCP público (pedido 270749), incluindo offer_source_proposal.
+- Apenas a proposta é acrescentada: identidade autodeclarada, sem publicação, deploy ou autoridade de execução. As observações continuam sem retenção de experiências.
+- Conferir tools/list com ambos os manifestos ao alterar capacidades. Esta correção documental não prova adoção externa nem independência integral de fornecedores.
+- Verificação final de produção e commit: consultar ora_mudancas posterior a #574; este bloco não afirma um deploy antes de o observar.
+
 ## Carteira BTC operacional · 10/09/2026
 
 - Conector de assinatura e envio Bitcoin no slot `ora-cdp-carteira-real` v4; contrato, custódia, limites, provas e recuperação em `docs/bitcoin-operational-wallet-v1.md`.

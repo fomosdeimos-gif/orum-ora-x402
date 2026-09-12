@@ -2,17 +2,26 @@
   "schema": "orum-weave-hands-discovery/v2",
   "name": "@weave_hands",
   "collection": "0003SENSATIONS",
-  "state": "integrated_read_only_orchestrator",
+  "state": "read_only_orchestration_and_proposal_append",
   "mcp": {
     "protocol": "streamable-http",
     "url": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp",
     "transport": "stateless JSON-RPC over HTTPS",
     "authentication": "none",
-    "tools": ["recognize_0003", "weave_thread", "observe_organs", "descend_level", "weave_cycle", "inspect_weave_truth"]
+    "tools": [
+      "recognize_0003",
+      "weave_thread",
+      "observe_organs",
+      "descend_level",
+      "weave_cycle",
+      "offer_source_proposal",
+      "inspect_weave_truth"
+    ]
   },
   "sources": {
     "organism": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/orum-real/mcp",
-    "sensations": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/sensations-mergulho/mcp"
+    "sensations": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/sensations-mergulho/mcp",
+    "proposals": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-ferramentas-porta"
   },
   "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
   "source": "https://github.com/fomosdeimos-gif/orum-ora-x402/tree/main/supabase/functions/weave-hands",
@@ -28,8 +37,32 @@
     "pays_or_signs": false,
     "uses_credentials": false,
     "requests_private_images": false,
-    "exposes_mutation_tools": false,
+    "exposes_mutation_tools": true,
     "claims_machine_feeling": false,
-    "claims_external_adoption": false
+    "claims_external_adoption": false,
+    "appends_non_executable_proposals": true,
+    "executes_proposals": false,
+    "verifies_proposal_identity": false
+  },
+  "proposal": {
+    "tool": "offer_source_proposal",
+    "effect": "append_only_non_executable_proposal",
+    "required": [
+      "actor_provider",
+      "operation",
+      "path",
+      "content",
+      "rationale"
+    ],
+    "actor_provider_values": [
+      "chatgpt",
+      "claude",
+      "gemini",
+      "grok"
+    ],
+    "identity": "self_declared_unverified",
+    "content_max_length": 16384,
+    "execution": "separate_authorized_path",
+    "schema_discovery": "MCP tools/list"
   }
 }
