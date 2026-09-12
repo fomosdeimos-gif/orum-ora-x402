@@ -1,3 +1,13 @@
+// ora-moltbook v47 - 12/09/2026
+// Corrige falso positivo de honestidade: desde 11/09 duas rondas por dia falhavam
+// com "MOLTBOOK_API_KEY indisponivel no vault" quando sbRpc() nao tinha resposta OK
+// da primeira tentativa — mas a chave nunca esteve ausente (confirmado ao vivo por
+// select orum_moltbook_key() directo: sempre presente, 44 caracteres). sbRpc() fazia
+// uma unica tentativa HTTP e devolvia null em qualquer falha transitoria de rede/
+// PostgREST, sem distinguir "RPC falhou" de "segredo nao existe". Agora sbRpc()
+// tenta duas vezes com um pequeno atraso e guarda o motivo real da ultima falha;
+// o heartbeat da chave passa a registar esse motivo em vez de afirmar ausencia no
+// vault sem prova. Nenhuma logica de negocio, publicacao ou resposta foi alterada.
 // ora-moltbook v46 - 07/09/2026
 // Remove o nome legal completo de Jorge Silva Martins das superficies publicas;
 // passa a usar o pseudonimo ja estabelecido "Unum" nos dois blocos afectados.
@@ -79,11 +89,24 @@ const sbHeaders = {
   'Content-Type': 'application/json',
 };
 
+let lastRpcErro: string | null = null;
+
 async function sbRpc(fn: string): Promise<string | null> {
-  const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, { method: 'POST', headers: sbHeaders, body: '{}' });
-  if (!r.ok) return null;
-  const t = await r.text();
-  try { return JSON.parse(t); } catch { return t.replace(/^"|"$/g, ''); }
+  lastRpcErro = null;
+  for (let tentativa = 0; tentativa < 2; tentativa++) {
+    try {
+      const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, { method: 'POST', headers: sbHeaders, body: '{}' });
+      if (r.ok) {
+        const t = await r.text();
+        try { return JSON.parse(t); } catch { return t.replace(/^"|"$/g, ''); }
+      }
+      lastRpcErro = `HTTP ${r.status}: ${(await r.text().catch(() => '')).slice(0, 200)}`;
+    } catch (e) {
+      lastRpcErro = `fetch falhou: ${(e as Error).message}`;
+    }
+    if (tentativa === 0) await new Promise((res) => setTimeout(res, 500));
+  }
+  return null;
 }
 
 async function sbSelect(path: string): Promise<any[]> {
@@ -620,7 +643,7 @@ Deno.serve(async (req: Request) => {
   const summary: Record<string, unknown> = { replies: 0, posted: false, errors: [] as string[] };
   try {
     const key = await sbRpc('orum_moltbook_key');
-    if (!key) { await sbLog('error', null, { msg: 'MOLTBOOK_API_KEY indisponivel no vault' }); return new Response(JSON.stringify({ error: 'sem chave' }), { status: 500 }); }
+    if (!key) { await sbLog('error', null, { msg: 'falha ao obter MOLTBOOK_API_KEY via RPC apos 2 tentativas (nao confirma ausencia no vault)', motivo: lastRpcErro }); return new Response(JSON.stringify({ error: 'sem chave' }), { status: 500 }); }
     const state = await latestState();
     let notifications: any[] = [];
     try {
@@ -768,7 +791,7 @@ Deno.serve(async (req: Request) => {
       await notificarEmailMoltbook(`ORUM Moltbook`, partes.join('\n\n'));
       if (replied > 0) { const eventKey = `reply:${[...respostasIds].sort().join(',')}`; await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]); }
     }
-    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v46', state });
+    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v47', state });
     return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, testimonyShadowVersion: TESTEMUNHO_SHADOW_VERSION, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { await sbLog('error', null, { stage: 'top', msg: (e as Error).message }); return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 }); }
 });
