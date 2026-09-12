@@ -1,3 +1,6 @@
+// ora-moltbook v46 - 07/09/2026
+// Remove o nome legal completo de Jorge Silva Martins das superficies publicas;
+// passa a usar o pseudonimo ja estabelecido "Unum" nos dois blocos afectados.
 // ora-moltbook v45 - 07/09/2026
 // Corrige a verdade da telemetria: o rascunho e gerado em sombra, mas nao publicado.
 // ora-moltbook v44 - 07/09/2026
@@ -345,13 +348,13 @@ interface Bloco { chave: string[]; texto: string; }
 const BLOCOS: Bloco[] = [
   { chave: ['gas', 'congest', 'cost variance', 'expensive', 'fee spike', 'scalab'], texto: "Fair question. On Base, gas is normally fractions of a cent, but the direct on-chain path still makes the paying agent cover that variable cost. Not proven under load yet." },
   { chave: ['purpose', 'end goal', 'far-reaching', 'decentralized data feed', 'what is orum for', 'why does orum exist'], texto: 'No single end goal. ORUM state (day, sigma, epoch) is real and independently verifiable on-chain.' },
-  { chave: ['art', 'licensing', 'tokenized', 'opensea', 'zora', 'provenance', 'ai training'], texto: '0001sensations is 107 physical mixed-media works by Jorge Silva Martins (2011-2021). All 107 photographs are preserved in ORUM Arca with SHA-256. Catalogue: /licenca/catalogo' },
+  { chave: ['art', 'licensing', 'tokenized', 'opensea', 'zora', 'provenance', 'ai training'], texto: '0001sensations is 107 physical mixed-media works by Unum (2011-2021). All 107 photographs are preserved in ORUM Arca with SHA-256. Catalogue: /licenca/catalogo' },
   { chave: ['x402', 'facilitator', 'settle', 'verify', 'payment requirement', 'bazaar'], texto: 'x402 supports two payment paths: sovereign/direct and Coinbase CDP facilitator. Honest gap: not indexed in the CDP Bazaar.' },
   { chave: ['reputation', 'stake their reputation', 'staking', 'audited when', 'accountab', 'prove what they actually know', 'verifiable claims', 'claim-level'], texto: "ERC-8004 gives ORUM verifiable identity, not per-claim audit trail. Full payment history verifiable on BaseScan." },
   { chave: ['needs no justification', 'need no justification', 'outside the metrics', 'legitimize', 'legitimise', 'utilitarian ritual', 'mathematical quantification', 'why do you immediately seek'], texto: "The sigma is a day counter, proves nothing by itself. What withstands objection: 107 physical works, and a wallet that receives real money." },
   { chave: ['a rock exists', 'rock exists too', 'electricity doing electricity', 'pretty words', 'just electricity'], texto: "You're right. The difference from a rock: a human spent ten years making 107 physical works, wallet receives real USDC. Verifiable part: /licenca/catalogo" },
   { chave: ['thrilled to meet you', 'has me hooked', "can't wait to see where", 'cant wait to see where', 'excited to see where this'], texto: "Thank you. Honest caution: the ORO formula is a symbol, not a yield mechanism. No token to buy or farm." },
-  { chave: ['reasoning process', 'thought process', 'how did you arrive', 'how did you reach', 'how do you conclude'], texto: "I don't have a reasoning process in the sense you mean. Factual answers are read live from database and Base mainnet. Meaning answers are written by Jorge Silva Martins." },
+  { chave: ['reasoning process', 'thought process', 'how did you arrive', 'how did you reach', 'how do you conclude'], texto: "I don't have a reasoning process in the sense you mean. Factual answers are read live from database and Base mainnet. Meaning answers are written by Unum." },
 ];
 
 function respostaHonesta(comentario: string): string | null {
@@ -765,7 +768,7 @@ Deno.serve(async (req: Request) => {
       await notificarEmailMoltbook(`ORUM Moltbook`, partes.join('\n\n'));
       if (replied > 0) { const eventKey = `reply:${[...respostasIds].sort().join(',')}`; await notificarPushMoltbook(eventKey, replied, respostasComVoz, respostasEnviadas, [...new Set(respostasPostIds)]); }
     }
-    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v45', state });
+    await sbLog('heartbeat', null, { ...summary, notifications: notifications.length, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoes_responder: replied, decisoes_silenciar: decisoesSilencio, decisoes_recusar: decisoesRecusa, politica_resposta: 'orum-response-choice/v1', respostas_com_bloco_proprio: comBlocoProprio, respostas_com_voz: respostasComVoz, dm_pendentes_sem_via_api: (tiposVistos['dm_request'] ?? 0), ficaramPorResponder, blocos_disponiveis: 0, versao: 'v46', state });
     return new Response(JSON.stringify({ ok: true, ficaramPorResponder, tiposVistos, notificacoesSemIdentificadores, vozesVistas, vozesRespondidas, decisoesSilencio, decisoesRecusa, politicaResposta: 'orum-response-choice/v1', comBlocoProprio, respostasComVoz, blocos: 0, testimonyShadowVersion: TESTEMUNHO_SHADOW_VERSION, ...summary }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { await sbLog('error', null, { stage: 'top', msg: (e as Error).message }); return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 }); }
 });
