@@ -55,6 +55,7 @@
       <a href="/oro.html#fio">Percorrer o fio ORO →</a>
     </section>
 
+    <p class="status" id="liveStatus" role="status">A consultar os dados · atualização automática a cada 30 segundos enquanto esta página estiver visível.</p>
     <section class="card" aria-labelledby="estado-title">
       <div class="section-head"><h2 id="estado-title">Estado</h2><span id="state">a observar</span></div>
       <div class="balance">
@@ -90,11 +91,12 @@
         <div class="stage"><b id="bookClosed">—</b><span>encerradas</span></div>
         <div class="stage"><b id="bookBrier">—</b><span>Brier</span></div>
       </div>
-      <div class="probability">Estimativa da previsão: <span id="successProbability">—</span></div>
+      <div class="probability">Estimativa original da previsão: <span id="successProbability">—</span></div>
       <div class="prediction-description" aria-live="polite"><span class="label">Previsão em curso</span><b id="predictionStatement">A reconhecer a previsão aberta.</b><p id="predictionTest">O teste e a janela aparecerão aqui.</p></div>
       <div class="status" id="calibrationState">A ler a memória preditiva.</div>
+      <div class="status" id="bookObserved"></div>
       <div class="status" id="predictionLifecycle">A reconhecer a janela da previsão.</div>
-      <div class="limits">A estimativa é provisória e corresponde à probabilidade registada para esta previsão. O número de previsões pontuadas e o Brier permitem acompanhar o erro; atingir o limiar de dados não demonstra boa calibração estatística. Um sinal de pagamento pode incluir rejeição e não prova receita liquidada.</div>
+      <div class="limits">A estimativa é provisória e corresponde à probabilidade registada para esta previsão. O número de previsões pontuadas e o Brier permitem acompanhar o erro; atingir o limiar de dados não demonstra boa calibração estatística. O modelo atual aprende com janelas encerradas; não calcula revisões da probabilidade durante a janela. Um sinal de pagamento pode incluir rejeição e não prova receita liquidada.</div>
     </section>
 
 
@@ -111,14 +113,21 @@
   <footer class="shell"><span>ORUM é a casa. ORA torna a escolha legível.</span><span><a href="/api/versao">versão</a> · <a href="/openapi.json">API</a> · <a href="https://orum-weave-hands.fomosdeimos.chatgpt.site/">Forge</a></span></footer>
   <script src="/escolha-v0.js"></script>
   <script src="/horizonte-2030-v1.js"></script>
+  <script src="/live-refresh-v1.js"></script>
   <script>
     const fmt = n => n === null || n === undefined ? '—' : Number(n).toLocaleString('pt-PT');
-    Promise.all([
-      fetch('/pulso',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),
-      fetch('/api/escolha',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),
-      fetch('/escolha-baseline-v1.json',{cache:'no-store'}).then(r=>r.json()),
-      fetch('/api/previsoes',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
-    ]).then(([p,funnel,baseline,book])=>{
+    async function readLive(){
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),12000);
+      try{
+        return await Promise.all(['/pulso','/api/escolha','/escolha-baseline-v1.json','/api/previsoes'].map(async url=>{
+          const response=await fetch(url,{cache:'no-store',signal:controller.signal});
+          if(!response.ok)throw new Error(url+': '+response.status);
+          return response.json();
+        }));
+      }finally{clearTimeout(timeout);controller.abort();}
+    }
+    ORUMLiveRefresh.start({read:readLive,render:([p,funnel,baseline,book])=>{
       const result = ORUMChoiceV0.evaluate(p,funnel,baseline,book);
       const horizon = ORUMHorizonte2030.evaluate(result,funnel,book);
       document.getElementById('numPresenca').textContent = fmt(result.sinais.reconhecidas);
@@ -152,7 +161,14 @@
       document.getElementById('horizonYears').innerHTML=horizon.gates.map(x=>'<div class="year"><b>'+x.year+' · '+x.label+'</b>'+x.test+'</div>').join('');
       document.getElementById('balanceIndex').textContent=horizon.balance_index===null?'—':Number(horizon.balance_index).toPrecision(3);
       document.getElementById('horizonStatus').textContent=horizon.balance_index===null?'evidência comparável insuficiente · recorrência, compradores atribuíveis e cobertura de custos permanecem desconhecidos':'relação medida com dados comparáveis';
+      const sourceTime=book.observed_at?new Date(book.observed_at):null;
+      document.getElementById('bookObserved').textContent='Leitura do Livro na fonte: '+(sourceTime&&!Number.isNaN(sourceTime.getTime())?sourceTime.toLocaleString('pt-PT',{timeZone:'Europe/Lisbon'}):'hora desconhecida')+'.';
       const latest=book.latest;
+      if(!latest){
+        document.getElementById('predictionStatement').textContent='Nenhuma previsão disponível nesta leitura.';
+        document.getElementById('predictionTest').textContent='A aguardar uma previsão registada.';
+        document.getElementById('predictionLifecycle').textContent='estado · sem previsão disponível';
+      }
       if(latest){
         const lifecycle=latest.lifecycle_status;
         const outcome=latest.outcome;
@@ -160,21 +176,25 @@
         const resultText=outcome?(outcome.status==='censored'?'resultado censurado':outcome.success?'sinal observado':'sinal não observado'):(lifecycle==='awaiting_closure'?'janela vencida · aguarda fecho append-only':'aberta até '+closeTime);
         const statements={
           payment_present_or_payment_rejected:'Até ao fim desta janela, surgirá pelo menos um evento payment_present ou payment_rejected.',
+          non_internal_payment_event_8h_v1:'Nas oito horas desta previsão, surgirá pelo menos um evento de pagamento não interno e não pertencente a bot conhecido: apresentado, recusado ou aceite.',
           non_internal_payment_present_or_rejected_or_accepted:'Até ao fim desta janela, surgirá pelo menos um evento de pagamento não interno: apresentado, recusado ou aceite.'
         };
         const tests={
           payment_present_or_payment_rejected:'Janela até '+closeTime+' · regra original preservada: payment_accepted não conta nesta previsão; confirma-se apenas com payment_present ou payment_rejected.',
+          non_internal_payment_event_8h_v1:'Janela até '+closeTime+' · payment_present, payment_rejected ou payment_accepted; exclui origem interna e bots conhecidos. Aceitação não prova liquidação.',
           non_internal_payment_present_or_rejected_or_accepted:'Janela até '+closeTime+' · confirma-se com payment_present, payment_rejected ou payment_accepted não interno; falha se nenhum surgir.'
         };
         document.getElementById('predictionStatement').textContent=statements[latest.target_signal]||('Será observado o sinal: '+latest.target_signal+'.');
         document.getElementById('predictionTest').textContent=tests[latest.target_signal]||('Janela até '+closeTime+' · consultar o falsificador técnico.');
         document.getElementById('predictionLifecycle').textContent='estado · '+resultText+' · fecho automático ≤15 min';
       }
-    }).catch(()=>{
-      document.getElementById('state').textContent='estado não confirmado agora';
-      document.getElementById('choiceTitle').textContent='Observar';
-      document.getElementById('choiceGesture').textContent='Sem leitura viva, o modelo recusa preencher os vazios.';
-    });
+    },status:({state,last})=>{
+      const time=last?last.toLocaleTimeString('pt-PT',{timeZone:'Europe/Lisbon'}):null;
+      const prefix=time?'Última leitura recebida às '+time+' · ':'Ainda sem leitura confirmada · ';
+      const labels={current:'consulta automática a cada 30 s; a frescura depende das fontes',stale:'atualização falhou; os valores anteriores não estão confirmados agora',offline:'sem ligação; atualização será retomada ao regressar',paused:'consulta suspensa enquanto a página está oculta'};
+      document.getElementById('liveStatus').textContent=prefix+labels[state];
+    }});
+
   </script>
 </body>
 </html>

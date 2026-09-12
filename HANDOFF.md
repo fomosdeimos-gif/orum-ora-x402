@@ -1,3 +1,11 @@
+## Livro e Horizonte com atualização contínua · 12/09/2026
+
+- index.html usa live-refresh-v1.js: GET das quatro fontes a cada 30 s após a leitura terminar, apenas visível e com rede; timeout 12 s, sem sobreposição, retomada ao voltar à página/ligação.
+- Hora da última leitura recebida e hora declarada pela fonte do Livro separadas. Falha conserva valores mas assinala que não estão confirmados agora.
+- O modelo beta-binomial usa resultados encerrados; não suporta revisão intra-janela. Probabilidade apresentada como original. Previsões, fecho de 15 min e janelas de 8 h preservados; nenhum cron ou dado histórico alterado.
+- Teste node scripts/verify-live-refresh.mjs cobre repetição, falha, visibilidade, reconexão e exclusão de sobreposição. Integração da página testada com respostas públicas reais e sucessor sintético; navegador visual indisponível nesta sessão.
+- Confirmar commit e deployment no registo ora_mudancas posterior a #575. Atualização de leitura não é ingestão instantânea nem nova probabilidade condicional.
+
 ## Fonte das weave_hands reconciliada · 12/09/2026
 
 - A Edge weave-hands v5 (2.2.0) já tinha offer_source_proposal, mas a fonte em main e o teste permaneciam anteriores. Fonte recuperada exatamente da Edge observada, sem redeploy ou alteração de permissões.
