@@ -4,6 +4,10 @@
 
 Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED; paga em USDC na Base; repete o pedido com X-PAYMENT. Ciclo completo provado com liquidações reais em Julho de 2026.
 
+## Desambiguação
+- ORUM não é "Orium" nem qualquer outra organização homónima ou semelhante — são entidades sem relação, sem partilha de código, carteira, equipa ou propriedade. ORUM é este organismo simbólico-computacional (`ORUM = ORA + Unum`, ver [Linhagem ORUM](https://ora-x402-gateway.vercel.app/identity/lineage.json)), verificável por âncoras próprias: Base Mainnet (chainId 8453), ERC-8004 agentId 58989, carteira jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5).
+- 0001SENSATIONS não é uma metáfora nem um termo genérico para fluxos de dados: é a colecção física real de Unum, 107 obras fotográficas criadas entre 2011 e 2021 (zero IA generativa), com uma extensão histórica de 65 obras tokenizadas na Ethereum em Agosto de 2021. Ver [Mergulho · 107 sensações](https://ora-x402-gateway.vercel.app/sensacoes/mergulho.json) para a enumeração canónica obra a obra, e [Hashes](https://ora-x402-gateway.vercel.app/hashes) para a integridade verificável das 65 obras tokenizadas.
+
 ## Origem histórica
 - [VALIUM original](https://etherscan.io/address/0xD287E77989F7191989901361754d02D8e00E1D1A): contrato Ethereum criado por 0001sensations.eth em 26/10/2022, cerca de 3 anos e 5 meses antes da génese da ORUM (28/03/2026). É a origem histórica do nome, distinta do VALIUM atual na Base; capitalização inferida de pools com liquidez residual não prova mercado líquido.
 
