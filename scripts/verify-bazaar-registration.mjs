@@ -12,6 +12,7 @@ const json=(body,status=200)=>new Response(JSON.stringify(body),{status});
 const cdp={evm:{getAccount:async()=>({name:'orum-operational-v1',address:mode==='wrong_account'?dummy.address:BAZAAR.ownerAddress}),signMessage:async({address,message})=>{signed++;assert.equal(address,BAZAAR.ownerAddress);assert.equal(message,`quick-register:${BAZAAR.url}:${BAZAAR.ownerAddress}:1700000000000`);return {signature:await dummy.signMessage({message})};}}};
 const net=async(url,options)=>{
  assert.equal(options.redirect,'error');observations++;
+ if(url.includes('/api/services?')&&mode==='catalogue_down')return json({error:'Failed to fetch services'},500);
  if(url.includes('/api/services?'))return json({services:mode==='duplicate'?[service]:[]});
  if(url.endsWith('/health'))return json({relay_configured:mode!=='relay_off'});
  if(url===BAZAAR.url)return json({accepts:[{network:'eip155:8453',amount:mode==='changed_price'?'1':'330000',scheme:'exact',payTo:'0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',asset:'0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'}]},402);
@@ -20,6 +21,7 @@ const net=async(url,options)=>{
 };
 const run=()=>registerBazaar({cdp,net,now:()=>1700000000000,recoverMessageAddress:async()=>BAZAAR.ownerAddress});
 assert.equal((await run()).outcome,'registration_verified');assert.equal(signed,1);assert.equal(posted,1);
+mode='catalogue_down';assert.equal((await run()).outcome,'catalogue_unavailable');assert.equal(signed,1);assert.equal(posted,1);
 mode='duplicate';assert.equal((await run()).outcome,'already_registered');assert.equal(signed,1);
 mode='relay_off';assert.equal((await run()).outcome,'relay_unavailable');assert.equal(signed,1);
 mode='changed_price';await assert.rejects(run,/upstream_contract_changed/);assert.equal(signed,1);

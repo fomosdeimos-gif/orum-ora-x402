@@ -13,7 +13,9 @@ export async function registerBazaar({cdp,recoverMessageAddress,net=fetch,now=Da
     if(!r.ok)throw Error('observation_failed');return r.json();
   };
   const matches=s=>s?.url===BAZAAR.url && s?.owner_address?.toLowerCase()===BAZAAR.ownerAddress && Number(s?.price_usdc)===BAZAAR.price;
-  const catalogue=await get(BAZAAR.api+'/api/services?search=ORUM&limit=200');
+  let catalogue;
+  try { catalogue=await get(BAZAAR.api+'/api/services?search=ORUM&limit=200'); }
+  catch { return {...base,status:503,outcome:'catalogue_unavailable',message_signed:false,registration_submitted:false}; }
   const services=Array.isArray(catalogue)?catalogue:(catalogue.services||catalogue.data);
   if(!Array.isArray(services))throw Error('invalid_catalogue');
   const existing=services.find(s=>s.url===BAZAAR.url);
