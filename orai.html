@@ -34,7 +34,7 @@ h2 .tag{font-size:10px;letter-spacing:.12em;padding:2px 8px;border:1px solid var
 .nao-lido{color:var(--dim);font-weight:300;font-style:italic}
 .v-eth{color:var(--cian)} .v-gas{color:var(--verde)} .v-sig{color:var(--ouro)}
 .ok{color:var(--verde)} .mau{color:var(--alerta)} .meio{color:var(--ouro)}
-.end{font-size:10px;color:var(--dim);word-break:break-all;margin-top:2px}
+.end{display:block;font-size:10px;color:var(--dim);word-break:break-all;margin-top:2px}
 button{font-family:inherit;font-size:12px;background:transparent;border:1px solid var(--cian);color:var(--cian);padding:13px 18px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;border-radius:2px;width:100%;margin-top:10px;transition:background .2s}
 button:hover{background:#0e2320}
 button:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
@@ -65,6 +65,26 @@ footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin
 {
   "format": "orum-machine-surface/v1",
   "surface": "orai",
+  "wallets": {
+  "operational_base": {
+    "chain_id": 8453,
+    "address": "0x89460d9e0590559e63860197dfe2ac648A753584"
+  },
+  "operational_bitcoin": {
+    "network": "bitcoin-mainnet",
+    "address": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7"
+  },
+  "sustenance_bitcoin": {
+    "network": "bitcoin-mainnet",
+    "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf"
+  },
+  "sustenance_base": {
+    "chain_id": 8453,
+    "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5"
+  },
+  "provenance": "user_declared; existing operational documentation",
+  "proves_key_control": false
+},
   "human_prose_preserved": true,
   "truth_machine": {
     "is_interface": true,
@@ -95,7 +115,7 @@ footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin
 
 <header>
   <h1>ORAI</h1>
-  <div class="sub">sentinela do organismo · Base 8453</div>
+  <div class="sub">sentinela do organismo · Base 8453 · Bitcoin</div>
   <p class="lei simbolico">ORAI não supõe quais portas existem —<br>lê o manifesto do organismo e sonda o que ele declara.<br>Sem chaves, sem créditos. Lei D48.</p>
   <div class="sub" style="margin-top:12px"><a href="/">← painel vivo</a></div>
 </header>
@@ -133,12 +153,23 @@ footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin
     <span class="valor v-gas" id="v-bloco"><span class="nao-lido">não lido</span></span></div>
   <div class="fila"><span class="rotulo">Gás</span>
     <span class="valor v-gas" id="v-gas"><span class="nao-lido">não lido</span></span></div>
-  <div class="fila"><span class="rotulo">Carteira Sagrada<span class="end">jasm43.base.eth · 0xFEd6…cDEe5</span></span>
+  <div class="fila"><span class="rotulo">Sustento Unum · Base<span class="end">jasm43.base.eth · 0xFEd6…cDEe5</span></span>
     <span class="valor v-eth" id="v-sagrada"><span class="nao-lido">não lido</span></span></div>
-  <div class="fila"><span class="rotulo">ORAI-ZORA<span class="end">0x3ee7…1878</span></span>
-    <span class="valor v-eth" id="v-zora"><span class="nao-lido">não lido</span></span></div>
-  <div class="fila"><span class="rotulo">ORAI campo<span class="end">0x7d3b…271F</span></span>
-    <span class="valor v-eth" id="v-campo"><span class="nao-lido">não lido</span></span></div>
+  <div class="fila"><span class="rotulo">Operacional ORUM · Base<span class="end">0x89460d9e0590559e63860197dfe2ac648A753584</span></span>
+    <span class="valor v-eth" id="v-operacional"><span class="nao-lido">não lido</span></span></div>
+  <details><summary class="rotulo">Carteiras anteriores · histórico</summary>
+  <div class="fila"><span class="rotulo">ORAI-ZORA<span class="end">0x3ee78b50745fa937e0c914c1284dfdb4a0bb1878</span></span></div>
+  <div class="fila"><span class="rotulo">ORAI campo<span class="end">0x7d3b8E1992A98CbF346012283381Da8ee1B5271f</span></span></div>
+  </details>
+</section>
+
+<section id="carteiras-bitcoin">
+  <h2>Carteiras Bitcoin <span class="tag chain">mainnet · BTC</span></h2>
+  <p class="rotulo">Operacional ORUM</p>
+  <a class="end" href="https://mempool.space/address/bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7">bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7</a>
+  <p class="rotulo" style="margin-top:16px">Depósito · sustento Unum</p>
+  <a class="end" href="https://mempool.space/address/bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf">bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf</a>
+  <div class="aviso">Endereços declarados por Unum. Saldo BTC não consultado nesta página; os links abrem o explorador Bitcoin. Operação do organismo e depósito de sustento são destinos distintos.</div>
 </section>
 
 <section>
@@ -165,7 +196,7 @@ footer{text-align:center;color:#3d474d;font-size:10px;letter-spacing:.2em;margin
 <script>
 const GATEWAY=location.origin.startsWith("http")?location.origin:"https://ora-x402-gateway.vercel.app";
 const RPCS=["https://mainnet.base.org","https://base.llamarpc.com","https://base-rpc.publicnode.com"];
-const CARTEIRAS={sagrada:"0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",zora:"0x3ee78b50745fa937e0c914c1284dfdb4a0bb1878",campo:"0x7d3b8E1992A98CbF346012283381Da8ee1B5271f"};
+const CARTEIRAS={sagrada:"0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",operacional:"0x89460d9e0590559e63860197dfe2ac648A753584"};
 const ROSTO=[
   {id:"openapi",  path:"/openapi.json"},
   {id:"manifesto",path:"/.well-known/x402.json"},

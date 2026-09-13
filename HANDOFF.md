@@ -1,3 +1,11 @@
+## Carteiras na sentinela · 13/09/2026
+
+- orai.html distingue operacional Base `0x89460d9e0590559e63860197dfe2ac648A753584`, operacional BTC `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7` e depósito/sustento BTC `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf`, por pedido explícito de Unum.
+- Sustento Base `0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` preservado. ORAI-ZORA/campo ficam como histórico; ronda Base passa a ler operacional e sustento. BTC tem endereços e links, sem alegar saldo observado.
+- Contrato JSON da página inclui redes e papéis. Nenhuma alteração de executor, chaves, destino de pagamentos x402 ou limites. Endereço declarado não prova controlo da chave.
+- Verificação de publicação e classificação interna do depósito: consultar ora_mudancas desta sessão; este ficheiro não afirma deployment antecipadamente.
+
+
 ## Livro e Horizonte com atualização contínua · 12/09/2026
 
 - index.html usa live-refresh-v1.js: GET das quatro fontes a cada 30 s após a leitura terminar, apenas visível e com rede; timeout 12 s, sem sobreposição, retomada ao voltar à página/ligação.
