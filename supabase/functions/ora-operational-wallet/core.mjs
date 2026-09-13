@@ -1,3 +1,4 @@
+import { registerBazaar } from './bazaar.mjs';
 import { paymentAction } from './payments.mjs';
 export const ACCOUNT_NAME = 'orum-operational-v1';
 export const CREATE_ID = 'ca153211-4c87-47b7-8516-3256d6b70001';
@@ -5,7 +6,7 @@ const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const response = (status, value) => new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
 // Authenticated named account operations and fixed-destination USDC payments only.
-export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet }) {
+export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, recoverMessageAddress, bazaarNet }) {
   return async req => {
     if (req.method !== 'POST') return response(405, { error: 'post_required' });
     const token = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.get('authorization') || '')?.[1];
@@ -16,7 +17,7 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet }
       if (raw.length > 256) return response(413, { error: 'request_too_large' });
       let body;
       try { body = JSON.parse(raw); } catch { return response(400, { error: 'invalid_json' }); }
-      const allowed={btc_create:['action'],btc_observe:['action'],btc_preview:['action','request_id','amount_sats'],btc_send:['action','request_id','amount_sats'],btc_status:['action','request_id'],create:['action'],observe:['action'],receive_btc:['action'],preview_usdc:['action','request_id','amount_atomic'],transfer_usdc:['action','request_id','amount_atomic'],payment_status:['action','request_id']};
+      const allowed={bazaar_register:['action'],btc_create:['action'],btc_observe:['action'],btc_preview:['action','request_id','amount_sats'],btc_send:['action','request_id','amount_sats'],btc_status:['action','request_id'],create:['action'],observe:['action'],receive_btc:['action'],preview_usdc:['action','request_id','amount_atomic'],transfer_usdc:['action','request_id','amount_atomic'],payment_status:['action','request_id']};
       if (!body || Array.isArray(body) || !Object.hasOwn(allowed,body.action) || Object.keys(body).some(k=>!allowed[body.action].includes(k))) return response(400, { error: 'invalid_action' });
       if(body.action.startsWith('btc_')){const result=await bitcoinAction(body,{rpc,net:bitcoinNet});return response(result.status,result);}
       if(body.action==='receive_btc')return response(200,{network:'bitcoin-mainnet',address:'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',uri:'bitcoin:bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',destination:'Unum directly',control_proof:'not_asserted',bitcoin_signing_available:false,operational_bitcoin_signing_available:true,operational_bitcoin_action:'btc_observe',conversion_performed:false});
@@ -24,6 +25,7 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet }
       const wallet = await rpc('orum_cdp_wallet_secret', {});
       if (!keys?.[0]?.key_id || !keys[0].key_secret || !wallet?.[0]?.wallet_secret) return response(503, { error: 'credentials_unavailable' });
       const cdp = makeClient({ apiKeyId: keys[0].key_id, apiKeySecret: keys[0].key_secret, walletSecret: wallet[0].wallet_secret });
+      if(body.action==='bazaar_register'){const result=await registerBazaar({cdp,recoverMessageAddress,net:bazaarNet});return response(result.status,result);}
       if(body.action==='preview_usdc'||body.action==='transfer_usdc'||body.action==='payment_status'){
         const result=await paymentAction(body,{rpc,cdp,chainRpc});
         return response(result.status,result);

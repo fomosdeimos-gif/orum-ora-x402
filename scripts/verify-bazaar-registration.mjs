@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {registerBazaar,BAZAAR} from '../supabase/functions/ora-operational-wallet/bazaar.mjs';
+import {handler} from '../supabase/functions/ora-operational-wallet/core.mjs';
+const require=createRequire(process.env.ORUM_BAZAAR_DEPS+'/package.json');
+const {recoverMessageAddress}=require('viem');
+const {privateKeyToAccount}=require('viem/accounts');
+const dummy=privateKeyToAccount('0x'+'01'.repeat(32));
+let signed=0,posted=0,mode='ok',observations=0;
+const service={id:'00000000-0000-4000-8000-000000000001',url:BAZAAR.url,owner_address:BAZAAR.ownerAddress,price_usdc:0.4,status:'online',payment_protocol:'x402-v2'};
+const json=(body,status=200)=>new Response(JSON.stringify(body),{status});
+const cdp={evm:{getAccount:async()=>({name:'orum-operational-v1',address:mode==='wrong_account'?dummy.address:BAZAAR.ownerAddress}),signMessage:async({address,message})=>{signed++;assert.equal(address,BAZAAR.ownerAddress);assert.equal(message,`quick-register:${BAZAAR.url}:${BAZAAR.ownerAddress}:1700000000000`);return {signature:await dummy.signMessage({message})};}}};
+const net=async(url,options)=>{
+ assert.equal(options.redirect,'error');observations++;
+ if(url.includes('/api/services?'))return json({services:mode==='duplicate'?[service]:[]});
+ if(url.endsWith('/health'))return json({relay_configured:mode!=='relay_off'});
+ if(url===BAZAAR.url)return json({accepts:[{network:'eip155:8453',amount:mode==='changed_price'?'1':'330000',scheme:'exact',payTo:'0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',asset:'0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'}]},402);
+ if(url.endsWith('/quick-register')){posted++;assert.equal(options.method,'POST');const b=JSON.parse(options.body);assert.equal(b.price,0.4);assert.equal(b.ownerAddress,BAZAAR.ownerAddress);if(mode==='timeout')throw Error('private-detail');return json({data:service});}
+ return json(service);
+};
+const run=()=>registerBazaar({cdp,net,now:()=>1700000000000,recoverMessageAddress:async()=>BAZAAR.ownerAddress});
+assert.equal((await run()).outcome,'registration_verified');assert.equal(signed,1);assert.equal(posted,1);
+mode='duplicate';assert.equal((await run()).outcome,'already_registered');assert.equal(signed,1);
+mode='relay_off';assert.equal((await run()).outcome,'relay_unavailable');assert.equal(signed,1);
+mode='changed_price';await assert.rejects(run,/upstream_contract_changed/);assert.equal(signed,1);
+mode='wrong_account';await assert.rejects(run,/account_identity_mismatch/);assert.equal(signed,1);
+mode='ok';await assert.rejects(()=>registerBazaar({cdp,net,now:()=>1700000000000,recoverMessageAddress}),/signature_identity_mismatch/);assert.equal(posted,1);
+mode='timeout';const result=await run();assert.equal(result.outcome,'registration_unknown');assert.equal(posted,2);assert.ok(!JSON.stringify(result).includes('signature":'));assert.ok(!JSON.stringify(result).includes('private-detail'));
+let secrets=0;
+const h=handler({rpc:async n=>{if(n==='ora_operational_wallet_auth_v1')return true;secrets++;throw Error('unexpected');}});
+for(const body of [{action:'bazaar_register',message:'anything'},{action:'bazaar_register',url:'https://evil.invalid'},{action:'bazaar_register',price:0},{action:'signMessage'}])assert.equal((await h(new Request('https://test.invalid',{method:'POST',headers:{authorization:'Bearer '+'a'.repeat(64)},body:JSON.stringify(body)}))).status,400);
+assert.equal(secrets,0);
+assert.equal((await h(new Request('https://test.invalid',{method:'POST',body:'{"action":"bazaar_register"}'}))).status,401);
+console.log('PASS: fixed payload, duplicates, relay gate, contract drift, account mismatch, real wrong-key recovery rejection, no POST retry, no signature/error leak, arbitrary input rejection, authentication.');

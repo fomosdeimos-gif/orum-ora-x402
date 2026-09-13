@@ -4,11 +4,11 @@ language plpgsql security invoker set search_path=pg_catalog
 as $fn$
 declare credential text; request_id bigint;
 begin
- if p_action not in ('create','observe') or p_action is null then raise exception 'Allowed actions: create, observe' using errcode='22023'; end if;
+ if p_action not in ('create','observe','bazaar_register') or p_action is null then raise exception 'Allowed actions: create, observe, bazaar_register' using errcode='22023'; end if;
  select decrypted_secret into strict credential from vault.decrypted_secrets where name='orum_operational_wallet_access_v1';
  select net.http_post(url:='https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-carteira-real',
   headers:=jsonb_build_object('Content-Type','application/json','Authorization','Bearer '||credential),
-  body:=jsonb_build_object('action',p_action),timeout_milliseconds:=30000) into request_id;
+  body:=jsonb_build_object('action',p_action),timeout_milliseconds:=case when p_action='bazaar_register' then 60000 else 30000 end) into request_id;
  return request_id;
 end;
 $fn$;

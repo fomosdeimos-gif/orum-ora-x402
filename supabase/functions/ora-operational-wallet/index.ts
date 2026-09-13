@@ -1,3 +1,4 @@
+import { recoverMessageAddress } from 'npm:viem@2.37.3';
 import * as btc from 'npm:@scure/btc-signer@1.8.1';
 import { pubECDSA } from 'npm:@scure/btc-signer@1.8.1/utils';
 import { bitcoinHandler, bitcoinNetwork } from './bitcoin.mjs';
@@ -17,4 +18,4 @@ async function chainRpc(method: string, params: unknown[]) {
   if (data.error) throw new Error('chain_error');
   return data.result;
 }
-Deno.serve(handler({ rpc, makeClient, chainRpc, bitcoinAction: bitcoinHandler({btc,pubECDSA}), bitcoinNet: bitcoinNetwork() }));
+Deno.serve(handler({ recoverMessageAddress, rpc, makeClient, chainRpc, bitcoinAction: bitcoinHandler({btc,pubECDSA}), bitcoinNet: bitcoinNetwork() }));

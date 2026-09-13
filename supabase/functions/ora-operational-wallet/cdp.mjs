@@ -33,6 +33,7 @@ export function makeClient(options) {
     return r.json();
   }
   return {evm:{
+    signMessage:({address,message})=>call('POST','/platform/v2/evm/accounts/'+encodeURIComponent(address)+'/sign/message',{message}),
     getAccount:({name,address})=>call('GET','/platform/v2/evm/accounts/'+(address?encodeURIComponent(address):'by-name/'+encodeURIComponent(name))),
     createAccount:({name,idempotencyKey})=>call('POST','/platform/v2/evm/accounts',{name},idempotencyKey),
     sendTransaction:({address,network,transaction,idempotencyKey})=>call('POST','/platform/v2/evm/accounts/'+encodeURIComponent(address)+'/send/transaction',{network,transaction},idempotencyKey)

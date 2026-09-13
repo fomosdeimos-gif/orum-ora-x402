@@ -1,3 +1,10 @@
+## Registo Bazaar pela carteira operacional · 13/09/2026
+
+- Capacidade específica `bazaar_register`, contrato e limites em docs/bazaar-registration-v1.md. Somente endpoint e carteira fixos, preço 0,40 USDC; nenhuma transferência.
+- Não usar browser para a conta CDP nem extrair a chave. Dispatch autenticado existente; após resultado incerto, observar catálogo antes de repetir.
+- Fonte e Edge devem coincidir. Registo efectivo, deployment e bloqueios: consultar ora_mudancas posteriores a #587.
+
+
 ## Carteiras na sentinela · 13/09/2026
 
 - orai.html distingue operacional Base `0x89460d9e0590559e63860197dfe2ac648A753584`, operacional BTC `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7` e depósito/sustento BTC `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf`, por pedido explícito de Unum.
