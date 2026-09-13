@@ -136,7 +136,38 @@ async function verifyOnChain(txHash: string, lic: Lic): Promise<VerifyResult> {
   return { valid: true, payer, amount: amountAtomic.toString() };
 }
 function parsePaymentHeader(h: string): Record<string, unknown> | null { try { return JSON.parse(atob(h)); } catch { try { return JSON.parse(h); } catch { return null; } } }
-function extrairTxHash(h: string): string | null { const d = parsePaymentHeader(h); if (!d) return null; return (d.transactionHash as string) || (d.tx_hash as string) || (d.hash as string) || null; }
+function extrairTxHash(h: string): string | null {
+  const d = parsePaymentHeader(h);
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return null;
+  const hash = d.transactionHash || d.tx_hash || d.hash;
+  return typeof hash === 'string' && /^0x[0-9a-fA-F]{64}$/.test(hash) ? hash : null;
+}
+
+async function invalidPaymentProof(req: Request, lic: Lic, obra: string | null): Promise<Response> {
+  const challenge = paymentRequired(req, lic, obra);
+  const body = await challenge.json();
+  const headers = new Headers(challenge.headers);
+  headers.set('X-ORUM-PAYMENT-REASON', 'payment_proof_invalid_format');
+  headers.set('Cache-Control', 'no-store');
+  return new Response(JSON.stringify({ ...body,
+    error: 'payment_proof_invalid_format',
+    erro: 'prova de pagamento sem transactionHash valido',
+    recovery: {
+      schema: 'orum-payment-proof-recovery/v1',
+      route: 'direct_onchain_transaction_hash',
+      headers: ['PAYMENT-SIGNATURE', 'X-PAYMENT'],
+      encoding: ['base64(JSON)', 'JSON'],
+      transactionHash_pattern: '^0x[0-9a-fA-F]{64}$',
+      fields: ['transactionHash', 'tx_hash', 'hash'],
+      preferred_field: 'transactionHash',
+      retry_url: resourceUrlFor(req, lic, obra),
+      retry_method: 'GET',
+      instruction: 'Reuse the transaction hash of your existing transfer. Encode {"transactionHash":"YOUR_REAL_TRANSACTION_HASH"} as base64 JSON and retry the same resource. Do not send another transfer merely to correct this header.',
+      verification: 'Valid format does not prove payment. Network, receipt, USDC asset, recipient, amount and duplicate claim checks still apply.',
+      payment_status: 'not_verified'
+    }
+  }), { status: 402, headers });
+}
 
 // ---------- NOVO EM V34-V40: caminho paralelo via facilitador CDP (Bazaar) ----------
 ed.etc.sha512Async = async (...msgs: Uint8Array[]) => { let total = 0; for (const m of msgs) total += m.length; const buf = new Uint8Array(total); let off = 0; for (const m of msgs) { buf.set(m, off); off += m.length; } return new Uint8Array(await crypto.subtle.digest('SHA-512', buf)); };
@@ -552,7 +583,7 @@ async function nucleo(req: Request): Promise<Response> {
   }
 
   const th = extrairTxHash(hasPayment);
-  if (!th) return new Response(JSON.stringify({ erro: 'prova de pagamento sem transactionHash valido' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'payment_proof_invalid_format' } });
+  if (!th) return invalidPaymentProof(req, lic, obraQuery);
   const v = await verifyOnChain(th, lic);
   if (!v.valid) { if (v.pending) return paymentPending(lic, th); return new Response(JSON.stringify({ erro: 'pagamento invalido', detalhe: v.error }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(v.error, v.pending) } }); }
   const claim = await claimPagamento({ tx_hash: th, payer: v.payer, amount: v.amount, currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
