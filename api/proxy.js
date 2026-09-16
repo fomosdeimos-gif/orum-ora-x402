@@ -9,7 +9,7 @@
 // anunciar um resource diferente do URL que a maquina tinha pedido —
 // validadores x402 rejeitam essa divergencia.
 const SUPA = (process.env.ORUM_FUNCTIONS_BASE || 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1').replace(/\/$/, '');
-const PASS_RES = ['content-type', 'payment-required', 'payment-response', 'x-payment-response', 'www-authenticate', 'retry-after', 'x-ora-version', 'x-ora-x402', 'x-ora-tier', 'extension-responses', 'cache-control'];
+const PASS_RES = ['content-type', 'payment-required', 'payment-response', 'x-payment-response', 'www-authenticate', 'retry-after', 'x-ora-version', 'x-ora-x402', 'x-ora-tier', 'extension-responses', 'cache-control', 'location'];
 
 module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') {
@@ -43,6 +43,7 @@ module.exports = async (req, res) => {
     const xff = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '';
     if (xff) headers['x-ora-origem'] = String(xff).split(',')[0].trim();
     const upstream = await fetch(target, {
+      redirect: 'manual',
       method: req.method,
       headers,
       body: ['GET', 'HEAD'].includes(req.method) ? undefined : JSON.stringify(req.body || {}),
@@ -63,3 +64,4 @@ module.exports = async (req, res) => {
     res.end(JSON.stringify({ ok: false, error: 'upstream_unreachable', detalhe: String((e && e.message) || e) }));
   }
 };
+

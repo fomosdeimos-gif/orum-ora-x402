@@ -1,4 +1,5 @@
 import { createRenewalHandler } from "./renewal.ts";
+import { createSelectionCodec, type Selection } from "./selection.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import * as ed from "npm:@noble/ed25519@2";
@@ -44,7 +45,7 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
-const VERSAO = 'V50';
+const VERSAO = 'V51';
 const ORO_CONTRACT = '0xd859c01F11C273641F765509a005F7F2A69Dc4bD';
 const ATTESTOR_SCHEMA = 'orum-operational-attestation/v1';
 const ATTESTOR_KEY_ID = 'orum-oro-attestor-v1';
@@ -77,7 +78,14 @@ function boundariesMachineLicenca() {
   };
 }
 function hostExterno(req: Request): string | null { const candidatos = [req.headers.get('x-ora-host'), req.headers.get('x-forwarded-host')]; for (const c of candidatos) { const h = (c || '').trim(); if (h && !h.includes('supabase.co') && !h.includes('localhost')) return h; } return null; }
-function resourceUrlFor(req: Request, lic: Lic, obra?: string | null): string { const h = hostExterno(req); const base = h ? `https://${h}/licenca/${lic.key}` : `${SUPABASE_URL}/functions/v1/ora-licenca/${lic.key}`; return base + (obra ? '?obra=' + encodeURIComponent(obra) : ''); }
+function resourceUrlFor(req: Request, lic: Lic, obra?: string | null): string {
+  const h = hostExterno(req); const base = h ? `https://${h}/licenca/${lic.key}` : `${SUPABASE_URL}/functions/v1/ora-licenca/${lic.key}`;
+  const result = new URL(base);
+  if (obra) result.searchParams.set('obra', obra);
+  const selection = new URL(req.url).searchParams.get('selection');
+  if (selection) result.searchParams.set('selection', selection);
+  return result.toString();
+}
 function publicoUrl(req: Request, sufixo: string): string { const h = hostExterno(req); return h ? `https://${h}/licenca/${sufixo}` : `${SUPABASE_URL}/functions/v1/ora-licenca/${sufixo}`; }
 function sbHeaders(extra: Record<string, string> = {}) { return { 'Content-Type': 'application/json', apikey: SERVICE_ROLE_KEY, Authorization: `Bearer ${SERVICE_ROLE_KEY}`, ...extra }; }
 async function sbSelect(table: string, query: string) { try { const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, { headers: sbHeaders() }); return await r.json(); } catch { return []; } }
@@ -246,7 +254,7 @@ const CDP_HOST = 'api.cdp.coinbase.com';
 function bazaarExtensionFor(lic: Lic, resourceUrlStr: string) {
   const info = {
     input: { type: 'http', method: 'GET', queryParams: { obra: '89' } },
-    output: { type: 'json', example: { acesso: 'concedido', licenca: { tipo_licenca: lic.key, obra: { titulo: 'exemplo', sha256: '...' }, acesso_a_fotografia: { url_assinada: 'https://...', expira_em: '2026-...' } } } },
+    output: { type: 'json', example: { acesso: 'concedido', licenca: { tipo_licenca: lic.key, obra: { titulo: 'exemplo', sha256: '...' }, acesso_a_fotografia: { url: 'https://...', expira_em: '2026-...' } } } },
   };
   const schema = {
     '$schema': 'https://json-schema.org/draft/2020-12/schema',
@@ -290,7 +298,7 @@ async function verificarESettleViaCdp(pagamento: PagamentoV2, lic: Lic, resource
 }
 // ---------- fim do bloco novo ----------
 
-function outputSchemaFor(lic: Lic) { return { input: { type: 'http', method: 'GET', queryParams: { obra: { type: 'string', required: false, description: 'id ou titulo de uma obra fisica (ver catalogo).' } }, headerFields: { 'PAYMENT-SIGNATURE': { type: 'string', required: false }, 'X-PAYMENT': { type: 'string', required: false } } }, output: { type: 'object', properties: { acesso: 'string', licenca: { certificado: 'string', obra: 'object', tipo_licenca: 'string', direitos: 'array', licenciado: 'string', valor: 'string', acesso_a_fotografia: { url_assinada: 'string', expira_em: 'string' } } } } }; }
+function outputSchemaFor(lic: Lic) { return { input: { type: 'http', method: 'GET', queryParams: { obra: { type: 'string', required: false, description: 'ID canonico numerico da obra fisica; obrigatorio com selection.' }, sha256: { type: 'string', required: false, description: 'Hash anunciado pela amostra; validado antes da selecao.' }, selection: { type: 'string', required: false, description: 'Referencia Ed25519 emitida pelo servidor, obrigatoria no pedido pago. Seguir o redirect 307 antes do desafio 402.' } }, headerFields: { 'PAYMENT-SIGNATURE': { type: 'string', required: false }, 'X-PAYMENT': { type: 'string', required: false } } }, output: { type: 'object', properties: { acesso: 'string', licenca: { certificado: 'string', obra: 'object', tipo_licenca: 'string', direitos: 'array', licenciado: 'string', valor: 'string', acesso_a_fotografia: { url: 'string', expira_em: 'string' } } } } }; }
 function acceptsFor(lic: Lic, resourceUrlStr: string) {
   const base = { scheme: 'exact', network: CAIP2_NETWORK, amount: lic.atomic.toString(), maxAmountRequired: lic.atomic.toString(), resource: resourceUrlStr, description: `0001sensations · coleccão fisica · ${lic.descricao}`, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(lic), extra: { name: 'USD Coin', version: '2' }, 'x-orum': { name: '0001sensations · ORUM', licenca: lic.key, amount: `${lic.usdc} USDC`, autor: 'Unum · jasm43.base.eth' } };
   const lista = [base];
@@ -317,6 +325,55 @@ async function encontrarObraFisica(query: string | null): Promise<any | null> {
   return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
 }
 
+const selectionCodec = createSelectionCodec({
+  sign: async bytes => {
+    if (!attestorSeed) throw new Error('selection_signer_unavailable');
+    return ed.signAsync(bytes, attestorSeed);
+  },
+  verify: async (signature, bytes) => !!attestorPublicKey && await ed.verifyAsync(signature, bytes, attestorPublicKey),
+});
+function selectionTerms(lic: Lic) {
+  return { license: lic.key, amount: lic.atomic.toString(), network: CAIP2_NETWORK, asset: USDC_BASE, pay_to: WALLET };
+}
+function selectionError(code: string, status = 409) {
+  return new Response(JSON.stringify({ erro: code, payment_executed_by_this_request: false,
+    instruction: 'Obtain a fresh selection without a payment header. Follow the returned canonical URL; keep the selected work and verify its hash. Do not pay again to correct a request.' }),
+    { status, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': VERSAO } });
+}
+async function verifiedPhoto(obra: any, expectedHash: string): Promise<boolean> {
+  if (!obra?.bytes_na_arca || !obra.caminho_arca || !/^[a-f0-9]{64}$/.test(expectedHash) || obra.sha256 !== expectedHash) return false;
+  const { data, error } = await sb.storage.from(BUCKET_PRIVADO).download(obra.caminho_arca);
+  if (error || !data || data.size === 0 || data.size > 25 * 1024 * 1024) return false;
+  const actual = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await data.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
+  return actual === expectedHash;
+}
+async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean): Promise<Response | { obra: any; selection: Selection }> {
+  const params = new URL(req.url).searchParams;
+  if (['obra', 'sha256', 'selection'].some(key => params.getAll(key).length > 1)) return selectionError('selection_ambiguous', 400);
+  const token = params.get('selection');
+  if (!token) {
+    if (hasPayment) return selectionError('selection_required');
+    const query = params.get('obra');
+    if (params.has('obra') && (!query || !/^[1-9][0-9]*$/.test(query))) return selectionError('work_id_invalid', 400);
+    const obra = await encontrarObraFisica(query);
+    if (!obra) return selectionError('work_not_found', 404);
+    if (params.has('sha256') && params.get('sha256') !== obra.sha256) return selectionError('work_hash_mismatch');
+    if (!await verifiedPhoto(obra, obra.sha256)) return selectionError('work_unavailable', 503);
+    const issued = await selectionCodec.issue({ ...selectionTerms(lic), work_id: String(obra.id), sha256: obra.sha256 });
+    const location = new URL(resourceUrlFor(req, lic, String(obra.id)));
+    location.searchParams.set('selection', issued.token);
+    return new Response(JSON.stringify({ selection: issued.selection, resource: { url: location.toString() } }),
+      { status: 307, headers: { ...CORS, Location: location.toString(), 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': VERSAO } });
+  }
+  let selection: Selection;
+  try { selection = await selectionCodec.verify(token, selectionTerms(lic)); }
+  catch (error) { return selectionError((error as Error).message); }
+  if (params.get('obra') !== selection.work_id || (params.has('sha256') && params.get('sha256') !== selection.sha256)) return selectionError('selection_mismatch');
+  const obra = await encontrarObraFisica(selection.work_id);
+  if (!await verifiedPhoto(obra, selection.sha256)) return selectionError('work_unavailable', 503);
+  return { obra, selection };
+}
+
 async function gerarAcessoAssinado(obra: any, lic: Lic, licencaId: string): Promise<{ url: string; expira_em: string } | null> {
   if (!obra.bytes_na_arca || !obra.caminho_arca) return null;
   const { data, error } = await sb.storage.from(BUCKET_PRIVADO).createSignedUrl(obra.caminho_arca, lic.acesso_segundos);
@@ -326,18 +383,21 @@ async function gerarAcessoAssinado(obra: any, lic: Lic, licencaId: string): Prom
   return { url: data.signedUrl, expira_em: expiraEm };
 }
 
-async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string, payer: string, via: string = 'rpc-direto'): Promise<Response> {
-  const obra = await encontrarObraFisica(obraQuery);
-  if (!obra) return new Response(JSON.stringify({ erro: 'nenhuma obra fisica disponivel para licenciar' }), { status: 404, headers: { ...CORS, 'Content-Type': 'application/json' } });
+async function emitirLicenca(lic: Lic, selection: Selection, txHash: string, payer: string, via: string = 'rpc-direto'): Promise<Response> {
+  const obra = await encontrarObraFisica(selection.work_id);
+  if (!await verifiedPhoto(obra, selection.sha256)) return new Response(JSON.stringify({ erro: 'delivery_unavailable_after_payment', tx_hash: txHash, payment_confirmed: true, delivery_confirmed: false }), { status: 503, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
   const validaAte = lic.dias ? new Date(Date.now() + lic.dias * 86400000).toISOString() : null;
   const inserted = await sbInsert('ora_licencas_fisicas', { obra_id: obra.id, obra_titulo: obra.titulo, obra_sha256: obra.sha256, obra_ano: obra.ano, tipo_licenca: lic.key, licenciado: payer, tx_hash: txHash, valor_usdc: Number(lic.usdc), valida_ate: validaAte });
   const licencaId = Array.isArray(inserted) && inserted[0] ? inserted[0].id : null;
 
+  if (!licencaId) return new Response(JSON.stringify({ erro: 'license_record_failed', tx_hash: txHash, payment_confirmed: true, delivery_confirmed: false }), { status: 503, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+
   const acesso = licencaId ? await gerarAcessoAssinado(obra, lic, licencaId) : null;
 
   const certificadoBase = {
     certificado: 'licenca-0001sensations-fisica', versao: VERSAO,
+    selecao: selection,
     obra: { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel },
     tipo_licenca: lic.key, direitos: lic.direitos, licenciado: payer, valor: `${lic.usdc} USDC`,
     prova_pagamento: { tx_hash: txHash, chain: 'base-mainnet', chain_id: CHAIN_ID, token: USDC_BASE, destino: WALLET, via },
@@ -353,6 +413,8 @@ async function emitirLicenca(lic: Lic, obraQuery: string | null, txHash: string,
 
   const services = await sbSelect('x402_services', `sku=eq.${lic.sku}&select=id`);
   if (Array.isArray(services) && services.length > 0) await sbInsert('x402_orders', { service_id: services[0].id, buyer_actor: payer, protocol: 'x402', external_id: txHash, status: 'paid', payment_tx_hash: txHash, total_amount: Number(lic.usdc), currency: 'USDC' });
+
+  if (!acesso) return new Response(JSON.stringify({ erro: 'delivery_unavailable_after_payment', licenca: certificado, payment_confirmed: true, delivery_confirmed: false, reacesso: SUPABASE_URL + '/functions/v1/ora-licenca/reacesso' }), { status: 503, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
   return new Response(JSON.stringify({ acesso: 'concedido', licenca: certificado }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), 'X-ORA-VERSION': VERSAO, 'Cache-Control': 'no-store' } });
 }
@@ -375,6 +437,7 @@ async function catalogo(req: Request) {
     obras: lista.map((f: any) => ({ id: f.id, titulo: f.titulo, ano: f.ano, sha256: f.sha256, descricao_visivel: f.descricao_visivel, fotografia_preservada: !!f.bytes_na_arca, fotografia_publica: false })),
     licencas: Object.values(LICENCAS).map((l) => ({ tipo: l.key, sku: l.sku, preco: `${l.usdc} USDC`, duracao_da_licenca: l.dias ? `${l.dias} dias` : 'perpetua', duracao_do_acesso_a_imagem: `${l.acesso_segundos}s (URL assinada, gerada apos pagamento)`, direitos: l.direitos, descricao: l.descricao, endpoint: resourceUrlFor(req, l) })),
     reacesso: { endpoint: publicoUrl(req, 'reacesso'), autenticacao: 'assinatura personal_sign da carteira licenciada', novo_pagamento: false, condicao: 'licenca valida e nao revogada; fotografia verificada pelo hash da licenca', instrucoes: 'GET com ?tx=hash devolve a mensagem para assinar; POST com transactionHash, issued_at, nonce, signature devolve nova URL temporaria.' },
+    selecao_da_obra: { schema: 'orum-work-selection/v1', canonical_id: 'obra.id', integrity: 'obra.sha256', initial_request: 'GET da licenca com ?obra=id e sha256 opcional; seguir 307 para o URL canonico com selection', paid_request: 'Repetir exactamente resource.url do desafio 402, incluindo obra e selection', validity_seconds: 1800, validation: 'Assinatura Ed25519 do atestador operacional, obra/hash e termos verificados no servidor antes do pagamento; bytes novamente verificados antes da emissao', payment_authorization: false, expired_selection: 'Obter nova selecao sem cabecalho de pagamento; reutilizar comprovativo existente apenas se ainda nao foi reivindicado. Nao pagar novamente para corrigir um pedido.' },
     licenciamento_nao_exclusivo: 'Nenhuma licenca e exclusiva. Nao ha limite ao numero de vezes que uma obra pode ser licenciada.',
     truth_machine: truthMachineCatalogo(),
     boundaries_machine: boundariesMachineLicenca(),
@@ -388,7 +451,7 @@ async function catalogo(req: Request) {
 
 async function amostra(req: Request) {
   const obra = await encontrarObraFisica(null);
-  return { amostra: 'gratuita', nota: 'Metadados de uma obra fisica real, sem imagem -- as fotografias sao privadas. Para aceder a fotografia, adquire uma licenca.', obra: obra ? { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel, fotografia_preservada: !!obra.bytes_na_arca } : null, proveniencia: { autor: 'Unum · jasm43.base.eth', ia_generativa: false, periodo: '2011–2021' }, licenciar: Object.values(LICENCAS).map((l) => ({ tipo: l.key, preco: `${l.usdc} USDC`, endpoint: resourceUrlFor(req, l) })), catalogo_completo: publicoUrl(req, 'catalogo'), timestamp: new Date().toISOString() }; }
+  return { amostra: 'gratuita', nota: 'Metadados de uma obra fisica real, sem imagem -- as fotografias sao privadas. Para aceder a fotografia, adquire uma licenca.', obra: obra ? { id: obra.id, titulo: obra.titulo, ano: obra.ano, sha256: obra.sha256, descricao_visivel: obra.descricao_visivel, fotografia_preservada: !!obra.bytes_na_arca } : null, proveniencia: { autor: 'Unum · jasm43.base.eth', ia_generativa: false, periodo: '2011–2021' }, licenciar: Object.values(LICENCAS).map((l) => ({ tipo: l.key, preco: `${l.usdc} USDC`, endpoint: obra ? resourceUrlFor(req, l, String(obra.id)) + '&sha256=' + obra.sha256 : null })), catalogo_completo: publicoUrl(req, 'catalogo'), timestamp: new Date().toISOString() }; }
 
 
 /* ORA · HAL PROVIDER · V1 · 04/09/2026
@@ -570,16 +633,24 @@ async function nucleo(req: Request): Promise<Response> {
   if (!lic) return new Response(JSON.stringify(await catalogo(req)), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
   const hasPayment = req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE');
-  if (!hasPayment) return paymentRequired(req, lic, obraQuery);
+  const prepared = await prepareSelection(req, lic, !!hasPayment);
+  if (prepared instanceof Response) return prepared;
+  if (!hasPayment) {
+    const challenge = paymentRequired(req, lic, prepared.selection.work_id);
+    const body = await challenge.json();
+    const headers = new Headers(challenge.headers); headers.set('Cache-Control', 'no-store');
+    return new Response(JSON.stringify({ ...body, selection: prepared.selection, selection_signature: { key_id: ATTESTOR_KEY_ID, algorithm: 'Ed25519', purpose: 'work_selection_only_not_payment_authorization' } }), { status: 402, headers });
+  }
 
   const parsed = parsePaymentHeader(hasPayment);
   if (CDP_DISPONIVEL && pareceX402V2Cdp(parsed)) {
-    const resourceUrlStr = resourceUrlFor(req, lic, obraQuery);
+    const resourceUrlStr = resourceUrlFor(req, lic, prepared.selection.work_id);
     const r = await verificarESettleViaCdp(parsed as PagamentoV2, lic, resourceUrlStr);
     if (!r.ok) return new Response(JSON.stringify({ erro: 'pagamento invalido (via CDP)', detalhe: r.erro }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(r.erro) } });
-    const claim = await claimPagamento({ tx_hash: r.txHash, payer: r.payer, amount: lic.atomic.toString(), currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain', via: 'cdp-facilitador' });
+    const claim = await claimPagamento({ tx_hash: r.txHash, payer: r.payer, amount: lic.atomic.toString(), currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
     if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'claim_duplicate' } });
-    return emitirLicenca(lic, obraQuery, r.txHash, r.payer, 'cdp-facilitador');
+    if (claim.ok !== 'claimed') return new Response(JSON.stringify({ erro: 'payment_record_failed', tx_hash: r.txHash, payment_confirmed: true, delivery_confirmed: false }), { status: 503, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    return emitirLicenca(lic, prepared.selection, r.txHash, r.payer, 'cdp-facilitador');
   }
 
   const th = extrairTxHash(hasPayment);
@@ -588,7 +659,8 @@ async function nucleo(req: Request): Promise<Response> {
   if (!v.valid) { if (v.pending) return paymentPending(lic, th); return new Response(JSON.stringify({ erro: 'pagamento invalido', detalhe: v.error }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(v.error, v.pending) } }); }
   const claim = await claimPagamento({ tx_hash: th, payer: v.payer, amount: v.amount, currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
   if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'claim_duplicate' } });
-  return emitirLicenca(lic, obraQuery, th, v.payer!);
+  if (claim.ok !== 'claimed') return new Response(JSON.stringify({ erro: 'payment_record_failed', tx_hash: th, payment_confirmed: true, delivery_confirmed: false }), { status: 503, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  return emitirLicenca(lic, prepared.selection, th, v.payer!);
 }
 
 Deno.serve(async (req: Request) => {

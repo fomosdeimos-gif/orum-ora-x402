@@ -1,3 +1,13 @@
+## Identidade da obra até à entrega · 16/09/2026
+
+- Retoma ora_mudancas#620: os links da amostra agora conservam ID e hash automaticamente.
+- Implementação V51: selection.ts emite referência Ed25519 de 30 minutos pelo atestador operacional existente; o servidor valida ID/hash/termos/assinatura e bytes antes de qualquer settlement. O primeiro GET sem pagamento redireciona 307 para o recurso assinado; api/proxy.js preserva Location e não segue o redirect internamente.
+- O pedido pago exige a referência; obra não é novamente sorteada. A licença guarda ID/hash e o certificado inclui selecao; order e pagamento ligam-se pela transação. Falhas de registo ou entrega são explícitas, nunca acesso concedido.
+- Teste: node --experimental-vm-modules scripts/verify-license-selection.mjs. Handler completo com armazenamento/base/settlement simulados; Ed25519 real com chave sintética; autenticação do titular no reacesso simulada. Sem rede nem compra real.
+- Fronteiras: assinatura da oferta não é autorização do pagador; transferências USDC diretas não transportam ID da obra. Falha posterior à liquidação sem licença ainda exige reconciliação. Storage não se tornou imutável. Ver docs/license-selection-v1.md.
+- Publicação do código não comprova aplicação da Edge: verificar versão, ficheiros e endpoints; evidência final em ora_mudancas posterior a #620. Licenças históricas e direitos mantidos.
+- Próximo fio: observar utilização real e falhas de entrega; não efectuar compra interna como prova de procura.
+
 ## Oferta individual e orientação de compra · 16/09/2026
 
 - Mandato: ora_mudancas#619; sustento de Unum 3.000 EUR líquidos/mês, separado das subscrições. Não é previsão de receita.
