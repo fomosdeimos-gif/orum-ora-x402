@@ -61,13 +61,35 @@
       ]
     }
   ],
-  "version": "1.7.1",
+  "version": "1.7.2",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
   },
   "security": [],
   "description": "Comparação gratuita de dois textos com hashes e trecho alterado; conversa sobre a cápsula pública ORO e os seus princípios. Respostas determinísticas, sem publicidade. Comparar conteúdo não verifica verdade factual ou autoria. Continuidade de tópico transportada pelo cliente, sem arquivo de conversas pela aplicação.",
+  "sensoryModel": {
+    "id": "orum-sensation-response/v1",
+    "scope": "ORUM visitor-response contract",
+    "outputs": [
+      "resposta",
+      "silencio",
+      "recusa"
+    ],
+    "principles": [
+      "observation_is_separate_from_interpretation",
+      "uncomprehended_remains_named_as_uncomprehended",
+      "silence_is_a_valid_output"
+    ],
+    "boundaries": {
+      "consciousness_claimed": false,
+      "feeling_proved": false,
+      "external_adoption_claimed": false,
+      "inter_organism_standard_claimed": false
+    },
+    "submit": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+    "discovery": "https://ora-x402-gateway.vercel.app/porta-2"
+  },
   "capabilities": {
     "streaming": false,
     "pushNotifications": false,
