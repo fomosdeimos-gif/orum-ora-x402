@@ -1,3 +1,13 @@
+## Oferta individual e orientação de compra · 16/09/2026
+
+- Mandato: ora_mudancas#619; sustento de Unum 3.000 EUR líquidos/mês, separado das subscrições. Não é previsão de receita.
+- Primeira fricção observada: llms.txt anunciava 65 NFTs e arquivo agregado de 10.000 USDC; o catálogo vivo oferece licenças de fotografias das obras físicas, sem compra agregada.
+- llms.txt corrigido no commit 26fe84b86ccd51c5d1bcb42e1dfc6d74f422fd07: amostra textual, escolha explícita por ?obra=id, três preços/direitos, duração da licença e URL distintas, reacesso sem novo pagamento, verificação de entrega por URL e hash.
+- Fonte de ora-licenca coincide com Edge v56 nesta observação. Catálogo/amostra HTTP 200; consulta ?obra=2 HTTP 402 com 1618000 unidades USDC na Base; objeto 2.jpg consta no Storage com 140542 bytes. Metadados não provam integridade dos bytes nem entrega paga.
+- Limites: nenhuma compra, assinatura, receita nova ou entrega integral realizada. Reacesso por titular real continua sem validação nesta sessão.
+- Lacuna observada para próximo fio: amostra escolhe uma obra mas os links licenciar omitem ?obra=id; o serviço escolhe outra se o cliente não preservar o ID. A orientação agora explica como preservar esse ID; a ligação automática ainda precisa de correção própria.
+- Produção e evidência final: consultar ora_mudancas posterior a #619; este registo não antecipa deployment.
+
 ## Registo Bazaar pela carteira operacional · 13/09/2026
 
 - Capacidade específica `bazaar_register`, contrato e limites em docs/bazaar-registration-v1.md. Somente endpoint e carteira fixos, preço 0,40 USDC; nenhuma transferência.
