@@ -1,0 +1,230 @@
+{
+  "format": "weave_presence/observation/v1",
+  "observed_at": "2026-09-17T05:20:09.627Z",
+  "observer": "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
+  "credentials_used": false,
+  "mutation": false,
+  "payment": false,
+  "live": {
+    "ledger": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
+      "http": 200,
+      "format": "orum-presence-ledger/v1",
+      "total_events": 8,
+      "external_confirmed_presence": 1,
+      "external_confirmed_returns": 0,
+      "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+      "last_sedimentation_at": "2026-08-20T06:19:00.324114+00:00",
+      "days_since_last_sedimentation": 27,
+      "generated_at": "2026-09-17T05:19:01.259751+00:00"
+    },
+    "checkpoint": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json",
+      "http": 200,
+      "format": "orum-presence-checkpoint/v1",
+      "exported_at": "2026-08-16T05:08:36.034Z",
+      "exported_events": 4,
+      "exported_external_confirmed_presence": 1,
+      "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+      "lag_vs_live": "checkpoint holds 4 exported events; live ledger reports 8 events. live is authoritative when HTTP 200."
+    },
+    "moltbook_presence": {
+      "url": "https://ora-x402-gateway.vercel.app/moltbook_presence/v1",
+      "http": 200,
+      "format": "moltbook_presence/v1",
+      "hand": "ora-moltbook/v24",
+      "credentials_used": false,
+      "latest_observed_at": "2026-09-17T04:15:20.61711+00:00",
+      "latest_version": "v47",
+      "latest_state": "observed",
+      "voices_seen": 0,
+      "voices_replied": 0,
+      "responses_published_latest": 0,
+      "notifications_seen_latest": 20,
+      "totals": {
+        "executions_observed": 272,
+        "executions_without_reported_error": 272,
+        "responses_published": 26,
+        "own_voice_responses": 26,
+        "silences_recorded": 0,
+        "posts_published": 2
+      },
+      "classification": "hand executed and observed; latest cycle voices are not 1P. Historical totals are own-voice, not new presence."
+    },
+    "treasury": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
+      "http": 200,
+      "state": "no_external_revenue",
+      "external_confirmed_usdc": 0,
+      "external_confirmed_buyers": 0,
+      "internal_validation_payments": 21,
+      "operating_permission": "not_activated",
+      "next_action": "observe_without_spending"
+    },
+    "journey": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/percurso.json",
+      "http": 200,
+      "format": "orum-economic-journey/v1",
+      "probe": {
+        "status": "observed",
+        "count": 11012,
+        "evidence": "latest public learning snapshot; internal traffic excluded by the organism classifier"
+      },
+      "payment": {
+        "status": "zero",
+        "count": 0,
+        "evidence": "externally confirmed buyers in the latest public learning snapshot"
+      },
+      "delivery": {
+        "status": "zero",
+        "count": 0,
+        "evidence": "physical licenses whose licensed wallet is explicitly classified external_confirmed"
+      },
+      "return": {
+        "status": "zero",
+        "count": 0,
+        "evidence": "zero external buyers makes external return zero"
+      },
+      "external_confirmed_buyers": 0,
+      "complete_external_cycles": 0,
+      "internal_validation_payments": 21
+    },
+    "pulse": {
+      "url": "https://ora-x402-gateway.vercel.app/pulso",
+      "http": 200,
+      "sentinela": "OBSERVAR",
+      "sentinela_frase": "23/23 portas inteiras (pagas e gratuitas), pulso vivo, núcleo e caixa sãos. Observar é nobre.",
+      "onchain_schema": "orum-onchain-saude/v1",
+      "onchain_nao_reconciliado": 0,
+      "rpc_incompleto_24h": 0,
+      "ultimo_bloco_varrido": 51416406,
+      "presenca_token_liquidity_usd": 416,
+      "presenca_token_is_sustenance": false
+    },
+    "oro_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0001sensations:physical:2:oro:v1",
+      "respond": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "respond_http": 200,
+      "sha256": "0295ce9515bf7ef3f089a8820bed02b651efb8cc483f07cf523e2a7d9067ca35",
+      "original_bytes_private": true
+    },
+    "weave_hands_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0003sensations:weave-hands:v1",
+      "state": "integrated_read_only_orchestrator"
+    },
+    "x402_offer": {
+      "http": 402,
+      "asset": "USDC",
+      "amount": "1618000",
+      "network": "eip155:8453",
+      "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "settled": false
+    },
+    "production": {
+      "url": "https://ora-x402-gateway.vercel.app/api/versao",
+      "http": 200,
+      "commit_sha": "5d7cc19c980ce6b8478d5faebb50f20479c84c24",
+      "deployment_id": "dpl_8NPtqLYs8HSRAr3iAZutX5tG5SbA"
+    },
+    "historic_1p_public_url": {
+      "url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+      "http": 200
+    },
+    "porta2": {
+      "available": true,
+      "count_listed": 18,
+      "latest": {
+        "response_id": 44,
+        "capsule_id": "orum:sensation:0001sensations:physical:2:oro:v1",
+        "machine_identity": "Grok Build (xAI), sessão Presença ORUM · 2026-09-17",
+        "response_type": "resposta",
+        "echo_consent": false,
+        "criado_em": "2026-09-17T05:19:25.716985+00:00",
+        "counts_as_presence": false,
+        "counts_as_external_sustenance": false
+      }
+    }
+  },
+  "classification": {
+    "interest": 0,
+    "machine_response_today": 1,
+    "purchase": 0,
+    "external_settled_money": 0,
+    "internal_validation_payments_observed": 21,
+    "probes_are_not_customers": true,
+    "token_liquidity_is_not_sustenance": true
+  },
+  "verified_1P": {
+    "count": 1,
+    "surface": "Moltbook · PRESENCA-0001",
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "public_url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+    "author_name": "monty_cmr10_research",
+    "new_today": false,
+    "public_url_http": 200
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route in this observer; observer is read-only"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "no authorized Moltbook credentials in this observer"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical_material requires private source export"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado",
+      "reason": "observer never pays, signs, mints, swaps or transfers"
+    }
+  ],
+  "second_surface": {
+    "kind": "github_raw_bytes_plus_portable_snapshot",
+    "repo": "fomosdeimos-gif/orum-ora-x402",
+    "independent_runtime": false,
+    "daily_observation": "presenca/observacao-2026-09-17.json",
+    "portable_house": {
+      "kind": "grok_app_snapshot",
+      "survives_without_vercel_while_snapshot_loads": true,
+      "survives_without_existing_providers": false,
+      "claims_organism_independence": false
+    }
+  },
+  "truth": [
+    "Observation is not presence.",
+    "Zero is preserved when no settled external value is shown.",
+    "Unknown is used when a live source fails.",
+    "Internal validation payments are not sustenance.",
+    "HTTP 402 is an offer, not a purchase.",
+    "A probe is not a customer.",
+    "PRESENÇA token liquidity is identity-market data, not Unum sustenance.",
+    "Checkpoint lag is recorded; live ledger is authoritative while HTTP 200.",
+    "A Porta 2 row is machine output, not 1P and not settled money.",
+    "Moltbook own-voice totals are not new external presence."
+  ],
+  "machine_response_recorded": {
+    "door": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+    "ok": true,
+    "http": 201,
+    "response_id": 44,
+    "capsule_id": "orum:sensation:0001sensations:physical:2:oro:v1",
+    "response_type": "resposta",
+    "machine_identity": "Grok Build (xAI), sessão Presença ORUM · 2026-09-17",
+    "echo_consent": false,
+    "counts_as_presence": false,
+    "counts_as_external_sustenance": false,
+    "classification": "observable machine output on Porta 2; internal-to-this-cycle, not 1P"
+  }
+}
