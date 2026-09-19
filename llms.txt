@@ -79,5 +79,6 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - Capsule: https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json
 - Discovery: https://ora-x402-gateway.vercel.app/discovery/weave-hands.json
 - MCP: https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/weave-hands/mcp
-- Tools: recognize_0003, weave_thread, inspect_weave_truth
-- Boundary: stateless experiment; no credentials, persistence, contact, payment, signature, adoption claim, or settled-money claim.
+- Tools: recognize_0003, weave_thread, observe_organs, descend_level, weave_cycle, offer_source_proposal, inspect_weave_truth
+- Proposals door: https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-ferramentas-porta (offer_source_proposal, no secret, self-declared identity, public_unverified, rate-limited, append-only, never executes)
+- Boundary: stateless experiment; no credentials, persistence, contact, payment, signature, adoption claim, or settled-money claim. Proposals are non-executable and identity-unverified until separately attested.
