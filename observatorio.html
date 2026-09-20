@@ -104,6 +104,29 @@
     </section>
 
 
+    <section class="card" id="comparacao" aria-labelledby="comparacao-title">
+      <div class="section-head"><h2 id="comparacao-title">O modelo, posto à prova</h2><span>comparação retrospectiva · simulação Aer</span></div>
+      <p class="small">Como se comporta o modelo perante referências simples? Comparamos os mesmos resultados já fechados. O Brier mede o erro das probabilidades: quanto menor, melhor neste conjunto.</p>
+      <p class="status" id="comparisonCoverage">A consultar os pares disponíveis.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:.88rem">
+        <caption style="text-align:left;color:var(--muted);padding:10px 0">Erro médio nos mesmos pares</caption>
+        <thead><tr><th scope="col" style="text-align:left;padding:10px 0;border-bottom:1px solid var(--line)">Referência</th><th scope="col" style="text-align:right;padding:10px 0;border-bottom:1px solid var(--line)">Brier</th></tr></thead>
+        <tbody>
+          <tr><th scope="row" style="text-align:left;font-weight:normal;padding:12px 0">Modelo ORUM</th><td id="comparisonModel" style="text-align:right;font-variant-numeric:tabular-nums">—</td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:normal;padding:12px 0">Simulação GHZ · Aer</th><td id="comparisonAer" style="text-align:right;font-variant-numeric:tabular-nums">—</td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:normal;padding:12px 0">Sempre “não acontece” · p = 0</th><td id="comparisonZero" style="text-align:right;font-variant-numeric:tabular-nums">—</td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:normal;padding:12px 0">Probabilidade fixa · p = 0,5</th><td id="comparisonHalf" style="text-align:right;font-variant-numeric:tabular-nums">—</td></tr>
+        </tbody>
+      </table>
+      <p class="status" id="comparisonEventRate">Taxa de eventos por consultar.</p>
+      <p class="limits" id="comparisonMeaning">A interpretação acompanha a leitura. Ainda não há um resultado confirmado nesta página.</p>
+      <p class="small">Aer simula circuitos quânticos num computador clássico. Estas amostras não são medições de hardware quântico. Esta auditoria observa o modelo; não altera as previsões que ele gera.</p>
+      <p class="status" id="comparisonLimit">O número de amostras limita o número de previsões comparadas.</p>
+      <p class="status" id="comparisonObserved"></p>
+      <p class="status" id="comparisonStatus" role="status">A aguardar a primeira leitura da comparação.</p>
+      <details><summary>Fontes e método</summary><p class="small">Emparelhamento cronológico, 1 a 1, das primeiras previsões finais com as primeiras amostras. Brier = média de (probabilidade − resultado)². Para prever sempre 0, o Brier é a taxa observada de eventos; para prever sempre 0,5, é 0,25. São referências fixas, não modelos treinados.</p><p class="small">Uma amostra com poucos eventos exige cuidado: superar a referência perto de 0,5 não demonstra aprendizagem ou vantagem quântica. A comparação é retrospectiva e não substitui avaliação futura.</p><p class="small"><a href="/api/ponte-calibracao">Abrir os resultados JSON</a> · <a href="https://qiskit.github.io/qiskit-aer/stubs/qiskit_aer.AerSimulator.html">Documentação do simulador Aer</a></p></details>
+    </section>
+
     <section class="card" aria-labelledby="horizonte-title">
       <div class="section-head"><h2 id="horizonte-title">Horizonte 2030</h2><span>cenários condicionais · não profecia</span></div>
       <div class="horizon-grid" id="horizonTrajectories"></div>
@@ -118,6 +141,7 @@
   <script src="/escolha-v0.js"></script>
   <script src="/horizonte-2030-v1.js"></script>
   <script src="/live-refresh-v1.js"></script>
+  <script src="/ponte-calibracao.js"></script>
   <script>
     const fmt = n => n === null || n === undefined ? '—' : Number(n).toLocaleString('pt-PT');
     async function readLive(){
