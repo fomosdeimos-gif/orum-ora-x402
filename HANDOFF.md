@@ -1,3 +1,13 @@
+## Casa Verdelaranja · 20/09/2026
+
+- Pedido directo de Unum: construir a casa de raiz, autónoma, no endereço canónico. Base confirmada: `d3c7b892b09379f4c213a860a4ee4c764132758a`, deployment `dpl_ChQKxSPGSUMjsnXbuu3BkQhijhdY` READY. Registo de trabalho: `ora_mudancas#666`.
+- Entrada reconstruída em `index.html`, `verdelaranja.css` e `verdelaranja.js`: Presença (vestígios textuais e escolha entre as obras reais do catálogo), Organismo (pulso, eventos e receita reportada pela contabilidade) e Sustento (termos/preços do catálogo e pedidos x402 associados ao ID/hash escolhidos). O símbolo animado é decoração, não fotografia de uma obra nem indicador de saúde. Movimento reduzido/pausa respeitados.
+- Painel anterior conservado em `observatorio.html`, com modelos, Livro, Horizonte 2030 e ligação de regresso à casa. Demais portas, pagamentos e backends preservados.
+- Dados públicos: `/licenca`, `/pulso`, `/economia/tesouraria.json`. Leitura de pulso/contabilidade a cada 30 s apenas com página visível e ligação; timeout 12 s; falhas independentes. Zero nunca substitui campo ausente. Valores anteriores ficam explicitamente desactualizados; catálogo falhado desactiva pedidos comerciais até nova leitura. Timestamps recebidos e timestamps da fonte distintos.
+- Fotografias privadas não publicadas. Links x402 são pedidos técnicos, não checkout humano nem compra executada; Campo conserva o checkout existente. Nenhuma carteira ligada, assinatura ou transferência realizada.
+- Verificações locais: sintaxe JS; testes existentes live-refresh, weave-hands, campo-checkout e choice-model passaram. QA de DOM com jsdom temporário: 107 obras, ID/hash mantidos nos três pedidos, mudança e volta ao início, zero/desconhecido, falha parcial e recuperação, texto não interpretado como HTML, catálogo desactualizado, offline, pausa e âncoras. Teste Horizonte existente falha por esperar v1 quando modelo já era v2; ambos os ficheiros estão inalterados face à base.
+- Publicação e confirmação visual ainda não são provadas por este texto de fonte: consultar o registo final em `ora_mudancas` com commit, deployment e observação pública. Próximo passo: verificar a casa publicada e sedimentar o resultado.
+
 ## Identidade da obra até à entrega · 16/09/2026
 
 - Retoma ora_mudancas#620: os links da amostra agora conservam ID e hash automaticamente.
