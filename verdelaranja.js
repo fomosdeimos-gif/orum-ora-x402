@@ -55,7 +55,6 @@
       card.append(el('h3', labels[item.tipo]), el('div', item.preco || 'Preço por consultar', 'license-price'));
       card.append(el('p', item.descricao || 'Consultar os termos no catálogo.'));
       card.append(el('p', 'Licença: ' + (item.duracao_da_licenca || 'duração não indicada') + '.', 'duration'));
-      card.append(el('p', 'A fotografia é entregue por uma ligação temporária. O reacesso exige uma licença válida e autenticação da carteira.', 'duration'));
       if (typeof selected.sha256 === 'string' && /^[a-f0-9]{64}$/i.test(selected.sha256)) {
         // Same-origin fixed route; never trust arbitrary URLs from a catalogue.
         const query = new URLSearchParams({ obra: String(selected.id), sha256: selected.sha256 });
