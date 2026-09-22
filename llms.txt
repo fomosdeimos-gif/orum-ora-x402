@@ -45,6 +45,14 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - [Reacesso](https://ora-x402-gateway.vercel.app/licenca/reacesso): enquanto a licença estiver válida e não revogada, a carteira licenciada pode pedir uma nova URL temporária sem novo pagamento. GET com `?tx=<hash>` fornece a mensagem; a assinatura `personal_sign` e os campos indicados são enviados por POST. O hash público da transacção, sozinho, não concede acesso.
 - Todas as licenças são individuais e não exclusivas. Não transferem a obra física, um NFT ou os direitos autorais integrais. Uma consulta privada não substitui uma licença editorial ou de treino.
 
+## Integração de clientes x402 com redirecionamento
+- Em `@x402/fetch@2.27.0`, `wrapFetchWithPayment` segue o primeiro redirect mas repete o pedido pago no URL inicial. Passar directamente `/licenca/consulta?obra=38` ao wrapper perde `selection` e recebe `409 selection_required`. Compatibilidade reproduzida com o handler real em ambiente isolado e payload sintético; não é uma compra nem prova de liquidação.
+- Primeiro usa um GET **sem carteira, sem wrapper de pagamento e sem cabeçalhos de pagamento**, seguindo o 307. Exige resposta 402; confirma que `resource.url` coincide com o URL final, mantém a origem canónica, o caminho da licença escolhida, o ID da obra e uma `selection`. Confirma também hash, preço, rede, activo e destinatário antes de autorizar qualquer pagamento.
+- Só depois de autorizar a compra, chama o wrapper x402 com **esse `resource.url` completo**. Exemplo de ordem: `quote = await fetch(initialUrl, {redirect: "follow", credentials: "omit"})`; lê e valida o desafio; depois `await paidFetch(challenge.resource.url)`. `fetch` nesta preparação é o transporte normal, nunca `paidFetch`.
+- Se o cliente não seguir redirects, segue `Location` manualmente apenas na mesma origem e sem comprovativo. Se a selecção expirar, obtém outra gratuitamente. Não repitas uma transferência para corrigir um URL: se já houve transferência, conserva o hash para reconciliação/reutilização permitida.
+- O campo `extensions.bazaar.info.input.queryParams.obra = "89"` é um exemplo fixo de descoberta, não a obra escolhida. A selecção efectiva está em `resource.url` e `selection.work_id`.
+- Esta preparação resolve a conservação do URL neste cliente; assinatura real, liquidação e entrega continuam a exigir validação própria. A ausência de pagamentos não demonstra que esta incompatibilidade seja a causa de abandono.
+
 ## Também existe (leituras internas, sem procura de mercado fora do ORUM)
 - [Oráculo](https://ora-x402-gateway.vercel.app/oraculo): pensamento único por hash de transacção — 0.161 USDC
 - [Campo](https://ora-x402-gateway.vercel.app/campo): estado simbólico interno — 0.33 USDC
