@@ -105,9 +105,38 @@ const sample=await (await call(base+'/amostra')).json();
 for(const link of sample.licenciar){const u=new URL(link.endpoint);assert.equal(u.searchParams.get('obra'),String(sample.obra.id));assert.equal(u.searchParams.get('sha256'),sample.obra.sha256);}
 const initial=await call(sample.licenciar[0].endpoint);assert.equal(initial.status,307);
 const selectedUrl=initial.headers.get('location');assert(new URL(selectedUrl).searchParams.get('selection'));
+const initialLog = tables.ora_acessos_log.at(-1).x402_observation;
+assert.equal(initialLog.selection, 'issued');
+const attempt = initialLog.attempt_id;
+assert.match(attempt, /^[0-9a-f-]{36}$/);
+const concurrent = await Promise.all([call(sample.licenciar[0].endpoint), call(sample.licenciar[0].endpoint)]);
+const concurrentIds = await Promise.all(concurrent.map(async r => (await r.json()).selection.attempt_id));
+assert.equal(new Set([attempt, ...concurrentIds]).size, 3, 'same-second selections have unique attempt IDs');
 const challenge=await call(selectedUrl);assert.equal(challenge.status,402);
 const c=await challenge.json();assert.equal(c.selection.work_id,String(sample.obra.id));assert.equal(c.selection.sha256,sample.obra.sha256);assert.equal(c.resource.url,selectedUrl);
 assert.equal(JSON.parse(Buffer.from(challenge.headers.get('payment-required'),'base64')).resource.url,selectedUrl);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.attempt_id, attempt);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.challenge, true);
+const bad = new URL(selectedUrl);
+const parts = bad.searchParams.get('selection').split('.');
+const payload = JSON.parse(Buffer.from(parts[0], 'base64url'));
+payload.attempt_id = webcrypto.randomUUID();
+bad.searchParams.set('selection', Buffer.from(JSON.stringify(payload)).toString('base64url')+'.'+parts[1]);
+assert.equal((await call(bad)).status, 409);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.attempt_id, null, 'unverified IDs are never attributed');
+const legacy = new URL(selectedUrl); delete payload.attempt_id;
+const legacyBytes = Buffer.from(JSON.stringify(payload));
+legacy.searchParams.set('selection', legacyBytes.toString('base64url')+'.'+sign(null,legacyBytes,key).toString('base64url'));
+assert.equal((await call(legacy)).status, 402, 'old signed selections remain valid');
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.attempt_id, null, 'no invented historical attempt');
+const malformed = new URL(selectedUrl); payload.attempt_id = 'invalid';
+const malformedBytes = Buffer.from(JSON.stringify(payload));
+malformed.searchParams.set('selection', malformedBytes.toString('base64url')+'.'+sign(null,malformedBytes,key).toString('base64url'));
+assert.equal((await call(malformed)).status, 409);
+const invalidProof = await call(selectedUrl,{headers:{'X-PAYMENT':'invalid'}});
+assert.equal(invalidProof.status,402);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.proof_received,true);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.settlement,'not_observed');
 const before=rpcCalls+settleCalls;
 for(const mutate of [u=>u.searchParams.set('obra','37'),u=>u.searchParams.set('sha256','f'.repeat(64)),u=>u.searchParams.append('obra','2'),u=>u.pathname=u.pathname.replace('consulta','treino'),u=>{const t=u.searchParams.get('selection');u.searchParams.set('selection',t.slice(0,-4)+'AAAA');}]){
   const u=new URL(selectedUrl);mutate(u);assert([400,409].includes((await call(u,{headers:payment(1)})).status));
@@ -120,6 +149,9 @@ works[0].sha256='e'.repeat(64);assert.equal((await call(selectedUrl,{headers:pay
 now+=1801000;assert.equal((await call(selectedUrl,{headers:payment(1)})).status,409);now-=1801000;
 assert.equal(rpcCalls+settleCalls,before,'invalid selection must stop before settlement');
 const paid=await call(selectedUrl,{headers:payment(1)});assert.equal(paid.status,200);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.attempt_id, attempt);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.settlement, 'confirmed');
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.delivery, 'response_ready');
 const receipt=await paid.json();const license=tables.ora_licencas_fisicas[0];
 assert.equal(license.obra_id,sample.obra.id);assert.equal(license.obra_sha256,sample.obra.sha256);
 assert.equal(receipt.licenca.selecao.work_id,String(license.obra_id));assert.equal(receipt.licenca.prova_pagamento.tx_hash,license.tx_hash);
@@ -136,10 +168,20 @@ const renewedBody=await renewed.json();assert.equal(renewedBody.obra_id,license.
 assert.equal(sha(Buffer.from(await(await fakeFetch(renewedBody.acesso_a_fotografia.url)).arrayBuffer())),license.obra_sha256);
 corrupt=true;assert.equal((await call(base+'/reacesso',{method:'POST',body:JSON.stringify(renewalBody)})).status,503);corrupt=false;
 signingFails=true;assert.equal((await call(selectedUrl,{headers:payment(2)})).status,503);signingFails=false;
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.settlement,'confirmed');
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.delivery,'failed');
 insertFails=true;assert.equal((await call(selectedUrl,{headers:payment(3)})).status,503);insertFails=false;
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.settlement,'confirmed');
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.delivery,'failed');
 activeTx=tx(4);const cdpProof={scheme:'exact',payload:{signature:'synthetic',authorization:{from:payer}}};
 const cdp=await call(selectedUrl,{headers:{'PAYMENT-SIGNATURE':btoa(JSON.stringify(cdpProof))}});assert.equal(cdp.status,200);
 assert.equal((await cdp.json()).licenca.obra.id,sample.obra.id);assert.equal(settleCalls,1);
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.settlement,'confirmed');
+assert.equal(tables.ora_acessos_log.at(-1).x402_observation.delivery,'response_ready');
+for (const row of tables.ora_acessos_log) {
+  assert.deepEqual(Object.keys(row.x402_observation).sort(), ['schema','attempt_id','selection','challenge','proof_received','settlement','delivery'].sort());
+}
+console.log('PASS: unique same-second/concurrent attempt IDs; redirect/retry correlation; signed legacy compatibility; tamper rejection; malformed proof; direct/CDP settlement distinct from failed delivery; bounded telemetry without proofs or identity.');
 console.log('PASS: sample → signed selection → challenge → simulated direct/CDP payment → stored work/hash → verified bytes → authorized mocked-holder reaccess. Tampering, expiry, duplicate redemption, missing/corrupt bytes and failed delivery/record fail closed. No network or real payment.');
 
 // The gateway must expose the canonical redirect instead of following it on
@@ -154,3 +196,4 @@ const proxyRes={setHeader:(k,v)=>proxyHeaders[k]=v,end:b=>{proxyBody=b;},statusC
 await proxyModule.exports({method:'GET',query:{base:'ora-licenca',rest:'consulta',obra:'2'},headers:{host:'ora-x402-gateway.vercel.app'}},proxyRes);
 assert.equal(forwarded.options.redirect,'manual');assert.equal(proxyRes.statusCode,307);assert.equal(proxyHeaders.location,selectedUrl);assert.equal(proxyBody,'{}');
 console.log('PASS: gateway preserves canonical selection redirect and no-store.');
+

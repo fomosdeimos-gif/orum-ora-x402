@@ -72,3 +72,43 @@ No real network calls, funds or production purchases are used by this test.
 Live verification should only follow unpaid links, compare the attestor signature,
 and submit invalid proofs to check rejection. Record source hashes, Edge version,
 deployment and observed outcomes in ora_mudancas. Never call these tests a sale.
+
+
+## Attempt observation · V52
+
+New selections contain a server-generated random UUID `attempt_id`, covered by
+the existing Ed25519 selection signature. Two selections for the same work in
+the same second are distinct. The signed canonical URL carries it through the
+307, challenge and proof retry. Old selections remain valid until expiry and
+have no attempt ID; no historical IDs are manufactured. Sharing a selected URL
+can share the attempt: this is not buyer identity or a unique machine count.
+
+`x402_observation` in ora_acessos_log (copied into ora_x402_tentativas) records
+only schema, attempt_id, selection, challenge, proof_received, settlement and
+delivery. Selection `verified` means its signature/terms/expiry were verified;
+subsequent URL or Storage checks can still refuse the request. Invalid or expired
+signatures are not assigned an ID. No payment proofs, raw signatures, addresses,
+IP addresses or selected URLs are added to this observation.
+
+Settlement is `not_observed`, `unknown` while verification/settlement was tried
+without a positive result, or `confirmed` after the existing direct/CDP verifier
+returns success. A later claim/issuance error does not erase this observation.
+It is not proof of a new payment, independent origin or reconciled revenue.
+Repeated proofs and duplicate claims can refer to the same already-paid transfer.
+Delivery is `not_attempted`, `failed`, or `response_ready`; the latter means the
+server prepared the license and image URL, not that a client received/downloaded
+or verified the photograph. If the worker dies, no complete log may exist.
+
+The optional observation is additive: legacy stage/outcome, origem_hash,
+correlation_hash, prediction inputs and historical rows remain untouched.
+Logs use EdgeRuntime.waitUntil; persistence stays best-effort. A missing retry
+has unknown cause. The initial legacy /preview redirect and other services do
+not acquire an attempt ID until an actual signed license selection is issued.
+
+Apply db/license-attempt-observation-v1.sql through the migration tool before
+publishing the Edge. It checks the previous capture-function hash and preserves
+all legacy classifier branches and permissions. Roll back by redeploying the
+previous Edge files; leave nullable telemetry columns and stored evidence intact.
+Local verification includes concurrent same-second IDs, signed legacy selections,
+signature tampering, invalid proof, direct/CDP success, post-payment delivery
+failures and the existing full license/reaccess suite. All payments are simulated.

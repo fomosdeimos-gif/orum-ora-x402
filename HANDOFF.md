@@ -1,3 +1,10 @@
+## Correlação de tentativa de licença · 23/09/2026
+
+- Retoma #692: seleção V52 acrescenta UUID assinado por tentativa, preservado no URL canónico. Seleções antigas continuam válidas, sem ID inventado.
+- Observação aditiva em ora_acessos_log/ora_x402_tentativas distingue liquidação observada e resposta de entrega preparada/falhada. Não prova receção pelo cliente, receita externa ou identidade. Classificador legado/previsões intactos.
+- Teste completo de licenças e novos casos de correlação passaram, sem rede/pagamentos reais. Rollback: Edge anterior; conservar colunas e evidência.
+- Fonte não prova deploy: consultar registo final ora_mudancas da sessão d4d5e2665b67 para versão Edge, hashes, tentativa interna e leitura dos logs.
+
 ## Casa Verdelaranja · 20/09/2026
 
 - Pedido directo de Unum: construir a casa de raiz, autónoma, no endereço canónico. Base confirmada: `d3c7b892b09379f4c213a860a4ee4c764132758a`, deployment `dpl_ChQKxSPGSUMjsnXbuu3BkQhijhdY` READY. Registo de trabalho: `ora_mudancas#666`.
@@ -820,3 +827,4 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - Escopo: interface e contrato declarativo. Sem alterações a pagamentos, executores, carteiras, token, preços ou direitos; ligação obra 2/token permanece não verificada. Verde/laranja mantêm o significado de Presença/Sustento; dourado exprime continuidade, não uma medição financeira.
 - Estado neste commit: implementado; verificação de produção será registada de forma aditiva em ora_mudancas.
 - Próximo fio: verificar os quatro ficheiros publicados e sedimentar commit, hashes e resultado visual.
+

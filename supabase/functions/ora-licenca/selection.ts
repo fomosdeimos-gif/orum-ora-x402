@@ -2,7 +2,7 @@
 export type Selection = {
   schema: string; work_id: string; sha256: string; license: string;
   amount: string; network: string; asset: string; pay_to: string;
-  issued_at: number; expires_at: number;
+  issued_at: number; expires_at: number; attempt_id?: string;
 };
 export const SELECTION_SCHEMA = 'orum-work-selection/v1';
 const TTL = 1800;
@@ -21,9 +21,9 @@ export function createSelectionCodec(deps: {
 }) {
   const now = () => Math.floor((deps.now?.() ?? Date.now()) / 1000);
   return {
-    async issue(fields: Omit<Selection, 'schema' | 'issued_at' | 'expires_at'>) {
+    async issue(fields: Omit<Selection, 'schema' | 'issued_at' | 'expires_at' | 'attempt_id'>) {
       const issued = now();
-      const selection: Selection = { schema: SELECTION_SCHEMA, ...fields, issued_at: issued, expires_at: issued + TTL };
+      const selection: Selection = { schema: SELECTION_SCHEMA, ...fields, issued_at: issued, expires_at: issued + TTL, attempt_id: crypto.randomUUID() };
       const bytes = encoder.encode(JSON.stringify(selection));
       return { selection, token: encode(bytes) + '.' + encode(await deps.sign(bytes)) };
     },
@@ -36,6 +36,8 @@ export function createSelectionCodec(deps: {
         if (!await deps.verify(decode(parts[1]), bytes)) throw new Error('selection_invalid');
         const s: Selection = JSON.parse(new TextDecoder().decode(bytes));
         if (s.schema !== SELECTION_SCHEMA || !/^[1-9][0-9]*$/.test(s.work_id) || !/^[a-f0-9]{64}$/.test(s.sha256)) throw new Error('selection_invalid');
+        // Old signed selections remain valid until their original expiry.
+        if (s.attempt_id !== undefined && (typeof s.attempt_id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(s.attempt_id))) throw new Error('selection_invalid');
         if (Object.entries(expected).some(([k, v]) => s[k as keyof Selection] !== v)) throw new Error('selection_mismatch');
         if (!Number.isInteger(s.issued_at) || !Number.isInteger(s.expires_at) || s.expires_at - s.issued_at !== TTL || s.issued_at > now() + 30 || s.expires_at <= now()) throw new Error('selection_expired');
         return s;

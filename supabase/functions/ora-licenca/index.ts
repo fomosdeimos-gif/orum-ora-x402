@@ -45,7 +45,7 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
-const VERSAO = 'V51';
+const VERSAO = 'V52';
 const ORO_CONTRACT = '0xd859c01F11C273641F765509a005F7F2A69Dc4bD';
 const ATTESTOR_SCHEMA = 'orum-operational-attestation/v1';
 const ATTESTOR_KEY_ID = 'orum-oro-attestor-v1';
@@ -347,7 +347,7 @@ async function verifiedPhoto(obra: any, expectedHash: string): Promise<boolean> 
   const actual = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await data.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
   return actual === expectedHash;
 }
-async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean): Promise<Response | { obra: any; selection: Selection }> {
+async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean, observation: AttemptObservation): Promise<Response | { obra: any; selection: Selection }> {
   const params = new URL(req.url).searchParams;
   if (['obra', 'sha256', 'selection'].some(key => params.getAll(key).length > 1)) return selectionError('selection_ambiguous', 400);
   const token = params.get('selection');
@@ -360,6 +360,8 @@ async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean): Pr
     if (params.has('sha256') && params.get('sha256') !== obra.sha256) return selectionError('work_hash_mismatch');
     if (!await verifiedPhoto(obra, obra.sha256)) return selectionError('work_unavailable', 503);
     const issued = await selectionCodec.issue({ ...selectionTerms(lic), work_id: String(obra.id), sha256: obra.sha256 });
+    observation.attempt_id = issued.selection.attempt_id ?? null;
+    observation.selection = 'issued';
     const location = new URL(resourceUrlFor(req, lic, String(obra.id)));
     location.searchParams.set('selection', issued.token);
     return new Response(JSON.stringify({ selection: issued.selection, resource: { url: location.toString() } }),
@@ -367,7 +369,9 @@ async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean): Pr
   }
   let selection: Selection;
   try { selection = await selectionCodec.verify(token, selectionTerms(lic)); }
-  catch (error) { return selectionError((error as Error).message); }
+  catch (error) { observation.selection = 'rejected'; return selectionError((error as Error).message); }
+  observation.attempt_id = selection.attempt_id ?? null;
+  observation.selection = 'verified';
   if (params.get('obra') !== selection.work_id || (params.has('sha256') && params.get('sha256') !== selection.sha256)) return selectionError('selection_mismatch');
   const obra = await encontrarObraFisica(selection.work_id);
   if (!await verifiedPhoto(obra, selection.sha256)) return selectionError('work_unavailable', 503);
@@ -609,7 +613,22 @@ const reacesso = createRenewalHandler({
   },
 });
 
-async function nucleo(req: Request): Promise<Response> {
+// Observed server milestones, not buyer identity or proof of client receipt.
+// Kept separate from the legacy stage classifier used by open predictions.
+type AttemptObservation = {
+  schema: 'orum-license-attempt/v1'; attempt_id: string | null;
+  selection: 'not_observed' | 'issued' | 'verified' | 'rejected';
+  challenge: boolean; proof_received: boolean;
+  settlement: 'not_observed' | 'unknown' | 'confirmed';
+  delivery: 'not_attempted' | 'started' | 'failed' | 'response_ready';
+};
+async function deliverObserved(lic: Lic, selection: Selection, tx: string, payer: string, via: string, observation: AttemptObservation) {
+  observation.delivery = 'started';
+  const response = await emitirLicenca(lic, selection, tx, payer, via);
+  observation.delivery = response.status === 200 ? 'response_ready' : 'failed';
+  return response;
+}
+async function nucleo(req: Request, observation: AttemptObservation): Promise<Response> {
   const url = new URL(req.url); const path = url.pathname; const obraQuery = url.searchParams.get('obra');
   if (path.endsWith('/reacesso')) return reacesso(req);
   if (path.includes('/hal')) return halProvider(req);
@@ -633,11 +652,12 @@ async function nucleo(req: Request): Promise<Response> {
   if (!lic) return new Response(JSON.stringify(await catalogo(req)), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
   const hasPayment = req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE');
-  const prepared = await prepareSelection(req, lic, !!hasPayment);
+  const prepared = await prepareSelection(req, lic, !!hasPayment, observation);
   if (prepared instanceof Response) return prepared;
   if (!hasPayment) {
     const challenge = paymentRequired(req, lic, prepared.selection.work_id);
     const body = await challenge.json();
+    observation.challenge = true;
     const headers = new Headers(challenge.headers); headers.set('Cache-Control', 'no-store');
     return new Response(JSON.stringify({ ...body, selection: prepared.selection, selection_signature: { key_id: ATTESTOR_KEY_ID, algorithm: 'Ed25519', purpose: 'work_selection_only_not_payment_authorization' } }), { status: 402, headers });
   }
@@ -645,33 +665,46 @@ async function nucleo(req: Request): Promise<Response> {
   const parsed = parsePaymentHeader(hasPayment);
   if (CDP_DISPONIVEL && pareceX402V2Cdp(parsed)) {
     const resourceUrlStr = resourceUrlFor(req, lic, prepared.selection.work_id);
+    observation.settlement = 'unknown';
     const r = await verificarESettleViaCdp(parsed as PagamentoV2, lic, resourceUrlStr);
     if (!r.ok) return new Response(JSON.stringify({ erro: 'pagamento invalido (via CDP)', detalhe: r.erro }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(r.erro) } });
+    observation.settlement = 'confirmed';
     const claim = await claimPagamento({ tx_hash: r.txHash, payer: r.payer, amount: lic.atomic.toString(), currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
     if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'claim_duplicate' } });
     if (claim.ok !== 'claimed') return new Response(JSON.stringify({ erro: 'payment_record_failed', tx_hash: r.txHash, payment_confirmed: true, delivery_confirmed: false }), { status: 503, headers: { ...CORS, 'Content-Type': 'application/json' } });
-    return emitirLicenca(lic, prepared.selection, r.txHash, r.payer, 'cdp-facilitador');
+    return deliverObserved(lic, prepared.selection, r.txHash, r.payer, 'cdp-facilitador', observation);
   }
 
   const th = extrairTxHash(hasPayment);
   if (!th) return invalidPaymentProof(req, lic, obraQuery);
+  observation.settlement = 'unknown';
   const v = await verifyOnChain(th, lic);
   if (!v.valid) { if (v.pending) return paymentPending(lic, th); return new Response(JSON.stringify({ erro: 'pagamento invalido', detalhe: v.error }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(v.error, v.pending) } }); }
+  observation.settlement = 'confirmed';
   const claim = await claimPagamento({ tx_hash: th, payer: v.payer, amount: v.amount, currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
   if (claim.ok === 'duplicate') return new Response(JSON.stringify({ erro: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': 'claim_duplicate' } });
   if (claim.ok !== 'claimed') return new Response(JSON.stringify({ erro: 'payment_record_failed', tx_hash: th, payment_confirmed: true, delivery_confirmed: false }), { status: 503, headers: { ...CORS, 'Content-Type': 'application/json' } });
-  return emitirLicenca(lic, prepared.selection, th, v.payer!);
+  return deliverObserved(lic, prepared.selection, th, v.payer!, 'rpc-direto', observation);
 }
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+  const observation: AttemptObservation = { schema: 'orum-license-attempt/v1', attempt_id: null,
+    selection: 'not_observed', challenge: false,
+    proof_received: !!(req.headers.get('X-PAYMENT') || req.headers.get('PAYMENT-SIGNATURE')),
+    settlement: 'not_observed', delivery: 'not_attempted' };
   let resp: Response;
-  try { resp = await nucleo(req); }
+  try { resp = await nucleo(req, observation); }
   catch (e) { resp = new Response(JSON.stringify({ erro: 'erro interno', detalhe: String((e as Error)?.message || e) }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
+  if (observation.delivery === 'started') observation.delivery = 'failed';
   try {
     const url = new URL(req.url); const path = url.pathname;
-    const acessoInfo = { servico: 'ora-licenca', tier: (path.match(/\/(consulta|editorial|treino|preview|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), status_code: resp.status, payment_reason_code: resp.headers.get('X-ORUM-PAYMENT-REASON') };
-    sbInsert('ora_acessos_log', acessoInfo);
+    const acessoInfo = { servico: 'ora-licenca', tier: (path.match(/\/(consulta|editorial|treino|preview|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), status_code: resp.status, payment_reason_code: resp.headers.get('X-ORUM-PAYMENT-REASON'), x402_observation: observation };
+    // Keep the existing best-effort log alive after sending the response.
+    const logging = sbInsert('ora_acessos_log', acessoInfo);
+    if (typeof EdgeRuntime !== 'undefined') EdgeRuntime.waitUntil(logging);
+    else await logging;
   } catch (_) {}
   return resp;
 });
+
