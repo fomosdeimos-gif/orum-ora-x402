@@ -4,6 +4,17 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import * as ed from "npm:@noble/ed25519@2";
 
+// ORA · LICENCA · V53 · 24/09/2026 — corta o egress do Supabase sem tirar garantia.
+// Causa observada (logs edge_logs, 23-24/09): cada desafio 307/402 descarregava a
+// fotografia INTEIRA (~2.5MB) de arca-fisica para lhe calcular o SHA-256, duas vezes
+// por sondagem (uma no 307, outra no 402). A ora-sentinela sonda 3 licencas a cada
+// 15 min => ~1.4GB/dia; org excedeu 5.5GB de cached egress.
+// Correcao: antes do pagamento, a verificacao de bytes passa a ser lembrada por
+// ETag+tamanho do objecto (colunas verificado_* em ora_coleccao_fisica). Se o ETag
+// vivo coincide com o ETag em que o SHA-256 foi confirmado (ate 7 dias), nao ha novo
+// download; se mudou, ou se nao ha metadados, cai na verificacao completa de sempre.
+// A verificacao completa de bytes+SHA-256 antes da EMISSAO (emitirLicenca) e o
+// reacesso ficam intactos. Nenhuma logica de pagamento, preco ou assinatura tocada.
 // ORA · LICENCA · V49 · 07/09/2026 — remove o nome legal completo (Jorge Silva
 // Martins) das superficies publicas; usa o pseudonimo ja estabelecido "Unum"
 // nos 4 pontos afectados (accepts x-orum, certificado, catalogo, amostra).
@@ -45,12 +56,14 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
-const VERSAO = 'V52';
+const VERSAO = 'V53';
 const ORO_CONTRACT = '0xd859c01F11C273641F765509a005F7F2A69Dc4bD';
 const ATTESTOR_SCHEMA = 'orum-operational-attestation/v1';
 const ATTESTOR_KEY_ID = 'orum-oro-attestor-v1';
 const TOTAL_OBRAS_FISICAS = 107;
 const BUCKET_PRIVADO = 'arca-fisica';
+const COLS_OBRA = 'id,titulo,ano,sha256,descricao_visivel,bytes_na_arca,caminho_arca,verificado_etag,verificado_bytes,verificado_em';
+const VERIFICACAO_VALIDADE_MS = 7 * 86400000;
 
 const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-PAYMENT, PAYMENT-SIGNATURE, X-ORUM-Key-Id, X-ORUM-Timestamp, X-ORUM-Signature', 'Access-Control-Expose-Headers': 'PAYMENT-REQUIRED, PAYMENT-RESPONSE, EXTENSION-RESPONSES, X-ORUM-PAYMENT-REASON' };
 
@@ -271,7 +284,25 @@ function cdpAcceptFor(lic: Lic, resourceUrlStr: string) {
   return { scheme: 'exact', network: CAIP2_NETWORK, asset: USDC_BASE, amount: lic.atomic.toString(), payTo: WALLET, maxTimeoutSeconds: 300, resource: resourceUrlStr, description: `0001sensations · coleccão fisica · ${lic.descricao} · via facilitador CDP`, extra: { name: 'USD Coin', version: '2' } };
 }
 interface PagamentoV2 { x402Version?: number; scheme?: string; network?: string; payload?: { signature?: string; authorization?: Record<string, unknown> } }
-function pareceX402V2Cdp(d: Record<string, unknown> | null): d is PagamentoV2 { if (!d) return false; const p = (d as PagamentoV2).payload; return !!(p && p.signature && p.authorization && (d as PagamentoV2).scheme === 'exact'); }
+// x402 v2 puts the chosen requirements in accepted. Validate before normalizing;
+// never silently replace a client's conflicting payment destination or amount.
+function normalizarPagamentoCdp(d: Record<string, unknown> | null, lic: Lic, resource: string): PagamentoV2 | null {
+  if (!d) return null;
+  const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
+  if (!object(d.payload) || typeof d.payload.signature !== 'string' || !d.payload.signature || !object(d.payload.authorization)) return null;
+  if ('x402Version' in d && d.x402Version !== 2) return null;
+  if ('scheme' in d && d.scheme !== 'exact') return null;
+  if ('network' in d && d.network !== CAIP2_NETWORK) return null;
+  if ('resource' in d && (!object(d.resource) || d.resource.url !== resource)) return null;
+  if ('accepted' in d) {
+    const a = d.accepted;
+    const addressEqual = (v: unknown, expected: string) => typeof v === 'string' && /^0x[0-9a-fA-F]{40}$/.test(v) && v.toLowerCase() === expected.toLowerCase();
+    if (d.x402Version !== 2 || !object(a) || a.scheme !== 'exact' || a.network !== CAIP2_NETWORK ||
+        a.amount !== lic.atomic.toString() || !addressEqual(a.asset, USDC_BASE) || !addressEqual(a.payTo, WALLET) ||
+        a.maxTimeoutSeconds !== 300 || !object(a.extra) || a.extra.name !== 'USD Coin' || a.extra.version !== '2') return null;
+  } else if (d.scheme !== 'exact') return null; // existing legacy CDP envelope
+  return { x402Version: 2, scheme: 'exact', network: CAIP2_NETWORK, payload: d.payload };
+}
 async function verificarESettleViaCdp(pagamento: PagamentoV2, lic: Lic, resourceUrlStr: string): Promise<{ ok: true; txHash: string; payer: string } | { ok: false; erro: string; pendente?: boolean }> {
   if (!cdpKeys) return { ok: false, erro: 'facilitador CDP nao configurado' };
   const accepted = { scheme: 'exact', network: CAIP2_NETWORK, asset: USDC_BASE, amount: lic.atomic.toString(), payTo: WALLET, maxTimeoutSeconds: 300, extra: { name: 'USD Coin', version: '2' } };
@@ -314,14 +345,14 @@ function paymentPending(lic: Lic, txHash: string) { return new Response(JSON.str
 
 async function encontrarObraFisica(query: string | null): Promise<any | null> {
   if (!query) {
-    const disponiveis = await sbSelect('ora_coleccao_fisica', 'select=id,titulo,ano,sha256,descricao_visivel,bytes_na_arca,caminho_arca&bytes_na_arca=eq.true&order=id.asc');
+    const disponiveis = await sbSelect('ora_coleccao_fisica', `select=${COLS_OBRA}&bytes_na_arca=eq.true&order=id.asc`);
     if (Array.isArray(disponiveis) && disponiveis.length > 0) return disponiveis[Math.floor(Math.random() * disponiveis.length)];
     return null;
   }
   const isNum = /^\d+$/.test(query.trim());
   const rows = await sbSelect('ora_coleccao_fisica', isNum
-    ? `id=eq.${query.trim()}&select=id,titulo,ano,sha256,descricao_visivel,bytes_na_arca,caminho_arca&limit=1`
-    : `titulo=ilike.*${encodeURIComponent(query.trim())}*&select=id,titulo,ano,sha256,descricao_visivel,bytes_na_arca,caminho_arca&limit=1`);
+    ? `id=eq.${query.trim()}&select=${COLS_OBRA}&limit=1`
+    : `titulo=ilike.*${encodeURIComponent(query.trim())}*&select=${COLS_OBRA}&limit=1`);
   return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
 }
 
@@ -347,6 +378,24 @@ async function verifiedPhoto(obra: any, expectedHash: string): Promise<boolean> 
   const actual = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await data.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
   return actual === expectedHash;
 }
+// V53 — verificacao PRE-PAGAMENTO com memoria por ETag. So dispensa o download quando
+// o objecto vivo tem o mesmo ETag e tamanho do momento em que o SHA-256 foi confirmado
+// (e essa confirmacao tem menos de 7 dias). Qualquer duvida => verificacao completa.
+async function verifiedPhotoCached(obra: any, expectedHash: string): Promise<boolean> {
+  if (!obra?.bytes_na_arca || !obra.caminho_arca || !/^[a-f0-9]{64}$/.test(expectedHash) || obra.sha256 !== expectedHash) return false;
+  let etag: string | null = null; let tam: number | null = null;
+  try {
+    const { data: info, error } = await sb.storage.from(BUCKET_PRIVADO).info(obra.caminho_arca);
+    if (!error && info && typeof info.etag === 'string' && info.etag && typeof info.size === 'number' && info.size > 0 && info.size <= 25 * 1024 * 1024) { etag = info.etag; tam = info.size; }
+  } catch (_) { /* sem metadados: verificacao completa */ }
+  const recente = !!obra.verificado_em && Date.now() - Date.parse(obra.verificado_em) < VERIFICACAO_VALIDADE_MS;
+  if (etag && tam !== null && recente && obra.verificado_etag === etag && Number(obra.verificado_bytes) === tam) return true;
+  if (!await verifiedPhoto(obra, expectedHash)) return false;
+  if (etag && tam !== null) {
+    try { await fetch(`${SUPABASE_URL}/rest/v1/ora_coleccao_fisica?id=eq.${obra.id}`, { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ verificado_etag: etag, verificado_bytes: tam, verificado_em: new Date().toISOString() }) }); } catch (_) { /* a memoria e opcional */ }
+  }
+  return true;
+}
 async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean, observation: AttemptObservation): Promise<Response | { obra: any; selection: Selection }> {
   const params = new URL(req.url).searchParams;
   if (['obra', 'sha256', 'selection'].some(key => params.getAll(key).length > 1)) return selectionError('selection_ambiguous', 400);
@@ -358,7 +407,7 @@ async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean, obs
     const obra = await encontrarObraFisica(query);
     if (!obra) return selectionError('work_not_found', 404);
     if (params.has('sha256') && params.get('sha256') !== obra.sha256) return selectionError('work_hash_mismatch');
-    if (!await verifiedPhoto(obra, obra.sha256)) return selectionError('work_unavailable', 503);
+    if (!await verifiedPhotoCached(obra, obra.sha256)) return selectionError('work_unavailable', 503);
     const issued = await selectionCodec.issue({ ...selectionTerms(lic), work_id: String(obra.id), sha256: obra.sha256 });
     observation.attempt_id = issued.selection.attempt_id ?? null;
     observation.selection = 'issued';
@@ -374,7 +423,7 @@ async function prepareSelection(req: Request, lic: Lic, hasPayment: boolean, obs
   observation.selection = 'verified';
   if (params.get('obra') !== selection.work_id || (params.has('sha256') && params.get('sha256') !== selection.sha256)) return selectionError('selection_mismatch');
   const obra = await encontrarObraFisica(selection.work_id);
-  if (!await verifiedPhoto(obra, selection.sha256)) return selectionError('work_unavailable', 503);
+  if (!await verifiedPhotoCached(obra, selection.sha256)) return selectionError('work_unavailable', 503);
   return { obra, selection };
 }
 
@@ -663,10 +712,12 @@ async function nucleo(req: Request, observation: AttemptObservation): Promise<Re
   }
 
   const parsed = parsePaymentHeader(hasPayment);
-  if (CDP_DISPONIVEL && pareceX402V2Cdp(parsed)) {
-    const resourceUrlStr = resourceUrlFor(req, lic, prepared.selection.work_id);
+  const resourceUrlStr = resourceUrlFor(req, lic, prepared.selection.work_id);
+  const cdpPayment = normalizarPagamentoCdp(parsed, lic, resourceUrlStr);
+  if (parsed && 'accepted' in parsed && !cdpPayment) return invalidPaymentProof(req, lic, obraQuery);
+  if (CDP_DISPONIVEL && cdpPayment) {
     observation.settlement = 'unknown';
-    const r = await verificarESettleViaCdp(parsed as PagamentoV2, lic, resourceUrlStr);
+    const r = await verificarESettleViaCdp(cdpPayment, lic, resourceUrlStr);
     if (!r.ok) return new Response(JSON.stringify({ erro: 'pagamento invalido (via CDP)', detalhe: r.erro }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'X-ORUM-PAYMENT-REASON': paymentReasonCode(r.erro) } });
     observation.settlement = 'confirmed';
     const claim = await claimPagamento({ tx_hash: r.txHash, payer: r.payer, amount: lic.atomic.toString(), currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
@@ -707,4 +758,3 @@ Deno.serve(async (req: Request) => {
   } catch (_) {}
   return resp;
 });
-
