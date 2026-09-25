@@ -1,3 +1,13 @@
+## Diagnóstico x402 só de leitura · 25/09/2026
+
+- Adicionado `scripts/diagnose-x402-readonly.mjs`: `--self-test` valida fixtures sem rede; `--live` lê a amostra gratuita, confirma o redireccionamento 307, lê o desafio 402 v2 e compara corpo/cabeçalho, rede Base, USDC, destinatário e recurso.
+- O modo live não envia cabeçalhos de pagamento, assinatura, não liquida e não obtém fotografia. Cada execução gera tráfego/challenge normal e não conta como compra ou adoção.
+- Evidência da implementação: self-test passou; SHA-256 do ficheiro `a1dbc02bce41efbcde10bc3a9a9f7e7586209b1eafca8917a481facb1a532c93`; fonte em main verificada pelo writer no commit `cdfb18bc4b64a55a1ec8c0bba73c12af319dc757`; deployment Vercel de produção READY `dpl_4ojpcAkab5QEConDCwRXVyQPKsC2`; `/api/versao` e o ficheiro publicado responderam 200.
+- Ensaio independente anterior: uma consulta pública devolveu 402 v2 com `PAYMENT-REQUIRED`, seleção Ed25519, rede `eip155:8453`, USDC, preço 1.618 USDC e destinatário ORUM. Não foi apresentada prova de pagamento nem acedido o ficheiro privado.
+- Sem nova compra, assinatura, transferência, migração ou alteração de carteira. Próximo passo: correr `node scripts/diagnose-x402-readonly.mjs --live` apenas quando a ORA quiser criar um evento de diagnóstico explícito; comparar a saída com a instrumentação x402 e conservar a classificação como validação interna.
+
+---
+
 ## Correlação de tentativa de licença · 23/09/2026
 
 - Retoma #692: seleção V52 acrescenta UUID assinado por tentativa, preservado no URL canónico. Seleções antigas continuam válidas, sem ID inventado.
