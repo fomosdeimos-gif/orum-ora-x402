@@ -48,6 +48,23 @@ module.exports = async (req, res) => {
       headers,
       body: ['GET', 'HEAD'].includes(req.method) ? undefined : JSON.stringify(req.body || {}),
     });
+    const text = await upstream.text();
+    if (upstream.status === 402 && !upstream.headers.get('payment-required')) {
+      let bodyChallenge = false;
+      try {
+        const challenge = JSON.parse(text);
+        bodyChallenge = [1, 2].includes(challenge?.x402Version)
+          && Array.isArray(challenge.accepts) && challenge.accepts.length > 0;
+      } catch {}
+      if (!bodyChallenge) {
+        res.statusCode = 503;
+        res.setHeader('content-type', 'application/json');
+        res.setHeader('cache-control', 'no-store');
+        res.setHeader('access-control-allow-origin', '*');
+        res.end(JSON.stringify({ ok: false, error: 'upstream_payment_unavailable', payment_available: false }));
+        return;
+      }
+    }
     res.statusCode = upstream.status;
     res.setHeader('access-control-allow-origin', '*');
     res.setHeader('access-control-allow-headers', 'Content-Type, Authorization, X-PAYMENT, PAYMENT-SIGNATURE');
@@ -56,7 +73,6 @@ module.exports = async (req, res) => {
       const v = upstream.headers.get(h);
       if (v) res.setHeader(h, v);
     }
-    const text = await upstream.text();
     res.end(text);
   } catch (e) {
     res.statusCode = 502;
