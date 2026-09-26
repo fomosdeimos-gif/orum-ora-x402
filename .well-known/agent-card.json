@@ -83,7 +83,7 @@
       ]
     }
   ],
-  "version": "1.7.4",
+  "version": "1.7.5",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
@@ -301,6 +301,25 @@
       ],
       "security": [],
       "description": "Experiência pública que classifica fios de presença e sustento e também orquestra, em leitura, ORUM-real e 0001sensations-mergulho. Não guarda os fios, contacta, publica, paga, assina ou conta o ensaio como adoção."
+    },
+    {
+      "id": "oro-certificado",
+      "name": "ORO · certificado assinado de pagamento",
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "signature",
+        "eip-191",
+        "oro",
+        "certificate"
+      ],
+      "security": [
+        {
+          "x402": []
+        }
+      ],
+      "description": "Emite um certificado JSON assinado (EIP-191 personal_sign) de que este organismo observou um pagamento real (1.618 USDC, Base) ligado a uma obra/sensacao referenciada. Assinado automaticamente por uma chave delegada distinta da carteira soberana e do titular do token ORO -- ver /identity/oro-certificador.json para o endereco publico do assinante e como verificar por ecrecover. GET https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-diagnostico?obra=<referencia> -> 402 -> paga -> repete com X-PAYMENT -> recebe certificado + assinatura."
     }
   ],
   "serviceInterfaces": [
@@ -437,6 +456,11 @@
       "network": "bitcoin-mainnet",
       "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
       "description": "Destino declarado para recebimentos BTC; formato validado, controlo/saldo/receita não afirmados. Separado de ORO."
+    },
+    {
+      "url": "https://ora-x402-gateway.vercel.app/identity/oro-certificador.json",
+      "type": "delegated-signer-identity",
+      "description": "Endereco publico e declaracao do assinante delegado usado para assinar certificados ORO -- distinto da carteira soberana e do titular do token ORO, para verificacao independente por ecrecover."
     }
   ],
   "preferredTransport": "JSONRPC",
