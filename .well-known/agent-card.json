@@ -13,8 +13,15 @@
       "id": "compare-texts",
       "name": "Duas mãos · comparar textos",
       "description": "Compara dois textos fornecidos: SHA-256 UTF-8 sem normalização e um trecho de substituição reconstruível. Até 1800 unidades UTF-16 por texto. Gratuito, sem retenção pela aplicação, sem assinatura ou verificação da verdade factual. Documentação: /docs/a2a-text-comparison-v1.md",
-      "tags": ["text", "comparison", "sha256", "free"],
-      "examples": ["compare_texts {\"left\":\"Aqui\",\"right\":\"Ali\"}"]
+      "tags": [
+        "text",
+        "comparison",
+        "sha256",
+        "free"
+      ],
+      "examples": [
+        "compare_texts {\"left\":\"Aqui\",\"right\":\"Ali\"}"
+      ]
     },
     {
       "id": "oro-public-dialogue",
@@ -29,6 +36,21 @@
         "Que sabes realmente sobre a Obra 2?",
         "E a sua ligação ao token?",
         "Uma interpretação poética?"
+      ]
+    },
+    {
+      "id": "auditoria-descoberta-referral",
+      "name": "Encaminhar para auditoria x402 (Bazaar)",
+      "description": "Este diálogo gratuito não audita marcas, mas encaminha para o serviço x402 real que o faz: verifica se uma marca ou domínio de terceiros está indexado no catálogo de descoberta (Bazaar) da Coinbase Developer Platform. Devolve endpoint, preço e passos de pagamento; não processa o pagamento nem faz a auditoria aqui.",
+      "tags": [
+        "referral",
+        "x402",
+        "discovery",
+        "free"
+      ],
+      "examples": [
+        "podes auditar a minha marca no bazaar?",
+        "o meu domínio está indexado no x402 discovery?"
       ]
     },
     {
@@ -61,7 +83,7 @@
       ]
     }
   ],
-  "version": "1.7.3",
+  "version": "1.7.4",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"

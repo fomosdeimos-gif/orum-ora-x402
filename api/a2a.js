@@ -17,6 +17,16 @@ const BTC_RECEIVING = Object.freeze({
   controlProof: 'not_asserted', balanceObserved: false, revenueObserved: false,
   manifest: BASE + '/payments/bitcoin.json'
 });
+// Discovery-audit referral: this A2A door stays free and stateless. It never
+// takes payment itself -- it points to the real x402 endpoint (ora-x402 gateway,
+// slug inherited from a reused test-utility slot) where the paid audit runs.
+const AUDIT_SERVICE = Object.freeze({
+  id: 'auditoria-descoberta', priceUsdc: '0.50', network: 'Base Mainnet', chainId: 8453,
+  endpoint: 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-teste-payto-cdp',
+  payTo: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',
+  asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+  description: 'Verifica ao vivo se uma marca ou dominio de terceiros esta indexado no catalogo de descoberta x402 (Bazaar) da Coinbase Developer Platform.'
+});
 const LIMIT = 16384;
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -73,6 +83,10 @@ function answer(text, topic) {
   if (/\b(observe_oro_origin|origem do oro|oro origin|contrato oro|oro na base|supply do oro|emissao do oro|duas unidades|duas maos)\b/.test(q)) {
     return { text: `ORO é um contrato distinto na Base Mainnet: ${ORO_ORIGIN.contract}; nome/símbolo ORO, supply total 2 e 0 decimais. Declaração inscrita: “${ORO_ORIGIN.declaration}” Estes dados são uma âncora publicável e verificável pelo contrato; não provam valor, liquidez ou ligação à Obra física 2. Manifesto: ${ORO_ORIGIN.manifest}`, topic: 'oro', outcome: 'answered',
       evidence: { ...evidence, oro_origin: ORO_ORIGIN } };
+  }
+  if (/\b(auditoria|bazaar|indexad[oa]|x402 discovery|discovery x402|minha marca|meu dominio|meu site esta indexado)\b/.test(q)) {
+    return { text: `Não audito marcas dentro desta porta gratuita, mas conheço quem faz: o serviço "${AUDIT_SERVICE.id}" verifica ao vivo, para qualquer marca ou domínio de terceiros, se está indexado no catálogo de descoberta x402 (Bazaar) da Coinbase Developer Platform. GET ${AUDIT_SERVICE.endpoint}?marca=<texto> → HTTP 402 → paga ${AUDIT_SERVICE.priceUsdc} USDC na ${AUDIT_SERVICE.network} para ${AUDIT_SERVICE.payTo} → repete o pedido com X-PAYMENT (base64 de {"transactionHash":"0x…"}) → recebe veredicto real, sem cache. Este diálogo A2A não processa esse pagamento; é apenas o encaminhamento.`, topic: 'auditoria', outcome: 'answered',
+      evidence: { ...evidence, source_kind: 'referral_to_paid_service', audit_service: AUDIT_SERVICE, side_effects: false } };
   }
   if (/\b(preco|vale|valor|receita|pagamento|saldo|amanha|hoje|agora|price|revenue)\b/.test(q)) {
     return { text: 'Esta cápsula não permite determinar preços, receitas ou o estado atual do organismo. Não vou transformar o seu vestígio em previsão ou medição financeira.', topic, outcome: 'unknown', evidence };
@@ -152,7 +166,7 @@ module.exports = async (req, res) => {
   let thread = randomUUID();
   if (m.contextId !== undefined) {
     if (typeof m.contextId !== 'string') return error(rpc.id, -32602, 'Invalid contextId');
-    const context = /^orum-a2a-v1:(open|oro|principles):([a-f0-9-]{36})$/.exec(m.contextId);
+    const context = /^orum-a2a-v1:(open|oro|principles|auditoria):([a-f0-9-]{36})$/.exec(m.contextId);
     if (!context) return error(rpc.id, -32602, 'Unknown context format; omit contextId to start');
     [, topic, thread] = context;
   }
