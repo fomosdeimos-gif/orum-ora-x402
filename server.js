@@ -76,6 +76,7 @@ function dynamicRoute(req, res, url) {
     decorate(req, res, url);
     return api.economia(req, res);
   }
+  if (pathname === '/economia/recebimentos.json') return proxyRoute(req, res, url, 'recebimentos');
   if (pathname === '/economia/tesouraria.json') {
     decorate(req, res, url);
     return api.tesouraria(req, res);
