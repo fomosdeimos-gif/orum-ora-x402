@@ -104,5 +104,10 @@
       "source": "/.well-known/mcp-registry-auth",
       "destination": "/api/mcp-registry-auth"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "claude/*": false
+    }
+  }
 }

@@ -103,4 +103,6 @@ assert.ok(r.body.tentativas.some((t) => /HTTP 503/.test(t.erro)), 'diz o erro do
 }
 const vj = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
 assert.equal(vj.rewrites.find((x) => x.source === '/economia/recebimentos.json').destination, '/api/proxy?base=recebimentos');
+// o plano gratuito limita a 100 deploys/dia por equipa e este repo alimenta varios projectos: ramos claude/* nao fazem deploy
+assert.equal(vj.git.deploymentEnabled['claude/*'], false);
 console.log('recebimentos: RPC com intervalo limitado, indexador alternativo, falhas com diagnostico, limites, proxy e limite de 12 funcoes passaram.');
