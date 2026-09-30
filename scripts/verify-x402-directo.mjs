@@ -58,6 +58,12 @@ assert.equal(req.resource.url, ORIGIN + '/oraculo');
 assert.deepEqual(req.accepts, ch.body.accepts);
 assert.equal(req.accepts[0].amount, '161000');
 assert.equal(req.accepts[0].payTo, d.WALLET);
+// Bazaar discovery: x402scan so marca a rota como invocavel com input schema.
+assert.equal(req.extensions.bazaar.info.input.type, 'http');
+assert.equal(req.extensions.bazaar.info.input.method, 'GET');
+assert.equal(req.extensions.bazaar.info.output.type, 'json');
+assert.deepEqual(req.extensions.bazaar.schema.required, ['input']);
+assert.deepEqual(ch.body.extensions, req.extensions);
 assert.equal(req.accepts[0].network, 'eip155:8453');
 assert.equal(ch.h['x-ora-via'], 'vercel-directa');
 assert.equal((await call('ora-x402', '')).body.resource.url, ORIGIN + '/campo');
