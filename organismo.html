@@ -704,15 +704,20 @@ document.getElementById('btnDentro').addEventListener('click', () => {
     const s = (await sb('ora_aprendizagem_ultimo_snapshot_publica?select=compradores_externos'))[0];
     document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot ' + (s.compradores_externos>0?'estado-ok':'estado-warn'));
   }catch(e){ document.querySelector('[data-dot="fluxo"]').setAttribute('class','estado-dot estado-falha'); }
-  document.querySelector('[data-dot="memoria"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="aprendizagem"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="voz"]').setAttribute('class','estado-dot estado-ok');
+  // verde só depois de uma leitura real desse órgão; falha de leitura fica a cinzento com contorno
+  const sonda = async (dot, caminho) => {
+    try{ await sb(caminho); document.querySelector('[data-dot="'+dot+'"]').setAttribute('class','estado-dot estado-ok'); }
+    catch(e){ document.querySelector('[data-dot="'+dot+'"]').setAttribute('class','estado-dot estado-falha'); }
+  };
+  sonda('memoria','ora_coleccao_fisica_publica?select=id&limit=1');
+  sonda('aprendizagem','ora_mudancas?select=id&limit=1');
+  sonda('voz','ora_moltbook_publica?select=*&limit=1');
   try{
     const b = await sb('ora_bloqueios_ativos?select=id');
     document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot ' + (b.length>0?'estado-warn':'estado-ok'));
   }catch(e){ document.querySelector('[data-dot="auditoria"]').setAttribute('class','estado-dot estado-falha'); }
-  document.querySelector('[data-dot="licencas"]').setAttribute('class','estado-dot estado-ok');
-  document.querySelector('[data-dot="ecossistema"]').setAttribute('class','estado-dot estado-ok');
+  sonda('licencas','ora_licencas_fisicas?select=obra_titulo&limit=1');
+  sonda('ecossistema','x402_services?select=id&limit=1');
 })();
 </script>
 </body>
