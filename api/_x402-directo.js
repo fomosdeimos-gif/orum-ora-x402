@@ -77,11 +77,35 @@ function comoPagar(tier, origin, eip3009 = false) {
   };
 }
 
+// Descoberta Bazaar (mesma forma que ora-oraculo/ora-licenca): indexadores como o
+// x402scan so marcam uma rota como invocavel quando o desafio traz input schema.
+// GET sem parametros; o exemplo de saida descreve a forma, nao uma leitura real.
+function bazaarExtension(tier) {
+  const example = tier.key === 'oraculo'
+    ? { acesso: 'concedido', tier: 'oraculo', x402: 'verificado_onchain', tx_hash: '0x…', pensamento: 'texto gerado a partir da tx', campo: { dia: 0, sigma: 0, epoca: 'ETERNIDADE' } }
+    : { acesso: 'concedido', tier: 'campo', x402: 'verificado_onchain', tx_hash: '0x…', campo: { dia: 0, sigma: 0, epoca: 'ETERNIDADE', pensamento: '…' } };
+  return {
+    bazaar: {
+      info: { input: { type: 'http', method: 'GET', queryParams: {} }, output: { type: 'json', example } },
+      schema: {
+        $schema: 'https://json-schema.org/draft/2020-12/schema',
+        type: 'object',
+        required: ['input'],
+        properties: {
+          input: { type: 'object', required: ['type', 'method'], properties: { type: { type: 'string', const: 'http' }, method: { type: 'string', const: 'GET' }, queryParams: { type: 'object' } } },
+          output: { type: 'object', required: ['type'], properties: { type: { type: 'string' }, example: { type: 'object' } } },
+        },
+      },
+    },
+  };
+}
+
 function requirements(tier, origin) {
   return { x402Version: 2, error: 'X-PAYMENT header required',
     resource: { url: resourceFor(tier, origin), description: tier.descricao, mimeType: 'application/json' },
     accepts: [{ scheme: 'exact', network: CAIP2, amount: tier.atomic.toString(), asset: USDC_BASE, payTo: WALLET,
-      maxTimeoutSeconds: 300, extra: { name: 'USD Coin', version: '2' } }] };
+      maxTimeoutSeconds: 300, extra: { name: 'USD Coin', version: '2' } }],
+    extensions: bazaarExtension(tier) };
 }
 
 function fronteiras(eip3009 = false) {
@@ -187,7 +211,7 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createC
 
     if (alvo.kind === 'manifesto') {
       return send(200, { x402Version: 2, provider: { name: 'ORA · ORUM', creator: 'Unum · jasm43.base.eth' }, via: 'vercel-directa',
-        resources: Object.values(TIERS).map((t) => { const r = requirements(t, origin); return { resource: r.resource.url, type: 'http', method: 'GET', description: t.descricao, accepts: r.accepts }; }),
+        resources: Object.values(TIERS).map((t) => { const r = requirements(t, origin); return { resource: r.resource.url, type: 'http', method: 'GET', description: t.descricao, accepts: r.accepts, extensions: r.extensions }; }),
         free_sample: `${origin}/oraculo/eco`,
         indisponiveis_nesta_via: ['sedimento', 'kernel', 'licencas', 'auditoria-descoberta'],
         nota: 'Manifesto servido pela via directa: lista apenas o que aceita pagamento agora. Os restantes servicos voltam a ser anunciados quando as Edge Functions Supabase voltarem.',
