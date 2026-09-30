@@ -158,30 +158,70 @@ async function testarEndpoint(btn, url){
 }
 window.testarEndpoint = testarEndpoint;
 
-(async () => {
+// Serviços que o gateway serve por si próprio (via directa), por SKU.
+const CAMINHO_GATEWAY = { 'ora-oraculo': '/oraculo', 'ora-x402-campo-acesso': '/campo', 'ora-x402-sedimento': '/sedimento', 'ora-x402-kernel': '/kernel' };
+
+async function caminhosAtivosAgora(){
   try{
-    const servicos = await sb('x402_services?select=*&order=price_amount.asc');
-    document.getElementById('n-servicos').textContent = servicos.length;
-    document.getElementById('lista-servicos').innerHTML = servicos.map(s => {
-      const endpoint = s.metadata && s.metadata.endpoint ? s.metadata.endpoint : null;
-      const manifesto = s.metadata && s.metadata.manifest ? s.metadata.manifest : null;
-      return `<div class="cartao">
+    const r = await fetch('/.well-known/x402.json', { headers: { accept: 'application/json' } });
+    if(!r.ok) return null;
+    const m = await r.json();
+    const urls = (m.resources || []).map(x => String(x.resource || ''));
+    return Object.values(CAMINHO_GATEWAY).filter(c => urls.some(u => u.endsWith(c)));
+  }catch(e){ return null; }
+}
+
+function cartaoServico(s, opcoes){
+  const meta = s.metadata || {};
+  const endpoint = opcoes.endpoint !== undefined ? opcoes.endpoint : (meta.endpoint || null);
+  const manifesto = opcoes.instantaneo ? null : (meta.manifest || null);
+  const estado = opcoes.estado ? `<span class="preco" style="color:${opcoes.estado.cor}">${escapar(opcoes.estado.texto)}</span>` : '';
+  return `<div class="cartao">
         <div class="linha-topo">
           <h3>${escapar(s.name)}</h3>
           <span class="preco">${fmtPreco(s.price_amount, s.price_currency)}</span>
         </div>
+        ${estado ? `<div style="margin-top:4px">${estado}</div>` : ''}
         <p class="desc">${escapar(s.description)}</p>
         <div class="sku">${escapar(s.sku)}</div>
         <div class="acoes">
-          ${endpoint ? `<button class="testar" onclick="testarEndpoint(this,'${endpoint.replace(/'/g,"\\'")}')">testar</button>` : ''}
-          ${manifesto ? `<a class="abrir" href="${manifesto}" target="_blank">manifesto</a>` : ''}
+          ${endpoint ? `<button class="testar" onclick="testarEndpoint(this,'${String(endpoint).replace(/'/g,"\\'")}')">testar</button>` : ''}
+          ${manifesto ? `<a class="abrir" href="${escapar(manifesto)}" target="_blank">manifesto</a>` : ''}
         </div>
         <div class="resultado-teste"></div>
       </div>`;
-    }).join('');
+}
+
+(async () => {
+  const lista = document.getElementById('lista-servicos');
+  let servicos = null, instantaneo = null;
+  try{
+    servicos = await sb('x402_services?select=*&order=price_amount.asc');
   }catch(e){
-    document.getElementById('lista-servicos').innerHTML = '<div class="carregando">O organismo não respondeu agora. Nada foi inventado — tenta de novo.</div>';
+    try{
+      const r = await fetch('/servicos-instantaneo.json');
+      if(!r.ok) throw new Error('sem instantaneo');
+      instantaneo = await r.json();
+      servicos = instantaneo.servicos;
+    }catch(e2){
+      lista.innerHTML = '<div class="carregando">O organismo não respondeu agora. Nada foi inventado — tenta de novo.</div>';
+      return;
+    }
   }
+  document.getElementById('n-servicos').textContent = servicos.length;
+  if(!instantaneo){
+    lista.innerHTML = servicos.map(s => cartaoServico(s, {})).join('');
+    return;
+  }
+  const ativos = await caminhosAtivosAgora();
+  const aviso = `<div class="cartao"><p class="desc"><b>A leitura ao vivo do catálogo não está disponível neste momento.</b> Estás a ver o instantâneo de ${escapar(String(instantaneo.gerado_em || '').slice(0,10))}, que pode estar desactualizado. O que aceita pagamento <i>agora</i> é o que consta em <a class="abrir" style="display:inline;padding:2px 8px" href="/.well-known/x402.json" target="_blank">/.well-known/x402.json</a>${ativos === null ? ' (não foi possível lê-lo agora: o estado abaixo é desconhecido)' : ''}.</p></div>`;
+  lista.innerHTML = aviso + servicos.map(s => {
+    const caminho = CAMINHO_GATEWAY[s.sku];
+    if(Number(s.price_amount) === 0) return cartaoServico(s, { instantaneo: true, endpoint: null });
+    if(ativos === null) return cartaoServico(s, { instantaneo: true, endpoint: null, estado: { texto: 'estado agora: desconhecido', cor: '#9b9490' } });
+    if(caminho && ativos.includes(caminho)) return cartaoServico(s, { instantaneo: true, endpoint: location.origin + caminho, estado: { texto: 'aceita pagamento agora', cor: '#3ddc84' } });
+    return cartaoServico(s, { instantaneo: true, endpoint: null, estado: { texto: 'indisponível agora', cor: '#ff5c5c' } });
+  }).join('');
 })();
 </script>
 </body>
