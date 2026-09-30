@@ -9,6 +9,10 @@
       "destination": "/api/presenca"
     },
     {
+      "source": "/economia/recebimentos.json",
+      "destination": "/api/recebimentos"
+    },
+    {
       "source": "/economia/tesouraria.json",
       "destination": "/api/tesouraria"
     },
