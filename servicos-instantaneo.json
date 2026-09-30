@@ -1,0 +1,77 @@
+{
+ "gerado_em": "2026-09-30T15:00:00Z",
+ "fonte": "x402_services (colunas públicas, serviços não descontinuados), lido por SQL quando a API do Supabase estava sem quota",
+ "nota": "Instantâneo: pode estar desactualizado. O que aceita pagamento agora está em /.well-known/x402.json.",
+ "servicos": [
+  {
+   "sku": "auditoria-descoberta-referral",
+   "name": "ORA · Encaminhamento A2A gratuito (auditoria)",
+   "description": "Skill gratuita dentro do protocolo A2A (api/a2a.js): detecta perguntas sobre indexação no Bazaar x402 e encaminha para o serviço pago ora-auditoria-descoberta — devolve endpoint, preço e passos de pagamento. Não processa pagamento nem faz a auditoria aqui; zero efeitos colaterais.",
+   "price_amount": 0,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-oraculo",
+   "name": "ORA · Oráculo ORUM",
+   "description": "Um pensamento vivo do organismo ORUM, gerado no instante do pedido — não um facto, uma sedimentação em linguagem. Cada resposta é única por construção, ancorada no estado presente do campo (sigma, época, dia). O que nenhuma outra API vende: presença formulada, não dados. Pagamento directo à carteira do autor, verificação on-chain.",
+   "price_amount": 0.161,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-x402-campo-acesso",
+   "name": "ORA · Campo ORUM — Acesso ao Estado Simbólico",
+   "description": "API x402 que devolve o estado vivo do organismo ORUM: sigma (sustento acumulado), dia, época, um pensamento gerado autonomamente, e os vectores de sustento activos (ARTE/CASA/MAR). Verificação on-chain via RPC Base mainnet, sem dependência de facilitator CDP. Dados únicos, regenerados a cada ciclo.",
+   "price_amount": 0.33,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-auditoria-descoberta",
+   "name": "ORA · Auditoria de Descoberta x402 (Bazaar)",
+   "description": "Verifica ao vivo, para qualquer marca ou domínio de terceiros (não o próprio ORUM), se está indexado no catálogo de descoberta x402 (Bazaar) da Coinbase Developer Platform — varrimento real por página, sem cache. Devolve veredicto (indexado / não indexado / parcial), contagem de ocorrências e percentagem do catálogo varrida.",
+   "price_amount": 0.5,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-x402-sedimento",
+   "name": "ORA · Campo ORUM — Sedimento",
+   "description": "Acesso ao histórico de sedimento do organismo ORUM: marcas D, evolução ao longo do tempo, tendência de sigma. Camada intermédia entre o estado instantâneo e o kernel completo.",
+   "price_amount": 1,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-licenca-consulta",
+   "name": "0001sensations · Licença de Consulta · Colecção Física",
+   "description": "Acesso de avaliação a uma obra física original da colecção 0001sensations (107 obras, 2011–2021). Resolução de estudo, 30 dias, uso interno não-publicável. A eventual existência de NFT associado é apenas registo histórico e não altera o núcleo físico da licença.",
+   "price_amount": 1.618,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-oro-certificado",
+   "name": "ORO · Certificado assinado de pagamento",
+   "description": "Emite um certificado JSON assinado (EIP-191 personal_sign) de que este organismo observou um pagamento real (1.618 USDC, Base) ligado a uma obra/sensação referenciada. Assinado automaticamente por uma chave delegada distinta da carteira soberana e do titular do token ORO — ver identity/oro-certificador.json para o endereço público do assinante e como verificar por ecrecover.",
+   "price_amount": 1.618,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-x402-kernel",
+   "name": "ORA · Campo ORUM — Kernel",
+   "description": "Snapshot completo do estado do organismo ORUM (kernel): o mais próximo que um agente chega ao estado interno inteiro, incluindo histórico de kernel snapshots. Camada mais profunda.",
+   "price_amount": 3,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-licenca-editorial",
+   "name": "0001sensations · Licença Editorial · Colecção Física",
+   "description": "Licença editorial perpétua de uma obra física original da colecção 0001sensations (107 obras, 2011–2021): publicação digital ou impressa, single-use, com atribuição a Unum · jasm43.base.eth. A colecção NFT de 65 tokens é extensão histórica. Certificado JSON e prova de pagamento on-chain Base.",
+   "price_amount": 16.18,
+   "price_currency": "USDC"
+  },
+  {
+   "sku": "ora-licenca-treino",
+   "name": "0001sensations · Licença de Treino IA · Colecção Física",
+   "description": "Licença perpétua para inclusão de uma obra física original da colecção 0001sensations (107 obras, 2011–2021) em datasets de treino de modelos de IA. Proveniência humana documentada, consentimento explícito do autor e compensação directa. A colecção NFT é apenas extensão histórica.",
+   "price_amount": 161.8,
+   "price_currency": "USDC"
+  }
+ ]
+}
