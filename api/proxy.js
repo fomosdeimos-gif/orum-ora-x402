@@ -8,6 +8,10 @@
 // sobrepoe x-forwarded-host com o seu proprio dominio, o que fazia o 402
 // anunciar um resource diferente do URL que a maquina tinha pedido —
 // validadores x402 rejeitam essa divergencia.
+// ORA 30/09/2026: quando o Supabase falha (quota de egress, 5xx ou rede), os
+// servicos que nao precisam de base de dados passam para a via directa Vercel
+// (api/_x402-directo.js), que verifica o pagamento na propria Base.
+const directo = require('./_x402-directo').createHandler();
 const SUPA = (process.env.ORUM_FUNCTIONS_BASE || 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1').replace(/\/$/, '');
 const PASS_RES = ['content-type', 'payment-required', 'payment-response', 'x-payment-response', 'www-authenticate', 'retry-after', 'x-ora-version', 'x-ora-x402', 'x-ora-tier', 'extension-responses', 'cache-control', 'location'];
 
@@ -20,19 +24,21 @@ module.exports = async (req, res) => {
     res.end();
     return;
   }
+  const q = Object.assign({}, req.query);
+  const base = q.base || 'ora-x402';
+  delete q.base;
+  const restRaw = q.rest || '';
+  const rest = restRaw ? '/' + restRaw : '';
+  delete q.rest;
+  const hostExterno = req.headers['x-forwarded-host'] || req.headers.host || 'ora-x402-gateway.vercel.app';
+  const viaDirecta = () => directo(req, res, { base, rest: restRaw, origin: `https://${hostExterno}` });
   try {
-    const q = Object.assign({}, req.query);
-    const base = q.base || 'ora-x402';
-    delete q.base;
-    const rest = q.rest ? '/' + q.rest : '';
-    delete q.rest;
     const qs = new URLSearchParams(q).toString();
     const target = `${SUPA}/${base}${rest}${qs ? '?' + qs : ''}`;
     const headers = {};
     for (const h of ['x-payment', 'payment-signature', 'content-type']) {
       if (req.headers[h]) headers[h] = req.headers[h];
     }
-    const hostExterno = req.headers['x-forwarded-host'] || req.headers.host || 'ora-x402-gateway.vercel.app';
     headers['x-forwarded-host'] = hostExterno;
     // cabecalho proprio: sobrevive a plataforma intermedia, ao contrario do x-forwarded-host
     headers['x-ora-host'] = hostExterno;
@@ -49,6 +55,7 @@ module.exports = async (req, res) => {
       body: ['GET', 'HEAD'].includes(req.method) ? undefined : JSON.stringify(req.body || {}),
     });
     const text = await upstream.text();
+    if (upstream.status >= 500 && await viaDirecta()) return;
     if (upstream.status === 402 && !upstream.headers.get('payment-required')) {
       let bodyChallenge = false;
       try {
@@ -57,6 +64,7 @@ module.exports = async (req, res) => {
           && Array.isArray(challenge.accepts) && challenge.accepts.length > 0;
       } catch {}
       if (!bodyChallenge) {
+        if (await viaDirecta()) return;
         res.statusCode = 503;
         res.setHeader('content-type', 'application/json');
         res.setHeader('cache-control', 'no-store');
@@ -75,6 +83,7 @@ module.exports = async (req, res) => {
     }
     res.end(text);
   } catch (e) {
+    try { if (!res.headersSent && await viaDirecta()) return; } catch {}
     res.statusCode = 502;
     res.setHeader('content-type', 'application/json');
     res.end(JSON.stringify({ ok: false, error: 'upstream_unreachable', detalhe: String((e && e.message) || e) }));

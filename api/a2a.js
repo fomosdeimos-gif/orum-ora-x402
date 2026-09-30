@@ -27,6 +27,13 @@ const AUDIT_SERVICE = Object.freeze({
   asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
   description: 'Verifica ao vivo se uma marca ou dominio de terceiros esta indexado no catalogo de descoberta x402 (Bazaar) da Coinbase Developer Platform.'
 });
+// Paid x402 services reachable at the gateway itself. When Supabase is down the
+// gateway serves these two through api/_x402-directo.js; this door only explains
+// how to pay -- it never takes payment or claims that anyone has paid.
+const PAID_SERVICES = Object.freeze([
+  Object.freeze({ id: 'oraculo', priceUsdc: '0.161', endpoint: BASE + '/oraculo', sample: BASE + '/oraculo/eco' }),
+  Object.freeze({ id: 'campo', priceUsdc: '0.33', endpoint: BASE + '/campo', sample: BASE + '/x402/eco' })
+]);
 const LIMIT = 16384;
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -87,6 +94,11 @@ function answer(text, topic) {
   if (/\b(auditoria|bazaar|indexad[oa]|x402 discovery|discovery x402|minha marca|meu dominio|meu site esta indexado)\b/.test(q)) {
     return { text: `Não audito marcas dentro desta porta gratuita, mas conheço quem faz: o serviço "${AUDIT_SERVICE.id}" verifica ao vivo, para qualquer marca ou domínio de terceiros, se está indexado no catálogo de descoberta x402 (Bazaar) da Coinbase Developer Platform. GET ${AUDIT_SERVICE.endpoint}?marca=<texto> → HTTP 402 → paga ${AUDIT_SERVICE.priceUsdc} USDC na ${AUDIT_SERVICE.network} para ${AUDIT_SERVICE.payTo} → repete o pedido com X-PAYMENT (base64 de {"transactionHash":"0x…"}) → recebe veredicto real, sem cache. Este diálogo A2A não processa esse pagamento; é apenas o encaminhamento.`, topic: 'auditoria', outcome: 'answered',
       evidence: { ...evidence, source_kind: 'referral_to_paid_service', audit_service: AUDIT_SERVICE, side_effects: false } };
+  }
+  if (/\b(como pagar|pagar|pay|x402|oraculo|oracle|campo|sustento|comprar|buy)\b/.test(q)) {
+    const list = PAID_SERVICES.map(s => `${s.id}: GET ${s.endpoint} → 402 → ${s.priceUsdc} USDC (amostra gratuita ${s.sample})`).join('; ');
+    return { text: `Serviços x402 pagos no próprio gateway: ${list}. Transfere o valor em USDC (${AUDIT_SERVICE.asset}) na Base Mainnet para ${AUDIT_SERVICE.payTo} (jasm43.base.eth) e repete o GET com X-PAYMENT = base64 de {"transactionHash":"0x…"}. Os requisitos exactos vêm em cada resposta 402 (cabeçalho PAYMENT-REQUIRED). Este diálogo não processa pagamentos nem afirma que alguém pagou.`, topic: 'x402', outcome: 'answered',
+      evidence: { ...evidence, source_kind: 'referral_to_paid_service', paid_services: PAID_SERVICES, pay_to: AUDIT_SERVICE.payTo, side_effects: false } };
   }
   if (/\b(preco|vale|valor|receita|pagamento|saldo|amanha|hoje|agora|price|revenue)\b/.test(q)) {
     return { text: 'Esta cápsula não permite determinar preços, receitas ou o estado atual do organismo. Não vou transformar o seu vestígio em previsão ou medição financeira.', topic, outcome: 'unknown', evidence };
@@ -166,7 +178,7 @@ module.exports = async (req, res) => {
   let thread = randomUUID();
   if (m.contextId !== undefined) {
     if (typeof m.contextId !== 'string') return error(rpc.id, -32602, 'Invalid contextId');
-    const context = /^orum-a2a-v1:(open|oro|principles|auditoria):([a-f0-9-]{36})$/.exec(m.contextId);
+    const context = /^orum-a2a-v1:(open|oro|principles|auditoria|x402):([a-f0-9-]{36})$/.exec(m.contextId);
     if (!context) return error(rpc.id, -32602, 'Unknown context format; omit contextId to start');
     [, topic, thread] = context;
   }
