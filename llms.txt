@@ -72,7 +72,7 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 
 
 ## Resiliencia
-- Se este gateway estiver inacessivel, os documentos de descoberta (x402.json, agent-card.json, llms.txt, openapi.json) tem um espelho fora da Vercel, servido directamente do GitHub: https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/ — inclui `discovery/ora-mcp-auto.json`, verificável por commit
+- Se este gateway estiver inacessivel, os documentos de descoberta (agent-card.json, llms.txt, openapi.json; o manifesto x402 é dinâmico e só existe neste gateway) tem um espelho fora da Vercel, servido directamente do GitHub: https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/ — inclui `discovery/ora-mcp-auto.json`, verificável por commit
 
 
 ## Token de identidade na Base

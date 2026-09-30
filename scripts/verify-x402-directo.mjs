@@ -103,6 +103,21 @@ assert.equal((await call('ora-oraculo', 'eco')).status, 200);
 const man = await call('ora-x402', '.well-known/x402.json');
 assert.equal(man.status, 200);
 assert.deepEqual(man.body.resources.map((r) => r.resource), [ORIGIN + '/oraculo', ORIGIN + '/campo']);
+assert.deepEqual(man.body.resources.map((r) => r.accepts[0].amount), ['161000', '330000']);
+assert.ok(man.body.indisponiveis_nesta_via.includes('sedimento') && man.body.indisponiveis_nesta_via.includes('kernel'));
+assert.ok(!JSON.stringify(man.body.resources).includes('/sedimento') && !JSON.stringify(man.body.resources).includes('/kernel'));
+
+// Proxy: the manifest path falls to the direct rail when Supabase is out of quota.
+{
+  const proxyM = require('../api/proxy.js');
+  const f = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ message: 'exceed_cached_egress_quota' }), { status: 402 });
+  const r = mockRes(); r.headersSent = false;
+  await proxyM({ method: 'GET', query: { base: 'ora-x402', rest: '.well-known/x402.json' }, headers: { host: 'ora-x402-gateway.vercel.app' }, socket: {} }, r);
+  globalThis.fetch = f;
+  assert.equal(r.statusCode, 200);
+  assert.equal(r.body.via, 'vercel-directa');
+}
 
 // Proxy integration: Supabase quota 402 (not a challenge) → direct rail; a real
 // upstream challenge still passes through untouched.
