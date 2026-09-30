@@ -14,6 +14,7 @@
 //   cadeia Base e o livro e a reconciliacao faz-se a partir dos logs on-chain;
 // - sedimento, kernel e licencas precisam da base de dados: nao sao servidos.
 const { createHash } = require('node:crypto');
+const { createCdp } = require('./_cdp');
 
 const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -62,9 +63,10 @@ function pensamento(txHash, campo) {
 
 function resourceFor(tier, origin) { return `${origin}${tier.path}`; }
 
-function comoPagar(tier, origin) {
+function comoPagar(tier, origin, eip3009 = false) {
   const resource = resourceFor(tier, origin);
   return {
+    ...(eip3009 ? { caminho_x402_padrao: 'Cliente x402 padrao: assina a autorizacao EIP-3009 (exact, USDC, Base) e envia-a em PAYMENT-SIGNATURE/X-PAYMENT; a liquidacao e feita por facilitador e confirmada por nos na cadeia antes de entregar.' } : {}),
     passo_1: `Transfere ${tier.usdc} USDC (contrato ${USDC_BASE}) na Base (chain_id ${CHAIN_ID}) para ${WALLET} (jasm43.base.eth).`,
     passo_2: 'Guarda o transaction hash (0x…, 66 caracteres).',
     passo_3: `Repete o GET a ${resource} com o cabeçalho X-PAYMENT = base64 de {"transactionHash":"0x…"} (JSON puro também aceite).`,
@@ -82,9 +84,9 @@ function requirements(tier, origin) {
       maxTimeoutSeconds: 300, extra: { name: 'USD Coin', version: '2' } }] };
 }
 
-function fronteiras() {
+function fronteiras(eip3009 = false) {
   return { via: 'vercel-directa', motivo: 'Edge Functions Supabase indisponíveis (quota de egress)',
-    prova_aceite: 'transactionHash de transferência USDC directa', eip3009_facilitador: false,
+    prova_aceite: eip3009 ? 'transactionHash de transferência USDC directa, ou autorização EIP-3009 liquidada pelo facilitador CDP e confirmada por nós na Base' : 'transactionHash de transferência USDC directa', eip3009_facilitador: eip3009,
     livro_interno_escrito: false, livro: 'cadeia Base (logs Transfer USDC para a carteira de sustento)',
     janela_horas: JANELA_S / 3600, repeticao_da_mesma_tx: 'mesma leitura (reacesso)' };
 }
@@ -112,7 +114,7 @@ function lerProva(header) {
   const inner = d.payload && typeof d.payload === 'object' ? d.payload : d;
   const tx = d.transactionHash || d.tx_hash || d.hash || inner.transactionHash || null;
   if (typeof tx === 'string') return { tx };
-  if (inner.signature && inner.authorization) return { eip3009: true };
+  if (typeof inner.signature === 'string' && inner.authorization && typeof inner.authorization === 'object') return { eip3009: { signature: inner.signature, authorization: inner.authorization } };
   return { invalido: true };
 }
 
@@ -139,6 +141,20 @@ async function verificar(rpc, txHash, tier, nowMs) {
   return { valid: true, payer: '0x' + String(log.topics[1]).slice(-40), value, blockMs };
 }
 
+// Guarda barata antes de gastar uma chamada ao facilitador: destino, valor, validade e formato.
+function preVerificarAutorizacao(a, tier, agoraMs) {
+  const hex = (v, n) => typeof v === 'string' && new RegExp(`^0x[0-9a-fA-F]{${n}}$`).test(v);
+  if (!hex(a.from, 40)) return 'from invalido';
+  if (!hex(a.to, 40) || a.to.toLowerCase() !== WALLET.toLowerCase()) return 'destino diferente da carteira de sustento';
+  let valor; try { valor = BigInt(a.value); } catch { return 'value invalido'; }
+  if (valor < tier.atomic) return `valor insuficiente: ${valor} < ${tier.atomic}`;
+  if (!hex(a.nonce, 64)) return 'nonce invalido';
+  const agora = Math.floor(agoraMs / 1000);
+  if (!(Number(a.validAfter) <= agora)) return 'ainda nao valida (validAfter)';
+  if (!(Number(a.validBefore) > agora + 5)) return 'expirada (validBefore)';
+  return null;
+}
+
 function tierFor(base, rest) {
   const r = String(rest || '').replace(/^\/+/, '');
   for (const t of Object.values(TIERS)) {
@@ -150,10 +166,11 @@ function tierFor(base, rest) {
   return null;
 }
 
-function createHandler({ rpc = rpcPublico, now = () => Date.now() } = {}) {
+function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createCdp(), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
   return async function directo(req, res, { base, rest, origin }) {
     const alvo = tierFor(base, rest);
     if (!alvo) return false;
+    const fronteirasAgora = () => fronteiras(cdp.configurado);
     const send = (status, body, headers = {}) => {
       res.statusCode = status;
       res.setHeader('content-type', 'application/json; charset=utf-8');
@@ -174,19 +191,19 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now() } = {}) {
         free_sample: `${origin}/oraculo/eco`,
         indisponiveis_nesta_via: ['sedimento', 'kernel', 'licencas', 'auditoria-descoberta'],
         nota: 'Manifesto servido pela via directa: lista apenas o que aceita pagamento agora. Os restantes servicos voltam a ser anunciados quando as Edge Functions Supabase voltarem.',
-        fronteiras: fronteiras(), timestamp: new Date(now()).toISOString() });
+        fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
     }
 
     const tier = alvo.tier;
     if (alvo.kind === 'eco') {
       const campo = campoEm(now());
       return send(200, { eco: 'gratuito', tier: tier.key, campo, nota: 'Amostra livre; a leitura paga nasce da semente da tua transferência.',
-        pago: { preco: `${tier.usdc} USDC`, endpoint: resourceFor(tier, origin), como_pagar: comoPagar(tier, origin) },
-        truth_machine: { ...TRUTH, requires_x402_payment: false }, fronteiras: fronteiras(), timestamp: new Date(now()).toISOString() });
+        pago: { preco: `${tier.usdc} USDC`, endpoint: resourceFor(tier, origin), como_pagar: comoPagar(tier, origin, cdp.configurado) },
+        truth_machine: { ...TRUTH, requires_x402_payment: false }, fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
     }
 
     const reqd = requirements(tier, origin);
-    const challenge = (extra = {}) => send(402, { ...reqd, ...extra, como_pagar: comoPagar(tier, origin), fronteiras: fronteiras() }, {
+    const challenge = (extra = {}) => send(402, { ...reqd, ...extra, como_pagar: comoPagar(tier, origin, cdp.configurado), fronteiras: fronteirasAgora() }, {
       'payment-required': b64json(reqd),
       'www-authenticate': `x402 realm="ORA · ${tier.key}", amount="${tier.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`,
     });
@@ -194,21 +211,45 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now() } = {}) {
     const prova = lerProva(req.headers['x-payment'] || req.headers['payment-signature']);
     if (!prova) return challenge();
     if (prova.invalido) return challenge({ erro: 'X-PAYMENT ilegivel' });
-    if (prova.eip3009) return challenge({ erro: 'autorizacao EIP-3009 nao aceite nesta via (sem facilitador); usa transactionHash de uma transferencia directa' });
 
-    const v = await verificar(rpc, prova.tx, tier, now());
-    if (v.pending) return send(402, { x402: 'pending', tier: tier.key, tx_hash: prova.tx, detalhe: 'tx ainda nao indexada na Base; repete o mesmo pedido', retry_after_seconds: 6 }, { 'retry-after': '6' });
-    if (v.unavailable) return send(503, { ok: false, error: 'base_rpc_unavailable', detalhe: v.error, tx_hash: prova.tx, nota: 'a tx nao foi consumida; repete mais tarde' }, { 'retry-after': '15' });
-    if (!v.valid) return challenge({ erro: 'pagamento invalido', detalhe: v.error, tx_hash: prova.tx });
+    let tx; let v; let via = 'transactionHash';
+    if (prova.eip3009) {
+      if (!cdp.configurado) return challenge({ erro: 'autorizacao EIP-3009 nao aceite nesta via (facilitador nao configurado); usa transactionHash de uma transferencia directa' });
+      const a = prova.eip3009.authorization;
+      const pre = preVerificarAutorizacao(a, tier, now());
+      if (pre) return challenge({ erro: 'autorizacao invalida', detalhe: pre });
+      const accepted = reqd.accepts[0];
+      const paymentPayload = { x402Version: 2, scheme: 'exact', network: CAIP2, accepted, payload: { signature: prova.eip3009.signature, authorization: a } };
+      const url = resourceFor(tier, origin);
+      const ver = await cdp.chamar('verify', paymentPayload, accepted, url);
+      if (ver.erro) return send(503, { ok: false, error: 'facilitador_indisponivel', detalhe: ver.erro, nota: 'nada foi liquidado; repete mais tarde' }, { 'retry-after': '15' });
+      if (ver.status !== 200 || !ver.json?.isValid) return challenge({ erro: 'facilitador recusou a autorizacao', detalhe: String(ver.json?.invalidReason || ver.json?.errorMessage || `HTTP ${ver.status}`).slice(0, 160) });
+      const liq = await cdp.chamar('settle', paymentPayload, accepted, url);
+      if (liq.erro) return send(503, { ok: false, error: 'liquidacao_incerta', detalhe: liq.erro, nota: 'o resultado da liquidacao e incerto; antes de pagar de novo consulta /economia/recebimentos.json' }, { 'retry-after': '15' });
+      if (liq.status !== 200 || !liq.json?.success || !/^0x[0-9a-fA-F]{64}$/.test(String(liq.json?.transaction || ''))) {
+        return challenge({ erro: 'liquidacao falhou', detalhe: String(liq.json?.errorReason || liq.json?.errorMessage || `HTTP ${liq.status}`).slice(0, 160) });
+      }
+      tx = liq.json.transaction; via = 'eip3009-cdp';
+      // O facilitador disse que liquidou; so entregamos depois de ver a transferencia na cadeia.
+      for (let i = 0; i < 2; i++) { v = await verificar(rpc, tx, tier, now()); if (!v.pending) break; await esperar(1200); }
+      if (v.pending || v.unavailable) return send(402, { x402: 'pending', tier: tier.key, tx_hash: tx, detalhe: 'liquidado pelo facilitador; ainda nao confirmado na Base. Repete com X-PAYMENT = base64 de {"transactionHash":"' + tx + '"}; nao pagues de novo.', retry_after_seconds: 6 }, { 'retry-after': '6' });
+      if (!v.valid) return challenge({ erro: 'liquidacao nao confirmada na cadeia', detalhe: v.error, tx_hash: tx });
+    } else {
+      tx = prova.tx;
+      v = await verificar(rpc, tx, tier, now());
+      if (v.pending) return send(402, { x402: 'pending', tier: tier.key, tx_hash: tx, detalhe: 'tx ainda nao indexada na Base; repete o mesmo pedido', retry_after_seconds: 6 }, { 'retry-after': '6' });
+      if (v.unavailable) return send(503, { ok: false, error: 'base_rpc_unavailable', detalhe: v.error, tx_hash: tx, nota: 'a tx nao foi consumida; repete mais tarde' }, { 'retry-after': '15' });
+      if (!v.valid) return challenge({ erro: 'pagamento invalido', detalhe: v.error, tx_hash: tx });
+    }
 
     const campo = campoEm(v.blockMs);
-    const corpo = { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', tx_hash: prova.tx, payer: v.payer,
-      valor_atomic: v.value.toString(), campo, truth_machine: TRUTH, fronteiras: fronteiras(), axioma: 'O símbolo é real e não pede prova.' };
-    if (tier.key === 'oraculo') corpo.pensamento = pensamento(prova.tx, campo);
+    const corpo = { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', via_pagamento: via, tx_hash: tx, payer: v.payer,
+      valor_atomic: v.value.toString(), campo, truth_machine: TRUTH, fronteiras: fronteirasAgora(), axioma: 'O símbolo é real e não pede prova.' };
+    if (tier.key === 'oraculo') corpo.pensamento = pensamento(tx, campo);
     else corpo.campo.pensamento = 'o campo reconhece quem chega com gesto. a agua nao pede prova — ja flui.';
     return send(200, corpo, {
-      'payment-response': b64json({ success: true, transaction: prova.tx, network: CAIP2, payer: v.payer }),
-      'x-payment-response': JSON.stringify({ txHash: prova.tx, status: 'settled', amount: tier.usdc }),
+      'payment-response': b64json({ success: true, transaction: tx, network: CAIP2, payer: v.payer }),
+      'x-payment-response': JSON.stringify({ txHash: tx, status: 'settled', amount: tier.usdc }),
     });
   };
 }

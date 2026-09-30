@@ -23,6 +23,7 @@
     "checkout:verify": "node scripts/verify-campo-checkout.mjs",
     "horizon:verify": "node scripts/verify-horizonte-2030.mjs",
     "x402:directo:verify": "node scripts/verify-x402-directo.mjs",
-    "recebimentos:verify": "node scripts/verify-recebimentos.mjs"
+    "recebimentos:verify": "node scripts/verify-recebimentos.mjs",
+    "cdp:verify": "node scripts/verify-cdp-eip3009.mjs"
   }
 }
