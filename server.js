@@ -14,7 +14,6 @@ const api = {
   versao: require('./api/versao'),
   economia: require('./api/economia'),
   tesouraria: require('./api/tesouraria'),
-  recebimentos: require('./api/recebimentos'),
   presenca: require('./api/presenca'),
 };
 
@@ -77,10 +76,7 @@ function dynamicRoute(req, res, url) {
     decorate(req, res, url);
     return api.economia(req, res);
   }
-  if (pathname === '/economia/recebimentos.json') {
-    decorate(req, res, url);
-    return api.recebimentos(req, res);
-  }
+  if (pathname === '/economia/recebimentos.json') return proxyRoute(req, res, url, 'recebimentos');
   if (pathname === '/economia/tesouraria.json') {
     decorate(req, res, url);
     return api.tesouraria(req, res);

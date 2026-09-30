@@ -10,7 +10,7 @@
     },
     {
       "source": "/economia/recebimentos.json",
-      "destination": "/api/recebimentos"
+      "destination": "/api/proxy?base=recebimentos"
     },
     {
       "source": "/economia/tesouraria.json",

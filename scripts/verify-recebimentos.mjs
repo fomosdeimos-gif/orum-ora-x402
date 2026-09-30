@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const m = require('../api/recebimentos.js');
+const m = require('../api/_recebimentos.js');
 const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
@@ -44,4 +44,24 @@ r = res(); await handler({ query: { horas: 'abc' } }, r); assert.equal(r.statusC
 r = res(); await handler({ query: { horas: '-1' } }, r); assert.equal(r.statusCode, 400);
 r = res(); await m.createHandler({ rpc: async () => { throw new Error('offline'); }, now: () => NOW })({ query: {} }, r);
 assert.equal(r.statusCode, 503); assert.equal(r.h['cache-control'], 'no-store');
+// Rota via proxy: nao toca no Supabase e nao cria funcao nova.
+{
+  const proxy = require('../api/proxy.js');
+  const f = globalThis.fetch; const urls = [];
+  globalThis.fetch = async (u) => { urls.push(String(u)); throw new Error('sem rede no teste'); };
+  const pr = res();
+  await proxy({ method: 'GET', query: { base: 'recebimentos', horas: '1' }, headers: {}, socket: {} }, pr);
+  globalThis.fetch = f;
+  assert.ok(urls.length > 0 && urls.every((u) => !u.includes('supabase')), 'so RPC Base, nunca Supabase: ' + urls.join(','));
+  assert.equal(pr.statusCode, 503, 'sem rede o RPC falha e responde 503');
+}
+
+// Plano Hobby do Vercel: no maximo 12 funcoes (api/*.js sem prefixo _).
+{
+  const { readdirSync } = await import('node:fs');
+  const fns = readdirSync(new URL('../api/', import.meta.url)).filter((n) => n.endsWith('.js') && !n.startsWith('_'));
+  assert.ok(fns.length <= 12, `funcoes serverless: ${fns.length} > 12 (${fns.join(', ')})`);
+}
+const vj = JSON.parse((await import('node:fs')).readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+assert.equal(vj.rewrites.find((r) => r.source === '/economia/recebimentos.json').destination, '/api/proxy?base=recebimentos');
 console.log('recebimentos: janela em blocos, filtro Transfer→carteira, preços, ordem, limites e falha de RPC passaram.');
