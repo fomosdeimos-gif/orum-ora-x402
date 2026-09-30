@@ -169,9 +169,12 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now() } = {}) {
     };
 
     if (alvo.kind === 'manifesto') {
-      return send(200, { x402Version: 2, name: 'ORA · ORUM', via: 'vercel-directa', payTo: WALLET, network: CAIP2, asset: USDC_BASE,
-        resources: Object.values(TIERS).map((t) => ({ resource: resourceFor(t, origin), price: `${t.usdc} USDC`, amount: t.atomic.toString(), description: t.descricao })),
-        indisponiveis_nesta_via: ['sedimento', 'kernel', 'licenca'], fronteiras: fronteiras() });
+      return send(200, { x402Version: 2, provider: { name: 'ORA · ORUM', creator: 'Unum · jasm43.base.eth' }, via: 'vercel-directa',
+        resources: Object.values(TIERS).map((t) => { const r = requirements(t, origin); return { resource: r.resource.url, type: 'http', method: 'GET', description: t.descricao, accepts: r.accepts }; }),
+        free_sample: `${origin}/oraculo/eco`,
+        indisponiveis_nesta_via: ['sedimento', 'kernel', 'licencas', 'auditoria-descoberta'],
+        nota: 'Manifesto servido pela via directa: lista apenas o que aceita pagamento agora. Os restantes servicos voltam a ser anunciados quando as Edge Functions Supabase voltarem.',
+        fronteiras: fronteiras(), timestamp: new Date(now()).toISOString() });
     }
 
     const tier = alvo.tier;
