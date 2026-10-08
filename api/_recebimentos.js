@@ -7,7 +7,8 @@
 //      intervalo de blocos (observado: "limited to 0 - 50 blocks range" e, em 08/10/2026,
 //      "limited to a 500 range" no mainnet.base.org), por isso tenta-se 9000, 2000 e 500
 //      blocos por pedido, com pedidos em paralelo limitado, dentro de um orçamento.
-//   2. Indexadores públicos sem chave (Blockscout e Routescan), como alternativa.
+//   2. Indexador público Blockscout (sem chave), como alternativa. O Routescan foi tentado e
+//      não serve a Base ("chain not supported", observado em 08/10/2026).
 // Quando nenhuma serve, a resposta 503 diz porquê, fonte a fonte.
 //
 // Fronteiras: é observação on-chain, não contabilidade. Não classifica pagadores
@@ -17,13 +18,16 @@
 const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
-const RPCS = ['https://mainnet.base.org', 'https://base-rpc.publicnode.com', 'https://base.llamarpc.com', 'https://1rpc.io/base'];
+// Ordem: os que aceitam intervalos maiores primeiro (cada falha de intervalo é imediata); o mainnet.base.org
+// limita a 500 blocos e responde "over rate limit" a rajadas, por isso vai depois. Lista a confirmar em produção.
+const RPCS = ['https://base.drpc.org', 'https://base.gateway.tenderly.co', 'https://base-mainnet.public.blastapi.io',
+  'https://endpoints.omniatech.io/v1/base/mainnet/public', 'https://base.meowrpc.com', 'https://mainnet.base.org',
+  'https://base-rpc.publicnode.com', 'https://1rpc.io/base'];
 const INDEXADOR = 'https://base.blockscout.com/api/v2';
 const BLOCK_S = 2;
 const TAMANHOS = [9000, 2000, 500];
 const MAX_PEDIDOS = 100; // 24 h = 87 pedidos de 500 blocos
 const PARALELO = 4; // o mainnet.base.org responde "over rate limit" com 16 em paralelo (observado em 08/10/2026)
-const ROUTESCAN = 'https://api.routescan.io/v2/network/mainnet/evm/8453/etherscan/api';
 const UA = 'ora-x402-gateway/1.0 (+https://ora-x402-gateway.vercel.app)';
 const PRAZO_MS = 7000; // o plano Hobby corta as funções aos 10 s
 const MAX_HORAS = 72;
@@ -131,30 +135,6 @@ async function viaIndexador({ fetchFn }, horas, agora, limite) {
   return { brutos, origem: { tipo: 'indexador-blockscout', url: INDEXADOR, hora: 'do indexador' }, janela: { corte_utc: new Date(corte).toISOString() } };
 }
 
-// Routescan (API compatível com Etherscan, sem chave): transferências ERC-20 recebidas pela carteira.
-// "status 0 / No transactions found" é um resultado válido (zero transferências), não uma falha.
-async function viaRoutescan({ fetchFn }, horas, agora, limite) {
-  const corte = agora - horas * 3600 * 1000;
-  const qs = new URLSearchParams({ module: 'account', action: 'tokentx', contractaddress: USDC_BASE, address: WALLET, page: '1', offset: '200', sort: 'desc' });
-  try {
-    if (Date.now() >= limite) throw new Error('prazo esgotado');
-    const r = await fetchFn(`${ROUTESCAN}?${qs}`, { headers: { accept: 'application/json', 'user-agent': UA },
-      signal: AbortSignal.timeout(Math.max(500, Math.min(4000, limite - Date.now()))) });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    if (!j || !Array.isArray(j.result)) throw new Error(`formato inesperado (${String((j && j.message) || '')}: ${String((j && j.result) ?? '').slice(0, 80)})`);
-    const brutos = [];
-    for (const t of j.result) {
-      const ts = Number(t.timeStamp) * 1000;
-      if (!(ts >= corte)) continue;
-      if (String(t.contractAddress).toLowerCase() !== USDC_BASE.toLowerCase() || String(t.to).toLowerCase() !== WALLET.toLowerCase()) continue;
-      brutos.push({ tx: t.hash, bloco: Number(t.blockNumber), logIndex: Number(t.logIndex || t.transactionIndex || 0), ts,
-        de: String(t.from).toLowerCase(), atomic: String(t.value ?? '0') });
-    }
-    return { brutos, origem: { tipo: 'indexador-routescan', url: ROUTESCAN, hora: 'do indexador' }, janela: { corte_utc: new Date(corte).toISOString() } };
-  } catch (e) { const err = new Error('routescan nao serviu'); err.tentativas = [{ fonte: ROUTESCAN, erro: curto(e) }]; throw err; }
-}
-
 function formatar(fonte, horas, agora) {
   const ordenados = fonte.brutos.slice().sort((x, y) => y.bloco - x.bloco || y.logIndex - x.logIndex);
   const linhas = ordenados.slice(0, MAX_ROWS).map((t) => ({ tx: t.tx, bloco: t.bloco, hora_utc: new Date(t.ts).toISOString(), de: t.de,
@@ -168,11 +148,11 @@ function formatar(fonte, horas, agora) {
 
 async function recebimentos(deps, horas, agora) {
   const limite = Date.now() + PRAZO_MS;
-  const fontes = await Promise.allSettled([viaRpc(deps, horas, limite), viaIndexador(deps, horas, agora, limite), viaRoutescan(deps, horas, agora, limite)]);
-  const boa = fontes.find((f) => f.status === 'fulfilled'); // ordem de preferência: cadeia directa, Blockscout, Routescan
+  const fontes = await Promise.allSettled([viaRpc(deps, horas, limite), viaIndexador(deps, horas, agora, limite)]);
+  const boa = fontes.find((f) => f.status === 'fulfilled'); // ordem de preferência: cadeia directa, Blockscout
   if (boa) return formatar(boa.value, horas, agora);
   const err = new Error('nenhuma fonte serviu');
-  err.tentativas = fontes.flatMap((f, i) => f.reason.tentativas || [{ fonte: ['rpc', 'indexador', 'routescan'][i], erro: curto(f.reason) }]);
+  err.tentativas = fontes.flatMap((f, i) => f.reason.tentativas || [{ fonte: ['rpc', 'indexador'][i], erro: curto(f.reason) }]);
   throw err;
 }
 

@@ -83,24 +83,6 @@ assert.ok(maximo <= 4, 'paralelismo limitado: ' + maximo);
   assert.equal(out.n_transferencias, 3);
 }
 
-// 2d) so o Routescan serve (Blockscout 403): formato Etherscan, e "No transactions found" nao e falha.
-{
-  const routescan = (lista) => async (url) => {
-    if (!url.includes('routescan')) return { ok: false, status: 403 };
-    const q = new URL(url).searchParams;
-    assert.equal(q.get('action'), 'tokentx'); assert.equal(q.get('address'), WALLET); assert.equal(q.get('contractaddress'), USDC);
-    return { ok: true, json: async () => (lista.length ? { status: '1', message: 'OK', result: lista } : { status: '0', message: 'No transactions found', result: [] }) };
-  };
-  const tr = (hash, val, ago, from) => ({ hash, blockNumber: '39999900', timeStamp: String(Math.floor((NOW - ago) / 1000)), from, to: WALLET.toLowerCase(), contractAddress: USDC.toLowerCase(), value: String(val) });
-  out = await m.recebimentos({ call: semRede, fetchFn: routescan([tr('0xr1', 161000, 3600e3, A1), tr('0xr2', 999, 200 * 3600e3, A3)]), urls }, 24, NOW);
-  assert.equal(out.fonte.tipo, 'indexador-routescan');
-  assert.equal(out.n_transferencias, 1);
-  assert.equal(out.transferencias[0].corresponde_ao_preco_de, 'oraculo');
-  out = await m.recebimentos({ call: semRede, fetchFn: routescan([]), urls }, 24, NOW);
-  assert.equal(out.fonte.tipo, 'indexador-routescan');
-  assert.equal(out.n_transferencias, 0);
-}
-
 // 3) RPC que so aceita 50 blocos (o caso de producao): o indexador serve.
 out = await m.recebimentos({ call: rpcCom(50), fetchFn: indexadorOk, urls }, 24, NOW);
 assert.equal(out.fonte.tipo, 'indexador-blockscout');
