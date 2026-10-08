@@ -87,6 +87,13 @@
 - Endereço operacional `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7`, distinto do destino pessoal. A chave fica exclusivamente no Vault; nunca recriar/rodar para retomar o serviço.
 - Usar `ora_bitcoin_dispatch_v1`: btc_observe / btc_preview / btc_send / btc_status. Zero saldo observado; nenhum BTC real enviado. Assinatura sintética verificada, percurso financiado ainda não observado. Nenhum agendamento de envios criado.
 
+## recebimentos.json — leitura parcial declarada · 08/10/2026
+
+- Em produção o endpoint dava 503: os RPC públicos da Base limitam `eth_getLogs` (mainnet.base.org 500 blocos e "over rate limit" a rajadas; 1rpc 50; blastapi 10; drpc recusa; publicnode pede token; Blockscout 403; Routescan "chain not supported").
+- `api/_recebimentos.js` varre agora da janela mais recente para a mais antiga, aprende o intervalo máximo da mensagem de erro e devolve `cobertura` (`completa`, `horas_pedidas`, `horas_cobertas`, `motivo`) mais `aviso` quando a leitura é parcial. Leitura completa (RPC ou Blockscout) tem sempre preferência. Em pré-visualização: HTTP 200, cobertura parcial de 6,9 h das 24 h, 1 transferência de 0,000216 USDC (pó, `nao_classificada`).
+- Leitura completa de 24 h exige um RPC com chave que aceite intervalos largos: definir `BASE_RPC_URL` no Vercel (o URL nunca aparece nas respostas; só "BASE_RPC_URL (ambiente)"). Decisão de Unum: escolher o fornecedor e criar a chave.
+- Teste: `npm run recebimentos:verify`. Estado: `executed` até o merge e a leitura em produção.
+
 ## Observador BTC só de leitura · 08/10/2026
 
 - `/economia/bitcoin.json` (`api/_bitcoin.js`, via `api/proxy.js?base=bitcoin`): lê saldo e transacções recentes dos dois endereços BTC (recepção e operacional) em duas fontes Esplora (Blockstream e mempool.space). Sem Supabase, sem chave, sem assinar nem enviar.
