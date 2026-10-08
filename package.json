@@ -24,6 +24,7 @@
     "horizon:verify": "node scripts/verify-horizonte-2030.mjs",
     "x402:directo:verify": "node scripts/verify-x402-directo.mjs",
     "recebimentos:verify": "node scripts/verify-recebimentos.mjs",
+    "arca:export:verify": "node scripts/verify-arca-export.mjs",
     "bitcoin:observer:verify": "node scripts/verify-bitcoin-observer.mjs",
     "cdp:verify": "node scripts/verify-cdp-eip3009.mjs",
     "servicos:verify": "node scripts/verify-servicos-fallback.mjs"
