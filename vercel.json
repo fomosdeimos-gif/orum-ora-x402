@@ -13,6 +13,10 @@
       "destination": "/api/proxy?base=recebimentos"
     },
     {
+      "source": "/economia/bitcoin.json",
+      "destination": "/api/proxy?base=bitcoin"
+    },
+    {
       "source": "/economia/tesouraria.json",
       "destination": "/api/tesouraria"
     },
