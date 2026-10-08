@@ -87,6 +87,13 @@
 - Endereço operacional `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7`, distinto do destino pessoal. A chave fica exclusivamente no Vault; nunca recriar/rodar para retomar o serviço.
 - Usar `ora_bitcoin_dispatch_v1`: btc_observe / btc_preview / btc_send / btc_status. Zero saldo observado; nenhum BTC real enviado. Assinatura sintética verificada, percurso financiado ainda não observado. Nenhum agendamento de envios criado.
 
+## Observador BTC só de leitura · 08/10/2026
+
+- `/economia/bitcoin.json` (`api/_bitcoin.js`, via `api/proxy.js?base=bitcoin`): lê saldo e transacções recentes dos dois endereços BTC (recepção e operacional) em duas fontes Esplora (Blockstream e mempool.space). Sem Supabase, sem chave, sem assinar nem enviar.
+- Saldo só é dado quando as duas fontes concordam; discrepância fica declarada (`DISCREPANCIA`, saldo nulo); uma só fonte aparece como `fonte_unica`. Não classifica pagadores (`nao_classificada`); só marca `de_carteira_operacional_orum` quando a origem é o endereço operacional declarado.
+- Teste: `npm run bitcoin:observer:verify` (fontes simuladas). Estado: `executed`. A consulta às fontes reais foi bloqueada pelo proxy de saída desta sessão (blockstream.info e mempool.space); falta observar `https://ora-x402-gateway.vercel.app/economia/bitcoin.json` em produção depois do deploy.
+- Não prova controlo da chave de recepção, adopção externa nem receita. Próximo passo: após o deploy, ler o endpoint e registar em `ora_mudancas`; depois classificar os dois endereços em `ora_carteiras_classificacao`.
+
 ## Comparação A2A · 10/09/2026
 
 - `compare_texts {"left":"original","right":"versão"}` acrescenta SHA-256 UTF-8 e um trecho de substituição reconstruível ao `message/send` existente. Contrato: `docs/a2a-text-comparison-v1.md`.

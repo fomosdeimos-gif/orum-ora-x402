@@ -13,6 +13,7 @@
 // (api/_x402-directo.js), que verifica o pagamento na propria Base.
 const directo = require('./_x402-directo').createHandler();
 const recebimentos = require('./_recebimentos');
+const bitcoin = require('./_bitcoin');
 const SUPA = (process.env.ORUM_FUNCTIONS_BASE || 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1').replace(/\/$/, '');
 const PASS_RES = ['content-type', 'payment-required', 'payment-response', 'x-payment-response', 'www-authenticate', 'retry-after', 'x-ora-version', 'x-ora-x402', 'x-ora-tier', 'extension-responses', 'cache-control', 'location'];
 
@@ -30,6 +31,7 @@ module.exports = async (req, res) => {
   // ORA 30/09/2026: leitura on-chain local (sem Supabase). Vive aqui e nao em api/recebimentos.js
   // porque o plano Hobby do Vercel so admite 12 funcoes por deployment.
   if (base === 'recebimentos') return recebimentos(req, res);
+  if (base === 'bitcoin') return bitcoin(req, res); // ORA: observador BTC so de leitura, mesma razao
   delete q.base;
   const restRaw = q.rest || '';
   const rest = restRaw ? '/' + restRaw : '';
