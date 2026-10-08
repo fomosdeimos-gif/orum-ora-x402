@@ -142,7 +142,7 @@ async function viaRoutescan({ fetchFn }, horas, agora, limite) {
       signal: AbortSignal.timeout(Math.max(500, Math.min(4000, limite - Date.now()))) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const j = await r.json();
-    if (!j || !Array.isArray(j.result)) throw new Error('formato inesperado');
+    if (!j || !Array.isArray(j.result)) throw new Error(`formato inesperado (${String((j && j.message) || '')}: ${String((j && j.result) ?? '').slice(0, 80)})`);
     const brutos = [];
     for (const t of j.result) {
       const ts = Number(t.timeStamp) * 1000;
