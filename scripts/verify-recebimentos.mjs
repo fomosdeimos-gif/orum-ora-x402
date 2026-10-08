@@ -53,6 +53,21 @@ assert.equal(out.fonte.tipo, 'rpc-base-publico');
 assert.equal(out.n_transferencias, 3);
 assert.ok(sizes.includes(2000));
 
+// 2b) RPC que so aceita 500 blocos (caso observado em producao a 08/10/2026): 87 pedidos, nunca mais de 16 em curso.
+let emCurso = 0, maximo = 0;
+const rpc500 = async (url, method, params) => {
+  if (method === 'eth_getBlockByNumber') return headBlock;
+  emCurso++; maximo = Math.max(maximo, emCurso);
+  await new Promise((r) => setTimeout(r, 2));
+  try { return await rpcCom(500)(url, method, params); } finally { emCurso--; }
+};
+sizes.length = 0;
+out = await m.recebimentos({ call: rpc500, fetchFn: semRede, urls }, 24, NOW);
+assert.equal(out.fonte.tipo, 'rpc-base-publico');
+assert.equal(out.n_transferencias, 3);
+assert.ok(sizes.includes(500) && sizes.filter((x) => x === 500).length >= 86);
+assert.ok(maximo <= 16, 'paralelismo limitado: ' + maximo);
+
 // 3) RPC que so aceita 50 blocos (o caso de producao): o indexador serve.
 out = await m.recebimentos({ call: rpcCom(50), fetchFn: indexadorOk, urls }, 24, NOW);
 assert.equal(out.fonte.tipo, 'indexador-blockscout');

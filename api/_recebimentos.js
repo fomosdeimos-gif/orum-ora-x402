@@ -4,8 +4,9 @@
 // Duas fontes independentes do Supabase, em paralelo; usa-se a primeira que servir,
 // preferindo a leitura directa da cadeia:
 //   1. RPC público, eth_getLogs (Transfer USDC → carteira). Os RPC públicos limitam o
-//      intervalo de blocos (observado: "limited to 0 - 50 blocks range"), por isso
-//      tenta-se 9000 e depois 2000 blocos por pedido, dentro de um orçamento de pedidos.
+//      intervalo de blocos (observado: "limited to 0 - 50 blocks range" e, em 08/10/2026,
+//      "limited to a 500 range" no mainnet.base.org), por isso tenta-se 9000, 2000 e 500
+//      blocos por pedido, com pedidos em paralelo limitado, dentro de um orçamento.
 //   2. Indexador público Blockscout (sem chave), como alternativa.
 // Quando nenhuma serve, a resposta 503 diz porquê, fonte a fonte.
 //
@@ -19,8 +20,9 @@ const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 const RPCS = ['https://mainnet.base.org', 'https://base-rpc.publicnode.com', 'https://base.llamarpc.com', 'https://1rpc.io/base'];
 const INDEXADOR = 'https://base.blockscout.com/api/v2';
 const BLOCK_S = 2;
-const TAMANHOS = [9000, 2000];
-const MAX_PEDIDOS = 25;
+const TAMANHOS = [9000, 2000, 500];
+const MAX_PEDIDOS = 100; // 24 h = 87 pedidos de 500 blocos
+const PARALELO = 16;
 const PRAZO_MS = 7000; // o plano Hobby corta as funções aos 10 s
 const MAX_HORAS = 72;
 const MAX_ROWS = 200;
@@ -29,6 +31,20 @@ const PRECOS = { '161000': 'oraculo', '330000': 'campo' };
 
 const pad = (a) => '0x' + a.toLowerCase().replace(/^0x/, '').padStart(64, '0');
 const curto = (e) => String((e && e.message) || e).slice(0, 160);
+// Corre fn sobre os itens com no máximo n pedidos em curso; à primeira falha deixa de lançar novos.
+async function emParalelo(itens, n, fn) {
+  const out = new Array(itens.length);
+  let i = 0;
+  const fim = await Promise.allSettled(Array.from({ length: Math.min(n, itens.length) }, async () => {
+    while (i < itens.length) {
+      const k = i++;
+      try { out[k] = await fn(itens[k]); } catch (e) { i = itens.length; throw e; }
+    }
+  }));
+  const falha = fim.find((r) => r.status === 'rejected'); // espera os pedidos em curso antes de falhar
+  if (falha) throw falha.reason;
+  return out;
+}
 const limiteDeIntervalo = (e) => /range|limit|too many|exceed|block/i.test(curto(e));
 
 async function chamarRpc(url, method, params, ms) {
@@ -55,9 +71,9 @@ async function viaRpc({ call, urls }, horas, limite) {
       for (let s = from; s <= latest; s += tam) ranges.push([s, Math.min(s + tam - 1, latest)]);
       if (ranges.length > MAX_PEDIDOS) { tentativas.push({ fonte: url, erro: `${ranges.length} pedidos de ${tam} blocos excede o orcamento` }); continue; }
       try {
-        const parts = await Promise.all(ranges.map(([a, b]) => call(url, 'eth_getLogs', [{
+        const parts = await emParalelo(ranges, PARALELO, ([a, b]) => call(url, 'eth_getLogs', [{
           fromBlock: '0x' + a.toString(16), toBlock: '0x' + b.toString(16), address: USDC_BASE,
-          topics: [TRANSFER_TOPIC, null, pad(WALLET)] }], ms())));
+          topics: [TRANSFER_TOPIC, null, pad(WALLET)] }], ms()));
         const brutos = parts.flat().map((l) => {
           const bn = parseInt(l.blockNumber, 16);
           return { tx: l.transactionHash, bloco: bn, logIndex: parseInt(l.logIndex, 16), ts: (latestTs - (latest - bn) * BLOCK_S) * 1000,
