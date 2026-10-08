@@ -27,6 +27,7 @@ const rpcCom = (maxRange) => async (url, method, params) => {
 };
 const semRede = async () => { throw new Error('sem rede'); };
 const indexadorOk = async (url) => {
+  if (!url.includes('blockscout')) return { ok: false, status: 500 };
   assert.ok(url.includes(`/addresses/${WALLET}/token-transfers`) && url.includes('filter=to'));
   const item = (tx, val, ago, from) => ({ transaction_hash: tx, block_number: 39999900, log_index: 1, timestamp: new Date(NOW - ago).toISOString(),
     from: { hash: from }, to: { hash: WALLET }, token: { address_hash: USDC }, total: { value: String(val) } });
@@ -53,7 +54,7 @@ assert.equal(out.fonte.tipo, 'rpc-base-publico');
 assert.equal(out.n_transferencias, 3);
 assert.ok(sizes.includes(2000));
 
-// 2b) RPC que so aceita 500 blocos (caso observado em producao a 08/10/2026): 87 pedidos, nunca mais de 16 em curso.
+// 2b) RPC que so aceita 500 blocos (caso observado em producao a 08/10/2026): 87 pedidos, nunca mais de 4 em curso.
 let emCurso = 0, maximo = 0;
 const rpc500 = async (url, method, params) => {
   if (method === 'eth_getBlockByNumber') return headBlock;
@@ -66,7 +67,39 @@ out = await m.recebimentos({ call: rpc500, fetchFn: semRede, urls }, 24, NOW);
 assert.equal(out.fonte.tipo, 'rpc-base-publico');
 assert.equal(out.n_transferencias, 3);
 assert.ok(sizes.includes(500) && sizes.filter((x) => x === 500).length >= 86);
-assert.ok(maximo <= 16, 'paralelismo limitado: ' + maximo);
+assert.ok(maximo <= 4, 'paralelismo limitado: ' + maximo);
+
+// 2c) limite de taxa: a primeira chamada a cada janela falha com "over rate limit" e a repeticao serve.
+{
+  const vistos = new Set();
+  const limitado = async (url, method, params) => {
+    if (method === 'eth_getBlockByNumber') return headBlock;
+    const chave = params[0].fromBlock;
+    if (!vistos.has(chave)) { vistos.add(chave); throw new Error('over rate limit'); }
+    return rpcCom(500)(url, method, params);
+  };
+  out = await m.recebimentos({ call: limitado, fetchFn: semRede, urls }, 24, NOW);
+  assert.equal(out.fonte.tipo, 'rpc-base-publico', 'uma repeticao por limite de taxa');
+  assert.equal(out.n_transferencias, 3);
+}
+
+// 2d) so o Routescan serve (Blockscout 403): formato Etherscan, e "No transactions found" nao e falha.
+{
+  const routescan = (lista) => async (url) => {
+    if (!url.includes('routescan')) return { ok: false, status: 403 };
+    const q = new URL(url).searchParams;
+    assert.equal(q.get('action'), 'tokentx'); assert.equal(q.get('address'), WALLET); assert.equal(q.get('contractaddress'), USDC);
+    return { ok: true, json: async () => (lista.length ? { status: '1', message: 'OK', result: lista } : { status: '0', message: 'No transactions found', result: [] }) };
+  };
+  const tr = (hash, val, ago, from) => ({ hash, blockNumber: '39999900', timeStamp: String(Math.floor((NOW - ago) / 1000)), from, to: WALLET.toLowerCase(), contractAddress: USDC.toLowerCase(), value: String(val) });
+  out = await m.recebimentos({ call: semRede, fetchFn: routescan([tr('0xr1', 161000, 3600e3, A1), tr('0xr2', 999, 200 * 3600e3, A3)]), urls }, 24, NOW);
+  assert.equal(out.fonte.tipo, 'indexador-routescan');
+  assert.equal(out.n_transferencias, 1);
+  assert.equal(out.transferencias[0].corresponde_ao_preco_de, 'oraculo');
+  out = await m.recebimentos({ call: semRede, fetchFn: routescan([]), urls }, 24, NOW);
+  assert.equal(out.fonte.tipo, 'indexador-routescan');
+  assert.equal(out.n_transferencias, 0);
+}
 
 // 3) RPC que so aceita 50 blocos (o caso de producao): o indexador serve.
 out = await m.recebimentos({ call: rpcCom(50), fetchFn: indexadorOk, urls }, 24, NOW);

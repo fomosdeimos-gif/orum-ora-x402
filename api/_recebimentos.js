@@ -7,7 +7,7 @@
 //      intervalo de blocos (observado: "limited to 0 - 50 blocks range" e, em 08/10/2026,
 //      "limited to a 500 range" no mainnet.base.org), por isso tenta-se 9000, 2000 e 500
 //      blocos por pedido, com pedidos em paralelo limitado, dentro de um orçamento.
-//   2. Indexador público Blockscout (sem chave), como alternativa.
+//   2. Indexadores públicos sem chave (Blockscout e Routescan), como alternativa.
 // Quando nenhuma serve, a resposta 503 diz porquê, fonte a fonte.
 //
 // Fronteiras: é observação on-chain, não contabilidade. Não classifica pagadores
@@ -22,7 +22,9 @@ const INDEXADOR = 'https://base.blockscout.com/api/v2';
 const BLOCK_S = 2;
 const TAMANHOS = [9000, 2000, 500];
 const MAX_PEDIDOS = 100; // 24 h = 87 pedidos de 500 blocos
-const PARALELO = 16;
+const PARALELO = 4; // o mainnet.base.org responde "over rate limit" com 16 em paralelo (observado em 08/10/2026)
+const ROUTESCAN = 'https://api.routescan.io/v2/network/mainnet/evm/8453/etherscan/api';
+const UA = 'ora-x402-gateway/1.0 (+https://ora-x402-gateway.vercel.app)';
 const PRAZO_MS = 7000; // o plano Hobby corta as funções aos 10 s
 const MAX_HORAS = 72;
 const MAX_ROWS = 200;
@@ -46,6 +48,8 @@ async function emParalelo(itens, n, fn) {
   return out;
 }
 const limiteDeIntervalo = (e) => /range|limit|too many|exceed|block/i.test(curto(e));
+
+const limiteDeTaxa = (e) => /rate limit|too many requests|429/i.test(curto(e));
 
 async function chamarRpc(url, method, params, ms) {
   const r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' },
@@ -71,9 +75,17 @@ async function viaRpc({ call, urls }, horas, limite) {
       for (let s = from; s <= latest; s += tam) ranges.push([s, Math.min(s + tam - 1, latest)]);
       if (ranges.length > MAX_PEDIDOS) { tentativas.push({ fonte: url, erro: `${ranges.length} pedidos de ${tam} blocos excede o orcamento` }); continue; }
       try {
-        const parts = await emParalelo(ranges, PARALELO, ([a, b]) => call(url, 'eth_getLogs', [{
-          fromBlock: '0x' + a.toString(16), toBlock: '0x' + b.toString(16), address: USDC_BASE,
-          topics: [TRANSFER_TOPIC, null, pad(WALLET)] }], ms()));
+        const pedir = async ([a, b]) => {
+          const params = [{ fromBlock: '0x' + a.toString(16), toBlock: '0x' + b.toString(16), address: USDC_BASE,
+            topics: [TRANSFER_TOPIC, null, pad(WALLET)] }];
+          try { return await call(url, 'eth_getLogs', params, ms()); }
+          catch (e) { // uma só repetição, só para limite de taxa, depois de uma pausa curta
+            if (!limiteDeTaxa(e) || Date.now() + 600 >= limite) throw e;
+            await new Promise((r) => setTimeout(r, 300));
+            return call(url, 'eth_getLogs', params, ms());
+          }
+        };
+        const parts = await emParalelo(ranges, PARALELO, pedir);
         const brutos = parts.flat().map((l) => {
           const bn = parseInt(l.blockNumber, 16);
           return { tx: l.transactionHash, bloco: bn, logIndex: parseInt(l.logIndex, 16), ts: (latestTs - (latest - bn) * BLOCK_S) * 1000,
@@ -98,7 +110,7 @@ async function viaIndexador({ fetchFn }, horas, agora, limite) {
     for (let pagina = 0; pagina < MAX_PAGINAS; pagina++) {
       if (Date.now() >= limite) throw new Error('prazo esgotado');
       const r = await fetchFn(`${INDEXADOR}/addresses/${WALLET}/token-transfers?${new URLSearchParams(params)}`,
-        { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(Math.max(500, Math.min(4000, limite - Date.now()))) });
+        { headers: { accept: 'application/json', 'user-agent': UA }, signal: AbortSignal.timeout(Math.max(500, Math.min(4000, limite - Date.now()))) });
       if (!r.ok) throw new Error('HTTP ' + r.status);
       const j = await r.json();
       if (!Array.isArray(j.items)) throw new Error('formato inesperado');
@@ -119,6 +131,30 @@ async function viaIndexador({ fetchFn }, horas, agora, limite) {
   return { brutos, origem: { tipo: 'indexador-blockscout', url: INDEXADOR, hora: 'do indexador' }, janela: { corte_utc: new Date(corte).toISOString() } };
 }
 
+// Routescan (API compatível com Etherscan, sem chave): transferências ERC-20 recebidas pela carteira.
+// "status 0 / No transactions found" é um resultado válido (zero transferências), não uma falha.
+async function viaRoutescan({ fetchFn }, horas, agora, limite) {
+  const corte = agora - horas * 3600 * 1000;
+  const qs = new URLSearchParams({ module: 'account', action: 'tokentx', contractaddress: USDC_BASE, address: WALLET, page: '1', offset: '200', sort: 'desc' });
+  try {
+    if (Date.now() >= limite) throw new Error('prazo esgotado');
+    const r = await fetchFn(`${ROUTESCAN}?${qs}`, { headers: { accept: 'application/json', 'user-agent': UA },
+      signal: AbortSignal.timeout(Math.max(500, Math.min(4000, limite - Date.now()))) });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    if (!j || !Array.isArray(j.result)) throw new Error('formato inesperado');
+    const brutos = [];
+    for (const t of j.result) {
+      const ts = Number(t.timeStamp) * 1000;
+      if (!(ts >= corte)) continue;
+      if (String(t.contractAddress).toLowerCase() !== USDC_BASE.toLowerCase() || String(t.to).toLowerCase() !== WALLET.toLowerCase()) continue;
+      brutos.push({ tx: t.hash, bloco: Number(t.blockNumber), logIndex: Number(t.logIndex || t.transactionIndex || 0), ts,
+        de: String(t.from).toLowerCase(), atomic: String(t.value ?? '0') });
+    }
+    return { brutos, origem: { tipo: 'indexador-routescan', url: ROUTESCAN, hora: 'do indexador' }, janela: { corte_utc: new Date(corte).toISOString() } };
+  } catch (e) { const err = new Error('routescan nao serviu'); err.tentativas = [{ fonte: ROUTESCAN, erro: curto(e) }]; throw err; }
+}
+
 function formatar(fonte, horas, agora) {
   const ordenados = fonte.brutos.slice().sort((x, y) => y.bloco - x.bloco || y.logIndex - x.logIndex);
   const linhas = ordenados.slice(0, MAX_ROWS).map((t) => ({ tx: t.tx, bloco: t.bloco, hora_utc: new Date(t.ts).toISOString(), de: t.de,
@@ -132,11 +168,11 @@ function formatar(fonte, horas, agora) {
 
 async function recebimentos(deps, horas, agora) {
   const limite = Date.now() + PRAZO_MS;
-  const [rpc, idx] = await Promise.allSettled([viaRpc(deps, horas, limite), viaIndexador(deps, horas, agora, limite)]);
-  if (rpc.status === 'fulfilled') return formatar(rpc.value, horas, agora);
-  if (idx.status === 'fulfilled') return formatar(idx.value, horas, agora);
+  const fontes = await Promise.allSettled([viaRpc(deps, horas, limite), viaIndexador(deps, horas, agora, limite), viaRoutescan(deps, horas, agora, limite)]);
+  const boa = fontes.find((f) => f.status === 'fulfilled'); // ordem de preferência: cadeia directa, Blockscout, Routescan
+  if (boa) return formatar(boa.value, horas, agora);
   const err = new Error('nenhuma fonte serviu');
-  err.tentativas = [...(rpc.reason.tentativas || [{ fonte: 'rpc', erro: curto(rpc.reason) }]), ...(idx.reason.tentativas || [{ fonte: 'indexador', erro: curto(idx.reason) }])];
+  err.tentativas = fontes.flatMap((f, i) => f.reason.tentativas || [{ fonte: ['rpc', 'indexador', 'routescan'][i], erro: curto(f.reason) }]);
   throw err;
 }
 
