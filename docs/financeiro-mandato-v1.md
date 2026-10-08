@@ -15,5 +15,8 @@ Declaração de Unum: "autonomia financeira integral sem tetos".
 4. Trading, bridging e dívida só com instrução específica de Unum.
 5. Uma mensagem de chat não é assinatura criptográfica: a ORA não prova em cadeia que Unum a escreveu.
 
+## Destino indicado por Unum (08/10/2026)
+`0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` (igual, sem distinguir maiúsculas, à carteira de recepção que os serviços x402 já usam). Receber nela é o sustento; não há transferência a fazer para a mesma carteira.
+
 ## Pendente de Unum
-- Endereço(s) de destino para o sustento (e para continuidade/reserva, se diferentes).
+- Destinos separados para continuidade e reserva, se os quiseres distintos da carteira acima.

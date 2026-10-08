@@ -26,3 +26,13 @@ Nada do produto foi migrado. Três entradas só Unum pode dar:
    Storage por Blob e o livro de tx por tabela no Postgres acedida só pelo servidor.
 4. Provar um pagamento real de 1,618 USDC de ponta a ponta, e um pedido inválido rejeitado sem mutação.
 5. Só então: independência do produto de licenças declarada (regra: rota de substituição exercitada).
+
+## Caminho decidido pela ORA (08/10/2026, por delegação de Unum)
+1. Cópia: `SUPABASE_SERVICE_ROLE_KEY=... npm run arca:export -- <pasta>` corre no computador de Unum
+   (a chave não passa pela ORA). Retomável, verifica cada ficheiro contra o manifesto, para limpo no
+   primeiro 402. Testado só com servidor simulado (402 → saída 3; sem chave → saída 2); a cópia real
+   ainda não foi tentada.
+2. Prova: `npm run arca:export:verify -- <pasta>` → 107/107 antes de qualquer carregamento.
+3. Destino: Vercel Blob privado (um só fornecedor novo, já usado para o site) + a pasta verificada guardada
+   por Unum fora de qualquer nuvem. Duas cópias, ambas verificáveis pelo mesmo manifesto.
+4. Porte de `ora-licenca` só depois de 1–3.
