@@ -36,7 +36,7 @@ const indexadorOk = async (url) => {
 const urls = ['https://rpc-a.test', 'https://rpc-b.test'];
 
 // 1) RPC que aceita 9000 blocos: 24 h em 5 pedidos.
-let out = await m.recebimentos({ call: rpcCom(10000), fetchFn: semRede, urls }, 24, NOW);
+let out = await m.recebimentos({ call: rpcCom(10000), fetchFn: semRede, urls, pausa: 0 }, 24, NOW);
 assert.equal(out.fonte.tipo, 'rpc-base-publico');
 assert.equal(out.n_transferencias, 3);
 assert.equal(out.total_usdc, 0.491005);
@@ -49,7 +49,7 @@ assert.ok(sizes.every((s) => s <= 9000));
 
 // 2) RPC que so aceita 2500 blocos: desce para 2000 (22 pedidos, dentro do orcamento).
 sizes.length = 0;
-out = await m.recebimentos({ call: rpcCom(2500), fetchFn: semRede, urls }, 24, NOW);
+out = await m.recebimentos({ call: rpcCom(2500), fetchFn: semRede, urls, pausa: 0 }, 24, NOW);
 assert.equal(out.fonte.tipo, 'rpc-base-publico');
 assert.equal(out.n_transferencias, 3);
 assert.ok(sizes.includes(2000));
@@ -63,7 +63,7 @@ const rpc500 = async (url, method, params) => {
   try { return await rpcCom(500)(url, method, params); } finally { emCurso--; }
 };
 sizes.length = 0;
-out = await m.recebimentos({ call: rpc500, fetchFn: semRede, urls }, 24, NOW);
+out = await m.recebimentos({ call: rpc500, fetchFn: semRede, urls, pausa: 0 }, 24, NOW);
 assert.equal(out.fonte.tipo, 'rpc-base-publico');
 assert.equal(out.n_transferencias, 3);
 assert.ok(sizes.includes(500) && sizes.filter((x) => x === 500).length >= 86);
@@ -78,13 +78,13 @@ assert.ok(maximo <= 4, 'paralelismo limitado: ' + maximo);
     if (!vistos.has(chave)) { vistos.add(chave); throw new Error('over rate limit'); }
     return rpcCom(500)(url, method, params);
   };
-  out = await m.recebimentos({ call: limitado, fetchFn: semRede, urls }, 24, NOW);
+  out = await m.recebimentos({ call: limitado, fetchFn: semRede, urls, pausa: 0 }, 24, NOW);
   assert.equal(out.fonte.tipo, 'rpc-base-publico', 'uma repeticao por limite de taxa');
   assert.equal(out.n_transferencias, 3);
 }
 
 // 3) RPC que so aceita 50 blocos (o caso de producao): o indexador serve.
-out = await m.recebimentos({ call: rpcCom(50), fetchFn: indexadorOk, urls }, 24, NOW);
+out = await m.recebimentos({ call: rpcCom(50), fetchFn: indexadorOk, urls, pausa: 0 }, 24, NOW);
 assert.equal(out.fonte.tipo, 'indexador-blockscout');
 assert.equal(out.n_transferencias, 2, 'a transferencia de ha 200 h fica fora da janela de 24 h');
 assert.deepEqual(out.transferencias.map((t) => t.corresponde_ao_preco_de), ['oraculo', 'campo']);
@@ -92,12 +92,12 @@ assert.ok(out.transferencias.every((t) => t.classificacao === 'nao_classificada'
 assert.equal(out.fonte.hora, 'do indexador');
 
 // 4) RPC em baixo e indexador a servir.
-out = await m.recebimentos({ call: semRede, fetchFn: indexadorOk, urls }, 24, NOW);
+out = await m.recebimentos({ call: semRede, fetchFn: indexadorOk, urls, pausa: 0 }, 24, NOW);
 assert.equal(out.fonte.tipo, 'indexador-blockscout');
 
 // 5) Indexador com formato inesperado ou HTTP de erro nao passa por bom.
-await assert.rejects(m.recebimentos({ call: semRede, fetchFn: async () => ({ ok: true, json: async () => ({ x: 1 }) }), urls }, 24, NOW), (e) => e.tentativas.some((t) => /formato inesperado/.test(t.erro)));
-await assert.rejects(m.recebimentos({ call: semRede, fetchFn: async () => ({ ok: false, status: 429 }), urls }, 24, NOW), (e) => e.tentativas.some((t) => /HTTP 429/.test(t.erro)));
+await assert.rejects(m.recebimentos({ call: semRede, fetchFn: async () => ({ ok: true, json: async () => ({ x: 1 }) }), urls, pausa: 0 }, 24, NOW), (e) => e.tentativas.some((t) => /formato inesperado/.test(t.erro)));
+await assert.rejects(m.recebimentos({ call: semRede, fetchFn: async () => ({ ok: false, status: 429 }), urls, pausa: 0 }, 24, NOW), (e) => e.tentativas.some((t) => /HTTP 429/.test(t.erro)));
 
 function res() { const h = {}; return { h, setHeader(k, v) { h[k] = v; }, end(r) { this.body = JSON.parse(r); } }; }
 const handler = m.createHandler({ call: rpcCom(10000), fetchFn: semRede, urls, now: () => NOW });
@@ -107,12 +107,36 @@ r = res(); await handler({ query: { horas: '9999' } }, r); assert.equal(r.body.j
 r = res(); await handler({ query: { horas: 'abc' } }, r); assert.equal(r.statusCode, 400);
 r = res(); await handler({ query: { horas: '-1' } }, r); assert.equal(r.statusCode, 400);
 
+// 5b) RPC que so aguenta 50 blocos e sem indexador: leitura PARCIAL declarada (100 janelas = 5000 blocos = 2,8 h), nunca 'completa'.
+r = res(); await m.createHandler({ call: rpcCom(50), fetchFn: async () => ({ ok: false, status: 503 }), urls, pausa: 0, now: () => NOW })({ query: {} }, r);
+assert.equal(r.statusCode, 200);
+assert.equal(r.body.cobertura.completa, false);
+assert.equal(r.body.cobertura.horas_pedidas, 24);
+assert.ok(r.body.cobertura.horas_cobertas > 2 && r.body.cobertura.horas_cobertas < 3.1, 'cobertura: ' + r.body.cobertura.horas_cobertas);
+assert.match(r.body.aviso, /PARCIAL/);
+assert.equal(r.body.n_transferencias, 2, 'so as transferencias dentro da parte coberta (HEAD-100 e HEAD-50)');
+assert.ok(r.body.janela.bloco_a - r.body.janela.bloco_de < 43200);
+
+// 5c) Uma leitura completa do indexador ganha a uma parcial do RPC.
+out = await m.recebimentos({ call: rpcCom(50), fetchFn: indexadorOk, urls, pausa: 0 }, 24, NOW);
+assert.equal(out.fonte.tipo, 'indexador-blockscout'); assert.equal(out.cobertura.completa, true);
+
 // 6) Tudo em baixo: 503 sem cache e com o motivo de cada fonte.
-r = res(); await m.createHandler({ call: rpcCom(50), fetchFn: async () => ({ ok: false, status: 503 }), urls, now: () => NOW })({ query: {} }, r);
+r = res(); await m.createHandler({ call: semRede, fetchFn: async () => ({ ok: false, status: 503 }), urls, pausa: 0, now: () => NOW })({ query: {} }, r);
 assert.equal(r.statusCode, 503); assert.equal(r.h['cache-control'], 'no-store');
 assert.equal(r.body.error, 'fontes_indisponiveis');
-assert.ok(r.body.tentativas.some((t) => /limited to 0 - 50 blocks/.test(t.erro)), 'diz o limite do RPC');
+assert.ok(r.body.tentativas.some((t) => /sem rede/.test(t.erro)), 'diz o erro do RPC');
 assert.ok(r.body.tentativas.some((t) => /HTTP 503/.test(t.erro)), 'diz o erro do indexador');
+
+// 6b) O URL de um RPC com chave (BASE_RPC_URL) nunca aparece na resposta.
+{
+  process.env.BASE_RPC_URL = 'https://rpc.exemplo.test/v3/SEGREDO123';
+  try {
+    r = res(); await m.createHandler({ call: semRede, fetchFn: async () => ({ ok: false, status: 503 }), pausa: 0, now: () => NOW })({ query: {} }, r);
+    const txt = JSON.stringify(r.body);
+    assert.ok(!txt.includes('SEGREDO123') && txt.includes('BASE_RPC_URL (ambiente)'), 'chave nao exposta');
+  } finally { delete process.env.BASE_RPC_URL; }
+}
 
 // 7) Rota via proxy: nunca toca no Supabase e nao cria funcao nova.
 {
