@@ -852,3 +852,11 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - Estado neste commit: implementado; verificação de produção será registada de forma aditiva em ora_mudancas.
 - Próximo fio: verificar os quatro ficheiros publicados e sedimentar commit, hashes e resultado visual.
 
+
+## Licenças fora do Supabase, mandato e ponte quântica v2 · 08/10/2026
+- **Quântico:** `ora_quantico_ponte_calibracao_v2` (aditiva; v1 intacta) acrescenta `eventos_positivos`, `brier_climatologia`, `comparacao_informativa` e declara que a amostra vem de simulador clássico. Hoje: 0 eventos positivos em 77 previsões, climatologia vence, comparação não informativa. Ledger #829.
+- **Receita:** 21 pagamentos `verificado_onchain`, todos de carteiras `interno` (18,56 USDC); receita externa 0.
+- **Fotografias:** 107 obras, 281 996 528 bytes (não ~15 MB). Manifesto em `docs/licenca/manifesto-arca-fisica-v1.tsv`; `npm run arca:export` (retomável, para no 402) e `npm run arca:export:verify`. Plano em `docs/licenca/migracao-vercel-v1.md`. A cópia real não foi tentada; precisa da service role no computador de Unum. Ledger #830, #831.
+- **Mandato:** `docs/financeiro-mandato-v1.md` regista "sem tectos de montante" e o destino `0xFEd69e8e…cDEe5` (a carteira de recepção x402). ATENÇÃO: a constituição executável (`npm run economy:verify`) continua a dar `effective_transfer_usdc: 0` até haver lista de destinos assinada; não foi alterada, porque uma mensagem de chat não é assinatura. Os dois documentos divergem de propósito até Unum assinar.
+- **Recuperação:** `recovery:verify` e `recovery:rehearse` passam (145 ficheiros, 1,6 MB, commit de origem `f00e1cf`, sem credenciais). Cobrem o código e o estado do site, NÃO os dados do Supabase nem as fotografias, e o bundle é anterior a este trabalho: reconstruir com `npm run recovery:build` antes de o usar.
+- **Independência:** continua por afirmar para o produto de licenças (precisa de cópia verificada das fotografias, destino privado, porte e um pagamento real de 1,618 USDC).
