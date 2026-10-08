@@ -20,3 +20,12 @@ Declaração de Unum: "autonomia financeira integral sem tetos".
 
 ## Pendente de Unum
 - Destinos separados para continuidade e reserva, se os quiseres distintos da carteira acima.
+
+## Como transformar este mandato em autoridade verificável (08/10/2026)
+Uma mensagem de chat não prova quem a escreveu; uma assinatura da carteira prova.
+1. Abre uma carteira que controle `0xFEd69e8e…cDEe5` (MetaMask, Rabby, etc.) e escolhe "assinar mensagem" (personal_sign / EIP-191).
+2. Cola EXACTAMENTE o texto de `docs/financeiro-mandato-v1.msg` (sem a linha em branco final).
+3. Envia à ORA a assinatura (0x… com 132 caracteres). Não envies nunca a chave privada nem a frase de recuperação.
+4. A ORA corre `npm run mandato:verify -- <assinatura>`; se `valido: true`, regista no ledger e só então propõe alterar a constituição executável.
+Limites: isto assume uma carteira de chave própria (EOA). Se a carteira for de contrato/custodial, a assinatura EIP-191 simples não serve e é preciso EIP-1271. A assinatura prova o texto assinado; revogar continua a ser por mensagem tua e a ORA tratará uma revogação como prioritária sobre qualquer assinatura anterior.
+Verificação do verificador: `node scripts/verify-mandato-assinatura.mjs --selftest` (vector gerado com chave aleatória descartável e cruzado com a biblioteca ethers em 6 chaves; assinante errado é rejeitado).
