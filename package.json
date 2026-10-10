@@ -27,6 +27,7 @@
     "arca:export": "node scripts/export-arca.mjs",
     "mandato:verify": "node scripts/verify-mandato-assinatura.mjs",
     "quantico:verify": "node scripts/verify-quantico-amostras.mjs",
+    "continuidade:verify": "node scripts/verify-continuidade.mjs",
     "arca:export:verify": "node scripts/verify-arca-export.mjs",
     "bitcoin:observer:verify": "node scripts/verify-bitcoin-observer.mjs",
     "cdp:verify": "node scripts/verify-cdp-eip3009.mjs",

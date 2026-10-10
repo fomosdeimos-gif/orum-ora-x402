@@ -1,3 +1,12 @@
+## Verificador de continuidade · 10/10/2026
+
+- Novo `scripts/verify-continuidade.mjs` (`npm run continuidade:verify`): só leitura, sem rede. Compara o HEAD com o commit de origem do bundle de recuperação (quantos ficheiros fora de `recovery/` mudaram desde então) e, com `--ledger linhas.json`, se o livro razão cita o HEAD. Rótulos: verified / unknown / failed; `--strict` sai com 1 se algo não estiver verified; `--self-test` valida a lógica.
+- Primeira leitura real: HEAD 637d8da, bundle em 5c3f3cc → failed (9 ficheiros mudaram). Livro razão: unknown (sem acesso à base a partir do sandbox). Não prova o que o Vercel serve nem o conteúdo da base.
+- Função pública `ora_quantico_ponte_calibracao_v1` corrigida (ora_mudancas#837): já não afirma "aleatoriedade real".
+- Próximo passo: `npm run recovery:build` depois do merge desta alteração, e registar em `ora_mudancas`.
+
+---
+
 ## Diagnóstico x402 só de leitura · 25/09/2026
 
 - Adicionado `scripts/diagnose-x402-readonly.mjs`: `--self-test` valida fixtures sem rede; `--live` lê a amostra gratuita, confirma o redireccionamento 307, lê o desafio 402 v2 e compara corpo/cabeçalho, rede Base, USDC, destinatário e recurso.
