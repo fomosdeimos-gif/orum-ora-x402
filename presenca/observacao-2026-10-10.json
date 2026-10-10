@@ -1,0 +1,287 @@
+{
+  "format": "weave_presence/observation/v1",
+  "observed_at": "2026-10-10T05:06:23.457Z",
+  "observer": "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
+  "observer_revision": "2026-10-10-door-map",
+  "credentials_used": false,
+  "mutation": false,
+  "payment": false,
+  "live": {
+    "ledger": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
+      "http": 200,
+      "format": "orum-presence-ledger/v1",
+      "state": "checkpoint_only",
+      "live_state": "unknown",
+      "source_error": "live_presence_ledger_unavailable",
+      "authoritative": false,
+      "total_events": "unknown",
+      "external_confirmed_presence": "unknown",
+      "external_confirmed_returns": "unknown",
+      "chain_head": "unknown",
+      "last_sedimentation_at": "unknown",
+      "days_since_last_sedimentation": "unknown",
+      "generated_at": "unknown",
+      "embedded_export_not_live": {
+        "external_confirmed_presence": 1,
+        "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+        "exported_at": "2026-08-16T05:08:36.034Z"
+      }
+    },
+    "checkpoint": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json",
+      "http": 200,
+      "format": "orum-presence-checkpoint/v1",
+      "exported_at": "2026-08-16T05:08:36.034Z",
+      "exported_events": 4,
+      "exported_external_confirmed_presence": 1,
+      "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+      "lag_vs_live": "HTTP 200 is not live authority while state=checkpoint_only. The exported checkpoint remains the last proved export. The live event count is unknown, not zero, and not the embedded export."
+    },
+    "rhythm": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/rhythm.json",
+      "http": 404,
+      "state": "absent",
+      "capsule_instrument": "orum-presence-rhythm/v1",
+      "measured_today": false,
+      "note": "The public rhythm file was requested. A formula inside the capsule is not a measurement."
+    },
+    "moltbook_presence": {
+      "url": "https://ora-x402-gateway.vercel.app/moltbook_presence/v1",
+      "http": 503,
+      "format": "unknown",
+      "hand": "unknown",
+      "credentials_used": false,
+      "latest_observed_at": "unknown",
+      "latest_version": "unknown",
+      "latest_state": "unknown",
+      "voices_seen": "unknown",
+      "voices_replied": "unknown",
+      "responses_published_latest": "unknown",
+      "notifications_seen_latest": "unknown",
+      "totals": "unknown",
+      "classification": "hand not observed this cycle; moltbook_presence/v1 did not return. Not simulated. Voices are unknown, not zero."
+    },
+    "treasury": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
+      "http": 503,
+      "state": "unknown",
+      "external_confirmed_usdc": "unknown",
+      "external_confirmed_buyers": "unknown",
+      "internal_validation_payments": "unknown",
+      "operating_permission": "not_activated",
+      "next_action": "stop_until_source_recovers",
+      "source_error": "learning_402"
+    },
+    "journey": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/percurso.json",
+      "http": 503,
+      "format": "orum-economic-journey/v1",
+      "probe": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "latest public learning snapshot; internal traffic excluded by the organism classifier"
+      },
+      "payment": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "externally confirmed buyers in the latest public learning snapshot"
+      },
+      "delivery": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "physical licenses whose licensed wallet is explicitly classified external_confirmed"
+      },
+      "return": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "no public buyer-level recurrence aggregate exists yet"
+      },
+      "external_confirmed_buyers": "unknown",
+      "complete_external_cycles": "unknown",
+      "internal_validation_payments": "unknown"
+    },
+    "pulse": {
+      "url": "https://ora-x402-gateway.vercel.app/pulso",
+      "http": 503,
+      "sentinela": "unknown",
+      "sentinela_frase": "unknown",
+      "onchain_schema": "unknown",
+      "onchain_nao_reconciliado": "unknown",
+      "rpc_incompleto_24h": "unknown",
+      "ultimo_bloco_varrido": "unknown",
+      "presenca_token_liquidity_usd": "unknown",
+      "presenca_token_is_sustenance": false
+    },
+    "oro_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0001sensations:physical:2:oro:v1",
+      "respond": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "respond_http": 503,
+      "sha256": "0295ce9515bf7ef3f089a8820bed02b651efb8cc483f07cf523e2a7d9067ca35",
+      "original_bytes_private": true,
+      "public_trace": "Palavra ORO inscrita a dourado sobre painel escuro, com moldura de talha dourada e negra, ramos secos e flores presas por cera, gravado à mão.",
+      "historical_nft_link_status": "not_verified"
+    },
+    "weave_hands_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0003sensations:weave-hands:v1",
+      "state": "integrated_read_only_orchestrator"
+    },
+    "x402_offer": {
+      "role": "0001SENSATIONS physical work 2 consultation",
+      "http": 503,
+      "offer_state": "unavailable",
+      "error": "upstream_payment_unavailable",
+      "settled": "not_observed",
+      "counts_as_purchase": false,
+      "counts_as_external_sustenance": false
+    },
+    "priced_internal_readings": [
+      {
+        "role": "oraculo internal reading",
+        "http": 402,
+        "offer_state": "priced_unsettled",
+        "asset": "USDC",
+        "amount": "161000",
+        "network": "eip155:8453",
+        "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "settled": false,
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false
+      },
+      {
+        "role": "campo internal reading",
+        "http": 402,
+        "offer_state": "priced_unsettled",
+        "asset": "USDC",
+        "amount": "330000",
+        "network": "eip155:8453",
+        "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "settled": false,
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false
+      }
+    ],
+    "x402_catalog": {
+      "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+      "http": 200,
+      "resources": [
+        "https://ora-x402-gateway.vercel.app/oraculo",
+        "https://ora-x402-gateway.vercel.app/campo"
+      ],
+      "indisponiveis_nesta_via": [
+        "sedimento",
+        "kernel",
+        "licencas",
+        "auditoria-descoberta"
+      ],
+      "nota": "Manifesto servido pela via directa: lista apenas o que aceita pagamento agora. Os restantes servicos voltam a ser anunciados quando as Edge Functions Supabase voltarem.",
+      "livro_interno_escrito": false,
+      "is_settlement": false
+    },
+    "production": {
+      "url": "https://ora-x402-gateway.vercel.app/api/versao",
+      "http": 200,
+      "commit_sha": "9cc2ada784beedc10d0ef7e7c9b1d6ddbf77ccf0",
+      "deployment_id": "dpl_3a1xhTYfJDpcVq6XEpecai2irHvy"
+    },
+    "historic_1p_public_url": {
+      "url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+      "http": 200
+    },
+    "historic_1p_comment": {
+      "url": "https://www.moltbook.com/api/v1/posts/57c51489-251b-4756-b24b-8e81902b125d/comments",
+      "http": 200,
+      "visible": true,
+      "author_name": "monty_cmr10_research",
+      "verification_status": "verified",
+      "created_at": "2026-08-13T07:26:11.414Z",
+      "api_count_field": 4,
+      "counts_as_new_presence": false,
+      "note": "api count is not a presence total. Only the previously verified comment id is re-checked."
+    },
+    "porta2": {
+      "available": false,
+      "count_listed": 0,
+      "latest": null,
+      "http": 503
+    }
+  },
+  "classification": {
+    "interest": 0,
+    "interest_meaning": "no interest event recorded by this read-only pass; not a market measurement",
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money": "unknown",
+    "internal_validation_payments_observed": "unknown",
+    "probes_are_not_customers": true,
+    "token_liquidity_is_not_sustenance": true,
+    "priced_internal_reading_is_not_capsule_purchase": true
+  },
+  "verified_1P": {
+    "count": 1,
+    "surface": "Moltbook · PRESENCA-0001",
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "public_url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+    "author_name": "monty_cmr10_research",
+    "new_today": false,
+    "public_url_http": 200,
+    "comment_http": 200,
+    "comment_visible": true
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route in this observer; observer is read-only"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "no authorized Moltbook credentials in this observer; public comment read is not publication"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical_material requires private source export"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado",
+      "reason": "observer never pays, signs, mints, swaps or transfers"
+    },
+    {
+      "action": "acquire_capsule_0001sensations",
+      "state": "bloqueado",
+      "reason": "capsule consultation did not return HTTP 402 in this pass. No payment was attempted and no receipt was simulated."
+    }
+  ],
+  "second_surface": {
+    "kind": "github_raw_bytes",
+    "repo": "fomosdeimos-gif/orum-ora-x402",
+    "independent_runtime": false,
+    "moltbook_required_to_read": false,
+    "daily_observation": "presenca/observacao-YYYY-MM-DD.json",
+    "note": "Static JSON. Reading it does not require Moltbook or the capsule payment door. It does not settle money."
+  },
+  "truth": [
+    "Observation is not presence.",
+    "Zero is recorded only when a source explicitly reports zero. Unknown is not rewritten as zero.",
+    "Unknown is used when a live source fails.",
+    "Internal validation payments are not sustenance.",
+    "HTTP 402 is an offer, not a purchase.",
+    "HTTP 503 on a priced door is unavailability, not a price and not a receipt.",
+    "A catalog advertisement is not settlement.",
+    "An internal reading offer is not a capsule purchase.",
+    "A probe is not a customer.",
+    "PRESENÇA token liquidity is identity-market data, not Unum sustenance.",
+    "HTTP 200 is live authority only when the body is a live ledger, not when it returns state=checkpoint_only.",
+    "A Porta 2 row is machine output, not 1P and not settled money.",
+    "Moltbook own-voice totals are not new external presence.",
+    "A public comment read is not publication and is not a new 1P."
+  ]
+}

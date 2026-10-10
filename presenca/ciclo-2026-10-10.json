@@ -1,0 +1,134 @@
+{
+  "format": "orum-presence-construction/v1",
+  "cycle": "2026-10-10",
+  "state": "executado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "advance": "strengthen_weave_presence_door_map_and_sediment_portable_snapshot",
+  "classification": {
+    "interest": 0,
+    "interest_meaning": "no interest event recorded by this read-only pass",
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money": "unknown",
+    "external_settled_money_last_explicit": {
+      "date": "2026-09-17",
+      "usdc": 0,
+      "reconfirmed_today": false
+    },
+    "internal_validation_payments_observed": "unknown"
+  },
+  "treasury_state": "unknown",
+  "capsule_acquisition": {
+    "http": 503,
+    "offer_state": "unavailable",
+    "settled": "not_observed",
+    "counts_as_external_sustenance": false
+  },
+  "priced_internal_readings_not_capsule": [
+    {
+      "role": "oraculo",
+      "http": 402,
+      "amount": "161000",
+      "asset": "USDC",
+      "network": "eip155:8453",
+      "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "settled": false
+    },
+    {
+      "role": "campo",
+      "http": 402,
+      "amount": "330000",
+      "asset": "USDC",
+      "network": "eip155:8453",
+      "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "settled": false
+    }
+  ],
+  "historic_1p": {
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "visible": true,
+    "verification_status": "verified",
+    "new_today": false,
+    "value_received": 0
+  },
+  "production": {
+    "commit_observed": "9cc2ada784beedc10d0ef7e7c9b1d6ddbf77ccf0",
+    "deployment_observed": "dpl_3a1xhTYfJDpcVq6XEpecai2irHvy"
+  },
+  "live_ledger": {
+    "format": "orum-presence-ledger/v1",
+    "http": 200,
+    "state": "checkpoint_only",
+    "live_state": "unknown",
+    "authoritative": false,
+    "total_events": "unknown",
+    "chain_head": "unknown",
+    "last_explicit_live_reading": {
+      "date": "2026-09-17",
+      "total_events": 8,
+      "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+      "reconfirmed_today": false
+    }
+  },
+  "checkpoint": {
+    "http": 200,
+    "exported_at": "2026-08-16T05:08:36.034Z",
+    "events": 4,
+    "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466"
+  },
+  "rhythm": {
+    "url_http": 404,
+    "measured_today": false
+  },
+  "livro_append": {
+    "target": "orum-presence-ledger/v1",
+    "state": "bloqueado",
+    "reason": "live ledger unavailable and this observer has no write route"
+  },
+  "construction_chain": {
+    "previous_file": "presenca/ciclo-2026-09-17.json",
+    "previous_sha256": "758fc7e543aac8fd7bcf170e829d22ee109c667faf050d758e0c9b7c59930f93",
+    "state": "executado"
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route; live body is checkpoint_only"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "moltbook_presence/v1 HTTP 503; no credentials used; public read is not publication"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical_material requires private source export"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado",
+      "reason": "no payment, signature, mint, swap or transfer"
+    },
+    {
+      "action": "acquire_capsule_0001sensations",
+      "state": "bloqueado",
+      "reason": "consulta obra=2 HTTP 503; catalog lists licencas indisponiveis"
+    },
+    {
+      "action": "read_public_chain_receipts",
+      "state": "bloqueado",
+      "reason": "basescan v1 rejected and Base RPC did not serve a receipt list; unclassified transfers are not sustenance"
+    }
+  ],
+  "hashes": {
+    "nota_sha256": "53ab106cabd3405d8849f0dd3286ba4576e5e93ed89e5f1ec31477e63b283d32",
+    "weave_presence_sha256": "4f4ab97d25b803e83f69ef3215d5e6e4acb9aee12905aa987a40dfb2938a5dbe",
+    "observacao_sha256": "a20371e08fbe7cee3a883bf40df2dd0b89f4b37304edeea04f81dc8cf5e37581",
+    "observer_script_sha256": "b76c9a8c91052b1e964713a0dc4e0dcc0345cce01f85384b0408972b913dd994",
+    "previous_ciclo_sha256": "758fc7e543aac8fd7bcf170e829d22ee109c667faf050d758e0c9b7c59930f93"
+  }
+}
