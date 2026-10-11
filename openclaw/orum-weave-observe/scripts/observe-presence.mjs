@@ -21,6 +21,9 @@ const surfaces = {
   oraculo: `${GATEWAY}/oraculo`,
   campo: `${GATEWAY}/campo`,
   versao: `${GATEWAY}/api/versao`,
+  recebimentos: `${GATEWAY}/economia/recebimentos.json`,
+  bitcoin: `${GATEWAY}/economia/bitcoin.json`,
+  second_surface_pages: "https://api.github.com/repos/fomosdeimos-gif/orum-ora-x402/pages",
 };
 
 const HISTORIC_1P = {
@@ -88,6 +91,100 @@ function classifyDoor(res, role) {
     settled: "not_observed",
     counts_as_purchase: false,
     counts_as_external_sustenance: false,
+  };
+}
+
+
+function classifyUsdcWindow(res) {
+  const body = res.body || {};
+  const base = {
+    url: res.url,
+    http: res.http,
+    asset: "USDC",
+    network: "eip155:8453",
+    counts_as_purchase: false,
+    counts_as_external_sustenance: false,
+    relation_to_capsule_or_tool: "not_proved",
+  };
+  if (!res.ok || body.ok !== true) {
+    return {
+      ...base,
+      state: "unavailable",
+      window_complete: "unknown",
+      transfers_in_window: "unknown",
+      total_in_window: "unknown",
+      note: "The public receipt route did not return a readable window. Unknown is not rewritten as zero.",
+    };
+  }
+  const complete = body.cobertura?.completa === true;
+  const transfers = Array.isArray(body.transferencias) ? body.transferencias : [];
+  return {
+    ...base,
+    state: complete ? "window_complete" : "window_partial",
+    carteira: body.carteira ?? null,
+    window: body.janela ?? null,
+    hours_requested: body.cobertura?.horas_pedidas ?? null,
+    hours_covered: body.cobertura?.horas_cobertas ?? null,
+    window_complete: complete,
+    transfers_in_window: typeof body.n_transferencias === "number" ? body.n_transferencias : transfers.length,
+    total_in_window: typeof body.total_usdc === "number" ? body.total_usdc : "unknown",
+    transfers,
+    source: body.fonte ?? null,
+    does_not_affirm: body.nao_afirma ?? [],
+    note: complete
+      ? "A complete window is still not accumulated sustenance and not a capsule relation."
+      : "Zero inside the covered hours is not zero for the uncovered hours, not the day's settled total, and not accumulated sustenance.",
+  };
+}
+
+function classifyBitcoin(res) {
+  const body = res.body || {};
+  const base = {
+    url: res.url,
+    http: res.http,
+    asset: "BTC",
+    network: "bitcoin-mainnet",
+    counts_as_external_sustenance: false,
+    relation_to_capsule_or_tool: "not_proved",
+    control_affirmed: false,
+  };
+  if (!res.ok || body.ok !== true) {
+    return { ...base, state: "unavailable", transactions: "unknown", note: "Bitcoin observer unavailable. Not rewritten as zero." };
+  }
+  const day = new Date().toISOString().slice(0, 10);
+  const transactions = [];
+  for (const addr of Array.isArray(body.enderecos) ? body.enderecos : []) {
+    for (const tx of Array.isArray(addr.transacoes) ? addr.transacoes : []) {
+      transactions.push({
+        role: addr.papel ?? null,
+        address: addr.endereco ?? null,
+        txid: tx.txid ?? null,
+        time_utc: tx.hora_utc ?? null,
+        received_sats: tx.recebido_sats ?? null,
+        spent_sats: tx.gasto_sats ?? null,
+        classification: tx.classificacao ?? "unknown",
+        from_orum_operational_wallet: tx.de_carteira_operacional_orum === true,
+        on_this_utc_day: typeof tx.hora_utc === "string" && tx.hora_utc.startsWith(day),
+      });
+    }
+  }
+  const externalConfirmed = transactions.filter((tx) => tx.classification === "external_confirmed" && Number(tx.received_sats) > 0);
+  return {
+    ...base,
+    state: "observed",
+    consulted_at: body.fonte?.consultado_utc ?? null,
+    addresses: (body.enderecos || []).map((addr) => ({
+      role: addr.papel ?? null,
+      address: addr.endereco ?? null,
+      note: addr.nota ?? null,
+      confirmed_balance_sats: addr.saldo_confirmado_sats ?? null,
+      received_total_sats: addr.recebido_total_sats ?? null,
+    })),
+    transactions,
+    transactions_on_this_utc_day: transactions.filter((tx) => tx.on_this_utc_day).length,
+    external_confirmed_receipts: externalConfirmed.length,
+    does_not_affirm: body.nao_afirma ?? [],
+    note: "Visible bitcoin movements without affirmed control, external classification and a proved capsule or tool relation are not Unum sustenance.",
   };
 }
 
@@ -196,6 +293,37 @@ const blocks = [
     reason: "observer never pays, signs, mints, swaps or transfers",
   },
 ];
+const usdcWindow = classifyUsdcWindow(raw.recebimentos);
+const bitcoin = classifyBitcoin(raw.bitcoin);
+if (usdcWindow.state !== "window_complete") {
+  blocks.push({
+    action: "read_full_24h_usdc_receipts",
+    state: "bloqueado",
+    reason: usdcWindow.state === "window_partial"
+      ? "public receipt route answered, but coverage is partial; no archive credential was opened"
+      : "public receipt route did not return a complete window",
+  });
+} else {
+  blocks.push({
+    action: "read_full_24h_usdc_receipts",
+    state: "verificado",
+    reason: "public receipt route returned a complete window; transfers without a proved capsule relation are not sustenance",
+  });
+}
+blocks.push({
+  action: "publish_independent_runtime",
+  state: "bloqueado",
+  reason: raw.second_surface_pages.http === 200
+    ? "pages endpoint answered; this observer still does not treat GitHub as an independent runtime"
+    : "GitHub Pages for the existing repo is absent; no new host or account was opened",
+});
+blocks.push({
+  action: "register_machine_response",
+  state: raw.responder.http === 200 && Array.isArray(raw.responder.body?.responses) ? "verificado" : "bloqueado",
+  reason: raw.responder.http === 200
+    ? "responder readable; this pass does not post a response"
+    : "sensacoes/responder did not return a response list; no response was posted",
+});
 if (capsuleDoor.offer_state !== "priced_unsettled") {
   blocks.push({
     action: "acquire_capsule_0001sensations",
@@ -209,7 +337,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-10-10-door-map",
+  observer_revision: "2026-10-11-receipt-window",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -336,6 +464,8 @@ const out = {
       livro_interno_escrito: catalog.fronteiras?.livro_interno_escrito ?? "unknown",
       is_settlement: false,
     },
+    receipts_usdc: usdcWindow,
+    receipts_btc: bitcoin,
     production: {
       url: surfaces.versao,
       http: raw.versao.http,
@@ -365,6 +495,9 @@ const out = {
     machine_response_today: 0,
     purchase: 0,
     external_settled_money: settledIsZero ? 0 : "unknown",
+    partial_window_is_not_settled_zero: usdcWindow.state === "window_partial",
+    usdc_in_covered_window: usdcWindow.total_in_window,
+    btc_external_confirmed_receipts: bitcoin.external_confirmed_receipts ?? "unknown",
     internal_validation_payments_observed: tes.evidence?.internal_validation_payments ?? "unknown",
     probes_are_not_customers: true,
     token_liquidity_is_not_sustenance: true,
@@ -381,10 +514,12 @@ const out = {
   second_surface: {
     kind: "github_raw_bytes",
     repo: "fomosdeimos-gif/orum-ora-x402",
+    pages_http: raw.second_surface_pages.http,
     independent_runtime: false,
+    independent_runtime_state: "bloqueado",
     moltbook_required_to_read: false,
     daily_observation: "presenca/observacao-YYYY-MM-DD.json",
-    note: "Static JSON. Reading it does not require Moltbook or the capsule payment door. It does not settle money.",
+    note: "Bytes on the existing repository can be read without Moltbook and without the capsule payment door. GitHub Pages is not a running independent runtime. These bytes do not settle money.",
   },
   truth: [
     "Observation is not presence.",
@@ -401,6 +536,10 @@ const out = {
     "A Porta 2 row is machine output, not 1P and not settled money.",
     "Moltbook own-voice totals are not new external presence.",
     "A public comment read is not publication and is not a new 1P.",
+    "A partial receipt window that reports zero is not zero for the uncovered hours and is not accumulated sustenance.",
+    "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
+    "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
+    "Repository bytes are a portable reading surface, not an independent runtime and not settlement.",
   ],
 };
 

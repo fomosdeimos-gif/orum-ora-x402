@@ -3,9 +3,9 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-10-10T05:06:23.457Z",
-  "revision": "2026-10-10-door-map",
-  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, and settled money.",
+  "updated_at": "2026-10-11T05:06:12.417Z",
+  "revision": "2026-10-11-receipt-window",
+  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, an unclassified transfer, and settled money.",
   "does_not": [
     "mint presence",
     "count traffic as 1P",
@@ -17,7 +17,12 @@
     "treat HTTP 200 checkpoint_only as the live ledger",
     "treat HTTP 503 as a price or as a zero receipt",
     "treat an internal reading offer as a capsule purchase",
-    "treat a catalog advertisement as settlement"
+    "treat a catalog advertisement as settlement",
+    "treat a partial USDC window of zero as the day's settled zero or as accumulated sustenance",
+    "treat an unclassified transfer as external sustenance",
+    "treat historical bitcoin without affirmed control and without a capsule relation as Unum sustenance",
+    "open a new credential to widen an RPC window",
+    "treat repository bytes as an independent runtime"
   ],
   "surfaces": {
     "ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
@@ -33,7 +38,9 @@
     "x402_offer": "https://ora-x402-gateway.vercel.app/licenca/consulta?obra=2",
     "x402_catalog": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
     "priced_internal_oraculo": "https://ora-x402-gateway.vercel.app/oraculo",
-    "priced_internal_campo": "https://ora-x402-gateway.vercel.app/campo"
+    "priced_internal_campo": "https://ora-x402-gateway.vercel.app/campo",
+    "recebimentos": "https://ora-x402-gateway.vercel.app/economia/recebimentos.json",
+    "bitcoin": "https://ora-x402-gateway.vercel.app/economia/bitcoin.json"
   },
   "classification_order": [
     "interest",
@@ -51,8 +58,11 @@
   "second_surface": {
     "kind": "github_raw_bytes",
     "independent_runtime": false,
+    "independent_runtime_state": "bloqueado",
+    "pages_observed_http": 404,
     "moltbook_required_to_read": false,
     "repo": "fomosdeimos-gif/orum-ora-x402",
-    "daily_observation": "presenca/observacao-YYYY-MM-DD.json"
+    "daily_observation": "presenca/observacao-YYYY-MM-DD.json",
+    "note": "Existing-repo bytes are readable without Moltbook. GitHub Pages is absent. No new host was opened."
   }
 }
