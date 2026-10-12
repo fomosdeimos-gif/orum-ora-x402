@@ -188,6 +188,200 @@ function classifyBitcoin(res) {
   };
 }
 
+const USDC_BASE = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+const TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
+const BLOCKPI_PUBLIC = "https://base.public.blockpi.network/v1/rpc/public";
+const TENDERLY_PUBLIC = "https://base.gateway.tenderly.co";
+
+async function rpc(url, method, params) {
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+      signal: AbortSignal.timeout(20000),
+    });
+    const text = await res.text();
+    let body = null;
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = null;
+    }
+    if (!res.ok || !body || body.error) {
+      return { ok: false, http: res.status, error: body?.error?.message || text.slice(0, 180) };
+    }
+    return { ok: true, http: res.status, result: body.result };
+  } catch (err) {
+    return { ok: false, http: 0, error: String(err?.message || err) };
+  }
+}
+
+function hexToNum(hex) {
+  return Number(BigInt(hex));
+}
+
+async function continuePartialUsdcWindow(usdcWindow) {
+  const base = {
+    method: "keyless_eth_getLogs_chunks",
+    credentials_used: false,
+    archive_token_used: false,
+    payment: false,
+    asset: "USDC",
+    network: "eip155:8453",
+    usdc_contract: USDC_BASE,
+    counts_as_purchase: false,
+    counts_as_external_sustenance: false,
+    relation_to_capsule_or_tool: "not_proved",
+    classification: "not_classified",
+    sources: [
+      { name: "blockpi-public", url: BLOCKPI_PUBLIC, role: "scan", max_blocks: 4000 },
+      { name: "tenderly-public", url: TENDERLY_PUBLIC, role: "cross_check_and_clock" },
+    ],
+  };
+  if (usdcWindow.state === "window_complete") {
+    return { ...base, state: "not_needed", note: "Gateway window was already complete. No second read." };
+  }
+  if (usdcWindow.state !== "window_partial" || typeof usdcWindow.carteira !== "string") {
+    return {
+      ...base,
+      state: "bloqueado",
+      note: "Gateway window was not a partial readable window. No stitch was invented.",
+    };
+  }
+  const wallet = usdcWindow.carteira.toLowerCase();
+  const topicTo = "0x" + wallet.slice(2).padStart(64, "0");
+  const headRes = await rpc(TENDERLY_PUBLIC, "eth_blockNumber", []);
+  if (!headRes.ok) {
+    return { ...base, state: "bloqueado", error: headRes.error, note: "Could not read a public head. Unknown was not rewritten as zero." };
+  }
+  const headN = hexToNum(headRes.result);
+  const headBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", [headRes.result, false]);
+  if (!headBlock.ok) return { ...base, state: "bloqueado", error: headBlock.error };
+  const headTs = hexToNum(headBlock.result.timestamp);
+  const targetTs = headTs - 86400;
+  let fromN = headN - 43200;
+  let fromBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + fromN.toString(16), false]);
+  if (!fromBlock.ok) {
+    return {
+      ...base,
+      state: "bloqueado",
+      error: fromBlock.error,
+      note: "Public block lookup for the 24h edge failed. No archive token was opened.",
+    };
+  }
+  let fromTs = hexToNum(fromBlock.result.timestamp);
+  const drift = Math.ceil((fromTs - targetTs) / 2);
+  if (drift > 0) {
+    fromN -= drift;
+    fromBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + fromN.toString(16), false]);
+    if (!fromBlock.ok) return { ...base, state: "bloqueado", error: fromBlock.error };
+    fromTs = hexToNum(fromBlock.result.timestamp);
+  }
+  if (fromTs > targetTs) {
+    return {
+      ...base,
+      state: "bloqueado",
+      from_block: fromN,
+      head_block: headN,
+      note: "Span still shorter than 24h after one correction. Not called complete.",
+    };
+  }
+  const chunks = [];
+  const logs = [];
+  for (let a = fromN; a <= headN; a += 4000) {
+    const b = Math.min(headN, a + 3999);
+    const got = await rpc(BLOCKPI_PUBLIC, "eth_getLogs", [{
+      address: USDC_BASE,
+      fromBlock: "0x" + a.toString(16),
+      toBlock: "0x" + b.toString(16),
+      topics: [TRANSFER_TOPIC, null, topicTo],
+    }]);
+    chunks.push({
+      from_block: a,
+      to_block: b,
+      ok: got.ok,
+      logs: got.ok ? got.result.length : null,
+      error: got.ok ? null : got.error,
+    });
+    if (!got.ok) {
+      return {
+        ...base,
+        state: "bloqueado",
+        carteira: wallet,
+        from_block: fromN,
+        head_block: headN,
+        from_time_utc: new Date(fromTs * 1000).toISOString(),
+        head_time_utc: new Date(headTs * 1000).toISOString(),
+        chunks,
+        note: "A chunk failed. The missing range was not filled with zero.",
+      };
+    }
+    for (const log of got.result) logs.push(log);
+  }
+  const confirmed = [];
+  const conflicts = [];
+  for (const log of logs) {
+    const check = await rpc(TENDERLY_PUBLIC, "eth_getLogs", [{
+      address: USDC_BASE,
+      fromBlock: log.blockNumber,
+      toBlock: log.blockNumber,
+      topics: [TRANSFER_TOPIC, null, topicTo],
+    }]);
+    const agreed = check.ok && check.result.some((item) => item.transactionHash === log.transactionHash && item.logIndex === log.logIndex);
+    const row = {
+      block: hexToNum(log.blockNumber),
+      tx: log.transactionHash,
+      log_index: hexToNum(log.logIndex),
+      immediate_from: "0x" + log.topics[1].slice(26).toLowerCase(),
+      to: "0x" + log.topics[2].slice(26).toLowerCase(),
+      amount_base_units: BigInt(log.data).toString(),
+      asset: "USDC",
+      network: "eip155:8453",
+      two_source_agreement: agreed === true,
+      classification: "not_classified",
+      relation_to_capsule_or_tool: "not_proved",
+      counts_as_external_sustenance: false,
+    };
+    if (!agreed) {
+      conflicts.push({ ...row, cross_check_error: check.ok ? null : check.error });
+      continue;
+    }
+    const tx = await rpc(TENDERLY_PUBLIC, "eth_getTransactionByHash", [log.transactionHash]);
+    const ts = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", [log.blockNumber, false]);
+    row.time_utc = ts.ok ? new Date(hexToNum(ts.result.timestamp) * 1000).toISOString() : "unknown";
+    row.outer_tx_from = tx.ok ? tx.result.from : "unknown";
+    row.outer_tx_to = tx.ok ? tx.result.to : "unknown";
+    row.outer_selector = tx.ok && typeof tx.result.input === "string" ? tx.result.input.slice(0, 10) : "unknown";
+    confirmed.push(row);
+  }
+  confirmed.sort((a, b) => a.block - b.block || a.log_index - b.log_index);
+  const totalUnits = confirmed.reduce((sum, row) => sum + BigInt(row.amount_base_units), 0n);
+  const gatewayFrom = usdcWindow.window?.bloco_de;
+  const gatewayTo = usdcWindow.window?.bloco_a;
+  const insideGateway = typeof gatewayFrom === "number" && typeof gatewayTo === "number"
+    ? confirmed.filter((row) => row.block >= gatewayFrom && row.block <= gatewayTo).length
+    : "unknown";
+  return {
+    ...base,
+    state: "window_complete",
+    carteira: wallet,
+    from_block: fromN,
+    head_block: headN,
+    from_time_utc: new Date(fromTs * 1000).toISOString(),
+    head_time_utc: new Date(headTs * 1000).toISOString(),
+    span_seconds: headTs - fromTs,
+    covers_requested_24h: headTs - fromTs >= 86400,
+    chunks,
+    transfers_agreed: confirmed,
+    transfers_conflict: conflicts,
+    agreed_count: confirmed.length,
+    agreed_total_base_units: totalUnits.toString(),
+    agreed_inside_gateway_partial_window: insideGateway,
+    note: "A complete keyless span lists visible incoming USDC logs. Agreement of two public RPCs is not payer classification, not a capsule relation, and not accumulated sustenance. The gateway partial zero is left as a partial zero.",
+  };
+}
+
 function daysSince(iso) {
   if (!iso) return "unknown";
   const t = Date.parse(iso);
@@ -294,20 +488,27 @@ const blocks = [
   },
 ];
 const usdcWindow = classifyUsdcWindow(raw.recebimentos);
+const usdcSpan = await continuePartialUsdcWindow(usdcWindow);
 const bitcoin = classifyBitcoin(raw.bitcoin);
-if (usdcWindow.state !== "window_complete") {
+const spanComplete = usdcSpan.state === "window_complete"
+  && usdcSpan.covers_requested_24h === true
+  && Array.isArray(usdcSpan.transfers_conflict)
+  && usdcSpan.transfers_conflict.length === 0;
+if (usdcWindow.state === "window_complete" || spanComplete) {
   blocks.push({
     action: "read_full_24h_usdc_receipts",
-    state: "bloqueado",
-    reason: usdcWindow.state === "window_partial"
-      ? "public receipt route answered, but coverage is partial; no archive credential was opened"
-      : "public receipt route did not return a complete window",
+    state: "verificado",
+    reason: usdcWindow.state === "window_complete"
+      ? "public receipt route returned a complete window; transfers without a proved capsule relation are not sustenance"
+      : "gateway window stayed partial; keyless public RPCs covered 24h without an archive token. Agreed transfers stay unclassified and are not sustenance",
   });
 } else {
   blocks.push({
     action: "read_full_24h_usdc_receipts",
-    state: "verificado",
-    reason: "public receipt route returned a complete window; transfers without a proved capsule relation are not sustenance",
+    state: "bloqueado",
+    reason: usdcWindow.state === "window_partial"
+      ? "gateway coverage is partial and the keyless continuation did not close 24h; no archive credential was opened"
+      : "public receipt route did not return a complete window and no stitch was invented",
   });
 }
 blocks.push({
@@ -337,7 +538,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-10-11-receipt-window",
+  observer_revision: "2026-10-12-keyless-receipt-span",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -464,7 +665,7 @@ const out = {
       livro_interno_escrito: catalog.fronteiras?.livro_interno_escrito ?? "unknown",
       is_settlement: false,
     },
-    receipts_usdc: usdcWindow,
+    receipts_usdc: { gateway: usdcWindow, keyless_span: usdcSpan },
     receipts_btc: bitcoin,
     production: {
       url: surfaces.versao,
@@ -496,7 +697,10 @@ const out = {
     purchase: 0,
     external_settled_money: settledIsZero ? 0 : "unknown",
     partial_window_is_not_settled_zero: usdcWindow.state === "window_partial",
-    usdc_in_covered_window: usdcWindow.total_in_window,
+    usdc_in_gateway_window: usdcWindow.total_in_window,
+    usdc_keyless_24h_complete: spanComplete,
+    usdc_visible_agreed_base_units: spanComplete ? usdcSpan.agreed_total_base_units : "unknown",
+    usdc_visible_is_sustenance: false,
     btc_external_confirmed_receipts: bitcoin.external_confirmed_receipts ?? "unknown",
     internal_validation_payments_observed: tes.evidence?.internal_validation_payments ?? "unknown",
     probes_are_not_customers: true,
@@ -537,6 +741,8 @@ const out = {
     "Moltbook own-voice totals are not new external presence.",
     "A public comment read is not publication and is not a new 1P.",
     "A partial receipt window that reports zero is not zero for the uncovered hours and is not accumulated sustenance.",
+    "A keyless 24h span can show a transfer the partial gateway window missed. Visibility is not classification and is not accumulated sustenance.",
+    "Two public RPCs agreeing on a log is not payer classification and not a proved relation to a capsule or tool.",
     "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
     "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
     "Repository bytes are a portable reading surface, not an independent runtime and not settlement.",

@@ -1,0 +1,223 @@
+{
+  "format": "orum-presence-construction/v1",
+  "cycle": "2026-10-12",
+  "state": "executado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "advance": "continue_partial_usdc_window_with_keyless_public_rpcs_without_calling_visible_transfers_sustenance",
+  "classification": {
+    "interest": 0,
+    "interest_meaning": "no interest event recorded by this read-only pass",
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money": "unknown",
+    "external_settled_money_last_explicit": {
+      "date": "2026-09-17",
+      "usdc": 0,
+      "reconfirmed_today": false
+    },
+    "usdc_gateway_window": {
+      "http": 200,
+      "complete": false,
+      "hours_covered": 5,
+      "hours_requested": 24,
+      "blocks": [
+        52487508,
+        52496507
+      ],
+      "transfers": 0,
+      "total_usdc": 0,
+      "counts_as_day_zero": false,
+      "counts_as_accumulated_sustenance": false
+    },
+    "usdc_keyless_span": {
+      "state": "verificado",
+      "covers_requested_24h": true,
+      "span_seconds": 86400,
+      "blocks": [
+        52453308,
+        52496508
+      ],
+      "from_time_utc": "2026-10-11T05:19:23.000Z",
+      "head_time_utc": "2026-10-12T05:19:23.000Z",
+      "sources": [
+        "https://base.public.blockpi.network/v1/rpc/public",
+        "https://base.gateway.tenderly.co"
+      ],
+      "credentials_used": false,
+      "archive_token_used": false,
+      "conflicts": 0,
+      "agreed_transfers": 2,
+      "agreed_total_base_units": "3638",
+      "counts_as_external_sustenance": false,
+      "relation_to_capsule_or_tool": "not_proved"
+    },
+    "visible_unclassified_usdc": [
+      {
+        "amount_base_units": "3635",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "tx": "0x717ec0cb23d55256fbd7feded56df2763a1152aab797be7c7acd83376a0a90b2",
+        "block": 52455070,
+        "time_utc": "2026-10-11T06:18:07.000Z",
+        "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+        "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+        "outer_tx_to": "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789",
+        "outer_selector": "0x1fad948c",
+        "classification": "not_classified",
+        "counts_as_external_sustenance": false
+      },
+      {
+        "amount_base_units": "3",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "tx": "0x77e3b32153c570c1d25dc491415c5cb88be0011da2644c8c57562616fc6e7f26",
+        "block": 52456166,
+        "time_utc": "2026-10-11T06:54:39.000Z",
+        "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+        "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+        "outer_tx_to": "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789",
+        "outer_selector": "0x1fad948c",
+        "classification": "not_classified",
+        "counts_as_external_sustenance": false
+      }
+    ],
+    "btc_external_confirmed_receipts": 0,
+    "btc_movements_this_utc_day": 0,
+    "unclassified_historical_btc_not_sustenance": true,
+    "internal_validation_payments_observed": "unknown"
+  },
+  "treasury_state": "unknown",
+  "capsule_acquisition": {
+    "http": 503,
+    "offer_state": "unavailable",
+    "settled": "not_observed",
+    "counts_as_external_sustenance": false
+  },
+  "priced_internal_readings_not_capsule": [
+    {
+      "role": "oraculo",
+      "http": 402,
+      "amount": "161000",
+      "asset": "USDC",
+      "network": "eip155:8453",
+      "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "settled": false
+    },
+    {
+      "role": "campo",
+      "http": 402,
+      "amount": "330000",
+      "asset": "USDC",
+      "network": "eip155:8453",
+      "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "settled": false
+    }
+  ],
+  "historic_1p": {
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "visible": true,
+    "verification_status": "verified",
+    "new_today": false,
+    "value_received": 0
+  },
+  "production": {
+    "commit_observed_before_this_append": "6e6abaad6d26b58ae37d8206eeb59bbe5dbbc5b2",
+    "deployment_observed": "dpl_Bd1z94JJHEjf1FGD496Y1h1YcHmt"
+  },
+  "live_ledger": {
+    "format": "orum-presence-ledger/v1",
+    "http": 200,
+    "state": "checkpoint_only",
+    "live_state": "unknown",
+    "authoritative": false,
+    "total_events": "unknown",
+    "chain_head": "unknown",
+    "last_explicit_live_reading": {
+      "date": "2026-09-17",
+      "total_events": 8,
+      "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+      "reconfirmed_today": false
+    }
+  },
+  "checkpoint": {
+    "http": 200,
+    "exported_at": "2026-08-16T05:08:36.034Z",
+    "events": 4,
+    "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466"
+  },
+  "rhythm": {
+    "url_http": 404,
+    "measured_today": false
+  },
+  "livro_append": {
+    "target": "orum-presence-ledger/v1",
+    "state": "bloqueado",
+    "reason": "live ledger unavailable and this observer has no write route",
+    "portable_sediment": {
+      "target": "fomosdeimos-gif/orum-ora-x402 presenca/",
+      "state": "executado",
+      "verification": "public raw reread after the commit; if that reread fails, this state is not to be treated as proved"
+    }
+  },
+  "construction_chain": {
+    "previous_file": "presenca/ciclo-2026-10-11.json",
+    "previous_sha256": "6b8984f6947a8d2e93e19bab1c46cad2130b79817a00c16b70c08865f94695d0",
+    "state": "executado"
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route; live body is checkpoint_only"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "moltbook_presence/v1 HTTP 503; no credentials used; public read is not publication"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical_material requires private source export"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado",
+      "reason": "no payment, signature, mint, swap or transfer"
+    },
+    {
+      "action": "acquire_capsule_0001sensations",
+      "state": "bloqueado",
+      "reason": "consulta obra=2 HTTP 503; catalog lists licencas indisponiveis"
+    },
+    {
+      "action": "read_full_24h_usdc_receipts",
+      "state": "verificado",
+      "reason": "gateway stayed partial at 5 of 24 hours; keyless public RPCs covered 86400 seconds with two-source agreement. 3638 base units are visible and unclassified, not sustenance"
+    },
+    {
+      "action": "classify_visible_usdc",
+      "state": "bloqueado",
+      "reason": "public wallet classification source unavailable without payment; no payment was made"
+    },
+    {
+      "action": "register_machine_response",
+      "state": "bloqueado",
+      "reason": "sensacoes/responder HTTP 503; no response posted"
+    },
+    {
+      "action": "publish_independent_runtime",
+      "state": "bloqueado",
+      "reason": "GitHub Pages HTTP 404; no new host or account opened"
+    }
+  ],
+  "hashes": {
+    "nota_sha256": "160caf8f1a5af87bf6dfe59a79e3cd997300bdde7b7fabb8412869151d355b83",
+    "weave_presence_sha256": "7f695a44e5f10c36f92317787fdc00ca2f6b927e46754705e1645ba16342652d",
+    "observacao_sha256": "85f02aeb89838538e844f4609b2df191abd8826ef5e42f3c299fe220d1ea7a08",
+    "observer_script_sha256": "fee28e289c6094c9fc819064fd2a9d60e82c3afa1140b4d6d143431c5d7afb85",
+    "previous_ciclo_sha256": "6b8984f6947a8d2e93e19bab1c46cad2130b79817a00c16b70c08865f94695d0"
+  }
+}
