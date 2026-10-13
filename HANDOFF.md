@@ -1,3 +1,13 @@
+## Pulso e previsões de recurso sem Supabase · 13/10/2026
+
+- Causa: Edge Functions do Supabase fora de quota (`exceed_cached_egress_quota`, ora_mudancas#848/#849) deixavam `/pulso` e `/api/previsoes` em 402/503 há 16 dias. A base em si está viva (o ciclo de previsões continua a escrever).
+- Alteração: `api/_snapshot.js` + `presenca/snapshot-publico.json`. Quando a origem falha, `/pulso` (via `api/proxy.js`) e `/api/previsoes` devolvem 200 com `estado: snapshot_desactualizado`, `snapshot_observado_em`, `idade_s` e cabeçalho `x-ora-fonte`. O campo (Σ) é calculado agora; o resto é cópia estática. Resposta viva boa passa intacta; serviços pagos não usam snapshot. Sem nova função Vercel (limite Hobby de 12).
+- Fronteira: o snapshot não prova actividade posterior a `observado_em` e não reabre `/integridade`. Os acessos continuam congelados desde 26/09 e isso é declarado no corpo.
+- Teste: `npm run snapshot:verify` (sem rede; simula 402, 503 e falha de rede).
+- Próximo passo: depois do merge, confirmar em produção que `/pulso` devolve a marca de snapshot enquanto a quota durar; actualizar o snapshot por leitura SQL quando for relevante.
+
+---
+
 ## Verificador de continuidade · 10/10/2026
 
 - Novo `scripts/verify-continuidade.mjs` (`npm run continuidade:verify`): só leitura, sem rede. Compara o HEAD com o commit de origem do bundle de recuperação (quantos ficheiros fora de `recovery/` mudaram desde então) e, com `--ledger linhas.json`, se o livro razão cita o HEAD. Rótulos: verified / unknown / failed; `--strict` sai com 1 se algo não estiver verified; `--self-test` valida a lógica.
