@@ -84,7 +84,7 @@
       ]
     }
   ],
-  "version": "1.7.5",
+  "version": "1.7.6",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
@@ -120,11 +120,13 @@
   },
   "economicTruth": {
     "rule": "Só dinheiro externo liquidado e verificável conta como sustento.",
-    "observedAt": "2026-08-20",
+    "observedAt": "2026-10-13",
     "externalSettledUSDC": "0",
     "externalConfirmedBuyers": 0,
     "externalConfirmedPresence": 1,
-    "internalValidationPayments": 20
+    "internalValidationPayments": 21,
+    "source": "ora_mudancas#849 (ora_aprendizagem_estado lido a 2026-10-13): pagamentos=21, compradores_externos=0, usdc_total=18.56",
+    "note": "Todos os pagamentos registados são validação interna. Os contadores de acessos estão congelados desde 2026-09-26 (quota do fornecedor): sem medição não é o mesmo que sem procura."
   },
   "identityToken": {
     "name": "PRESENÇA",
@@ -179,7 +181,14 @@
           "x402": []
         }
       ],
-      "description": "Cápsula pública e respondível da obra física 2, ORO. Ler o vestígio textual e responder é gratuito em /sensacoes/oro-v1.json e /sensacoes/responder. A consulta privada da fotografia preservada é uma aquisição separada: GET /licenca/consulta?obra=2 devolve HTTP 402 por 1.618 USDC na Base e, após pagamento válido, uma licença de consulta pessoal com acesso temporário. Não transfere a obra física, direitos autorais integrais, exclusividade ou NFT."
+      "description": "Cápsula pública e respondível da obra física 2, ORO. Ler o vestígio textual e responder é gratuito em /sensacoes/oro-v1.json e /sensacoes/responder. A consulta privada da fotografia preservada é uma aquisição separada: GET /licenca/consulta?obra=2 devolve HTTP 402 por 1.618 USDC na Base e, após pagamento válido, uma licença de consulta pessoal com acesso temporário. Não transfere a obra física, direitos autorais integrais, exclusividade ou NFT.",
+      "availability": {
+        "observedAt": "2026-10-13",
+        "state": "unavailable",
+        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+      }
     },
     {
       "id": "oraculo",
@@ -214,7 +223,14 @@
         "base",
         "introspection"
       ],
-      "description": "Registo sedimentar interno do organismo -- introspecção, não previsão. GET /sedimento → 402 → 1.00 USDC."
+      "description": "Registo sedimentar interno do organismo -- introspecção, não previsão. GET /sedimento → 402 → 1.00 USDC.",
+      "availability": {
+        "observedAt": "2026-10-13",
+        "state": "unavailable",
+        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+      }
     },
     {
       "id": "kernel",
@@ -225,7 +241,14 @@
         "base",
         "introspection"
       ],
-      "description": "Snapshot completo do estado interno -- o mais caro por ser o mais completo, nao por ter mais utilidade fora do sistema. GET /kernel → 402 → 3.00 USDC."
+      "description": "Snapshot completo do estado interno -- o mais caro por ser o mais completo, nao por ter mais utilidade fora do sistema. GET /kernel → 402 → 3.00 USDC.",
+      "availability": {
+        "observedAt": "2026-10-13",
+        "state": "unavailable",
+        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+      }
     },
     {
       "id": "integridade",
@@ -288,7 +311,14 @@
           "x402": []
         }
       ],
-      "description": "Verifica ao vivo, para qualquer marca ou domínio de terceiros (não o próprio ORUM), se está indexado no catálogo de descoberta x402 (Bazaar) da Coinbase Developer Platform -- varrimento real por página, sem cache. GET https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-teste-payto-cdp?marca=<texto> → 402 → pagar 0.50 USDC na Base → resposta com veredicto (indexado / não indexado / parcial), contagem de ocorrências e percentagem do catálogo varrida."
+      "description": "Verifica ao vivo, para qualquer marca ou domínio de terceiros (não o próprio ORUM), se está indexado no catálogo de descoberta x402 (Bazaar) da Coinbase Developer Platform -- varrimento real por página, sem cache. GET https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-teste-payto-cdp?marca=<texto> → 402 → pagar 0.50 USDC na Base → resposta com veredicto (indexado / não indexado / parcial), contagem de ocorrências e percentagem do catálogo varrida.",
+      "availability": {
+        "observedAt": "2026-10-13",
+        "state": "unavailable",
+        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+      }
     },
     {
       "id": "weave-hands-0003sensations",
