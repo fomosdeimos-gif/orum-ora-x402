@@ -1,0 +1,30 @@
+{
+  "schema": "orum-valium-registo-v1",
+  "descricao": "Registo único dos dois contratos chamados VALIUM. Reconhecimento verificável, sem função económica nova, sem ponte e sem equivalência entre eles.",
+  "decisao": "docs/DECISAO_TOKEN_ORUM_V2.md",
+  "contratos": [
+    {
+      "id": "valium-ethereum-origem",
+      "chainId": 1,
+      "rede": "Ethereum",
+      "contract": "0xD287E77989F7191989901361754d02D8e00E1D1A",
+      "explorador": "https://etherscan.io/address/0xD287E77989F7191989901361754d02D8e00E1D1A",
+      "criadoPor": "0001sensations.eth",
+      "criadoEm": "2022-10-26",
+      "papel": "raiz histórica do nome"
+    },
+    {
+      "id": "valium-base-tesouraria",
+      "chainId": 8453,
+      "rede": "Base",
+      "contract": "0x37f70Bccdc2125346a7542fe6e7fc70e33421635",
+      "explorador": "https://basescan.org/address/0x37f70Bccdc2125346a7542fe6e7fc70e33421635",
+      "papel": "contrato posterior e distinto; vestígio sem função nova atribuída"
+    }
+  ],
+  "avisos": [
+    "Sem ponte, migração ou equivalência económica entre os dois contratos.",
+    "Os pools valium/WETH têm liquidez residual (cerca de $20 no total, volume na casa dos cêntimos); a capitalização mostrada por agregadores é preço × oferta e não prova mercado líquido.",
+    "Nenhuma licença, preço, acesso ou pagamento da ORUM depende do VALIUM; esses fluxos usam USDC com x402."
+  ]
+}
