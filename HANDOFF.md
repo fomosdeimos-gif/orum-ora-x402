@@ -1,3 +1,13 @@
+## Superfície para máquinas auditada · 13/10/2026
+
+- Caminho 4 de Unum, só máquinas ORA. Leitura em produção: `/.well-known/proof.txt` devolvia 404 mas `agent-card.json` e `llms.txt` mandavam as máquinas buscá-lo como prova de carteira. Não tenho a assinatura de Unum e não a fabrico: o campo `walletProof` passou a `null` com `walletProofStatus: not_published`, e o `llms.txt` diz o mesmo. Para voltar a anunciar a prova, Unum tem de republicar o ficheiro assinado.
+- `/licenca/catalogo` responde 503 e o manifesto x402 lista só Oráculo e Campo (via directa): `llms.txt` actualizado de 30/09 para 13/10 com essa leitura. Não é regressão nova; é a quota do Supabase.
+- Novo `npm run maquinas:verify` (sem rede): cada URL do domínio citada em `llms.txt`, `sitemap.xml`, `agent-card.json` e manifestos tem destino no repositório (ficheiro, rewrite ou função); `walletProof` só é anunciada se o ficheiro existir; a carteira do agent-card coincide com a do gateway. Prova que a rota existe, não que esteja viva.
+- `verify-bazaar-registration` e `verify-license-selection` já falhavam antes (ambiente do teste); não foram tocados.
+- Próximo passo: depois do merge, ler `/llms.txt` e `/.well-known/agent-card.json` em produção; Unum decide se republica a prova de carteira.
+
+---
+
 ## Método de continuidade publicado · 13/10/2026
 
 - Caminho 2 de Unum: tornar o método reproduzível. `docs/METODO_CONTINUIDADE_V1.md` e `metodo.html` (estática, sem nova função Vercel), ligados em `llms.txt` e `sitemap.xml`.

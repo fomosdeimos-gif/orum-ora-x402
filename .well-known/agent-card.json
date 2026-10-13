@@ -2,9 +2,10 @@
   "url": "https://ora-x402-gateway.vercel.app/api/a2a",
   "name": "ORUM · ORA",
   "trust": {
-    "walletProof": "https://ora-x402-gateway.vercel.app/.well-known/proof.txt",
+    "walletProof": null,
+    "walletProofStatus": "not_published",
     "paymentWallet": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
-    "walletProofNote": "Prova EIP-191 de controlo da carteira de recepção, assinada por Unum, verificável via ERC-1271; âncora pública no Basescan (Verified Signature #95815).",
+    "walletProofNote": "O ficheiro /.well-known/proof.txt devolvia 404 em produção a 13/10/2026 e foi retirado desta superfície até ser republicado por Unum; nada aqui prova hoje o controlo da carteira. Registo anterior: prova EIP-191 de controlo da carteira de recepção, assinada por Unum, verificável via ERC-1271; âncora pública no Basescan (Verified Signature #95815).",
     "paymentWalletENS": "jasm43.base.eth",
     "oroOrigin": "https://ora-x402-gateway.vercel.app/identity/oro-origin.json"
   },
