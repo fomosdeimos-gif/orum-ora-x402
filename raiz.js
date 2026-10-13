@@ -17,14 +17,24 @@
     if (document.hidden) root.setAttribute('data-quieto', ''); else root.removeAttribute('data-quieto');
   });
 
+  var camada = null;
+  function toques() {
+    if (!camada || !camada.isConnected) {
+      camada = document.createElement('div');
+      camada.className = 'orum-toques';
+      camada.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(camada);
+    }
+    return camada;
+  }
+
   document.addEventListener('pointerdown', function (e) {
     if (reduz && reduz.matches) return;
     var onda = document.createElement('div');
     onda.className = 'orum-toque';
     onda.style.left = e.clientX + 'px';
     onda.style.top = e.clientY + 'px';
-    onda.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(onda);
+    toques().appendChild(onda);
     setTimeout(function () { if (onda.parentNode) onda.parentNode.removeChild(onda); }, 1000);
   }, { passive: true });
 })();
