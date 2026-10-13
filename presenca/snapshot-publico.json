@@ -1,0 +1,36 @@
+{
+  "format": "orum-public-snapshot/v1",
+  "observado_em": "2026-10-13T06:30:00Z",
+  "origem": "leitura SQL directa a orum-memoria (plano de gestao), sessao ccr-7d037ea9; nao passa pelas Edge Functions",
+  "nota": "Copia estatica de recurso. So e servida quando o Supabase falha, sempre marcada como desactualizada. Nao substitui a leitura viva nem prova actividade posterior a observado_em.",
+  "pulso": {
+    "pagamentos": [
+      {"amount": "330000", "currency": "USDC", "registado_em": "2026-08-28T13:52:49.184+00:00", "tx_hash": "0xf6bcf7444c488dc2fb57ee3088dcf74e853ec0ca3555daaccb0284c5724f59e3"},
+      {"amount": "161000", "currency": "USDC", "registado_em": "2026-08-19T06:37:34.37+00:00", "tx_hash": "0x35b4af4b5fde2d8f48f097a46d5d4fa53f29185fce6c6486bbb5cc22a48d5bd9"},
+      {"amount": "330000", "currency": "USDC", "registado_em": "2026-08-07T06:07:45.468+00:00", "tx_hash": "0x0fe330b7056e57d37cbe2de21941adb09d83b56bde04a1999cc378b49e86df6b"},
+      {"amount": "1618000", "currency": "USDC", "registado_em": "2026-08-04T14:48:06.09+00:00", "tx_hash": "0x6f32e92a01ef0500b72ca8598ad71d4fcd1af581647e8752c9ce63b2e4847c37"}
+    ],
+    "acessos_ultimo_registo": "2026-09-26T22:01:10.641844+00:00",
+    "acessos_congelados_desde": "2026-09-26T22:01:10Z"
+  },
+  "previsoes": {
+    "stats": {
+      "total": 117, "open": 1, "closed": 116, "awaiting_outcome": 0, "scored": 92,
+      "minimum_for_calibration": 20, "calibration_ready": true,
+      "brier_score": 0.0016389909782608696, "mean_prediction": 0.036168478260869566, "observed_rate": 0
+    },
+    "latest": {
+      "id": "319d52dd-3cd6-42eb-adc3-7e61bc263de0",
+      "created_at": "2026-10-13T05:30:00.177366+00:00",
+      "closes_at": "2026-10-13T13:30:00.271986+00:00",
+      "model_version": "escolha-v1+autonomous-cycle-8h-v1",
+      "decision": "observe",
+      "option_key": "observar_progressao",
+      "target_signal": "non_internal_payment_event_8h_v1",
+      "predicted_probability": 0.0175,
+      "probability_status": "calibrated",
+      "data_confidence": 0.2,
+      "falsifier": "A previsão falha se, nas próximas 8 horas, não surgir nenhum evento não interno e não pertencente a bot conhecido: payment_present, payment_rejected ou payment_accepted. Aceitação HTTP não prova liquidação."
+    }
+  }
+}

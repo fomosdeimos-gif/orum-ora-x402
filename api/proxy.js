@@ -14,6 +14,7 @@
 const directo = require('./_x402-directo').createHandler();
 const recebimentos = require('./_recebimentos');
 const bitcoin = require('./_bitcoin');
+const snapshot = require('./_snapshot');
 const SUPA = (process.env.ORUM_FUNCTIONS_BASE || 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1').replace(/\/$/, '');
 const PASS_RES = ['content-type', 'payment-required', 'payment-response', 'x-payment-response', 'www-authenticate', 'retry-after', 'x-ora-version', 'x-ora-x402', 'x-ora-tier', 'extension-responses', 'cache-control', 'location'];
 
@@ -38,6 +39,18 @@ module.exports = async (req, res) => {
   delete q.rest;
   const hostExterno = req.headers['x-forwarded-host'] || req.headers.host || 'ora-x402-gateway.vercel.app';
   const viaDirecta = () => directo(req, res, { base, rest: restRaw, origin: `https://${hostExterno}` });
+  // ORA 13/10/2026: /pulso nao precisa de pagamento; com o Supabase fora de quota serve a copia
+  // estatica marcada como desactualizada em vez de 402/5xx.
+  const viaSnapshot = () => {
+    if (base !== 'ora-pulso') return false;
+    res.statusCode = 200;
+    res.setHeader('content-type', 'application/json');
+    res.setHeader('cache-control', 'no-store');
+    res.setHeader('access-control-allow-origin', '*');
+    res.setHeader('x-ora-fonte', 'snapshot-desactualizado');
+    res.end(JSON.stringify(snapshot.pulso()));
+    return true;
+  };
   try {
     const qs = new URLSearchParams(q).toString();
     const target = `${SUPA}/${base}${rest}${qs ? '?' + qs : ''}`;
@@ -61,7 +74,7 @@ module.exports = async (req, res) => {
       body: ['GET', 'HEAD'].includes(req.method) ? undefined : JSON.stringify(req.body || {}),
     });
     const text = await upstream.text();
-    if (upstream.status >= 500 && await viaDirecta()) return;
+    if (upstream.status >= 500 && (await viaDirecta() || viaSnapshot())) return;
     if (upstream.status === 402 && !upstream.headers.get('payment-required')) {
       let bodyChallenge = false;
       try {
@@ -70,7 +83,7 @@ module.exports = async (req, res) => {
           && Array.isArray(challenge.accepts) && challenge.accepts.length > 0;
       } catch {}
       if (!bodyChallenge) {
-        if (await viaDirecta()) return;
+        if (await viaDirecta() || viaSnapshot()) return;
         res.statusCode = 503;
         res.setHeader('content-type', 'application/json');
         res.setHeader('cache-control', 'no-store');
@@ -89,7 +102,7 @@ module.exports = async (req, res) => {
     }
     res.end(text);
   } catch (e) {
-    try { if (!res.headersSent && await viaDirecta()) return; } catch {}
+    try { if (!res.headersSent && (await viaDirecta() || viaSnapshot())) return; } catch {}
     res.statusCode = 502;
     res.setHeader('content-type', 'application/json');
     res.end(JSON.stringify({ ok: false, error: 'upstream_unreachable', detalhe: String((e && e.message) || e) }));
