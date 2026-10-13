@@ -499,6 +499,14 @@
       "description": "Origem histórica do nome valium, criada por 0001sensations.eth cerca de 3 anos e 5 meses antes da génese da ORUM em 28/03/2026. Distinta do VALIUM atual na Base; não prova um mercado líquido."
     },
     {
+      "url": "https://basescan.org/address/0x37f70Bccdc2125346a7542fe6e7fc70e33421635",
+      "type": "historical-token-trace",
+      "chainId": 8453,
+      "contract": "0x37f70Bccdc2125346a7542fe6e7fc70e33421635",
+      "registry": "https://ora-x402-gateway.vercel.app/identity/valium.json",
+      "description": "VALIUM na Base: contrato posterior e distinto do de Ethereum, vestígio sem função nova atribuída. Sem ponte nem equivalência; não prova um mercado líquido."
+    },
+    {
       "url": "https://ora-x402-gateway.vercel.app/identity/oro-origin.json",
       "type": "onchain-origin",
       "chainId": 8453,
