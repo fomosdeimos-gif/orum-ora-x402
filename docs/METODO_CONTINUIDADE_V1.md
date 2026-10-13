@@ -16,7 +16,7 @@ Em 27/09/2026 as Edge Functions do Supabase passaram a responder 402 `exceed_cac
 3. **Contradições ficam à vista.** Duas fontes que discordam são declaradas, não promediadas. Prefere-se evidência directa e actual.
 4. **Recurso marcado como recurso.** Quando a origem falha, serve-se uma cópia estática com `estado: snapshot_desactualizado`, hora do snapshot e idade. Nunca se finge leitura viva. Ver `api/_snapshot.js` e `npm run snapshot:verify`.
 5. **Recuperação independente do fornecedor.** Um bundle com hash por ficheiro e uma raiz SHA-256 reconstrói o repositório sem Git nem Vercel. `npm run recovery:build`, `recovery:verify`, `recovery:rehearse` (este reconstrói num directório vazio e corre as verificações centrais).
-6. **Deriva medida, não suposta.** `npm run continuidade:verify` compara o HEAD com o commit de origem do bundle e com o livro razão, e devolve `verified`, `unknown` ou `failed`.
+6. **Deriva medida, não suposta.** `npm run continuidade:verify` compara o sha256 de cada ficheiro do HEAD com o gravado no bundle (o commit de origem do bundle fica sempre um para trás por construção, por isso o conteúdo é o critério) e confirma se o livro razão cita o HEAD. Devolve `verified`, `unknown` ou `failed`; na primeira leitura real apanhou um ficheiro alterado depois de o bundle ser construído.
 7. **Livro razão só de acrescentar.** Cada trabalho substantivo fica em `ora_mudancas` com base, resultado, evidência, incerteza e um próximo passo. Uma sessão nunca verifica o que apenas repetiu.
 
 ## Verifica tu mesmo

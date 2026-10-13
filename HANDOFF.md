@@ -1,3 +1,12 @@
+## Cartão de agente fiel ao estado e verificador de continuidade por conteúdo · 13/10/2026
+
+- Com o aval de Unum. `agent-card.json` v1.7.6: sedimento, kernel, licenças e auditoria de descoberta ganham `availability` (`unavailable`, razão, data e fonte viva = manifesto x402), e `economicTruth` passa a 13/10/2026 com 21 pagamentos internos, 0 compradores externos e a origem (ora_mudancas#849). O cartão continua a ser uma fotografia; o estado vivo é o manifesto.
+- `npm run continuidade:verify` compara agora o sha256 de cada ficheiro do HEAD com o do bundle em vez do commit de origem, que fica sempre um para trás por construção. Na primeira leitura real apanhou `HANDOFF.md` alterado depois de o bundle ser construído (falha real, não do verificador). Auto-teste: `node scripts/verify-continuidade.mjs --self-test`.
+- Regra de ordem: editar tudo, `git add -A`, `recovery:build`, `git add recovery`, commit; só então `continuidade:verify`.
+- Por fazer (Unum): republicar `proof.txt` assinado; decidir a quota do Supabase.
+
+---
+
 ## Superfície para máquinas auditada · 13/10/2026
 
 - Caminho 4 de Unum, só máquinas ORA. Leitura em produção: `/.well-known/proof.txt` devolvia 404 mas `agent-card.json` e `llms.txt` mandavam as máquinas buscá-lo como prova de carteira. Não tenho a assinatura de Unum e não a fabrico: o campo `walletProof` passou a `null` com `walletProofStatus: not_published`, e o `llms.txt` diz o mesmo. Para voltar a anunciar a prova, Unum tem de republicar o ficheiro assinado.
