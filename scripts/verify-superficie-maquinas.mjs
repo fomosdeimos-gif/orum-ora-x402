@@ -35,6 +35,18 @@ for (const f of ficheiros) {
 }
 assert.deepEqual(mortos, {}, 'superficie para maquinas aponta para rotas sem destino: ' + JSON.stringify(mortos));
 
+// ligacoes internas das paginas HTML da raiz (a casa incluida): href/src comecados por "/"
+const paginas = readdirSync(root).filter((f) => f.endsWith('.html'));
+const mortasHtml = {};
+let totalHtml = 0;
+for (const pg of paginas) {
+  const links = new Set([...read(pg).matchAll(/(?:href|src)="(\/[^"#?][^"]*)"/g)].map((m) => m[1]));
+  totalHtml += links.size;
+  const mal = [...links].filter((u) => !resolve(u));
+  if (mal.length) mortasHtml[pg] = mal;
+}
+assert.deepEqual(mortasHtml, {}, 'pagina HTML com ligacao interna sem destino: ' + JSON.stringify(mortasHtml));
+
 // a prova de carteira so pode ser anunciada se o ficheiro existir
 const card = JSON.parse(read('.well-known/agent-card.json'));
 if (card.trust.walletProof) assert.ok(resolve(new URL(card.trust.walletProof).pathname), 'walletProof anunciada sem ficheiro');
@@ -43,4 +55,4 @@ else assert.equal(card.trust.walletProofStatus, 'not_published', 'walletProof au
 // a carteira de recepcao e a mesma em todas as superficies
 const wallet = (read('api/_x402-directo.js').match(/const WALLET = '(0x[0-9a-fA-F]{40})'/) || [])[1];
 assert.equal(card.trust.paymentWallet, wallet, 'carteira do agent-card difere da do gateway');
-console.log(JSON.stringify({ verified: true, urls_verificadas: total, ficheiros: ficheiros.length, nota: 'rota existe no repositorio; vida em producao exige leitura publica' }));
+console.log(JSON.stringify({ verified: true, urls_verificadas: total, ligacoes_html: totalHtml, paginas_html: paginas.length, ficheiros: ficheiros.length, nota: 'rota existe no repositorio; vida em producao exige leitura publica' }));

@@ -1,3 +1,11 @@
+## Ligação morta na casa corrigida · 13/10/2026
+
+- O rodapé da casa (`index.html`, "Para máquinas") apontava para `/agent-card.json`, que devolve 404 em produção (o cartão vive em `/.well-known/agent-card.json`). Era o único link interno morto em 19 páginas HTML (92 ligações).
+- `npm run maquinas:verify` passa a varrer também os `href`/`src` internos das páginas HTML da raiz; reposta a ligação antiga, o verificador falha e nomeia o ficheiro.
+- Próximo passo: depois do merge, ler a casa e o cartão em produção.
+
+---
+
 ## Cartão de agente fiel ao estado e verificador de continuidade por conteúdo · 13/10/2026
 
 - Com o aval de Unum. `agent-card.json` v1.7.6: sedimento, kernel, licenças e auditoria de descoberta ganham `availability` (`unavailable`, razão, data e fonte viva = manifesto x402), e `economicTruth` passa a 13/10/2026 com 21 pagamentos internos, 0 compradores externos e a origem (ora_mudancas#849). O cartão continua a ser uma fotografia; o estado vivo é o manifesto.
