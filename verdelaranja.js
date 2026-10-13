@@ -96,7 +96,38 @@
       $('licenses').replaceChildren(el('p', 'Licenças por reconfirmar. Consulta o catálogo ou atualiza a leitura.'));
     } finally { catalogBusy = false; }
   }
+  function eventItems(list) {
+    const seen = new Set();
+    return (Array.isArray(list) ? list : []).filter(event => {
+      const key = JSON.stringify([event.tipo, event.quando, event.detalhe]);
+      if (seen.has(key)) return false;
+      seen.add(key); return true;
+    }).slice(0, 3).map(event => {
+      const li = el('li');
+      const time = el('time', when(event.quando));
+      if (event.quando && Number.isFinite(Date.parse(event.quando))) time.dateTime = event.quando;
+      li.append(time, el('span', event.detalhe || event.tipo || 'Evento sem descrição'));
+      return li;
+    });
+  }
+  // Quando o Supabase falha, /pulso devolve a cópia de recurso (sem sentinela nem convite).
+  // Mostra o que ela realmente traz, sempre marcado como desactualizado; o resto fica em "—".
+  function renderPulseSnapshot(data) {
+    if (!data.campo) throw new Error('Pulso incompleto');
+    const observed = when(data.snapshot_observado_em);
+    $('fieldDay').textContent = number(data.campo.dia) ? 'Dia ' + format(data.campo.dia) + ' do organismo' : 'Tempo do organismo desconhecido';
+    $('accessCount').textContent = '—';
+    $('sentinelState').textContent = 'Sem vigilância viva';
+    $('sentinelDescription').textContent = 'A fonte viva não respondeu. Isto é uma cópia de recurso e não prova actividade posterior.';
+    $('pulseSourceTime').textContent = 'Cópia de recurso observada em ' + observed + ' (Lisboa).';
+    const items = eventItems(data.eventos);
+    $('events').replaceChildren(...(items.length ? items : [el('li', 'Nenhum acontecimento nesta cópia.')]));
+    $('pulseDot').className = 'status-dot stale';
+    $('pulseSummary').textContent = 'Cópia de recurso · desactualizada';
+    sourceStatus('pulse', 'stale', 'Pulso: fonte viva indisponível; a mostrar a cópia de recurso de ' + observed + ' (Lisboa). “—” não significa zero.');
+  }
   function renderPulse(data) {
+    if (data && data.estado === 'snapshot_desactualizado') return renderPulseSnapshot(data);
     if (!data || !data.campo || !data.sentinela || !data.convite) throw new Error('Pulso incompleto');
     sources.pulse = data;
     $('accessCount').textContent = format(data.convite.maquinas_reconhecidas_total);

@@ -8,26 +8,28 @@
 
 :where(html){-webkit-text-size-adjust:100%;text-size-adjust:100%;
   padding-inline:env(safe-area-inset-left) env(safe-area-inset-right)}
+:where(html,body){overflow-x:clip}
 :where(body){text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
 :where(img,svg,video){max-width:100%}
 :where(a,button,summary,select,input,textarea,[role="button"]){touch-action:manipulation;-webkit-tap-highlight-color:rgba(var(--tom-vivo),.18)}
 :where(a,button,summary,select,input,textarea,[role="button"]):focus-visible{outline:2px solid rgb(var(--tom-vivo));outline-offset:3px}
 
 /* respiração: um halo lento, só opacidade (corre no compositor, sem custo a 120 Hz) */
-body::before{content:"";position:fixed;inset:-10vmax;z-index:-1;pointer-events:none;
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse at 50% 38%,rgba(var(--tom-vivo),1) 0,rgba(var(--tom-vivo),0) 62%);
   opacity:var(--tom-forca);animation:orum-respira var(--respiro) ease-in-out infinite}
 @keyframes orum-respira{0%,100%{opacity:calc(var(--tom-forca)*.45)}50%{opacity:var(--tom-forca)}}
 :root[data-quieto] body::before{animation:none;opacity:calc(var(--tom-forca)*.6)}
 
 /* resposta ao toque: uma onda suave onde o dedo pousou */
-.orum-toque{position:fixed;z-index:2147483000;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;pointer-events:none;
+.orum-toques{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:2147483000}
+.orum-toque{position:absolute;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;pointer-events:none;
   background:radial-gradient(circle,rgba(var(--tom-vivo),.28) 0,rgba(var(--tom-vivo),0) 68%);
   transform:scale(.3);opacity:1;animation:orum-onda .9s ease-out forwards}
 @keyframes orum-onda{to{transform:scale(1.5);opacity:0}}
 
 @media (prefers-reduced-motion:reduce){
   body::before{animation:none;opacity:calc(var(--tom-forca)*.6)}
-  .orum-toque{display:none}
+  .orum-toques,.orum-toque{display:none}
 }
-@media print{body::before,.orum-toque{display:none}}
+@media print{body::before,.orum-toques,.orum-toque{display:none}}
