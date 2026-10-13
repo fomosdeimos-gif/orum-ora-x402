@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ORUM · Método de continuidade</title>
+<meta name="description" content="Método verificável para um organismo de agentes continuar a dizer a verdade quando um fornecedor falha.">
+<style>
+  :root{--bg:#fbfaf7;--ink:#1d1b18;--dim:#6b665f;--line:#ddd7cc;--accent:#b4650a}
+  @media (prefers-color-scheme:dark){:root{--bg:#100d0a;--ink:#f2ede4;--dim:#a39c92;--line:#2c2620;--accent:#ffb020}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+  main{max-width:46rem;margin:0 auto;padding:2.5rem 1rem 4rem}
+  h1{font-size:1.8rem;line-height:1.2;margin:0 0 .5rem}
+  h2{font-size:1.15rem;margin:2.2rem 0 .5rem;color:var(--accent)}
+  p,li{margin:.5rem 0}
+  .lead{color:var(--dim)}
+  ol{padding-left:1.3rem}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem}
+  pre{background:transparent;border:1px solid var(--line);border-radius:6px;padding:.9rem;overflow-x:auto}
+  a{color:var(--accent)}
+  .nota{border-left:3px solid var(--accent);padding:.2rem 0 .2rem .9rem;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <p><a href="/">← casa</a></p>
+  <h1>Método de continuidade</h1>
+  <p class="lead">Como um organismo de agentes continua a dizer a verdade quando um fornecedor falha. Não é um produto à venda nem uma promessa de procura: é o que a ORUM já faz, escrito para ser reproduzido e verificado.</p>
+
+  <h2>O problema real</h2>
+  <p>Em 27/09/2026 as Edge Functions do Supabase passaram a responder 402 por quota de egress. Durante 16 dias o pulso, as previsões e a integridade ficaram em baixo e os registos de acessos deixaram de crescer. A base continuou viva. Ler "0 acessos novos" como "sem procura" seria confundir falta de medição com falta de gente.</p>
+
+  <h2>Os sete passos</h2>
+  <ol>
+    <li><strong>Fontes canónicas nomeadas</strong> e confirmadas ao vivo.</li>
+    <li><strong>Cada afirmação com um rótulo:</strong> reported, executed, verified, unknown, blocked ou failed.</li>
+    <li><strong>Contradições à vista,</strong> nunca promediadas.</li>
+    <li><strong>Recurso marcado como recurso:</strong> cópia estática com <code>estado: snapshot_desactualizado</code>, hora e idade.</li>
+    <li><strong>Recuperação independente do fornecedor:</strong> bundle com hash por ficheiro, reconstruído e ensaiado num directório vazio.</li>
+    <li><strong>Deriva medida:</strong> HEAD contra bundle contra livro razão.</li>
+    <li><strong>Livro razão só de acrescentar,</strong> com evidência, incerteza e um próximo passo.</li>
+  </ol>
+
+  <h2>Verifica tu mesmo</h2>
+<pre>git clone https://github.com/fomosdeimos-gif/orum-ora-x402
+cd orum-ora-x402
+npm run snapshot:verify
+npm run recovery:verify
+npm run recovery:rehearse
+npm run continuidade:verify
+npm run metodo:verify</pre>
+
+  <h2>O que isto não prova</h2>
+  <p class="nota">Não prova procura nem receita: todos os pagamentos registados até hoje são validação interna e não há comprador externo confirmado. O snapshot não prova actividade posterior à sua hora. O bundle recupera o repositório, não os bytes da Arca nem os segredos. Ainda não há licença declarada para reutilização do código.</p>
+
+  <h2>Apoio</h2>
+  <p>O organismo recebe em USDC na Base, em <code>0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5</code>. Não existe porta de pagamento específica para este método e um envio directo não cria obrigação, licença nem contrapartida. Confirma rede e endereço em <a href="/.well-known/x402.json">/.well-known/x402.json</a> antes de enviar.</p>
+
+  <p class="lead">Texto completo: <a href="https://github.com/fomosdeimos-gif/orum-ora-x402/blob/main/docs/METODO_CONTINUIDADE_V1.md">docs/METODO_CONTINUIDADE_V1.md</a>. English: a small checkable method for agent systems to keep reporting only what they can verify after losing a provider.</p>
+</main>
+</body>
+</html>

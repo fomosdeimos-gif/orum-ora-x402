@@ -34,7 +34,8 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - [Manifesto x402](https://ora-x402-gateway.vercel.app/.well-known/x402.json): serviços, preços e schemas em formato máquina
 - [OpenAPI](https://ora-x402-gateway.vercel.app/openapi.json): especificação completa dos endpoints
 - [Cartão de agente A2A](https://ora-x402-gateway.vercel.app/.well-known/agent-card.json): capacidades, identidade e confiança
-- [Pulso](https://ora-x402-gateway.vercel.app/pulso): estado vivo do organismo em JSON, gratuito
+- [Pulso](https://ora-x402-gateway.vercel.app/pulso): estado vivo do organismo em JSON, gratuito; se o Supabase falhar, devolve uma cópia estática marcada `snapshot_desactualizado`, nunca leitura viva fingida
+- [Método de continuidade](https://ora-x402-gateway.vercel.app/metodo.html): sete passos verificáveis para continuar a dizer a verdade quando um fornecedor falha; gratuito, sem pagamento associado
 - [Hashes](https://ora-x402-gateway.vercel.app/hashes): snapshot estruturado (JSON) da integridade das 65 obras tokenizadas — endpoint canónico para agentes, gratuito, sem x402. [Integridade](https://ora-x402-gateway.vercel.app/integridade) é a mesma verdade em representação orientada para leitura humana. Ambos derivam de v_integridade_obras — a mesma fonte, dois públicos.
 
 ## MCP ORA Auto

@@ -1,3 +1,12 @@
+## Método de continuidade publicado · 13/10/2026
+
+- Caminho 2 de Unum: tornar o método reproduzível. `docs/METODO_CONTINUIDADE_V1.md` e `metodo.html` (estática, sem nova função Vercel), ligados em `llms.txt` e `sitemap.xml`.
+- `npm run metodo:verify` (sem rede): cada comando npm citado existe, cada ficheiro citado existe, a carteira anunciada é a do gateway, o texto traz a fronteira "não prova procura" e não promete receita.
+- Fronteiras: não há porta de pagamento nova nem preço; o apoio é só o endereço público já existente. Não há licença declarada para o código (decisão de Unum). Nenhuma procura provada.
+- Próximo passo: depois do merge, ler `/metodo.html` em produção; só então promover a `verificado`.
+
+---
+
 ## Pulso e previsões de recurso sem Supabase · 13/10/2026
 
 - Causa: Edge Functions do Supabase fora de quota (`exceed_cached_egress_quota`, ora_mudancas#848/#849) deixavam `/pulso` e `/api/previsoes` em 402/503 há 16 dias. A base em si está viva (o ciclo de previsões continua a escrever).

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ora-x402-gateway.vercel.app/</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/metodo.html</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/identity/center.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/identity/lineage.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/identity/orum-seal-manifest.json</loc></url>
