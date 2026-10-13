@@ -1,5 +1,5 @@
 export const BTC_DESTINATION='bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf';
-export const BTC_POLICY={network:'bitcoin-mainnet',destination:BTC_DESTINATION,min_sats:546,max_sats:10000,max_daily_debit_sats:50000,max_fee_sats:1000,max_sat_per_vbyte:10,min_confirmations:6,max_inputs:5};
+export const BTC_POLICY={network:'bitcoin-mainnet',destination:BTC_DESTINATION,min_sats:546,max_sats:null,max_daily_debit_sats:null,max_fee_sats:1000,max_sat_per_vbyte:10,min_confirmations:6,max_inputs:5};
 export const fromHex=h=>{if(typeof h!=='string'||!/^([a-f0-9]{2})+$/.test(h))throw Error('invalid_hex');return Uint8Array.from(h.match(/../g),x=>parseInt(x,16));};
 export const toHex=b=>Array.from(b,x=>x.toString(16).padStart(2,'0')).join('');
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -99,8 +99,8 @@ export function bitcoinHandler({btc,pubECDSA}){
     let observation;try{const o=await observeBitcoin(wallet.address,net);observation={state:'two_observers_agree',heads:o.heads,total_sats:o.total_sats,spendable_sats:o.spendable_sats};}catch{observation={state:'unavailable'};}
     return {status:200,wallet,policy:BTC_POLICY,observation,signing_implemented:true,financial_transaction_signed:false,funds_sent:false,custody:'Supabase Vault hot wallet in user project; not an HSM; no independent recovery backup verified'};
    }
-   ensure(typeof body.amount_sats==='string'&&/^[1-9][0-9]{0,4}$/.test(body.amount_sats),'bitcoin_invalid_amount');
-   const amount=BigInt(body.amount_sats);ensure(amount>=546n&&amount<=10000n,'bitcoin_amount_cap');
+   ensure(typeof body.amount_sats==='string'&&/^[1-9][0-9]{0,15}$/.test(body.amount_sats),'bitcoin_invalid_amount');
+   const amount=BigInt(body.amount_sats);ensure(amount>=546n,'bitcoin_amount_dust');
    const old=await rpc('ora_btc_job_v1',{p_id:body.request_id});if(old)return old.amount_sats===body.amount_sats?{status:200,job:old,replayed:true}:{status:409,error:'bitcoin_idempotency_conflict'};
    const observation=await observeBitcoin(wallet.address,net);
    if(BigInt(observation.spendable_sats)<amount+1n)return {status:409,error:'bitcoin_insufficient_confirmed_funds',signed:false,submitted:false};

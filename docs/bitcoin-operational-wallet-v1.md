@@ -13,7 +13,7 @@ Pedido de Unum: criar também um conector BTC capaz de assinar e enviar autonoma
 
 Chave operacional gerada por CSPRNG dentro da base de dados e guardada no Supabase Vault. Só o servidor autenticado a consome para derivação e assinatura. A chave não foi exposta ao chat, ao repositório, aos testes ou ao registo. É uma hot wallet no projeto do utilizador; não é um HSM nem uma carteira independente do fornecedor. Não há cópia de recuperação independente verificada. Nunca eliminar ou substituir este segredo ao reconstruir o serviço. A perda do cofre pode impedir a recuperação de fundos.
 
-Por operação: 546 a 10000 sats enviados; taxa máxima 1000 sats e 10 sats/vbyte. Por dia UTC de reserva: débito máximo de 50000 sats, incluindo taxas. No máximo cinco inputs confirmados há pelo menos seis blocos. Troco regressa exclusivamente à carteira operacional. Não aceita destino, rede, calldata, PSBT ou transação arbitrários do cliente.
+Por operação: mínimo 546 sats (piso de poeira do protocolo); sem teto de montante e sem teto diário (retirados a pedido de Unum em 13/10); taxa máxima 1000 sats e 10 sats/vbyte mantida. No máximo cinco inputs confirmados há pelo menos seis blocos. Troco regressa exclusivamente à carteira operacional. Não aceita destino, rede, calldata, PSBT ou transação arbitrários do cliente.
 
 ## Execução
 

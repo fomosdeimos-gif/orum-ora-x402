@@ -12,7 +12,7 @@ create table orum_finance.bitcoin_wallet_v1 (
 );
 create table orum_finance.bitcoin_jobs_v1 (
  id uuid primary key,
- amount_sats bigint not null check(amount_sats between 546 and 10000),
+ amount_sats bigint not null check(amount_sats>=546),
  fee_sats bigint not null check(fee_sats between 1 and 1000),
  status text not null check(status in ('reserved','signed','submitted','unknown','confirmed')),
  txid text check(txid ~ '^[0-9a-f]{64}$'),
@@ -47,17 +47,14 @@ create function public.ora_btc_job_v1(p_id uuid) returns jsonb language sql stab
 $fn$;
 create function public.ora_btc_claim_v1(p_id uuid,p_amount text,p_fee text) returns jsonb
 language plpgsql security definer set search_path=pg_catalog as $fn$
-declare prior jsonb; total bigint; day_start timestamptz;
+declare prior jsonb;
 begin
- if p_id is null or p_amount is null or p_fee is null or p_amount !~ '^[1-9][0-9]{0,4}$' or p_fee !~ '^[1-9][0-9]{0,3}$' then raise exception 'Invalid request'; end if;
- if p_amount::bigint not between 546 and 10000 or p_fee::bigint not between 1 and 1000 then raise exception 'Payment limits exceeded'; end if;
+ if p_id is null or p_amount is null or p_fee is null or p_amount !~ '^[1-9][0-9]{0,15}$' or p_fee !~ '^[1-9][0-9]{0,3}$' then raise exception 'Invalid request'; end if;
+ if p_amount::bigint<546 or p_fee::bigint not between 1 and 1000 then raise exception 'Payment limits exceeded'; end if;
  perform pg_advisory_xact_lock(0,20260912);
  prior:=public.ora_btc_job_v1(p_id);
  if prior is not null then return jsonb_build_object('claimed',false,'reason',case when prior->>'amount_sats'=p_amount then 'already_reserved' else 'idempotency_conflict' end,'job',prior); end if;
  if exists(select 1 from orum_finance.bitcoin_jobs_v1 where status<>'confirmed') then return jsonb_build_object('claimed',false,'reason','another_payment_unresolved'); end if;
- day_start:=date_trunc('day',clock_timestamp() at time zone 'UTC') at time zone 'UTC';
- select coalesce(sum(amount_sats+fee_sats),0) into total from orum_finance.bitcoin_jobs_v1 where created_at>=day_start;
- if total+p_amount::bigint+p_fee::bigint>50000 then return jsonb_build_object('claimed',false,'reason','daily_cap_exceeded'); end if;
  insert into orum_finance.bitcoin_jobs_v1(id,amount_sats,fee_sats,status) values(p_id,p_amount::bigint,p_fee::bigint,'reserved');
  return jsonb_build_object('claimed',true);
 end;
@@ -101,8 +98,8 @@ begin
   if p_request_id is null then raise exception 'Request ID required'; end if;
   payload:=payload||jsonb_build_object('request_id',p_request_id);
   if p_action in ('btc_preview','btc_send') then
-   if p_amount_sats is null or p_amount_sats !~ '^[1-9][0-9]{0,4}$' then raise exception 'Invalid amount'; end if;
-   if p_amount_sats::bigint not between 546 and 10000 then raise exception 'Amount outside limits'; end if;
+   if p_amount_sats is null or p_amount_sats !~ '^[1-9][0-9]{0,15}$' then raise exception 'Invalid amount'; end if;
+   if p_amount_sats::bigint<546 then raise exception 'Amount below dust floor'; end if;
    payload:=payload||jsonb_build_object('amount_sats',p_amount_sats);
   elsif p_amount_sats is not null then raise exception 'Unexpected amount'; end if;
  end if;
