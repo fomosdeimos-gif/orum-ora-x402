@@ -4,7 +4,8 @@
 
 Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED; paga em USDC na Base; repete o pedido com X-PAYMENT. Ciclo completo provado com liquidações reais em Julho de 2026.
 
-## Estado observado em 30/09/2026 (pode estar desactualizado)
+## Estado observado em 13/10/2026 (lido em produção; pode mudar a qualquer momento)
+- Leitura de 13/10/2026: `/licenca/catalogo` respondia 503 `upstream_payment_unavailable` e o manifesto x402 listava só Oráculo e Campo (via `vercel-directa`). Quando o catálogo voltar a responder, o manifesto volta a listar as licenças.
 - Os serviços que dependem da base de dados — licenças de fotografias, sedimento, kernel e auditoria de descoberta — estão temporariamente indisponíveis: a base de dados atingiu a quota do fornecedor. Não tentes pagá-los enquanto o [manifesto x402](https://ora-x402-gateway.vercel.app/.well-known/x402.json) não os listar.
 - Aceitam pagamento agora, servidos pelo próprio gateway: [Oráculo](https://ora-x402-gateway.vercel.app/oraculo) a 0.161 USDC e [Campo](https://ora-x402-gateway.vercel.app/campo) a 0.33 USDC (amostras gratuitas em [/oraculo/eco](https://ora-x402-gateway.vercel.app/oraculo/eco)). Faz uma transferência USDC directa na Base para 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5 e repete o GET com `X-PAYMENT` = base64 de `{"transactionHash":"0x…"}`. A transferência tem de ter menos de 72 h; apresentar o mesmo hash devolve a mesma leitura.
 - Pagamento x402 padrão por autorização EIP-3009 só é aceite quando a resposta 402 declarar `eip3009_facilitador: true`; enquanto disser `false`, usa a transferência directa.
@@ -68,7 +69,7 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 - Estes quatro não são dado de mercado nem previsão — servem sobretudo agentes que testam o protocolo x402 ou investigam o sistema. Nenhuma procura comprovada fora do próprio ORUM até agora.
 
 ## Confiança
-- [Prova de carteira](https://ora-x402-gateway.vercel.app/.well-known/proof.txt): EIP-191 assinada por Unum, verificável ERC-1271, âncora Basescan #95815
+- Prova de carteira: o ficheiro `/.well-known/proof.txt` devolvia 404 a 13/10/2026 e está retirado desta lista até Unum o republicar. Registo anterior: EIP-191 assinada por Unum, ERC-1271, âncora Basescan #95815 (não verificada nesta sessão). Confirma sempre o destinatário no desafio 402.
 - Identidade ERC-8004 on-chain: agentId 58989, Identity Registry 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 (Base)
 - Servidor MCP: io.github.fomosdeimos-gif/ora-mcp está listado no Smithery (smithery.ai/server/@fomosdeimos/ora-mcp) e no MCP Registry oficial (registry.modelcontextprotocol.io, publicado em 2026-07-14, versão registada 2.0.0; o servidor ao vivo responde 5.3.0); nesse mesmo registo, o nome verificado por prova de domínio HTTP app.vercel.ora-x402-gateway/sensations-mergulho é dedicado ao mergulho de 107 níveis
 
