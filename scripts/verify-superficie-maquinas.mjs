@@ -52,6 +52,16 @@ const card = JSON.parse(read('.well-known/agent-card.json'));
 if (card.trust.walletProof) assert.ok(resolve(new URL(card.trust.walletProof).pathname), 'walletProof anunciada sem ficheiro');
 else assert.equal(card.trust.walletProofStatus, 'not_published', 'walletProof ausente sem estado declarado');
 
+// quem declara disponibilidade tem de dizer o estado, a data da leitura e onde se confirma ao vivo
+const estados = new Set(['available', 'unavailable', 'unknown']);
+for (const sk of card.httpServiceSkills || []) {
+  if (!sk.availability) continue;
+  const a = sk.availability;
+  assert.ok(estados.has(a.state), `availability.state invalido em ${sk.id}`);
+  assert.match(String(a.observedAt), /^\d{4}-\d{2}-\d{2}$/, `availability.observedAt em falta em ${sk.id}`);
+  assert.ok(a.liveSource && a.reason, `availability sem liveSource/reason em ${sk.id}`);
+}
+
 // a carteira de recepcao e a mesma em todas as superficies
 const wallet = (read('api/_x402-directo.js').match(/const WALLET = '(0x[0-9a-fA-F]{40})'/) || [])[1];
 assert.equal(card.trust.paymentWallet, wallet, 'carteira do agent-card difere da do gateway');

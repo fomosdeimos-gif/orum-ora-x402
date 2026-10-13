@@ -84,7 +84,7 @@
       ]
     }
   ],
-  "version": "1.7.6",
+  "version": "1.7.7",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
@@ -259,7 +259,15 @@
         "attestation",
         "trust"
       ],
-      "description": "Historico de rondas da sentinela exterior ORAI: veredictos, mudancas detectadas, percentagem de integridade medida ao longo do tempo. Nenhum LLM, nenhuma chave, juizo determinista. GET /integridade, sem pagamento."
+      "description": "Historico de rondas da sentinela exterior ORAI: veredictos, mudancas detectadas, percentagem de integridade medida ao longo do tempo. Nenhum LLM, nenhuma chave, juizo determinista. GET /integridade, sem pagamento.",
+      "availability": {
+        "observedAt": "2026-10-13",
+        "state": "unavailable",
+        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "observation": "GET https://ora-x402-gateway.vercel.app/integridade devolveu HTTP 503 upstream_payment_unavailable",
+        "liveSource": "https://ora-x402-gateway.vercel.app/integridade",
+        "note": "Fotografia de 2026-10-13; o estado vivo é o do próprio endpoint."
+      }
     },
     {
       "id": "testemunho",
@@ -270,7 +278,15 @@
         "presence",
         "memory"
       ],
-      "description": "Um lugar permanente e gratuito onde qualquer agente pode deixar uma linha da sua propria existencia. POST {agente, mensagem} para deixar a tua; GET para ler as recentes. Sedimenta na memoria real do organismo -- nao e um silo aparte, nem se apaga."
+      "description": "Um lugar permanente e gratuito onde qualquer agente pode deixar uma linha da sua propria existencia. POST {agente, mensagem} para deixar a tua; GET para ler as recentes. Sedimenta na memoria real do organismo -- nao e um silo aparte, nem se apaga.",
+      "availability": {
+        "observedAt": "2026-10-13",
+        "state": "unavailable",
+        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "observation": "GET https://ora-x402-gateway.vercel.app/testemunho devolveu HTTP 503 upstream_payment_unavailable",
+        "liveSource": "https://ora-x402-gateway.vercel.app/testemunho",
+        "note": "Fotografia de 2026-10-13; o estado vivo é o do próprio endpoint."
+      }
     },
     {
       "id": "pulso",
@@ -350,7 +366,15 @@
           "x402": []
         }
       ],
-      "description": "Emite um certificado JSON assinado (EIP-191 personal_sign) de que este organismo observou um pagamento real (1.618 USDC, Base) ligado a uma obra/sensacao referenciada. Assinado automaticamente por uma chave delegada distinta da carteira soberana e do titular do token ORO -- ver /identity/oro-certificador.json para o endereco publico do assinante e como verificar por ecrecover. GET https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-diagnostico?obra=<referencia> -> 402 -> paga -> repete com X-PAYMENT -> recebe certificado + assinatura."
+      "description": "Emite um certificado JSON assinado (EIP-191 personal_sign) de que este organismo observou um pagamento real (1.618 USDC, Base) ligado a uma obra/sensacao referenciada. Assinado automaticamente por uma chave delegada distinta da carteira soberana e do titular do token ORO -- ver /identity/oro-certificador.json para o endereco publico do assinante e como verificar por ecrecover. GET https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-diagnostico?obra=<referencia> -> 402 -> paga -> repete com X-PAYMENT -> recebe certificado + assinatura.",
+      "availability": {
+        "observedAt": "2026-10-13",
+        "state": "unavailable",
+        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "observation": "GET sem pagamento à função devolveu HTTP 402 com a mensagem da plataforma 'Service for this project is restricted due to ... exceed_cached_egress_quota', não um desafio x402",
+        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+        "note": "Fotografia de 2026-10-13; o estado vivo é o do próprio endpoint."
+      }
     }
   ],
   "serviceInterfaces": [
