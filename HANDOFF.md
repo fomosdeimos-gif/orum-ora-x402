@@ -1,3 +1,12 @@
+## Disponibilidade de integridade, testemunho e certificado ORO no cartão · 13/10/2026
+
+- Leitura a 13/10/2026: `/integridade` e `/testemunho` respondem 503 `upstream_payment_unavailable`; a função `ora-cdp-diagnostico` (certificado ORO) devolve a mensagem da plataforma `exceed_cached_egress_quota` (HTTP 402 que não é um desafio x402). Mesma causa raiz das outras quatro.
+- `agent-card.json` v1.7.7: os três ganham `availability` com `observation` (o que foi lido) e `liveSource`. `maquinas:verify` passa a exigir estado válido, data da leitura, razão e fonte viva em qualquer `availability`.
+- O pedido sem pagamento à função Supabase foi feito por `net.http_get` (SQL); conta como tráfego interno, não como procura.
+- Quando a quota voltar, as sete marcações `unavailable` ficam desactualizadas: reler o manifesto e os endpoints e actualizá-las.
+
+---
+
 ## Ligação morta na casa corrigida · 13/10/2026
 
 - O rodapé da casa (`index.html`, "Para máquinas") apontava para `/agent-card.json`, que devolve 404 em produção (o cartão vive em `/.well-known/agent-card.json`). Era o único link interno morto em 19 páginas HTML (92 ligações).
