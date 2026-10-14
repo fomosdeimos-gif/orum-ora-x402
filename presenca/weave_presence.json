@@ -3,9 +3,9 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-10-12T05:19:26.567Z",
-  "revision": "2026-10-12-keyless-receipt-span",
-  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless 24h continuation, an unclassified transfer, and settled money.",
+  "updated_at": "2026-10-14T05:06:16.296Z",
+  "revision": "2026-10-14-keyless-seam",
+  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation, an unscanned gap between verified heads, an unclassified transfer, and settled money.",
   "does_not": [
     "mint presence",
     "count traffic as 1P",
@@ -24,6 +24,8 @@
     "open a new credential to widen an RPC window",
     "treat repository bytes as an independent runtime",
     "treat a keyless 24h continuation as accumulated sustenance",
+    "treat an unscanned gap since the last verified receipt head as empty",
+    "treat a scanned seam as payer classification or as accumulated sustenance",
     "treat two public RPCs agreeing on a log as payer classification or as a capsule relation",
     "open an archive or personal RPC token to widen a window",
     "fill a failed receipt chunk with zero"
@@ -60,7 +62,8 @@
     "requires_network": true,
     "requires_credentials": false,
     "writes": "presenca/observacao-YYYY-MM-DD.json",
-    "continues_partial_usdc_window": true
+    "continues_partial_usdc_window": true,
+    "stitches_unscanned_gap_since_last_verified_head": true
   },
   "second_surface": {
     "kind": "github_raw_bytes",

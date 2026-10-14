@@ -3,6 +3,9 @@
 // Classifies interest / response / purchase / settled_money as distinct states.
 // Unknown is used when a live source fails. Zero is recorded only when a source says zero.
 
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
 
 const surfaces = {
@@ -221,6 +224,47 @@ function hexToNum(hex) {
   return Number(BigInt(hex));
 }
 
+async function rpcRetry(url, method, params) {
+  const first = await rpc(url, method, params);
+  if (first.ok) return first;
+  await new Promise((resolve) => setTimeout(resolve, 700));
+  return rpc(url, method, params);
+}
+
+function lastVerifiedKeylessHead() {
+  const dir = join(process.cwd(), "presenca");
+  let names;
+  try {
+    names = readdirSync(dir);
+  } catch {
+    return { state: "unknown", reason: "presenca directory was not readable" };
+  }
+  let best = null;
+  for (const name of names) {
+    if (!/^observacao-\d{4}-\d{2}-\d{2}\.json$/.test(name)) continue;
+    let parsed;
+    try {
+      parsed = JSON.parse(readFileSync(join(dir, name), "utf8"));
+    } catch {
+      continue;
+    }
+    const span = parsed?.live?.receipts_usdc?.keyless_span;
+    if (!span || span.state !== "window_complete" || span.covers_requested_24h !== true) continue;
+    if (!Array.isArray(span.transfers_conflict) || span.transfers_conflict.length !== 0) continue;
+    if (!Number.isInteger(span.head_block)) continue;
+    if (!best || span.head_block > best.head_block) {
+      best = {
+        state: "found",
+        file: `presenca/${name}`,
+        head_block: span.head_block,
+        head_time_utc: span.head_time_utc ?? "unknown",
+      };
+    }
+  }
+  if (!best) return { state: "absent", reason: "no complete keyless span with a head block was found" };
+  return best;
+}
+
 async function continuePartialUsdcWindow(usdcWindow) {
   const base = {
     method: "keyless_eth_getLogs_chunks",
@@ -287,11 +331,64 @@ async function continuePartialUsdcWindow(usdcWindow) {
       note: "Span still shorter than 24h after one correction. Not called complete.",
     };
   }
+  const edge24 = { from_block: fromN, from_time_utc: new Date(fromTs * 1000).toISOString() };
+  const previous = lastVerifiedKeylessHead();
+  let seam = {
+    state: previous.state === "found" ? "not_needed" : previous.state,
+    previous_file: previous.file ?? null,
+    previous_head_block: previous.head_block ?? null,
+    previous_head_time_utc: previous.head_time_utc ?? null,
+    note: previous.state === "found"
+      ? "Previous verified head already meets this 24h edge. No hole."
+      : previous.reason,
+  };
+  if (previous.state === "found" && previous.head_block >= headN) {
+    return {
+      ...base,
+      state: "bloqueado",
+      seam: {
+        ...seam,
+        state: "bloqueado",
+        note: "Previous verified head is not behind the public head. No backward scan was invented.",
+      },
+    };
+  }
+  if (previous.state === "found" && previous.head_block + 1 < fromN) {
+    const seamFrom = previous.head_block + 1;
+    const seamBlock = await rpcRetry(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + seamFrom.toString(16), false]);
+    if (!seamBlock.ok) {
+      return {
+        ...base,
+        state: "bloqueado",
+        error: seamBlock.error,
+        seam: {
+          state: "bloqueado",
+          previous_file: previous.file,
+          previous_head_block: previous.head_block,
+          previous_head_time_utc: previous.head_time_utc,
+          seam_from_block: seamFrom,
+          note: "Seam block lookup failed. The unscanned gap was not filled with zero.",
+        },
+      };
+    }
+    fromN = seamFrom;
+    fromTs = hexToNum(seamBlock.result.timestamp);
+    seam = {
+      state: "scanned",
+      previous_file: previous.file,
+      previous_head_block: previous.head_block,
+      previous_head_time_utc: previous.head_time_utc,
+      seam_from_block: seamFrom,
+      twenty_four_hour_edge_block: edge24.from_block,
+      blocks_before_24h_edge: edge24.from_block - seamFrom,
+      note: "Previous verified head was older than this 24h edge. The hole was scanned with the same keyless sources. Scanning is not classification and is not sustenance.",
+    };
+  }
   const chunks = [];
   const logs = [];
   for (let a = fromN; a <= headN; a += 4000) {
     const b = Math.min(headN, a + 3999);
-    const got = await rpc(BLOCKPI_PUBLIC, "eth_getLogs", [{
+    const got = await rpcRetry(BLOCKPI_PUBLIC, "eth_getLogs", [{
       address: USDC_BASE,
       fromBlock: "0x" + a.toString(16),
       toBlock: "0x" + b.toString(16),
@@ -313,16 +410,18 @@ async function continuePartialUsdcWindow(usdcWindow) {
         head_block: headN,
         from_time_utc: new Date(fromTs * 1000).toISOString(),
         head_time_utc: new Date(headTs * 1000).toISOString(),
+        seam,
         chunks,
         note: "A chunk failed. The missing range was not filled with zero.",
       };
     }
     for (const log of got.result) logs.push(log);
+    await new Promise((resolve) => setTimeout(resolve, 250));
   }
   const confirmed = [];
   const conflicts = [];
   for (const log of logs) {
-    const check = await rpc(TENDERLY_PUBLIC, "eth_getLogs", [{
+    const check = await rpcRetry(TENDERLY_PUBLIC, "eth_getLogs", [{
       address: USDC_BASE,
       fromBlock: log.blockNumber,
       toBlock: log.blockNumber,
@@ -347,8 +446,8 @@ async function continuePartialUsdcWindow(usdcWindow) {
       conflicts.push({ ...row, cross_check_error: check.ok ? null : check.error });
       continue;
     }
-    const tx = await rpc(TENDERLY_PUBLIC, "eth_getTransactionByHash", [log.transactionHash]);
-    const ts = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", [log.blockNumber, false]);
+    const tx = await rpcRetry(TENDERLY_PUBLIC, "eth_getTransactionByHash", [log.transactionHash]);
+    const ts = await rpcRetry(TENDERLY_PUBLIC, "eth_getBlockByNumber", [log.blockNumber, false]);
     row.time_utc = ts.ok ? new Date(hexToNum(ts.result.timestamp) * 1000).toISOString() : "unknown";
     row.outer_tx_from = tx.ok ? tx.result.from : "unknown";
     row.outer_tx_to = tx.ok ? tx.result.to : "unknown";
@@ -371,14 +470,15 @@ async function continuePartialUsdcWindow(usdcWindow) {
     from_time_utc: new Date(fromTs * 1000).toISOString(),
     head_time_utc: new Date(headTs * 1000).toISOString(),
     span_seconds: headTs - fromTs,
-    covers_requested_24h: headTs - fromTs >= 86400,
+    covers_requested_24h: fromTs <= targetTs && headTs - fromTs >= 86400,
+    seam,
     chunks,
     transfers_agreed: confirmed,
     transfers_conflict: conflicts,
     agreed_count: confirmed.length,
     agreed_total_base_units: totalUnits.toString(),
     agreed_inside_gateway_partial_window: insideGateway,
-    note: "A complete keyless span lists visible incoming USDC logs. Agreement of two public RPCs is not payer classification, not a capsule relation, and not accumulated sustenance. The gateway partial zero is left as a partial zero.",
+    note: "A complete keyless span lists visible incoming USDC logs, including a seam back to the last verified head when that head is older than 24h. Agreement of two public RPCs is not payer classification, not a capsule relation, and not accumulated sustenance. The gateway partial zero is left as a partial zero.",
   };
 }
 
@@ -511,6 +611,16 @@ if (usdcWindow.state === "window_complete" || spanComplete) {
       : "public receipt route did not return a complete window and no stitch was invented",
   });
 }
+const seamState = usdcSpan.seam?.state ?? "unknown";
+blocks.push({
+  action: "scan_usdc_seam_since_last_verified_head",
+  state: seamState === "scanned" || seamState === "not_needed" ? "verificado" : "bloqueado",
+  reason: seamState === "scanned"
+    ? "the hole between the last verified head and this 24h edge was scanned with two public RPCs. Visible logs stay unclassified and are not sustenance"
+    : seamState === "not_needed"
+      ? "the last verified head already meets this 24h edge"
+      : "the seam was not scanned. The missing range was not filled with zero and no archive credential was opened",
+});
 blocks.push({
   action: "publish_independent_runtime",
   state: "bloqueado",
@@ -538,7 +648,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-10-12-keyless-receipt-span",
+  observer_revision: "2026-10-14-keyless-seam",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -744,6 +854,7 @@ const out = {
     "A keyless 24h span can show a transfer the partial gateway window missed. Visibility is not classification and is not accumulated sustenance.",
     "Two public RPCs agreeing on a log is not payer classification and not a proved relation to a capsule or tool.",
     "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
+    "A gap between the last verified receipt head and the new 24h edge is scanned, not treated as empty. The scan is not classification and is not accumulated sustenance.",
     "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
     "Repository bytes are a portable reading surface, not an independent runtime and not settlement.",
   ],

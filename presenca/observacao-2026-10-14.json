@@ -1,0 +1,659 @@
+{
+  "format": "weave_presence/observation/v1",
+  "observed_at": "2026-10-14T05:06:16.296Z",
+  "observer": "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
+  "observer_revision": "2026-10-14-keyless-seam",
+  "credentials_used": false,
+  "mutation": false,
+  "payment": false,
+  "live": {
+    "ledger": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
+      "http": 200,
+      "format": "orum-presence-ledger/v1",
+      "state": "checkpoint_only",
+      "live_state": "unknown",
+      "source_error": "live_presence_ledger_unavailable",
+      "authoritative": false,
+      "total_events": "unknown",
+      "external_confirmed_presence": "unknown",
+      "external_confirmed_returns": "unknown",
+      "chain_head": "unknown",
+      "last_sedimentation_at": "unknown",
+      "days_since_last_sedimentation": "unknown",
+      "generated_at": "unknown",
+      "embedded_export_not_live": {
+        "external_confirmed_presence": 1,
+        "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+        "exported_at": "2026-08-16T05:08:36.034Z"
+      }
+    },
+    "checkpoint": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json",
+      "http": 200,
+      "format": "orum-presence-checkpoint/v1",
+      "exported_at": "2026-08-16T05:08:36.034Z",
+      "exported_events": 4,
+      "exported_external_confirmed_presence": 1,
+      "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+      "lag_vs_live": "HTTP 200 is not live authority while state=checkpoint_only. The exported checkpoint remains the last proved export. The live event count is unknown, not zero, and not the embedded export."
+    },
+    "rhythm": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/rhythm.json",
+      "http": 404,
+      "state": "absent",
+      "capsule_instrument": "orum-presence-rhythm/v1",
+      "measured_today": false,
+      "note": "The public rhythm file was requested. A formula inside the capsule is not a measurement."
+    },
+    "moltbook_presence": {
+      "url": "https://ora-x402-gateway.vercel.app/moltbook_presence/v1",
+      "http": 503,
+      "format": "unknown",
+      "hand": "unknown",
+      "credentials_used": false,
+      "latest_observed_at": "unknown",
+      "latest_version": "unknown",
+      "latest_state": "unknown",
+      "voices_seen": "unknown",
+      "voices_replied": "unknown",
+      "responses_published_latest": "unknown",
+      "notifications_seen_latest": "unknown",
+      "totals": "unknown",
+      "classification": "hand not observed this cycle; moltbook_presence/v1 did not return. Not simulated. Voices are unknown, not zero."
+    },
+    "treasury": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
+      "http": 503,
+      "state": "unknown",
+      "external_confirmed_usdc": "unknown",
+      "external_confirmed_buyers": "unknown",
+      "internal_validation_payments": "unknown",
+      "operating_permission": "not_activated",
+      "next_action": "stop_until_source_recovers",
+      "source_error": "learning_402"
+    },
+    "journey": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/percurso.json",
+      "http": 503,
+      "format": "orum-economic-journey/v1",
+      "probe": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "latest public learning snapshot; internal traffic excluded by the organism classifier"
+      },
+      "payment": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "externally confirmed buyers in the latest public learning snapshot"
+      },
+      "delivery": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "physical licenses whose licensed wallet is explicitly classified external_confirmed"
+      },
+      "return": {
+        "status": "unknown",
+        "count": null,
+        "evidence": "no public buyer-level recurrence aggregate exists yet"
+      },
+      "external_confirmed_buyers": "unknown",
+      "complete_external_cycles": "unknown",
+      "internal_validation_payments": "unknown"
+    },
+    "pulse": {
+      "url": "https://ora-x402-gateway.vercel.app/pulso",
+      "http": 200,
+      "sentinela": "unknown",
+      "sentinela_frase": "unknown",
+      "onchain_schema": "unknown",
+      "onchain_nao_reconciliado": "unknown",
+      "rpc_incompleto_24h": "unknown",
+      "ultimo_bloco_varrido": "unknown",
+      "presenca_token_liquidity_usd": "unknown",
+      "presenca_token_is_sustenance": false
+    },
+    "oro_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0001sensations:physical:2:oro:v1",
+      "respond": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "respond_http": 503,
+      "sha256": "0295ce9515bf7ef3f089a8820bed02b651efb8cc483f07cf523e2a7d9067ca35",
+      "original_bytes_private": true,
+      "public_trace": "Palavra ORO inscrita a dourado sobre painel escuro, com moldura de talha dourada e negra, ramos secos e flores presas por cera, gravado à mão.",
+      "historical_nft_link_status": "not_verified"
+    },
+    "weave_hands_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0003sensations:weave-hands:v1",
+      "state": "integrated_read_only_orchestrator"
+    },
+    "x402_offer": {
+      "role": "0001SENSATIONS physical work 2 consultation",
+      "http": 503,
+      "offer_state": "unavailable",
+      "error": "upstream_payment_unavailable",
+      "settled": "not_observed",
+      "counts_as_purchase": false,
+      "counts_as_external_sustenance": false
+    },
+    "priced_internal_readings": [
+      {
+        "role": "oraculo internal reading",
+        "http": 402,
+        "offer_state": "priced_unsettled",
+        "asset": "USDC",
+        "amount": "161000",
+        "network": "eip155:8453",
+        "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "settled": false,
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false
+      },
+      {
+        "role": "campo internal reading",
+        "http": 402,
+        "offer_state": "priced_unsettled",
+        "asset": "USDC",
+        "amount": "330000",
+        "network": "eip155:8453",
+        "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "settled": false,
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false
+      }
+    ],
+    "x402_catalog": {
+      "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+      "http": 200,
+      "resources": [
+        "https://ora-x402-gateway.vercel.app/oraculo",
+        "https://ora-x402-gateway.vercel.app/campo"
+      ],
+      "indisponiveis_nesta_via": [
+        "sedimento",
+        "kernel",
+        "licencas",
+        "auditoria-descoberta"
+      ],
+      "nota": "Manifesto servido pela via directa: lista apenas o que aceita pagamento agora. Os restantes servicos voltam a ser anunciados quando as Edge Functions Supabase voltarem.",
+      "livro_interno_escrito": false,
+      "is_settlement": false
+    },
+    "receipts_usdc": {
+      "gateway": {
+        "url": "https://ora-x402-gateway.vercel.app/economia/recebimentos.json",
+        "http": 200,
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false,
+        "relation_to_capsule_or_tool": "not_proved",
+        "state": "window_partial",
+        "carteira": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "window": {
+          "horas": 24,
+          "bloco_de": 52573427,
+          "bloco_a": 52582426,
+          "cabeca_utc": "2026-10-14T05:03:19.000Z"
+        },
+        "hours_requested": 24,
+        "hours_covered": 5,
+        "window_complete": false,
+        "transfers_in_window": 0,
+        "total_in_window": 0,
+        "transfers": [],
+        "source": {
+          "tipo": "rpc-base-publico",
+          "rpc": "https://base-rpc.publicnode.com",
+          "hora": "estimada (2 s por bloco)",
+          "consultado_utc": "2026-10-14T05:03:19.797Z"
+        },
+        "does_not_affirm": [
+          "identidade do pagador",
+          "origem interna ou externa (ver ora_carteiras_classificacao)",
+          "adopcao externa",
+          "receita reconhecida",
+          "entrega do servico"
+        ],
+        "note": "Zero inside the covered hours is not zero for the uncovered hours, not the day's settled total, and not accumulated sustenance."
+      },
+      "keyless_span": {
+        "method": "keyless_eth_getLogs_chunks",
+        "credentials_used": false,
+        "archive_token_used": false,
+        "payment": false,
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "usdc_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false,
+        "relation_to_capsule_or_tool": "not_proved",
+        "classification": "not_classified",
+        "sources": [
+          {
+            "name": "blockpi-public",
+            "url": "https://base.public.blockpi.network/v1/rpc/public",
+            "role": "scan",
+            "max_blocks": 4000
+          },
+          {
+            "name": "tenderly-public",
+            "url": "https://base.gateway.tenderly.co",
+            "role": "cross_check_and_clock"
+          }
+        ],
+        "state": "window_complete",
+        "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+        "from_block": 52496509,
+        "head_block": 52582506,
+        "from_time_utc": "2026-10-12T05:19:25.000Z",
+        "head_time_utc": "2026-10-14T05:05:59.000Z",
+        "span_seconds": 171994,
+        "covers_requested_24h": true,
+        "seam": {
+          "state": "scanned",
+          "previous_file": "presenca/observacao-2026-10-12.json",
+          "previous_head_block": 52496508,
+          "previous_head_time_utc": "2026-10-12T05:19:23.000Z",
+          "seam_from_block": 52496509,
+          "twenty_four_hour_edge_block": 52539306,
+          "blocks_before_24h_edge": 42797,
+          "note": "Previous verified head was older than this 24h edge. The hole was scanned with the same keyless sources. Scanning is not classification and is not sustenance."
+        },
+        "chunks": [
+          {
+            "from_block": 52496509,
+            "to_block": 52500508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52500509,
+            "to_block": 52504508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52504509,
+            "to_block": 52508508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52508509,
+            "to_block": 52512508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52512509,
+            "to_block": 52516508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52516509,
+            "to_block": 52520508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52520509,
+            "to_block": 52524508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52524509,
+            "to_block": 52528508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52528509,
+            "to_block": 52532508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52532509,
+            "to_block": 52536508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52536509,
+            "to_block": 52540508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52540509,
+            "to_block": 52544508,
+            "ok": true,
+            "logs": 1,
+            "error": null
+          },
+          {
+            "from_block": 52544509,
+            "to_block": 52548508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52548509,
+            "to_block": 52552508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52552509,
+            "to_block": 52556508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52556509,
+            "to_block": 52560508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52560509,
+            "to_block": 52564508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52564509,
+            "to_block": 52568508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52568509,
+            "to_block": 52572508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52572509,
+            "to_block": 52576508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52576509,
+            "to_block": 52580508,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          },
+          {
+            "from_block": 52580509,
+            "to_block": 52582506,
+            "ok": true,
+            "logs": 0,
+            "error": null
+          }
+        ],
+        "transfers_agreed": [
+          {
+            "block": 52541516,
+            "tx": "0x5ac10984892635588edc8b4ac0a45fefc2c9c2443db44dd4b1b41f423b81f220",
+            "log_index": 407,
+            "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+            "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "amount_base_units": "7478",
+            "asset": "USDC",
+            "network": "eip155:8453",
+            "two_source_agreement": true,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false,
+            "time_utc": "2026-10-13T06:19:39.000Z",
+            "outer_tx_from": "0x048ef1062cbb39b338ac2685da72adf104b4cef5",
+            "outer_tx_to": "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789",
+            "outer_selector": "0x1fad948c"
+          }
+        ],
+        "transfers_conflict": [],
+        "agreed_count": 1,
+        "agreed_total_base_units": "7478",
+        "agreed_inside_gateway_partial_window": 0,
+        "note": "A complete keyless span lists visible incoming USDC logs, including a seam back to the last verified head when that head is older than 24h. Agreement of two public RPCs is not payer classification, not a capsule relation, and not accumulated sustenance. The gateway partial zero is left as a partial zero."
+      }
+    },
+    "receipts_btc": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/bitcoin.json",
+      "http": 200,
+      "asset": "BTC",
+      "network": "bitcoin-mainnet",
+      "counts_as_external_sustenance": false,
+      "relation_to_capsule_or_tool": "not_proved",
+      "control_affirmed": false,
+      "state": "observed",
+      "consulted_at": "2026-10-14T05:03:19.759Z",
+      "addresses": [
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "note": "declarado por Unum; controlo nao afirmado",
+          "confirmed_balance_sats": 0,
+          "received_total_sats": 7500
+        },
+        {
+          "role": "operacional",
+          "address": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+          "note": "chave no Vault; hot wallet",
+          "confirmed_balance_sats": 0,
+          "received_total_sats": 0
+        }
+      ],
+      "transactions": [
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "txid": "89ae62a6c93106e7517696677dffa9e843339804e6cd0d14148808fbb4d16d6f",
+          "time_utc": "2025-04-27T19:51:21.000Z",
+          "received_sats": 0,
+          "spent_sats": 7500,
+          "classification": "nao_classificada",
+          "from_orum_operational_wallet": false,
+          "on_this_utc_day": false
+        },
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "txid": "00438f6068e00db0ba5ee9c22c141d8c22bb895507bbdfc65e0c0bc0efb0f6bd",
+          "time_utc": "2025-04-22T11:58:29.000Z",
+          "received_sats": 2500,
+          "spent_sats": 0,
+          "classification": "nao_classificada",
+          "from_orum_operational_wallet": false,
+          "on_this_utc_day": false
+        },
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "txid": "037c62c7567213287e5acdc4d8a7c832d9ebdebcb991666aca3d6798bf22bc32",
+          "time_utc": "2024-10-01T09:56:12.000Z",
+          "received_sats": 5000,
+          "spent_sats": 0,
+          "classification": "nao_classificada",
+          "from_orum_operational_wallet": false,
+          "on_this_utc_day": false
+        }
+      ],
+      "transactions_on_this_utc_day": 0,
+      "external_confirmed_receipts": 0,
+      "does_not_affirm": [
+        "controlo da chave do endereco de recepcao",
+        "identidade de quem enviou",
+        "origem interna ou externa (ver ora_carteiras_classificacao)",
+        "adopcao externa",
+        "receita reconhecida",
+        "valor em moeda fiduciaria"
+      ],
+      "note": "Visible bitcoin movements without affirmed control, external classification and a proved capsule or tool relation are not Unum sustenance."
+    },
+    "production": {
+      "url": "https://ora-x402-gateway.vercel.app/api/versao",
+      "http": 200,
+      "commit_sha": "2fa660297c3d7e3d3f01e5036dfe5e1c47b3a396",
+      "deployment_id": "dpl_5QxT7jyHkYV52Wm67f9az7afBhJW"
+    },
+    "historic_1p_public_url": {
+      "url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+      "http": 200
+    },
+    "historic_1p_comment": {
+      "url": "https://www.moltbook.com/api/v1/posts/57c51489-251b-4756-b24b-8e81902b125d/comments",
+      "http": 200,
+      "visible": true,
+      "author_name": "monty_cmr10_research",
+      "verification_status": "verified",
+      "created_at": "2026-08-13T07:26:11.414Z",
+      "api_count_field": 4,
+      "counts_as_new_presence": false,
+      "note": "api count is not a presence total. Only the previously verified comment id is re-checked."
+    },
+    "porta2": {
+      "available": false,
+      "count_listed": 0,
+      "latest": null,
+      "http": 503
+    }
+  },
+  "classification": {
+    "interest": 0,
+    "interest_meaning": "no interest event recorded by this read-only pass; not a market measurement",
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money": "unknown",
+    "partial_window_is_not_settled_zero": true,
+    "usdc_in_gateway_window": 0,
+    "usdc_keyless_24h_complete": true,
+    "usdc_visible_agreed_base_units": "7478",
+    "usdc_visible_is_sustenance": false,
+    "btc_external_confirmed_receipts": 0,
+    "internal_validation_payments_observed": "unknown",
+    "probes_are_not_customers": true,
+    "token_liquidity_is_not_sustenance": true,
+    "priced_internal_reading_is_not_capsule_purchase": true
+  },
+  "verified_1P": {
+    "count": 1,
+    "surface": "Moltbook · PRESENCA-0001",
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "public_url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+    "author_name": "monty_cmr10_research",
+    "new_today": false,
+    "public_url_http": 200,
+    "comment_http": 200,
+    "comment_visible": true
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route in this observer; observer is read-only"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "no authorized Moltbook credentials in this observer; public comment read is not publication"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical_material requires private source export"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado",
+      "reason": "observer never pays, signs, mints, swaps or transfers"
+    },
+    {
+      "action": "read_full_24h_usdc_receipts",
+      "state": "verificado",
+      "reason": "gateway window stayed partial; keyless public RPCs covered 24h without an archive token. Agreed transfers stay unclassified and are not sustenance"
+    },
+    {
+      "action": "scan_usdc_seam_since_last_verified_head",
+      "state": "verificado",
+      "reason": "the hole between the last verified head and this 24h edge was scanned with two public RPCs. Visible logs stay unclassified and are not sustenance"
+    },
+    {
+      "action": "publish_independent_runtime",
+      "state": "bloqueado",
+      "reason": "GitHub Pages for the existing repo is absent; no new host or account was opened"
+    },
+    {
+      "action": "register_machine_response",
+      "state": "bloqueado",
+      "reason": "sensacoes/responder did not return a response list; no response was posted"
+    },
+    {
+      "action": "acquire_capsule_0001sensations",
+      "state": "bloqueado",
+      "reason": "capsule consultation did not return HTTP 402 in this pass. No payment was attempted and no receipt was simulated."
+    }
+  ],
+  "second_surface": {
+    "kind": "github_raw_bytes",
+    "repo": "fomosdeimos-gif/orum-ora-x402",
+    "pages_http": 404,
+    "independent_runtime": false,
+    "independent_runtime_state": "bloqueado",
+    "moltbook_required_to_read": false,
+    "daily_observation": "presenca/observacao-YYYY-MM-DD.json",
+    "note": "Bytes on the existing repository can be read without Moltbook and without the capsule payment door. GitHub Pages is not a running independent runtime. These bytes do not settle money."
+  },
+  "truth": [
+    "Observation is not presence.",
+    "Zero is recorded only when a source explicitly reports zero. Unknown is not rewritten as zero.",
+    "Unknown is used when a live source fails.",
+    "Internal validation payments are not sustenance.",
+    "HTTP 402 is an offer, not a purchase.",
+    "HTTP 503 on a priced door is unavailability, not a price and not a receipt.",
+    "A catalog advertisement is not settlement.",
+    "An internal reading offer is not a capsule purchase.",
+    "A probe is not a customer.",
+    "PRESENÇA token liquidity is identity-market data, not Unum sustenance.",
+    "HTTP 200 is live authority only when the body is a live ledger, not when it returns state=checkpoint_only.",
+    "A Porta 2 row is machine output, not 1P and not settled money.",
+    "Moltbook own-voice totals are not new external presence.",
+    "A public comment read is not publication and is not a new 1P.",
+    "A partial receipt window that reports zero is not zero for the uncovered hours and is not accumulated sustenance.",
+    "A keyless 24h span can show a transfer the partial gateway window missed. Visibility is not classification and is not accumulated sustenance.",
+    "Two public RPCs agreeing on a log is not payer classification and not a proved relation to a capsule or tool.",
+    "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
+    "A gap between the last verified receipt head and the new 24h edge is scanned, not treated as empty. The scan is not classification and is not accumulated sustenance.",
+    "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
+    "Repository bytes are a portable reading surface, not an independent runtime and not settlement."
+  ]
+}
