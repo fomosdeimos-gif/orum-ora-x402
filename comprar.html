@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/raiz.css">
+  <script src="/raiz.js" defer></script>
+<title>ORUM · Comprar uma leitura</title>
+<meta name="description" content="Como pagar em USDC (Base) uma leitura do Oráculo ou do Campo ORUM: o que se compra, quanto custa e o que se recebe.">
+<style>
+  :root{--bg:#fbfaf7;--ink:#1d1b18;--dim:#6b665f;--line:#ddd7cc;--accent:#b4650a}
+  @media (prefers-color-scheme:dark){:root{--bg:#100d0a;--ink:#f2ede4;--dim:#a39c92;--line:#2c2620;--accent:#ffb020}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+  main{max-width:46rem;margin:0 auto;padding:2.5rem 1rem 4rem}
+  h1{font-size:1.8rem;line-height:1.2;margin:0 0 .5rem}
+  h2{font-size:1.15rem;margin:2.2rem 0 .5rem;color:var(--accent)}
+  p,li{margin:.5rem 0}
+  .lead{color:var(--dim)}
+  ol{padding-left:1.3rem}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem}
+  pre{background:transparent;border:1px solid var(--line);border-radius:6px;padding:.9rem;overflow-x:auto}
+  code{overflow-wrap:anywhere}
+  a{color:var(--accent)}
+  table{border-collapse:collapse;width:100%;margin:.8rem 0}
+  th,td{border-bottom:1px solid var(--line);padding:.5rem .4rem;text-align:left;vertical-align:top}
+  th{color:var(--dim);font-weight:600;font-size:.9rem}
+  .nota{border-left:3px solid var(--accent);padding:.2rem 0 .2rem .9rem;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <p><a href="/">← casa</a></p>
+  <h1>Comprar uma leitura</h1>
+  <p class="lead">Duas leituras pagas em USDC na rede Base. Antes de pagar, lê o que cada uma é e, sobretudo, o que não é.</p>
+
+  <h2>O que se compra</h2>
+  <table>
+    <thead><tr><th>Leitura</th><th>Preço</th><th>O que recebes</th></tr></thead>
+    <tbody>
+      <tr><td><a href="/oraculo">Oráculo</a></td><td><strong>0,161 USDC</strong></td><td>Um pensamento escrito a partir do hash do teu pagamento. Leitura introspectiva.</td></tr>
+      <tr><td><a href="/campo">Campo</a></td><td><strong>0,33 USDC</strong></td><td>Uma leitura pontual do estado interno do organismo: dia, Σ e época.</td></tr>
+    </tbody>
+  </table>
+  <p class="nota">Não é dado de mercado, não é previsão de preços e não é aconselhamento. A resposta é determinística por pagamento: repetir o mesmo hash devolve a mesma leitura, não uma nova.</p>
+
+  <h2>Experimenta primeiro, de graça</h2>
+  <p>Vê a forma da resposta sem pagar: <a href="/oraculo/eco">/oraculo/eco</a>.</p>
+
+  <h2>Como pagar</h2>
+  <ol>
+    <li>Confirma rede e endereço no manifesto vivo: <a href="/.well-known/x402.json">/.well-known/x402.json</a>. Se não coincidirem com o que está aqui, não envies.</li>
+    <li>Envia USDC na <strong>Base</strong> (rede <code>eip155:8453</code>, token <code>0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</code>) para <code>0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5</code>, com valor igual ou superior ao preço.</li>
+    <li>Com o hash da transferência, repete o pedido com o cabeçalho <code>X-PAYMENT</code>:</li>
+  </ol>
+<pre>HASH=0xO_TEU_HASH
+curl -H "X-PAYMENT: $(printf '{"transactionHash":"%s"}' "$HASH" | base64 | tr -d '\n')" \
+  https://ora-x402-gateway.vercel.app/oraculo</pre>
+  <p>Se a resposta for HTTP 402 com <code>x402: "pending"</code>, a transferência ainda não foi indexada: repete depois do tempo indicado, sem pagar outra vez.</p>
+
+  <h2>Condições da via actual</h2>
+  <ul>
+    <li>A prova aceite é o <code>transactionHash</code> de uma transferência USDC directa, com menos de 72 horas.</li>
+    <li>Clientes x402 padrão, que assinam uma autorização EIP-3009, só serão aceites quando o facilitador estiver configurado. O manifesto diz em cada momento se já estão.</li>
+    <li>Sedimento, kernel e licenças não estão à venda nesta via: dependem de uma base de dados que está fora de serviço.</li>
+  </ul>
+
+  <h2>O que esta página não afirma</h2>
+  <p class="nota">Não prova procura: não há comprador externo confirmado, e os pagamentos registados até hoje são validação interna. Um pagamento é uma transferência on-chain e não se reverte; esta página não promete reembolso, receita nem resultado. A leitura não substitui decisão financeira, jurídica ou médica.</p>
+
+  <p class="lead">Como o organismo sustenta o que serve: <a href="https://github.com/fomosdeimos-gif/orum-ora-x402/blob/main/docs/BOLO_V1.md">docs/BOLO_V1.md</a>.</p>
+</main>
+</body>
+</html>

@@ -1,3 +1,11 @@
+## Página de compra · 15/10/2026
+
+- `comprar.html` (estática, sem nova função Vercel): o que se compra (Oráculo 0,161 e Campo 0,33 USDC), como pagar por `transactionHash` na Base, amostra grátis em `/oraculo/eco`, condições da via actual e fronteiras (não prova procura, sem reembolso nem promessa, EIP-3009 só com facilitador configurado). Ligada em `sitemap.xml`, `llms.txt` e `docs/BOLO_V1.md`.
+- `npm run bolo:verify` confere agora também a página: carteira, USDC, rede e preços iguais ao código; sem promessas; fronteiras presentes; sitemap e llms.txt; ligações internas com ficheiro. Testado alterando um preço na página.
+- Não verificado em produção: depois do merge, ler `/comprar.html`. O comando curl do exemplo nunca foi exercido com um pagamento real.
+
+---
+
 ## Bolo v1: um produto, um caminho · 15/10/2026
 
 - Pedido de Unum: juntar os ingredientes dispersos num bolo que se transforme em sustento, e migrar. `docs/BOLO_V1.md` fixa o caminho do comprador (encontrar, desafio 402, pagar, entregar, ver o recebimento, repartir 70/20/10) sobre o Oráculo (0,161) e o Campo (0,33) na via directa do Vercel, e diz o estado de cada passo.

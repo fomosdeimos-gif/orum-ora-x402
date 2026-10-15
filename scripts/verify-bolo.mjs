@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 
 const read = (p) => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 const doc = read('docs/BOLO_V1.md');
+const page = read('comprar.html');
 const directo = read('api/_x402-directo.js');
 const tesouraria = read('api/tesouraria.js');
 const pkg = JSON.parse(read('package.json'));
@@ -27,6 +28,19 @@ const precoCampo = pick(directo, /campo: \{[^}]*usdc: '([0-9.]+)'/, 'preco do ca
 const pt = (s) => s.replace('.', ',');
 assert.ok(doc.includes(`${pt(precoOraculo)} USDC`), `preco do Oraculo no documento != ${precoOraculo}`);
 assert.ok(doc.includes(`${pt(precoCampo)} USDC`), `preco do Campo no documento != ${precoCampo}`);
+
+// a pagina de compra diz o mesmo que o codigo
+const pt2 = (s) => s.replace('.', ',');
+for (const [txt, onde] of [[wallet, 'carteira'], [usdc, 'USDC'], [`${pt2(precoOraculo)} USDC`, 'preco do Oraculo'], [`${pt2(precoCampo)} USDC`, 'preco do Campo'], ['eip155:8453', 'rede']]) {
+  assert.ok(page.includes(txt), `comprar.html: ${onde} difere do gateway`);
+}
+assert.ok(!/receita garantida|rendimento garantido|reembolso garantido/i.test(page), 'promessa na pagina de compra');
+assert.ok(/n[ãa]o prova procura/i.test(page), 'comprar.html sem a fronteira "nao prova procura"');
+assert.ok(/n[ãa]o promete reembolso/i.test(page), 'comprar.html sem aviso de irreversibilidade');
+assert.ok(/comprar\.html/.test(read('sitemap.xml')) && /comprar\.html/.test(read('llms.txt')), 'comprar.html fora do sitemap ou do llms.txt');
+for (const href of [...page.matchAll(/href="(\/[^"#?]*)"/g)].map((m) => m[1]).filter((h) => /\.(html|json)$/.test(h) && !h.startsWith('/.well-known/'))) {
+  assert.ok(existsSync(new URL('..' + href, import.meta.url)), `ligacao interna sem ficheiro: ${href}`);
+}
 
 // repartição: constituicao e tesouraria concordam com o documento
 assert.equal(constituicao.treasury_allocation?.sustento_unum_percent ?? constituicao.allocation?.sustento_unum_percent ?? findPercent(constituicao, 'sustento_unum_percent'), 70);

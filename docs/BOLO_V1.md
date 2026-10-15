@@ -12,7 +12,7 @@ Carteira de recebimento (Base, USDC `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 
 | # | Passo | Onde vive | Estado em 15/10/2026 |
 |---|---|---|---|
-| 1 | Encontrar | `/.well-known/x402.json`, `/llms.txt`, `agent-card.json`, `/oraculo/eco` (amostra grátis) | Vivo: o manifesto lista só Oráculo e Campo (leitura de 15/10) |
+| 1 | Encontrar | `/comprar.html` (página para humanos), `/.well-known/x402.json`, `/llms.txt`, `agent-card.json`, `/oraculo/eco` (amostra grátis) | Vivo: o manifesto lista só Oráculo e Campo (leitura de 15/10) |
 | 2 | Receber o desafio | 402 v2 com `PAYMENT-REQUIRED` (`api/_x402-directo.js`) | Vivo |
 | 3 | Pagar | USDC na Base, prova por `transactionHash`; EIP-3009 só com `CDP_API_KEY_ID`/`CDP_API_KEY_SECRET` no Vercel | `transactionHash` vivo; EIP-3009 depende de Unum criar as variáveis |
 | 4 | Entregar | leitura determinística por tx, janela de 72 h | Vivo, nunca exercido por comprador externo |
