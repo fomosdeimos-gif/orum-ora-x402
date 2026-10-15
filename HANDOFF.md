@@ -1,3 +1,15 @@
+## Bolo v1: um produto, um caminho · 15/10/2026
+
+- Pedido de Unum: juntar os ingredientes dispersos num bolo que se transforme em sustento, e migrar. `docs/BOLO_V1.md` fixa o caminho do comprador (encontrar, desafio 402, pagar, entregar, ver o recebimento, repartir 70/20/10) sobre o Oráculo (0,161) e o Campo (0,33) na via directa do Vercel, e diz o estado de cada passo.
+- Leitura viva de 15/10 (via conector Vercel; o sandbox não tem saída para o domínio): produção em 3ebf097 = main; `/.well-known/x402.json` lista só Oráculo e Campo (`via: vercel-directa`); `/economia/recebimentos.json?horas=72` cobriu só 5 h das 72 h pedidas (RPC públicos limitados), 0 transferências nessa parte.
+- `npm run bolo:verify` (sem rede): carteira, USDC, preços e repartição do texto coincidem com `api/_x402-directo.js`, `api/tesouraria.js` e `economia/constituicao-v2.json`; falha se o texto prometer receita ou omitir "não prova procura" (testado alterando um preço).
+- `api/_recebimentos.js`: numa leitura parcial, `cobertura.tentativas` passa a incluir também porque a outra fonte (Blockscout) não serviu, em vez de a calar. Só diagnóstico; não altera valores nem a escolha da fonte. Não verificado em produção: o sandbox não alcança o Blockscout.
+- Migração: Oráculo e Campo já estão fora do Supabase. Licenças NÃO foram migradas: continuam a precisar de Unum (bytes das 107 fotografias, token do Blob privado, segredos). Variáveis CDP no Vercel (EIP-3009) também só Unum.
+- Nenhuma transferência, assinatura, compra ou alteração de carteira, preço ou limite. Nenhuma procura provada.
+- Próximo passo: depois do merge, reler `/economia/recebimentos.json?horas=72` e ver o motivo do indexador em `cobertura.tentativas`; com ele, escolher o RPC/indexador que dá cobertura completa.
+
+---
+
 ## Disponibilidade de integridade, testemunho e certificado ORO no cartão · 13/10/2026
 
 - Leitura a 13/10/2026: `/integridade` e `/testemunho` respondem 503 `upstream_payment_unavailable`; a função `ora-cdp-diagnostico` (certificado ORO) devolve a mensagem da plataforma `exceed_cached_egress_quota` (HTTP 402 que não é um desafio x402). Mesma causa raiz das outras quatro.

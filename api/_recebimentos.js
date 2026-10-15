@@ -185,7 +185,14 @@ async function recebimentos(deps, horas, agora) {
   // ordem de preferência: leitura completa (cadeia directa, depois Blockscout); só então a parcial
   const ok = fontes.filter((f) => f.status === 'fulfilled').map((f) => f.value);
   const boa = ok.find((v) => !v.cobertura || v.cobertura.completa) || ok[0];
-  if (boa) return formatar(boa, horas, agora);
+  if (boa) {
+    // leitura parcial: mostrar tambem porque a outra fonte nao serviu, em vez de a calar
+    if (boa.cobertura && !boa.cobertura.completa) {
+      const falhadas = fontes.filter((f) => f.status === 'rejected').flatMap((f) => f.reason.tentativas || [{ erro: curto(f.reason) }]);
+      boa.cobertura.tentativas = [...(boa.cobertura.tentativas || []), ...falhadas];
+    }
+    return formatar(boa, horas, agora);
+  }
   const err = new Error('nenhuma fonte serviu');
   err.tentativas = fontes.flatMap((f, i) => f.reason.tentativas || [{ fonte: ['rpc', 'indexador'][i], erro: curto(f.reason) }]);
   throw err;
