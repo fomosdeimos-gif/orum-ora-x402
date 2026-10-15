@@ -180,7 +180,7 @@ function formatar(fonte, horas, agora) {
 }
 
 async function recebimentos(deps, horas, agora) {
-  const limite = Date.now() + PRAZO_MS;
+  const limite = Date.now() + (deps.prazoMs || PRAZO_MS);
   const fontes = await Promise.allSettled([viaRpc(deps, horas, limite), viaIndexador(deps, horas, agora, limite)]);
   // ordem de preferência: leitura completa (cadeia directa, depois Blockscout); só então a parcial
   const ok = fontes.filter((f) => f.status === 'fulfilled').map((f) => f.value);
@@ -216,3 +216,5 @@ function createHandler({ call = chamarRpc, fetchFn = (...a) => fetch(...a), urls
 module.exports = createHandler();
 module.exports.createHandler = createHandler;
 module.exports.recebimentos = recebimentos;
+// leitor com as fontes por defeito (RPC publico ou BASE_RPC_URL, e indexador), para outros modulos
+module.exports.lerPorDefeito = (horas, prazoMs) => recebimentos({ call: chamarRpc, fetchFn: (...a) => fetch(...a), urls: listaRpc(), pausa: 120, prazoMs }, Math.min(Math.max(1, Math.floor(horas) || 1), MAX_HORAS), Date.now());

@@ -43,4 +43,39 @@ assert.equal(body.operating_permission.monthly_proposal_ceiling_usdc, 2);
 assert.equal(body.operating_permission.monthly_effective_transfer_limit_usdc, 0);
 assert.equal(body.next_action, 'prepare_bounded_continuity_proposal');
 
+// Base em baixo: a cadeia e observada mas nunca alocada nem contada como externa
+const run = async (fetchImpl, chain) => {
+  global.fetch = fetchImpl;
+  let code; let out; let chamadas = 0;
+  const res = { setHeader() {}, status(c) { code = c; return this; }, end(v) { out = JSON.parse(v); } };
+  await handler.createHandler({ chain: async (...a) => { chamadas += 1; return chain(...a); } })({}, res);
+  return { code, out, chamadas };
+};
+const baseDown = async () => ({ ok: false, status: 402, json: async () => ({}) });
+let r = await run(baseDown, async () => ({ n_transferencias: 2, total_usdc: 0.5, cobertura: { completa: false, horas_cobertas: 5, motivo: 'archive' } }));
+assert.equal(r.code, 503);
+assert.equal(r.out.state, 'unknown');
+assert.equal(r.out.allocation, null);
+assert.equal(r.out.evidence.external_confirmed_usdc, null);
+assert.equal(r.out.evidence.chain_observation.classification, 'unclassified');
+assert.equal(r.out.evidence.chain_observation.counted_as_external, false);
+assert.equal(r.out.evidence.chain_observation.coverage.complete, false);
+assert.equal(r.out.evidence.chain_observation.transfers_observed, 2);
+assert.equal(r.out.next_action, 'classify_chain_transfers_before_allocating');
+assert.equal(r.out.operating_permission.monthly_proposal_ceiling_usdc, null);
+assert.equal(r.out.operating_permission.monthly_effective_transfer_limit_usdc, 0);
+assert.deepEqual(r.out.financial_effects, { payment: false, signature: false, transfer: false, trade: false, debt: false });
+r = await run(baseDown, async () => ({ n_transferencias: 0, total_usdc: 0, cobertura: { completa: true, horas_cobertas: 24 } }));
+assert.equal(r.out.next_action, 'stop_until_source_recovers');
+assert.equal(r.out.allocation, null);
+r = await run(baseDown, async () => { throw new Error('nenhuma fonte serviu'); });
+assert.equal(r.code, 503);
+assert.equal(r.out.evidence.chain_observation.available, false);
+assert.equal(r.out.next_action, 'stop_until_source_recovers');
+// base viva: a cadeia nem e lida
+r = await run(async () => ({ ok: true, json: async () => [{ criado_em: '2026-10-15T00:00:00Z', pagamentos: 21, compradores_externos: 0 }] }), async () => ({}));
+assert.equal(r.code, 200);
+assert.equal(r.chamadas, 0);
+assert.equal(r.out.evidence.chain_observation, undefined);
+
 console.log(JSON.stringify({ verified: true, state: body.state, allocation: body.allocation, effective_transfer_usdc: 0 }));
