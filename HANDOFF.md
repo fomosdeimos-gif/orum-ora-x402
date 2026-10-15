@@ -1,3 +1,19 @@
+## Diagnóstico do 403 nos recebimentos · 15/10/2026
+
+- Leitura em produção (deploy 8b4c5a1) de `/economia/recebimentos.json?horas=72`: `cobertura.completa: false`, 5 h cobertas das 72 pedidas. `cobertura.tentativas` mostra agora porque cada fonte falhou:
+  - `mainnet.base.org`: "request limit reached" (9000, 2000 e 500 blocos);
+  - `base.gateway.tenderly.co`: "invalid params" (9000);
+  - `base.drpc.org`: intervalos acima de 10000 blocos não suportados no plano gratuito (9000, 2000, 500);
+  - `1rpc.io/base`: `eth_getLogs` limitado a 50 blocos;
+  - `base.blockscout.com/api/v2` (indexador): **HTTP 403** quando o pedido sai do Vercel;
+  - `base-rpc.publicnode.com`: serviu só as últimas 5 h ("Archive requests require a personal token").
+- Conclusão: nenhuma fonte pública sem chave cobre 72 h, e o Blockscout recusa este tráfego. Uma transferência com mais de 5 h pode ficar fora da janela lida; a resposta já o declara (`aviso`, `cobertura`), por isso o valor lido nunca é apresentado como total.
+- Não foi testado se o 403 depende do `user-agent` ou do IP de saída do Vercel: o sandbox não alcança o Blockscout e o conector só abre URLs Vercel. Não alterei código.
+- Para desbloquear (só Unum): uma chave gratuita de RPC ou de indexador com `eth_getLogs` alargado (por exemplo Alchemy, Blockscout PRO, Basescan), criada como variável *Sensitive* no projecto Vercel, como as variáveis CDP. Sem chave, a alternativa é reduzir a janela anunciada a 5 h na página e no manifesto.
+- Próximo passo: com a chave, ler a janela inteira por essa fonte (primeira da lista), repetir `recebimentos:verify` e reler o endpoint em produção; `cobertura.completa` deve passar a `true`.
+
+---
+
 ## Página de compra · 15/10/2026
 
 - `comprar.html` (estática, sem nova função Vercel): o que se compra (Oráculo 0,161 e Campo 0,33 USDC), como pagar por `transactionHash` na Base, amostra grátis em `/oraculo/eco`, condições da via actual e fronteiras (não prova procura, sem reembolso nem promessa, EIP-3009 só com facilitador configurado). Ligada em `sitemap.xml`, `llms.txt` e `docs/BOLO_V1.md`.
