@@ -1,3 +1,10 @@
+## Regra de merge no CLAUDE.md · 15/10/2026
+
+- Com o aval de Unum: `CLAUDE.md` na raiz regista que a ORA faz o merge dos seus PRs sem perguntar quando estiverem prontos (CI verde ou sem checks, sem conflitos, sem revisões por resolver), só neste repositório, e que o merge não autoriza transferências, assinaturas, carteiras, preços, limites, segredos nem variáveis do Vercel. Acrescenta a ordem de edição/continuidade, as regras de verdade e os limites da plataforma já seguidos.
+- Sem código alterado. Primeiro PR a que a regra se aplica: o que a introduz.
+
+---
+
 ## Diagnóstico do 403 nos recebimentos · 15/10/2026
 
 - Leitura em produção (deploy 8b4c5a1) de `/economia/recebimentos.json?horas=72`: `cobertura.completa: false`, 5 h cobertas das 72 pedidas. `cobertura.tentativas` mostra agora porque cada fonte falhou:
