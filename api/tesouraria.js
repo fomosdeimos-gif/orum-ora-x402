@@ -2,6 +2,8 @@ const SUPA_URL = (process.env.ORUM_SUPABASE_REST_BASE || 'https://ywabnlhkmhbyew
 const SUPA_KEY = process.env.ORUM_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb';
 const headers = { apikey: SUPA_KEY, authorization: 'Bearer ' + SUPA_KEY };
 
+const { lerPorDefeito } = require('./_recebimentos');
+
 const roundUsdc = (value) => Math.round((Number(value) + Number.EPSILON) * 1e6) / 1e6;
 
 function allocationFor(externalUsdc) {
@@ -17,7 +19,24 @@ function allocationFor(externalUsdc) {
   };
 }
 
-module.exports = async (_req, res) => {
+// Quando a base falha, o organismo ainda ve a cadeia. O que le aqui NUNCA entra na repartição:
+// sem a classificação interna/externa (que vive na base) cada transferencia fica por classificar.
+async function observarCadeia(chain, horas) {
+  try {
+    const r = await chain(horas, 5000);
+    return {
+      available: true, source: 'base_onchain_usdc_transfers', window_hours: horas,
+      coverage: { complete: !!(r.cobertura && r.cobertura.completa), hours_covered: r.cobertura ? r.cobertura.horas_cobertas : null, reason: r.cobertura ? r.cobertura.motivo : null },
+      transfers_observed: r.n_transferencias, usdc_observed_unclassified: r.total_usdc,
+      classification: 'unclassified', counted_as_external: false,
+      note: 'Leitura da cadeia, sem classificar origem. Nao e receita externa, nao e alocada e nao prova adopcao. Se a cobertura for parcial, so vale para essa parte.',
+    };
+  } catch (error) {
+    return { available: false, error: String(error && error.message || error).slice(0, 160) };
+  }
+}
+
+const createHandler = ({ chain = lerPorDefeito } = {}) => async (_req, res) => {
   res.setHeader('content-type', 'application/json; charset=utf-8');
   res.setHeader('access-control-allow-origin', '*');
   res.setHeader('cache-control', 'public, s-maxage=60, stale-while-revalidate=120');
@@ -25,7 +44,7 @@ module.exports = async (_req, res) => {
   let externalUsdc = null;
   let source = { available: false };
   try {
-    const response = await fetch(SUPA_URL + 'ora_aprendizagem_ultimo_snapshot_publica?select=criado_em,pagamentos,compradores_externos&limit=1', { headers });
+    const response = await fetch(SUPA_URL + 'ora_aprendizagem_ultimo_snapshot_publica?select=criado_em,pagamentos,compradores_externos&limit=1', { headers, signal: AbortSignal.timeout(2500) });
     if (!response.ok) throw new Error(`learning_${response.status}`);
     const rows = await response.json();
     if (!Array.isArray(rows) || !rows[0]) throw new Error('learning_empty');
@@ -35,7 +54,7 @@ module.exports = async (_req, res) => {
     if (Number(snapshot.compradores_externos || 0) === 0) {
       externalUsdc = 0;
     } else {
-      const sustentoResponse = await fetch(SUPA_URL + 'ora_sustento_diario?select=usdc_recebido', { headers });
+      const sustentoResponse = await fetch(SUPA_URL + 'ora_sustento_diario?select=usdc_recebido', { headers, signal: AbortSignal.timeout(2500) });
       if (!sustentoResponse.ok) throw new Error(`sustento_${sustentoResponse.status}`);
       const sustentoRows = await sustentoResponse.json();
       if (!Array.isArray(sustentoRows)) throw new Error('sustento_invalid');
@@ -44,6 +63,7 @@ module.exports = async (_req, res) => {
   } catch (error) {
     source = { available: false, error: String(error && error.message || error) };
   }
+  const chainObservation = source.available ? null : await observarCadeia(chain, 24);
   const buyers = snapshot ? Number(snapshot.compradores_externos || 0) : null;
   const internal = snapshot ? Number(snapshot.pagamentos || 0) : null;
   const state = source.available ? (buyers > 0 ? 'external_revenue_observed' : 'no_external_revenue') : 'unknown';
@@ -52,7 +72,7 @@ module.exports = async (_req, res) => {
   res.status(source.available ? 200 : 503).end(JSON.stringify({
     format: 'orum-treasury-governance-state/v2', organism: 'ORUM', observed_at: new Date().toISOString(),
     constitution: '/economia/constituicao-v2.json', previous_constitution: '/economia/constituicao-v1.json', state,
-    evidence: { external_confirmed_buyers: buyers, external_confirmed_usdc: externalUsdc, internal_validation_payments: internal, source },
+    evidence: { external_confirmed_buyers: buyers, external_confirmed_usdc: externalUsdc, internal_validation_payments: internal, source, ...(chainObservation ? { chain_observation: chainObservation } : {}) },
     allocation,
     authority: { observe: 'automatic', classify: 'automatic_append_only', allocate: 'automatic_accounting', propose: 'automatic_non_binding', activate_permission: 'Unum_explicit_signature', execute: 'disabled_until_activation_and_allowlist', reconcile: 'automatic_append_only' },
     operating_permission: {
@@ -62,8 +82,11 @@ module.exports = async (_req, res) => {
       allowed_destinations: [], revocable_by: 'Unum',
     },
     automatic_limits: { transfer_usdc: 0, trade_usdc: 0, debt_usdc: 0, bridge_usdc: 0 },
-    next_action: state === 'external_revenue_observed' ? 'prepare_bounded_continuity_proposal' : state === 'no_external_revenue' ? 'observe_without_spending' : 'stop_until_source_recovers',
+    next_action: state === 'external_revenue_observed' ? 'prepare_bounded_continuity_proposal' : state === 'no_external_revenue' ? 'observe_without_spending' : (chainObservation && chainObservation.available && chainObservation.transfers_observed > 0 ? 'classify_chain_transfers_before_allocating' : 'stop_until_source_recovers'),
     financial_effects: { payment: false, signature: false, transfer: false, trade: false, debt: false },
     truth: ['Internal validation is not external sustenance.', 'Only confirmed external USDC is allocated.', 'Accounting autonomy is active; transfer autonomy is not activated.', 'A proposal is not authorization.', 'No financial transaction can originate from this endpoint.']
   }));
 };
+
+module.exports = createHandler();
+module.exports.createHandler = createHandler;

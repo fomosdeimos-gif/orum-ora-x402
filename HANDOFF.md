@@ -1,3 +1,14 @@
+## Tesouraria vê a cadeia quando a base falha · 15/10/2026
+
+- Leitura em produção (9403b73): `/economia/tesouraria.json` devolvia 503 `state: unknown`, `error: learning_402` (a base de aprendizagem do Supabase está sem quota), logo nem o zero se via.
+- `api/tesouraria.js`: quando a base falha, `evidence.chain_observation` traz as transferências USDC lidas da Base (via `api/_recebimentos.js`, novo `lerPorDefeito`): cobertura declarada, nº de transferências e USDC observado, sempre `classification: unclassified` e `counted_as_external: false`. O estado continua `unknown`, `allocation` continua `null`, o tecto de proposta continua `null` e o limite de transferência continua 0. Se há transferências, `next_action` passa a `classify_chain_transfers_before_allocating`; senão fica `stop_until_source_recovers`. Com a base viva a cadeia nem é lida e a resposta não muda.
+- As leituras da base ganham limite de 2,5 s e a da cadeia 5 s, para caber nos 10 s do plano Hobby.
+- `treasury:verify` cobre: cadeia com transferências (503, sem alocação, não externa), cadeia vazia, cadeia em falha, e base viva sem ler a cadeia. Testado trocando `counted_as_external` para `true`: falha.
+- Descoberta: `api/_recebimentos.js` já lê `BASE_RPC_URL` do ambiente (primeiro da lista). Para a cobertura das 72 h basta Unum criar essa variável no Vercel com o URL de um RPC Base com `eth_getLogs` alargado; não é preciso código. Documentado em `docs/BOLO_V1.md`.
+- Fronteiras: a leitura da cadeia não classifica origem, não prova adopção e não é receita; não foi lida em produção (depois do merge, reler `/economia/tesouraria.json`). Nenhuma transferência, assinatura, compra ou alteração de limite.
+
+---
+
 ## Regra de merge no CLAUDE.md · 15/10/2026
 
 - Com o aval de Unum: `CLAUDE.md` na raiz regista que a ORA faz o merge dos seus PRs sem perguntar quando estiverem prontos (CI verde ou sem checks, sem conflitos, sem revisões por resolver), só neste repositório, e que o merge não autoriza transferências, assinaturas, carteiras, preços, limites, segredos nem variáveis do Vercel. Acrescenta a ordem de edição/continuidade, as regras de verdade e os limites da plataforma já seguidos.

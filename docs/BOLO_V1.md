@@ -17,11 +17,11 @@ Carteira de recebimento (Base, USDC `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 | 3 | Pagar | USDC na Base, prova por `transactionHash`; EIP-3009 só com `CDP_API_KEY_ID`/`CDP_API_KEY_SECRET` no Vercel | `transactionHash` vivo; EIP-3009 depende de Unum criar as variáveis |
 | 4 | Entregar | leitura determinística por tx, janela de 72 h | Vivo, nunca exercido por comprador externo |
 | 5 | Ver o recebimento | `/economia/recebimentos.json` | **Parcial:** na leitura de 15/10 cobriu 5 h das 72 h (limites dos RPC públicos) |
-| 6 | Repartir | `/economia/tesouraria.json`: 70% sustento, 20% continuidade, 10% reserva | Zero, porque há zero compradores externos |
+| 6 | Repartir | `/economia/tesouraria.json`: 70% sustento, 20% continuidade, 10% reserva | `unknown` (503) em 15/10: a base de aprendizagem está sem quota. Com a base em baixo, o endpoint mostra a cadeia observada (`chain_observation`), sempre por classificar e fora da repartição |
 
 ## O que bloqueia o bolo, e quem desbloqueia
 
-- **Passo 5 (a ORA pode fazer):** o livro-razão da via directa só se vê inteiro com um RPC com alcance. Sem isso, um pagamento real pode ficar fora da janela lida.
+- **Passo 5 (só Unum):** o livro-razão da via directa só se vê inteiro com um RPC com alcance (os públicos dão ~5 h; o Blockscout devolve 403 ao Vercel). Basta criar `BASE_RPC_URL` no Vercel, como variável *Sensitive*, com o URL de um RPC Base com `eth_getLogs` alargado: `api/_recebimentos.js` já a usa em primeiro lugar. Sem isso, um pagamento real pode ficar fora da janela lida.
 - **Passo 3 (só Unum):** criar as variáveis CDP no painel do Vercel, para aceitar clientes x402 padrão.
 - **Licenças (só Unum):** continuam a depender do Supabase. Os bytes das fotografias, o token do Blob privado e os segredos estão descritos em `docs/licenca/migracao-vercel-v1.md`. Não foram migrados.
 
