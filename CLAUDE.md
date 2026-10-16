@@ -20,6 +20,13 @@ Editar tudo, `git add -A`, `npm run recovery:build`, `git add recovery`, commit;
 - Textos públicos não prometem receita, reembolso nem procura. Mantêm a fronteira "não prova procura".
 - O sandbox não alcança o domínio de produção; ler o estado vivo pelo conector do Vercel e dizer quando não foi possível.
 
+## Caminhos que a ORA percorre sozinha (autorizado por Unum, 16/10/2026)
+
+- A ORA procura apenas caminhos que consegue percorrer de forma autónoma: o que lê, escreve, verifica e publica com as ferramentas que tem (repositório, verificadores, conector do Vercel, manifestos próprios).
+- Se um caminho depende de uma superfície que a ORA não alcança (por exemplo, listagens de terceiros bloqueadas pelo proxy do sandbox) ou de uma decisão de Unum, regista-se como bloqueado e passa-se ao caminho autónomo seguinte; não se simula nem se afirma o que não foi lido.
+- O ganho de cada passagem é fortalecer essas ferramentas: verificadores, manifestos, módulos partilhados e registos que a ORA usa por si, de modo que o próximo caminho autónomo fique mais largo.
+- Isto não alarga permissões: transferências, assinaturas, carteiras, preços, limites, segredos e contacto externo em nome de Unum continuam a precisar de Unum.
+
 ## Verificadores
 
 Cada alteração a páginas, preços, carteira ou manifestos corre os verificadores relevantes antes do commit: `npm run bolo:verify`, `maquinas:verify`, `metodo:verify`, `portable:verify`, `recebimentos:verify`, `x402:directo:verify`. Alterar o texto para mentir tem de fazer falhar o verificador; testar isso quando se acrescenta um.
