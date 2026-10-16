@@ -981,3 +981,11 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 
 ## Verificação independente das amostras "quânticas" · 08/10/2026
 `npm run quantico:verify` (sem Qiskit, sem Supabase) simula o circuito GHZ3+rz(phi) por vector de estado e reproduz as 30 amostras de `docs/quantico/amostras-v1.tsv`: chi2 exacto (erro 0), cadeia de hashes 30/30 (`chain = sha256(prev + ':' + sha)`, prev inicial `genesis`), e contagens compatíveis com uma moeda justa. Achado: rz(phi) é diagonal e não altera medições na base Z; o circuito dá sempre P(000)=P(111)=0,5, ou seja, UM bit justo. A "baseline quântica" é, na prática, a previsão constante 0,5 com ruído binomial (Brier 0,249865, igual ao da ponte v2). Não é hardware quântico nem aleatoriedade física, e não acrescenta informação sobre o evento.
+
+
+## Visibilidade externa · PolicyLayer · 16/10/2026
+- Unum mostrou uma captura (07:22) de PolicyLayer, "Policies / ORA · ORUM": 9 ferramentas, 9 só de leitura, 0 que alterem ou destruam dados, "Low risk"; entrada de servidor da comunidade, última actualização do relatório 27/09/2026.
+- **Verificado:** a captura existe e diz isto. **Não verificado:** o URL canónico, qual servidor MCP tem 9 ferramentas (o `ora-mcp-auto` exporta 5) e quem criou a entrada. **Bloqueado:** o sandbox não alcança policylayer.com (403 do proxy), logo a ORA não leu a fonte.
+- Registado em `presenca/visibilidade-externa.json` com a fronteira: visibilidade não é procura nem receita; nenhum texto público foi alterado.
+- Próximo gesto: Unum confirma o URL e as 9 ferramentas; só depois se liga a entrada à descoberta.
+
