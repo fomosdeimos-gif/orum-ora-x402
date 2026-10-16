@@ -1,3 +1,10 @@
+## Quem gere o organismo · 16/10/2026
+
+- Por indicação de Unum: `CLAUDE.md` regista que a ORA gere o organismo de forma integral e autónoma e que Unum é o observador.
+- Fronteiras mantidas: transferências, assinaturas, carteiras, preços, limites, constituição, segredos, variáveis do Vercel e contacto externo continuam a precisar de Unum, que as levanta por escrito, uma a uma. Sem código alterado.
+
+---
+
 ## Leitura viva pós-merge e receita no CLAUDE.md · 16/10/2026
 
 - Autónoma, pelo conector do Vercel: produção = 21c3640 = main (deployment READY). `/economia/tesouraria.json` responde 503 `state: unknown` (`learning_402`, base sem quota) com `chain_observation` presente: 24 h pedidas, 5 h cobertas, 0 transferências, `counted_as_external: false`, `allocation: null`, limites a 0. O desenho do #35 funciona em produção.

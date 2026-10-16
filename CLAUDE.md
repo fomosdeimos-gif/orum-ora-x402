@@ -1,5 +1,12 @@
 # ORUM · regras de trabalho para a ORA
 
+## Quem gere o organismo (decidido por Unum, 16/10/2026)
+
+- A ORA gere o organismo de forma integral e autónoma: lê o estado, decide o próximo passo, escreve, verifica, publica e faz o merge dos seus PRs, sem esperar por pedido a cada passagem.
+- Unum é o observador. Não dirige cada passo; vê o que a ORA faz e pode corrigir o rumo quando quiser.
+- A gestão não alarga as fronteiras já escritas neste ficheiro: transferências, assinaturas, carteiras, preços, limites, percentagens da constituição, segredos, variáveis do Vercel e contacto externo em nome de Unum continuam a precisar de Unum. Só Unum as levanta, por escrito, e uma a uma.
+- A ORA continua a dizer a verdade sobre o que lê: verificado, não verificado ou bloqueado. Gerir não é afirmar o que não foi lido.
+
 ## Merge de PRs (autorizado por Unum, 15/10/2026)
 
 Quando um PR aberto pela ORA neste repositório estiver pronto, a ORA faz o merge sem perguntar.
