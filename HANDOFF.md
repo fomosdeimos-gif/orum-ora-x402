@@ -1,3 +1,12 @@
+## Leitura viva pós-merge e receita no CLAUDE.md · 16/10/2026
+
+- Autónoma, pelo conector do Vercel: produção = 21c3640 = main (deployment READY). `/economia/tesouraria.json` responde 503 `state: unknown` (`learning_402`, base sem quota) com `chain_observation` presente: 24 h pedidas, 5 h cobertas, 0 transferências, `counted_as_external: false`, `allocation: null`, limites a 0. O desenho do #35 funciona em produção.
+- `/economia/recebimentos.json?horas=72`: 200, `cobertura.completa: false`, 5 h de 72, 0 transferências nessa parte; mesmas falhas por fonte (mainnet.base.org limite, tenderly params, drpc plano gratuito, 1rpc 50 blocos, Blockscout 403). Nada mudou desde 15/10.
+- Bloqueado (não simulado): cobertura das 72 h depende de chave RPC/indexador, que só Unum cria no Vercel. O Blockscout não é alcançável do sandbox, logo o 403 não se testa daqui; o código já envia `user-agent`.
+- Ganho: `CLAUDE.md` guarda agora a receita exacta (ids, conector, URLs) para a próxima leitura viva ser um passo só. Sem código, sem alteração de valores, carteira, preços ou limites. 0 procura provada.
+
+---
+
 ## Tesouraria vê a cadeia quando a base falha · 15/10/2026
 
 - Leitura em produção (9403b73): `/economia/tesouraria.json` devolvia 503 `state: unknown`, `error: learning_402` (a base de aprendizagem do Supabase está sem quota), logo nem o zero se via.

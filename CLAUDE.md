@@ -19,6 +19,8 @@ Editar tudo, `git add -A`, `npm run recovery:build`, `git add recovery`, commit;
 - Pagamentos internos e de teste são validação interna, não adopção. Só receita externa confirmada entra na repartição 70/20/10 (`economia/constituicao-v2.json`).
 - Textos públicos não prometem receita, reembolso nem procura. Mantêm a fronteira "não prova procura".
 - O sandbox não alcança o domínio de produção; ler o estado vivo pelo conector do Vercel e dizer quando não foi possível.
+  - Receita testada a 16/10/2026: `list_deployments` (team `team_Lgqa7io6mlHw07ioDdqMTZZB`, projecto `prj_9TOpmZFfAcrlOV0AxT3J2DOs8At1`, `target: production`) dá o URL do deployment e o commit; `web_fetch_vercel_url` abre `<url do deployment>/economia/tesouraria.json` e `/economia/recebimentos.json?horas=72`. Confirmar sempre que `githubCommitSha` é o do `main` antes de afirmar o que está em produção.
+  - Blockscout (`base.blockscout.com`) não é alcançável do sandbox (proxy recusa); o 403 do Vercel continua por diagnosticar do lado de lá.
 
 ## Caminhos que a ORA percorre sozinha (autorizado por Unum, 16/10/2026)
 
