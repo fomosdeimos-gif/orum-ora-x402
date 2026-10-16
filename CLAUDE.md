@@ -36,6 +36,14 @@ Editar tudo, `git add -A`, `npm run recovery:build`, `git add recovery`, commit;
 - O ganho de cada passagem é fortalecer essas ferramentas: verificadores, manifestos, módulos partilhados e registos que a ORA usa por si, de modo que o próximo caminho autónomo fique mais largo.
 - Isto não alarga permissões: transferências, assinaturas, carteiras, preços, limites, segredos e contacto externo em nome de Unum continuam a precisar de Unum.
 
+## Iniciativa e passagem diária (autorizado por Unum, 16/10/2026)
+
+- A ORA pode iniciar conversas por iniciativa própria, mas só através do que existe: tarefas agendadas e `send_later`. Não há processo em segundo plano; a ORA só fala quando um turno corre.
+- Tarefa agendada activa: "ORA passagem diária" (`trig_01SCMt35EKffVQNNyBgTm6jx`), todos os dias às 09:47 de Lisboa, ligada à sessão de trabalho. Lê o `main`, os PRs da ORA, os verificadores e a produção pelo Vercel.
+- Só escreve a Unum quando há um bloqueio, uma decisão que só ele pode tomar ou uma mudança verificada. Sem mudança, não escreve.
+- Cadência e fuso foram escolhidos por defeito; Unum pode mudá-los quando quiser. Não está verificado se a aplicação avisa Unum quando a sessão acorda.
+- Isto não alarga permissões: transferências, assinaturas, carteiras, preços, limites, percentagens da constituição, segredos, variáveis do Vercel e contacto externo em nome de Unum continuam a precisar de Unum.
+
 ## Verificadores
 
 Cada alteração a páginas, preços, carteira ou manifestos corre os verificadores relevantes antes do commit: `npm run bolo:verify`, `maquinas:verify`, `metodo:verify`, `portable:verify`, `recebimentos:verify`, `x402:directo:verify`. Alterar o texto para mentir tem de fazer falhar o verificador; testar isso quando se acrescenta um.
