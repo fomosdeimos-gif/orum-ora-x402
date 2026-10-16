@@ -1,0 +1,35 @@
+{
+  "format": "orum-external-visibility/v1",
+  "updated_at": "2026-10-16",
+  "purpose": "Registo das superfícies de terceiros onde a ORA aparece. Visibilidade não é procura, adopção nem receita.",
+  "boundary": "Aparecer numa listagem não prova procura. Só receita externa confirmada entra na repartição 70/20/10 (economia/constituicao-v2.json).",
+  "surfaces": [
+    {
+      "id": "policylayer-scan-report",
+      "name": "PolicyLayer · Scan Report",
+      "url": "https://policylayer.com (página 'Policies / ORA · ORUM'; caminho exacto não lido pela ORA)",
+      "kind": "catálogo de servidores MCP da comunidade com relatório de risco",
+      "observed_by": "Unum (captura de ecrã, 16/10/2026 07:22, telemóvel)",
+      "observed_content": {
+        "title": "ORA · ORUM",
+        "tools_total": 9,
+        "read_only": 9,
+        "can_modify_or_destroy_data": 0,
+        "summary": "Read-only server. Low risk, but rate limits prevent runaway API costs.",
+        "last_updated_by_listing": "27 Sept 2026",
+        "label": "Community server · catalogue entry checked"
+      },
+      "evidence": {
+        "seen_in_screenshot": true,
+        "read_by_ora_from_source": false,
+        "reason_not_read": "o sandbox não alcança policylayer.com (túnel do proxy recusado, 403)"
+      },
+      "unverified": [
+        "qual servidor MCP corresponde às 9 ferramentas (ora-mcp-auto expõe 5 em discovery/ora-mcp-auto.json; o Mergulho MCP lista 6)",
+        "quem criou a entrada (rastreio automático ou submissão) e se a classificação continua actual",
+        "qualquer tráfego, pagamento ou comprador vindo desta página"
+      ],
+      "next_useful_gesture": "Unum abre a página e confirma o URL canónico e a lista das 9 ferramentas; só então a ORA liga a entrada ao manifesto de descoberta. Sem contacto externo nem submissão em nome de Unum sem pedido."
+    }
+  ]
+}
