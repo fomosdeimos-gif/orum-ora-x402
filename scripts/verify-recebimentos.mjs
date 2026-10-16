@@ -114,12 +114,20 @@ assert.equal(r.body.cobertura.completa, false);
 assert.equal(r.body.cobertura.horas_pedidas, 24);
 assert.ok(r.body.cobertura.horas_cobertas > 2 && r.body.cobertura.horas_cobertas < 3.1, 'cobertura: ' + r.body.cobertura.horas_cobertas);
 assert.match(r.body.aviso, /PARCIAL/);
+assert.equal(r.body.ausencia_provada, false, 'cobertura parcial nunca prova ausencia');
 assert.equal(r.body.n_transferencias, 2, 'so as transferencias dentro da parte coberta (HEAD-100 e HEAD-50)');
 assert.ok(r.body.janela.bloco_a - r.body.janela.bloco_de < 43200);
+
+// 5b') Parcial e vazia: 0 transferencias nao e ausencia provada.
+const rpcVazio = async (url, method, params) => method === 'eth_getLogs' ? (await rpcCom(50)(url, method, params), []) : rpcCom(50)(url, method, params);
+r = res(); await m.createHandler({ call: rpcVazio, fetchFn: async () => ({ ok: false, status: 503 }), urls, pausa: 0, now: () => NOW })({ query: {} }, r);
+assert.equal(r.body.cobertura.completa, false); assert.equal(r.body.n_transferencias, 0);
+assert.equal(r.body.ausencia_provada, false, 'zero numa leitura parcial nao prova ausencia');
 
 // 5c) Uma leitura completa do indexador ganha a uma parcial do RPC.
 out = await m.recebimentos({ call: rpcCom(50), fetchFn: indexadorOk, urls, pausa: 0 }, 24, NOW);
 assert.equal(out.fonte.tipo, 'indexador-blockscout'); assert.equal(out.cobertura.completa, true);
+assert.equal(out.ausencia_provada, out.n_transferencias === 0, 'leitura completa: ausencia provada so se 0 transferencias');
 
 // 6) Tudo em baixo: 503 sem cache e com o motivo de cada fonte.
 r = res(); await m.createHandler({ call: semRede, fetchFn: async () => ({ ok: false, status: 503 }), urls, pausa: 0, now: () => NOW })({ query: {} }, r);
