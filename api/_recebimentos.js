@@ -174,6 +174,7 @@ function formatar(fonte, horas, agora) {
   const cobertura = fonte.cobertura || { completa: true, horas_pedidas: horas, horas_cobertas: horas, motivo: null };
   return { ok: true, carteira: WALLET, ativo: 'USDC (Base)', janela: { horas, ...fonte.janela }, cobertura,
     ...(cobertura.completa ? {} : { aviso: `leitura PARCIAL: so as ultimas ${cobertura.horas_cobertas} h das ${horas} h pedidas; o total e as transferencias valem apenas para essa parte` }),
+    ausencia_provada: cobertura.completa && ordenados.length === 0,
     n_transferencias: ordenados.length, total_usdc: Number(total) / 1e6, truncado: ordenados.length > MAX_ROWS, transferencias: linhas,
     fonte: { ...fonte.origem, consultado_utc: new Date(agora).toISOString() },
     nao_afirma: ['identidade do pagador', 'origem interna ou externa (ver ora_carteiras_classificacao)', 'adopcao externa', 'receita reconhecida', 'entrega do servico'] };

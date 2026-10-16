@@ -1,3 +1,12 @@
+## Diagnóstico do learning_402 e zero parcial nunca prova ausência · 16/10/2026
+
+- Lido pelo conector do Supabase (só leitura): o projecto `orum-memoria` está `ACTIVE_HEALTHY` e a vista `ora_aprendizagem_ultimo_snapshot_publica` responde por SQL com `criado_em` 2026-10-16 05:30 UTC, `pagamentos` 21, `compradores_externos` 0. Ou seja, o dado existe; o 402 não vem da base em si.
+- Não verificado: a causa do 402 na camada REST (o sandbox não alcança `*.supabase.co`, proxy recusa, e os logs de API não foram lidos). Hipótese anterior (quota/egress) continua por confirmar; só Unum vê facturação/quotas no painel.
+- Código: `recebimentos.json` ganha `ausencia_provada` (verdadeiro só com cobertura completa e 0 transferências). `recebimentos:verify` cobre parcial vazio (falso) e completo; testado removendo a condição de cobertura: falha.
+- Fronteiras: nada de segredos, carteira, preços, limites ou transferências. 0 receita externa provada, 0 procura provada.
+
+---
+
 ## Quem gere o organismo · 16/10/2026
 
 - Por indicação de Unum: `CLAUDE.md` regista que a ORA gere o organismo de forma integral e autónoma e que Unum é o observador.
