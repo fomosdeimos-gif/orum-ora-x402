@@ -1,0 +1,20 @@
+{
+  "format": "orum-mandato-assinatura/v1",
+  "mandato": "docs/financeiro-mandato-v2.msg",
+  "mandato_sha256": "624226d0996a1928deae847794c9c0239590b3cea7c880ee9389346992ccb568",
+  "assinado_por": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+  "assinatura": "0x84c2f0c3727fb24b77f8d58eb4a6074b3d361eb5700c2394d14bdf07d5af3f1564bbbaee1dee0c8061b89b4f2f7e98d76fe0cb298b8c2b21fb65e3e6f522b7451c",
+  "recebida": "2026-10-17, na sessao de trabalho, colada por Unum depois de assinar em assinar.html (MetaMask)",
+  "verificada": {
+    "comando": "npm run mandato:verify -- --msg docs/financeiro-mandato-v2.msg <assinatura> 0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+    "resultado": "valido: true (endereco recuperado = 0x2ef8cfB9…d0d8C)",
+    "tipo_de_conta": "conta de chave propria (EOA): a recuperacao ecrecover sem rede coincidiu, o que uma carteira de contrato nao daria"
+  },
+  "o_que_prova": "Quem controla a chave de 0x2ef8… assinou este texto exacto, incluindo a declaracao de que a carteira da app da Base (0xFEd69e8e…cDEe5) tambem e dele e a confirmacao de D1 a D8 da v3.",
+  "o_que_nao_prova": [
+    "nao prova que 0x2ef8… e Unum alem de quem tem a chave: a identidade vem de Unum o ter dito na sessao e de assinar com ela",
+    "nao prova o controlo da carteira da app da Base (0xFEd69e8e…cDEe5): so a declaracao assinada",
+    "nao autoriza nenhuma transaccao em cadeia: a permissao on-chain (D7) e uma assinatura separada, ainda por pedir",
+    "nao altera o destino fixo dos executores operacionais nem activa a constituicao v3 (falta o codigo)"
+  ]
+}

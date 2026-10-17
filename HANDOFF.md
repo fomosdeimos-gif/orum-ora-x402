@@ -1093,3 +1093,8 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Verificado:** checksum EIP-55 dos três endereços da Base (keccak256 do repositório). **Não verificado:** que Unum controla a chave; só a assinatura do mandato o prova.
 - **Não muda** o destino fixo dos executores operacionais (produção envia só para `0xFEd69e8e…cDEe5`). Mudá-lo é redeploy e instrução à parte.
 - A app da Base estava a bloquear `assinar.html`; o mandato v2 passa a ser assinado com o MetaMask. `assinar.html`, `docs/financeiro-mandato-v2.msg` (hash novo da proposta) e `assinar:verify` actualizados. Verificação: `npm run mandato:verify -- --msg docs/financeiro-mandato-v2.msg <assinatura> 0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C`.
+
+## Mandato v2 assinado · 17/10/2026
+- Unum assinou `docs/financeiro-mandato-v2.msg` com `0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C` (MetaMask) a partir da pré-visualização do ramo (produção ainda por actualizar: quota diária de deployments da Vercel). A ORA verificou: `valido: true`; registo em `docs/financeiro-mandato-v2.assinatura.json`, relido por `assinar:verify` (15 mentiras apanhadas).
+- **Verificado:** o endereço recuperado coincide; a recuperação sem rede funcionou, logo é uma conta de chave própria (EOA). **Não prova:** controlo da carteira da app da Base (só a declaração assinada); nenhuma permissão on-chain (D7 por pedir); destinos dos executores inalterados; v3 continua sem código (inactiva).
+- Por fazer: produção ainda serve a página antiga (retry de deploy agendado); v3 em código; D7 (assinatura on-chain) com verificação de compatibilidade.
