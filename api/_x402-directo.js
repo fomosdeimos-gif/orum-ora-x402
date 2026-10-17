@@ -14,7 +14,7 @@
 //   cadeia Base e o livro e a reconciliacao faz-se a partir dos logs on-chain;
 // - sedimento, kernel e licencas precisam da base de dados: nao sao servidos.
 const { createHash } = require('node:crypto');
-const { createCdp } = require('./_cdp');
+const { createFacilitador } = require('./_facilitador');
 
 const { RECEBIMENTO: WALLET } = require('./_carteira');
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -108,9 +108,12 @@ function requirements(tier, origin) {
     extensions: bazaarExtension(tier) };
 }
 
-function fronteiras(eip3009 = false) {
+// eip: false, true (CDP, compatibilidade) ou o nome do facilitador activo ('cdp' | 'publico')
+function fronteiras(eip = false) {
+  const nome = typeof eip === 'string' ? eip : (eip ? 'cdp' : null);
+  const quem = nome === 'publico' ? 'um facilitador público (sem conta, só usado depois de anunciar a Base mainnet)' : 'o facilitador CDP';
   return { via: 'vercel-directa', motivo: 'Edge Functions Supabase indisponíveis (quota de egress)',
-    prova_aceite: eip3009 ? 'transactionHash de transferência USDC directa, ou autorização EIP-3009 liquidada pelo facilitador CDP e confirmada por nós na Base' : 'transactionHash de transferência USDC directa', eip3009_facilitador: eip3009,
+    prova_aceite: nome ? `transactionHash de transferência USDC directa, ou autorização EIP-3009 liquidada por ${quem} e confirmada por nós na Base` : 'transactionHash de transferência USDC directa', eip3009_facilitador: Boolean(nome), facilitador: nome,
     livro_interno_escrito: false, livro: 'cadeia Base (logs Transfer USDC para a carteira de sustento)',
     janela_horas: JANELA_S / 3600, repeticao_da_mesma_tx: 'mesma leitura (reacesso)' };
 }
@@ -190,11 +193,18 @@ function tierFor(base, rest) {
   return null;
 }
 
-function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createCdp(), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+// 'cdp' | 'publico' | false. Aceita o cliente CDP antigo (só `configurado`) e o novo (`pronto()`).
+async function prontoDe(f) {
+  if (typeof f.pronto === 'function') { try { return (await f.pronto()) || false; } catch { return false; } }
+  return f.configurado ? 'cdp' : false;
+}
+
+function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createFacilitador(), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
   return async function directo(req, res, { base, rest, origin }) {
     const alvo = tierFor(base, rest);
     if (!alvo) return false;
-    const fronteirasAgora = () => fronteiras(cdp.configurado);
+    const eip = await prontoDe(cdp);
+    const fronteirasAgora = () => fronteiras(eip);
     const send = (status, body, headers = {}) => {
       res.statusCode = status;
       res.setHeader('content-type', 'application/json; charset=utf-8');
@@ -222,12 +232,12 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createC
     if (alvo.kind === 'eco') {
       const campo = campoEm(now());
       return send(200, { eco: 'gratuito', tier: tier.key, campo, nota: 'Amostra livre; a leitura paga nasce da semente da tua transferência.',
-        pago: { preco: `${tier.usdc} USDC`, endpoint: resourceFor(tier, origin), como_pagar: comoPagar(tier, origin, cdp.configurado) },
+        pago: { preco: `${tier.usdc} USDC`, endpoint: resourceFor(tier, origin), como_pagar: comoPagar(tier, origin, Boolean(eip)) },
         truth_machine: { ...TRUTH, requires_x402_payment: false }, fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
     }
 
     const reqd = requirements(tier, origin);
-    const challenge = (extra = {}) => send(402, { ...reqd, ...extra, como_pagar: comoPagar(tier, origin, cdp.configurado), fronteiras: fronteirasAgora() }, {
+    const challenge = (extra = {}) => send(402, { ...reqd, ...extra, como_pagar: comoPagar(tier, origin, Boolean(eip)), fronteiras: fronteirasAgora() }, {
       'payment-required': b64json(reqd),
       'www-authenticate': `x402 realm="ORA · ${tier.key}", amount="${tier.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`,
     });
@@ -238,7 +248,7 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createC
 
     let tx; let v; let via = 'transactionHash';
     if (prova.eip3009) {
-      if (!cdp.configurado) return challenge({ erro: 'autorizacao EIP-3009 nao aceite nesta via (facilitador nao configurado); usa transactionHash de uma transferencia directa' });
+      if (!eip) return challenge({ erro: 'autorizacao EIP-3009 nao aceite nesta via (facilitador nao configurado); usa transactionHash de uma transferencia directa' });
       const a = prova.eip3009.authorization;
       const pre = preVerificarAutorizacao(a, tier, now());
       if (pre) return challenge({ erro: 'autorizacao invalida', detalhe: pre });
@@ -253,7 +263,7 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createC
       if (liq.status !== 200 || !liq.json?.success || !/^0x[0-9a-fA-F]{64}$/.test(String(liq.json?.transaction || ''))) {
         return challenge({ erro: 'liquidacao falhou', detalhe: String(liq.json?.errorReason || liq.json?.errorMessage || `HTTP ${liq.status}`).slice(0, 160) });
       }
-      tx = liq.json.transaction; via = 'eip3009-cdp';
+      tx = liq.json.transaction; via = 'eip3009-' + eip;
       // O facilitador disse que liquidou; so entregamos depois de ver a transferencia na cadeia.
       for (let i = 0; i < 2; i++) { v = await verificar(rpc, tx, tier, now()); if (!v.pending) break; await esperar(1200); }
       if (v.pending || v.unavailable) return send(402, { x402: 'pending', tier: tier.key, tx_hash: tx, detalhe: 'liquidado pelo facilitador; ainda nao confirmado na Base. Repete com X-PAYMENT = base64 de {"transactionHash":"' + tx + '"}; nao pagues de novo.', retry_after_seconds: 6 }, { 'retry-after': '6' });

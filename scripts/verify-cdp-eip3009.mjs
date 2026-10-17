@@ -2,6 +2,7 @@
 // facilitador e RPC simulados; chave Ed25519 gerada no proprio teste (nunca a real).
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
+process.env.ORUM_FACILITATOR_URL = 'off'; // hermetico: o facilitador publico tem o seu proprio teste (verify-facilitador)
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { createCdp, assinarJwt } = require('../api/_cdp.js');

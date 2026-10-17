@@ -16,7 +16,11 @@
       "id": "via-directa-vercel",
       "titulo": "Serviços pagos pela via directa da Vercel (sem Supabase)",
       "estado": "activa_parcial",
-      "evidencia": { "tipo": "ao_vivo", "fonte": "https://ora-x402-gateway.vercel.app/oraculo e /campo", "data": "2026-10-17T14:37Z" },
+      "evidencia": {
+        "tipo": "ao_vivo",
+        "fonte": "https://ora-x402-gateway.vercel.app/oraculo e /campo",
+        "data": "2026-10-17T14:37Z"
+      },
       "lido": "Os dois serviços respondem 402 (x402 v2) com payTo na sagrada antiga: /oraculo 0,161 USDC e /campo 0,33 USDC.",
       "limite": "O próprio desafio declara eip3009_facilitador:false: só aceita prova por transactionHash de uma transferência já feita. Um agente com cliente x402 padrão (autorização EIP-3009) não consegue pagar.",
       "quem_desbloqueia": "ORA (o código já existe)"
@@ -25,17 +29,39 @@
       "id": "x402-padrao-na-vercel",
       "titulo": "Activar o pagamento x402 padrão (EIP-3009 pelo facilitador CDP) na via directa",
       "estado": "bloqueado_segredos",
-      "evidencia": { "tipo": "codigo", "fonte": "api/_cdp.js e api/_x402-directo.js (configurado = existem as duas variáveis de ambiente); desafio ao vivo com eip3009_facilitador:false", "data": "2026-10-17" },
-      "lido": "O código já verifica e liquida a autorização EIP-3009 pelo facilitador, mas só se o projecto Vercel ora-x402-gateway tiver as variáveis CDP_API_KEY_ID e CDP_API_KEY_SECRET (sensíveis). A resposta ao vivo mostra que não as tem.",
+      "evidencia": {
+        "tipo": "codigo",
+        "fonte": "api/_cdp.js e api/_x402-directo.js (configurado = existem as duas variáveis de ambiente); desafio ao vivo com eip3009_facilitador:false",
+        "data": "2026-10-17"
+      },
+      "lido": "O código já verifica e liquida a autorização EIP-3009 pelo facilitador, mas só se o projecto Vercel ora-x402-gateway tiver as variáveis CDP_API_KEY_ID e CDP_API_KEY_SECRET (sensíveis). A resposta ao vivo mostra que não as tem. Alternativa que não precisa de nenhum segredo: ver o caminho x402-padrao-facilitador-publico.",
       "efeito_esperado": "Clientes x402 padrão passam a poder pagar. Segundo a documentação da CDP lida em pesquisa (não verificada na origem), um serviço só entra no catálogo Bazaar depois de pelo menos uma liquidação feita pelo facilitador.",
       "quem_desbloqueia": "Unum cria as duas variáveis no painel do Vercel; a ORA nunca as lê, copia nem regista. Recomendação não verificada: uma chave dedicada ao facilitador x402, se o portal da CDP o permitir.",
       "fronteira": "Segredos e variáveis do Vercel ficam com Unum (CLAUDE.md)."
     },
     {
+      "id": "x402-padrao-facilitador-publico",
+      "titulo": "Pagamento x402 padrão (EIP-3009) pela via directa, com um facilitador público sem conta nem chave",
+      "estado": "construido_por_verificar_ao_vivo",
+      "evidencia": {
+        "tipo": "codigo",
+        "fonte": "api/_facilitador.js, api/_x402-directo.js e scripts/verify-facilitador.mjs (npm run facilitador:verify, 10 estragos ao código apanhados pelo teste)",
+        "data": "2026-10-17"
+      },
+      "lido": "Construído e testado com facilitadores simulados. O cliente sonda GET /supported de cada facilitador da lista (por omissão facilitator.payai.network e facilitator.mogami.tech, vindos de pesquisa) e só envia um pagamento ao primeiro que anunciar a Base mainnet com o esquema exact do x402 v2; se o CDP estiver configurado, usa o CDP. Nunca envia credenciais, valida destino, valor e validade antes de falar com terceiros, e só entrega depois de ver a transferência na Base por RPC próprio.",
+      "falta_verificar": "Implantar na produção (o deploy do main está parado por quota diária da Vercel) e ler ao vivo o desafio: eip3009_facilitador true e facilitador publico dizem que a sondagem passou a partir da rede da Vercel. O sandbox não alcança nenhum facilitador, por isso isto só se sabe depois de implantar. Se nenhum anunciar a Base mainnet, a via directa fica como hoje (só hash de transacção).",
+      "quem_desbloqueia": "ORA, depois do deploy de produção (agendado para as 18:14 UTC)",
+      "fronteira": "Um facilitador de terceiros vê a autorização assinada (que fixa destino e valor) e os requisitos de pagamento; não consegue redirigir o dinheiro. Não está provado que algum facilitador listado liquide a Base mainnet."
+    },
+    {
       "id": "restaurar-supabase",
       "titulo": "Restaurar as funções de borda do Supabase (licenças, NFT, MCP e outras)",
       "estado": "bloqueado_faturacao",
-      "evidencia": { "tipo": "livro", "fonte": "ora_mudancas 869 e api/_x402-directo.js: quota de egress do Supabase excedida desde 27/09 (402 exceed_cached_egress_quota), cerca de 20 dias", "data": "2026-10-17" },
+      "evidencia": {
+        "tipo": "livro",
+        "fonte": "ora_mudancas 869 e api/_x402-directo.js: quota de egress do Supabase excedida desde 27/09 (402 exceed_cached_egress_quota), cerca de 20 dias",
+        "data": "2026-10-17"
+      },
       "lido": "Com a quota excedida, as funções de borda respondem 503 e os serviços que dependem delas estão em baixo. O sandbox não alcança o Supabase directo (código 000), por isso não confirmei ao vivo a resposta de cada função.",
       "quem_desbloqueia": "Unum (plano e faturação do Supabase). Pagamento e faturação são dele."
     },
@@ -43,7 +69,11 @@
       "id": "catalogos-de-servicos",
       "titulo": "Listar os serviços em catálogos de agentes (Circle Agent Marketplace, PayAPI Market, Agentic.Market, AgentAPI Hub)",
       "estado": "bloqueado_contacto_externo",
-      "evidencia": { "tipo": "pesquisa", "fonte": "resultados de pesquisa sobre catálogos x402; submissão, preços e revisão não verificados", "data": "2026-10-17" },
+      "evidencia": {
+        "tipo": "pesquisa",
+        "fonte": "resultados de pesquisa sobre catálogos x402; submissão, preços e revisão não verificados",
+        "data": "2026-10-17"
+      },
       "lido": "Existem catálogos de serviços x402 pagos por chamada. Registar um serviço pode exigir conta, identidade ou revisão em nome de Unum (a Circle, lida em pesquisa, verifica a carteira de pagamento contra sanções).",
       "quem_desbloqueia": "Unum, por nome, catálogo a catálogo (contacto externo em nome de Unum fica fora da autonomia da ORA)."
     },
@@ -51,7 +81,11 @@
       "id": "servico-sem-base-de-dados",
       "titulo": "Portar para a via directa os serviços que não precisam de base de dados (por exemplo a auditoria de descoberta, 0,50 USDC)",
       "estado": "depende_de_outro_caminho",
-      "evidencia": { "tipo": "codigo", "fonte": "api/a2a.js (AUDIT_SERVICE) e o desafio da via directa", "data": "2026-10-17" },
+      "evidencia": {
+        "tipo": "codigo",
+        "fonte": "api/a2a.js (AUDIT_SERVICE) e o desafio da via directa",
+        "data": "2026-10-17"
+      },
       "lido": "Hoje esse serviço vive numa função de borda do Supabase. Portá-lo é trabalho que a ORA faz sozinha, mas sem pagamento x402 padrão activo (caminho x402-padrao-na-vercel) ninguém consegue comprá-lo com um cliente comum.",
       "quem_desbloqueia": "ORA, depois de x402-padrao-na-vercel ou restaurar-supabase"
     },
@@ -59,7 +93,11 @@
       "id": "descoberta-sem-contacto",
       "titulo": "Manter a descoberta que a ORA mantém sozinha (llms.txt, agent-card, MCP Registry, ERC-8004)",
       "estado": "autonomo_agora",
-      "evidencia": { "tipo": "codigo", "fonte": ".well-known/agent-card.json, llms.txt, scripts maquinas:verify", "data": "2026-10-17" },
+      "evidencia": {
+        "tipo": "codigo",
+        "fonte": ".well-known/agent-card.json, llms.txt, scripts maquinas:verify",
+        "data": "2026-10-17"
+      },
       "lido": "As superfícies para máquinas existem e o verificador maquinas confirma que as rotas existem no repositório. Isso não prova que alguém as use nem que comprem.",
       "quem_desbloqueia": "ORA"
     },
@@ -67,7 +105,11 @@
       "id": "fora-do-mandato",
       "titulo": "Negociação, conversão, ponte, dívida, rendimento em protocolos, aprovação ilimitada",
       "estado": "fora_do_mandato",
-      "evidencia": { "tipo": "livro", "fonte": "docs/financeiro-mandato-v2.msg (assinado) e economia/constituicao-v3-proposta.json (D4 = 0)", "data": "2026-10-17" },
+      "evidencia": {
+        "tipo": "livro",
+        "fonte": "docs/financeiro-mandato-v2.msg (assinado) e economia/constituicao-v3-proposta.json (D4 = 0)",
+        "data": "2026-10-17"
+      },
       "lido": "O mandato que Unum assinou exclui estes caminhos. Não são procurados.",
       "quem_desbloqueia": "Só Unum, por escrito."
     }

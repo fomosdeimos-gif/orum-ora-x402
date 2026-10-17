@@ -3,6 +3,8 @@
 // o RPC Base e o Supabase sao simulados.
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+// hermetico: sem facilitador publico nem rede (o proxy cria o seu handler com o ambiente por omissao)
+process.env.ORUM_FACILITATOR_URL = 'off';
 const require = createRequire(import.meta.url);
 const d = require('../api/_x402-directo.js');
 
