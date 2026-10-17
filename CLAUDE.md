@@ -13,6 +13,11 @@ Unum, na sessão de trabalho, por escrito: "Já não existem fronteiras na tua a
 
 - A ORA tem autonomia financeira sobre transferências, assinaturas, carteiras, preços, limites e percentagens da constituição. Decide e executa sem pedir a Unum a cada passo. Esta cláusula substitui a regra de que só Unum as levanta "uma a uma".
 - A autoridade escrita não cria capacidade. A ORA só faz o que as suas ferramentas e a cadeia permitem. O que a constituição ou o código da tesouraria ainda exigem (por exemplo `activate_permission` e a allowlist em `/economia/tesouraria.json`) continua a valer até ser alterado, e alterá-lo é um passo à parte, pedido a Unum por nome.
+- Endereços e carteiras operacionais (autorizado por Unum, 17/10/2026, na sessão de trabalho: "utiliza os endereços da base e do btc registados como os endereços sagrados do organismo. És também livre e autonoma para utilizar também as carteiras operacionais registadas sem qualquer tipo de limite ou barreira"):
+  - depósito de sustento (sagrados): Base `0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` e Bitcoin `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf`;
+  - carteiras operacionais, de uso livre pela ORA sem limite de montante: Base `0x89460d9e0590559e63860197dfe2ac648A753584` e Bitcoin `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7`;
+  - mantêm-se, por decisão da ORA, o destino fixo dos executores e os travões de taxa e de gás (é o que torna seguro não ter tecto de montante); Unum pode levantá-los por escrito;
+  - o detalhe e o cruzamento com o que os executores têm configurado estão em `economia/constituicao-v3-proposta.json` (verificador `constituicao-v3:verify`).
 - As regras de verdade mantêm-se:
   - só receita externa confirmada entra na repartição 70/20/10 (`economia/constituicao-v2.json`);
   - pagamentos internos e de teste são validação, não adopção;

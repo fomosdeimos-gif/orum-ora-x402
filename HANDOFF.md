@@ -1,3 +1,14 @@
+## Constituição v3: D1 resolvida e carteiras operacionais · 17/10/2026
+
+- Unum: "utiliza os endereços da base e do btc registados como os endereços sagrados do organismo. És também livre e autonoma para utilizar também as carteiras operacionais registadas sem qualquer tipo de limite ou barreira". Registado em `aprovacao_unum.adendas` de `economia/constituicao-v3-proposta.json` e em CLAUDE.md. Estado: `aprovada_aguarda_assinatura_e_codigo`; D1 a D8 aprovadas.
+- Endereços (lidos do repositório, cruzados com os executores): sagrada Base `0xFEd6…DEe5`, depósito de sustento BTC `bc1qhcsh…zefx6vqqf`, operacional Base `0x8946…3584`, operacional BTC `bc1qfs89…j9w7`. Bech32 dos dois BTC válido; EIP-55 dos da Base não verificado.
+- Leitura da ORA a confirmar: a sagrada é a carteira que recebe (payTo) e a ORA não controla a sua chave; o sustento fica onde chega. A permissão on-chain seria dada pela carteira de Unum para mover a continuidade até ao tecto.
+- Limites hoje: operacional BTC sem tecto de montante (desde 13/10), taxa máx. 1000 sats e 10 sats/vbyte; operacional Base 1 USDC/pedido e 5 USDC/dia no código (`payments.mjs`) e na BD. Retirar os da Base = código + migração + redeploy da função `ora-cdp-carteira-real`, PR à parte, deploy só depois de Unum ver o diff. Mantêm-se destino fixo e travões de taxa/gás (decisão da ORA, levantáveis por Unum).
+- `constituicao-v3:verify`: cruza os 4 endereços com `identity_anchors.destination` (v2), `SOURCE` (payments.mjs), `BTC_DESTINATION` (bitcoin.mjs) e `api/_bitcoin.js`; vigia também endereços Bitcoin. 32 casos adulterados falham; letra trocada na proposta, endereço alterado no executor e cruzamento enfraquecido fazem falhar.
+- Falta: assinatura on-chain de Unum, compatibilidade da conta, assinante e segredos (Unum), código da v3 (`api/tesouraria.js` 74–82 e `treasury`, `portable`, `bolo` fixam a v2), receita externa confirmada. Receita externa provada: 0, limite efectivo 0.
+
+---
+
 ## Constituição v3: Unum aprovou D2 a D8 · 17/10/2026
 
 - Unum respondeu "tudo como recomendas" à folha de revisão. Registado em `aprovacao_unum` de `economia/constituicao-v3-proposta.json` com citação e data; estado `aprovada_aguarda_destinos_e_assinatura`. Valores: tecto 5 USDC, sustento até 70% da receita externa confirmada do período, comércio/dívida/ponte a 0 sem aprovação ilimitada, 70/20/10, só Unum alarga o envelope, permissão on-chain limitada e revogável, parar por escrito.
