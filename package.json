@@ -39,6 +39,7 @@
     "bolo:verify": "node scripts/verify-bolo.mjs",
     "visibilidade:verify": "node scripts/verify-visibilidade-externa.mjs",
     "financeiro:verify": "node scripts/verify-registo-financeiro.mjs",
-    "constituicao-v3:verify": "node scripts/verify-constituicao-v3-proposta.mjs"
+    "constituicao-v3:verify": "node scripts/verify-constituicao-v3-proposta.mjs",
+    "assinar:verify": "node scripts/verify-assinar.mjs"
   }
 }
