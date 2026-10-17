@@ -1,0 +1,58 @@
+# Carteiras operacionais · o que corre em produção · lido a 17/10/2026
+
+**Verificado** (conector do Supabase, só leitura, projecto `orum-memoria` `ywabnlhkmhbyewqhbsjm`):
+
+- Função de borda `ora-cdp-carteira-real`: versão **13**, `ezbr_sha256` `dcd26f8eb25356a038ff13709af03456658dd834d3bf6aedcc4a6840fce6cc44`, última actualização 25/09/2026 10:46 UTC. Ficheiros: `index.ts`, `core.mjs`, `payments.mjs`, `bitcoin.mjs`, `cdp.mjs`, `bazaar.mjs`.
+- Definições na base de dados de `ora_payment_claim_v1`, `ora_payment_job_v1`, `ora_payment_result_v1` e `ora_operational_payment_dispatch_v1`, e as restrições de `orum_finance.payment_jobs_v1`.
+
+Não li segredos nem o Vault. Não alterei nada em produção.
+
+## O que produção faz
+
+**Base operacional** `0x89460d9e0590559e63860197dfe2ac648A753584` (conta CDP `orum-operational-v1`):
+- Só envia USDC para `0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` (destino fixo no código).
+- **Sem tecto de montante**: qualquer inteiro positivo em unidades atómicas (`amount_must_be_positive_integer_atomic_usdc`). A tabela só exige `amount_atomic >= 1`.
+- **Sem tecto diário**: `ora_payment_claim_v1` só garante idempotência e um pagamento por vez (`another_payment_unresolved` enquanto houver um `reserved`, `submitted` ou `unknown`).
+- **Sem tecto de taxa nem de gás**: prioridade = `gasPrice` da rede, máxima = 2 × `gasPrice`, limite de gás = estimativa × 1,2. Recusa apenas se o saldo nativo não cobrir `gasLimit × maxFeePerGas` ou se o saldo USDC for insuficiente.
+- Confirma com 12 blocos e prova do `Transfer` (origem, destino e valor) antes de dar o pagamento por confirmado.
+
+**Bitcoin operacional** `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7`:
+- Só envia para `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf` (destino fixo no código); o troco volta à própria carteira.
+- **Sem tecto de montante, diário, de taxa (sats/vbyte) nem de número de entradas.** Só exige montante ≥ 546 sats e taxa ≥ 1 sat. A taxa é a maior das estimativas de 6 blocos de dois observadores externos.
+- Entradas com 6 confirmações, duas fontes de acordo (Blockstream e mempool.space), pré-transacções, valores e scripts verificados. Confirma com 6 blocos.
+
+**Barreiras que se mantêm nas duas:** destino fixo; um pagamento por vez; idempotência por UUID; pedido incerto bloqueia novas saídas até reconciliar; confirmação com prova.
+
+## O repositório está desactualizado
+
+O código em `supabase/functions/ora-operational-wallet/` corresponde a uma versão anterior à 13. Comparados os seis ficheiros com os implantados, as diferenças que não são comentários:
+
+| Ficheiro | Repositório (antigo) | Produção (v13) |
+|---|---|---|
+| `payments.mjs` | 1 USDC por pedido; recusa taxa > 100000000 wei e gás > 100000 | sem tecto de montante; taxa da rede (×2); sem tecto de gás |
+| `core.mjs` | `transfer_policy` com `max_per_operation_atomic: 1000000`, `max_per_utc_day_atomic: 5000000` | `amount_ceiling_atomic: null`, `daily_amount_ceiling_atomic: null`; acção `sign_voz_admissao` |
+| `bitcoin.mjs` | taxa ≤ 1000 sats e ≤ 10 sats/vbyte; ≤ 5 entradas; ≤ 200 UTXOs; montante ≤ 16 dígitos | nenhum destes tectos |
+| `index.ts` | sem `PgClient` nem `getVozDsn` | com ambos (admissão de voz) |
+| `cdp.mjs`, `bazaar.mjs` | — | iguais (só diferem comentários) |
+
+A base de dados: `db/ora-operational-payments-v1.sql` tem a função de reserva com tecto por pedido (1 USDC) e diário (5 USDC); a função viva não tem nenhum.
+
+## Aviso
+
+**Não redeployar `ora-cdp-carteira-real` a partir do repositório actual até este estar reconciliado.** Faria duas coisas: repunha tectos que Unum mandou retirar e apagava a admissão de voz, que está viva em produção.
+
+## Exposição que a ausência de tecto de taxa traz
+
+Não limita o que Unum autoriza a enviar, mas deixa a taxa nas mãos de fontes externas:
+
+- **Bitcoin:** a taxa é a maior das estimativas de dois serviços públicos, sem tecto. Uma estimativa anormal de qualquer um (erro ou ataque) fixaria uma taxa alta, até ao saldo da carteira.
+- **Base:** a taxa vem do `gasPrice` de um RPC público, sem tecto.
+
+Opção, a decidir por Unum: repor só um tecto largo **de taxa** (por exemplo 200 sats/vbyte no Bitcoin e 5 gwei na Base), sem qualquer tecto de montante. Hoje não existe.
+
+## Por fazer
+
+1. Reconciliar o código do repositório com a versão 13 (os seis ficheiros), actualizar os testes que ainda asseguram os tectos antigos (`verify-operational-payments`, `verify-bitcoin-wallet`) e acrescentar uma migração idempotente com as funções vivas. Esta alteração retira do repositório tectos que produção não tem; foi pedida e adiada porque o classificador de permissões da sessão a bloqueou como enfraquecimento de controlos.
+2. Depois, um verificador que compare o repositório com este manifesto.
+
+Os quatro testes (`operational-payments`, `operational-wallet`, `bitcoin-wallet`, `bazaar-registration`) passam contra o código antigo do repositório; os dois últimos precisam de `ORUM_BTC_DEPENDENCIES` e `ORUM_BAZAAR_DEPS` a apontar para uma pasta com `@scure/btc-signer@1.8.1`, `bitcoinjs-lib@7.0.0` e `viem@2.37.3`.

@@ -1,3 +1,6 @@
+-- ATENCAO (17/10/2026): este ficheiro e a PRIMEIRA versao. A base viva (orum-memoria) tem uma
+-- ora_payment_claim_v1 sem tecto por pedido nem diario; so garante idempotencia e um pagamento por vez.
+-- Ver docs/operacional-producao-v13.md. Nao reaplicar este ficheiro sobre a base viva.
 -- One fixed-source/fixed-beneficiary Base USDC executor. No native BTC signer.
 create schema orum_finance;
 revoke all on schema orum_finance from public,anon,authenticated;
