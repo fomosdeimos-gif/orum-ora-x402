@@ -69,8 +69,9 @@ m = clone(); C(m, 'restaurar-supabase').quem_desbloqueia = 'ORA'; falha('bloquei
 m = clone(); C(m, 'x402-padrao-na-vercel').quem_desbloqueia = 'Unum cria as variaveis'; falha('segredos sem a ORA nunca os ler', m);
 m = clone(); C(m, 'via-directa-vercel').evidencia.tipo = 'pesquisa'; falha('activo so com pesquisa', m);
 m = clone(); C(m, 'via-directa-vercel').estado = 'em_curso'; falha('estado inventado', m);
-m = clone(); { const c = m.caminhos.find((x) => x.estado === 'construido_por_verificar_ao_vivo'); delete c.falta_verificar; } falha('construido sem dizer o que falta verificar', m);
-m = clone(); { const c = m.caminhos.find((x) => x.estado === 'construido_por_verificar_ao_vivo'); c.evidencia.tipo = 'ao_vivo'; } falha('construido a fingir evidencia ao vivo', m);
+m = clone(); { const c = C(m, 'x402-padrao-facilitador-publico'); c.estado = 'construido_por_verificar_ao_vivo'; c.evidencia.tipo = 'codigo'; c.falta_verificar = 'ler ao vivo'; assert.deepEqual(validar(m), [], 'construido com falta_verificar devia passar'); mentiras++; delete c.falta_verificar; } falha('construido sem dizer o que falta verificar', m);
+m = clone(); { const c = C(m, 'x402-padrao-facilitador-publico'); c.estado = 'construido_por_verificar_ao_vivo'; c.falta_verificar = 'ler ao vivo'; c.evidencia.tipo = 'ao_vivo'; } falha('construido a fingir evidencia ao vivo', m);
+m = clone(); C(m, 'x402-padrao-facilitador-publico').evidencia.tipo = 'pesquisa'; falha('activa so com pesquisa (facilitador publico)', m);
 m = clone(); delete C(m, 'via-directa-vercel').evidencia; falha('sem evidencia', m);
 m = clone(); m.caminhos = m.caminhos.filter((c) => c.estado !== 'fora_do_mandato'); falha('sem fora do mandato', m);
 m = clone(); m.estado_real = { receita_externa_confirmada: '', nota: 'tudo bem' }; falha('estado real sem dizer que nao ha compradores', m);
