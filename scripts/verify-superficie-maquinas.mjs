@@ -3,6 +3,7 @@
 // funcao em api/. Isto prova que a ROTA existe, nao que esteja viva em producao (isso exige leitura publica).
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 
 const root = new URL('../', import.meta.url);
 const read = (p) => readFileSync(new URL(p, root), 'utf8');
@@ -63,6 +64,6 @@ for (const sk of card.httpServiceSkills || []) {
 }
 
 // a carteira de recepcao e a mesma em todas as superficies
-const wallet = (read('api/_x402-directo.js').match(/const WALLET = '(0x[0-9a-fA-F]{40})'/) || [])[1];
+const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO;
 assert.equal(card.trust.paymentWallet, wallet, 'carteira do agent-card difere da do gateway');
 console.log(JSON.stringify({ verified: true, urls_verificadas: total, ligacoes_html: totalHtml, paginas_html: paginas.length, ficheiros: ficheiros.length, nota: 'rota existe no repositorio; vida em producao exige leitura publica' }));
