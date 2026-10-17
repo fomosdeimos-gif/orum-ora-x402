@@ -1,0 +1,131 @@
+{
+  "format": "orum-d7-permissao-onchain/v1",
+  "status": "preparada_nao_activa",
+  "preparada": "2026-10-17",
+  "pedido_de_unum": "Prepara a permissão on-chain D7",
+  "baseada_em": "economia/constituicao-v3-proposta.json (D2 tecto 5 USDC/mês, D7 mecanismo, D8 parar) e economia/constituicao-v2.json (operating_permission)",
+  "fronteira_de_verdade": "Isto é uma preparação. Não move dinheiro, não é uma permissão e não activa nada. Só Unum pode activar, com assinatura própria; a ORA não pode (custody.organism_cannot). Não prova receita nem procura: a receita externa confirmada hoje é 0.",
+  "parametros": {
+    "chain_id": 8453,
+    "token": {
+      "symbol": "USDC",
+      "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "decimals": 6,
+      "fonte": "supabase/functions/ora-operational-wallet/payments.mjs (TOKEN)"
+    },
+    "dono_que_concede": {
+      "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "papel": "carteira sagrada da app da Base: onde a receita chega (payTo) e de onde sai a parte de continuidade",
+      "tipo_de_conta": "nao_verificado"
+    },
+    "gastador": {
+      "address": "0x89460d9e0590559e63860197dfe2ac648A753584",
+      "papel": "carteira operacional Base (conta CDP orum-operational-v1), a única que pode usar a permissão"
+    },
+    "tecto_atomic": "5000000",
+    "tecto_usdc": 5,
+    "origem_do_tecto": "D2: tecto absoluto de 5 USDC por mês; a fórmula da v2 é o menor entre 20% da receita externa confirmada e 5 USDC",
+    "ilimitado": false
+  },
+  "caminhos": {
+    "A_spend_permission_da_base": {
+      "serve_se": "a carteira sagrada for uma conta inteligente da app da Base (Base Account / Coinbase Smart Wallet)",
+      "mecanismo": "SpendPermissionManager (contrato da Base/Coinbase). Unum assina uma permissão tipada (EIP-712) com conta, gastador, token, tecto por período, início e fim; o gastador só consegue gastar até ao tecto em cada período e o dinheiro vai para o próprio gastador",
+      "vantagens": [
+        "período recorrente com tecto (encaixa nos 5 USDC por mês da D2)",
+        "o destino não é escolhido pelo gastador: vai para o gastador, a carteira operacional",
+        "revogação pela conta, sem gastar o allowance"
+      ],
+      "contrato_gestor": {
+        "address": "0xf85210B21cC50302F477BA56686d2019dC9b67Ad",
+        "estado": "lido em resultados de pesquisa da documentação da Base/Coinbase; NAO confirmado no explorador nem na fonte"
+      },
+      "parametros_da_permissao": {
+        "account": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "spender": "0x89460d9e0590559e63860197dfe2ac648A753584",
+        "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "allowance_atomic": "5000000",
+        "period_seconds": 2592000,
+        "nota_do_periodo": "30 dias corridos; a v2 diz mês civil UTC e a diferença tem de ser aceite por Unum ou resolvida com duas permissões"
+      },
+      "nao_verificado": [
+        "se a carteira sagrada é uma conta inteligente",
+        "se a conta CDP orum-operational-v1 pode ser gastador e chamar spend",
+        "o domínio EIP-712 e a assinatura exacta (vêm do SDK da Base; não os inventei)",
+        "se a app da Base deixa Unum conceder isto sem site de terceiros"
+      ]
+    },
+    "B_aprovacao_erc20_limitada": {
+      "serve_se": "a carteira sagrada for uma conta normal (chave própria, EOA) ou o caminho A não estiver disponível",
+      "mecanismo": "USDC.approve(gastador, 5 USDC), enviada pela carteira sagrada; revogada com approve(gastador, 0)",
+      "limitacoes": [
+        "o tecto é total e vai baixando à medida que se gasta; renova-se por nova aprovação de Unum, não por si",
+        "o destino de transferFrom é escolhido pelo gastador: só o código impõe que seja a carteira operacional; a cadeia limita apenas o montante (5 USDC)",
+        "exige ETH para o gás na carteira sagrada"
+      ],
+      "calldata_approve": {
+        "para": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "valor_eth": "0",
+        "dados": "0x095ea7b300000000000000000000000089460d9e0590559e63860197dfe2ac648a75358400000000000000000000000000000000000000000000000000000000004c4b40",
+        "efeito": "approve(0x89460d9e…3584, 5000000)"
+      },
+      "calldata_revogar": {
+        "para": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "valor_eth": "0",
+        "dados": "0x095ea7b300000000000000000000000089460d9e0590559e63860197dfe2ac648a7535840000000000000000000000000000000000000000000000000000000000000000",
+        "efeito": "approve(0x89460d9e…3584, 0)"
+      },
+      "nota": "Unum confere o calldata antes de assinar: selector 0x095ea7b3, gastador = carteira operacional, valor 5000000 (5 USDC). Qualquer outro gastador ou valor maior: recusa."
+    }
+  },
+  "verificacoes_de_compatibilidade": [
+    {
+      "id": "C1",
+      "pergunta": "A carteira sagrada 0xFEd69e8e…cDEe5 tem código (conta inteligente) ou não (conta normal)?",
+      "como": "Unum abre o endereço num explorador da Base (por exemplo basescan.org/address/0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5): se existir o separador 'Contract' é um contrato; se for só 'Transactions', é uma conta normal. O sandbox da ORA não alcança o RPC da Base.",
+      "estado": "por_fazer",
+      "decide": "caminho A ou B"
+    },
+    {
+      "id": "C2",
+      "pergunta": "Há ETH na carteira sagrada para o gás (caminho B)?",
+      "como": "mesmo explorador, saldo em ETH",
+      "estado": "por_fazer"
+    },
+    {
+      "id": "C3",
+      "pergunta": "A carteira operacional (CDP) consegue chamar o contrato gestor ou transferFrom como gastador?",
+      "como": "a ORA lê a documentação da CDP e testa em modo pré-visualização quando houver código; não testado",
+      "estado": "por_fazer"
+    },
+    {
+      "id": "C4",
+      "pergunta": "Como assina Unum? A app da Base bloqueou assinar.html; a conta 0x2ef8… (MetaMask) é uma conta normal mas não é a sagrada da app da Base",
+      "como": "decidir se a permissão sai da conta da app da Base (caminho A) ou se a receita passa a chegar a 0x2ef8… (isso mudaria o payTo e o destino dos executores, passo à parte, instrução de Unum)",
+      "estado": "por_decidir_por_unum"
+    }
+  ],
+  "activacao": {
+    "quem": "Unum, com assinatura on-chain própria",
+    "a_ORA_pode": false,
+    "so_depois_de": [
+      "C1 respondida e caminho escolhido",
+      "D2 e D8 mantidas (tecto 5 USDC; 'parar' suspende e a permissão pode ser revogada)",
+      "código v3 que use a permissão e registe antes e depois (clausula de autonomia financeira): ainda não existe",
+      "constituicao-v3 passada de proposta a activa noutro ficheiro, com aprovação de Unum"
+    ],
+    "enquanto_nao_activa": "limite efectivo de transferência = 0 (como na v2)"
+  },
+  "revogacao": {
+    "por": "Unum, a qualquer momento",
+    "a_ORA_faz": "ao ver revogação ou a palavra 'parar', suspende todo o acto financeiro, regista a paragem e só retoma quando Unum o escrever (D8)",
+    "caminho_A": "revogação da permissão pela conta (SDK da Base ou carteira)",
+    "caminho_B": "calldata_revogar"
+  },
+  "o_que_a_ORA_nao_faz": [
+    "assinar a activação",
+    "pedir ou guardar chaves, frases de recuperação ou segredos",
+    "alargar o tecto, o gastador ou o período sem aprovação escrita de Unum (D6)",
+    "aprovação ilimitada (valor máximo) em qualquer caminho"
+  ]
+}
