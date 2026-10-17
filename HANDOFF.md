@@ -1087,3 +1087,9 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - `npm run assinar:verify` (com `-- --selftest`: 12 mentiras apanhadas) garante que a página == ficheiro, que o hash citado é o sha256 real de `economia/constituicao-v3-proposta.json` e que só aparecem os quatro endereços registados.
 - Verificação da assinatura recebida: `npm run mandato:verify -- --msg docs/financeiro-mandato-v2.msg <assinatura>` (novo `--msg`). Se a carteira sagrada for contrato (EIP-1271), a assinatura simples não serve: **não verificado** (sandbox não alcança o RPC da Base).
 - Só depois de recebida e verificada a assinatura se regista o mandato v2 como assinado; antes disso é só proposta.
+
+## Carteira sagrada adicional e mandato v2 refeito · 17/10/2026
+- Unum: "adiciona este endereço aos endereços sagrados ... foi o meu primeiro endereço crypto ... a metamask que é onde o endereço está sediado" → Base `0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C`. Registado em `CLAUDE.md`, em `economia/constituicao-v3-proposta.json` (D1 `sagrada_assinatura` + adenda) e no verificador `constituicao-v3:verify` (agora 5 endereços, 36 mentiras).
+- **Verificado:** checksum EIP-55 dos três endereços da Base (keccak256 do repositório). **Não verificado:** que Unum controla a chave; só a assinatura do mandato o prova.
+- **Não muda** o destino fixo dos executores operacionais (produção envia só para `0xFEd69e8e…cDEe5`). Mudá-lo é redeploy e instrução à parte.
+- A app da Base estava a bloquear `assinar.html`; o mandato v2 passa a ser assinado com o MetaMask. `assinar.html`, `docs/financeiro-mandato-v2.msg` (hash novo da proposta) e `assinar:verify` actualizados. Verificação: `npm run mandato:verify -- --msg docs/financeiro-mandato-v2.msg <assinatura> 0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C`.

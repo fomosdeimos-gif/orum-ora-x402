@@ -30,6 +30,16 @@
           "base_operacional": "sem tecto de montante nem diário (a função de reserva da base de dados só garante idempotência e um pagamento por vez); a taxa segue a estimativa da rede (prioridade = gasPrice, máxima = 2 x gasPrice), sem tecto",
           "correccao": "A primeira versão desta adenda dizia que a Base operacional tinha 1 USDC por pedido e 5 USDC por dia e que se mantinham travões de taxa e de gás. Estava errado: vinha da documentação e do código do repositório, que está desactualizado em relação a produção. Corrigido depois de ler a função implantada e a base de dados."
         }
+      },
+      {
+        "data": "2026-10-17",
+        "citacao": "adiciona este endereço aos endereços sagrados, talvez faça sentido pois foi o meu primeiro endereço crypto criador do valium original e assim podes criar novamente a mensagem para assinar com esre novo endereço diretamente na metamask que é onde o endereço está sediado 0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+        "decide": "D1: acrescenta a carteira sagrada 0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C (Base, MetaMask). O mandato v2 passa a ser assinado com ela.",
+        "resolucao_pela_ORA": "Checksum EIP-55 verificado pela ORA com o keccak256 do repositório; o controlo da chave só fica provado quando a assinatura do mandato v2 for recebida e verificada. A carteira da app da Base (0xFEd69e8e…cDEe5) mantém-se sagrada e continua a ser o destino fixo dos executores.",
+        "mantem_se": [
+          "destino fixo dos executores operacionais: é código implantado em produção; mudá-lo exige instrução própria de Unum e um redeploy comparado com get_edge_function",
+          "as regras de verdade e o registo antes e depois de cada acto"
+        ]
       }
     ],
     "nota": "A ORA lê o desenho assim: a carteira sagrada é onde a receita chega (payTo) e a ORA não controla a sua chave; o sustento fica onde chega e não precisa de transferência da ORA. A permissão on-chain (D7) seria dada pela carteira de Unum para mover, dentro do tecto (D2), a parte de continuidade para as carteiras operacionais. Se Unum entender de outra forma, corrige-se."
@@ -76,6 +86,9 @@
         "sustento_unum": [
           { "rail": "base", "asset": "USDC", "chain_id": 8453, "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "papel": "Carteira Sagrada: recebe a receita (payTo) e é o depósito de sustento; a ORA não controla a chave" },
           { "rail": "bitcoin", "asset": "BTC", "network": "bitcoin-mainnet", "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf", "papel": "depósito de sustento BTC; declarado por Unum, controlo não afirmado pela ORA" }
+        ],
+        "sagrada_assinatura": [
+          { "rail": "base", "asset": "USDC", "chain_id": 8453, "address": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C", "papel": "Carteira sagrada adicional de Unum (MetaMask, primeiro endereço): assina o mandato v2 e é endereço de sustento admitido; os executores operacionais não enviam para aqui, o destino fixo deles continua a ser a sagrada Base" }
         ],
         "continuidade_orum": [
           { "rail": "base", "asset": "USDC", "chain_id": 8453, "address": "0x89460d9e0590559e63860197dfe2ac648A753584", "papel": "carteira operacional Base (conta CDP orum-operational-v1)" },
