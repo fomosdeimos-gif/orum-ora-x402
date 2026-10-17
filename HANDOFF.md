@@ -1,3 +1,13 @@
+## Constituição v3: proposta para Unum rever · 17/10/2026
+
+- Novos `economia/constituicao-v3-proposta.json` (estado `proposta_nao_activa`), `economia/constituicao-v3-proposta.md` (folha de revisão com as decisões D1 a D8) e `npm run constituicao-v3:verify`. A v2 continua em vigor; nenhuma superfície nem verificador de runtime lê a proposta.
+- A proposta traz a ORA a decidir e executar dentro de um envelope que Unum activa (finalidade nova: sustento de Unum até 70% da receita externa confirmada do período). Todos os valores (destinos, tecto) ficam a `null` até Unum responder.
+- Recomendação da ORA contrária à frase "sem fronteiras": só Unum alarga o envelope (D6). Decisão de Unum.
+- O verificador falha se a proposta for marcada activa, se tiver valor, endereço ou limites alargados sem `aprovacao_unum` (citação e data), ou se `api/`, `llms.txt`, `weave_hands.json`, `openapi.json`, `sitemap.xml`, `vercel.json`, `server.js` ou `index.html` a referirem. Testado: 13 casos adulterados falham; activar a proposta à mão, ligá-la ao `llms.txt` e retirar a regra dos endereços fazem falhar.
+- Por fazer, só depois da aprovação: código da v3 (`api/tesouraria.js` linhas 74–82 e os verificadores `treasury`, `portable`, `bolo` fixam a v2), assinatura on-chain de Unum, compatibilidade da conta, assinante e segredos (Unum). Receita externa provada: 0, logo o limite efectivo continua 0.
+
+---
+
 ## Registo financeiro e verificador · 17/10/2026
 
 - Novo `economia/registo-financeiro.json` (vazio: nenhum acto financeiro praticado pela ORA) e `npm run financeiro:verify` (`scripts/verify-registo-financeiro.mjs`, regras em `scripts/lib-registo-financeiro.mjs`), a pedido da cláusula "Autonomia financeira" do CLAUDE.md: sem registo antes e depois, o acto não conta como feito.
