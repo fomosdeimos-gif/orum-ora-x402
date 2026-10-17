@@ -12,7 +12,12 @@ const rpc=async(name,args)=>{
 const chainRpc=async(method)=>({eth_chainId:wrongChain?'0x1':'0x2105',eth_call:'0x'+balance.toString(16),eth_getBalance:'0x'+eth.toString(16),eth_gasPrice:'0x1',eth_estimateGas:'0xea60',eth_getTransactionCount:'0x0',eth_getTransactionReceipt:receipt,eth_getTransactionByHash:tx,eth_blockNumber:'0x20'})[method];
 const cdp={evm:{getAccount:async()=>({address:SOURCE}),sendTransaction:async(args)=>{sends++;assert.equal(args.address,SOURCE);assert.equal(args.network,'base');assert.equal(args.idempotencyKey,id);if(fail)throw Error('provider secret must not escape');return {transactionHash:hash};}}};
 const run=(action='transfer_usdc',amount_atomic='1000000')=>paymentAction({action,amount_atomic,request_id:id},{rpc,cdp,chainRpc});
-assert.equal((await run('transfer_usdc','1000001')).status,400);assert.equal(sends,0);
+// Sem tecto de montante (producao v13): acima de 1 USDC e aceite ate ao saldo; so montantes mal formados sao recusados.
+for(const bad of ['0','-1','1.5','abc','01',''])assert.equal((await run('transfer_usdc',bad)).status,400,'montante mal formado devia ser recusado: '+bad);
+assert.equal((await run('transfer_usdc',1000001)).status,400);
+assert.equal((await run('preview_usdc','5000000')).status,200);assert.equal((await run('preview_usdc','5000000')).signed,false);
+assert.equal((await run('preview_usdc','99999999999')).error,'insufficient_operational_funds');
+assert.equal(sends,0);assert.equal(claims,0);
 wrongChain=true;assert.equal((await run()).error,'wrong_chain');wrongChain=false;
 balance=0n;assert.equal((await run()).error,'insufficient_operational_funds');assert.equal(claims,0);balance=10000000n;
 assert.equal((await run('preview_usdc')).signed,false);assert.equal(claims,0);assert.equal(sends,0);

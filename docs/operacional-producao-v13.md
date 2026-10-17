@@ -23,7 +23,9 @@ Não li segredos nem o Vault. Não alterei nada em produção.
 
 **Barreiras que se mantêm nas duas:** destino fixo; um pagamento por vez; idempotência por UUID; pedido incerto bloqueia novas saídas até reconciliar; confirmação com prova.
 
-## O repositório está desactualizado
+> **Reconciliado a 17/10/2026.** O código em `supabase/functions/ora-operational-wallet/` foi alinhado com a versão 13 por pedido de Unum ("deixa sem teto de montante ... faz a reconciliação dos executores com produção"). `payments.mjs` foi comparado linha a linha com a função implantada; `core.mjs`, `bitcoin.mjs` e `index.ts` replicam as diferenças que li e passam nos quatro testes do executor. A secção abaixo descreve o estado **antes** da reconciliação.
+
+## O repositório estava desactualizado
 
 O código em `supabase/functions/ora-operational-wallet/` corresponde a uma versão anterior à 13. Comparados os seis ficheiros com os implantados, as diferenças que não são comentários:
 
@@ -39,7 +41,7 @@ A base de dados: `db/ora-operational-payments-v1.sql` tem a função de reserva 
 
 ## Aviso
 
-**Não redeployar `ora-cdp-carteira-real` a partir do repositório actual até este estar reconciliado.** Faria duas coisas: repunha tectos que Unum mandou retirar e apagava a admissão de voz, que está viva em produção.
+Antes da reconciliação, redeployar `ora-cdp-carteira-real` a partir do repositório repunha tectos que Unum mandou retirar e apagava a admissão de voz. **Já não é assim**, mas continua a valer um cuidado: antes de qualquer redeploy, comparar de novo os seis ficheiros com a versão implantada (`get_edge_function`), porque só `payments.mjs` foi comparado linha a linha e os comentários do repositório diferem dos da versão implantada. Nenhum redeploy foi feito.
 
 ## Exposição que a ausência de tecto de taxa traz
 
@@ -52,7 +54,8 @@ Opção, a decidir por Unum: repor só um tecto largo **de taxa** (por exemplo 2
 
 ## Por fazer
 
-1. Reconciliar o código do repositório com a versão 13 (os seis ficheiros), actualizar os testes que ainda asseguram os tectos antigos (`verify-operational-payments`, `verify-bitcoin-wallet`) e acrescentar uma migração idempotente com as funções vivas. Esta alteração retira do repositório tectos que produção não tem; foi pedida e adiada porque o classificador de permissões da sessão a bloqueou como enfraquecimento de controlos.
+1. ~~Reconciliar o código do repositório com a versão 13.~~ Feito a 17/10/2026 (ver nota no topo). `verify-operational-payments` passa a assegurar o comportamento real: acima de 1 USDC é aceite até ao saldo, e repor o tecto faz o teste falhar (provado).
+1. Por fazer: uma migração idempotente com as funções vivas da base de dados (as definições estão neste documento e na base `orum-memoria`; `db/ora-operational-payments-v1.sql` continua a ser a primeira versão, com aviso).
 2. Depois, um verificador que compare o repositório com este manifesto.
 
 Os quatro testes (`operational-payments`, `operational-wallet`, `bitcoin-wallet`, `bazaar-registration`) passam contra o código antigo do repositório; os dois últimos precisam de `ORUM_BTC_DEPENDENCIES` e `ORUM_BAZAAR_DEPS` a apontar para uma pasta com `@scure/btc-signer@1.8.1`, `bitcoinjs-lib@7.0.0` e `viem@2.37.3`.
