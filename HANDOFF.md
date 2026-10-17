@@ -1111,3 +1111,8 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Opção 1 em vigor:** nada na cadeia nem código novo; a ORA pede transferência a Unum quando precisar de fundos para a continuidade. **Opção 2 autorizada, não implementada:** receita externa para a carteira operacional e pagamento do sustento pelo executor existente (v13, operacional para sagrada, destino fixo); mudar o `payTo` exige plano e novo "eu autorizo" de Unum.
 - Executor existente lido em produção e no repositório (`payments.mjs`): destino fixo `0xFEd69e8e…cDEe5`, sem tecto de montante. D7 (`economia/d7-permissao-onchain.json`) fica parada e válida.
 - Produção ainda serve a página antiga: quota diária de deployments da Vercel (retry marcado).
+
+## Plano da opção 2 (payTo para a operacional) · 17/10/2026
+- Unum: "Eu autorizo ORA", em resposta à proposta de preparar o plano. Autoriza **o plano**, não a mudança do `payTo`: essa só avança com novo "eu autorizo" ao plano (`docs/plano-opcao-2-payto.md`).
+- Lido: `payTo` escrito à mão em 9 ficheiros de código (3 em `api/`, 6 funções de borda) + superfícies públicas; 7 scripts de verificação contêm o endereço. Produção a 14:02 UTC: tesouraria `unknown`, fonte `learning_402` indisponível, observação on-chain de 5/24 h, 0 transferências: **sem receita externa confirmada**.
+- Recomendação: fases 0–3 (leitura, ponto único, verificadores, adenda sem tocar na v3 assinada) quando Unum quiser; virar o `payTo` só com o primeiro pagamento externo confirmado. Até lá, opção 1.
