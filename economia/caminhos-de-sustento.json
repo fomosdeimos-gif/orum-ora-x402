@@ -42,15 +42,15 @@
     {
       "id": "x402-padrao-facilitador-publico",
       "titulo": "Pagamento x402 padrão (EIP-3009) pela via directa, com um facilitador público sem conta nem chave",
-      "estado": "construido_por_verificar_ao_vivo",
+      "estado": "activa_parcial",
       "evidencia": {
-        "tipo": "codigo",
-        "fonte": "api/_facilitador.js, api/_x402-directo.js e scripts/verify-facilitador.mjs (npm run facilitador:verify, 10 estragos ao código apanhados pelo teste)",
-        "data": "2026-10-17"
+        "tipo": "ao_vivo",
+        "fonte": "https://ora-x402-gateway.vercel.app/oraculo e /campo (deploy de produção do main 88ccd69, READY); código em api/_facilitador.js e scripts/verify-facilitador.mjs (npm run facilitador:verify)",
+        "data": "2026-10-17T18:16Z"
       },
-      "lido": "Construído e testado com facilitadores simulados. O cliente sonda GET /supported de cada facilitador da lista (por omissão facilitator.payai.network e facilitator.mogami.tech, vindos de pesquisa) e só envia um pagamento ao primeiro que anunciar a Base mainnet com o esquema exact do x402 v2; se o CDP estiver configurado, usa o CDP. Nunca envia credenciais, valida destino, valor e validade antes de falar com terceiros, e só entrega depois de ver a transferência na Base por RPC próprio.",
-      "falta_verificar": "Implantar na produção (o deploy do main está parado por quota diária da Vercel) e ler ao vivo o desafio: eip3009_facilitador true e facilitador publico dizem que a sondagem passou a partir da rede da Vercel. O sandbox não alcança nenhum facilitador, por isso isto só se sabe depois de implantar. Se nenhum anunciar a Base mainnet, a via directa fica como hoje (só hash de transacção).",
-      "quem_desbloqueia": "ORA, depois do deploy de produção (agendado para as 18:14 UTC)",
+      "lido": "Lido ao vivo depois do deploy: os dois desafios declaram eip3009_facilitador true e facilitador publico, e o payTo continua 0xFEd69e8e…cDEe5. Quer dizer que, a partir da rede da Vercel, a sondagem GET /supported encontrou um facilitador público que anuncia a Base mainnet com o esquema exact do x402 v2. O cliente só envia um pagamento a um facilitador depois dessa sondagem, nunca envia credenciais, valida destino, valor e validade antes de falar com terceiros, e só entrega depois de ver a transferência na Base por RPC próprio.",
+      "limite": "Não verificado: que esse facilitador liquide de facto um pagamento. Nenhum pagamento x402 padrão foi feito, por isso a liquidação e a entrega por este caminho nunca foram vistas. Também não se sabe qual dos facilitadores da lista foi escolhido.",
+      "quem_desbloqueia": "ORA (o caminho está no ar); a primeira prova real é um pagamento externo",
       "fronteira": "Um facilitador de terceiros vê a autorização assinada (que fixa destino e valor) e os requisitos de pagamento; não consegue redirigir o dinheiro. Não está provado que algum facilitador listado liquide a Base mainnet."
     },
     {
