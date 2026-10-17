@@ -19,20 +19,26 @@
       "data": "2026-10-17",
       "citacao": "Eu autorizo, classifica a 0x2ef8 como interna e utiliza apenas os 2 endereços mais antigos da base e do btc para receber o pagamento de serviços, as operacionais é para procurares receitas de sustento novas e as depositares aí e depois enviares os 70% para carteira sagrada nova que está alojada no metamask e que foi usada na criação do valium original.",
       "cobre": "Substitui a opção 2. Serviços pagam SÓ às duas carteiras sagradas mais antigas (Base 0xFEd69e8e…cDEe5 e Bitcoin bc1qhcsh…qqf). As carteiras operacionais servem para a ORA procurar receitas de sustento novas e depositá-las; depois a ORA envia 70% delas à carteira sagrada nova do MetaMask (Base 0x2ef8…d0d8C). Classificar 0x2ef8… como interna (feito)."
+    },
+    {
+      "data": "2026-10-17",
+      "citacao": "Eu autorizo ORA podes procurar novos caminhos e fontes de sustento completamente novas e 100% autónomas e e se quiseres podes manter as carteiras anteriores para o recebimento dos 70% das receitas novas",
+      "cobre": "Procura de caminhos novos (economia/caminhos-de-sustento.json) e a escolha, deixada à ORA, de manter a sagrada antiga como destino dos 70%. A ORA escolheu manter: DESTINO_70 = SAGRADA_ANTIGA, igual ao executor implantado."
     }
   ],
   "regime_actual": "opcao_3",
   "regimes": {
     "opcao_1": "Clientes pagam à carteira sagrada antiga. Nada na cadeia, sem código novo de custódia.",
     "opcao_2": "Substituída: o payTo dos serviços passaria para a operacional. Unum decidiu que os serviços pagam só às sagradas antigas.",
-    "opcao_3": "Em vigor. Serviços: payTo = sagrada antiga (Base) e depósito BTC antigo. Receitas novas que a ORA procurar: depositadas nas operacionais (Base e BTC); a ORA envia 70% à sagrada nova (Base: executor operacional para 0x2ef8…d0d8C). Bitcoin: a carteira sagrada nova é um endereço EVM e não recebe BTC, por isso os 70% de BTC continuam a ir para o depósito BTC de sustento (bc1qhcsh…qqf)."
+    "opcao_3": "Em vigor. Serviços: payTo = sagrada antiga (Base) e depósito BTC antigo. Receitas novas que a ORA procurar: depositadas nas operacionais (Base e BTC); a ORA envia 70% a uma sagrada de Unum. Unum deixou a escolha à ORA e a ORA mantém a sagrada antiga (Base 0xFEd69e8e…cDEe5; BTC bc1qhcsh…qqf), que é o que o executor implantado já faz. A sagrada nova (0x2ef8…d0d8C) assina o mandato e é alternativa admitida para os 70% (exige implantar o executor)."
   },
   "carteiras": {
     "SAGRADA_ANTIGA": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
     "SAGRADA_NOVA": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
     "OPERACIONAL": "0x89460d9e0590559e63860197dfe2ac648A753584",
     "BTC_SAGRADO_ANTIGO": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
-    "BTC_OPERACIONAL": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7"
+    "BTC_OPERACIONAL": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+    "DESTINO_70": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5"
   },
   "activacao": {
     "requer": "Esta adenda não tem activação: o regime em vigor é a opção 3 e o payTo dos serviços fica na sagrada antiga. Voltar à opção 2 exigiria nova adenda e novo 'eu autorizo' de Unum.",
@@ -46,8 +52,8 @@
     "A permissão on-chain D7 fica preparada e parada (economia/d7-permissao-onchain.json); não é preciso neste regime."
   ],
   "pendente": [
-    "Implantar o executor operacional com o novo destino dos 70% (0x2ef8…d0d8C) só depois de comparar os seis ficheiros implantados com o repositório.",
-    "Listagens externas (por exemplo Bazaar) não mudam: o payTo dos serviços é o mesmo."
+    "Passar os 70% para a sagrada nova só se Unum o pedir: exige implantar o executor com o destino novo, depois de comparar os seis ficheiros implantados com o repositório.",
+    "Listagens externas não mudam: o payTo dos serviços é o mesmo."
   ],
   "fronteira_de_verdade": "Esta adenda não move dinheiro. Hoje não há receita externa confirmada; não promete receita, reembolso nem procura."
 }

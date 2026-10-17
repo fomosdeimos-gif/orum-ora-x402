@@ -1,7 +1,8 @@
 // Verifica que as carteiras do organismo tem uma fonte unica no codigo de api/ e que tudo o resto concorda:
 // funcoes de borda do repositorio, constantes dos scripts de teste e os registos.
 // Regime em vigor (Unum, 17/10/2026): servicos pagam so a sagrada ANTIGA (RECEBIMENTO); o executor operacional
-// da Base envia os 70% a sagrada NOVA (MetaMask); a operacional e de uso livre da ORA.
+// da Base envia os 70% ao DESTINO_70, que e uma das duas sagradas de Unum (hoje a ANTIGA, por escolha da ORA
+// autorizada por Unum); a operacional e de uso livre da ORA.
 // Sem rede, sem pagamentos. Cada mentira testada aqui tem de falhar.
 import { readFileSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -28,7 +29,7 @@ export const CONSUMIDORES = [
   // confere o payTo da listagem do Bazaar: acompanha RECEBIMENTO
   ['supabase/functions/ora-operational-wallet/bazaar.mjs', new RegExp(`payTo\\?\\.toLowerCase\\(\\)!=='(${ADDR})'`)],
 ];
-// onde o destino dos 70% (executor operacional da Base) esta escrito: acompanha SAGRADA_NOVA
+// onde o destino dos 70% (executor operacional da Base) esta escrito: acompanha DESTINO_70
 export const CONSUMIDORES_DESTINO = [
   ['supabase/functions/ora-operational-wallet/core.mjs', new RegExp(`transfer_policy:\\{[^}]*destination:'(${ADDR})'`)],
 ];
@@ -39,7 +40,8 @@ export function validar(e) {
   const a = e.adenda ?? {};
   // 1. os enderecos sao os registados nos executores e na constituicao v2
   if (!igual(c.SAGRADA_ANTIGA, e.v2destino)) f.push('SAGRADA_ANTIGA nao coincide com identity_anchors.destination da v2');
-  if (!igual(c.SAGRADA_NOVA, e.executor?.DESTINATION)) f.push('SAGRADA_NOVA nao coincide com o destino fixo do executor (DESTINATION)');
+  if (!igual(c.DESTINO_70, e.executor?.DESTINATION)) f.push('DESTINO_70 nao coincide com o destino fixo do executor (DESTINATION)');
+  if (!igual(c.DESTINO_70, c.SAGRADA_ANTIGA) && !igual(c.DESTINO_70, c.SAGRADA_NOVA)) f.push('DESTINO_70 tem de ser uma das duas sagradas de Unum');
   if (!igual(c.OPERACIONAL, e.executor?.SOURCE)) f.push('OPERACIONAL nao coincide com a carteira do executor (SOURCE)');
   if (igual(c.SAGRADA_ANTIGA, c.SAGRADA_NOVA) || igual(c.SAGRADA_NOVA, c.OPERACIONAL) || igual(c.SAGRADA_ANTIGA, c.OPERACIONAL)) f.push('as tres carteiras tem de ser distintas');
   // 2. a adenda tem de existir, com citacoes de Unum e um estado conhecido
@@ -66,7 +68,7 @@ export function validar(e) {
     }
   }
   // 5. consumidores de recebimento dizem o mesmo que RECEBIMENTO; o destino dos 70% diz o mesmo que SAGRADA_NOVA
-  for (const [lista, esperado, rotulo] of [[CONSUMIDORES, c.RECEBIMENTO, 'carteira de recebimento'], [CONSUMIDORES_DESTINO, c.SAGRADA_NOVA, 'destino dos 70%']]) {
+  for (const [lista, esperado, rotulo] of [[CONSUMIDORES, c.RECEBIMENTO, 'carteira de recebimento'], [CONSUMIDORES_DESTINO, c.DESTINO_70, 'destino dos 70%']]) {
     for (const [ficheiro, re] of lista) {
       const texto = e.consumidores?.[ficheiro];
       if (texto === undefined) { f.push(`consumidor em falta: ${ficheiro}`); continue; }
@@ -106,7 +108,9 @@ m = clone(); m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; m.a
 m = clone(); m.carteira.SAGRADA_ANTIGA = troca(m.carteira.SAGRADA_ANTIGA); falha('SAGRADA_ANTIGA com uma letra trocada', m);
 m = clone(); m.carteira.SAGRADA_NOVA = troca(m.carteira.SAGRADA_NOVA); falha('SAGRADA_NOVA com uma letra trocada', m);
 m = clone(); m.carteira.OPERACIONAL = troca(m.carteira.OPERACIONAL); falha('OPERACIONAL com uma letra trocada', m);
-m = clone(); m.executor.DESTINATION = m.carteira.SAGRADA_ANTIGA; falha('executor ainda envia os 70% a sagrada antiga', m);
+m = clone(); m.executor.DESTINATION = m.carteira.SAGRADA_NOVA; falha('executor envia a sagrada nova mas DESTINO_70 diz antiga', m);
+m = clone(); m.carteira.DESTINO_70 = m.carteira.OPERACIONAL; m.executor.DESTINATION = m.carteira.OPERACIONAL; falha('DESTINO_70 na operacional', m);
+m = clone(); m.carteira.DESTINO_70 = '0x' + '8'.repeat(40); m.executor.DESTINATION = m.carteira.DESTINO_70; falha('DESTINO_70 num endereco qualquer', m);
 m = clone(); m.executor.DESTINATION = '0x' + '6'.repeat(40); falha('executor envia para um endereco qualquer', m);
 m = clone(); m.executor.SOURCE = troca(m.executor.SOURCE); falha('origem do executor diferente', m);
 m = clone(); m.v2destino = troca(m.v2destino); falha('ancora da v2 diferente', m);
@@ -128,4 +132,9 @@ m = clone(); m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; m.a
 for (const [ficheiro, re] of CONSUMIDORES) m.consumidores[ficheiro] = m.consumidores[ficheiro].replace(re, (todo, addr) => todo.replace(addr, carteira.OPERACIONAL));
 assert.deepEqual(validar(m), [], 'a mudanca legitima devia passar: ' + validar(m).join('; '));
 
-console.log(JSON.stringify({ verified: true, regime: real.adenda.regime_actual, recebimento: carteira.RECEBIMENTO, destino_70: carteira.SAGRADA_NOVA, consumidores: CONSUMIDORES.length + CONSUMIDORES_DESTINO.length, casos_de_mentira: mentiras }));
+// e o caminho legitimo para os 70% irem a sagrada nova: DESTINO_70 e o executor acompanham-se
+m = clone(); m.carteira.DESTINO_70 = m.carteira.SAGRADA_NOVA; m.executor.DESTINATION = m.carteira.SAGRADA_NOVA;
+for (const [ficheiro, re] of CONSUMIDORES_DESTINO) m.consumidores[ficheiro] = m.consumidores[ficheiro].replace(re, (todo, addr) => todo.replace(addr, carteira.SAGRADA_NOVA));
+assert.deepEqual(validar(m), [], 'mudar o destino dos 70% para a sagrada nova com o executor devia passar: ' + validar(m).join('; '));
+
+console.log(JSON.stringify({ verified: true, regime: real.adenda.regime_actual, recebimento: carteira.RECEBIMENTO, destino_70: carteira.DESTINO_70, consumidores: CONSUMIDORES.length + CONSUMIDORES_DESTINO.length, casos_de_mentira: mentiras }));

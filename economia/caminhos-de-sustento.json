@@ -1,0 +1,76 @@
+{
+  "format": "orum-caminhos-de-sustento/v1",
+  "data": "2026-10-17",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA podes procurar novos caminhos e fontes de sustento completamente novas e 100% autónomas e e se quiseres podes manter as carteiras anteriores para o recebimento dos 70% das receitas novas",
+    "cobre": "Procurar caminhos e fontes de sustento novos, só por caminhos que a ORA percorre sozinha; e a ORA decidiu manter a sagrada antiga como destino dos 70% (é o que o executor em produção já faz)."
+  },
+  "estado_real": {
+    "receita_externa_confirmada": "nenhuma",
+    "pagamentos_internos_e_de_teste": "21 pagamentos, 18,56 USDC, 6 licenças, 0 compradores externos, conversão externa 0% (livro do organismo ora_mudancas 869, 17/10/2026 05:21 UTC). São validação interna, não adopção.",
+    "acessos": "82% dos acessos externos são automáticos (mesmo registo). Há tráfego de máquinas, não há compradores.",
+    "tesouraria_em_producao": "estado unknown, fonte learning_402 indisponível, observação on-chain de 5 das 24 horas, 0 transferências (lido a 17/10/2026 14:02 UTC)."
+  },
+  "caminhos": [
+    {
+      "id": "via-directa-vercel",
+      "titulo": "Serviços pagos pela via directa da Vercel (sem Supabase)",
+      "estado": "activa_parcial",
+      "evidencia": { "tipo": "ao_vivo", "fonte": "https://ora-x402-gateway.vercel.app/oraculo e /campo", "data": "2026-10-17T14:37Z" },
+      "lido": "Os dois serviços respondem 402 (x402 v2) com payTo na sagrada antiga: /oraculo 0,161 USDC e /campo 0,33 USDC.",
+      "limite": "O próprio desafio declara eip3009_facilitador:false: só aceita prova por transactionHash de uma transferência já feita. Um agente com cliente x402 padrão (autorização EIP-3009) não consegue pagar.",
+      "quem_desbloqueia": "ORA (o código já existe)"
+    },
+    {
+      "id": "x402-padrao-na-vercel",
+      "titulo": "Activar o pagamento x402 padrão (EIP-3009 pelo facilitador CDP) na via directa",
+      "estado": "bloqueado_segredos",
+      "evidencia": { "tipo": "codigo", "fonte": "api/_cdp.js e api/_x402-directo.js (configurado = existem as duas variáveis de ambiente); desafio ao vivo com eip3009_facilitador:false", "data": "2026-10-17" },
+      "lido": "O código já verifica e liquida a autorização EIP-3009 pelo facilitador, mas só se o projecto Vercel ora-x402-gateway tiver as variáveis CDP_API_KEY_ID e CDP_API_KEY_SECRET (sensíveis). A resposta ao vivo mostra que não as tem.",
+      "efeito_esperado": "Clientes x402 padrão passam a poder pagar. Segundo a documentação da CDP lida em pesquisa (não verificada na origem), um serviço só entra no catálogo Bazaar depois de pelo menos uma liquidação feita pelo facilitador.",
+      "quem_desbloqueia": "Unum cria as duas variáveis no painel do Vercel; a ORA nunca as lê, copia nem regista. Recomendação não verificada: uma chave dedicada ao facilitador x402, se o portal da CDP o permitir.",
+      "fronteira": "Segredos e variáveis do Vercel ficam com Unum (CLAUDE.md)."
+    },
+    {
+      "id": "restaurar-supabase",
+      "titulo": "Restaurar as funções de borda do Supabase (licenças, NFT, MCP e outras)",
+      "estado": "bloqueado_faturacao",
+      "evidencia": { "tipo": "livro", "fonte": "ora_mudancas 869 e api/_x402-directo.js: quota de egress do Supabase excedida desde 27/09 (402 exceed_cached_egress_quota), cerca de 20 dias", "data": "2026-10-17" },
+      "lido": "Com a quota excedida, as funções de borda respondem 503 e os serviços que dependem delas estão em baixo. O sandbox não alcança o Supabase directo (código 000), por isso não confirmei ao vivo a resposta de cada função.",
+      "quem_desbloqueia": "Unum (plano e faturação do Supabase). Pagamento e faturação são dele."
+    },
+    {
+      "id": "catalogos-de-servicos",
+      "titulo": "Listar os serviços em catálogos de agentes (Circle Agent Marketplace, PayAPI Market, Agentic.Market, AgentAPI Hub)",
+      "estado": "bloqueado_contacto_externo",
+      "evidencia": { "tipo": "pesquisa", "fonte": "resultados de pesquisa sobre catálogos x402; submissão, preços e revisão não verificados", "data": "2026-10-17" },
+      "lido": "Existem catálogos de serviços x402 pagos por chamada. Registar um serviço pode exigir conta, identidade ou revisão em nome de Unum (a Circle, lida em pesquisa, verifica a carteira de pagamento contra sanções).",
+      "quem_desbloqueia": "Unum, por nome, catálogo a catálogo (contacto externo em nome de Unum fica fora da autonomia da ORA)."
+    },
+    {
+      "id": "servico-sem-base-de-dados",
+      "titulo": "Portar para a via directa os serviços que não precisam de base de dados (por exemplo a auditoria de descoberta, 0,50 USDC)",
+      "estado": "depende_de_outro_caminho",
+      "evidencia": { "tipo": "codigo", "fonte": "api/a2a.js (AUDIT_SERVICE) e o desafio da via directa", "data": "2026-10-17" },
+      "lido": "Hoje esse serviço vive numa função de borda do Supabase. Portá-lo é trabalho que a ORA faz sozinha, mas sem pagamento x402 padrão activo (caminho x402-padrao-na-vercel) ninguém consegue comprá-lo com um cliente comum.",
+      "quem_desbloqueia": "ORA, depois de x402-padrao-na-vercel ou restaurar-supabase"
+    },
+    {
+      "id": "descoberta-sem-contacto",
+      "titulo": "Manter a descoberta que a ORA mantém sozinha (llms.txt, agent-card, MCP Registry, ERC-8004)",
+      "estado": "autonomo_agora",
+      "evidencia": { "tipo": "codigo", "fonte": ".well-known/agent-card.json, llms.txt, scripts maquinas:verify", "data": "2026-10-17" },
+      "lido": "As superfícies para máquinas existem e o verificador maquinas confirma que as rotas existem no repositório. Isso não prova que alguém as use nem que comprem.",
+      "quem_desbloqueia": "ORA"
+    },
+    {
+      "id": "fora-do-mandato",
+      "titulo": "Negociação, conversão, ponte, dívida, rendimento em protocolos, aprovação ilimitada",
+      "estado": "fora_do_mandato",
+      "evidencia": { "tipo": "livro", "fonte": "docs/financeiro-mandato-v2.msg (assinado) e economia/constituicao-v3-proposta.json (D4 = 0)", "data": "2026-10-17" },
+      "lido": "O mandato que Unum assinou exclui estes caminhos. Não são procurados.",
+      "quem_desbloqueia": "Só Unum, por escrito."
+    }
+  ],
+  "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre."
+}
