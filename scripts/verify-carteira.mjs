@@ -1,6 +1,7 @@
-// Verifica que a carteira de recebimento (payTo) tem uma fonte unica no codigo de api/ e que tudo o resto
-// concorda com ela: funcoes de borda do repositorio, constantes dos scripts de teste e os registos.
-// E que RECEBIMENTO so sai da carteira sagrada (opcao 1) com a adenda da opcao 2 activada por Unum.
+// Verifica que as carteiras do organismo tem uma fonte unica no codigo de api/ e que tudo o resto concorda:
+// funcoes de borda do repositorio, constantes dos scripts de teste e os registos.
+// Regime em vigor (Unum, 17/10/2026): servicos pagam so a sagrada ANTIGA (RECEBIMENTO); o executor operacional
+// da Base envia os 70% a sagrada NOVA (MetaMask); a operacional e de uso livre da ORA.
 // Sem rede, sem pagamentos. Cada mentira testada aqui tem de falhar.
 import { readFileSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -11,7 +12,7 @@ const ler = (p) => readFileSync(raiz(p), 'utf8');
 const ADDR = '0x[0-9a-fA-F]{40}';
 const igual = (a, b) => typeof a === 'string' && typeof b === 'string' && a.toLowerCase() === b.toLowerCase();
 
-// onde cada consumidor escreve a carteira de recebimento: [ficheiro, regex com um grupo (o endereco)]
+// onde cada consumidor escreve a carteira de recebimento (payTo): [ficheiro, regex com um grupo (o endereco)]
 export const CONSUMIDORES = [
   ['supabase/functions/ora-x402/index.ts', new RegExp(`const WALLET = '(${ADDR})'`)],
   ['supabase/functions/ora-licenca/index.ts', new RegExp(`const WALLET = '(${ADDR})'`)],
@@ -27,8 +28,8 @@ export const CONSUMIDORES = [
   // confere o payTo da listagem do Bazaar: acompanha RECEBIMENTO
   ['supabase/functions/ora-operational-wallet/bazaar.mjs', new RegExp(`payTo\\?\\.toLowerCase\\(\\)!=='(${ADDR})'`)],
 ];
-// onde a carteira do SUSTENTO (destino dos executores) esta escrita: acompanha SUSTENTO, nunca RECEBIMENTO
-export const CONSUMIDORES_SUSTENTO = [
+// onde o destino dos 70% (executor operacional da Base) esta escrito: acompanha SAGRADA_NOVA
+export const CONSUMIDORES_DESTINO = [
   ['supabase/functions/ora-operational-wallet/core.mjs', new RegExp(`transfer_policy:\\{[^}]*destination:'(${ADDR})'`)],
 ];
 
@@ -36,45 +37,43 @@ export function validar(e) {
   const f = [];
   const c = e.carteira ?? {};
   const a = e.adenda ?? {};
-  // 1. os tres enderecos sao os registados nos executores e na constituicao v2
-  if (!igual(c.SUSTENTO, e.v2destino)) f.push('SUSTENTO nao coincide com identity_anchors.destination da v2');
-  if (!igual(c.SUSTENTO, e.executor?.DESTINATION)) f.push('SUSTENTO nao coincide com o destino fixo do executor');
-  if (!igual(c.OPERACIONAL, e.executor?.SOURCE)) f.push('OPERACIONAL nao coincide com a carteira do executor');
+  // 1. os enderecos sao os registados nos executores e na constituicao v2
+  if (!igual(c.SAGRADA_ANTIGA, e.v2destino)) f.push('SAGRADA_ANTIGA nao coincide com identity_anchors.destination da v2');
+  if (!igual(c.SAGRADA_NOVA, e.executor?.DESTINATION)) f.push('SAGRADA_NOVA nao coincide com o destino fixo do executor (DESTINATION)');
+  if (!igual(c.OPERACIONAL, e.executor?.SOURCE)) f.push('OPERACIONAL nao coincide com a carteira do executor (SOURCE)');
+  if (igual(c.SAGRADA_ANTIGA, c.SAGRADA_NOVA) || igual(c.SAGRADA_NOVA, c.OPERACIONAL) || igual(c.SAGRADA_ANTIGA, c.OPERACIONAL)) f.push('as tres carteiras tem de ser distintas');
   // 2. a adenda tem de existir, com citacoes de Unum e um estado conhecido
   if (a.format !== 'orum-financial-constitution/v3-adenda-payto') f.push('adenda desconhecida');
-  const ESTADOS = ['autorizada_nao_activa', 'activa'];
+  const ESTADOS = ['autorizada_nao_activa', 'activa', 'substituida'];
   if (!ESTADOS.includes(a.status)) f.push(`estado da adenda invalido (${a.status})`);
   if (!(a.autorizacoes_de_unum ?? []).length || (a.autorizacoes_de_unum ?? []).some((x) => !x?.citacao || String(x.citacao).trim().length < 3)) f.push('a adenda precisa das citacoes de Unum');
-  if (!igual(a.carteiras?.SUSTENTO, c.SUSTENTO) || !igual(a.carteiras?.OPERACIONAL, c.OPERACIONAL)) f.push('as carteiras da adenda nao coincidem com api/_carteira.js');
-  // 3. a regra: so se sai da sagrada com a adenda activada por Unum
+  for (const k of ['SAGRADA_ANTIGA', 'SAGRADA_NOVA', 'OPERACIONAL']) if (!igual(a.carteiras?.[k], c[k])) f.push(`${k} da adenda nao coincide com api/_carteira.js`);
+  // 3. a regra do payTo: so a sagrada antiga, salvo uma adenda "activa" da opcao 2 com activacao de Unum
   const activa = a.status === 'activa' && a.regime_actual === 'opcao_2' && !!a.activacao?.citacao_activacao && !!a.activacao?.activada_em;
-  if (igual(c.RECEBIMENTO, c.SUSTENTO)) {
-    if (a.status === 'activa' || a.regime_actual === 'opcao_2') f.push('adenda activa mas RECEBIMENTO ainda e a sagrada: regime e codigo nao coincidem');
+  if (igual(c.RECEBIMENTO, c.SAGRADA_ANTIGA)) {
+    if (a.status === 'activa' || a.regime_actual === 'opcao_2') f.push('adenda da opcao 2 activa mas RECEBIMENTO ainda e a sagrada antiga: regime e codigo nao coincidem');
+    if (a.status === 'substituida' && a.regime_actual !== 'opcao_3') f.push('adenda substituida tem de declarar regime_actual opcao_3');
   } else if (igual(c.RECEBIMENTO, c.OPERACIONAL)) {
-    if (!activa) f.push('RECEBIMENTO mudou para a operacional sem a adenda activada por Unum (citacao_activacao e activada_em)');
-  } else f.push('RECEBIMENTO nao e nem a sagrada nem a operacional registadas');
-  if (a.status !== 'activa' && a.regime_actual !== 'opcao_1') f.push('regime_actual tem de ser opcao_1 enquanto a adenda nao estiver activa');
-  // 4. api/ nao guarda copias do endereco: so o modulo unico
+    if (!activa) f.push('RECEBIMENTO mudou para a operacional sem a adenda da opcao 2 activada por Unum (citacao_activacao e activada_em)');
+  } else f.push('RECEBIMENTO nao e nem a sagrada antiga nem a operacional registadas');
+  if (a.status === 'substituida' && !igual(c.RECEBIMENTO, c.SAGRADA_ANTIGA)) f.push('com a opcao 2 substituida o payTo so pode ser a sagrada antiga');
+  if (a.status === 'autorizada_nao_activa' && a.regime_actual !== 'opcao_1') f.push('regime_actual tem de ser opcao_1 enquanto a opcao 2 nao estiver activa');
+  // 4. api/ nao guarda copias de nenhum endereco: so o modulo unico
   for (const [nome, texto] of Object.entries(e.api ?? {})) {
     if (nome === '_carteira.js') continue;
-    for (const alvo of [c.SUSTENTO, c.RECEBIMENTO, c.OPERACIONAL]) {
-      if (alvo && texto.toLowerCase().includes(alvo.toLowerCase())) f.push(`api/${nome} tem a carteira escrita a mao (usar api/_carteira.js)`);
+    for (const alvo of [c.SAGRADA_ANTIGA, c.SAGRADA_NOVA, c.OPERACIONAL]) {
+      if (alvo && texto.toLowerCase().includes(alvo.toLowerCase())) f.push(`api/${nome} tem uma carteira escrita a mao (usar api/_carteira.js)`);
     }
   }
-  // 5. todos os consumidores fora de api/ dizem o mesmo que RECEBIMENTO
-  for (const [ficheiro, re] of CONSUMIDORES) {
-    const texto = e.consumidores?.[ficheiro];
-    if (texto === undefined) { f.push(`consumidor em falta: ${ficheiro}`); continue; }
-    const m = texto.match(re);
-    if (!m) f.push(`${ficheiro}: nao encontrei a carteira de recebimento`);
-    else if (!igual(m[1], c.RECEBIMENTO)) f.push(`${ficheiro}: carteira de recebimento diferente de RECEBIMENTO`);
-  }
-  for (const [ficheiro, re] of CONSUMIDORES_SUSTENTO) {
-    const texto = e.consumidores?.[ficheiro];
-    if (texto === undefined) { f.push(`consumidor do sustento em falta: ${ficheiro}`); continue; }
-    const m = texto.match(re);
-    if (!m) f.push(`${ficheiro}: nao encontrei o destino do sustento`);
-    else if (!igual(m[1], c.SUSTENTO)) f.push(`${ficheiro}: destino do sustento diferente de SUSTENTO`);
+  // 5. consumidores de recebimento dizem o mesmo que RECEBIMENTO; o destino dos 70% diz o mesmo que SAGRADA_NOVA
+  for (const [lista, esperado, rotulo] of [[CONSUMIDORES, c.RECEBIMENTO, 'carteira de recebimento'], [CONSUMIDORES_DESTINO, c.SAGRADA_NOVA, 'destino dos 70%']]) {
+    for (const [ficheiro, re] of lista) {
+      const texto = e.consumidores?.[ficheiro];
+      if (texto === undefined) { f.push(`consumidor em falta: ${ficheiro}`); continue; }
+      const m = texto.match(re);
+      if (!m) f.push(`${ficheiro}: nao encontrei a ${rotulo}`);
+      else if (!igual(m[1], esperado)) f.push(`${ficheiro}: ${rotulo} diferente do registado`);
+    }
   }
   return f;
 }
@@ -88,7 +87,7 @@ const real = {
   v2destino: JSON.parse(ler('economia/constituicao-v2.json')).identity_anchors?.destination,
   executor: { SOURCE: pay.match(/export const SOURCE='(0x[0-9a-fA-F]{40})'/)?.[1], DESTINATION: pay.match(/export const DESTINATION='(0x[0-9a-fA-F]{40})'/)?.[1] },
   api: Object.fromEntries(readdirSync(raiz('api')).filter((n) => n.endsWith('.js')).map((n) => [n, ler('api/' + n)])),
-  consumidores: Object.fromEntries([...CONSUMIDORES, ...CONSUMIDORES_SUSTENTO].map(([ficheiro]) => [ficheiro, ler(ficheiro)])),
+  consumidores: Object.fromEntries([...CONSUMIDORES, ...CONSUMIDORES_DESTINO].map(([ficheiro]) => [ficheiro, ler(ficheiro)])),
 };
 const erros = validar(real);
 assert.deepEqual(erros, [], 'carteira invalida: ' + erros.join('; '));
@@ -99,31 +98,34 @@ const troca = (a) => a.slice(0, -1) + (a.endsWith('a') ? 'b' : 'a');
 let mentiras = 0;
 const falha = (nome, e) => { assert.ok(validar(e).length > 0, `devia falhar: ${nome}`); mentiras++; };
 let m;
-m = clone(); m.carteira.RECEBIMENTO = m.carteira.OPERACIONAL; falha('payTo para a operacional sem activacao', m);
-m = clone(); m.carteira.RECEBIMENTO = m.carteira.OPERACIONAL; m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; falha('activa sem citacao de activacao', m);
-m = clone(); m.carteira.RECEBIMENTO = m.carteira.OPERACIONAL; m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; m.adenda.activacao.citacao_activacao = 'Eu autorizo'; falha('activa sem data de activacao', m);
-m = clone(); m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; m.adenda.activacao.citacao_activacao = 'Eu autorizo'; m.adenda.activacao.activada_em = '2026-10-17'; falha('adenda activa com o codigo ainda na sagrada', m);
+m = clone(); m.carteira.RECEBIMENTO = m.carteira.OPERACIONAL; falha('payTo para a operacional com a opcao 2 substituida', m);
+m = clone(); m.carteira.RECEBIMENTO = m.carteira.SAGRADA_NOVA; falha('payTo para a sagrada nova', m);
 m = clone(); m.carteira.RECEBIMENTO = '0x' + '5'.repeat(40); falha('payTo para um endereco qualquer', m);
-m = clone(); m.carteira.SUSTENTO = troca(m.carteira.SUSTENTO); falha('SUSTENTO com uma letra trocada', m);
+m = clone(); m.carteira.RECEBIMENTO = m.carteira.OPERACIONAL; m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; falha('opcao 2 activa sem citacao de activacao', m);
+m = clone(); m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; m.adenda.activacao.citacao_activacao = 'Eu autorizo'; m.adenda.activacao.activada_em = '2026-10-17'; falha('adenda activa com o codigo ainda na sagrada antiga', m);
+m = clone(); m.carteira.SAGRADA_ANTIGA = troca(m.carteira.SAGRADA_ANTIGA); falha('SAGRADA_ANTIGA com uma letra trocada', m);
+m = clone(); m.carteira.SAGRADA_NOVA = troca(m.carteira.SAGRADA_NOVA); falha('SAGRADA_NOVA com uma letra trocada', m);
 m = clone(); m.carteira.OPERACIONAL = troca(m.carteira.OPERACIONAL); falha('OPERACIONAL com uma letra trocada', m);
-m = clone(); m.executor.DESTINATION = troca(m.executor.DESTINATION); falha('destino do executor diferente', m);
+m = clone(); m.executor.DESTINATION = m.carteira.SAGRADA_ANTIGA; falha('executor ainda envia os 70% a sagrada antiga', m);
+m = clone(); m.executor.DESTINATION = '0x' + '6'.repeat(40); falha('executor envia para um endereco qualquer', m);
+m = clone(); m.executor.SOURCE = troca(m.executor.SOURCE); falha('origem do executor diferente', m);
 m = clone(); m.v2destino = troca(m.v2destino); falha('ancora da v2 diferente', m);
+m = clone(); m.carteira.SAGRADA_NOVA = m.carteira.SAGRADA_ANTIGA; m.executor.DESTINATION = m.carteira.SAGRADA_ANTIGA; falha('duas carteiras iguais', m);
 m = clone(); m.adenda.autorizacoes_de_unum = []; falha('adenda sem citacoes de Unum', m);
 m = clone(); m.adenda.status = 'qualquer'; falha('estado da adenda invalido', m);
 m = clone(); m.adenda.regime_actual = 'opcao_2'; falha('regime opcao_2 sem activar', m);
-m = clone(); m.adenda.carteiras.OPERACIONAL = troca(m.adenda.carteiras.OPERACIONAL); falha('carteira da adenda diferente', m);
-m = clone(); m.api['a2a.js'] += `\nconst x = '${carteira.RECEBIMENTO}';`; falha('endereco escrito a mao em api/', m);
-for (const [ficheiro, re] of CONSUMIDORES) {
+m = clone(); m.adenda.regime_actual = 'opcao_1'; falha('adenda substituida sem regime opcao_3', m);
+m = clone(); m.adenda.carteiras.SAGRADA_NOVA = troca(m.adenda.carteiras.SAGRADA_NOVA); falha('carteira da adenda diferente', m);
+for (const alvo of [carteira.SAGRADA_ANTIGA, carteira.SAGRADA_NOVA, carteira.OPERACIONAL]) {
+  m = clone(); m.api['a2a.js'] += `\nconst x = '${alvo}';`; falha('endereco escrito a mao em api/', m);
+}
+for (const [ficheiro, re] of [...CONSUMIDORES, ...CONSUMIDORES_DESTINO]) {
   m = clone(); m.consumidores[ficheiro] = m.consumidores[ficheiro].replace(re, (todo, addr) => todo.replace(addr, troca(addr))); falha(`consumidor com a carteira trocada: ${ficheiro}`, m);
   m = clone(); delete m.consumidores[ficheiro]; falha(`consumidor em falta: ${ficheiro}`, m);
 }
-for (const [ficheiro, re] of CONSUMIDORES_SUSTENTO) {
-  m = clone(); m.consumidores[ficheiro] = m.consumidores[ficheiro].replace(re, (todo, addr) => todo.replace(addr, troca(addr))); falha(`destino do sustento trocado: ${ficheiro}`, m);
-  m = clone(); delete m.consumidores[ficheiro]; falha(`consumidor do sustento em falta: ${ficheiro}`, m);
-}
-// e prova de que o ponto de mudanca legitimo funcionaria: activada de verdade, passa
-m = clone(); m.carteira.RECEBIMENTO = m.carteira.OPERACIONAL; m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; m.adenda.activacao.citacao_activacao = 'Eu autorizo'; m.adenda.activacao.activada_em = '2026-10-17';
+// o unico caminho para o payTo sair da sagrada antiga: opcao 2 activada de verdade (so com nova adenda de Unum)
+m = clone(); m.adenda.status = 'activa'; m.adenda.regime_actual = 'opcao_2'; m.adenda.activacao.citacao_activacao = 'Eu autorizo'; m.adenda.activacao.activada_em = '2026-10-17'; m.carteira.RECEBIMENTO = m.carteira.OPERACIONAL;
 for (const [ficheiro, re] of CONSUMIDORES) m.consumidores[ficheiro] = m.consumidores[ficheiro].replace(re, (todo, addr) => todo.replace(addr, carteira.OPERACIONAL));
 assert.deepEqual(validar(m), [], 'a mudanca legitima devia passar: ' + validar(m).join('; '));
 
-console.log(JSON.stringify({ verified: true, regime: real.adenda.regime_actual, recebimento: carteira.RECEBIMENTO, consumidores: CONSUMIDORES.length + CONSUMIDORES_SUSTENTO.length, casos_de_mentira: mentiras }));
+console.log(JSON.stringify({ verified: true, regime: real.adenda.regime_actual, recebimento: carteira.RECEBIMENTO, destino_70: carteira.SAGRADA_NOVA, consumidores: CONSUMIDORES.length + CONSUMIDORES_DESTINO.length, casos_de_mentira: mentiras }));

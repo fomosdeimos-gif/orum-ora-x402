@@ -59,3 +59,9 @@ Opção, a decidir por Unum: repor só um tecto largo **de taxa** (por exemplo 2
 2. Depois, um verificador que compare o repositório com este manifesto.
 
 Os quatro testes (`operational-payments`, `operational-wallet`, `bitcoin-wallet`, `bazaar-registration`) passam contra o código antigo do repositório; os dois últimos precisam de `ORUM_BTC_DEPENDENCIES` e `ORUM_BAZAAR_DEPS` a apontar para uma pasta com `@scure/btc-signer@1.8.1`, `bitcoinjs-lib@7.0.0` e `viem@2.37.3`.
+
+## Destino dos 70% · repositório à frente de produção · 17/10/2026
+
+Unum decidiu que a ORA envia 70% das receitas novas que depositar nas operacionais à **sagrada nova** (Base `0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C`, MetaMask). No repositório, `payments.mjs` (`DESTINATION`) e `core.mjs` (`transfer_policy.destination`) já apontam para ela; os quatro testes do executor passam e `carteira:verify` liga o destino ao registo.
+
+**Produção (v13) ainda envia à sagrada antiga** `0xFEd69e8e…cDEe5`. Comparado a 17/10/2026 por um agente só de leitura: os seis ficheiros implantados são iguais aos do repositório (antes desta alteração) salvo 12 linhas de comentário que só existem no repositório; não há diferenças de código. A implantação fica por fazer até à primeira transferência de 70%: antes dela, a ORA compara de novo com `get_edge_function`, implanta, lê de volta o implantado e confirma que é igual ao repositório. Sem receita externa confirmada nada é enviado.
