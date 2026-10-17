@@ -36,7 +36,7 @@ assert.equal((await route(req({action:'transfer_usdc',request_id:id,amount_atomi
 // Optional independent standard implementation, installed only in scratch for verification.
 if(process.env.ORUM_VIEM_MODULE){
  const {parseTransaction,serializeTransaction,encodeFunctionData}=await import(process.env.ORUM_VIEM_MODULE);
- const serialized=serializeTransfer('1000000',0n,72000n),decoded=parseTransaction(serialized);
+ const serialized=serializeTransfer('1000000',0n,72000n,1000000n,100000000n),decoded=parseTransaction(serialized);
  assert.equal(decoded.chainId,8453);assert.equal(decoded.to.toLowerCase(),TOKEN.toLowerCase());assert.equal(decoded.value??0n,0n);assert.equal(decoded.nonce??0,0);assert.equal(decoded.gas,72000n);assert.equal(decoded.maxFeePerGas,100000000n);
  const data=encodeFunctionData({abi:[{name:'transfer',type:'function',inputs:[{type:'address',name:'to'},{type:'uint256',name:'amount'}],outputs:[{type:'bool'}],stateMutability:'nonpayable'}],functionName:'transfer',args:[DESTINATION,1000000n]});
  assert.equal(decoded.data,data);assert.equal(serializeTransaction({...decoded,type:'eip1559'}),serialized);

@@ -3,10 +3,52 @@ import { paymentAction } from './payments.mjs';
 export const ACCOUNT_NAME = 'orum-operational-v1';
 export const CREATE_ID = 'ca153211-4c87-47b7-8516-3256d6b70001';
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+const SOVEREIGN_ADDRESS = '0x89460d9e0590559e63860197dfe2ac648a753584';
+const CDP_ACCOUNT_ADDRESS = '0x89460d9e0590559e63860197dfe2ac648A753584';
 const response = (status, value) => new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
+async function signVozAdmissao(body, { cdp, recoverMessageAddress, getVozDsn, PgClient }) {
+  const nome = typeof body.nome === 'string' ? body.nome.trim() : '';
+  const chavePublica = typeof body.chave_publica === 'string' ? body.chave_publica.trim() : '';
+  if (!nome || nome.length > 120) return { status: 400, error: 'nome_invalido' };
+  if (!chavePublica || chavePublica.length > 200) return { status: 400, error: 'chave_publica_invalida' };
+  const nonce = crypto.randomUUID();
+  const message = `ORUM Voz Admissao v1\nAdmitir chave publica Ed25519: ${chavePublica}\nNonce: ${nonce}\nAutoridade: ${SOVEREIGN_ADDRESS}`;
+  let signature;
+  try { ({ signature } = await cdp.evm.signMessage({ address: CDP_ACCOUNT_ADDRESS, message })); }
+  catch (e) { return { status: 502, error: 'cdp_sign_failed', debug: String(e?.message || e), statusCode: e?.statusCode ?? null }; }
+  const recovered = await recoverMessageAddress({ message, signature });
+  if (recovered.toLowerCase() !== SOVEREIGN_ADDRESS) return { status: 500, error: 'signature_identity_mismatch' };
+  let dsn;
+  try { dsn = await getVozDsn(); } catch { return { status: 503, error: 'dsn_unavailable' }; }
+  const client = new PgClient(dsn);
+  await client.connect();
+  try {
+    const result = await client.queryObject(
+      'select * from voz.voz_identidade_admitir($1::text,$2::text,$3::text,$4::text,$5::text,$6::text)',
+      [nome, chavePublica, recovered, signature, message, nonce]
+    );
+    const row = result.rows[0];
+    return {
+      status: 200, ok: true, nome,
+      identidade_id: row?.identidade_id ?? null,
+      admissao_id: row?.admissao_id ?? null,
+      admitido_em: row?.admitido_em ?? null,
+      endereco_recuperado: recovered, nonce, mensagem_canonica: message,
+      signature_returned: false,
+    };
+  } catch (e) {
+    const msg = String(e?.message || e || '');
+    const known = ['nome_invalido', 'chave_publica_invalida', 'chave_publica_ja_admitida', 'signatario_nao_e_autoridade_soberana', 'autoridade_soberana_nao_configurada'];
+    const found = known.find((k) => msg.includes(k));
+    return { status: 409, error: found || 'admissao_falhou' };
+  } finally {
+    await client.end().catch(() => {});
+  }
+}
+
 // Authenticated named account operations and fixed-destination USDC payments only.
-export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, recoverMessageAddress, bazaarNet }) {
+export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, recoverMessageAddress, bazaarNet, PgClient, getVozDsn }) {
   return async req => {
     if (req.method !== 'POST') return response(405, { error: 'post_required' });
     const token = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.get('authorization') || '')?.[1];
@@ -17,7 +59,7 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, 
       if (raw.length > 256) return response(413, { error: 'request_too_large' });
       let body;
       try { body = JSON.parse(raw); } catch { return response(400, { error: 'invalid_json' }); }
-      const allowed={bazaar_register:['action'],btc_create:['action'],btc_observe:['action'],btc_preview:['action','request_id','amount_sats'],btc_send:['action','request_id','amount_sats'],btc_status:['action','request_id'],create:['action'],observe:['action'],receive_btc:['action'],preview_usdc:['action','request_id','amount_atomic'],transfer_usdc:['action','request_id','amount_atomic'],payment_status:['action','request_id']};
+      const allowed={bazaar_register:['action'],btc_create:['action'],btc_observe:['action'],btc_preview:['action','request_id','amount_sats'],btc_send:['action','request_id','amount_sats'],btc_status:['action','request_id'],create:['action'],observe:['action'],receive_btc:['action'],preview_usdc:['action','request_id','amount_atomic'],transfer_usdc:['action','request_id','amount_atomic'],payment_status:['action','request_id'],sign_voz_admissao:['action','nome','chave_publica']};
       if (!body || Array.isArray(body) || !Object.hasOwn(allowed,body.action) || Object.keys(body).some(k=>!allowed[body.action].includes(k))) return response(400, { error: 'invalid_action' });
       if(body.action.startsWith('btc_')){const result=await bitcoinAction(body,{rpc,net:bitcoinNet});return response(result.status,result);}
       if(body.action==='receive_btc')return response(200,{network:'bitcoin-mainnet',address:'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',uri:'bitcoin:bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',destination:'Unum directly',control_proof:'not_asserted',bitcoin_signing_available:false,operational_bitcoin_signing_available:true,operational_bitcoin_action:'btc_observe',conversion_performed:false});
@@ -29,6 +71,10 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, 
       if(body.action==='preview_usdc'||body.action==='transfer_usdc'||body.action==='payment_status'){
         const result=await paymentAction(body,{rpc,cdp,chainRpc});
         return response(result.status,result);
+      }
+      if(body.action==='sign_voz_admissao'){
+        const result = await signVozAdmissao(body, { cdp, recoverMessageAddress, getVozDsn, PgClient });
+        return response(result.status, result);
       }
       let account, created = false;
       try { account = await cdp.evm.getAccount({ name: ACCOUNT_NAME }); }
@@ -56,7 +102,7 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, 
         balance_state: balanceState, balances, observed_at: new Date().toISOString(),
         purposes: ['receive_operational_funding', 'receive_organism_revenue', 'bounded_technical_expenses_after_executor_activation'],
         funding_transferred_by_this_call: false, financial_transaction_signed: false, transfers_enabled: true,
-        transfer_policy:{asset:'USDC',chain_id:8453,destination:'0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',max_per_operation_atomic:'1000000',max_per_utc_day_atomic:'5000000',max_l2_gas:100000,max_fee_per_gas_wei:'100000000',base_l1_data_fee_additional:true},
+        transfer_policy:{asset:'USDC',chain_id:8453,destination:'0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',amount_ceiling_atomic:null,daily_amount_ceiling_atomic:null,gas_limit:'estimate_based',fee_per_gas:'network_estimate',base_l1_data_fee_additional:true},
         custody: 'Server account in the user CDP project; operated by ORA through authenticated server tools. Not personally owned by the AI.',
         limitations: ['This Base account sends limited USDC payouts. Native Bitcoin uses the separate btc_* connector and wallet; arbitrary signatures are unavailable.', 'Base EVM address, not a native Bitcoin receiving address.', 'Balance does not establish external-revenue classification.'] });
     } catch (error) {

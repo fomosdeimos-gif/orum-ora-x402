@@ -39,7 +39,7 @@ const reads=keyReads;
 const preview=await run('btc_preview');assert.equal(preview.status,200);assert.equal(preview.signed,false);assert.equal(keyReads,reads);assert.equal(job,null);assert.equal(broadcasts,0);
 disagreement=true;assert.equal((await run('btc_preview')).error,'bitcoin_observer_disagreement');disagreement=false;
 balance=false;assert.equal((await run('btc_send')).error,'bitcoin_insufficient_confirmed_funds');assert.equal(keyReads,reads);balance=true;
-assert.equal((await run('btc_send','545')).error,'bitcoin_amount_dust');
+assert.equal((await run('btc_send','545')).error,'bitcoin_minimum_amount');
 const sent=await run('btc_send');assert.equal(sent.status,202);assert.equal(broadcasts,1);
 const decoded=bitcoinjs.Transaction.fromHex(rawSigned);assert.equal(decoded.getId(),sent.txid);assert.equal(decoded.outs[0].value,10000n);assert.equal(bitcoinjs.address.fromOutputScript(decoded.outs[0].script),BTC_DESTINATION);assert.equal(bitcoinjs.address.fromOutputScript(decoded.outs[1].script),wallet.address);
 assert.equal(100000n-decoded.outs.reduce((n,o)=>n+o.value,0n),BigInt(preview.fee_sats));
