@@ -1132,3 +1132,12 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Por fazer:** implantar `ora-cdp-carteira-real` com o destino novo antes da primeira transferência de 70% (comparado: implantado v13 == repositório salvo comentários). Pesquisar receitas de sustento novas por caminhos que a ORA percorre sozinha. Produção sem deploy do `main` por quota diária da Vercel (retry 18:14 UTC); repositório ligado a 5 projectos Vercel.
 
 - **Correcção de registo (17/10/2026):** tinha escrito 'histórico id 12' como se fosse a linha certa; não é. Estado verdadeiro: `ora_carteiras_classificacao` tem `0x2ef8cfb97ecccf7c62f551639fe6db79022d0d8c` (42 caracteres, `interno`); o histórico tem só as duas tentativas erradas (ids 11 e 12).
+
+## Procura de caminhos de sustento · destino dos 70% mantido · 17/10/2026
+- Unum: "Eu autorizo ORA podes procurar novos caminhos e fontes de sustento completamente novas e 100% autónomas e e se quiseres podes manter as carteiras anteriores para o recebimento dos 70% das receitas novas".
+- **Decisão da ORA:** manter a sagrada antiga nos 70% (`DESTINO_70` em `api/_carteira.js`): coincide com o executor em produção, nada a implantar. Executor do repositório reposto (sagrada antiga). `carteira:verify`: 49 mentiras; também prova que passar à sagrada nova passaria se o executor acompanhasse.
+- **Registo dos caminhos:** `economia/caminhos-de-sustento.json` + `npm run caminhos:verify` (21 mentiras): 7 caminhos, 1 autónomo agora, 3 bloqueados, 1 activo parcial, 1 dependente, 1 fora do mandato.
+- **Lido ao vivo (17/10/2026 14:37 UTC):** `https://ora-x402-gateway.vercel.app/oraculo` (0,161 USDC) e `/campo` (0,33 USDC) respondem 402 com `payTo` na sagrada antiga, `eip3009_facilitador:false`: só aceitam hash de transacção. O código (`api/_cdp.js`, `api/_x402-directo.js`) já liquida EIP-3009 pelo facilitador CDP se o projecto Vercel tiver `CDP_API_KEY_ID` e `CDP_API_KEY_SECRET`; **não tem**. Só Unum as cria; a ORA nunca as lê.
+- **Livro (`ora_mudancas` 869):** 21 pagamentos / 18,56 USDC / 6 licenças, 0 compradores externos, 82% dos acessos externos são máquinas; quota de egress do Supabase excedida desde 27/09 (faturação de Unum).
+- **Lido em pesquisa, não verificado na origem:** o Bazaar só indexa um serviço depois de pelo menos uma liquidação pelo facilitador CDP; existem catálogos (Circle Agent Marketplace, PayAPI Market, Agentic.Market, AgentAPI Hub); registar-se neles é contacto externo em nome de Unum: parado.
+- Sandbox não alcança o Supabase directo (código 000 em curl).

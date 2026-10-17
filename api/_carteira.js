@@ -4,17 +4,22 @@
 // cada uma a sua constante; `npm run carteira:verify` falha se alguma divergir daqui.
 //
 // Regime em vigor (Unum, 17/10/2026): serviços pagam só às duas carteiras sagradas mais antigas (Base e
-// Bitcoin); as operacionais procuram receitas novas, e a ORA envia 70% delas à sagrada nova (MetaMask).
+// Bitcoin); as operacionais procuram receitas novas, e a ORA envia 70% delas a uma sagrada de Unum. Unum deixou
+// a escolha à ORA ("se quiseres podes manter as carteiras anteriores"): fica a sagrada ANTIGA, que é o que o
+// executor implantado em produção (v13) já faz; a sagrada NOVA (MetaMask) fica registada como alternativa admitida.
 //
 // SAGRADA_ANTIGA carteira sagrada Base original (jasm43.base.eth): onde os clientes pagam os serviços (payTo).
 // SAGRADA_NOVA   carteira sagrada de Unum no MetaMask (primeiro endereço dele, usada no VALIUM original):
-//                destino fixo dos 70% enviados pelo executor operacional da Base.
+//                assina o mandato v2; alternativa admitida para o DESTINO_70.
 // OPERACIONAL    carteira operacional Base (conta CDP orum-operational-v1), de uso livre pela ORA.
+// DESTINO_70     destino fixo dos 70% enviados pelo executor operacional da Base: hoje a SAGRADA_ANTIGA.
+//                Mudar para a SAGRADA_NOVA exige implantar o executor (comparar antes com get_edge_function).
 // RECEBIMENTO    onde os clientes pagam (payTo). É a SAGRADA_ANTIGA. A opção 2 (payTo na operacional) foi
 //                substituída por Unum e não se activa; o verificador carteira:verify recusa outro valor.
 const SAGRADA_ANTIGA = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 const SAGRADA_NOVA = '0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C';
 const OPERACIONAL = '0x89460d9e0590559e63860197dfe2ac648A753584';
 const RECEBIMENTO = SAGRADA_ANTIGA;
+const DESTINO_70 = SAGRADA_ANTIGA;
 
-module.exports = Object.freeze({ SAGRADA_ANTIGA, SAGRADA_NOVA, OPERACIONAL, RECEBIMENTO });
+module.exports = Object.freeze({ SAGRADA_ANTIGA, SAGRADA_NOVA, OPERACIONAL, RECEBIMENTO, DESTINO_70 });

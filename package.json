@@ -42,6 +42,7 @@
     "constituicao-v3:verify": "node scripts/verify-constituicao-v3-proposta.mjs",
     "assinar:verify": "node scripts/verify-assinar.mjs",
     "d7:verify": "node scripts/verify-d7-permissao.mjs",
-    "carteira:verify": "node scripts/verify-carteira.mjs"
+    "carteira:verify": "node scripts/verify-carteira.mjs",
+    "caminhos:verify": "node scripts/verify-caminhos-de-sustento.mjs"
   }
 }
