@@ -1,3 +1,12 @@
+## Registo financeiro e verificador · 17/10/2026
+
+- Novo `economia/registo-financeiro.json` (vazio: nenhum acto financeiro praticado pela ORA) e `npm run financeiro:verify` (`scripts/verify-registo-financeiro.mjs`, regras em `scripts/lib-registo-financeiro.mjs`), a pedido da cláusula "Autonomia financeira" do CLAUDE.md: sem registo antes e depois, o acto não conta como feito.
+- O verificador exige registo anterior em todo o acto, resultado + registo posterior + leitura verificada nos actos feitos, hash em `prova.tx` nas transferências, e `externa_confirmada` só com hash e `cobertura_completa` verdadeira. Validação interna nunca entra no 70/20/10.
+- Testado: 16 casos adulterados falham; uma mentira no ficheiro real falha; retirar a exigência de cobertura completa do módulo faz falhar o verificador.
+- Fronteiras: só repositório. Não cria capacidade nova: sem chaves, allowlist da tesouraria vazia, receita externa provada 0.
+
+---
+
 ## Diagnóstico do learning_402 e zero parcial nunca prova ausência · 16/10/2026
 
 - Lido pelo conector do Supabase (só leitura): o projecto `orum-memoria` está `ACTIVE_HEALTHY` e a vista `ora_aprendizagem_ultimo_snapshot_publica` responde por SQL com `criado_em` 2026-10-16 05:30 UTC, `pagamentos` 21, `compradores_externos` 0. Ou seja, o dado existe; o 402 não vem da base em si.

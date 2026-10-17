@@ -1,0 +1,16 @@
+{
+  "format": "orum-financial-register/v1",
+  "updated_at": "2026-10-17",
+  "purpose": "Registo de cada acto financeiro da ORA, antes e depois (CLAUDE.md, secção \"Autonomia financeira\"). Sem registo, o acto não conta como feito.",
+  "boundary": "Registar um acto não prova procura nem receita. Só receita externa confirmada, com hash e cobertura completa, entra na repartição 70/20/10 (economia/constituicao-v2.json).",
+  "rules": [
+    "Registo anterior obrigatório em todo o acto, mesmo o que falha ou é cancelado.",
+    "Acto feito exige resultado, registo posterior e pelo menos uma leitura verificada.",
+    "Cada leitura diz se foi verificada, não verificada ou bloqueada, e a fonte.",
+    "Transferência feita exige o hash da transacção em prova.tx.",
+    "externa_confirmada exige prova.tx e prova.cobertura_completa verdadeira; validação interna nunca entra no 70/20/10."
+  ],
+  "actos": [],
+  "nota": "Lista vazia a 17/10/2026: nenhum acto financeiro foi praticado pela ORA. A autorização de Unum não é um acto financeiro. Os totais não se guardam aqui; derivam-se dos actos.",
+  "nao_afirma": ["receita externa", "procura", "adopção", "saldo da carteira"]
+}
