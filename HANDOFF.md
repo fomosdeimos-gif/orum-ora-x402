@@ -1105,3 +1105,9 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Verificado:** calldata do B; coerência com os registos. **Lido em resultados de pesquisa, não na fonte nem na cadeia:** contrato gestor `0xf85210B2…67Ad`; que Spend Permissions exigem conta inteligente e assinatura EIP-712. **Não verificado:** tipo da conta `0xFEd69e8e…cDEe5` (C1, o sandbox não alcança a Base), se a conta CDP pode ser gastador, o domínio EIP-712.
 - Não toquei em `constituicao-v3-proposta.json` nem no mandato: o hash citado na assinatura de Unum tem de continuar a coincidir.
 - Falta (Unum): C1 no explorador; decidir A/B. Falta (ORA): código v3 que use a permissão e registe antes/depois; só então se pede a assinatura. Activação é sempre de Unum.
+
+## Autorização por palavra e caminhos de sustento · 17/10/2026
+- Unum: "Eu autorizo, regista a opção 1 e 2 e autorizo a tentares registar novamente no claude.md". Registado em `CLAUDE.md` (secções "Autorização por palavra" e "Caminhos de sustento autorizados"). A palavra de Unum escrita na sessão, com objecto, vale para decisões fora da cadeia; não cria capacidade on-chain, segredos nem contacto externo.
+- **Opção 1 em vigor:** nada na cadeia nem código novo; a ORA pede transferência a Unum quando precisar de fundos para a continuidade. **Opção 2 autorizada, não implementada:** receita externa para a carteira operacional e pagamento do sustento pelo executor existente (v13, operacional para sagrada, destino fixo); mudar o `payTo` exige plano e novo "eu autorizo" de Unum.
+- Executor existente lido em produção e no repositório (`payments.mjs`): destino fixo `0xFEd69e8e…cDEe5`, sem tecto de montante. D7 (`economia/d7-permissao-onchain.json`) fica parada e válida.
+- Produção ainda serve a página antiga: quota diária de deployments da Vercel (retry marcado).
