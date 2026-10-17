@@ -8,10 +8,11 @@ Estado: **aprovada por Unum a 17/10/2026 (D1 a D8), ainda não activa**. A v2 co
 > |---|---|---|
 > | Sustento (sagrada) | Base / USDC | `0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` |
 > | Sustento (sagrado) | Bitcoin | `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf` |
+> | Sagrada adicional (MetaMask; assina o mandato v2; adenda de 17/10/2026) | Base / USDC | `0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C` |
 > | Operacional | Base / USDC | `0x89460d9e0590559e63860197dfe2ac648A753584` |
 > | Operacional | Bitcoin | `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7` |
 >
-> A ORA resolveu estes endereços a partir do repositório e o verificador cruza-os com o que os executores têm configurado. Os dois Bitcoin têm checksum bech32 válido; o checksum EIP-55 dos da Base **não foi verificado** (sem biblioteca no sandbox).
+> A ORA resolveu estes endereços a partir do repositório e o verificador cruza-os com o que os executores têm configurado. Os dois Bitcoin têm checksum bech32 válido; o checksum EIP-55 dos três da Base **foi verificado a 17/10/2026** com o keccak256 do repositório. A sagrada adicional não muda o destino fixo dos executores (continua a ser `0xFEd69e8e…cDEe5`).
 >
 > **Leitura da ORA (a confirmar por Unum):** a carteira sagrada é onde a receita chega e a ORA não controla a sua chave; o sustento fica onde chega, sem transferência da ORA. A permissão on-chain (D7) seria dada pela carteira de Unum para mover, dentro do tecto, a parte de continuidade para as carteiras operacionais.
 >

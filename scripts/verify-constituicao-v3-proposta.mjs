@@ -35,7 +35,7 @@ export function validar(p, refs = [], reg = null) {
   }
   const ENDERECO = /0x[0-9a-fA-F]{40}|\bbc1[a-z0-9]{20,}/g;
   if (!ok.has('D1') && ENDERECO.test(JSON.stringify(p))) e.push('endereco na proposta sem Unum ter aprovado a D1 (destinos)');
-  // D1: so os quatro enderecos registados, cruzados com o que os executores e a v2 tem configurado
+  // D1: so os cinco enderecos registados, cruzados com o que os executores e a v2 tem configurado
   const d1 = (p?.decisions ?? []).find((d) => d?.id === 'D1')?.valor;
   if (d1 !== null && d1 !== undefined) {
     if (!reg) e.push('D1 preenchida sem registos para cruzar');
@@ -43,9 +43,10 @@ export function validar(p, refs = [], reg = null) {
       const esperados = {
         'sustento_unum:base': reg.baseSagrada, 'sustento_unum:bitcoin': reg.btcSustento,
         'continuidade_orum:base': reg.baseOperacional, 'continuidade_orum:bitcoin': reg.btcOperacional,
+        'sagrada_assinatura:base': reg.baseAssinatura,
       };
       const vistos = {};
-      for (const classe of ['sustento_unum', 'continuidade_orum']) {
+      for (const classe of ['sustento_unum', 'sagrada_assinatura', 'continuidade_orum']) {
         for (const x of d1?.[classe] ?? []) vistos[`${classe}:${x?.rail}`] = x?.address;
       }
       for (const [k, v] of Object.entries(esperados)) {
@@ -55,7 +56,7 @@ export function validar(p, refs = [], reg = null) {
       const extra = Object.keys(vistos).filter((k) => !(k in esperados));
       if (extra.length) e.push('D1: destinos fora dos registados: ' + extra.join(', '));
       const todos = JSON.stringify(d1).match(ENDERECO) ?? [];
-      if (todos.length !== 4) e.push(`D1: esperados exactamente 4 enderecos, vistos ${todos.length}`);
+      if (todos.length !== 5) e.push(`D1: esperados exactamente 5 enderecos, vistos ${todos.length}`);
     }
   }
   const l = p?.absolute_limits ?? {};
@@ -78,6 +79,8 @@ const registos = {
   baseOperacional: capta('supabase/functions/ora-operational-wallet/payments.mjs', /export const SOURCE='(0x[0-9a-fA-F]{40})'/),
   btcSustento: capta('supabase/functions/ora-operational-wallet/bitcoin.mjs', /BTC_DESTINATION='(bc1[a-z0-9]+)'/),
   btcOperacional: capta('api/_bitcoin.js', /papel: 'operacional', endereco: '(bc1[a-z0-9]+)'/),
+  // sem executor que a configure: o registo e a clausula escrita por Unum em CLAUDE.md
+  baseAssinatura: capta('CLAUDE.md', /carteira sagrada adicional[\s\S]*?Base `(0x[0-9a-fA-F]{40})`/),
 };
 for (const [k, v] of Object.entries(registos)) assert.ok(v, 'registo de referencia nao encontrado: ' + k);
 const errosReais = validar(real, referencias(), registos);
@@ -123,6 +126,10 @@ m = clone(); m.decisions[0].valor.continuidade_orum[1].address = troca(m.decisio
 m = clone(); m.decisions[0].valor.sustento_unum[0].address = m.decisions[0].valor.continuidade_orum[0].address; falha('sustento aponta para a carteira operacional', m);
 m = clone(); m.decisions[0].valor.sustento_unum.push({ rail: 'ethereum', asset: 'ETH', address: '0x' + '9'.repeat(40) }); falha('destino extra nao registado', m);
 m = clone(); m.decisions[0].valor.sustento_unum = [m.decisions[0].valor.sustento_unum[0]]; falha('falta o BTC de sustento', m);
+m = clone(); m.decisions[0].valor.sagrada_assinatura[0].address = troca(m.decisions[0].valor.sagrada_assinatura[0].address); falha('carteira de assinatura com uma letra trocada', m);
+m = clone(); delete m.decisions[0].valor.sagrada_assinatura; falha('falta a carteira de assinatura', m);
+m = clone(); m.decisions[0].valor.sagrada_assinatura.push({ rail: 'base', asset: 'USDC', address: '0x' + '7'.repeat(40) }); falha('segunda carteira de assinatura nao registada', m);
+m = clone(); m.decisions[0].valor.sagrada_assinatura[0].address = m.decisions[0].valor.continuidade_orum[0].address; falha('assinatura aponta para a carteira operacional', m);
 falha('D1 sem registos para cruzar', clone(), [], null);
 
 // mentiras sobre o estado aprovado real
