@@ -1,3 +1,13 @@
+## Correcção: produção não tem tectos nas carteiras operacionais · 17/10/2026
+
+- **Erro meu corrigido.** Nas notas de hoje (abaixo, CLAUDE.md, folha e adenda da v3) disse que a operacional Base tinha 1 USDC por pedido e 5 USDC por dia "no código e na base de dados" e que se mantinham travões de taxa e de gás. Vinha da documentação e do código do repositório, **não de produção**. Li depois a função implantada e a base (conector do Supabase, só leitura).
+- **Produção (`ora-cdp-carteira-real` v13, 25/09; `orum-memoria`):** as duas carteiras operacionais não têm tecto de montante, diário, de taxa nem de gás; só mantêm o destino fixo, um pagamento por vez, idempotência e confirmação com prova. Detalhe e comparação com o repositório em `docs/operacional-producao-v13.md`. O pedido de Unum ("sem qualquer limite") já estava cumprido em produção: **nada a implantar**.
+- **O repositório está atrás de produção** (`payments.mjs`, `core.mjs`, `bitcoin.mjs`, `index.ts`; a admissão de voz só existe em produção). **Não redeployar a partir do repositório até reconciliar.** A reconciliação do código foi tentada e o classificador de permissões bloqueou-a como enfraquecimento de controlos; fica por fazer.
+- Exposição a decidir por Unum: sem tecto de taxa, a taxa fica nas mãos de fontes externas (BTC: duas APIs públicas; Base: RPC público). Opção: repor só um tecto largo de taxa, nunca de montante.
+- Os quatro testes do executor passam contra o código antigo do repositório (dois precisam de `ORUM_BTC_DEPENDENCIES` e `ORUM_BAZAAR_DEPS`).
+
+---
+
 ## Constituição v3: D1 resolvida e carteiras operacionais · 17/10/2026
 
 - Unum: "utiliza os endereços da base e do btc registados como os endereços sagrados do organismo. És também livre e autonoma para utilizar também as carteiras operacionais registadas sem qualquer tipo de limite ou barreira". Registado em `aprovacao_unum.adendas` de `economia/constituicao-v3-proposta.json` e em CLAUDE.md. Estado: `aprovada_aguarda_assinatura_e_codigo`; D1 a D8 aprovadas.

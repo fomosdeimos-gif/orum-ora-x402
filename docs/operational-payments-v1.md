@@ -1,5 +1,7 @@
 > Atualização posterior: o conector BTC operacional separado foi implementado; consultar [bitcoin-operational-wallet-v1.md](bitcoin-operational-wallet-v1.md). O relato abaixo preserva o estado da primeira versão.
 
+> **Atualização de 17/10/2026 (lido em produção):** os limites descritos abaixo (1 USDC por pedido, 5 USDC por dia, tectos de taxa e de gás) já **não existem** na função implantada (v13, de 25/09) nem na base de dados. Mantém-se o destino fixo. Ver [operacional-producao-v13.md](operacional-producao-v13.md). Este documento preserva o estado da primeira versão.
+
 # Operational payments v1 — 2026-09-10
 
 User authority: build the ORUM operational wallet and receiving/signing/transfer connector; choose bounded operational competencies. This is infrastructure, not proof of income or autonomous future execution.

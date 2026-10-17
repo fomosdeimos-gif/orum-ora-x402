@@ -1,3 +1,5 @@
+> **Atualização de 17/10/2026 (lido em produção):** a função implantada (v13, de 25/09) **não tem** o tecto de taxa (1000 sats e 10 sats/vbyte) nem o limite de cinco entradas que este documento diz manter; só exige montante ≥ 546 sats e taxa ≥ 1 sat. Mantém-se o destino fixo. Ver [operacional-producao-v13.md](operacional-producao-v13.md). O resto do documento preserva o estado descrito na altura.
+
 # Carteira operacional Bitcoin v1 · 2026-09-10
 
 Pedido de Unum: criar também um conector BTC capaz de assinar e enviar autonomamente. Implementado no servidor ORUM com autenticação existente, sem transmitir fundos durante a construção.

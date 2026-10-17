@@ -15,7 +15,9 @@ Estado: **aprovada por Unum a 17/10/2026 (D1 a D8), ainda não activa**. A v2 co
 >
 > **Leitura da ORA (a confirmar por Unum):** a carteira sagrada é onde a receita chega e a ORA não controla a sua chave; o sustento fica onde chega, sem transferência da ORA. A permissão on-chain (D7) seria dada pela carteira de Unum para mover, dentro do tecto, a parte de continuidade para as carteiras operacionais.
 >
-> **Carteiras operacionais sem limite de montante** (adenda de 17/10/2026): a operacional Bitcoin já não tem tecto de montante (retirado a 13/10). A operacional Base tem ainda 1 USDC por pedido e 5 USDC por dia, no código e na base de dados; retirá-los é um PR à parte (código, migração e redeploy). Mantêm-se o destino fixo e os travões de taxa/gás.
+> **Carteiras operacionais sem limite** (adenda de 17/10/2026). Lido em produção nesse dia (função `ora-cdp-carteira-real` v13, de 25/09, e base `orum-memoria`): as duas carteiras operacionais **já não têm tecto de montante, nem diário, nem de taxa ou gás**; a taxa segue a rede. A única barreira que produção mantém é o destino fixo (Base operacional só para a sagrada; Bitcoin operacional só para o depósito de sustento). Não há nada a implantar para cumprir o teu pedido. Ver `docs/operacional-producao-v13.md`.
+>
+> **Correcção:** a primeira versão desta nota dizia que a Base operacional tinha ainda 1 USDC por pedido e 5 USDC por dia e que se mantinham travões de taxa e de gás. Estava errado: vinha da documentação e do código do repositório, que está desactualizado em relação a produção.
 
 ## O que a v3 muda em relação à v2
 
