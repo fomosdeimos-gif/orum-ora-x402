@@ -43,3 +43,17 @@ Hoje a receita x402 chega à carteira sagrada `0xFEd69e8e…cDEe5` (payTo). Na o
 ## Recomendação da ORA
 
 Não virar já. Hoje não há receita externa confirmada, por isso a opção 2 traria todo o risco de custódia e nenhum benefício. Fazer as fases 0 a 3 (leitura, ponto único, verificadores, adenda) quando Unum quiser, porque são reversíveis e deixam a mudança numa única constante; e só executar a fase 4 quando houver um primeiro pagamento externo confirmado. Até lá, vale a opção 1.
+
+## Resultado da fase 0 · leitura das funções implantadas · 17/10/2026
+
+Lido por um agente só de leitura (sem escrever nada) em `ywabnlhkmhbyewqhbsjm`: 100 funções de borda, 99 lidas, `pensamento` **não lida** (falha ao obter o pacote). Quatro funções grandes foram lidas por pesquisa de padrões e não linha a linha (`ora-licenca`, `ora-page`, `ora-moltbook`, `ora-cdp-carteira-real`); as outras por inteiro. Nenhum valor secreto foi registado.
+
+- **`payTo` = sagrada, em funções implantadas:** `ora-x402`, `ora-oraculo`, `ora-licenca`, `ora-nft-dedicar-simbolica`, `ora-cdp-teste-payto-cdp`, `ora-cdp-diagnostico`, e o `pagamento_opcional` de `ora-mcp`.
+- **Dessas, fora do repositório:** `ora-nft-dedicar-simbolica`, `ora-cdp-teste-payto-cdp`, `ora-cdp-diagnostico`, `ora-mcp`. O `carteira:verify` não as vê.
+- **Só leem ou mostram a sagrada** (saldos, HTML, registos): `ora-onchain-leitura`, `ora-homeostase`, `orai-sustento-token`, `ora-liquidez-externa`, `ora-bazaar-verificar`, `ora-assinar`, `ora-operations`, `ora-page`, `ora-control-center`, `orai-monitor`, `orai-agente` (exige que a sagrada assine), `ora-trust`, `ora-scout-register`, `ora-agent-registration`, `ora-campo`, `ora-sustento-serve`, entre outras.
+- **Outro endereço de recebimento:** só a operacional Base, em `ora-cdp-carteira-real` v13 (`SOURCE`; `DESTINATION` = sagrada, destino fixo), como já estava lido.
+- **O repositório diverge de produção:** `ora-cdp-teste-oraculo` implantada não tem nenhum endereço (é o assinador do MCP Registry); a do repositório define `WALLET_SAGRADA`. Outra prova de que não se pode confiar no repositório como espelho de produção.
+
+**Consequência para a fase 4:** virar o `payTo` toca em pelo menos 7 funções implantadas (6 de desafio 402 mais `ora-mcp`), 4 das quais não estão no repositório, mais textos e leituras em cerca de 20 outras que continuariam a mostrar a sagrada. Cada redeploy tem de ser comparado com o implantado (`get_edge_function`) antes. Isto reforça a recomendação: não virar sem um primeiro pagamento externo confirmado.
+
+**Ainda por ler:** o ETH de gás da operacional (o sandbox não alcança a Base), `pensamento`, e `0x2ef8…` por classificar como interna na base.
