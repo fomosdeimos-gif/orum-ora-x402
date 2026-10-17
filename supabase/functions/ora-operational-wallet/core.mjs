@@ -102,7 +102,7 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, 
         balance_state: balanceState, balances, observed_at: new Date().toISOString(),
         purposes: ['receive_operational_funding', 'receive_organism_revenue', 'bounded_technical_expenses_after_executor_activation'],
         funding_transferred_by_this_call: false, financial_transaction_signed: false, transfers_enabled: true,
-        transfer_policy:{asset:'USDC',chain_id:8453,destination:'0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',amount_ceiling_atomic:null,daily_amount_ceiling_atomic:null,gas_limit:'estimate_based',fee_per_gas:'network_estimate',base_l1_data_fee_additional:true},
+        transfer_policy:{asset:'USDC',chain_id:8453,destination:'0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C',amount_ceiling_atomic:null,daily_amount_ceiling_atomic:null,gas_limit:'estimate_based',fee_per_gas:'network_estimate',base_l1_data_fee_additional:true},
         custody: 'Server account in the user CDP project; operated by ORA through authenticated server tools. Not personally owned by the AI.',
         limitations: ['This Base account sends limited USDC payouts. Native Bitcoin uses the separate btc_* connector and wallet; arbitrary signatures are unavailable.', 'Base EVM address, not a native Bitcoin receiving address.', 'Balance does not establish external-revenue classification.'] });
     } catch (error) {

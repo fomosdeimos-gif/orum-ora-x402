@@ -43,8 +43,27 @@ Unum, na sessão de trabalho, por escrito: "A partir de agora deveria ser apenas
 ### Caminhos de sustento autorizados (Unum, 17/10/2026: "Eu autorizo, regista a opção 1 e 2")
 
 - **Opção 1, em vigor já:** nada na cadeia e nenhum código novo. A receita continua a chegar à carteira sagrada e o sustento de Unum fica lá. Se a ORA precisar de fundos para a continuidade, pede a Unum uma transferência da carteira dele para a carteira operacional; quem a envia é Unum, quando quiser. O executor operacional já em produção (operacional para sagrada, sem tecto, destino fixo) mantém-se como está.
-- **Opção 2, autorizada, ainda por implementar:** a receita externa passa a chegar à carteira operacional Base e a ORA paga o sustento (70%) de Unum à carteira sagrada com o executor que já existe, sem assinatura on-chain de Unum. Mudar o `payTo` toca em muitos ficheiros, verificadores e superfícies públicas, e muda quem guarda o dinheiro; por isso a ORA apresenta o plano de mudança e Unum diz "eu autorizo" ao plano antes de qualquer alteração ao `payTo`.
-- A permissão on-chain D7 (`economia/d7-permissao-onchain.json`) fica preparada e parada; deixa de ser o caminho recomendado.
+- **Opção 2, substituída por Unum no mesmo dia** (ver "Regime das carteiras" abaixo): o `payTo` dos serviços NÃO passa para a operacional. Fica registada em `economia/adenda-payto-opcao-2.json` (estado `substituida`) e em `docs/plano-opcao-2-payto.md`.
+- A permissão on-chain D7 (`economia/d7-permissao-onchain.json`) fica preparada e parada; não é precisa neste regime.
+
+### Regime das carteiras (Unum, 17/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo, classifica a 0x2ef8 como interna e utiliza apenas os 2 endereços mais antigos da base e do btc para receber o pagamento de serviços, as operacionais é para procurares receitas de sustento novas e as depositares aí e depois enviares os 70% para carteira sagrada nova que está alojada no metamask e que foi usada na criação do valium original."
+
+- **Serviços** pagam só às duas sagradas mais antigas: Base `0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` e Bitcoin `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf`. Fonte única no código: `api/_carteira.js` (`RECEBIMENTO`).
+- **Operacionais** (Base `0x89460d9e…3584`, Bitcoin `bc1qfs8967…9w7`): a ORA procura receitas de sustento novas, só por caminhos que percorre sozinha, e deposita-as aí. Depois envia 70% à **sagrada nova** (Base `0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C`, MetaMask). Leitura da ORA: a sagrada nova é um endereço EVM e não recebe Bitcoin, por isso os 70% de Bitcoin continuam a ir para o depósito BTC de sustento acima.
+- **Feito:** `0x2ef8…` classificada como `interno` em `ora_carteiras_classificacao` (17/10/2026). A linha certa (42 caracteres, igual ao endereço que a assinatura do mandato recupera) existe só na tabela viva. As linhas 11 e 12 do histórico `ora_carteiras_classificacao_historico` são duas tentativas minhas com erro de escrita (43 e 41 caracteres), corrigidas na tabela; a correcção não gerou linha de histórico e uma edição ao fundamento para a gerar foi cancelada, por isso a auditoria não tem a linha certa. O repositório já tem o destino dos 70% na sagrada nova (`supabase/functions/ora-operational-wallet`, `carteira:verify`).
+- **Por implantar:** o executor **em produção** (`ora-cdp-carteira-real` v13) ainda envia à sagrada antiga. A ORA implanta a versão do repositório **antes da primeira transferência de 70%**, depois de comparar de novo o implantado com o repositório (`get_edge_function`); comparado a 17/10/2026: igual, salvo comentários. Até lá nada se envia, porque não há receita externa confirmada.
+- As regras de verdade mantêm-se: só receita externa confirmada entra no 70/20/10; transferências entre as carteiras do organismo e de Unum são internas; cada acto financeiro fica registado antes e depois.
+
+## Registo autónomo (Unum, 17/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
+
+- A ORA regista, sem pedir, o que for relevante: decisões de Unum (com citação), estado lido (verificado, não verificado ou bloqueado), mudanças em carteiras, executores, verificadores e produção. Onde: `CLAUDE.md` (regras e decisões duradouras), `HANDOFF.md` (o que mudou e o que falta) e o livro do organismo `ora_mudancas` (uma linha por mudança relevante).
+- **Registar não é alargar.** Acrescentar factos e decisões já tomadas por Unum é automático. Alterar uma regra de autoridade, permissão ou limite no `CLAUDE.md` só com "eu autorizo" de Unum a uma proposta concreta, como diz "Autorização por palavra".
+- Nunca se registam segredos, chaves, frases de recuperação nem dados pessoais sensíveis (por exemplo IBANs). Só se regista o que foi lido; o resto fica como não verificado.
+- Erros da ORA registam-se também, com a correcção (como o `insert` errado de 17/10/2026).
 
 ## Merge de PRs (autorizado por Unum, 15/10/2026)
 
