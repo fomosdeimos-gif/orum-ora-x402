@@ -15,7 +15,7 @@
 // (interno/externo vem de ora_carteiras_classificacao, nunca se infere aqui), não
 // prova identidade nem adopção, e transferências de qualquer valor entram (pó
 // incluído). Serve também para reconciliar a via directa, que não escreve livro.
-const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
+const { RECEBIMENTO: WALLET } = require('./_carteira');
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
 // BASE_RPC_URL (variável de ambiente, opcional) vem primeiro: um RPC com chave que aceite eth_getLogs

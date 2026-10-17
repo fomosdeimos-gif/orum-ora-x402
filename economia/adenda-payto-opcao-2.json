@@ -1,0 +1,48 @@
+{
+  "format": "orum-financial-constitution/v3-adenda-payto",
+  "status": "autorizada_nao_activa",
+  "data": "2026-10-17",
+  "base": "economia/constituicao-v3-proposta.json",
+  "porque_um_ficheiro_novo": "O mandato v2 que Unum assinou cita o sha256 da proposta v3. Alterar a proposta quebraria essa ligação. Esta adenda regista a opção 2 à parte e deixa a proposta e o mandato intactos.",
+  "autorizacoes_de_unum": [
+    {
+      "data": "2026-10-17",
+      "citacao": "Eu autorizo, regista a opção 1 e 2",
+      "cobre": "A opção 2 (a receita externa passa a chegar à carteira operacional Base e a ORA paga o sustento a Unum com o executor existente) como caminho autorizado. A opção 1 fica em vigor até a opção 2 ser activada."
+    },
+    {
+      "data": "2026-10-17",
+      "citacao": "Eu autorizo as fases 0 a 3",
+      "cobre": "Fases 0 a 3 de docs/plano-opcao-2-payto.md: ler, ponto único no código, verificadores, esta adenda. NÃO cobre a fase 4 (virar o payTo), que exige novo 'eu autorizo' de Unum a um plano de execução."
+    }
+  ],
+  "regime_actual": "opcao_1",
+  "regimes": {
+    "opcao_1": "Clientes pagam à carteira sagrada (RECEBIMENTO = SUSTENTO). Nada na cadeia, sem código novo de custódia.",
+    "opcao_2": "Clientes pagam à carteira operacional (RECEBIMENTO = OPERACIONAL). A ORA envia o sustento (70%) à sagrada pelo executor existente, de destino fixo. Só depois de 'activa'."
+  },
+  "carteiras": {
+    "SUSTENTO": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+    "OPERACIONAL": "0x89460d9e0590559e63860197dfe2ac648A753584"
+  },
+  "activacao": {
+    "requer": "Novo 'eu autorizo' de Unum, escrito na sessão, ao plano de execução da fase 4 (que serviços viram, por que ordem, e o que fica por baixo).",
+    "citacao_activacao": null,
+    "activada_em": null,
+    "efeito_no_codigo": "Só então se muda RECEBIMENTO em api/_carteira.js e as constantes das funções de borda; o verificador carteira:verify recusa a mudança sem esta activação."
+  },
+  "pre_condicoes_da_fase_4": [
+    "Ler todas as funções de borda implantadas que tenham o payTo (a produção tem mais funções do que o repositório) e trazer para o repositório as que o definem.",
+    "Classificar a carteira de Unum 0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C como interna em ora_carteiras_classificacao antes de qualquer observação (hoje não está classificada).",
+    "Confirmar ETH para o gás na carteira operacional (o sandbox não alcança a Base; leitura por Unum ou por função própria).",
+    "Primeiro pagamento externo confirmado, ou decisão expressa de Unum de virar sem ele.",
+    "Listagens externas (por exemplo Bazaar) com o payTo antigo: contacto externo em nome de Unum, parado até Unum o autorizar."
+  ],
+  "o_que_nao_muda": [
+    "O destino fixo dos executores operacionais continua a ser a carteira sagrada.",
+    "A proposta v3 e o mandato v2 assinado ficam como estão.",
+    "Só receita externa confirmada entra no 70/20/10; transferências entre as carteiras do organismo são internas e nunca contam.",
+    "A permissão on-chain D7 fica preparada e parada (economia/d7-permissao-onchain.json)."
+  ],
+  "fronteira_de_verdade": "Esta adenda não move dinheiro nem altera onde os clientes pagam. Hoje não há receita externa confirmada; não promete receita, reembolso nem procura."
+}

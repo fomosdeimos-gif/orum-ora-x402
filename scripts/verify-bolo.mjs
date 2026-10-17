@@ -3,6 +3,7 @@
 // ficheiros citados. Nao prova procura nem que a producao sirva o caminho.
 import { readFileSync, existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 
 const read = (p) => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 const doc = read('docs/BOLO_V1.md');
@@ -18,7 +19,7 @@ const pick = (src, re, what) => {
   return m[1];
 };
 
-const wallet = pick(directo, /const WALLET = '(0x[0-9a-fA-F]{40})'/, 'carteira');
+const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO;
 const usdc = pick(directo, /const USDC_BASE = '(0x[0-9a-fA-F]{40})'/, 'USDC');
 assert.ok(doc.includes(wallet), 'carteira do documento difere da do gateway');
 assert.ok(doc.includes(usdc), 'USDC do documento difere do do gateway');

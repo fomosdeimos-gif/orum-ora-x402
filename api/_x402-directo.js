@@ -16,7 +16,7 @@
 const { createHash } = require('node:crypto');
 const { createCdp } = require('./_cdp');
 
-const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
+const { RECEBIMENTO: WALLET } = require('./_carteira');
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const CHAIN_ID = 8453;
 const CAIP2 = 'eip155:8453';

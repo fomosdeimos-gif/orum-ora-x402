@@ -3,6 +3,7 @@
 // anunciada e a mesma do gateway. Nao prova procura nem que o texto esteja publicado.
 import { readFileSync, existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 
 const read = (p) => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 const pkg = JSON.parse(read('package.json'));
@@ -19,7 +20,7 @@ for (const f of ['api/_snapshot.js', 'scripts/verify-snapshot-recurso.mjs', 'rec
   assert.ok(existsSync(new URL('../' + f, import.meta.url)), `ficheiro citado em falta: ${f}`);
 }
 
-const wallet = (directo.match(/const WALLET = '(0x[0-9a-fA-F]{40})'/) || [])[1];
+const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO;
 assert.ok(wallet, 'carteira do gateway nao encontrada');
 assert.ok(doc.includes(wallet) && page.includes(wallet), 'carteira anunciada difere da do gateway');
 

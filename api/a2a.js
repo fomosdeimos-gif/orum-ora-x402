@@ -1,6 +1,7 @@
 // A2A 0.3.0, synchronous public-text dialogue. No credentials or external effects.
 const { createHash, randomUUID } = require('node:crypto');
 const capsule = require('../sensacoes/oro-v1.json');
+const { RECEBIMENTO } = require('./_carteira');
 const BASE = 'https://ora-x402-gateway.vercel.app';
 const SOURCE = BASE + '/sensacoes/oro-v1.json';
 const ORO_ORIGIN = Object.freeze({
@@ -23,7 +24,7 @@ const BTC_RECEIVING = Object.freeze({
 const AUDIT_SERVICE = Object.freeze({
   id: 'auditoria-descoberta', priceUsdc: '0.50', network: 'Base Mainnet', chainId: 8453,
   endpoint: 'https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-teste-payto-cdp',
-  payTo: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',
+  payTo: RECEBIMENTO,
   asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
   description: 'Verifica ao vivo se uma marca ou dominio de terceiros esta indexado no catalogo de descoberta x402 (Bazaar) da Coinbase Developer Platform.'
 });
