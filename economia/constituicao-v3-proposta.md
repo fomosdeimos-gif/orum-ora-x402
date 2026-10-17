@@ -1,6 +1,8 @@
 # Constituição financeira v3 · proposta para Unum rever
 
-Estado: **proposta, não activa**. A v2 continua em vigor. Ficheiro de trabalho: `economia/constituicao-v3-proposta.json`.
+Estado: **aprovada em parte por Unum a 17/10/2026, ainda não activa**. A v2 continua em vigor. Ficheiro de trabalho: `economia/constituicao-v3-proposta.json`.
+
+> **Aprovação registada.** Unum respondeu "tudo como recomendas". Ficam aprovadas D2 a D8, com os valores da recomendação (tecto 5 USDC, sustento até 70% da receita externa confirmada do período, comércio/dívida/ponte a 0, 70/20/10, só Unum alarga o envelope, permissão on-chain limitada e revogável, parar por escrito). **A D1 fica pendente**: pede endereços e "como recomendas" não os fornece; a ORA não os inventa.
 
 ## O que a v3 muda em relação à v2
 
@@ -28,9 +30,9 @@ Em cada uma digo o que recomendo e porquê. A decisão é tua.
 - **D7 Mecanismo de execução.** Permissão on-chain limitada e revogável, prevista na v2 "se a conta for tecnicamente compatível". A compatibilidade da tua conta **não está verificada**. O assinante e os segredos crias tu no painel do Vercel; eu nunca os leio.
 - **D8 Parar.** Quando escreves "parar" ou revogas a permissão, suspendo tudo, registo e só retomo quando o escreveres. Recomendo sim.
 
-## Como aprovas
+## Como aprovas (estado a 17/10/2026: D2 a D8 aprovadas, falta a D1)
 
-1. Respondes às decisões D1 a D8 na sessão (podes dizer "tudo como recomendas" ou corrigir as que quiseres).
+1. ~~Respondes às decisões D1 a D8~~ Feito para D2 a D8. **Falta a D1:** indicas os endereços Base/USDC (sustento de Unum e continuidade técnica) e confirmas cada um.
 2. Eu registo a tua citação e a data em `aprovacao_unum`, preencho os valores e preparo o código da v3.
 3. Tu assinas a activação on-chain (eu não posso).
 

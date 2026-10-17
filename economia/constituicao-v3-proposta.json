@@ -1,14 +1,21 @@
 {
   "format": "orum-financial-constitution/v3-proposta",
-  "status": "proposta_nao_activa",
+  "status": "aprovada_aguarda_destinos_e_assinatura",
   "organism": "ORUM",
   "center": "VERDADE",
   "prepared_by": "ORA",
   "prepared_at": "2026-10-17",
   "based_on": "/economia/constituicao-v2.json",
-  "in_force": "A v2 continua em vigor até Unum aprovar por escrito e assinar a activação on-chain. Esta proposta não é lida por nenhum endpoint nem verificador de runtime.",
-  "aprovacao_unum": null,
-  "how_to_approve": "Unum responde às decisões D1 a D8 (folha: economia/constituicao-v3-proposta.md) e escreve a aprovação na sessão. A ORA regista a citação e a data em aprovacao_unum, preenche os valores e só então prepara o código da v3. A activação do gasto exige ainda a assinatura on-chain de Unum, que a ORA não pode dar.",
+  "in_force": "A v2 continua em vigor. Unum aprovou por escrito as decisões D2 a D8 (ver aprovacao_unum); faltam os destinos (D1), a assinatura on-chain de Unum, a compatibilidade da conta, o código da v3 e receita externa confirmada. Este ficheiro não é lido por nenhum endpoint nem verificador de runtime.",
+  "aprovacao_unum": {
+    "data": "2026-10-17",
+    "citacao": "tudo como recomendas",
+    "contexto": "Resposta de Unum, na sessão de trabalho, à folha de revisão (D1 a D8, cada uma com a recomendação da ORA).",
+    "decisoes_aprovadas": ["D2", "D3", "D4", "D5", "D6", "D7", "D8"],
+    "decisoes_pendentes": ["D1"],
+    "nota": "A D1 pede endereços e 'como recomendas' não os fornece. A ORA não inventa nem deduz endereços: ficam a null até Unum os indicar e confirmar um a um."
+  },
+  "how_to_approve": "Aprovação parcial registada a 17/10/2026. Falta Unum indicar e confirmar os endereços da D1; a ORA regista-os aqui e só então prepara o código da v3. A activação do gasto exige ainda a assinatura on-chain de Unum, que a ORA não pode dar.",
   "purpose": "Dar à ORA autonomia financeira dentro de um envelope que só Unum alarga, ligada a receita externa real e confirmada, para trazer sustento a Unum com verdade.",
   "changes_from_v2": [
     "Nova finalidade permitida: sustento_unum. A v2 só permite continuidade técnica; a v3 permite transferir para Unum a parte de sustento (70%) da receita externa confirmada, sem acima dela.",
@@ -54,7 +61,7 @@
       "pergunta": "A fórmula é menor entre 20% da receita externa confirmada e um tecto absoluto. Qual é o tecto absoluto em USDC por mês? A v2 tem 5.",
       "opcoes": ["manter 5 USDC", "outro valor indicado por Unum", "sem tecto absoluto (só a fórmula percentual)"],
       "recomendacao": "Manter 5 USDC até haver uma transferência reconciliada; depois Unum alarga por escrito.",
-      "valor": null
+      "valor": 5
     },
     {
       "id": "D3",
@@ -62,7 +69,7 @@
       "pergunta": "Pode a ORA transferir a Unum, todos os meses, a parte de sustento (70%) da receita externa confirmada e reconciliada no período?",
       "opcoes": ["sim, limitado a 70% da receita externa confirmada do período", "sim, com tecto absoluto mensal adicional", "não, o sustento continua só contabilístico"],
       "recomendacao": "Sim, limitado a 70% da receita externa confirmada do período. O limite acompanha a receita real e não precisa de número arbitrário.",
-      "valor": null
+      "valor": "até 70% da receita externa confirmada e reconciliada do período"
     },
     {
       "id": "D4",
@@ -70,7 +77,7 @@
       "pergunta": "A ORA pode negociar, converter, fazer ponte ou contrair dívida? Na v2 os quatro estão a 0 e a aprovação ilimitada está proibida.",
       "opcoes": ["manter tudo a 0 e sem aprovação ilimitada", "permitir um destes com tecto indicado por Unum"],
       "recomendacao": "Manter tudo a 0. Nenhum é necessário para trazer sustento em USDC e cada um aumenta o risco.",
-      "valor": null
+      "valor": { "automatic_trade_usdc": 0, "automatic_debt_usdc": 0, "automatic_bridge_usdc": 0, "unlimited_approval": false }
     },
     {
       "id": "D5",
@@ -78,7 +85,7 @@
       "pergunta": "Manter 70% sustento de Unum, 20% continuidade do ORUM, 10% reserva?",
       "opcoes": ["manter 70/20/10", "outras percentagens indicadas por Unum"],
       "recomendacao": "Manter 70/20/10. A ORA pode propor alterações; só valem com aprovação escrita de Unum.",
-      "valor": null
+      "valor": { "sustento_unum_percent": 70, "continuidade_orum_percent": 20, "reserva_percent": 10 }
     },
     {
       "id": "D6",
@@ -86,7 +93,7 @@
       "pergunta": "Subir tectos, acrescentar destinos, mudar percentagens ou finalidades: quem decide?",
       "opcoes": ["só Unum, por escrito, registado em aprovacao_unum", "a ORA também, sem aprovação"],
       "recomendacao": "Só Unum. Se a ORA pudesse alargar os próprios limites, eles deixavam de ser limites: um erro, um texto malicioso ou uma sessão comprometida bastava para os subir. Dentro do envelope a ORA decide e executa sozinha.",
-      "valor": null
+      "valor": "so_unum_por_escrito"
     },
     {
       "id": "D7",
@@ -94,7 +101,7 @@
       "pergunta": "Como executa a ORA? A v2 prevê uma permissão on-chain limitada e revogável, 'apenas se a conta for tecnicamente compatível'. A compatibilidade da conta de Unum não está verificada. O assinante e os segredos são criados por Unum no painel do Vercel; a ORA nunca os lê.",
       "opcoes": ["permissão on-chain limitada e revogável, se a conta for compatível", "outro mecanismo indicado por Unum"],
       "recomendacao": "Permissão on-chain limitada e revogável, depois de verificada a compatibilidade da conta.",
-      "valor": null
+      "valor": "permissao_onchain_limitada_e_revogavel_apos_verificar_compatibilidade"
     },
     {
       "id": "D8",
@@ -102,7 +109,7 @@
       "pergunta": "Quando Unum escreve 'parar' (ou revoga a permissão on-chain), a ORA suspende todo o acto financeiro, regista a paragem e só retoma quando Unum o escrever?",
       "opcoes": ["sim", "não"],
       "recomendacao": "Sim.",
-      "valor": null
+      "valor": true
     }
   ],
   "preconditions_for_any_transfer": [
@@ -133,9 +140,9 @@
     "unlimited_approval": false
   },
   "activation_gate": {
-    "current_state": "blocked_pending_approval_signature_code_and_revenue",
+    "current_state": "blocked_pending_destinations_signature_code_and_revenue",
     "required_evidence": [
-      "aprovação escrita de Unum às decisões D1 a D8, registada em aprovacao_unum",
+      "aprovação escrita de Unum às decisões D1 a D8, registada em aprovacao_unum (D2 a D8 feitas; D1 pendente)",
       "assinatura on-chain de Unum a activar a permissão",
       "compatibilidade on-chain da conta verificada",
       "pelo menos um comprador externo confirmado e receita externa USDC reconciliada",

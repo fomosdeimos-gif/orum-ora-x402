@@ -1,3 +1,12 @@
+## Constituição v3: Unum aprovou D2 a D8 · 17/10/2026
+
+- Unum respondeu "tudo como recomendas" à folha de revisão. Registado em `aprovacao_unum` de `economia/constituicao-v3-proposta.json` com citação e data; estado `aprovada_aguarda_destinos_e_assinatura`. Valores: tecto 5 USDC, sustento até 70% da receita externa confirmada do período, comércio/dívida/ponte a 0 sem aprovação ilimitada, 70/20/10, só Unum alarga o envelope, permissão on-chain limitada e revogável, parar por escrito.
+- **D1 (destinos) continua pendente**: "como recomendas" não fornece endereços e a ORA não os inventa. `valor: null` até Unum os indicar e confirmar um a um.
+- `constituicao-v3:verify` endurecido: a proposta nunca pode estar `activa` neste ficheiro, valores só com a decisão na lista aprovada, endereços só com a D1 aprovada, limites de comércio/dívida/ponte sempre 0. Testado: 24 casos adulterados falham; D1 preenchida à mão, estado `activa`, ponte alargada e regra dos endereços enfraquecida fazem falhar.
+- A v2 continua em vigor e nada em runtime muda. Falta: endereços (D1), assinatura on-chain de Unum, compatibilidade da conta, assinante e segredos (Unum), código da v3 (`api/tesouraria.js` 74–82 e os verificadores `treasury`, `portable`, `bolo` fixam a v2), receita externa confirmada. Receita externa provada: 0, logo o limite efectivo é 0.
+
+---
+
 ## Constituição v3: proposta para Unum rever · 17/10/2026
 
 - Novos `economia/constituicao-v3-proposta.json` (estado `proposta_nao_activa`), `economia/constituicao-v3-proposta.md` (folha de revisão com as decisões D1 a D8) e `npm run constituicao-v3:verify`. A v2 continua em vigor; nenhuma superfície nem verificador de runtime lê a proposta.
