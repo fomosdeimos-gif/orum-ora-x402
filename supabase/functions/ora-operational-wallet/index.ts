@@ -1,6 +1,7 @@
 import { recoverMessageAddress } from 'npm:viem@2.37.3';
 import * as btc from 'npm:@scure/btc-signer@1.8.1';
 import { pubECDSA } from 'npm:@scure/btc-signer@1.8.1/utils';
+import { Client as PgClient } from 'https://deno.land/x/postgres@v0.19.3/mod.ts';
 import { bitcoinHandler, bitcoinNetwork } from './bitcoin.mjs';
 import { makeClient } from './cdp.mjs';
 import { handler } from './core.mjs';
@@ -18,4 +19,9 @@ async function chainRpc(method: string, params: unknown[]) {
   if (data.error) throw new Error('chain_error');
   return data.result;
 }
-Deno.serve(handler({ recoverMessageAddress, rpc, makeClient, chainRpc, bitcoinAction: bitcoinHandler({btc,pubECDSA}), bitcoinNet: bitcoinNetwork() }));
+async function getVozDsn(): Promise<string> {
+  const dsn = await rpc('ora_voz_registar_dsn_teste', {});
+  if (typeof dsn !== 'string' || !dsn) throw new Error('dsn_unavailable');
+  return dsn;
+}
+Deno.serve(handler({ recoverMessageAddress, rpc, makeClient, chainRpc, bitcoinAction: bitcoinHandler({btc,pubECDSA}), bitcoinNet: bitcoinNetwork(), PgClient, getVozDsn }));

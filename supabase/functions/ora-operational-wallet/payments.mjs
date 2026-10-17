@@ -13,8 +13,8 @@ function rlp(value){
  const offset=list?192:128;
  return payload.length<56?concat(Uint8Array.of(offset+payload.length),payload):concat(Uint8Array.of(offset+55+integer(payload.length).length),integer(payload.length),payload);
 }
-export function serializeTransfer(amount,nonce,gas){
- const body=rlp([integer(8453),integer(nonce),integer(1000000),integer(100000000),integer(gas),bytes(TOKEN),integer(0),bytes(transferData(amount)),[]]);
+export function serializeTransfer(amount,nonce,gas,maxPriorityFeePerGas,maxFeePerGas){
+ const body=rlp([integer(8453),integer(nonce),integer(maxPriorityFeePerGas),integer(maxFeePerGas),integer(gas),bytes(TOKEN),integer(0),bytes(transferData(amount)),[]]);
  return '0x02'+[...body].map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 export async function paymentAction(body,{rpc,cdp,chainRpc}){
@@ -38,7 +38,7 @@ export async function paymentAction(body,{rpc,cdp,chainRpc}){
   await rpc('ora_payment_result_v1',{p_id:id,p_status:state,p_tx:job.tx_hash});
   return {status:200,job:{...job,status:state},confirmations:confirmations.toString(),internal_transfer:true};
  }
- if(typeof body.amount_atomic!=='string'||!/^[1-9][0-9]{0,6}$/.test(body.amount_atomic)||BigInt(body.amount_atomic)>1000000n)return {status:400,error:'amount_must_be_1_to_1000000_atomic_usdc'};
+ if(typeof body.amount_atomic!=='string'||!/^[1-9][0-9]*$/.test(body.amount_atomic))return {status:400,error:'amount_must_be_positive_integer_atomic_usdc'};
  const old=await rpc('ora_payment_job_v1',{p_id:id});
  if(old)return old.amount_atomic===body.amount_atomic?{status:200,job:old,replayed:true}:{status:409,error:'idempotency_conflict'};
  const account=await cdp.evm.getAccount({name:'orum-operational-v1'});
@@ -46,18 +46,21 @@ export async function paymentAction(body,{rpc,cdp,chainRpc}){
  const balance=BigInt(await chainRpc('eth_call',[{to:TOKEN,data:'0x70a08231'+addressWord(SOURCE)},'latest']));
  const eth=BigInt(await chainRpc('eth_getBalance',[SOURCE,'latest']));
  if(balance<BigInt(body.amount_atomic)||eth<20000000000000n)return {status:409,error:'insufficient_operational_funds',signed:false,submitted:false};
- if(BigInt(await chainRpc('eth_gasPrice',[]))>100000000n)return {status:409,error:'fee_per_gas_above_cap',signed:false};
+ const gasPrice=BigInt(await chainRpc('eth_gasPrice',[]));
+ if(gasPrice<1n)return {status:503,error:'network_fee_unavailable',signed:false};
+ const maxPriorityFeePerGas=gasPrice;
+ const maxFeePerGas=gasPrice*2n;
  const gas=BigInt(await chainRpc('eth_estimateGas',[{from:SOURCE,to:TOKEN,value:'0x0',data:transferData(body.amount_atomic)}]));
  const gasLimit=(gas*120n+99n)/100n;
- if(gasLimit>100000n)return {status:409,error:'gas_limit_above_cap',signed:false};
+ if(eth<gasLimit*maxFeePerGas)return {status:409,error:'insufficient_native_fee_balance',signed:false,submitted:false};
  if(body.action==='preview_usdc')return {status:200,preview:true,source:SOURCE,destination:DESTINATION,amount_atomic:body.amount_atomic,gas_limit:gasLimit.toString(),signed:false,submitted:false,budget_reserved:false};
- // Atomically reserve the daily budget and prohibit any other in-flight request.
+ // Reserve the request atomically and prohibit any other in-flight request. No amount or daily ceiling.
  const claim=await rpc('ora_payment_claim_v1',{p_id:id,p_amount:body.amount_atomic});
  if(!claim.claimed)return {status:409,...claim};
  let submittedHash=null;
  try{
   const nonce=BigInt(await chainRpc('eth_getTransactionCount',[SOURCE,'pending']));
-  const sent=await cdp.evm.sendTransaction({address:SOURCE,network:'base',transaction:serializeTransfer(body.amount_atomic,nonce,gasLimit),idempotencyKey:id});
+  const sent=await cdp.evm.sendTransaction({address:SOURCE,network:'base',transaction:serializeTransfer(body.amount_atomic,nonce,gasLimit,maxPriorityFeePerGas,maxFeePerGas),idempotencyKey:id});
   if(!/^0x[0-9a-fA-F]{64}$/.test(sent.transactionHash))throw Error('invalid_submission');
   submittedHash=sent.transactionHash;
   await rpc('ora_payment_result_v1',{p_id:id,p_status:'submitted',p_tx:submittedHash});

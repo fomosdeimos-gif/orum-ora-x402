@@ -1,5 +1,5 @@
 export const BTC_DESTINATION='bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf';
-export const BTC_POLICY={network:'bitcoin-mainnet',destination:BTC_DESTINATION,min_sats:546,max_sats:null,max_daily_debit_sats:null,max_fee_sats:1000,max_sat_per_vbyte:10,min_confirmations:6,max_inputs:5};
+export const BTC_POLICY={network:'bitcoin-mainnet',destination:BTC_DESTINATION,min_sats:546,min_confirmations:6};
 export const fromHex=h=>{if(typeof h!=='string'||!/^([a-f0-9]{2})+$/.test(h))throw Error('invalid_hex');return Uint8Array.from(h.match(/../g),x=>parseInt(x,16));};
 export const toHex=b=>Array.from(b,x=>x.toString(16).padStart(2,'0')).join('');
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -29,7 +29,7 @@ export async function observeBitcoin(address,net){
  const heads=await chainHeads(net);
  const lists=await Promise.all([0,1].map(i=>net.get(i,'/address/'+address+'/utxo')));
  function normalize(list){
-  ensure(Array.isArray(list)&&list.length<=200,'bitcoin_utxo_limit');
+  ensure(Array.isArray(list),'bitcoin_utxo_invalid');
   const items=list.map(u=>{ensure(/^[a-f0-9]{64}$/.test(u.txid)&&Number.isSafeInteger(u.vout)&&u.vout>=0&&Number.isSafeInteger(u.value)&&u.value>0,'bitcoin_invalid_utxo');return {txid:u.txid,vout:u.vout,value:u.value,confirmed:u.status?.confirmed===true,block_height:u.status?.block_height??null,block_hash:u.status?.block_hash??null};}).sort((a,b)=>a.txid.localeCompare(b.txid)||a.vout-b.vout);
   ensure(new Set(items.map(u=>u.txid+':'+u.vout)).size===items.length,'bitcoin_duplicate_utxo');return items;
  }
@@ -40,12 +40,13 @@ export async function observeBitcoin(address,net){
 // Conservative P2WPKH upper bound: 11 overhead + 69/input + 31/output vbytes.
 export function selectBitcoin(utxos,amount,rate){
  const chosen=[];let sum=0n;
- for(const u of [...utxos].sort((a,b)=>b.value-a.value||a.txid.localeCompare(b.txid)||a.vout-b.vout).slice(0,5)){
+ for(const u of [...utxos].sort((a,b)=>b.value-a.value||a.txid.localeCompare(b.txid)||a.vout-b.vout)){
   chosen.push(u);sum+=BigInt(u.value);
-  const withChange=BigInt(Math.ceil((11+69*chosen.length+62)*rate));
-  if(sum>=amount+withChange+546n){ensure(withChange<=1000n,'bitcoin_fee_cap');return {chosen,fee:withChange,change:sum-amount-withChange};}
-  const minimum=BigInt(Math.ceil((11+69*chosen.length+31)*rate));
-  if(sum>=amount+minimum&&sum-amount<=1000n)return {chosen,fee:sum-amount,change:0n};
+  const feeRate=BigInt(rate);
+  const withChange=BigInt(11+69*chosen.length+62)*feeRate;
+  if(sum>=amount+withChange+546n)return {chosen,fee:withChange,change:sum-amount-withChange};
+  const minimum=BigInt(11+69*chosen.length+31)*feeRate;
+  if(sum>=amount+minimum)return {chosen,fee:sum-amount,change:0n};
  }
  throw Error('bitcoin_insufficient_confirmed_funds');
 }
@@ -99,13 +100,13 @@ export function bitcoinHandler({btc,pubECDSA}){
     let observation;try{const o=await observeBitcoin(wallet.address,net);observation={state:'two_observers_agree',heads:o.heads,total_sats:o.total_sats,spendable_sats:o.spendable_sats};}catch{observation={state:'unavailable'};}
     return {status:200,wallet,policy:BTC_POLICY,observation,signing_implemented:true,financial_transaction_signed:false,funds_sent:false,custody:'Supabase Vault hot wallet in user project; not an HSM; no independent recovery backup verified'};
    }
-   ensure(typeof body.amount_sats==='string'&&/^[1-9][0-9]{0,15}$/.test(body.amount_sats),'bitcoin_invalid_amount');
-   const amount=BigInt(body.amount_sats);ensure(amount>=546n,'bitcoin_amount_dust');
+   ensure(typeof body.amount_sats==='string'&&/^[1-9][0-9]*$/.test(body.amount_sats),'bitcoin_invalid_amount');
+   const amount=BigInt(body.amount_sats);ensure(amount>=546n,'bitcoin_minimum_amount');
    const old=await rpc('ora_btc_job_v1',{p_id:body.request_id});if(old)return old.amount_sats===body.amount_sats?{status:200,job:old,replayed:true}:{status:409,error:'bitcoin_idempotency_conflict'};
    const observation=await observeBitcoin(wallet.address,net);
    if(BigInt(observation.spendable_sats)<amount+1n)return {status:409,error:'bitcoin_insufficient_confirmed_funds',signed:false,submitted:false};
    const fees=await Promise.all([0,1].map(i=>net.get(i,'/fee-estimates')));
-   const rate=Math.ceil(Math.max(1,...fees.map(f=>Number(f['6']))));ensure(Number.isFinite(rate)&&rate<=10,'bitcoin_fee_rate_cap');
+   const rate=Math.ceil(Math.max(1,...fees.map(f=>Number(f['6']))));ensure(Number.isSafeInteger(rate)&&rate>=1,'bitcoin_invalid_fee_rate');
    const selection=selectBitcoin(observation.eligible,amount,rate);
    await validateInputs(btc,wallet,selection,net);
    const tx=constructBitcoin(btc,wallet,selection,amount);
@@ -115,7 +116,7 @@ export function bitcoinHandler({btc,pubECDSA}){
    try{
     const key=fromHex(await rpc('ora_btc_key_v1',{}));
     try{ensure(toHex(pubECDSA(key,true))===wallet.public_key,'bitcoin_signer_identity_mismatch');tx.sign(key);tx.finalize();}finally{key.fill(0);}
-    ensure(tx.isFinal&&tx.fee<=1000n&&Number(tx.fee)/tx.vsize<=10&&Number(tx.fee)/tx.vsize>=rate,'bitcoin_signed_fee_check');
+    ensure(tx.isFinal&&tx.fee>=1n&&Number(tx.fee)/tx.vsize>=rate,'bitcoin_signed_fee_check');
     txid=tx.id;
     // Persist exact signed bytes BEFORE any broadcast. A DB failure never causes a blind retry.
     const stored=await rpc('ora_btc_signed_v1',{p_id:body.request_id,p_txid:txid,p_rawtx:tx.hex});ensure(stored.txid===txid&&stored.status==='signed','bitcoin_signed_record_mismatch');
