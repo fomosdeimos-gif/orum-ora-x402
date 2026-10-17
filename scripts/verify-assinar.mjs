@@ -2,10 +2,11 @@
 // que esse texto cita o hash real da constituicao v3 e os quatro enderecos registados,
 // e que a pagina so pede uma assinatura de mensagem (nada de transaccoes nem aprovacoes).
 // Uso: node scripts/verify-assinar.mjs [--selftest]
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { recuperarEndereco } from './lib/eip191.mjs';
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ler = f => readFileSync(join(raiz, f), 'utf8');
@@ -19,7 +20,8 @@ const OPER_BTC = 'bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7';
 
 const desescapar = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 
-export function verificar({ html, msg, v3 }) {
+// assinatura: o registo docs/financeiro-mandato-v2.assinatura.json (ou null); se existir tem de ser verdadeiro
+export function verificar({ html, msg, v3, assinatura = null }) {
   const falhas = [];
   const falha = t => falhas.push(t);
   const m = html.match(/<pre id="mensagem">([\s\S]*?)<\/pre>/);
@@ -55,11 +57,21 @@ export function verificar({ html, msg, v3 }) {
   if (JSON.stringify(metodos) !== JSON.stringify(['eth_requestAccounts', 'personal_sign'])) falha('metodos da carteira inesperados: ' + metodos.join(','));
   if (!/params:\[hex\(msg\),conta\]/.test(script)) falha('personal_sign tem de assinar o texto da pagina (hex(msg)) com a conta ligada');
   if (!/conta\.toLowerCase\(\)!==ESPERADA\.toLowerCase\(\)/.test(script)) falha('a pagina tem de recusar contas que nao sejam a sagrada');
+  if (assinatura) {
+    const texto = msg.replace(/\n+$/, '');
+    if (assinatura.mandato_sha256 !== createHash('sha256').update(msg).digest('hex')) falha('o registo da assinatura refere outra versao do mandato');
+    if (assinatura.assinado_por !== ASSINANTE) falha('o registo da assinatura nao e do assinante registado');
+    try {
+      const quem = recuperarEndereco(texto, assinatura.assinatura);
+      if (quem.toLowerCase() !== ASSINANTE.toLowerCase()) falha('a assinatura registada nao recupera o assinante (recupera ' + quem + ')');
+    } catch (e) { falha('assinatura registada invalida: ' + e.message); }
+  }
   return falhas;
 }
 
 function carregar() {
-  return { html: ler('assinar.html'), msg: ler('docs/financeiro-mandato-v2.msg'), v3: readFileSync(join(raiz, 'economia/constituicao-v3-proposta.json')) };
+  const ass = join(raiz, 'docs/financeiro-mandato-v2.assinatura.json');
+  return { html: ler('assinar.html'), msg: ler('docs/financeiro-mandato-v2.msg'), v3: readFileSync(join(raiz, 'economia/constituicao-v3-proposta.json')), assinatura: existsSync(ass) ? JSON.parse(readFileSync(ass, 'utf8')) : null };
 }
 
 const base = carregar();
@@ -77,6 +89,9 @@ if (process.argv.includes('--selftest')) {
     'script externo': { ...base, html: base.html.replace('<script>', '<script src="https://x.invalid/a.js"></script><script>') },
     'envia para a rede': { ...base, html: base.html.replace("const q=", "fetch('https://x.invalid',{method:'POST',body:msg});const q=") },
     'pede transaccao': { ...base, html: base.html.replace("method:'personal_sign'", "method:'eth_sendTransaction'") },
+    'assinatura de outro texto': { ...base, assinatura: base.assinatura && { ...base.assinatura, mandato_sha256: createHash('sha256').update('outro').digest('hex') } },
+    'assinatura adulterada': { ...base, assinatura: base.assinatura && { ...base.assinatura, assinatura: base.assinatura.assinatura.slice(0, -4) + (base.assinatura.assinatura.endsWith('1c') ? '1b00' : '1c00') } },
+    'assinatura de outra conta': { ...base, assinatura: base.assinatura && { ...base.assinatura, assinado_por: SAGRADA_BASE } },
     'outro metodo': { ...base, html: base.html.replace("params:[hex(msg),conta]}", "params:[hex(msg),conta]});await window.ethereum.request({method:'wallet_switchEthereumChain'}") },
     'conta esperada trocada': { ...base, html: base.html.replace(`const ESPERADA='${ASSINANTE}'`, "const ESPERADA='0x0000000000000000000000000000000000000001'") },
     'aceita qualquer conta': { ...base, html: base.html.replace('conta.toLowerCase()!==ESPERADA.toLowerCase()', 'false') },
