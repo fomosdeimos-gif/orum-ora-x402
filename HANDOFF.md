@@ -1014,3 +1014,10 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - Registado em `presenca/visibilidade-externa.json` com a fronteira: visibilidade não é procura nem receita; nenhum texto público foi alterado.
 - Próximo gesto: Unum confirma o URL e as 9 ferramentas; só depois se liga a entrada à descoberta.
 
+
+## Outras listagens de MCP · 16/10/2026
+- **Lido da fonte:** o MCP Registry oficial lista `io.github.fomosdeimos-gif/ora-mcp`, título "ORA · ORUM", v2.0.0, activo, publicado em 14/07/2026. É a origem provável do relatório do PolicyLayer.
+- **Visto em pesquisa, página não aberta:** Glama lista o conector com 9 ferramentas (Streamable HTTP, "healthy", completude 3/5; lacunas: percorrer as 107 obras, pagamentos a parceiros). **Afirmado no repositório, não confirmado:** Smithery (`llms.txt` e agent-card); a pesquisa não o devolveu. **Sem resultado:** PulseMCP, mcp.so, mcpservers.org.
+- **Lacuna real:** `supabase/functions/` não tem a função `ora-mcp`; as 9 ferramentas não são verificáveis a partir deste repositório. Registo e caminhos seguintes em `presenca/visibilidade-externa.json`; `npm run visibilidade:verify` impede que o registo afirme procura, receita ou adopção.
+- Para Unum: abrir PolicyLayer, Glama e Smithery e confirmar URLs; republicar no registo precisa de Unum.
+

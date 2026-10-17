@@ -36,6 +36,7 @@
     "bitcoin:observer:verify": "node scripts/verify-bitcoin-observer.mjs",
     "cdp:verify": "node scripts/verify-cdp-eip3009.mjs",
     "servicos:verify": "node scripts/verify-servicos-fallback.mjs",
-    "bolo:verify": "node scripts/verify-bolo.mjs"
+    "bolo:verify": "node scripts/verify-bolo.mjs",
+    "visibilidade:verify": "node scripts/verify-visibilidade-externa.mjs"
   }
 }

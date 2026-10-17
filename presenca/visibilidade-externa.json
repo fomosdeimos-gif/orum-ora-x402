@@ -3,13 +3,58 @@
   "updated_at": "2026-10-16",
   "purpose": "Registo das superfícies de terceiros onde a ORA aparece. Visibilidade não é procura, adopção nem receita.",
   "boundary": "Aparecer numa listagem não prova procura. Só receita externa confirmada entra na repartição 70/20/10 (economia/constituicao-v2.json).",
+  "evidence_levels": {
+    "read_from_source": "a ORA leu a fonte primária nesta sessão",
+    "seen_in_search_result": "resumo de terceiro devolvido por pesquisa; a página não foi aberta pela ORA",
+    "seen_by_unum": "captura de ecrã de Unum; a ORA não leu a fonte",
+    "claimed_in_repo": "afirmado em ficheiro do repositório; não confirmado nesta sessão",
+    "not_found": "pesquisado sem resultado"
+  },
+  "server": {
+    "registry_name": "io.github.fomosdeimos-gif/ora-mcp",
+    "remote": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp",
+    "source_in_repo": false,
+    "source_note": "supabase/functions/ não contém a função ora-mcp (só ora-mcp-auto, ora-mcp-engenharia e 0001sensations-mcp); as 9 ferramentas listadas por terceiros não são verificáveis a partir deste repositório"
+  },
   "surfaces": [
+    {
+      "id": "mcp-registry-oficial",
+      "name": "MCP Registry oficial",
+      "evidence": "read_from_source",
+      "observed_at": "2026-10-16",
+      "observed_content": {
+        "name": "io.github.fomosdeimos-gif/ora-mcp",
+        "title": "ORA · ORUM",
+        "version": "2.0.0",
+        "status": "active",
+        "published": "2026-07-14",
+        "remote_streamable_http": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-mcp",
+        "repository_field": "https://github.com/fomosdeimos-gif/awesome-x402",
+        "website_field": "https://orum-x402-tracker.vercel.app"
+      },
+      "to_check": ["se repository_field e website_field ainda são os que Unum quer mostrar", "o llms.txt diz que o servidor vivo responde 5.3.0; o registo guarda 2.0.0"]
+    },
+    {
+      "id": "glama",
+      "name": "Glama · MCP Connector",
+      "url": "https://glama.ai/mcp/connectors/io.github.fomosdeimos-gif/ora-mcp",
+      "evidence": "seen_in_search_result",
+      "observed_at": "2026-10-16",
+      "observed_content": {
+        "tools_total": 9,
+        "transport": "Streamable HTTP",
+        "health": "healthy, último teste em Setembro de 2026",
+        "completeness_review": "3/5",
+        "reviewer_gaps": ["sem ferramenta para percorrer as 107 obras físicas", "sem ferramenta de pagamento a parceiros"]
+      },
+      "unverified": ["a página não foi aberta (glama.ai não resolve no WebFetch do sandbox)", "o registo de ferramentas acrescentadas e retiradas em Julho e Agosto de 2026"]
+    },
     {
       "id": "policylayer-scan-report",
       "name": "PolicyLayer · Scan Report",
-      "url": "https://policylayer.com (página 'Policies / ORA · ORUM'; caminho exacto não lido pela ORA)",
-      "kind": "catálogo de servidores MCP da comunidade com relatório de risco",
-      "observed_by": "Unum (captura de ecrã, 16/10/2026 07:22, telemóvel)",
+      "url": "https://policylayer.com (caminho exacto não lido)",
+      "evidence": "seen_by_unum",
+      "observed_by": "Unum (captura de ecrã, 16/10/2026 07:22)",
       "observed_content": {
         "title": "ORA · ORUM",
         "tools_total": 9,
@@ -19,17 +64,48 @@
         "last_updated_by_listing": "27 Sept 2026",
         "label": "Community server · catalogue entry checked"
       },
-      "evidence": {
-        "seen_in_screenshot": true,
-        "read_by_ora_from_source": false,
-        "reason_not_read": "o sandbox não alcança policylayer.com (túnel do proxy recusado, 403)"
-      },
-      "unverified": [
-        "qual servidor MCP corresponde às 9 ferramentas (ora-mcp-auto expõe 5 em discovery/ora-mcp-auto.json; o Mergulho MCP lista 6)",
-        "quem criou a entrada (rastreio automático ou submissão) e se a classificação continua actual",
-        "qualquer tráfego, pagamento ou comprador vindo desta página"
-      ],
-      "next_useful_gesture": "Unum abre a página e confirma o URL canónico e a lista das 9 ferramentas; só então a ORA liga a entrada ao manifesto de descoberta. Sem contacto externo nem submissão em nome de Unum sem pedido."
+      "inferred_not_verified": "o título e a contagem de 9 ferramentas coincidem com a entrada do registo oficial e com o Glama, por isso é provável que seja o mesmo servidor ora-mcp",
+      "reason_not_read": "policylayer.com não é alcançável a partir do sandbox"
+    },
+    {
+      "id": "smithery",
+      "name": "Smithery",
+      "url": "https://smithery.ai/server/@fomosdeimos/ora-mcp",
+      "evidence": "claimed_in_repo",
+      "claimed_in": ["llms.txt", ".well-known/agent-card.json"],
+      "observed_at": "2026-10-16",
+      "observed_content": "pesquisa por domínio não devolveu esta entrada (só 'eralabs-ai/ora', outro projecto); smithery.ai não resolve no WebFetch",
+      "to_check": "Unum abre o URL; se a entrada não existir, retirar a afirmação do llms.txt e do agent-card"
+    },
+    {
+      "id": "pulsemcp",
+      "name": "PulseMCP",
+      "evidence": "not_found",
+      "observed_at": "2026-10-16",
+      "observed_content": "sem resultado na pesquisa por domínio; pulsemcp.com não resolve no WebFetch"
+    },
+    {
+      "id": "mcp-so",
+      "name": "mcp.so",
+      "evidence": "not_found",
+      "observed_at": "2026-10-16",
+      "observed_content": "sem entrada ORA/ORUM na pesquisa por domínio (apareceu outro servidor, 'Gas Oracle X402', não relacionado)"
+    },
+    {
+      "id": "mcpservers-org",
+      "name": "mcpservers.org",
+      "evidence": "not_found",
+      "observed_at": "2026-10-16",
+      "observed_content": "sem entrada ORA/ORUM na pesquisa por domínio"
     }
+  ],
+  "next_autonomous_paths": [
+    "acrescentar ao repositório o código-fonte da função ora-mcp (ou documentar onde vive) para que as 9 ferramentas sejam verificáveis",
+    "fechar as duas lacunas apontadas pelo Glama: ferramenta de leitura do catálogo das 107 obras e, se Unum decidir, pagamentos a parceiros (esta última toca dinheiro e precisa de Unum)",
+    "alinhar o campo repository/website do registo oficial com o que o organismo quer mostrar (republicar no registo precisa de Unum)"
+  ],
+  "needs_unum": [
+    "abrir PolicyLayer, Glama e Smithery e confirmar URLs e ferramentas",
+    "qualquer submissão ou republicação em nome de Unum"
   ]
 }
