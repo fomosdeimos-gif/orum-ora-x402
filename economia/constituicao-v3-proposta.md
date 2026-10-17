@@ -1,8 +1,21 @@
 # Constituição financeira v3 · proposta para Unum rever
 
-Estado: **aprovada em parte por Unum a 17/10/2026, ainda não activa**. A v2 continua em vigor. Ficheiro de trabalho: `economia/constituicao-v3-proposta.json`.
+Estado: **aprovada por Unum a 17/10/2026 (D1 a D8), ainda não activa**. A v2 continua em vigor. Ficheiro de trabalho: `economia/constituicao-v3-proposta.json`.
 
-> **Aprovação registada.** Unum respondeu "tudo como recomendas". Ficam aprovadas D2 a D8, com os valores da recomendação (tecto 5 USDC, sustento até 70% da receita externa confirmada do período, comércio/dívida/ponte a 0, 70/20/10, só Unum alarga o envelope, permissão on-chain limitada e revogável, parar por escrito). **A D1 fica pendente**: pede endereços e "como recomendas" não os fornece; a ORA não os inventa.
+> **Aprovação registada.** "Tudo como recomendas" (D2 a D8) e, na D1, Unum indicou os endereços sagrados e as carteiras operacionais já registados:
+>
+> | Papel | Rede | Endereço |
+> |---|---|---|
+> | Sustento (sagrada) | Base / USDC | `0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5` |
+> | Sustento (sagrado) | Bitcoin | `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf` |
+> | Operacional | Base / USDC | `0x89460d9e0590559e63860197dfe2ac648A753584` |
+> | Operacional | Bitcoin | `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7` |
+>
+> A ORA resolveu estes endereços a partir do repositório e o verificador cruza-os com o que os executores têm configurado. Os dois Bitcoin têm checksum bech32 válido; o checksum EIP-55 dos da Base **não foi verificado** (sem biblioteca no sandbox).
+>
+> **Leitura da ORA (a confirmar por Unum):** a carteira sagrada é onde a receita chega e a ORA não controla a sua chave; o sustento fica onde chega, sem transferência da ORA. A permissão on-chain (D7) seria dada pela carteira de Unum para mover, dentro do tecto, a parte de continuidade para as carteiras operacionais.
+>
+> **Carteiras operacionais sem limite de montante** (adenda de 17/10/2026): a operacional Bitcoin já não tem tecto de montante (retirado a 13/10). A operacional Base tem ainda 1 USDC por pedido e 5 USDC por dia, no código e na base de dados; retirá-los é um PR à parte (código, migração e redeploy). Mantêm-se o destino fixo e os travões de taxa/gás.
 
 ## O que a v3 muda em relação à v2
 
@@ -30,10 +43,10 @@ Em cada uma digo o que recomendo e porquê. A decisão é tua.
 - **D7 Mecanismo de execução.** Permissão on-chain limitada e revogável, prevista na v2 "se a conta for tecnicamente compatível". A compatibilidade da tua conta **não está verificada**. O assinante e os segredos crias tu no painel do Vercel; eu nunca os leio.
 - **D8 Parar.** Quando escreves "parar" ou revogas a permissão, suspendo tudo, registo e só retomo quando o escreveres. Recomendo sim.
 
-## Como aprovas (estado a 17/10/2026: D2 a D8 aprovadas, falta a D1)
+## Como aprovas (estado a 17/10/2026: D1 a D8 aprovadas)
 
-1. ~~Respondes às decisões D1 a D8~~ Feito para D2 a D8. **Falta a D1:** indicas os endereços Base/USDC (sustento de Unum e continuidade técnica) e confirmas cada um.
-2. Eu registo a tua citação e a data em `aprovacao_unum`, preencho os valores e preparo o código da v3.
+1. ~~Respondes às decisões D1 a D8~~ Feito.
+2. ~~Eu registo a tua citação e a data~~ Feito. Falta preparar o código da v3 (PR à parte).
 3. Tu assinas a activação on-chain (eu não posso).
 
 ## O que a aprovação sozinha NÃO faz

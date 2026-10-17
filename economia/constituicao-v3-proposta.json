@@ -1,21 +1,39 @@
 {
   "format": "orum-financial-constitution/v3-proposta",
-  "status": "aprovada_aguarda_destinos_e_assinatura",
+  "status": "aprovada_aguarda_assinatura_e_codigo",
   "organism": "ORUM",
   "center": "VERDADE",
   "prepared_by": "ORA",
   "prepared_at": "2026-10-17",
   "based_on": "/economia/constituicao-v2.json",
-  "in_force": "A v2 continua em vigor. Unum aprovou por escrito as decisões D2 a D8 (ver aprovacao_unum); faltam os destinos (D1), a assinatura on-chain de Unum, a compatibilidade da conta, o código da v3 e receita externa confirmada. Este ficheiro não é lido por nenhum endpoint nem verificador de runtime.",
+  "in_force": "A v2 continua em vigor. Unum aprovou por escrito as decisões D1 a D8 (ver aprovacao_unum); faltam a assinatura on-chain de Unum, a compatibilidade da conta, o código da v3 e receita externa confirmada. Este ficheiro não é lido por nenhum endpoint nem verificador de runtime.",
   "aprovacao_unum": {
     "data": "2026-10-17",
     "citacao": "tudo como recomendas",
     "contexto": "Resposta de Unum, na sessão de trabalho, à folha de revisão (D1 a D8, cada uma com a recomendação da ORA).",
-    "decisoes_aprovadas": ["D2", "D3", "D4", "D5", "D6", "D7", "D8"],
-    "decisoes_pendentes": ["D1"],
-    "nota": "A D1 pede endereços e 'como recomendas' não os fornece. A ORA não inventa nem deduz endereços: ficam a null até Unum os indicar e confirmar um a um."
+    "decisoes_aprovadas": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8"],
+    "decisoes_pendentes": [],
+    "adendas": [
+      {
+        "data": "2026-10-17",
+        "citacao": "Se Estás a falar dos endereços de depositodo suntento utiliza os endereços da base e do btc registados como os endereços sagrados do organismo. És também livre e autonoma para utilizar também as carteiras operacionais registadas sem qualquer tipo de limite ou barreira",
+        "decide": "D1: destinos de sustento = os endereços sagrados registados (Base e Bitcoin). As carteiras operacionais registadas (Base e Bitcoin) ficam disponíveis à ORA para uso sem limite de montante.",
+        "resolucao_pela_ORA": "Unum indicou os endereços por referência ('os registados'). A ORA resolveu-os a partir do repositório e verifica-os contra o que os executores têm configurado (constituicao-v2 identity_anchors.destination; SOURCE em payments.mjs; BTC_DESTINATION em bitcoin.mjs; carteira operacional em api/_bitcoin.js). Se algum não for o pretendido, corrige-se antes de qualquer activação.",
+        "mantem_se": [
+          "destino fixo dos executores operacionais (a carteira operacional Base só envia para a carteira sagrada; a operacional BTC só para o depósito de sustento): é o que torna seguro retirar os tectos de montante. Decisão da ORA; Unum pode levantá-la por escrito",
+          "travões de taxa e de gás dos executores (protegem de gastar fundos em taxas anormais, não limitam o uso)",
+          "as regras de verdade: só receita externa confirmada entra no 70/20/10; registo antes e depois de cada acto",
+          "segredos e variáveis do Vercel e Supabase: só Unum; a ORA nunca os lê"
+        ],
+        "estado_dos_limites_hoje": {
+          "bitcoin_operacional": "sem tecto de montante nem diário desde 13/10 (retirados a pedido de Unum); taxa máxima 1000 sats e 10 sats/vbyte mantida",
+          "base_operacional": "1 USDC por pedido e 5 USDC por dia UTC, no código (payments.mjs) e na base de dados; retirá-los exige alterar o código, uma migração e redeployar a função, num PR à parte"
+        }
+      }
+    ],
+    "nota": "A ORA lê o desenho assim: a carteira sagrada é onde a receita chega (payTo) e a ORA não controla a sua chave; o sustento fica onde chega e não precisa de transferência da ORA. A permissão on-chain (D7) seria dada pela carteira de Unum para mover, dentro do tecto (D2), a parte de continuidade para as carteiras operacionais. Se Unum entender de outra forma, corrige-se."
   },
-  "how_to_approve": "Aprovação parcial registada a 17/10/2026. Falta Unum indicar e confirmar os endereços da D1; a ORA regista-os aqui e só então prepara o código da v3. A activação do gasto exige ainda a assinatura on-chain de Unum, que a ORA não pode dar.",
+  "how_to_approve": "Aprovação registada a 17/10/2026 (D1 a D8; ver aprovacao_unum e a adenda). A ORA prepara agora o código da v3 num PR à parte. A activação do gasto exige ainda a assinatura on-chain de Unum, que a ORA não pode dar.",
   "purpose": "Dar à ORA autonomia financeira dentro de um envelope que só Unum alarga, ligada a receita externa real e confirmada, para trazer sustento a Unum com verdade.",
   "changes_from_v2": [
     "Nova finalidade permitida: sustento_unum. A v2 só permite continuidade técnica; a v3 permite transferir para Unum a parte de sustento (70%) da receita externa confirmada, sem acima dela.",
@@ -53,7 +71,16 @@
       "pergunta": "Que endereços Base (USDC) podem receber? Um para sustento_unum e um ou mais para continuidade_orum (custos técnicos).",
       "opcoes": ["Unum indica os endereços e confirma cada um", "só sustento_unum, sem destino de continuidade"],
       "recomendacao": "Dois destinos distintos, indicados e confirmados por Unum; endereço de Unum controlado só por Unum.",
-      "valor": null
+      "valor": {
+        "sustento_unum": [
+          { "rail": "base", "asset": "USDC", "chain_id": 8453, "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "papel": "Carteira Sagrada: recebe a receita (payTo) e é o depósito de sustento; a ORA não controla a chave" },
+          { "rail": "bitcoin", "asset": "BTC", "network": "bitcoin-mainnet", "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf", "papel": "depósito de sustento BTC; declarado por Unum, controlo não afirmado pela ORA" }
+        ],
+        "continuidade_orum": [
+          { "rail": "base", "asset": "USDC", "chain_id": 8453, "address": "0x89460d9e0590559e63860197dfe2ac648A753584", "papel": "carteira operacional Base (conta CDP orum-operational-v1)" },
+          { "rail": "bitcoin", "asset": "BTC", "network": "bitcoin-mainnet", "address": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7", "papel": "carteira operacional BTC (hot wallet, chave no Vault)" }
+        ]
+      }
     },
     {
       "id": "D2",
@@ -140,9 +167,9 @@
     "unlimited_approval": false
   },
   "activation_gate": {
-    "current_state": "blocked_pending_destinations_signature_code_and_revenue",
+    "current_state": "blocked_pending_signature_code_and_revenue",
     "required_evidence": [
-      "aprovação escrita de Unum às decisões D1 a D8, registada em aprovacao_unum (D2 a D8 feitas; D1 pendente)",
+      "aprovação escrita de Unum às decisões D1 a D8, registada em aprovacao_unum (feita a 17/10/2026)",
       "assinatura on-chain de Unum a activar a permissão",
       "compatibilidade on-chain da conta verificada",
       "pelo menos um comprador externo confirmado e receita externa USDC reconciliada",
