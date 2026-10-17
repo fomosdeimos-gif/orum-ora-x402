@@ -7,8 +7,14 @@ import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
 import { recuperarEndereco } from './lib/eip191.mjs';
 const ESPERADO = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
-const texto = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../docs/financeiro-mandato-v1.msg'), 'utf8').replace(/\n+$/, '');
-const [a, b] = process.argv.slice(2);
+// Opcional: --msg <ficheiro> escolhe outra mensagem (por exemplo docs/financeiro-mandato-v2.msg); por defeito a v1.
+const args = process.argv.slice(2);
+let ficheiro = '../docs/financeiro-mandato-v1.msg';
+const i = args.indexOf('--msg');
+if (i >= 0) { ficheiro = args[i + 1]; args.splice(i, 2); }
+const aqui = dirname(fileURLToPath(import.meta.url));
+const texto = readFileSync(i >= 0 ? join(process.cwd(), ficheiro) : join(aqui, ficheiro), 'utf8').replace(/\n+$/, '');
+const [a, b] = args;
 if (a === '--selftest') {
   // vector gerado com uma chave aleatoria descartavel (ethers), nao com chaves da ORUM
   const got = recuperarEndereco(texto, '0xa949f28d7198dde5b66e74f9ae9ac73cddc181a64c5c6312e98b3f135787c9d74611646e3f24dbf99fb1b882aa4f0cf11572621f38b0ae8383e858eddc3e12881b');

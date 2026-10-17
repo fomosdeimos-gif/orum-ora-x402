@@ -1,0 +1,104 @@
+<!doctype html><html lang="pt"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0d0c">
+<meta name="robots" content="noindex">
+<title>ORUM · Assinar o mandato financeiro v2</title><meta name="description" content="Assinatura de uma mensagem de texto pela carteira sagrada. Não envia dinheiro nem dá permissão sobre a carteira.">
+<style>
+:root{--bg:#090b0a;--ink:#eee9df;--muted:#aaa99f;--green:#55d49a;--orange:#f49a45;--red:#ff7a7a;--line:#2b302c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:max(16px,env(safe-area-inset-top)) 16px 48px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:1.5rem;margin:.6rem 0 .2rem}
+h2{font-size:1.05rem;margin:1.6rem 0 .5rem;color:var(--green)}
+p{margin:.5rem 0}
+.muted{color:var(--muted)}
+a{color:var(--green)}
+.aviso{border:1px solid var(--orange);border-left-width:4px;border-radius:8px;padding:12px 14px;margin:1rem 0;background:#16110a}
+.aviso b{color:var(--orange)}
+pre{white-space:pre-wrap;word-break:break-word;background:#0f1311;border:1px solid var(--line);border-radius:8px;padding:14px;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;margin:.5rem 0}
+button{font:inherit;font-weight:600;border:1px solid var(--green);background:transparent;color:var(--green);border-radius:8px;padding:12px 16px;margin:.35rem .5rem .35rem 0;cursor:pointer;min-height:44px}
+button.primario{background:var(--green);color:#06130c}
+button:disabled{opacity:.4;cursor:not-allowed}
+textarea{width:100%;min-height:96px;background:#0f1311;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px;font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+.estado{margin:.6rem 0;padding:10px 12px;border-radius:8px;border:1px solid var(--line);display:none}
+.estado.mostra{display:block}
+.estado.ok{border-color:var(--green)}
+.estado.erro{border-color:var(--red);color:var(--red)}
+ol{padding-left:1.2rem}
+li{margin:.35rem 0}
+code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:#0f1311;padding:1px 5px;border-radius:4px}
+</style></head><body><main>
+<a href="/">← voltar à casa ORUM</a>
+<h1>Assinar o mandato financeiro v2</h1>
+<p class="muted">17/10/2026 · carteira sagrada <code>0xFEd69e8e…cDEe5</code></p>
+
+<div class="aviso"><b>Isto assina um texto. Não envia dinheiro.</b>
+<p>Assinar esta mensagem não move fundos, não aprova gastos e não dá permissão sobre a tua carteira. A carteira deve mostrar-te apenas um pedido de <b>assinar mensagem</b> com o texto abaixo.</p>
+<p><b>Se a carteira te mostrar uma transacção, uma aprovação (<code>approve</code>), um <code>permit</code>, um pedido para gastar ou levantar fundos, ou um texto diferente do que está aqui: recusa e não assines.</b></p></div>
+
+<h2>O texto que vais assinar</h2>
+<pre id="mensagem">MANDATO FINANCEIRO ORA v2 (17/10/2026)
+Eu, Unum, controlador da carteira 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5, confirmo as decisoes D1 a D8 da constituicao financeira v3 (economia/constituicao-v3-proposta.json, sha256 f079344c8754d579de6262b490c7fab7618e2ba9c995f1d36de3ef86a0562b68) e autorizo a ORA a agir dentro delas.
+Deposito de sustento: Base 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5 e Bitcoin bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf.
+Carteiras operacionais de uso livre pela ORA, sem limite de montante: Base 0x89460d9e0590559e63860197dfe2ac648A753584 e Bitcoin bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7.
+Divisao da receita externa confirmada: 70% sustento de Unum, 20% continuidade, 10% reserva. Tecto absoluto mensal do que a ORA move da carteira sagrada para a continuidade: 5 USDC. Receita de carteiras internas ou minhas nao conta como externa.
+Fora do mandato: trading, conversao, ponte, divida, aprovacao ilimitada, qualquer outro destino, segredos.
+So eu alargo tectos, destinos ou percentagens, por mensagem minha assinada.
+Revogavel por mensagem minha assinada; a palavra parar escrita por mim suspende todo o acto financeiro.
+Esta assinatura nao autoriza nenhuma transaccao em cadeia: a activacao da permissao on-chain e uma assinatura separada.</pre>
+
+<h2>Assinar</h2>
+<ol>
+<li>Abre esta página <b>dentro da aplicação da tua carteira</b> (ou num navegador com a extensão). <a id="metamask" href="#">Abrir no MetaMask</a></li>
+<li>Carrega em <b>Ligar carteira</b> e escolhe a carteira sagrada.</li>
+<li>Carrega em <b>Assinar mensagem</b> e confirma na carteira que o texto é o de cima.</li>
+<li>Copia a assinatura e envia-a à ORA. <b>Nunca</b> envies a chave privada nem a frase de recuperação.</li>
+</ol>
+<button id="ligar" class="primario">Ligar carteira</button>
+<button id="assinar" disabled>Assinar mensagem</button>
+<button id="copiar-texto">Copiar o texto</button>
+<div id="estado" class="estado" role="status" aria-live="polite"></div>
+
+<div id="saida" style="display:none">
+<h2>A tua assinatura</h2>
+<textarea id="assinatura" readonly aria-label="Assinatura"></textarea>
+<button id="copiar" class="primario">Copiar a assinatura</button>
+<p class="muted">Uma assinatura normal tem 132 caracteres (<code>0x</code> + 130). A ORA verifica-a com <code>npm run mandato:verify -- --msg docs/financeiro-mandato-v2.msg &lt;assinatura&gt;</code>.</p>
+</div>
+
+<h2>Se não conseguires assinar aqui</h2>
+<p>Usa "Copiar o texto", abre a tua carteira, escolhe <b>assinar mensagem</b> (<code>personal_sign</code>), cola o texto exactamente como está e copia a assinatura. Se a carteira sagrada for um contrato (carteira inteligente), a assinatura simples não serve e é preciso uma assinatura EIP-1271: diz-me e adapto o verificador.</p>
+<p class="muted">Esta página não envia nada para lado nenhum: não faz pedidos de rede, não guarda nada e não carrega scripts externos. A assinatura só aparece no teu ecrã.</p>
+</main>
+<script>
+const ESPERADA='0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
+const q=s=>document.querySelector(s);
+const msg=q('#mensagem').textContent;
+let conta=null;
+const estado=(t,tipo)=>{const e=q('#estado');e.textContent=t;e.className='estado mostra '+(tipo||'')};
+const hex=s=>'0x'+Array.from(new TextEncoder().encode(s),b=>b.toString(16).padStart(2,'0')).join('');
+q('#metamask').href='https://link.metamask.io/dapp/'+location.host+location.pathname;
+const copiar=async t=>{try{await navigator.clipboard.writeText(t);return true}catch{return false}};
+q('#copiar-texto').onclick=async()=>{const ok=await copiar(msg);estado(ok?'Texto copiado.':'Não consegui copiar. Seleciona o texto acima e copia à mão.',ok?'ok':'erro')};
+q('#ligar').onclick=async()=>{
+  if(!window.ethereum){estado('Não encontro uma carteira. Abre esta página dentro da aplicação da tua carteira.','erro');return}
+  try{
+    const contas=await window.ethereum.request({method:'eth_requestAccounts'});
+    conta=contas&&contas[0];
+    if(!conta){estado('A carteira não devolveu nenhuma conta.','erro');return}
+    if(conta.toLowerCase()!==ESPERADA.toLowerCase()){
+      q('#assinar').disabled=true;
+      estado('Esta conta ('+conta+') NÃO é a carteira sagrada ('+ESPERADA+'). Muda de conta na carteira e liga outra vez. Não assines com outra conta.','erro');return}
+    q('#assinar').disabled=false;
+    estado('Ligada: '+conta+'. Podes assinar.','ok');
+  }catch(e){estado('Não foi possível ligar: '+(e&&e.message?e.message:'recusado'),'erro')}
+};
+q('#assinar').onclick=async()=>{
+  if(!conta)return;
+  try{
+    const assinatura=await window.ethereum.request({method:'personal_sign',params:[hex(msg),conta]});
+    q('#assinatura').value=assinatura;q('#saida').style.display='block';
+    estado(assinatura.length===132?'Assinado. Copia a assinatura e envia-a à ORA.':'Assinado, mas o tamanho é invulgar ('+assinatura.length+' caracteres). Se for uma carteira inteligente, avisa a ORA.','ok');
+  }catch(e){estado('Não assinaste: '+(e&&e.message?e.message:'recusado'),'erro')}
+};
+q('#copiar').onclick=async()=>{estado(await copiar(q('#assinatura').value)?'Assinatura copiada.':'Não consegui copiar. Seleciona a assinatura e copia à mão.','ok')};
+</script></body></html>

@@ -1080,3 +1080,10 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Lacuna real:** `supabase/functions/` não tem a função `ora-mcp`; as 9 ferramentas não são verificáveis a partir deste repositório. Registo e caminhos seguintes em `presenca/visibilidade-externa.json`; `npm run visibilidade:verify` impede que o registo afirme procura, receita ou adopção.
 - Para Unum: abrir PolicyLayer, Glama e Smithery e confirmar URLs; republicar no registo precisa de Unum.
 
+
+## Ligação para Unum assinar o mandato v2 · 17/10/2026
+- `assinar.html` (servida em `/assinar.html`) mostra o texto exacto de `docs/financeiro-mandato-v2.msg` e pede só `eth_requestAccounts` + `personal_sign`, recusando contas que não sejam a sagrada `0xFEd69e8e…cDEe5`. Sem rede, sem armazenamento, sem scripts externos.
+- **É uma assinatura de texto, não de dinheiro.** Não dá permissão on-chain; essa activação é assinatura à parte e ainda depende da verificação de compatibilidade da carteira (D7).
+- `npm run assinar:verify` (com `-- --selftest`: 12 mentiras apanhadas) garante que a página == ficheiro, que o hash citado é o sha256 real de `economia/constituicao-v3-proposta.json` e que só aparecem os quatro endereços registados.
+- Verificação da assinatura recebida: `npm run mandato:verify -- --msg docs/financeiro-mandato-v2.msg <assinatura>` (novo `--msg`). Se a carteira sagrada for contrato (EIP-1271), a assinatura simples não serve: **não verificado** (sandbox não alcança o RPC da Base).
+- Só depois de recebida e verificada a assinatura se regista o mandato v2 como assinado; antes disso é só proposta.
