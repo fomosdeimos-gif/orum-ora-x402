@@ -217,5 +217,7 @@ function createHandler({ call = chamarRpc, fetchFn = (...a) => fetch(...a), urls
 module.exports = createHandler();
 module.exports.createHandler = createHandler;
 module.exports.recebimentos = recebimentos;
+module.exports.chamarRpc = chamarRpc;
+module.exports.listaRpc = listaRpc;
 // leitor com as fontes por defeito (RPC publico ou BASE_RPC_URL, e indexador), para outros modulos
 module.exports.lerPorDefeito = (horas, prazoMs) => recebimentos({ call: chamarRpc, fetchFn: (...a) => fetch(...a), urls: listaRpc(), pausa: 120, prazoMs }, Math.min(Math.max(1, Math.floor(horas) || 1), MAX_HORAS), Date.now());

@@ -13,6 +13,10 @@
       "destination": "/api/proxy?base=recebimentos"
     },
     {
+      "source": "/economia/saldos.json",
+      "destination": "/api/proxy?base=saldos"
+    },
+    {
       "source": "/economia/bitcoin.json",
       "destination": "/api/proxy?base=bitcoin"
     },

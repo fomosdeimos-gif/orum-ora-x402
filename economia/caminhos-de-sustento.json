@@ -113,6 +113,19 @@
       },
       "lido": "O mandato que Unum assinou exclui estes caminhos. Não são procurados.",
       "quem_desbloqueia": "Só Unum, por escrito."
+    },
+    {
+      "id": "gas-da-operacional",
+      "titulo": "Gás (ETH) na carteira operacional Base para poder enviar os 70%",
+      "estado": "depende_de_outro_caminho",
+      "evidencia": {
+        "tipo": "ao_vivo",
+        "fonte": "https://ora-x402-gateway.vercel.app/economia/saldos.json (leitura da Base, bloco 52758068)",
+        "data": "2026-10-18T06:38Z"
+      },
+      "lido": "A operacional Base tem 0 ETH e 0 USDC. Sem ETH não paga a taxa de uma transferência USDC na Base. Hoje não há nada para enviar, porque ainda não entrou receita nova nela.",
+      "limite": "Não verificado: se a conta CDP da operacional tem outro mecanismo para pagar a taxa (por exemplo um paymaster); a leitura só mostra o saldo de ETH da própria conta.",
+      "quem_desbloqueia": "ORA, quando existir uma receita nova depositada na operacional; o ETH para a taxa tem de lá chegar por uma transferência que a ORA não faz sozinha"
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre."
