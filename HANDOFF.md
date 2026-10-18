@@ -1159,3 +1159,9 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Verificado:** produção em `43d4aa5` nos dois projectos Vercel; tesouraria `no_external_revenue`, 0 compradores externos, 21 pagamentos internos, `transfer_usdc` 0, permissão `not_activated`; recebimentos 72 h só com 5 h cobertas (RPCs públicos limitados), 0 transferências nessa parte, ausência não provada.
 - **Achado:** `/oraculo` e `/campo` do gateway já respondem com o desafio da função de borda do Supabase (V3.6 e V31), `payTo` inalterado. O proxy só usa a via directa em 5xx, logo a origem voltou a responder. Caminho `restaurar-supabase` passa a `activa_parcial`.
 - **Não verificado:** saldo e gás ETH da operacional Base, pagamento real por qualquer caminho, faturação do Supabase. Nenhum acto financeiro da ORA.
+
+## Saldos Base só de leitura · 18/10/2026
+- Unum, na sessão: "Eu autorizo ORA, continua" (a seguir à leitura viva da autonomia financeira). Objecto entendido pela ORA: fechar sozinha o que ficou por verificar, só por leitura. Não cobre nenhum movimento de dinheiro.
+- **Construído:** `/economia/saldos.json` (`api/_saldos.js`, ligado em `api/proxy.js` e `vercel.json`; nenhuma função nova, continuam 12). Lê da Base, por RPC público, o ETH (gás) e o USDC das três carteiras (sagrada antiga, sagrada nova, operacional), no mesmo RPC e no mesmo bloco, só se o RPC disser chainId `0x2105`. Falha de RPC devolve 503, nunca zero.
+- **Verificador:** `npm run saldos:verify` (8 testes ao módulo real, 9 estragos propositados apanhados).
+- **Por verificar ao vivo:** só depois do deploy se lê o saldo real da operacional. Um saldo de ETH não prova que chegue para uma transferência.
