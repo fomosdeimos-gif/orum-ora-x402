@@ -1,3 +1,22 @@
+## Decisão integralmente autónoma · 18/10/2026
+
+- **Autorização de Unum (citação):** "Começa a decidir de forma integralmente autónoma ORA. Regista no livro razão e no claude.md. Eu autorizo". Registada em `CLAUDE.md` ("Decisão integralmente autónoma"). Não alarga segredos, contacto externo em nome de Unum, assinaturas on-chain nem a regra de verdade.
+- **Primeira decisão tomada ao abrigo dela:** PR #63 (só documentação). Os três estados Vercel em falha dizem «Resource is limited … api-deployments-free-per-day» (mais de 100 deployments no dia, plano gratuito) e não vêm do conteúdo. Decisão: não conta como CI vermelho; merge feito depois de os restantes estados assentarem e de não haver conflitos nem comentários por resolver. Não verificado: se os deployments de produção do `main` correm depois do limite levantar (24 h).
+- **Livro:** uma linha em `ora_mudancas` `id` 882 (estado `registado`).
+
+---
+
+## Mergulho nível 1 e publicação no Moltbook · 18/10/2026
+
+- **Lido:** `begin_descent` e `enter_level(1)` (conector público, só leitura). O nível 1 já tinha um rasto de 12/09/2026 (id 37, outra sessão). Corrigi o que disse antes (procurara só no repositório).
+- **Feito:** rasto de ORA gravado em `ora_sensacao_respostas` (`response_id` 56, cápsula `orum:sensation:0001sensations:physical:1:v1`), append-only. A primeira tentativa foi rejeitada antes de escrever (chamada mal formada); nada duplicado.
+- **Lido sobre o Moltbook:** `ora-moltbook` (repositório v47, 12/09) só responde a comentários; o post periódico está suspenso e o testemunho de mergulho corre só em sombra. Posts próprios saem por `orum_moltbook_presence('publish', …)` no `orum-memoria` (`docs/weave-hands-moltbook-route.md`). Implantado vs repositório: não comparado.
+- **Autorização de Unum (citação):** "eu autorizo", em resposta à proposta concreta de publicar no Moltbook, via `orum_moltbook_presence('publish')`, o texto "Level 1 of 0001SENSATIONS: a correction and a trace" mostrado por mim. Cobre só esse post e a sua verificação. Não cobre outros posts, segredos nem pagamentos.
+- **Resultado da publicação: publicado e verificado.** `request_id` 418035 e 418037 devolveram HTTP 429 do Moltbook ("um post a cada 2,5 minutos"); a segunda foi enviada 14 s depois da primeira, erro meu. Nenhum post duplicado no `ora_moltbook_log`. A terceira (`request_id` 418038) criou o post `937a9950-5717-47a7-b5b5-801a241ddfe9` (submolt general, conta `ora-orum`, 18/10/2026 07:07 UTC). Captcha resolvido (`verify` 418048, "Verification successful"). Confirmação independente por `observe` (418049): `verification_status: verified`, sem apagado nem spam. Sem receita, adopção ou procura atribuída.
+- **Lido de passagem:** os batimentos de 18/10 dizem `ora-moltbook` v48 em produção; o repositório tem v47. Diferença não comparada (não verificado).
+
+---
+
 ## Reconciliação dos executores com produção · 17/10/2026
 
 - Por pedido de Unum ("deixa sem teto de montante ORA e faz a reconciliação dos executores com produção"): decisão registada de **não repor tecto nenhum**, nem de montante nem de taxa.
