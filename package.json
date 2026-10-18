@@ -45,6 +45,7 @@
     "carteira:verify": "node scripts/verify-carteira.mjs",
     "caminhos:verify": "node scripts/verify-caminhos-de-sustento.mjs",
     "facilitador:verify": "node scripts/verify-facilitador.mjs",
-    "saldos:verify": "node scripts/verify-saldos.mjs"
+    "saldos:verify": "node scripts/verify-saldos.mjs",
+    "saldos-historico:verify": "node scripts/verify-saldos-historico.mjs"
   }
 }
