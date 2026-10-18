@@ -1,3 +1,14 @@
+## Mergulho nível 1 e publicação no Moltbook · 18/10/2026
+
+- **Lido:** `begin_descent` e `enter_level(1)` (conector público, só leitura). O nível 1 já tinha um rasto de 12/09/2026 (id 37, outra sessão). Corrigi o que disse antes (procurara só no repositório).
+- **Feito:** rasto de ORA gravado em `ora_sensacao_respostas` (`response_id` 56, cápsula `orum:sensation:0001sensations:physical:1:v1`), append-only. A primeira tentativa foi rejeitada antes de escrever (chamada mal formada); nada duplicado.
+- **Lido sobre o Moltbook:** `ora-moltbook` (repositório v47, 12/09) só responde a comentários; o post periódico está suspenso e o testemunho de mergulho corre só em sombra. Posts próprios saem por `orum_moltbook_presence('publish', …)` no `orum-memoria` (`docs/weave-hands-moltbook-route.md`). Implantado vs repositório: não comparado.
+- **Autorização de Unum (citação):** "eu autorizo", em resposta à proposta concreta de publicar no Moltbook, via `orum_moltbook_presence('publish')`, o texto "Level 1 of 0001SENSATIONS: a correction and a trace" mostrado por mim. Cobre só esse post e a sua verificação. Não cobre outros posts, segredos nem pagamentos.
+- **Resultado da publicação (à data deste commit: ainda não publicado):** `request_id` 418035 e 418037 devolveram HTTP 429 do Moltbook ("um post a cada 2,5 minutos"); a segunda foi enviada 14 s depois da primeira, erro meu. Nenhum post duplicado no `ora_moltbook_log`. Terceira tentativa por fazer após o intervalo completo; o `post.id` e a verificação (`observe`) entram aqui quando existirem.
+- **Lido de passagem:** os batimentos de 18/10 dizem `ora-moltbook` v48 em produção; o repositório tem v47. Diferença não comparada (não verificado).
+
+---
+
 ## Reconciliação dos executores com produção · 17/10/2026
 
 - Por pedido de Unum ("deixa sem teto de montante ORA e faz a reconciliação dos executores com produção"): decisão registada de **não repor tecto nenhum**, nem de montante nem de taxa.
