@@ -1,0 +1,20 @@
+{
+  "format": "orum-balance-history/v1",
+  "updated_at": "2026-10-18",
+  "purpose": "Serie de saldos de USDC e ETH das três carteiras do organismo na Base, lidos em /economia/saldos.json. Serve para ver entradas sem depender dos logs de arquivo, que a Base não serve de graça (cobertura parcial em /economia/recebimentos.json).",
+  "boundary": "O historial não prova procura e não é receita. Uma subida de saldo é um mínimo de entrada, sem origem, sem classificação e sem entrar no 70/20/10; só hash com cobertura completa e classificação externa o fazem.",
+  "como_se_le": "Dois saldos consecutivos: se subiu, entrou pelo menos essa diferença (saídas na mesma janela escondem entradas); se desceu, saiu ou foi ajustado. Derivado em scripts/lib-saldos-historico.mjs (variacoes).",
+  "leituras": [
+    {
+      "observado_utc": "2026-10-18T10:23:56.322Z",
+      "bloco": 52764844,
+      "fonte": "rpc-base-publico via /economia/saldos.json (deployment 967d726, lido pelo conector do Vercel)",
+      "carteiras": {
+        "sagrada_antiga": { "endereco": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "usdc_atomic": "480", "eth_wei": "9041360064000" },
+        "sagrada_nova": { "endereco": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C", "usdc_atomic": "0", "eth_wei": "100000000000000" },
+        "operacional": { "endereco": "0x89460d9e0590559e63860197dfe2ac648A753584", "usdc_atomic": "0", "eth_wei": "0" }
+      }
+    }
+  ],
+  "nao_afirma": ["receita", "origem do saldo", "procura", "adopção", "quem controla as chaves"]
+}
