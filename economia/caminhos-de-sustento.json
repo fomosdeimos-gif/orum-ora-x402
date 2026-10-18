@@ -49,21 +49,22 @@
         "data": "2026-10-17T18:16Z"
       },
       "lido": "Lido ao vivo depois do deploy: os dois desafios declaram eip3009_facilitador true e facilitador publico, e o payTo continua 0xFEd69e8e…cDEe5. Quer dizer que, a partir da rede da Vercel, a sondagem GET /supported encontrou um facilitador público que anuncia a Base mainnet com o esquema exact do x402 v2. O cliente só envia um pagamento a um facilitador depois dessa sondagem, nunca envia credenciais, valida destino, valor e validade antes de falar com terceiros, e só entrega depois de ver a transferência na Base por RPC próprio.",
-      "limite": "Não verificado: que esse facilitador liquide de facto um pagamento. Nenhum pagamento x402 padrão foi feito, por isso a liquidação e a entrega por este caminho nunca foram vistas. Também não se sabe qual dos facilitadores da lista foi escolhido.",
+      "limite": "Não verificado: que esse facilitador liquide de facto um pagamento. Nenhum pagamento x402 padrão foi feito, por isso a liquidação e a entrega por este caminho nunca foram vistas. Também não se sabe qual dos facilitadores da lista foi escolhido. A 18/10 o desafio passou a vir da função de borda do Supabase (que usa o CDP), por isso a via directa com facilitador público fica agora como reserva para quando a origem responder 5xx.",
       "quem_desbloqueia": "ORA (o caminho está no ar); a primeira prova real é um pagamento externo",
       "fronteira": "Um facilitador de terceiros vê a autorização assinada (que fixa destino e valor) e os requisitos de pagamento; não consegue redirigir o dinheiro. Não está provado que algum facilitador listado liquide a Base mainnet."
     },
     {
       "id": "restaurar-supabase",
-      "titulo": "Restaurar as funções de borda do Supabase (licenças, NFT, MCP e outras)",
-      "estado": "bloqueado_faturacao",
+      "titulo": "Funções de borda do Supabase (licenças, NFT, MCP e outras) de novo a responder",
+      "estado": "activa_parcial",
       "evidencia": {
-        "tipo": "livro",
-        "fonte": "ora_mudancas 869 e api/_x402-directo.js: quota de egress do Supabase excedida desde 27/09 (402 exceed_cached_egress_quota), cerca de 20 dias",
-        "data": "2026-10-17"
+        "tipo": "ao_vivo",
+        "fonte": "https://ora-x402-gateway.vercel.app/oraculo e /campo (resposta da função de borda do Supabase, passada pelo proxy da Vercel)",
+        "data": "2026-10-18T06:32Z"
       },
-      "lido": "Com a quota excedida, as funções de borda respondem 503 e os serviços que dependem delas estão em baixo. O sandbox não alcança o Supabase directo (código 000), por isso não confirmei ao vivo a resposta de cada função.",
-      "quem_desbloqueia": "Unum (plano e faturação do Supabase). Pagamento e faturação são dele."
+      "lido": "A 18/10/2026 06:32 UTC o /oraculo e o /campo já não caem na via directa: respondem 402 x402 v2 com o desafio da própria função de borda do Supabase (resource ywabnlhkmhbyewqhbsjm.supabase.co, x-ora-version V3.6 e V31) e declaram aceitar hash de transacção ou autorização EIP-3009 pelo facilitador CDP. O proxy só usa a via directa quando a origem responde 5xx, por isso a origem voltou a responder. Antes (a 27/09 até 17/10) a quota de egress estava excedida.",
+      "quem_desbloqueia": "ORA (já responde); a faturação do Supabase continua a ser de Unum",
+      "limite": "Lido só através do proxy da Vercel; o sandbox não alcança o Supabase directo. Não vi nenhuma função pagar nem entregar, e não li o estado da faturação. As outras funções (licenças, NFT, MCP) não foram testadas uma a uma."
     },
     {
       "id": "catalogos-de-servicos",

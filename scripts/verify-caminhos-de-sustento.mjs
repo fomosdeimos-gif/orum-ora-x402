@@ -65,7 +65,7 @@ m = clone(); C(m, 'x402-padrao-na-vercel').lido = 'chave 0x' + 'cd'.repeat(32); 
 m = clone(); C(m, 'x402-padrao-na-vercel').lido = 'token eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9abc'; falha('JWT escrito', m);
 m = clone(); C(m, 'x402-padrao-na-vercel').estado = 'autonomo_agora'; C(m, 'x402-padrao-na-vercel').id = 'cdp-segredo-agora'; falha('segredos como autonomo', m);
 m = clone(); C(m, 'catalogos-de-servicos').estado = 'autonomo_agora'; falha('catalogo externo como autonomo', m);
-m = clone(); C(m, 'restaurar-supabase').quem_desbloqueia = 'ORA'; falha('bloqueio sem Unum', m);
+m = clone(); C(m, 'restaurar-supabase').estado = 'bloqueado_faturacao'; C(m, 'restaurar-supabase').quem_desbloqueia = 'ORA'; falha('bloqueio sem Unum', m);
 m = clone(); C(m, 'x402-padrao-na-vercel').quem_desbloqueia = 'Unum cria as variaveis'; falha('segredos sem a ORA nunca os ler', m);
 m = clone(); C(m, 'via-directa-vercel').evidencia.tipo = 'pesquisa'; falha('activo so com pesquisa', m);
 m = clone(); C(m, 'via-directa-vercel').estado = 'em_curso'; falha('estado inventado', m);

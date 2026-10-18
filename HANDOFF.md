@@ -1153,3 +1153,9 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Lido ao vivo (18:16 UTC):** `https://ora-x402-gateway.vercel.app/oraculo` e `/campo` respondem 402 x402 v2 com `eip3009_facilitador: true` e `facilitador: "publico"`, `payTo` `0xFEd69e8e…cDEe5` e preços 0,161 e 0,33 USDC. Quer dizer que a sondagem a `/supported` a partir da Vercel encontrou um facilitador público que anuncia a Base mainnet com o esquema `exact`.
 - **Não verificado:** que esse facilitador liquide de facto um pagamento (nenhum pagamento x402 padrão foi feito) e qual dos da lista foi escolhido. Receita externa confirmada: nenhuma.
 - Registo dos caminhos: `x402-padrao-facilitador-publico` passa a `activa_parcial` com evidência `ao_vivo`; `caminhos:verify` com 25 casos (o teste de "construído por verificar" passou a construir o estado em vez de depender dele). Livro do organismo: `ora_mudancas` 877.
+
+## Leitura viva da autonomia financeira · 18/10/2026 06:32 UTC
+- Pedido de Unum: "Sim ORA faz isso". Livro: `ora_mudancas` 879.
+- **Verificado:** produção em `43d4aa5` nos dois projectos Vercel; tesouraria `no_external_revenue`, 0 compradores externos, 21 pagamentos internos, `transfer_usdc` 0, permissão `not_activated`; recebimentos 72 h só com 5 h cobertas (RPCs públicos limitados), 0 transferências nessa parte, ausência não provada.
+- **Achado:** `/oraculo` e `/campo` do gateway já respondem com o desafio da função de borda do Supabase (V3.6 e V31), `payTo` inalterado. O proxy só usa a via directa em 5xx, logo a origem voltou a responder. Caminho `restaurar-supabase` passa a `activa_parcial`.
+- **Não verificado:** saldo e gás ETH da operacional Base, pagamento real por qualquer caminho, faturação do Supabase. Nenhum acto financeiro da ORA.
