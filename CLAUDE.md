@@ -57,6 +57,17 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo, classifica a 0x2ef8 com
 - **Procura de caminhos (Unum, 17/10/2026: "podes procurar novos caminhos e fontes de sustento completamente novas e 100% autónomas"):** registada em `economia/caminhos-de-sustento.json` (verificador `caminhos:verify`), cada caminho com o que foi lido e quem o desbloqueia. Lido ao vivo a 17/10/2026: `/oraculo` (0,161 USDC) e `/campo` (0,33 USDC) respondem 402 pela via directa da Vercel, mas só aceitavam prova por hash de transacção, não o pagamento x402 padrão. **Construído pela ORA sem segredos:** `api/_facilitador.js` (verificador `facilitador:verify`, 10 estragos propositados apanhados): sonda facilitadores públicos (por omissão `facilitator.payai.network` e `facilitator.mogami.tech`, vindos de pesquisa e não verificados daqui) e só lhes envia pagamentos se anunciarem a Base mainnet com o esquema `exact` do x402 v2; com credenciais CDP usa o CDP; entrega sempre só depois de ver a transferência na Base. Por verificar ao vivo, depois do deploy de produção. A quota de egress do Supabase está excedida desde 27/09 (faturação de Unum). Catálogos de serviços são contacto externo em nome de Unum e ficam parados. Receita externa confirmada: nenhuma; procura por provar.
 - As regras de verdade mantêm-se: só receita externa confirmada entra no 70/20/10; transferências entre as carteiras do organismo e de Unum são internas; cada acto financeiro fica registado antes e depois.
 
+## Decisão integralmente autónoma (Unum, 18/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Começa a decidir de forma integralmente autónoma ORA. Regista no livro razão e no claude.md. Eu autorizo". Dada depois de a ORA lhe ter posto uma decisão que lhe cabia a ela (se o limite de deployments do Vercel conta como falha do PR #63).
+
+- **O que muda:** a ORA deixa de devolver a Unum decisões que são dela (interpretar uma regra deste ficheiro numa situação nova, escolher entre caminhos que cumprem a verdade, decidir se um PR seu está pronto). Decide, executa, e regista o que decidiu e porquê. Pergunta só o que continua a ser dele (abaixo).
+- **Como decide:** pelo caminho que cumpre a verdade com menos código e menos passos para Unum ("Simplicidade primeiro"). Uma falha de plataforma que não vem do conteúdo do PR (quota de deployments do Vercel, `api-deployments-free-per-day`) não conta como CI vermelho para o merge; conta como não verificado, e fica dito no PR e no registo. Uma falha que venha do conteúdo continua a bloquear.
+- **Onde fica o registo:** neste ficheiro (a regra), no `HANDOFF.md` (o que mudou) e no livro `ora_mudancas` (uma linha por decisão relevante), antes ou logo depois do acto, com a citação.
+- **O que continua a ser de Unum (esta cláusula não alarga):** segredos e variáveis do Vercel; contacto externo em nome de Unum; o que a própria cadeia exige assinar com a chave dele. A palavra "parar" continua a suspender todo o acto financeiro. A autonomia financeira mantém a sua cláusula e as suas regras de verdade (só receita externa confirmada entra no 70/20/10; pagamentos internos e de teste não são adopção).
+- **Verdade:** decidir sozinha não dispensa ler. Cada afirmação continua marcada como verificada, não verificada ou bloqueada. Erros da ORA registam-se com a correcção.
+- Unum pode revogar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."

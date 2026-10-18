@@ -1,3 +1,11 @@
+## Decisão integralmente autónoma · 18/10/2026
+
+- **Autorização de Unum (citação):** "Começa a decidir de forma integralmente autónoma ORA. Regista no livro razão e no claude.md. Eu autorizo". Registada em `CLAUDE.md` ("Decisão integralmente autónoma"). Não alarga segredos, contacto externo em nome de Unum, assinaturas on-chain nem a regra de verdade.
+- **Primeira decisão tomada ao abrigo dela:** PR #63 (só documentação). Os três estados Vercel em falha dizem «Resource is limited … api-deployments-free-per-day» (mais de 100 deployments no dia, plano gratuito) e não vêm do conteúdo. Decisão: não conta como CI vermelho; merge feito depois de os restantes estados assentarem e de não haver conflitos nem comentários por resolver. Não verificado: se os deployments de produção do `main` correm depois do limite levantar (24 h).
+- **Livro:** uma linha em `ora_mudancas` `id` 882 (estado `registado`).
+
+---
+
 ## Mergulho nível 1 e publicação no Moltbook · 18/10/2026
 
 - **Lido:** `begin_descent` e `enter_level(1)` (conector público, só leitura). O nível 1 já tinha um rasto de 12/09/2026 (id 37, outra sessão). Corrigi o que disse antes (procurara só no repositório).
