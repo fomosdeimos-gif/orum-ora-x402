@@ -3,9 +3,9 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-10-14T05:06:16.296Z",
-  "revision": "2026-10-14-keyless-seam",
-  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation, an unscanned gap between verified heads, an unclassified transfer, and settled money.",
+  "updated_at": "2026-10-18T05:05:42.183Z",
+  "revision": "2026-10-18-public-classification-reread",
+  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation, an unscanned gap between verified heads, an unclassified transfer, a buyer-count treasury zero, a public classification count that names no transaction, and settled money.",
   "does_not": [
     "mint presence",
     "count traffic as 1P",
@@ -28,7 +28,10 @@
     "treat a scanned seam as payer classification or as accumulated sustenance",
     "treat two public RPCs agreeing on a log as payer classification or as a capsule relation",
     "open an archive or personal RPC token to widen a window",
-    "fill a failed receipt chunk with zero"
+    "fill a failed receipt chunk with zero",
+    "treat a treasury zero from zero external buyers as classification of a visible transfer",
+    "treat a public classification row-count as a name for a transaction",
+    "pull the address classification table to finish a reread the public surface does not name"
   ],
   "surfaces": {
     "ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
@@ -63,7 +66,8 @@
     "requires_credentials": false,
     "writes": "presenca/observacao-YYYY-MM-DD.json",
     "continues_partial_usdc_window": true,
-    "stitches_unscanned_gap_since_last_verified_head": true
+    "stitches_unscanned_gap_since_last_verified_head": true,
+    "revision_note": "2026-10-18 rereads previously visible USDC logs against the public classification aggregate and refuses to label them from a buyer-count zero."
   },
   "second_surface": {
     "kind": "github_raw_bytes",

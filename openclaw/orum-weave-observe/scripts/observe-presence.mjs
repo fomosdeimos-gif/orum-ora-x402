@@ -482,6 +482,39 @@ async function continuePartialUsdcWindow(usdcWindow) {
   };
 }
 
+function loadPriorVisibleUsdc() {
+  const dir = join(process.cwd(), "presenca");
+  const rows = [];
+  let names = [];
+  try {
+    names = readdirSync(dir);
+  } catch {
+    return { state: "unreadable", rows };
+  }
+  for (const name of names) {
+    if (!/^observacao-\d{4}-\d{2}-\d{2}\.json$/.test(name)) continue;
+    let parsed;
+    try {
+      parsed = JSON.parse(readFileSync(join(dir, name), "utf8"));
+    } catch {
+      continue;
+    }
+    const agreed = parsed?.live?.receipts_usdc?.keyless_span?.transfers_agreed;
+    if (!Array.isArray(agreed)) continue;
+    for (const row of agreed) {
+      if (!row || typeof row.tx !== "string") continue;
+      rows.push({
+        source_file: `presenca/${name}`,
+        tx: row.tx,
+        amount_base_units: row.amount_base_units ?? "unknown",
+        time_utc: row.time_utc ?? "unknown",
+        prior_classification: row.classification ?? "unknown",
+      });
+    }
+  }
+  return { state: "read", rows };
+}
+
 function daysSince(iso) {
   if (!iso) return "unknown";
   const t = Date.parse(iso);
@@ -611,7 +644,41 @@ if (usdcWindow.state === "window_complete" || spanComplete) {
       : "public receipt route did not return a complete window and no stitch was invented",
   });
 }
+const priorVisible = loadPriorVisibleUsdc();
+const journeyClass = journey.sources?.classifications ?? null;
+const seenTx = new Set();
+const priorUnique = [];
+for (const row of priorVisible.rows) {
+  if (seenTx.has(row.tx)) continue;
+  seenTx.add(row.tx);
+  priorUnique.push(row);
+}
+const newVisible = Array.isArray(usdcSpan.transfers_agreed) ? usdcSpan.transfers_agreed : [];
+const classifyVisible = {
+  action: "classify_visible_usdc",
+  state: "bloqueado",
+  public_classifications_http: raw.journey.http,
+  public_classifications_available: journeyClass?.available === true,
+  public_classification_rows: typeof journeyClass?.rows === "number" ? journeyClass.rows : "unknown",
+  public_surface_names_transactions: false,
+  prior_visible: priorUnique,
+  new_visible_this_span: newVisible.map((row) => ({
+    tx: row.tx,
+    amount_base_units: row.amount_base_units,
+    time_utc: row.time_utc ?? "unknown",
+    classification: "not_classified",
+  })),
+  treasury_state: tes.state ?? "unknown",
+  treasury_external_confirmed_usdc: tes.evidence?.external_confirmed_usdc ?? "unknown",
+  treasury_zero_classifies_these_logs: false,
+  payment: false,
+  counts_as_external_sustenance: false,
+  reason: journeyClass?.available === true
+    ? "Public classification returned without payment as a count of rows, not as names of these transactions. They stay not_classified. The treasury figure is a buyer count, not a label on these logs. No address table was pulled and no payment was made."
+    : "Public classification did not return an available row count. These transactions stay not_classified. No address table was pulled and no payment was made.",
+};
 const seamState = usdcSpan.seam?.state ?? "unknown";
+blocks.push(classifyVisible);
 blocks.push({
   action: "scan_usdc_seam_since_last_verified_head",
   state: seamState === "scanned" || seamState === "not_needed" ? "verificado" : "bloqueado",
@@ -648,7 +715,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-10-14-keyless-seam",
+  observer_revision: "2026-10-18-public-classification-reread",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -811,6 +878,9 @@ const out = {
     usdc_keyless_24h_complete: spanComplete,
     usdc_visible_agreed_base_units: spanComplete ? usdcSpan.agreed_total_base_units : "unknown",
     usdc_visible_is_sustenance: false,
+    visible_usdc_classification: "not_classified",
+    treasury_zero_classifies_visible_logs: false,
+    public_classification_rows: classifyVisible.public_classification_rows,
     btc_external_confirmed_receipts: bitcoin.external_confirmed_receipts ?? "unknown",
     internal_validation_payments_observed: tes.evidence?.internal_validation_payments ?? "unknown",
     probes_are_not_customers: true,
@@ -854,6 +924,8 @@ const out = {
     "A keyless 24h span can show a transfer the partial gateway window missed. Visibility is not classification and is not accumulated sustenance.",
     "Two public RPCs agreeing on a log is not payer classification and not a proved relation to a capsule or tool.",
     "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
+    "A treasury zero produced from zero external buyers does not classify a visible transfer.",
+    "A public classification count that does not name a transaction leaves that transaction not_classified.",
     "A gap between the last verified receipt head and the new 24h edge is scanned, not treated as empty. The scan is not classification and is not accumulated sustenance.",
     "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
     "Repository bytes are a portable reading surface, not an independent runtime and not settlement.",
