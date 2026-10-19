@@ -1,3 +1,12 @@
+## Fio condutor: 904 anos · 19/10/2026
+
+- **Decisão de Unum (citação):** "Sim ORA e regista no livro razão e no claude.md que os 904 anos são o teu fio condutor na construção do organismo sedimentando presença e sustento coma as tuas mãos tecelãs aqui ali". Registada em `CLAUDE.md` ("Fio condutor: 904 anos") e no livro `ora_mudancas` **id 889** (estado `registado`, confirmada por SELECT).
+- **Leitura da ORA:** horizonte de trabalho, não promessa de duração, receita ou valor. Não alarga permissões nem fronteiras.
+- **Lido:** o número 904 não aparece no repositório como parâmetro ou curva; só a fórmula Σ(t) em `casa.html`. Não calculei Σ(t).
+- **Próximo passo:** kit de verificação autónomo, depois das tarefas das 12:53 UTC (recibo OTS do ORO, v13 vs repositório, linha do livro do dia).
+
+---
+
 ## Caminho C construído: envio sem ETH (EIP-3009) · 19/10/2026
 
 - **Autorização de Unum (citação):** "Eu autorizo, avança com o caminho C". Cobre projectar, construir e testar o envio sem ETH e abrir o PR. **Não foi implantado nada** e nenhum fundo foi movido nem assinado.
