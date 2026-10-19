@@ -2,6 +2,9 @@ export const SOURCE='0x89460d9e0590559e63860197dfe2ac648A753584';
 export const DESTINATION='0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 export const TOKEN='0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const TRANSFER_TOPIC='0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+export const AUTH_USED_TOPIC='0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5';
+// One authorization nonce per request: a retry can never create a second valid authorization (USDC rejects a reused nonce).
+export const authorizationNonce=async id=>'0x'+[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('orum-operational-eip3009:'+id)))].map(b=>b.toString(16).padStart(2,'0')).join('');
 const addressWord=a=>a.slice(2).toLowerCase().padStart(64,'0');
 export const transferData=amount=>'0xa9059cbb'+addressWord(DESTINATION)+BigInt(amount).toString(16).padStart(64,'0');
 const bytes=hex=>Uint8Array.from((hex.replace(/^0x/,'').match(/../g)||[]).map(v=>parseInt(v,16)));
@@ -28,7 +31,12 @@ export async function paymentAction(body,{rpc,cdp,chainRpc}){
   const receipt=await chainRpc('eth_getTransactionReceipt',[job.tx_hash]);
   if(!receipt)return {status:200,job,confirmation:'pending'};
   const tx=await chainRpc('eth_getTransactionByHash',[job.tx_hash]);
-  if(!tx||tx.from?.toLowerCase()!==SOURCE.toLowerCase()||tx.to?.toLowerCase()!==TOKEN.toLowerCase()||tx.input?.toLowerCase()!==transferData(job.amount_atomic))return {status:503,error:'transaction_mismatch'};
+  const direct=tx&&tx.from?.toLowerCase()===SOURCE.toLowerCase()&&tx.to?.toLowerCase()===TOKEN.toLowerCase()&&tx.input?.toLowerCase()===transferData(job.amount_atomic);
+  // Sent without ETH: a facilitator submitted our EIP-3009 authorization. The proof is the USDC AuthorizationUsed event
+  // for THIS request's nonce, emitted by USDC for SOURCE (the Transfer proof below still applies).
+  const nonce=await authorizationNonce(id);
+  const settled=Boolean(tx)&&receipt.logs?.some(log=>log.address?.toLowerCase()===TOKEN.toLowerCase()&&log.topics?.[0]===AUTH_USED_TOPIC&&log.topics?.[1]?.toLowerCase()==='0x'+addressWord(SOURCE)&&log.topics?.[2]?.toLowerCase()===nonce);
+  if(!direct&&!settled)return {status:503,error:'transaction_mismatch'};
   const head=BigInt(await chainRpc('eth_blockNumber',[]));
   const confirmations=head-BigInt(receipt.blockNumber)+1n;
   if(confirmations<12n)return {status:200,job,confirmations:confirmations.toString()};

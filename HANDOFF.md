@@ -1,3 +1,13 @@
+## Caminho C construído: envio sem ETH (EIP-3009) · 19/10/2026
+
+- **Autorização de Unum (citação):** "Eu autorizo, avança com o caminho C". Cobre projectar, construir e testar o envio sem ETH e abrir o PR. **Não foi implantado nada** e nenhum fundo foi movido nem assinado.
+- **Construído:** `supabase/functions/ora-operational-wallet/gasless.mjs` (acções `preview_usdc_gasless` e `transfer_usdc_gasless`), `cdp.mjs` (`signTypedData` e `x402` verify/settle), `payments.mjs` (nonce por pedido; confirmação por `AuthorizationUsed` + `Transfer`), `core.mjs`, `index.ts`. Destino fixo e um pagamento de cada vez, como no envio normal. Doc: `docs/operational-gasless-v1.md`.
+- **Verificado:** `npm run gasless:verify` (0 ETH ainda envia; 10 estragos propositados apanhados; com viem em área de teste, o separador de domínio igual ao lido na Base — `name` "USD Coin", `version` "2", `0x02fa7265…834f` — e o type hash EIP-3009). `verify-operational-payments`, `verify-operational-wallet`, `verify-cdp-eip3009` e os verificadores de carteira/caminhos/facilitador/x402 passam.
+- **Não verificado:** endpoint `sign/typed-data` e facilitador da CDP ao vivo (formato, credenciais, custo); `verify-bitcoin-wallet` e `verify-bazaar-registration` não correm aqui (precisam de pacotes externos; falham igual no `main`).
+- **Por fazer, passo à parte:** comparar a v13 implantada com o repositório (`get_edge_function`) antes de qualquer implantação; o classificador de permissões bloqueou um comando de shell que editava o executor, as edições seguiram pelas ferramentas de edição.
+
+---
+
 ## Paymaster procurado · 19/10/2026
 
 - **Autorização de Unum (citação):** "Eu autorizo, procura o paymaster". Cobre só a procura (leitura). Não cobre implantar executores, assinar nem mover fundos.

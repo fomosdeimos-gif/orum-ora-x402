@@ -130,7 +130,7 @@
         "B. Conta inteligente CDP + paymaster: outro endereço, credenciais e faturação CDP (segredos e faturação de Unum). Fica bloqueado para a ORA.",
         "C. EIP-3009 + facilitador: a ORA pode projectar e testar, mas implantar um executor novo é um passo à parte e o facilitador é uma dependência externa não verificada."
       ],
-      "quem_desbloqueia": "A: Unum, quando quiser, por transferência. B: Unum (segredos e faturação). C: ORA, depois de comparar o executor implantado com o repositório; ainda não construído"
+      "quem_desbloqueia": "A: Unum, quando quiser, por transferência. B: Unum (segredos e faturação). C: ORA. Construído e testado a 19/10/2026 (autorização de Unum: \"Eu autorizo, avança com o caminho C\"; docs/operational-gasless-v1.md, gasless:verify com 10 estragos propositados). Não implantado: falta comparar o executor implantado (v13) com o repositório e verificar ao vivo o endpoint sign/typed-data e o facilitador da CDP"
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre."

@@ -3,6 +3,24 @@
   "index": 2,
   "files": [
     {
+      "path": "android/status.sh",
+      "bytes": 663,
+      "sha256": "9bb875f4560918aeccaa6db54cde54d7a5c0de35984ceb1391f6e86b2202d15b",
+      "content_base64": "IyEvZGF0YS9kYXRhL2NvbS50ZXJtdXgvZmlsZXMvdXNyL2Jpbi9iYXNoCnNldCAtZXVvIHBpcGVmYWlsCk9SVU1fUk9PVD0iJHtQUkVGSVh9L3Zhci9saWIvb3J1bSIKSE9TVE5BTUVfRklMRT0iJHtPUlVNX1JPT1R9L2lkZW50aXR5L29uaW9uL2hvc3RuYW1lIgppZiBjdXJsIC0tZmFpbCAtLXNpbGVudCAtLW1heC10aW1lIDUgaHR0cDovLzEyNy4wLjAuMTo4Nzg3L19vcnVtL2hlYWx0aCA+L2Rldi9udWxsOyB0aGVuIGVjaG8gInJ1bnRpbWVfbG9jYWw9aGVhbHRoeSI7IGVsc2UgZWNobyAicnVudGltZV9sb2NhbD11bnJlYWNoYWJsZSI7IGZpCmlmIFtbIC1zICIke0hPU1ROQU1FX0ZJTEV9IiBdXTsgdGhlbgogIG9uaW9uPSIkKHRyIC1kICdcbicgPCAiJHtIT1NUTkFNRV9GSUxFfSIpIgogIGVjaG8gIm9uaW9uX2FkZHJlc3M9aHR0cDovLyR7b25pb259IgogIGlmIGN1cmwgLS1mYWlsIC0tc2lsZW50IC0tbWF4LXRpbWUgMzAgLS1zb2NrczUtaG9zdG5hbWUgMTI3LjAuMC4xOjkwNTAgImh0dHA6Ly8ke29uaW9ufS9fb3J1bS9oZWFsdGgiID4vZGV2L251bGw7IHRoZW4gZWNobyAib25pb25fc3VyZmFjZT1oZWFsdGh5IjsgZWxzZSBlY2hvICJvbmlvbl9zdXJmYWNlPXVucmVhY2hhYmxlIjsgZmkKZWxzZQogIGVjaG8gIm9uaW9uX2FkZHJlc3M9cGVuZGluZyIKZmkK"
+    },
+    {
+      "path": "android/stop.sh",
+      "bytes": 283,
+      "sha256": "7de09ec7c871de62e4864a08073e3ca25800ceb03de1d2435fde2cab9c362026",
+      "content_base64": "IyEvZGF0YS9kYXRhL2NvbS50ZXJtdXgvZmlsZXMvdXNyL2Jpbi9iYXNoCnNldCAtZXVvIHBpcGVmYWlsCk9SVU1fUk9PVD0iJHtQUkVGSVh9L3Zhci9saWIvb3J1bSIKZm9yIG5hbWUgaW4gdG9yIG5vZGU7IGRvCiAgcGlkX2ZpbGU9IiR7T1JVTV9ST09UfS9ydW4vJHtuYW1lfS5waWQiCiAgaWYgW1sgLWYgIiR7cGlkX2ZpbGV9IiBdXTsgdGhlbgogICAga2lsbCAiJChjYXQgIiR7cGlkX2ZpbGV9IikiIDI+L2Rldi9udWxsIHx8IHRydWUKICAgIHJtIC1mICIke3BpZF9maWxlfSIKICBmaQpkb25lCg=="
+    },
+    {
+      "path": "android/torrc.template",
+      "bytes": 200,
+      "sha256": "47efcdc3d572a9ba9771ba7e3ec72745e0c82f30d41d297ca4b578a6137ed94c",
+      "content_base64": "U29ja3NQb3J0IDkwNTAKRGF0YURpcmVjdG9yeSBAT1JVTV9ST09UQC90b3ItZGF0YQpIaWRkZW5TZXJ2aWNlRGlyIEBPUlVNX1JPT1RAL2lkZW50aXR5L29uaW9uCkhpZGRlblNlcnZpY2VWZXJzaW9uIDMKSGlkZGVuU2VydmljZVBvcnQgODAgMTI3LjAuMC4xOjg3ODcKTG9nIG5vdGljZSBmaWxlIEBPUlVNX1JPT1RAL2xvZy90b3Itbm90aWNlLmxvZwo="
+    },
+    {
       "path": "api/_bitcoin.js",
       "bytes": 7050,
       "sha256": "3e52ea06c95c03063cfa342863d8f0a7e6e4b8d7a245aa1c04ad420ea7129c7d",
