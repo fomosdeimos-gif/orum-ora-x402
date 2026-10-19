@@ -1306,3 +1306,10 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Verificadores:** `ancora:verify` tinha um estrago propositado que só valia para `pendente` (trocava um texto que já não existia); ficou consciente do estado e ganhou um estrago (manifesto `pendente` com recibo já confirmado): 12 estragos apanhados. Um `llms.txt` a dizer `pendente` com o manifesto confirmado falha o verificador (testado). `kit:verify` (8) e `maquinas:verify` passam; o kit lê agora "confirmado no bloco 972115".
 - **Ponto 2, v13 contra o repositório:** `get_edge_function` leu a v13 (25/09/2026). O repositório anterior ao caminho C coincide com a reconciliação de 17/10 (`git diff` vazio entre #49 e `576076b^`) e as marcas distintivas da v13 (`orum_cdp_wallet_secret`, `sign_voz_admissao`, `amount_ceiling_atomic:null`, limiar de ETH `20000000000000n`, `ora_voz_registar_dsn_teste`) existem lá. A diferença para o `main` é só o caminho C: `cdp.mjs`, `core.mjs`, `payments.mjs`, `index.ts` alterados e `gasless.mjs` novo. **Não feito:** comparação byte a byte (a função implantada não está em disco; não a retranscrevi à mão). **Nada implantado.**
 - **Ponto 3, livro:** `ora_mudancas` id 895.
+
+---
+
+## Orientação: a verdade dos caminhos · 19/10/2026
+
+- **Citação de Unum** e leitura da ORA em `CLAUDE.md` ("Orientação: a verdade dos caminhos antes da aceitação dos outros"). Progresso mede-se pelo que passa a ser verificável e a funcionar sem a ORA; a reacção externa é instrumento de leitura, não condição. Não promete receita nem procura; receita externa confirmada continua nenhuma.
+- **Pendente de ontem para hoje:** redeploy de produção do `main` (âncora confirmada, PR #74) bloqueado pela quota da Vercel; nova tentativa às 15:01 UTC (`trig_013WYuZSA1eZ1RQ71mt3i4SE`). Antes desta nota li o domínio: o `llms.txt` do #73 está no ar (pegada para máquinas viva); `/ancora/oro-v1.json` ainda diz `pendente`. Comparação do post do Moltbook às 10:40 UTC de 20/10 (`trig_01GwDA23Dnm3t5YHAL9Puca3`).
