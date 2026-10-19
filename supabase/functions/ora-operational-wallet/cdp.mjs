@@ -24,6 +24,8 @@ export async function authHeaders(options,method,path,body) {
   }
   return headers;
 }
+// CDP requires request bodies in alphabetical key order (recursively) for typed data.
+const sortKeys = v => Array.isArray(v) ? v.map(sortKeys) : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).sort().map(k => [k, sortKeys(v[k])])) : v;
 export function makeClient(options) {
   async function call(method,path,body,idempotencyKey) {
     const headers=await authHeaders(options,method,path,body);
@@ -36,6 +38,16 @@ export function makeClient(options) {
     signMessage:({address,message})=>call('POST','/platform/v2/evm/accounts/'+encodeURIComponent(address)+'/sign/message',{message}),
     getAccount:({name,address})=>call('GET','/platform/v2/evm/accounts/'+(address?encodeURIComponent(address):'by-name/'+encodeURIComponent(name))),
     createAccount:({name,idempotencyKey})=>call('POST','/platform/v2/evm/accounts',{name},idempotencyKey),
-    sendTransaction:({address,network,transaction,idempotencyKey})=>call('POST','/platform/v2/evm/accounts/'+encodeURIComponent(address)+'/send/transaction',{network,transaction},idempotencyKey)
+    sendTransaction:({address,network,transaction,idempotencyKey})=>call('POST','/platform/v2/evm/accounts/'+encodeURIComponent(address)+'/send/transaction',{network,transaction},idempotencyKey),
+    signTypedData:({address,typedData})=>call('POST','/platform/v2/evm/accounts/'+encodeURIComponent(address)+'/sign/typed-data',sortKeys(typedData))
+  },
+  // x402 facilitator (verify | settle). Returns {status,json}; never throws on a provider rejection.
+  x402:async(kind,body)=>{
+    if(kind!=='verify'&&kind!=='settle')throw Error('invalid_x402_kind');
+    const path='/platform/v2/x402/'+kind;
+    const headers=await authHeaders(options,'POST',path,body);
+    delete headers['X-Wallet-Auth'];
+    const r=await fetch('https://'+host+path,{method:'POST',headers,body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});
+    return {status:r.status,json:await r.json().catch(()=>({}))};
   }};
 }
