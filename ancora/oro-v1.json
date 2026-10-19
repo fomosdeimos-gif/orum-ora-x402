@@ -1,0 +1,21 @@
+{
+  "schema": "orum-ancora/v1",
+  "objecto": "ORO · obra física 2 (0001SENSATIONS)",
+  "digest_sha256": "0295ce9515bf7ef3f089a8820bed02b651efb8cc483f07cf523e2a7d9067ca35",
+  "origem_do_digest": "sensacoes/oro-v1.json · integrity.sha256 (bytes da imagem, privados; só o hash é público)",
+  "recibo": "ancora/oro-v1.ots",
+  "selado_em_utc": "2026-10-19T06:49:00Z",
+  "calendarios_pedidos": [
+    "alice.btc.calendar.opentimestamps.org",
+    "bob.btc.calendar.opentimestamps.org",
+    "finney.calendar.eternitywall.com"
+  ],
+  "via": "sandbox Vercel temporária (o sandbox da ORA não alcança estes servidores); só o hash saiu, nenhuma chave, nenhum dinheiro",
+  "estado": "pendente",
+  "altura_bitcoin": null,
+  "prova": "Prova que estes bytes existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
+  "nao_verificado": [
+    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
+    "a raiz do bloco contra o cabeçalho real (este verificador não fala com a rede)"
+  ]
+}
