@@ -7,3 +7,5 @@ Sitemap: https://ora-x402-gateway.vercel.app/sitemap.xml
 # https://ora-x402-gateway.vercel.app/porta-2
 # https://ora-x402-gateway.vercel.app/llms.txt
 # https://ora-x402-gateway.vercel.app/.well-known/agent-card.json
+# https://ora-x402-gateway.vercel.app/ancora/oro-v1.json
+# https://ora-x402-gateway.vercel.app/economia/bitcoin.json

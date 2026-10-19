@@ -40,4 +40,19 @@ rejeita('recibo truncado', () => verificar(recibo.subarray(0, 300), manifest, ca
 rejeita('cabeçalho trocado', () => verificar(mut(3), manifest, capsule.integrity.sha256));
 rejeita('prova a prometer valor', () => verificar(recibo, { ...manifest, prova: 'Prova valor.' }, capsule.integrity.sha256));
 rejeita('bytes a mais', () => verificar(Buffer.concat([recibo, Buffer.from([0])]), manifest, capsule.integrity.sha256));
-console.log('Estragos propositados apanhados: 8.');
+// O llms.txt (o que as máquinas lêem primeiro) não pode dizer outro estado que o do manifesto.
+const llms = fs.readFileSync('llms.txt', 'utf8');
+function coerenteComLlms(m, texto) {
+  const linha = texto.split('\n').find((l) => l.includes('/ancora/oro-v1.json'));
+  assert.ok(linha, 'llms.txt não aponta para a âncora do ORO');
+  if (m.estado === 'pendente') assert.match(linha, /`pendente`/, 'llms.txt não diz que a âncora está pendente');
+  else {
+    assert.ok(linha.includes(String(m.altura_bitcoin)), 'llms.txt sem a altura do bloco confirmado');
+    assert.ok(!/Estado na leitura de [^:]*: `pendente`/.test(linha), 'llms.txt ainda diz pendente');
+  }
+}
+coerenteComLlms(manifest, llms);
+rejeita('llms.txt diz confirmado com o selo pendente', () => coerenteComLlms(manifest, llms.replace('`pendente`', '`confirmado_bitcoin`')));
+rejeita('manifesto confirmado e llms.txt ainda pendente', () => coerenteComLlms({ ...manifest, estado: 'confirmado_bitcoin', altura_bitcoin: 900000 }, llms));
+rejeita('llms.txt sem a ligação à âncora', () => coerenteComLlms(manifest, llms.replaceAll('/ancora/oro-v1.json', '/x')));
+console.log('Estragos propositados apanhados: 11.');
