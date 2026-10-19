@@ -14,7 +14,9 @@ const leitura = (t, bloco, antiga) => {
   l.observado_utc = t; l.bloco = bloco; l.carteiras.sagrada_antiga.usdc_atomic = String(antiga);
   return l;
 };
-const com = (...ls) => ({ ...real, leituras: [real.leituras[0], ...ls] });
+// base fixa: os testes nao dependem de o historial real crescer
+const base0 = { ...real, leituras: [real.leituras[0]] };
+const com = (...ls) => ({ ...base0, leituras: [real.leituras[0], ...ls] });
 let mentiras = 0;
 const falha = (nome, h) => { assert.ok(validarHistorico(h).length > 0, `devia falhar: ${nome}`); mentiras++; };
 
@@ -32,8 +34,8 @@ const GRANDE = (1n << 70n) + 1n; // nao cabe num Number
 assert.equal(variacoes(com(leitura('2026-10-19T09:47:00Z', 52800000, GRANDE)))[0].variacao_usdc_atomic, String(GRANDE - 480n));
 
 // acrescentar aceita o valido e recusa o invalido
-assert.equal(acrescentar(real, leitura('2026-10-19T09:47:00Z', 52800000, 480)).leituras.length, 2);
-assert.throws(() => acrescentar(real, leitura('2026-10-17T09:47:00Z', 52800000, 480)), /recusada/);
+assert.equal(acrescentar(base0, leitura('2026-10-19T09:47:00Z', 52800000, 480)).leituras.length, 2);
+assert.throws(() => acrescentar(base0, leitura('2026-10-17T09:47:00Z', 52800000, 480)), /recusada/);
 mentiras++;
 
 // a resposta de /economia/saldos.json converte-se sem perder o inteiro
