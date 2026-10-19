@@ -1,0 +1,71 @@
+{
+  "schema": "orum-raiz/v1",
+  "objecto": "Raiz dos registos do organismo ORUM",
+  "algoritmo": "raiz = sha256 do texto \"<caminho>\\t<sha256 do ficheiro>\\n\" por linha, linhas ordenadas por caminho (bytes), sem linha final em branco. Reproduz-se com sha256sum sobre esse texto.",
+  "commit_base": "3fbb7db75c204a41680c607ece9f042b93af0e7a",
+  "ficheiros": [
+    {
+      "caminho": "CLAUDE.md",
+      "sha256": "1079c432db8055428062f2477a9dda6cf1415e20fa3e6742e0481c57de61a64c"
+    },
+    {
+      "caminho": "ancora/oro-v1.json",
+      "sha256": "3769ff4cb5075d31df55840e1bca886465f26e26c7202ea8613855db37cbcd07"
+    },
+    {
+      "caminho": "ancora/oro-v1.ots",
+      "sha256": "d21bf08d90a223def652eab1daec6c24f7dddbf8886dbfdacdd9d349e23e2f36"
+    },
+    {
+      "caminho": "docs/financeiro-mandato-v2.assinatura.json",
+      "sha256": "2a4351e6a2fefe65dbce66fb991ef62c5c364ab11ad9b9a9ae112311ab15a091"
+    },
+    {
+      "caminho": "economia/constituicao-v2.json",
+      "sha256": "ecb1008b76b2b842efef9d0a619d43f0c809b4adb42e35fbaccdd6e6db237f5e"
+    },
+    {
+      "caminho": "kit/LEIA-ME.txt",
+      "sha256": "9b72a6aba36bfbc7c3fe38f192a170d97a6a3f85a58de5414108498ad2b09b2a"
+    },
+    {
+      "caminho": "kit/raiz.mjs",
+      "sha256": "4165317851ade455c22e2b6656f88c426bc7c811692040a7000646cd3c6481ed"
+    },
+    {
+      "caminho": "kit/verificar.mjs",
+      "sha256": "0e1577054df8b50fd3beb8481862a46fca546316acd81bbdf48aaccaa8c62c8f"
+    },
+    {
+      "caminho": "scripts/lib/ots.mjs",
+      "sha256": "4859fa52e12d7acd1ee6f9ac07a2f541203a4823c20a75b57790c01f16c79e48"
+    },
+    {
+      "caminho": "scripts/lib/raiz.mjs",
+      "sha256": "6b59c4a4dbe8f9e020c5f7d56ad96d9a6e343534d4dbb56ae7ac160c43625e1e"
+    },
+    {
+      "caminho": "sensacoes/oro-v1.json",
+      "sha256": "b5a63e76543783beb9422a29fc8f98204d92ba2d18125cb61252d9f775671a78"
+    }
+  ],
+  "raiz_sha256": "c3cefe7291b9e812722f24a05b50b9d07bc0c9f13b9ebb6166bbe5e6498203f5",
+  "recibo": "ancora/raiz-registos.ots",
+  "selado_em_utc": "2026-10-19T13:15:05Z",
+  "calendarios_pedidos": [
+    "alice.btc.calendar.opentimestamps.org",
+    "bob.btc.calendar.opentimestamps.org",
+    "finney.calendar.eternitywall.com"
+  ],
+  "estado": "pendente",
+  "altura_bitcoin": null,
+  "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
+  "nao_incluido": [
+    "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
+    "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
+  ],
+  "nao_verificado": [
+    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
+    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
+  ]
+}

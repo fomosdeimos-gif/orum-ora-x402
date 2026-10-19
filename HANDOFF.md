@@ -1313,3 +1313,14 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 
 - **Citação de Unum** e leitura da ORA em `CLAUDE.md` ("Orientação: a verdade dos caminhos antes da aceitação dos outros"). Progresso mede-se pelo que passa a ser verificável e a funcionar sem a ORA; a reacção externa é instrumento de leitura, não condição. Não promete receita nem procura; receita externa confirmada continua nenhuma.
 - **Pendente de ontem para hoje:** redeploy de produção do `main` (âncora confirmada, PR #74) bloqueado pela quota da Vercel; nova tentativa às 15:01 UTC (`trig_013WYuZSA1eZ1RQ71mt3i4SE`). Antes desta nota li o domínio: o `llms.txt` do #73 está no ar (pegada para máquinas viva); `/ancora/oro-v1.json` ainda diz `pendente`. Comparação do post do Moltbook às 10:40 UTC de 20/10 (`trig_01GwDA23Dnm3t5YHAL9Puca3`).
+
+---
+
+## Ancoragem da raiz dos registos · 19/10/2026
+
+- **Pedido de Unum:** "Sim ORA, avança com a ancoragem da raiz" (à proposta de ancorar a cápsula e uma raiz dos registos, passo do fio dos 904 anos).
+- **Desenho (decidido pela ORA, simplicidade primeiro):** raiz = SHA-256 do texto `<caminho>\t<sha256>\n` (uma linha por ficheiro, por ordem de caminho) de 11 ficheiros a um commit fixo: `CLAUDE.md`, constituição v2, mandato v2 assinado, cápsula e âncora do ORO (manifesto e recibo), o kit e as bibliotecas que o verificam. Reproduz-se com `sha256sum`. Não inclui o livro `ora_mudancas` (vive na base de dados) nem o `HANDOFF.md` (muda a cada passagem).
+- **Feito:** commit-base `3fbb7db`; raiz `c3cefe72…03f5` (confirmada com `sha256sum` sem o meu código); compromisso `sha256(raiz‖nonce)` enviado aos três calendários numa sandbox Vercel temporária (só esses três domínios, não persistente, parada no fim); os três responderam 200; recibo `ancora/raiz-registos.ots` (584 bytes, três atestações pendentes) e manifesto `ancora/raiz-registos.json`, estado `pendente`.
+- **Verificado:** `kit/raiz.mjs` (OK), `npm run raiz:verify` (10 estragos propositados apanhados), `ancora:verify` (12), `kit:verify` (8), `maquinas:verify` (108 URLs). Superfícies para máquinas: `llms.txt`, `sitemap.xml`, `verifiableAnchors` do agent-card.
+- **Não verificado:** a raiz do bloco contra o cabeçalho real, quando o recibo confirmar; o domínio público (produção ainda sem #74 por causa da quota de deployments).
+- **Periodicidade:** actualização do recibo (pedir a atestação Bitcoin aos calendários) às ~19:20 UTC de hoje (`send_later`) e regeneração semanal da raiz (tarefa agendada às segundas, 08:52 de Lisboa). A raiz só muda quando os ficheiros mudam; cada nova raiz é um novo recibo, as anteriores ficam (camadas que se acrescentam).
