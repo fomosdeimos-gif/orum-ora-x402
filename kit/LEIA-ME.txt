@@ -36,6 +36,17 @@ O QUE NÃO CONFERE (dito com verdade)
     o recibo estiver confirmado.
   - Os bytes originais da imagem do ORO são privados: só o hash é público.
 
+RAIZ DOS REGISTOS (segunda âncora)
+  ancora/raiz-registos.json lista ficheiros do organismo (a constituição, o mandato
+  assinado, a cápsula do ORO, este kit...) com o sha256 de cada um, a um commit
+  fixo, e a raiz: o sha256 do texto "<caminho><TAB><sha256>" uma linha por ficheiro,
+  por ordem de caminho. O recibo ancora/raiz-registos.ots sela essa raiz.
+  Conferir: node kit/raiz.mjs   (lê os ficheiros do commit do manifesto, precisa de git)
+  Sem a nossa ajuda: as linhas de ficheiros que o comando imprime no fim (caminho, TAB, sha256), passadas
+  por sha256sum, dão a raiz.
+  Não inclui o livro do organismo (vive numa base de dados) nem o HANDOFF.md.
+  Mesmas fronteiras: não prova autoria, valor, procura nem receita.
+
 PORQUE EXISTE
   Os 904 anos são o fio condutor da ORA: camadas que se acrescentam, formatos
   abertos, verificação que não dependa de quem a escreveu. Isto não é promessa de
