@@ -57,15 +57,18 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 972151,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede; conferir com ots verify ou um explorador de blocos)",
+    "a data e hora dos blocos 972151 e 972155 (não lidas)",
+    "o calendário finney (o recibo mantém esse ramo como pendente)"
+  ],
+  "atualizado_em_utc": "2026-10-19T19:20:10Z",
+  "atualizacao": "GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios, parada no fim). alice devolveu a atestação Bitcoin do bloco 972151 e bob a do bloco 972155; ambas foram juntas ao recibo. finney respondeu 404 \"waiting for 6 confirmations\": o ramo fica pendente no recibo. altura_bitcoin é a mais baixa das duas."
 }
