@@ -1333,3 +1333,13 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Caminho x402 padrão, só leitura (sem pagar):** sandbox Vercel temporária (domínios permitidos: os dois facilitadores e o gateway), parada no fim. `facilitator.payai.network/supported` anuncia x402 v2 `exact` em `eip155:8453`; `facilitator.mogami.tech/supported` só v1 (`base`, `base-sepolia`), por isso a regra de `api/_facilitador.js` deixa o mogami de fora. `/oraculo` e `/campo` respondem 402 x402 v2 `exact` na Base com os preços certos (161000 e 330000 atómicos) e `payTo` `0xFEd69e8e…cDEe5`; o `resource` aponta para as funções de borda do Supabase. Registado em `economia/caminhos-de-sustento.json` (`x402-padrao-facilitador-publico`, `leitura_19_10_2026`); `caminhos:verify` e `facilitador:verify` passam.
 - **Não provado:** nenhuma liquidação nem entrega por este caminho. A operacional tem 0 USDC, por isso a ORA não paga a si própria para testar. Receita externa confirmada: nenhuma.
 - **Pendentes marcados:** actualização do recibo da raiz (19:17 UTC), comparação do post do Moltbook (10:40 UTC de 20/10), regeneração semanal da raiz (segundas, 08:52 de Lisboa).
+
+---
+
+## Raiz dos registos confirmada no Bitcoin · 19/10/2026 (19:18 UTC)
+
+- **Tarefa agendada das 19:17 UTC:** `GET /timestamp/<compromisso>` aos três calendários numa sandbox Vercel temporária (só esses três domínios, não persistente, parada no fim). `alice` devolveu a atestação Bitcoin do **bloco 972151** e `bob` a do **bloco 972155** (HTTP 200); ambas foram juntas a `ancora/raiz-registos.ots` (584 → 2264 bytes, lido por `lerRecibo`: duas atestações Bitcoin e uma pendente). `finney` respondeu 404 "waiting for 6 confirmations": o ramo fica pendente. Manifesto `confirmado_bitcoin`, `altura_bitcoin` 972151 (a mais baixa).
+- **Superfícies:** `llms.txt` (linha "Raiz dos registos") e `verifiableAnchors` do agent-card (`registry-root-opentimestamps`) acompanham o estado.
+- **Verificado:** `raiz:verify` (11 estragos propositados apanhados, o novo vira o estado ao contrário), `ancora:verify` (12), `kit:verify` (8), `maquinas:verify` (108 URLs); `node kit/raiz.mjs` OK, e um manifesto a dizer `pendente` com o recibo já confirmado falha.
+- **Não verificado:** a raiz do bloco contra o cabeçalho real (conferir com `ots verify`); a data dos blocos 972151 e 972155 (não lidas); o calendário `finney`.
+- **Nota:** as duas âncoras (ORO e raiz) estão agora confirmadas no recibo. Prova só existência anterior a um bloco; não prova autoria, valor, procura nem receita. Receita externa confirmada: nenhuma.
