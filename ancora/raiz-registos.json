@@ -65,10 +65,30 @@
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede; conferir com ots verify ou um explorador de blocos)",
-    "a data e hora dos blocos 972151 e 972155 (não lidas)",
     "o calendário finney (o recibo mantém esse ramo como pendente)"
   ],
   "atualizado_em_utc": "2026-10-19T19:20:10Z",
-  "atualizacao": "GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios, parada no fim). alice devolveu a atestação Bitcoin do bloco 972151 e bob a do bloco 972155; ambas foram juntas ao recibo. finney respondeu 404 \"waiting for 6 confirmations\": o ramo fica pendente no recibo. altura_bitcoin é a mais baixa das duas."
+  "atualizacao": "GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios, parada no fim). alice devolveu a atestação Bitcoin do bloco 972151 e bob a do bloco 972155; ambas foram juntas ao recibo. finney respondeu 404 \"waiting for 6 confirmations\": o ramo fica pendente no recibo. altura_bitcoin é a mais baixa das duas. Correcção (19/10/2026, 20:20 UTC): a primeira versão do ramo do bob, fundida no PR #78, tinha 36 bytes a menos por erro de cópia da ORA e não batia com o cabeçalho do bloco 972155; foi substituída pela resposta do calendário (930 bytes, sha256 7c1700bb…5aa3) e o juntador scripts/ots-juntar.mjs passou a recusar respostas sem o sha256 medido no calendário.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-10-19T20:20:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam)",
+    "blocos": [
+      {
+        "altura": 972151,
+        "hash": "000000000000000000016dd0c2a998c75bfd8a61120d842f64f87753671db5db",
+        "merkle_root": "620394876030288eeb94303364541eb6f5ec3ac8cc4980c248458efb14febd82",
+        "hora_utc": "2026-10-19T13:22:23Z"
+      },
+      {
+        "altura": 972155,
+        "hash": "000000000000000000002b01d09dbee0a115f4e22374fd9b8862edc7e89df4de",
+        "merkle_root": "389191322d961795e8d2ef9b0c039ad1e8dde7ae91b6c72e87b740e1dbc3ff13",
+        "hora_utc": "2026-10-19T13:36:38Z"
+      }
+    ]
+  }
 }

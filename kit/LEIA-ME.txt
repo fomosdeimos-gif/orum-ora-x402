@@ -29,8 +29,9 @@ COMO CORRER
 
 O QUE NÃO CONFERE (dito com verdade)
   - Não fala com a rede. Não compara a raiz do bloco com um cabeçalho real do
-    Bitcoin. Para isso, usa o cliente oficial do OpenTimestamps (ots verify) ou
-    um explorador de blocos, com o recibo e o hash da obra.
+    Bitcoin. Para isso, corre node kit/blocos.mjs (precisa de rede: compara, em duas
+    fontes independentes, Blockstream e mempool.space, a raiz de Merkle de cada
+    atestação com a do cabeçalho do bloco), ou usa o cliente oficial (ots verify).
   - Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.
     Prova apenas que estes bytes existiam antes de um bloco do Bitcoin, quando
     o recibo estiver confirmado.

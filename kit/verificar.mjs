@@ -31,7 +31,7 @@ export function verificar(raiz) {
   if (btc.length) {
     const altura = Math.min(...btc.map((a) => a.altura));
     if (manifesto.estado !== 'confirmado_bitcoin' || manifesto.altura_bitcoin !== altura) throw new Error('o recibo tem atestação Bitcoin que o manifesto não diz');
-    estado = `confirmado no bloco ${altura} (a raiz do bloco não foi comparada com um cabeçalho real: faz-se à mão, ver LEIA-ME.txt)`;
+    estado = `confirmado no bloco ${altura} (este comando não fala com a rede; para comparar a raiz do bloco com o cabeçalho real, corre node kit/blocos.mjs)`;
   } else {
     if (manifesto.estado !== 'pendente' || manifesto.altura_bitcoin !== null) throw new Error('o manifesto diz confirmado sem atestação Bitcoin no recibo');
     if (!pend.length) throw new Error('recibo sem nenhum calendário');

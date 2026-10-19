@@ -50,6 +50,7 @@
     "saldos:verify": "node scripts/verify-saldos.mjs",
     "saldos-historico:verify": "node scripts/verify-saldos-historico.mjs",
     "kit:verify": "node scripts/verify-kit.mjs",
-    "raiz:verify": "node scripts/verify-raiz.mjs"
+    "raiz:verify": "node scripts/verify-raiz.mjs",
+    "blocos:verify": "node scripts/verify-blocos.mjs"
   }
 }

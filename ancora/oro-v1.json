@@ -15,10 +15,24 @@
   "altura_bitcoin": 972115,
   "prova": "Prova que estes bytes existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_verificado": [
-    "a raiz do bloco contra o cabeçalho real (este verificador não fala com a rede; conferir com o cliente ots verify ou um explorador de blocos)",
-    "a data e hora do bloco 972115 (não lida)",
-    "a resposta do calendário finney (o recibo mantém esse ramo como pendente)"
+    "o calendário finney (o recibo mantém esse ramo como pendente)"
   ],
   "atualizado_em_utc": "2026-10-19T12:58:00Z",
-  "atualizacao": "Pedido GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios). alice e bob devolveram a atestação Bitcoin do bloco 972115 e foram juntas ao recibo; finney continua pendente no recibo (não foi juntada a sua resposta)."
+  "atualizacao": "Pedido GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios). alice e bob devolveram a atestação Bitcoin do bloco 972115 e foram juntas ao recibo; finney continua pendente no recibo (não foi juntada a sua resposta).",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-10-19T20:20:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam)",
+    "blocos": [
+      {
+        "altura": 972115,
+        "hash": "0000000000000000000046931113f06e323bb12cfb74ade544cac844df0523c5",
+        "merkle_root": "fc1f7a070be781a2e50ec075203c6a48dbd0e9a5d44737b1a86faf29ba8d3dee",
+        "hora_utc": "2026-10-19T06:58:28Z"
+      }
+    ]
+  }
 }
