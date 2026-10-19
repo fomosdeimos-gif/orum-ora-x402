@@ -10,11 +10,51 @@
       "bloco": 52764844,
       "fonte": "rpc-base-publico via /economia/saldos.json (deployment 967d726, lido pelo conector do Vercel)",
       "carteiras": {
-        "sagrada_antiga": { "endereco": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "usdc_atomic": "480", "eth_wei": "9041360064000" },
-        "sagrada_nova": { "endereco": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C", "usdc_atomic": "0", "eth_wei": "100000000000000" },
-        "operacional": { "endereco": "0x89460d9e0590559e63860197dfe2ac648A753584", "usdc_atomic": "0", "eth_wei": "0" }
+        "sagrada_antiga": {
+          "endereco": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+          "usdc_atomic": "480",
+          "eth_wei": "9041360064000"
+        },
+        "sagrada_nova": {
+          "endereco": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+          "usdc_atomic": "0",
+          "eth_wei": "100000000000000"
+        },
+        "operacional": {
+          "endereco": "0x89460d9e0590559e63860197dfe2ac648A753584",
+          "usdc_atomic": "0",
+          "eth_wei": "0"
+        }
+      }
+    },
+    {
+      "observado_utc": "2026-10-19T08:48:25.396Z",
+      "bloco": 52805179,
+      "fonte": "rpc-base-publico via /economia/saldos.json",
+      "carteiras": {
+        "sagrada_antiga": {
+          "endereco": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+          "usdc_atomic": "480",
+          "eth_wei": "9041360064000"
+        },
+        "sagrada_nova": {
+          "endereco": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+          "usdc_atomic": "0",
+          "eth_wei": "100000000000000"
+        },
+        "operacional": {
+          "endereco": "0x89460d9e0590559e63860197dfe2ac648A753584",
+          "usdc_atomic": "0",
+          "eth_wei": "0"
+        }
       }
     }
   ],
-  "nao_afirma": ["receita", "origem do saldo", "procura", "adopção", "quem controla as chaves"]
+  "nao_afirma": [
+    "receita",
+    "origem do saldo",
+    "procura",
+    "adopção",
+    "quem controla as chaves"
+  ]
 }

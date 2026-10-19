@@ -1262,3 +1262,7 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Limite:** saídas na mesma janela escondem entradas, e não diz de quem veio. Só hash com cobertura completa e classificação externa fazem receita.
 - **Por fazer na passagem diária:** ler `/economia/saldos.json` e acrescentar a leitura. O sandbox não alcança o RPC, por isso a leitura vem do conector.
 - **Não verificado:** o livro `ora_mudancas` (o sandbox não alcança a base), pagamento real por qualquer caminho, procura. Receita externa confirmada: nenhuma.
+
+## Passagem diária · 19/10/2026 08:48 UTC
+- **Lido (conector do Vercel):** produção `93c0624` = `main` (deployment READY). Tesouraria `no_external_revenue`, 0 compradores externos, 21 pagamentos internos, permissão `not_activated`, limites automáticos 0. Saldos no bloco 52805179: iguais aos de 18/10 (sagrada antiga 0,00048 USDC, sagrada nova 0, operacional 0 USDC e 0 ETH). Primeira leitura acrescentada ao historial com `registar-saldos.mjs`: **nenhuma entrada** entre as duas leituras (variação 0 nas três carteiras).
+- **Não verificado:** livro `ora_mudancas`; recebimentos 72 h (não lidos hoje, cobertura parcial nos dias anteriores). Nenhum acto financeiro da ORA.
