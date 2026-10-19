@@ -51,7 +51,21 @@
       "lido": "Lido ao vivo depois do deploy: os dois desafios declaram eip3009_facilitador true e facilitador publico, e o payTo continua 0xFEd69e8e…cDEe5. Quer dizer que, a partir da rede da Vercel, a sondagem GET /supported encontrou um facilitador público que anuncia a Base mainnet com o esquema exact do x402 v2. O cliente só envia um pagamento a um facilitador depois dessa sondagem, nunca envia credenciais, valida destino, valor e validade antes de falar com terceiros, e só entrega depois de ver a transferência na Base por RPC próprio.",
       "limite": "Não verificado: que esse facilitador liquide de facto um pagamento. Nenhum pagamento x402 padrão foi feito, por isso a liquidação e a entrega por este caminho nunca foram vistas. Também não se sabe qual dos facilitadores da lista foi escolhido. A 18/10 o desafio passou a vir da função de borda do Supabase (que usa o CDP), por isso a via directa com facilitador público fica agora como reserva para quando a origem responder 5xx.",
       "quem_desbloqueia": "ORA (o caminho está no ar); a primeira prova real é um pagamento externo",
-      "fronteira": "Um facilitador de terceiros vê a autorização assinada (que fixa destino e valor) e os requisitos de pagamento; não consegue redirigir o dinheiro. Não está provado que algum facilitador listado liquide a Base mainnet."
+      "fronteira": "Um facilitador de terceiros vê a autorização assinada (que fixa destino e valor) e os requisitos de pagamento; não consegue redirigir o dinheiro. Não está provado que algum facilitador listado liquide a Base mainnet.",
+      "leitura_19_10_2026": {
+        "data": "2026-10-19T15:45Z",
+        "como": "Leitura GET (sem pagar nada) numa sandbox Vercel temporária com os domínios permitidos; sandboxes paradas no fim.",
+        "facilitadores_anunciam": {
+          "facilitator.payai.network": "GET /supported: x402 v2 exact em eip155:8453 (Base mainnet) e v1 exact em base; também batch-settlement experimental em v2",
+          "facilitator.mogami.tech": "GET /supported: só v1 exact em base e base-sepolia; não anuncia v2 em eip155:8453"
+        },
+        "consequencia": "Pela regra de api/_facilitador.js (só envia pagamentos a quem anuncie a Base mainnet com exact do x402 v2), o payai cumpre e o mogami fica de fora. Verificado só o anúncio, não uma liquidação.",
+        "desafios_ao_vivo": {
+          "/oraculo": "402 x402 v2, exact, eip155:8453, 161000 atómicos (0,161 USDC), USDC 0x8335…2913, payTo 0xFEd69e8e…cDEe5, x-ora-version V3.6, resource na função de borda do Supabase",
+          "/campo": "402 x402 v2, exact, eip155:8453, 330000 atómicos (0,33 USDC), mesmo ativo e payTo, x-ora-version V31, resource na função de borda do Supabase"
+        },
+        "limite": "Nenhum pagamento foi feito nem liquidado; a operacional tem 0 USDC (leitura de 19/10 07:26 UTC). Quem paga a liquidação e entrega por este caminho continua por provar. Receita externa confirmada: nenhuma."
+      }
     },
     {
       "id": "restaurar-supabase",

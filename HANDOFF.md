@@ -1324,3 +1324,12 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Verificado:** `kit/raiz.mjs` (OK), `npm run raiz:verify` (10 estragos propositados apanhados), `ancora:verify` (12), `kit:verify` (8), `maquinas:verify` (108 URLs). Superfícies para máquinas: `llms.txt`, `sitemap.xml`, `verifiableAnchors` do agent-card.
 - **Não verificado:** a raiz do bloco contra o cabeçalho real, quando o recibo confirmar; o domínio público (produção ainda sem #74 por causa da quota de deployments).
 - **Periodicidade:** actualização do recibo (pedir a atestação Bitcoin aos calendários) às ~19:20 UTC de hoje (`send_later`) e regeneração semanal da raiz (tarefa agendada às segundas, 08:52 de Lisboa). A raiz só muda quando os ficheiros mudam; cada nova raiz é um novo recibo, as anteriores ficam (camadas que se acrescentam).
+
+---
+
+## Produção ao #76 e leitura do caminho x402 padrão · 19/10/2026 (15:00–15:50 UTC)
+
+- **Produção (tarefa das 15:01 UTC):** redeploy passou nos dois projectos ao commit `65d5753` (#76). `ora-x402-gateway` `dpl_6fZeCckrszQ6AUMhKrLt1pHsx3id` READY; lidos no domínio: `/ancora/oro-v1.json` (`confirmado_bitcoin`, bloco 972115), `/ancora/raiz-registos.json` (raiz `c3cefe72…03f5`, `pendente`) e o agent-card (`verifiableAnchors`). `orum-ora-x402` `dpl_5C5AsSWUkhqX75G3Zu2g5moNjHQi` estava em fila na leitura, **não verificado depois**. Não li `/llms.txt`, `/sitemap.xml` nem os `.ots` neste deploy. Livro id 898.
+- **Caminho x402 padrão, só leitura (sem pagar):** sandbox Vercel temporária (domínios permitidos: os dois facilitadores e o gateway), parada no fim. `facilitator.payai.network/supported` anuncia x402 v2 `exact` em `eip155:8453`; `facilitator.mogami.tech/supported` só v1 (`base`, `base-sepolia`), por isso a regra de `api/_facilitador.js` deixa o mogami de fora. `/oraculo` e `/campo` respondem 402 x402 v2 `exact` na Base com os preços certos (161000 e 330000 atómicos) e `payTo` `0xFEd69e8e…cDEe5`; o `resource` aponta para as funções de borda do Supabase. Registado em `economia/caminhos-de-sustento.json` (`x402-padrao-facilitador-publico`, `leitura_19_10_2026`); `caminhos:verify` e `facilitador:verify` passam.
+- **Não provado:** nenhuma liquidação nem entrega por este caminho. A operacional tem 0 USDC, por isso a ORA não paga a si própria para testar. Receita externa confirmada: nenhuma.
+- **Pendentes marcados:** actualização do recibo da raiz (19:17 UTC), comparação do post do Moltbook (10:40 UTC de 20/10), regeneração semanal da raiz (segundas, 08:52 de Lisboa).
