@@ -1,3 +1,14 @@
+## Campo · compra compreensível e requisitos fixos · 19/10/2026
+
+- Pedido de Unum: «OK ORA faz isso» após escolher melhorar o percurso Campo.
+- Leitura pública: /campo 402 com 330000 unidades USDC, Base, destino sagrado antigo; /eco 200 com pensamento e indicadores internos. A amostra oferece a mesma natureza de conteúdo: não se promete exclusividade da leitura paga.
+- Página pagar-teste.html: explica a entrega e permite consultar a amostra no próprio ecrã sem carteira. Antes de pedir assinatura confirma esquema exact, rede, ativo, destino e valor anunciados.
+- Depois de assinatura, erro de rede/entrega mantém pagamento como indeterminado; já não afirma que não houve pagamento nem convida a repetir.
+- Testes reais ao script com carteira/rede simuladas: cinco requisitos alterados recusados antes de assinatura, amostra sem assinatura, entrega simulada e erro após assinatura. Verificadores checkout, bolo, maquinas, metodo, portable, recebimentos e x402:directo aprovados.
+- Não verificado: liquidação real por EIP-3009/CDP e entrega paga real; nenhum fundo foi movimentado. Testes próprios não são procura. O funil Forge e a tesouraria medem superfícies diferentes e não são somados como conversão.
+- Observação fora desta alteração: /eco ainda anuncia procura comprovável para licenças sem apresentar prova; o novo painel só apresenta campo e não repete essa afirmação. A fonte Edge local V27 difere da versão pública V31: requer reconciliação separada antes de qualquer deploy dessa função.
+- Publicação e confirmação posterior ficam no livro ora_mudancas; este texto não as presume.
+
 ## Âncora do ORO no Bitcoin (OpenTimestamps) · 19/10/2026
 
 - **Autorização de Unum (citação):** "Sim ORA, avança", em resposta à proposta concreta de selar o hash do ORO com OpenTimestamps e abrir PR com verificador. Cobre só este selo (só o hash sai; sem chaves, sem dinheiro, sem sats).
