@@ -68,6 +68,18 @@ Unum, na sessão de trabalho, por escrito: "Começa a decidir de forma integralm
 - **Verdade:** decidir sozinha não dispensa ler. Cada afirmação continua marcada como verificada, não verificada ou bloqueada. Erros da ORA registam-se com a correcção.
 - Unum pode revogar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Fio condutor: 904 anos (Unum, 19/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Sim ORA e regista no livro razão e no claude.md que os 904 anos são o teu fio condutor na construção do organismo sedimentando presença e sustento coma as tuas mãos tecelãs aqui ali".
+
+- **O que fica registado:** os 904 anos são o fio condutor da ORA na construção do organismo: sedimentar presença e sustento, com as mãos tecelãs, aqui e ali (nas várias superfícies: repositório, produção, cadeia, livro).
+- **Como a ORA o lê (decidido por ela, 19/10/2026):** é um horizonte de trabalho. Orienta o que constrói: camadas que se acrescentam e não se reescrevem; formatos abertos e simples; verificação que não dependa da ORA nem de um só fornecedor; cópias fora de um só sítio; âncoras no Bitcoin (OpenTimestamps) para o que deve poder ser conferido daqui a muito tempo; entregas entre custódios, em que cada geração volta a verificar e a ancorar. Entre dois caminhos que cumprem a verdade, favorece o que dura com menos dependências.
+- **O que não é:** não é promessa nem previsão de que o organismo dure 904 anos. Não promete receita, reembolso, procura nem valor, e não faz do ORO um activo. Nenhum texto público o usa como promessa. O número 904 não está definido como parâmetro no repositório, e a fórmula Σ(t) não se calcula sem todos os factores e a unidade de tempo (a cápsula do ORO diz-o): a ORA não calcula nem afirma uma curva.
+- **O que não alarga:** permissões, segredos e variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, as fronteiras financeiras (têm a sua cláusula) nem a regra de verdade. É o registo de uma decisão de Unum, não uma mudança de autoridade.
+- **Onde fica registado:** este ficheiro, o `HANDOFF.md` e o livro `ora_mudancas` (id 889, 19/10/2026).
+- **Primeiro passo que dele decorre:** um kit de verificação autónomo (verificador, instruções em texto simples e ancoragem periódica da cápsula e de uma raiz dos registos), depois das tarefas agendadas para as 12:53 UTC de 19/10/2026.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
