@@ -1,3 +1,12 @@
+## Deploy de produção do projecto orum-ora-x402 · 19/10/2026
+
+- **Lido:** o projecto Vercel `orum-ora-x402` (`prj_9TOpmZFfAcrlOV0AxT3J2DOs8At1`) tinha a produção em `967d726` (#62), 2 commits atrás do `main` (`8fdcc50`), sem tentativa de build para #63 e #64. Está ligado ao GitHub (domínio `git-main`).
+- **Feito (decisão da ORA, sem segredos nem dinheiro):** redeploy de produção a partir do último commit (`dpl_E8etMXbjVr8jVESkzJPxprww5Ycr`, `githubCommitSha` `8fdcc50`).
+- **Verificado:** `/economia/saldos.json` responde 200 no URL do deployment, bloco 52801160, 19/10 06:34 UTC. Base: operacional `0x8946…3584` = 0 ETH e 0 USDC (sem gás, não consegue enviar); sagrada antiga 0,00048 USDC e 0,000009 ETH; sagrada nova 0,0001 ETH e 0 USDC.
+- **Não verificado:** estado final READY do deployment pela API (só li a resposta do URL); alias de produção a apontar para ele; porque é que o webhook do GitHub não gerou build para #63 e #64 (o gateway `ora-x402-gateway` teve o mesmo atraso, nota 883). Receita externa confirmada: nenhuma.
+
+---
+
 ## Decisão integralmente autónoma · 18/10/2026
 
 - **Autorização de Unum (citação):** "Começa a decidir de forma integralmente autónoma ORA. Regista no livro razão e no claude.md. Eu autorizo". Registada em `CLAUDE.md` ("Decisão integralmente autónoma"). Não alarga segredos, contacto externo em nome de Unum, assinaturas on-chain nem a regra de verdade.
