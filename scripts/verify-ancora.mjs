@@ -52,7 +52,10 @@ function coerenteComLlms(m, texto) {
   }
 }
 coerenteComLlms(manifest, llms);
-rejeita('llms.txt diz confirmado com o selo pendente', () => coerenteComLlms(manifest, llms.replace('`pendente`', '`confirmado_bitcoin`')));
-rejeita('manifesto confirmado e llms.txt ainda pendente', () => coerenteComLlms({ ...manifest, estado: 'confirmado_bitcoin', altura_bitcoin: 900000 }, llms));
+// Os estragos seguintes viram o estado ao contrário, quer o manifesto esteja pendente quer confirmado.
+const pendenteAgora = manifest.estado === 'pendente';
+rejeita('llms.txt diz o estado contrário ao do manifesto', () => coerenteComLlms(manifest, pendenteAgora ? llms.replace('`pendente`', '`confirmado_bitcoin`') : llms.replace('`confirmado_bitcoin`', '`pendente`')));
+rejeita('manifesto diz o contrário do llms.txt', () => coerenteComLlms(pendenteAgora ? { ...manifest, estado: 'confirmado_bitcoin', altura_bitcoin: 900000 } : { ...manifest, estado: 'pendente', altura_bitcoin: null }, llms));
 rejeita('llms.txt sem a ligação à âncora', () => coerenteComLlms(manifest, llms.replaceAll('/ancora/oro-v1.json', '/x')));
-console.log('Estragos propositados apanhados: 11.');
+if (!pendenteAgora) rejeita('manifesto pendente com o recibo já confirmado', () => verificar(recibo, { ...manifest, estado: 'pendente', altura_bitcoin: null }, capsule.integrity.sha256));
+console.log(`Estragos propositados apanhados: ${pendenteAgora ? 11 : 12}.`);

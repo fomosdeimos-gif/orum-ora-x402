@@ -11,11 +11,14 @@
     "finney.calendar.eternitywall.com"
   ],
   "via": "sandbox Vercel temporária (o sandbox da ORA não alcança estes servidores); só o hash saiu, nenhuma chave, nenhum dinheiro",
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 972115,
   "prova": "Prova que estes bytes existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (este verificador não fala com a rede)"
-  ]
+    "a raiz do bloco contra o cabeçalho real (este verificador não fala com a rede; conferir com o cliente ots verify ou um explorador de blocos)",
+    "a data e hora do bloco 972115 (não lida)",
+    "a resposta do calendário finney (o recibo mantém esse ramo como pendente)"
+  ],
+  "atualizado_em_utc": "2026-10-19T12:58:00Z",
+  "atualizacao": "Pedido GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios). alice e bob devolveram a atestação Bitcoin do bloco 972115 e foram juntas ao recibo; finney continua pendente no recibo (não foi juntada a sua resposta)."
 }
