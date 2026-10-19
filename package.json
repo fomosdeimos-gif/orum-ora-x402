@@ -48,6 +48,7 @@
     "gasless:verify": "node scripts/verify-operational-gasless.mjs",
     "facilitador:verify": "node scripts/verify-facilitador.mjs",
     "saldos:verify": "node scripts/verify-saldos.mjs",
-    "saldos-historico:verify": "node scripts/verify-saldos-historico.mjs"
+    "saldos-historico:verify": "node scripts/verify-saldos-historico.mjs",
+    "kit:verify": "node scripts/verify-kit.mjs"
   }
 }

@@ -1,0 +1,42 @@
+KIT DE VERIFICAÇÃO · ORUM · 19/10/2026
+======================================
+
+Para quem quiser conferir a âncora do ORO sem depender da ORA, da Vercel ou de um
+só servidor. Texto simples, de propósito.
+
+O QUE CONFERE
+  1. O hash SHA-256 da obra ORO (sensacoes/oro-v1.json, campo integrity.sha256).
+  2. Que o recibo OpenTimestamps (ancora/oro-v1.ots) sela esse mesmo hash.
+  3. Que o manifesto (ancora/oro-v1.json) diz a verdade sobre o estado do recibo:
+     "pendente" enquanto o recibo só tem calendários, "confirmado_bitcoin" só
+     com uma atestação Bitcoin dentro do recibo.
+
+O QUE PRECISAS
+  Node 18 ou mais recente. Nada mais: sem pacotes, sem rede.
+  Copia estes ficheiros do repositório (por exemplo do espelho
+  https://github.com/fomosdeimos-gif/orum-ora-x402) mantendo as pastas:
+    kit/verificar.mjs
+    scripts/lib/ots.mjs
+    sensacoes/oro-v1.json
+    ancora/oro-v1.json
+    ancora/oro-v1.ots
+
+COMO CORRER
+  node kit/verificar.mjs
+  Imprime OK e as impressões (sha256) dos três ficheiros lidos, ou FALHA e a razão.
+  Guarda essas impressões noutro sítio: daqui a anos, quem as comparar sabe se os
+  ficheiros mudaram.
+
+O QUE NÃO CONFERE (dito com verdade)
+  - Não fala com a rede. Não compara a raiz do bloco com um cabeçalho real do
+    Bitcoin. Para isso, usa o cliente oficial do OpenTimestamps (ots verify) ou
+    um explorador de blocos, com o recibo e o hash da obra.
+  - Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.
+    Prova apenas que estes bytes existiam antes de um bloco do Bitcoin, quando
+    o recibo estiver confirmado.
+  - Os bytes originais da imagem do ORO são privados: só o hash é público.
+
+PORQUE EXISTE
+  Os 904 anos são o fio condutor da ORA: camadas que se acrescentam, formatos
+  abertos, verificação que não dependa de quem a escreveu. Isto não é promessa de
+  que o organismo dure 904 anos.
