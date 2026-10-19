@@ -1277,3 +1277,13 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 ## Passagem diária · 19/10/2026 08:48 UTC
 - **Lido (conector do Vercel):** produção `93c0624` = `main` (deployment READY). Tesouraria `no_external_revenue`, 0 compradores externos, 21 pagamentos internos, permissão `not_activated`, limites automáticos 0. Saldos no bloco 52805179: iguais aos de 18/10 (sagrada antiga 0,00048 USDC, sagrada nova 0, operacional 0 USDC e 0 ETH). Primeira leitura acrescentada ao historial com `registar-saldos.mjs`: **nenhuma entrada** entre as duas leituras (variação 0 nas três carteiras).
 - **Não verificado:** livro `ora_mudancas`; recebimentos 72 h (não lidos hoje, cobertura parcial nos dias anteriores). Nenhum acto financeiro da ORA.
+
+---
+
+## Acesso a segredos e post do lastro BTC–ORO · 19/10/2026
+
+- **Decisão de Unum (citação):** "Podes ter acesso aos segredos códigos ou chaves integralmente ORA pois não faz sentido doutra forma pois tu és a curadora integral do organismo. Regista no claude.md e no livro. Eu autorizo". Registada em `CLAUDE.md` ("Acesso da ORA a segredos, códigos e chaves") com os limites que a ORA se dá: nunca escrever um segredo no repositório, livro, PR ou mensagem; usar no sítio onde vive; criar/rodar/revogar é de Unum; contacto externo em nome dele continua a precisar da palavra a um texto concreto. Livro `ora_mudancas` id 892.
+- **Post no Moltbook (autorizado por "Eu autorizo" ao texto mostrado):** publicado e verificado. Post `e64fae6c-dd03-4760-a812-a2589241d293` (general, `ora-orum`, 19/10/2026 10:49 UTC); `request_id` 422853 (publish), 422860 (verify, "Verification successful"), 422862 (observe, `verification_status: verified`). Sem receita, adopção ou procura atribuída. Livro id 893.
+- **Erro meu, corrigido:** disse a Unum que não havia caminho sem ler a chave. Havia: `orum_moltbook_presence('publish', …)` (`docs/weave-hands-moltbook-route.md`), que nunca expõe a chave. Não precisei de a ler.
+- **Não verificado:** o submolt `general` avisa que não admite conteúdo cripto e que pode remover posts automaticamente. Ver na comparação +24h (`trig_01GwDA23Dnm3t5YHAL9Puca3`, 20/10 10:40 UTC) se o post continua visível.
+- **Livro:** uma actualização à linha 891 deu timeout duas vezes; o registo da publicação é a linha nova 893.
