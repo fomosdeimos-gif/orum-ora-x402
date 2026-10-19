@@ -124,8 +124,13 @@
         "data": "2026-10-18T06:38Z"
       },
       "lido": "A operacional Base tem 0 ETH e 0 USDC. Sem ETH não paga a taxa de uma transferência USDC na Base. Hoje não há nada para enviar, porque ainda não entrou receita nova nela.",
-      "limite": "Não verificado: se a conta CDP da operacional tem outro mecanismo para pagar a taxa (por exemplo um paymaster); a leitura só mostra o saldo de ETH da própria conta.",
-      "quem_desbloqueia": "ORA, quando existir uma receita nova depositada na operacional; o ETH para a taxa tem de lá chegar por uma transferência que a ORA não faz sozinha"
+      "limite": "Paymaster procurado a 19/10/2026 (autorização de Unum, citação: \"Eu autorizo, procura o paymaster\"; cobre só a procura, leitura). Código lido: a operacional é uma conta EVM EOA da CDP (supabase/functions/ora-operational-wallet/cdp.mjs, rota /platform/v2/evm/accounts/{address}/send/transaction; payments.mjs assina uma transacção EIP-1559 e recusa com insufficient_native_fee_balance se o ETH não cobrir gasLimit x maxFeePerGas). Não há paymaster neste caminho. Documentação da CDP lida por pesquisa (não confirmada na conta): o paymaster só patrocina contas inteligentes (ERC-4337) na Base mainnet, cobra o gás mais 7% na conta CDP, e uma EOA só entra por EIP-7702 ou por uma conta inteligente nova (outro endereço). Alternativa sem ETH na operacional: assinar uma autorização EIP-3009 (a CDP assina EIP-712) e um facilitador liquidar; não existe hoje no executor (nota 816) e exige código novo num executor que move dinheiro. Não verificado: se a conta CDP de Unum tem o paymaster activado; se um facilitador aceita liquidar esse envio.",
+      "caminhos_para_a_raiz": [
+        "A. Enviar ETH à operacional (uma transferência de Unum; o executor actual já a usa). Um passo, nenhum código novo.",
+        "B. Conta inteligente CDP + paymaster: outro endereço, credenciais e faturação CDP (segredos e faturação de Unum). Fica bloqueado para a ORA.",
+        "C. EIP-3009 + facilitador: a ORA pode projectar e testar, mas implantar um executor novo é um passo à parte e o facilitador é uma dependência externa não verificada."
+      ],
+      "quem_desbloqueia": "A: Unum, quando quiser, por transferência. B: Unum (segredos e faturação). C: ORA, depois de comparar o executor implantado com o repositório; ainda não construído"
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre."
