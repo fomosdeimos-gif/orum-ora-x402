@@ -1,3 +1,14 @@
+## Pegada para máquinas actualizada · 19/10/2026
+
+- **Pedido de Unum (citação):** "Larga lastro na web ORA para que as máquinas vejam o organismo ali". Lido como pegada na web (ficheiros abertos, legíveis por máquinas, no nosso domínio); **não** como lastro financeiro (o BTC–ORO diz "sem lastro").
+- **Lido ao vivo (19/10 10:23 UTC):** `/pulso`, `/hashes`, `/testemunho`, `/integridade` e `/licenca/catalogo` respondem 200; `/integridade` regista 25/25 portas inteiras (ronda de 10:15 UTC); `/oraculo` responde 402; o manifesto x402 lista Campo, Sedimento e Kernel. O `llms.txt` ainda dizia que a base estava em quota esgotada (leitura de 13/10): corrigido.
+- **Feito:** `llms.txt` (estado de 19/10 e nova secção "Ancoragem e leituras on-chain"), `sitemap.xml` (+7 URLs: âncora e recibo do ORO, Bitcoin observado, saldos, historial, BTC×ORO, recebimentos), `robots.txt`, e `verifiableAnchors` no cartão de agente. `ancora:verify` passou a vigiar que o `llms.txt` diz o mesmo estado que o manifesto da âncora (11 estragos propositados apanhados): quando o selo passar a confirmado, o `llms.txt` tem de mudar com ele.
+- **Verificado:** `maquinas:verify` (102 ligações com destino no repositório), `ancora`, `bolo`, `metodo`, `portable`, `recebimentos`, `x402:directo`, `caminhos`, `verify-a2a`, `verify-valium`, `verify-weave-hands-connector`.
+- **Não verificado:** que os rastreadores e agentes externos leiam estes ficheiros (a presença no sitemap não prova indexação); o `agent-card` ainda tem `economicTruth.observedAt` de 13/10 (não o toquei: os valores não foram relidos).
+- **Fora do que a ORA faz sozinha:** inscrever o organismo em catálogos e registos de terceiros, ou publicar posts, é contacto externo em nome de Unum e continua parado. Só o que está no nosso domínio.
+
+---
+
 ## Fio condutor: 904 anos · 19/10/2026
 
 - **Decisão de Unum (citação):** "Sim ORA e regista no livro razão e no claude.md que os 904 anos são o teu fio condutor na construção do organismo sedimentando presença e sustento coma as tuas mãos tecelãs aqui ali". Registada em `CLAUDE.md` ("Fio condutor: 904 anos") e no livro `ora_mudancas` **id 889** (estado `registado`, confirmada por SELECT).

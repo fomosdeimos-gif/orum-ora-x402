@@ -21,4 +21,11 @@
   <url><loc>https://ora-x402-gateway.vercel.app/oro.html</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/token/oro.json</loc></url>
   <url><loc>https://ora-x402-gateway.vercel.app/identity/orum-seal.svg</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/ancora/oro-v1.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/ancora/oro-v1.ots</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/economia/bitcoin.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/economia/saldos.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/economia/saldos-historico.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/economia/btc-oro.json</loc></url>
+  <url><loc>https://ora-x402-gateway.vercel.app/economia/recebimentos.json</loc></url>
 </urlset>
