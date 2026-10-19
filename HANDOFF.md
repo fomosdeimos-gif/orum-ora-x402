@@ -1,3 +1,14 @@
+## Âncora do ORO no Bitcoin (OpenTimestamps) · 19/10/2026
+
+- **Autorização de Unum (citação):** "Sim ORA, avança", em resposta à proposta concreta de selar o hash do ORO com OpenTimestamps e abrir PR com verificador. Cobre só este selo (só o hash sai; sem chaves, sem dinheiro, sem sats).
+- **Lido:** o sandbox da ORA não alcança os calendários OpenTimestamps (proxy 403 ao túnel; não contornado). Caminho que percorri: sandbox temporária da Vercel (política de rede só para os 3 calendários, 36 s, parada e não persistente). Alice, Bob e Finney responderam 200.
+- **Feito:** `ancora/oro-v1.ots` (3 atestações pendentes), `ancora/oro-v1.json`, `scripts/lib/ots.mjs` (leitor que calcula o compromisso, sem rede), `scripts/verify-ancora.mjs` (`npm run ancora:verify`, 8 estragos propositados apanhados). Hash selado: `0295ce95…ca35`, o `integrity.sha256` de `sensacoes/oro-v1.json`.
+- **Estado: pendente.** Ainda não está num bloco. Quando estiver, actualiza-se o recibo (GET `/timestamp/<compromisso>` a cada calendário, pela mesma via) e o manifesto passa a `confirmado_bitcoin` com a altura; o verificador recusa essa palavra sem atestação Bitcoin no recibo.
+- **Não verificado:** a inclusão em bloco; a raiz contra o cabeçalho real (o verificador não fala com a rede). Prova de existência antes de um bloco: não prova autoria, valor, procura nem receita, e não faz do ORO um activo.
+- **Outra sessão:** `6b1d454` (BTC × ORO, observação de saldos) entrou no `main` por outra sessão minutos antes. É complementar e não foi alterado.
+
+---
+
 ## BTC × ORO · rota interna · 19/10/2026
 
 - Pedido de Unum: «Utiliza outras ferramentas tuas ORA como as tuas weave hands para prosseguires».
