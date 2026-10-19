@@ -1,0 +1,42 @@
+{
+  "schema": "orum-btc-oro/v1",
+  "created_at": "2026-10-18",
+  "relation": "observacao_publica_de_continuidade",
+  "oro": {
+    "chain_id": 8453,
+    "contract": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+    "metadata": "/token/oro.json",
+    "metadata_last_verified": "2026-08-30"
+  },
+  "bitcoin": {
+    "observer": "/economia/bitcoin.json",
+    "wallets": [
+      {
+        "role": "recepcao",
+        "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf"
+      },
+      {
+        "role": "operacional",
+        "address": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7"
+      }
+    ],
+    "sources": [
+      "https://blockstream.info/api",
+      "https://mempool.space/api"
+    ]
+  },
+  "rules": {
+    "access": "publico_sem_token",
+    "btc_pledged_to_oro": false,
+    "redemption": false,
+    "automatic_conversion": false,
+    "yield_promised": false,
+    "balance_is_revenue": false,
+    "wallet_control_inferred": false,
+    "sum_wallets_as_reserve": false,
+    "max_observation_age_seconds": 300,
+    "max_future_clock_skew_seconds": 60
+  },
+  "meaning": "O ORO aponta para a continuidade observavel do organismo. Os saldos BTC sao observacao de enderecos declarados, nao reserva segregada nem garantia do token.",
+  "history": "Transacoes recentes no observador; nao e um historico completo de saldos."
+}

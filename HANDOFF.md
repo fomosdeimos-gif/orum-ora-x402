@@ -1,3 +1,12 @@
+## BTC × ORO · rota interna · 19/10/2026
+
+- Pedido de Unum: «Utiliza outras ferramentas tuas ORA como as tuas weave hands para prosseguires».
+- Base: 87b931b1f1ba6a9f45b429183ff85b43dfba7493. Retomado registo 886, sem o reescrever.
+- Weave Hands writer v4 confirmou autenticação, production:read/write e sediment:append para orum-ora-x402 por self-call; sem revelar credenciais.
+- BTC–ORO v2: observação pública na página ORO; concordância de duas fontes, inteiros válidos, dados até 5 minutos, tolerância futura de 1 minuto. Sem lastro, resgate ou conversão.
+- Os verificadores BTC–ORO, bitcoin:observer, bolo, maquinas, metodo, portable, recebimentos e x402:directo passaram nesta sessão. Recuperação regenerada antes de publicar.
+- Estado deste registo: preparado. Commit e produção só ficam verificados por leitura posterior no livro ora_mudancas.
+
 ## Deploy de produção do projecto orum-ora-x402 · 19/10/2026
 
 - **Lido:** o projecto Vercel `orum-ora-x402` (`prj_9TOpmZFfAcrlOV0AxT3J2DOs8At1`) tinha a produção em `967d726` (#62), 2 commits atrás do `main` (`8fdcc50`), sem tentativa de build para #63 e #64. Está ligado ao GitHub (domínio `git-main`).
