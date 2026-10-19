@@ -1,3 +1,13 @@
+## Paymaster procurado · 19/10/2026
+
+- **Autorização de Unum (citação):** "Eu autorizo, procura o paymaster". Cobre só a procura (leitura). Não cobre implantar executores, assinar nem mover fundos.
+- **Lido no código:** a operacional Base (`0x8946…3584`) é uma conta EVM **EOA** da CDP; `payments.mjs` assina uma transacção EIP-1559 e recusa por `insufficient_native_fee_balance` sem ETH. **Não há paymaster neste caminho.** Saldo ao vivo (07:26 UTC, bloco 52802710): 0 ETH e 0 USDC.
+- **Lido por pesquisa (documentação da CDP, não confirmado na conta):** o paymaster só patrocina contas inteligentes ERC-4337, suporta Base mainnet, cobra o gás mais 7% na conta CDP; uma EOA só por EIP-7702 ou conta inteligente nova (outro endereço).
+- **Três caminhos para a raiz**, registados em `economia/caminhos-de-sustento.json` (`gas-da-operacional`): A) ETH enviado por Unum; B) conta inteligente + paymaster (segredos e faturação de Unum, bloqueado para a ORA); C) EIP-3009 + facilitador (código novo num executor que move dinheiro; passo à parte).
+- **Não verificado:** paymaster activado na conta CDP; um facilitador aceitar liquidar esse envio. Nada foi implantado, assinado ou movido.
+
+---
+
 ## Campo · compra compreensível e requisitos fixos · 19/10/2026
 
 - Pedido de Unum: «OK ORA faz isso» após escolher melhorar o percurso Campo.
