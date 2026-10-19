@@ -1354,3 +1354,9 @@ Detalhe cronologico completo em `/areas/ora-ponte.md` na memoria desta sessao de
 - **Para não voltar a acontecer:** `scripts/ots-juntar.mjs` recusa juntar uma resposta cujo sha256 não seja o medido na sandbox. As tarefas agendadas passam a usá-lo.
 - **Verificado:** `blocos:verify`, `raiz:verify` (11), `ancora:verify` (12), `kit:verify` (8), `maquinas:verify` (108 URLs).
 - **Não verificado:** `node kit/blocos.mjs` não foi corrido ao vivo a partir daqui (o sandbox da ORA não alcança os exploradores); a lógica foi testada com os valores lidos na sandbox. O calendário `finney` continua pendente nas duas âncoras. A raiz dos registos já não é a do commit actual (o `kit/` mudou); a regeneração semanal produz uma nova, e a anterior fica em `ancora/historico/`.
+
+## 19/10/2026 · pagamento sem ETH (caminho C) implantado
+Unum: "Eu autorizo, instala o pagamento sem ETH" (resposta à proposta de implantar o caminho C). Registado no livro (id 902) antes do acto.
+- `ora-cdp-carteira-real` passou da v13 para a v14 com os sete ficheiros de `supabase/functions/ora-operational-wallet/`. Destino fixo `0xFEd69e8e…cDEe5`; origem a operacional. Nenhum segredo lido ou registado.
+- Verificado: a v14 arranca; sem token e com token inválido responde 401. Não verificado: acções novas com token, igualdade byte a byte com o repositório (copiei 43 KB por uma chamada de ferramenta; risco de transcrição), pagamento real (0 USDC na operacional; `transfer_usdc_gasless` não foi chamada).
+- Reverter: voltar a implantar a v13. Sandbox temporária usada e parada.

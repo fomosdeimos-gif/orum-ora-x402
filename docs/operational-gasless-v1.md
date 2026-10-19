@@ -1,6 +1,6 @@
 # Carteira operacional Base · envio sem ETH (EIP-3009) · v1 · 19/10/2026
 
-Autorização de Unum (citação): "Eu autorizo, avança com o caminho C", em resposta à proposta concreta registada em `economia/caminhos-de-sustento.json` (`gas-da-operacional`). Cobre projectar, construir e testar. **Não está implantado.**
+Autorização de Unum (citação): "Eu autorizo, avança com o caminho C", em resposta à proposta concreta registada em `economia/caminhos-de-sustento.json` (`gas-da-operacional`). Cobre projectar, construir e testar. **Implantado a 19/10/2026 como `ora-cdp-carteira-real` v14** (autorização de Unum: "Eu autorizo, instala o pagamento sem ETH"). Verificado: a v14 arranca e responde 401 `unauthorized` sem token e com token inválido. Não verificado: as acções novas com token (não o tenho), a igualdade byte a byte com o repositório (o ficheiro foi copiado por uma chamada de ferramenta; o sha do implantado, a95cb377…0f2f, não é comparável com o do repositório) e qualquer pagamento real. A operacional tem 0 USDC; nada foi movido.
 
 ## Porquê
 
@@ -38,4 +38,4 @@ O destino não vem do pedido: continua fixo no código, e as acções novas só 
 
 - Um pedido `unknown` sem hash só se resolve lendo `authorizationState(from, nonce)` no USDC e reconciliando à mão; não está automatizado.
 - Não é um mecanismo de lucro nem de procura. Só permite que a raiz envie quando houver receita nova nela.
-- Antes de qualquer implantação: comparar de novo os seis ficheiros com `get_edge_function` (a versão implantada é a 13, de 25/09/2026). Este PR não implanta nada.
+- Implantação feita (v14, antes v13 de 25/09/2026). Para reverter: voltar a implantar os ficheiros da v13 (último estado reconciliado a 17/10/2026). Antes do primeiro pagamento real: comparar com `get_edge_function` e testar `preview_usdc_gasless` com token.
