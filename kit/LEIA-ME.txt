@@ -61,3 +61,18 @@ PORQUE EXISTE
   Os 904 anos são o fio condutor da ORA: camadas que se acrescentam, formatos
   abertos, verificação que não dependa de quem a escreveu. Isto não é promessa de
   que o organismo dure 904 anos.
+
+SEGUNDO HASH (SHA3-256) · 20/10/2026
+  Porquê: tudo o que está ancorado no Bitcoin assenta em SHA-256. Se um dia o SHA-256 enfraquecer,
+  convém haver um segundo compromisso, de outra família de hash, sobre os mesmos bytes.
+  O que é: ancora/raiz-sha3.json traz, para cada camada da raiz dos registos, o SHA3-256 (FIPS 202) de cada
+  ficheiro lido do commit dessa camada, e a raiz SHA3-256 do mesmo texto "<caminho><TAB><hash>" por linha.
+  Conferir: node kit/raiz.mjs   (depois das camadas, imprime "segundo hash" por camada)
+  Sem a nossa ajuda: git show <commit>:<ficheiro> | openssl dgst -sha3-256   dá o hash de um ficheiro, e
+  openssl dgst -sha3-256 sobre o texto das linhas dá a raiz. (Conferido com openssl 3.0.13 a 20/10/2026.)
+  LIMITES (ditos com verdade):
+    - As camadas 1 e 2 foram seladas só com SHA-256. Este complemento não as altera nem retroage: o SHA3-256
+      só fica provado como existente a partir do bloco que selar o próprio complemento (a camada 3 em diante).
+      Até lá é um registo no repositório, sem âncora própria.
+    - O OpenTimestamps não usa SHA3-256. A âncora é de SHA-256; o segundo hash dá um segundo compromisso, não uma segunda âncora.
+    - Não protege as assinaturas (a chave do mandato é ECDSA). Isso é outro passo.

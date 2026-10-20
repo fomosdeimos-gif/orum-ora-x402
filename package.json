@@ -51,6 +51,7 @@
     "saldos-historico:verify": "node scripts/verify-saldos-historico.mjs",
     "kit:verify": "node scripts/verify-kit.mjs",
     "raiz:verify": "node scripts/verify-raiz.mjs",
+    "raiz-sha3:verify": "node scripts/verify-raiz-sha3.mjs",
     "blocos:verify": "node scripts/verify-blocos.mjs",
     "wayback:verify": "node scripts/verify-wayback.mjs",
     "sonda:verify": "node scripts/verify-sonda.mjs"

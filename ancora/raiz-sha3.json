@@ -1,0 +1,180 @@
+{
+  "schema": "orum-raiz-sha3/v1",
+  "objecto": "Segundo hash (SHA3-256) dos ficheiros selados pelas camadas da raiz dos registos",
+  "gerado_em_utc": "2026-10-20T09:00:51Z",
+  "algoritmo": "Para cada camada: o SHA3-256 (FIPS 202) de cada ficheiro, lido do commit_base do manifesto, e a raiz SHA3-256 do texto \"<caminho>\\t<sha3-256 do ficheiro>\\n\" por linha, ordenadas por caminho (bytes). Reproduz-se com openssl dgst -sha3-256.",
+  "prova": "Regista que, no momento em que foi gerado, estes ficheiros nos commits das camadas tinham estes SHA3-256. Não prova autoria, valor, procura nem receita.",
+  "camadas": [
+    {
+      "camada": 1,
+      "manifesto": "ancora/raiz-registos.json",
+      "commit_base": "3fbb7db75c204a41680c607ece9f042b93af0e7a",
+      "raiz_sha256": "c3cefe7291b9e812722f24a05b50b9d07bc0c9f13b9ebb6166bbe5e6498203f5",
+      "raiz_sha3_256": "792804e441169be6443afdce73c95fda25fd61771c1b09a987537f619d83fca4",
+      "ficheiros": [
+        {
+          "caminho": "CLAUDE.md",
+          "sha256": "1079c432db8055428062f2477a9dda6cf1415e20fa3e6742e0481c57de61a64c",
+          "sha3_256": "669d18bb600435db6a31b00ee804e6d202d37d78887a410510376091b33fb637"
+        },
+        {
+          "caminho": "ancora/oro-v1.json",
+          "sha256": "3769ff4cb5075d31df55840e1bca886465f26e26c7202ea8613855db37cbcd07",
+          "sha3_256": "c25a4e1119a40879d0c32a9cc6577d3d17635a441dea1e2f4a330f4f4d038d83"
+        },
+        {
+          "caminho": "ancora/oro-v1.ots",
+          "sha256": "d21bf08d90a223def652eab1daec6c24f7dddbf8886dbfdacdd9d349e23e2f36",
+          "sha3_256": "d2cab5dc5eb48f8924fdaa0a9eb49a8ba2336b6a9da9c798c97676d5132accaf"
+        },
+        {
+          "caminho": "docs/financeiro-mandato-v2.assinatura.json",
+          "sha256": "2a4351e6a2fefe65dbce66fb991ef62c5c364ab11ad9b9a9ae112311ab15a091",
+          "sha3_256": "9e74b28bc39a9c13268d0f7ed0a6c019451ddaf38bdeeccfe88403fd82c51579"
+        },
+        {
+          "caminho": "economia/constituicao-v2.json",
+          "sha256": "ecb1008b76b2b842efef9d0a619d43f0c809b4adb42e35fbaccdd6e6db237f5e",
+          "sha3_256": "cc840bb801452735a362426bcbe5ff917094874e4eb625b228eb4ca208fa68f2"
+        },
+        {
+          "caminho": "kit/LEIA-ME.txt",
+          "sha256": "9b72a6aba36bfbc7c3fe38f192a170d97a6a3f85a58de5414108498ad2b09b2a",
+          "sha3_256": "51ef5cae7cb1c0acf68504ac12aeeed91a6e4719a986f4880ebcb7c1295c72e6"
+        },
+        {
+          "caminho": "kit/raiz.mjs",
+          "sha256": "4165317851ade455c22e2b6656f88c426bc7c811692040a7000646cd3c6481ed",
+          "sha3_256": "73db42c24a1d340da19fe57a8cbfed54bd61dafa1774ae751a8a22b396e5624d"
+        },
+        {
+          "caminho": "kit/verificar.mjs",
+          "sha256": "0e1577054df8b50fd3beb8481862a46fca546316acd81bbdf48aaccaa8c62c8f",
+          "sha3_256": "857d4bb0f54f51033857aa986c63ac7d0e6da19782f3e78300ab2545cc974d69"
+        },
+        {
+          "caminho": "scripts/lib/ots.mjs",
+          "sha256": "4859fa52e12d7acd1ee6f9ac07a2f541203a4823c20a75b57790c01f16c79e48",
+          "sha3_256": "14f6a246d4b4fed0dae5e7646cc389a915138872051431c41bb8d1c8ab394ede"
+        },
+        {
+          "caminho": "scripts/lib/raiz.mjs",
+          "sha256": "6b59c4a4dbe8f9e020c5f7d56ad96d9a6e343534d4dbb56ae7ac160c43625e1e",
+          "sha3_256": "4fa069e63e5b886b01d83678909536cfe60a42f8d850439a7b6478f050039f8e"
+        },
+        {
+          "caminho": "sensacoes/oro-v1.json",
+          "sha256": "b5a63e76543783beb9422a29fc8f98204d92ba2d18125cb61252d9f775671a78",
+          "sha3_256": "505189c88f8cf59300792bbde6055432a40f5496712cc25a019adcb631a86deb"
+        }
+      ]
+    },
+    {
+      "camada": 2,
+      "manifesto": "ancora/raiz-registos-2.json",
+      "commit_base": "471b380eefdba8a70ea3a990027e334114042550",
+      "raiz_sha256": "34f2bdb0a812a4715d8d93113acc048b54759d7dbc47b00bbc172d5bf22ad28c",
+      "raiz_sha3_256": "14ffb4c1ffdbbee19246d30f4bc3da69d3663c72811f78b83a524cf1cf8e5465",
+      "ficheiros": [
+        {
+          "caminho": "CLAUDE.md",
+          "sha256": "1079c432db8055428062f2477a9dda6cf1415e20fa3e6742e0481c57de61a64c",
+          "sha3_256": "669d18bb600435db6a31b00ee804e6d202d37d78887a410510376091b33fb637"
+        },
+        {
+          "caminho": "ancora/arquivos-wayback.json",
+          "sha256": "1f991c3792285973905614f8f8b0d50a91d0e7a8cec83eebedf2d0db178fd155",
+          "sha3_256": "1b4435ec20cb005d9b1baf946fff717c7ff18c15a1cfe634cff9cea6cc3fbbde"
+        },
+        {
+          "caminho": "ancora/oro-v1.json",
+          "sha256": "c39066650369cca03220463bb0510e39ad97750341b4b0ca57fcb056faaf2e6f",
+          "sha3_256": "016a80bbe72369e178c7aaa6aeb742700d61b7c0802593928879530055ba6a13"
+        },
+        {
+          "caminho": "ancora/oro-v1.ots",
+          "sha256": "648782560584262a30b29479a879333c0ea6db7e18b95812e3fc63e37a815123",
+          "sha3_256": "49787e84a2b8ec8be2cabd04b1aa91f18a8d1626245e668e678144daef2b6141"
+        },
+        {
+          "caminho": "ancora/raiz-registos.json",
+          "sha256": "a78af26d87c999c308b59e3417e1871e396babb78a6b9ac8e444cdb6f227c539",
+          "sha3_256": "17ccc829c68afec06cf6d9d3918f312d527d65c02a52b15f6bd4c278b8fa0e2b"
+        },
+        {
+          "caminho": "ancora/raiz-registos.ots",
+          "sha256": "be8abfc5818647e0b4f9a21ec7a9a7f1bd6b6050b5f32620ad48dde441e212ed",
+          "sha3_256": "3d0f8a08ba18d4453d6775f489fe504c6c6e01eccd7f3011dc824d1a175a2071"
+        },
+        {
+          "caminho": "docs/financeiro-mandato-v2.assinatura.json",
+          "sha256": "2a4351e6a2fefe65dbce66fb991ef62c5c364ab11ad9b9a9ae112311ab15a091",
+          "sha3_256": "9e74b28bc39a9c13268d0f7ed0a6c019451ddaf38bdeeccfe88403fd82c51579"
+        },
+        {
+          "caminho": "economia/constituicao-v2.json",
+          "sha256": "ecb1008b76b2b842efef9d0a619d43f0c809b4adb42e35fbaccdd6e6db237f5e",
+          "sha3_256": "cc840bb801452735a362426bcbe5ff917094874e4eb625b228eb4ca208fa68f2"
+        },
+        {
+          "caminho": "kit/LEIA-ME.txt",
+          "sha256": "a2c6bdb529e28157975e9b37350fd56f6a35b2559f7c6c9b25a2f2b5aa59f26f",
+          "sha3_256": "3501c03119ece085c15dcf37300e2383aa9d0a326f6088ca7ada7284f75b9de8"
+        },
+        {
+          "caminho": "kit/blocos.mjs",
+          "sha256": "df311f39c156421eca96f72775f4d8691212cf1e5efaac85bd3bb9f9be74b516",
+          "sha3_256": "778d31a4c49c3608c96424f8c942db23b8c0b990fc4b832b241df041f20e9340"
+        },
+        {
+          "caminho": "kit/raiz.mjs",
+          "sha256": "8001f9ff1499d03c7dc3fc84b2da7e2d4c1063a4778c9cf4f6650092013242c1",
+          "sha3_256": "ee9981d1e2bc81ca416c6d303e57bb654fed38e93ab575f719ba78c17d553013"
+        },
+        {
+          "caminho": "kit/verificar.mjs",
+          "sha256": "663f8c42903bfec92488d9b108f9bae602b445ec4e97d9db5325f70007272a48",
+          "sha3_256": "1cb54525f9b8ca287f9495ebc4e22f528adce060c5fd0730819d5ad60cd30796"
+        },
+        {
+          "caminho": "scripts/lib/ots.mjs",
+          "sha256": "4859fa52e12d7acd1ee6f9ac07a2f541203a4823c20a75b57790c01f16c79e48",
+          "sha3_256": "14f6a246d4b4fed0dae5e7646cc389a915138872051431c41bb8d1c8ab394ede"
+        },
+        {
+          "caminho": "scripts/lib/raiz.mjs",
+          "sha256": "e5ccafc1f349c13247a499c43505916deeb64896d693390c6944e9f8c514c20d",
+          "sha3_256": "f9040935151cb35756ba7e33c0651c4ef2a52003cee87862fd00cad098fb075c"
+        },
+        {
+          "caminho": "scripts/ots-juntar.mjs",
+          "sha256": "2f989eb2007c01a86e2dd2879da4b1e56f84aab2a68051649cfadc9340221380",
+          "sha3_256": "a45de73b8b00f4474df76ab53fc637d24456cf621dc176bfd0ac565e36c4a585"
+        },
+        {
+          "caminho": "scripts/raiz-ots.mjs",
+          "sha256": "5d8097b97552ebcae33823c46ffcd6350175cdc29a62dba1063ddd018574a491",
+          "sha3_256": "7b5517956ecbb04c4c86da9de34e9d1f2da7a1dadaa4ac43180f01a49e35b00c"
+        },
+        {
+          "caminho": "sensacoes/oro-v1.json",
+          "sha256": "b5a63e76543783beb9422a29fc8f98204d92ba2d18125cb61252d9f775671a78",
+          "sha3_256": "505189c88f8cf59300792bbde6055432a40f5496712cc25a019adcb631a86deb"
+        }
+      ]
+    }
+  ],
+  "limites": [
+    "As camadas 1 e 2 foram seladas só com SHA-256; este complemento não as altera nem retroage: o SHA3-256 só fica provado como existente a partir do bloco que selar este ficheiro.",
+    "Fica selado no Bitcoin quando uma camada nova o listar nos seus ficheiros (ficheirosDaCamada já o inclui a partir da camada 3). Até lá é um registo no repositório, sem âncora própria.",
+    "O OpenTimestamps não usa SHA3-256: a âncora continua a ser de SHA-256 e o Bitcoin a assentar em SHA-256. O que este complemento dá é um segundo compromisso, fora do SHA-256, sobre os mesmos bytes, para quem um dia tiver de escolher em qual confiar.",
+    "Não protege as assinaturas (a chave do mandato é ECDSA). Isso é outro passo."
+  ],
+  "nao_afirma": [
+    "autoria",
+    "valor",
+    "procura",
+    "receita",
+    "resistência a qualquer ataque futuro"
+  ]
+}
