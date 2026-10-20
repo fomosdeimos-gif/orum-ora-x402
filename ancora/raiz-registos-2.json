@@ -82,15 +82,42 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 972280,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
-  "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+  "nao_verificado": [],
+  "atualizado_em_utc": "2026-10-20T12:35:00Z",
+  "atualizacao": "20/10/2026 (12:27 UTC): GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios, parada no fim). alice devolveu atestação Bitcoin do bloco 972280 (895 bytes, sha256 58b08ae3…af1b), bob do 972285 (1001 bytes, sha256 274060f8…c28d) e finney do 972300 (1106 bytes, sha256 029f29f8…88e6); sha256 e tamanho conferidos localmente antes de juntar com scripts/ots-juntar.mjs. altura_bitcoin é a mais baixa das três.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-10-20T12:30:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam)",
+    "blocos": [
+      {
+        "altura": 972280,
+        "hash": "00000000000000000000c949594dcb1461a22989276eb416fd98c87612980131",
+        "merkle_root": "8eaa08292167f3e968fab3c8b6bd61a49723e5ea22061c9edc037fae993a096b",
+        "hora_utc": "2026-10-20T07:17:51Z"
+      },
+      {
+        "altura": 972285,
+        "hash": "00000000000000000001eb9dc3d53c485b2a0167a77c7bf499e8f7fb6abba6ca",
+        "merkle_root": "522b721ef2519fc354d17809865a6a5973bfd4d5f811cca55d5a7deaf8135b55",
+        "hora_utc": "2026-10-20T07:27:25Z"
+      },
+      {
+        "altura": 972300,
+        "hash": "00000000000000000001d7ede178227454eb3e19f2fcdf98a3bea869f245e617",
+        "merkle_root": "8dcabd691e22d7bd41b950ca7ebe34ea33b555c0dcb1e1686fc1bf28584a61d3",
+        "hora_utc": "2026-10-20T09:14:06Z"
+      }
+    ]
+  }
 }
