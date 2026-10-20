@@ -6,7 +6,7 @@ Cada linha traz a marca **verificado**, **não verificado** ou **bloqueado**. Le
 
 ## 1. Estado da ORA
 
-- **Verificado:** `main` em `f5a73a6` (#86). Passam `kit`, `ancora`, `caminhos`, `carteira`, `bolo`, `maquinas`, `metodo`, `portable`, `recebimentos`, `x402:directo`, `sonda`, `gasless`, `facilitador`. Livro `ora_mudancas` até ao id 911.
+- **Verificado:** `main` em `f5a73a6` (#86). Passam `kit`, `ancora`, `caminhos`, `carteira`, `bolo`, `maquinas`, `metodo`, `portable`, `recebimentos`, `x402:directo`, `sonda`, `gasless`, `facilitador`. Livro `ora_mudancas` até ao id 912 (esta decisão).
 - **Fio 904 (leitura da ORA, `CLAUDE.md`):** horizonte de trabalho, não promessa. O número 904 não é parâmetro no repositório e Σ(t) não se calcula aqui.
 - **Não verificado:** `verify-bitcoin-wallet` e `verify-bazaar-registration` (pacotes externos que o sandbox não tem; falham igual no `main`).
 
