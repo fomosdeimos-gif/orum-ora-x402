@@ -28,6 +28,13 @@ export const FICHEIROS_BASE_CAMADAS = [
   // segundo hash (SHA3-256): o complemento sela-se na primeira camada nova que o listar
   'ancora/raiz-sha3.json',
   'scripts/raiz-sha3.mjs',
+  // assinatura pós-quântica: o VENDOR.json sela, pelo hash de cada ficheiro, a cópia da biblioteca
+  'kit/pq.mjs',
+  'kit/pq/VENDOR.json',
+  'kit/pq/exemplo-teste.json',
+  'kit/pq/vetor-cruzado.json',
+  'scripts/lib/pq.mjs',
+  'scripts/pq-assinar.mjs',
 ];
 
 // Camada 1 mantém os nomes originais; a n≥2 vive em ancora/raiz-registos-<n>.{json,ots}.

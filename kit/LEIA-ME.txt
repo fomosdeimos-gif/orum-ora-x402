@@ -76,3 +76,24 @@ SEGUNDO HASH (SHA3-256) · 20/10/2026
       Até lá é um registo no repositório, sem âncora própria.
     - O OpenTimestamps não usa SHA3-256. A âncora é de SHA-256; o segundo hash dá um segundo compromisso, não uma segunda âncora.
     - Não protege as assinaturas (a chave do mandato é ECDSA). Isso é outro passo.
+
+ASSINATURA PÓS-QUÂNTICA (SLH-DSA, FIPS 205) · 20/10/2026
+  Porquê: as chaves das carteiras e do mandato são ECDSA (curvas elípticas), que um computador quântico
+  suficientemente grande quebraria. O SLH-DSA assenta só em hashes (aqui SHAKE-256), sem curvas.
+  Algoritmo: SLH-DSA-SHAKE-128s (assinatura de 7856 bytes, chave pública de 32 bytes).
+  Conferir: node kit/pq.mjs   (primeiro confere que a biblioteca copiada em kit/pq/ não foi alterada,
+  depois verifica kit/pq/exemplo-teste.json e, se existir, ancora/atestacao-pq.json)
+  A biblioteca: kit/pq/node_modules/@noble é uma cópia sem alterações de @noble/post-quantum 0.7.1 (MIT) e das
+  suas duas dependências, com o sha256 de cada ficheiro em kit/pq/VENDOR.json. Sem a nossa ajuda: npm pack dessas
+  versões e sha256sum. Só Node: sem rede, sem pacotes.
+  Conferido por fora: python3 -I scripts/pq-cruzar.py kit/pq/exemplo-teste.json  (pip install slh-dsa: outra
+  implementação, em Python, de outro autor). Para a mesma chave e mensagem, as duas dão a mesma assinatura byte a byte.
+  O QUE EXISTE E O QUE NÃO EXISTE (dito com verdade):
+    - Existe o formato, o verificador e um EXEMPLO DE TESTE assinado com uma chave descartada: prova o mecanismo,
+      não atesta nada do organismo e não tem autoridade.
+    - NÃO existe ainda uma chave pós-quântica do organismo nem uma atestação de produção (ancora/atestacao-pq.json).
+      Falta onde guardar a semente (48 bytes) sem a escrever no repositório. Uma atestação de produção só é aceite
+      com uma chave "activa" em ancora/chave-pq.json.
+    - Não protege o mandato assinado por Unum: esse usa a chave ECDSA da MetaMask, e a MetaMask não assina assim.
+    - Não são os vectores oficiais do NIST (ACVP, não disponíveis offline): é um cruzamento entre duas implementações.
+    - Uma assinatura prova que quem tem a chave viu estes bytes. Não prova autoria, valor, procura nem receita.
