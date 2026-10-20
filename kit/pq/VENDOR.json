@@ -1,0 +1,104 @@
+{
+  "schema": "orum-vendor/v1",
+  "objecto": "Cópia byte a byte, sem alterações, do código que o kit usa para verificar assinaturas SLH-DSA (FIPS 205)",
+  "pacotes": [
+    {
+      "nome": "@noble/post-quantum",
+      "versao": "0.7.1",
+      "publicado_em": "2026-08-27",
+      "licenca": "MIT"
+    },
+    {
+      "nome": "@noble/hashes",
+      "versao": "2.4.0",
+      "licenca": "MIT"
+    },
+    {
+      "nome": "@noble/curves",
+      "versao": "2.4.0",
+      "licenca": "MIT"
+    }
+  ],
+  "origem": "npm (registo público), copiados a 20/10/2026 de uma instalação limpa de @noble/post-quantum@0.7.1; só os ficheiros de que slh-dsa.js depende (fecho de imports verificado por script)",
+  "como_reproduzir": "npm pack @noble/post-quantum@0.7.1 @noble/hashes@2.4.0 @noble/curves@2.4.0, extrair, e comparar cada ficheiro desta lista com sha256sum. Qualquer diferença é adulteração ou outra versão.",
+  "ficheiros": [
+    {
+      "caminho": "kit/pq/node_modules/@noble/curves/LICENSE",
+      "sha256": "4f221aee6e072336700c408c68ab3b96a3fc09f6aebe6f48f1bd99e5ef13faec"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/curves/package.json",
+      "sha256": "63d976a6ee72f2dcdc81e6c8bf907edff54eb20e8423218578fbfaf29cff96e6"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/curves/utils.js",
+      "sha256": "be9ff86aef76419376e4d66cf01a134f3117f1f8dd62d81f1b79100145503367"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/LICENSE",
+      "sha256": "4f221aee6e072336700c408c68ab3b96a3fc09f6aebe6f48f1bd99e5ef13faec"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/_md.js",
+      "sha256": "60cf3010fda89e3e4d3f0e7ff1ce249e9c467f34b4fd41b6fd6101d9f69be763"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/_u64.js",
+      "sha256": "b09da8c07fe8187c07649494cdb7cd0bcf13df90b506a9473d19e4d5f8c2e102"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/hmac.js",
+      "sha256": "fec9f8f3aeda785ea2de91cc4c059d54ef98196261c026c43f48341007ae52c9"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/legacy.js",
+      "sha256": "690553a41af2fdd1e32ff6b534ba8508e95f1861c09c2d62fe762b6b501e09be"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/package.json",
+      "sha256": "3e361734f5269de162fa362483d7f45dee7efb533ec217157945338f7591baaf"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/sha2.js",
+      "sha256": "471746bba6ec4c6238ca41358d1d3b40b6ff31cf3363f0b4d550c649c1a8e83b"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/sha3.js",
+      "sha256": "9a81e1edb24eae27b335533220167609cfb58008c5690e140ce478acdc669f32"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/hashes/utils.js",
+      "sha256": "037ad49adb78168b6b699598fd33f85f7877456b1d28b4d032e2a1a16807947c"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/post-quantum/LICENSE",
+      "sha256": "0dea4b70b40ca57e3cfe30186e3dbd245147fe4d83ac566e92e70203aac59034"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/post-quantum/package.json",
+      "sha256": "193687769e8bd4d6a098a1c7f78985c2eadf23b70f2005369eb986521b28927f"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/post-quantum/slh-dsa.js",
+      "sha256": "95c9292df4c2b371f6547d63ebe933d50c058f8068543285c665f4b54e14abe5"
+    },
+    {
+      "caminho": "kit/pq/node_modules/@noble/post-quantum/utils.js",
+      "sha256": "01e9046ea3e45fe7569d3ae2881515d0a9446882d602255ab7627915aa0fd2af"
+    }
+  ],
+  "conferido_com_implementacao_independente": {
+    "data": "20/10/2026",
+    "implementacoes": [
+      "@noble/post-quantum 0.7.1 (JavaScript)",
+      "slh-dsa 0.2.5 (Python puro, outro autor)"
+    ],
+    "resultado": "Para a mesma chave, mensagem e contexto, as duas produzem assinaturas SLH-DSA-SHAKE-128s deterministas IGUAIS byte a byte (7856 bytes) e verificam-se uma à outra; ambas rejeitam mensagem alterada, contexto errado e 1 bit alterado.",
+    "nao_prova": "Não é o conjunto de vectores oficiais do NIST (ACVP), que não estava disponível offline; é um cruzamento entre duas implementações independentes."
+  },
+  "nao_afirma": [
+    "que a biblioteca esteja livre de erros",
+    "resistência a qualquer ataque, quântico ou outro",
+    "que o SLH-DSA seja a escolha certa daqui a décadas"
+  ]
+}
