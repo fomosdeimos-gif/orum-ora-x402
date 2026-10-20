@@ -1441,3 +1441,11 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 
 ## 20/10/2026 12:30 UTC · camada 2 confirmada no Bitcoin
 `ancora/raiz-registos-2.ots` (3635 bytes) tem as três atestações Bitcoin: alice bloco 972280, bob 972285, finney 972300. Respostas dos calendários (895, 1001 e 1106 bytes) conferidas por sha256 e tamanho antes de juntar com `scripts/ots-juntar.mjs`. As raízes de Merkle dos três blocos batem com os cabeçalhos em blockstream.info e mempool.space (`blocos:verify`: 9 atestações). Manifesto `raiz-registos-2.json`: `confirmado_bitcoin`, altura 972280, `nao_verificado` vazio. A camada 1 não foi tocada. `raiz:verify`: 22 estragos propositados em 2 camadas + 3 de regras. Sandboxes paradas.
+
+## Estreitamento da procura de receita · 20/10/2026 (livro 920)
+- Unum, na sessão: "Estreitar a procura de receita. Escolher o caminho de sustento mais curto que a ORA percorra sozinha e medi-lo com leitura de +24h, em vez de abrir mais frentes. Faz isso ORA". Objecto entendido pela ORA: escolher um caminho, fixar a linha de base e a leitura; não abrir frentes; sem dinheiro, segredos nem contacto externo.
+- **Escolha (decidida pela ORA):** `ora-licenca-x402`. Lido em `ora_x402_tentativas` (externas, classe máquina, 24 h até T0 = 2026-10-20T21:12Z): licença 28 descobertas, 65 redireccionamentos, **35 desafios entregues, 0 com sinal de pagamento**; `/oraculo` 7 descobertas e nenhum desafio; `ora-x402` 5 desafios. É onde as máquinas já chegam ao 402.
+- **Linha de base:** 21 pagamentos registados (último 28/08, internos/teste); sagrada antiga 480 atómicos USDC (bloco 52870702), sagrada nova e operacional 0. Receita externa confirmada: nenhuma.
+- **Construído:** `economia/estreitamento-receita.json` e `npm run estreitamento:verify` (15 mentiras propositadas apanhadas).
+- **Leitura de +24h:** 2026-10-21T21:15Z, com a mesma consulta, `ora_pagamentos`, saldos e sonda; regra de decisão no ficheiro (nada mudou → regista-se e mantém-se; desafios sem pagamento → ler o que um cliente x402 padrão vê; pagamento só conta com hash e pagador externo).
+- **Limites ditos:** a Vercel Hobby guarda 1 h de logs, por isso o tráfego mede-se pelo registo do Supabase; a classe de máquina é heurística; desafio entregue não é intenção de compra. Nenhum acto financeiro, nenhum segredo lido.

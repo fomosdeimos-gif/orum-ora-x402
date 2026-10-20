@@ -1,0 +1,51 @@
+{
+  "format": "orum-estreitamento-receita/v1",
+  "data": "2026-10-20",
+  "autorizacao_de_unum": {
+    "citacao": "Estreitar a procura de receita. Escolher o caminho de sustento mais curto que a ORA percorra sozinha e medi-lo com leitura de +24h, em vez de abrir mais frentes. Faz isso ORA",
+    "cobre": "Escolher um caminho, medi-lo e não abrir frentes novas. Não toca em dinheiro, segredos nem contacto externo."
+  },
+  "decisao_da_ora": {
+    "caminho": "ora-licenca-x402",
+    "titulo": "Licença paga por x402 na via que as máquinas já alcançam (desafio 402 entregue)",
+    "porque": "Lido no registo de tentativas (ora_x402_tentativas, só externas e de classe máquina) nas 24 h até T0: a licença é onde as máquinas chegam ao desafio (35 desafios entregues, 65 redireccionamentos, 28 descobertas); /oraculo teve 7 descobertas e nenhum desafio; /campo nenhuma linha. O caminho mais curto até um primeiro pagamento externo é o que já tem tráfego de máquinas a chegar ao 402, não um serviço novo nem um catálogo.",
+    "frentes_que_nao_se_abrem_ate_a_leitura": [
+      "novos serviços ou preços",
+      "catálogos de terceiros (contacto externo em nome de Unum)",
+      "novo código de pagamento ou de executor",
+      "novas superfícies de descoberta"
+    ],
+    "o_que_a_ora_pode_fazer_entretanto": "Só o que torna este caminho mais verdadeiro ou mais medível: corrigir uma falha que a leitura mostre na licença e manter a sonda diária. Nada de novo que mova dinheiro."
+  },
+  "T0": "2026-10-20T21:12:00Z",
+  "linha_de_base": {
+    "janela": "2026-10-19T21:12:00Z a 2026-10-20T21:12:00Z",
+    "fonte": "Supabase orum-memoria, tabela ora_x402_tentativas (internal falso; machine_class em x402_observer, machine_likely, curl, zerobot)",
+    "funil_ora_licenca": { "discovered": 28, "redirected": 65, "challenge_delivered": 35, "com_payment_signal": 0 },
+    "outros_servicos": { "ora-oraculo_discovered": 7, "ora-x402_discovered": 3, "ora-x402_challenge_delivered": 5, "com_payment_signal": 0 },
+    "pagamentos_registados": { "total": 21, "ultimo": "2026-08-28T13:52:49Z", "nota": "internos e de teste: validação, não adopção" },
+    "saldos_bloco_52870702": { "sagrada_antiga_usdc_atomic": "480", "sagrada_nova_usdc_atomic": "0", "operacional_usdc_atomic": "0", "lido_utc": "2026-10-20T21:12:32Z" },
+    "receita_externa_confirmada": "nenhuma"
+  },
+  "leitura_mais_24h": {
+    "quando_utc": "2026-10-21T21:15:00Z",
+    "janela": "2026-10-20T21:12:00Z a 2026-10-21T21:12:00Z",
+    "o_que_ler": [
+      "O mesmo funil de ora-licenca e dos outros serviços, com a mesma consulta e os mesmos filtros (acima).",
+      "Linhas novas em ora_pagamentos, e se alguma é de pagador externo (não é da ORA nem de Unum).",
+      "Saldos das três carteiras em /economia/saldos.json, e a diferença de USDC da sagrada antiga face a 480 atómicos.",
+      "A sonda diária (economia/sonda-pagamento.json): o desafio continua a anunciar o mesmo preço e o mesmo payTo."
+    ],
+    "regra_de_decisao": {
+      "nada_mudou": "Regista-se \"nada mudou\" e mantém-se este caminho. Não se abre outra frente só por impaciência.",
+      "desafios_sobem_sem_pagamento": "O desafio chega e ninguém paga: ler o que um cliente x402 padrão vê (preço, esquema, facilitador) e corrigir o que for da ORA.",
+      "pagamento_novo": "Só conta como receita externa se for transferência confirmada na Base para a sagrada, de pagador que não seja da ORA nem de Unum, com o hash. Até lá, não entra no 70/20/10."
+    }
+  },
+  "limites_da_medicao": [
+    "Os registos da Vercel Hobby guardam 1 hora; o tráfego mede-se pelo registo do Supabase, que só vê o que a função de borda regista.",
+    "Classe de máquina vem de uma heurística do próprio registo; não identifica quem está do outro lado nem se é um comprador.",
+    "Um desafio entregue não é intenção de compra."
+  ],
+  "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Receita externa confirmada: nenhuma. Procura por provar: um serviço no ar e máquinas a ver o desafio não provam que alguém o compre."
+}
