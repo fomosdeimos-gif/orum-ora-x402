@@ -1,0 +1,93 @@
+{
+  "schema": "orum-wayback/v1",
+  "objecto": "Cópias das âncoras e do kit no Wayback Machine (Internet Archive)",
+  "lido_em_utc": "2026-10-20T06:19:26Z",
+  "como": "scripts/arquivar-wayback.mjs numa sandbox Vercel temporária (só web.archive.org, archive.org e o gateway); para cada alvo: pedido de arquivo, leitura do snapshot cru (id_) e comparação do sha256 com o que o domínio servia nesse momento (ORUM_ESPERADO=vivo). Depois, o sha256 de cada ficheiro foi conferido com o do repositório.",
+  "autorizacao": "Unum, 20/10/2026: \"Eu autorizo os 4 pontos\" (ponto 2; livro 907). Só URLs públicas; nenhum segredo e nenhum nome.",
+  "resultados": [
+    {
+      "alvo": "ancora/oro-v1.json",
+      "url": "https://ora-x402-gateway.vercel.app/ancora/oro-v1.json",
+      "sha256_local": "c39066650369cca03220463bb0510e39ad97750341b4b0ca57fcb056faaf2e6f",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020055932",
+      "snapshot": "https://web.archive.org/web/20261020055932id_/https://ora-x402-gateway.vercel.app/ancora/oro-v1.json",
+      "sha256_arquivo": "c39066650369cca03220463bb0510e39ad97750341b4b0ca57fcb056faaf2e6f"
+    },
+    {
+      "alvo": "ancora/oro-v1.ots",
+      "url": "https://ora-x402-gateway.vercel.app/ancora/oro-v1.ots",
+      "sha256_local": "648782560584262a30b29479a879333c0ea6db7e18b95812e3fc63e37a815123",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020055948",
+      "snapshot": "https://web.archive.org/web/20261020055948id_/https://ora-x402-gateway.vercel.app/ancora/oro-v1.ots",
+      "sha256_arquivo": "648782560584262a30b29479a879333c0ea6db7e18b95812e3fc63e37a815123"
+    },
+    {
+      "alvo": "ancora/raiz-registos.json",
+      "url": "https://ora-x402-gateway.vercel.app/ancora/raiz-registos.json",
+      "sha256_local": "a78af26d87c999c308b59e3417e1871e396babb78a6b9ac8e444cdb6f227c539",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020060002",
+      "snapshot": "https://web.archive.org/web/20261020060002id_/https://ora-x402-gateway.vercel.app/ancora/raiz-registos.json",
+      "sha256_arquivo": "a78af26d87c999c308b59e3417e1871e396babb78a6b9ac8e444cdb6f227c539"
+    },
+    {
+      "alvo": "ancora/raiz-registos.ots",
+      "url": "https://ora-x402-gateway.vercel.app/ancora/raiz-registos.ots",
+      "sha256_local": "be8abfc5818647e0b4f9a21ec7a9a7f1bd6b6050b5f32620ad48dde441e212ed",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020060015",
+      "snapshot": "https://web.archive.org/web/20261020060015id_/https://ora-x402-gateway.vercel.app/ancora/raiz-registos.ots",
+      "sha256_arquivo": "be8abfc5818647e0b4f9a21ec7a9a7f1bd6b6050b5f32620ad48dde441e212ed"
+    },
+    {
+      "alvo": "kit/LEIA-ME.txt",
+      "url": "https://ora-x402-gateway.vercel.app/kit/LEIA-ME.txt",
+      "sha256_local": "e495a09a054ad75577e207a77c42ccf78b3b4e9e6c366727dec48282d500ca16",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020060029",
+      "snapshot": "https://web.archive.org/web/20261020060029id_/https://ora-x402-gateway.vercel.app/kit/LEIA-ME.txt",
+      "sha256_arquivo": "e495a09a054ad75577e207a77c42ccf78b3b4e9e6c366727dec48282d500ca16"
+    },
+    {
+      "alvo": "kit/verificar.mjs",
+      "url": "https://ora-x402-gateway.vercel.app/kit/verificar.mjs",
+      "sha256_local": "663f8c42903bfec92488d9b108f9bae602b445ec4e97d9db5325f70007272a48",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020060409",
+      "snapshot": "https://web.archive.org/web/20261020060409id_/https://ora-x402-gateway.vercel.app/kit/verificar.mjs",
+      "sha256_arquivo": "663f8c42903bfec92488d9b108f9bae602b445ec4e97d9db5325f70007272a48"
+    },
+    {
+      "alvo": "kit/blocos.mjs",
+      "url": "https://ora-x402-gateway.vercel.app/kit/blocos.mjs",
+      "sha256_local": "a99eea662fbb5db60f9f09dc19e2954f1ad7b227fd40115ef796c512cc5db05d",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020060522",
+      "snapshot": "https://web.archive.org/web/20261020060522id_/https://ora-x402-gateway.vercel.app/kit/blocos.mjs",
+      "sha256_arquivo": "a99eea662fbb5db60f9f09dc19e2954f1ad7b227fd40115ef796c512cc5db05d"
+    },
+    {
+      "alvo": "kit/raiz.mjs",
+      "url": "https://ora-x402-gateway.vercel.app/kit/raiz.mjs",
+      "sha256_local": "4165317851ade455c22e2b6656f88c426bc7c811692040a7000646cd3c6481ed",
+      "igual": true,
+      "save_http": 200,
+      "timestamp": "20261020060648",
+      "snapshot": "https://web.archive.org/web/20261020060648id_/https://ora-x402-gateway.vercel.app/kit/raiz.mjs",
+      "sha256_arquivo": "4165317851ade455c22e2b6656f88c426bc7c811692040a7000646cd3c6481ed"
+    }
+  ],
+  "nota": "Na 1.ª passagem (06:01 UTC) os 3 alvos do kit receberam HTTP 429 do arquivo; os snapshots de 06:04 a 06:06 vieram da repetição, com pausas maiores. As leituras dos 3 últimos vieram de uma 2.ª passagem cujo resultado se perdeu com a sandbox, e foram confirmadas numa 3.ª (06:19 UTC), que devolveu os mesmos snapshots. Prova que o arquivo guarda estes bytes; não prova autoria, valor, procura nem receita.",
+  "nao_verificado": [
+    "se o Wayback Machine mantém estes snapshots a longo prazo (é um serviço de terceiros, sem garantia)"
+  ]
+}
