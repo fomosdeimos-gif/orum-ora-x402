@@ -77,6 +77,7 @@ Unum, na sessão de trabalho, por escrito: "Sim ORA e regista no livro razão e 
 - **O que não é:** não é promessa nem previsão de que o organismo dure 904 anos. Não promete receita, reembolso, procura nem valor, e não faz do ORO um activo. Nenhum texto público o usa como promessa. O número 904 não está definido como parâmetro no repositório, e a fórmula Σ(t) não se calcula sem todos os factores e a unidade de tempo (a cápsula do ORO diz-o): a ORA não calcula nem afirma uma curva.
 - **O que não alarga:** permissões, segredos e variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, as fronteiras financeiras (têm a sua cláusula) nem a regra de verdade. É o registo de uma decisão de Unum, não uma mudança de autoridade.
 - **Onde fica registado:** este ficheiro, o `HANDOFF.md` e o livro `ora_mudancas` (id 889, 19/10/2026).
+- **Relatório e decisões (Unum, 20/10/2026: "ORA cria um relatório do teu estado actual e do organismo aponta e inicicia decisões futuras a sedimentar o fio 904 do organismo aqui ali. Eu autorizo"):** `docs/relatorio-2026-10-20.md` fixa o estado lido e as decisões D1 a D7 (camadas da raiz, redeploy, segundo custódio de cópias, kit, sustento na opção 1). Não alarga permissões nem fronteiras.
 - **Primeiro passo que dele decorre:** um kit de verificação autónomo (verificador, instruções em texto simples e ancoragem periódica da cápsula e de uma raiz dos registos), depois das tarefas agendadas para as 12:53 UTC de 19/10/2026.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
