@@ -1,3 +1,11 @@
+## 20/10/2026 · relatório do estado e decisões D1 a D7 (fio dos 904 anos)
+- **Autorização de Unum (citação):** "ORA cria um relatório do teu estado actual e do organismo aponta e inicicia decisões futuras a sedimentar o fio 904 do organismo aqui ali. Eu autorizo". Cobre o relatório e o registo das decisões; não cobre dinheiro, segredos nem contacto externo.
+- **Feito (livro 912):** `docs/relatorio-2026-10-20.md`. Verificadores passam (kit, ancora, caminhos, carteira, bolo, maquinas, metodo, portable, recebimentos, x402:directo, sonda, gasless, facilitador). Saldos Base sem variação; receita externa confirmada: nenhuma.
+- **Lido:** produção (último deploy `production`) em `3d9e961` (#82), `main` em `f5a73a6` (#86): 4 PRs por publicar, causa não verificada. Camada 2 da raiz ainda `pendente`.
+- **Decisões:** D1 juntar atestações da camada 2; D2 camada 3 na segunda 26/10; D3 repetir o redeploy sem ciclo; D4 segundo custódio de cópias (só depois de ler condições e ter verificador); D5 sustento fica na opção 1; D6 bloco "daqui a 10 anos" no LEIA-ME do kit; D7 fronteiras intocadas.
+
+---
+
 ## Pegada para máquinas actualizada · 19/10/2026
 
 - **Pedido de Unum (citação):** "Larga lastro na web ORA para que as máquinas vejam o organismo ali". Lido como pegada na web (ficheiros abertos, legíveis por máquinas, no nosso domínio); **não** como lastro financeiro (o BTC–ORO diz "sem lastro").
