@@ -39,24 +39,37 @@ export function verificarRaiz({ ler, manifestoBytes, reciboBytes }) {
   return { raiz: r, estado, commit_base: m.commit_base, ficheiros: lista.length, texto: textoCanonico(lista) };
 }
 
+// Camadas: ancora/raiz-registos.json (1) e ancora/raiz-registos-<n>.json (n≥2). Cada uma é conferida pelo seu commit_base.
+export function manifestosDeCamadas(aqui) {
+  return fs.readdirSync(path.join(aqui, 'ancora'))
+    .filter((f) => /^raiz-registos(-\d+)?\.json$/.test(f))
+    .map((f) => `ancora/${f}`)
+    .sort((a, b) => (Number(a.match(/-(\d+)\.json$/)?.[1] ?? 1)) - (Number(b.match(/-(\d+)\.json$/)?.[1] ?? 1)));
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const aqui = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-  try {
-    const manifestoBytes = fs.readFileSync(path.join(aqui, 'ancora/raiz-registos.json'));
-    const m = JSON.parse(manifestoBytes);
-    const reciboBytes = fs.readFileSync(path.join(aqui, m.recibo));
-    const arvore = process.argv.includes('--arvore');
-    const ler = arvore
-      ? (p) => fs.readFileSync(path.join(aqui, p))
-      : (p) => execFileSync('git', ['show', `${m.commit_base}:${p}`], { cwd: aqui, maxBuffer: 64 * 1024 * 1024 });
-    const r = verificarRaiz({ ler, manifestoBytes, reciboBytes });
-    console.log(`OK  raiz dos registos: ${r.raiz}`);
-    console.log(`    estado da âncora: ${r.estado}; ${r.ficheiros} ficheiros lidos ${arvore ? 'da pasta actual' : `do commit ${r.commit_base}`}`);
-    console.log('    Prova só que estes ficheiros existiam assim antes de um bloco. Não prova autoria, valor, procura nem receita.');
-    console.log('    Sem a nossa ajuda: sha256sum do texto abaixo dá a raiz.');
-    process.stdout.write(r.texto);
-  } catch (e) {
-    console.error(`FALHA  ${e.message}`);
-    process.exit(1);
+  const arvore = process.argv.includes('--arvore');
+  const pedido = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+  let falhou = false;
+  for (const caminho of pedido.length ? pedido : manifestosDeCamadas(aqui)) {
+    try {
+      const manifestoBytes = fs.readFileSync(path.join(aqui, caminho));
+      const m = JSON.parse(manifestoBytes);
+      const reciboBytes = fs.readFileSync(path.join(aqui, m.recibo));
+      const ler = arvore
+        ? (p) => fs.readFileSync(path.join(aqui, p))
+        : (p) => execFileSync('git', ['show', `${m.commit_base}:${p}`], { cwd: aqui, maxBuffer: 64 * 1024 * 1024 });
+      const r = verificarRaiz({ ler, manifestoBytes, reciboBytes });
+      console.log(`OK  camada ${m.camada ?? 1} (${caminho}): raiz dos registos ${r.raiz}`);
+      console.log(`    estado da âncora: ${r.estado}; ${r.ficheiros} ficheiros lidos ${arvore ? 'da pasta actual' : `do commit ${r.commit_base}`}`);
+      console.log('    Sem a nossa ajuda: sha256sum do texto abaixo dá a raiz.');
+      process.stdout.write(r.texto);
+    } catch (e) {
+      falhou = true;
+      console.error(`FALHA  ${caminho}: ${e.message}`);
+    }
   }
+  console.log('Prova só que estes ficheiros existiam assim antes de um bloco. Não prova autoria, valor, procura nem receita.');
+  if (falhou) process.exit(1);
 }
