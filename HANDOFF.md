@@ -1363,3 +1363,6 @@ Unum: "Eu autorizo, instala o pagamento sem ETH" (resposta à proposta de implan
 
 ## 20/10/2026 · finney juntado aos dois recibos
 Tarefa agendada das 01:23 UTC. finney respondeu 200 aos dois compromissos (raiz 1034 bytes, sha256 4983866c…145d; ORO 965 bytes, sha256 33829d71…d438, ambos medidos na sandbox e verificados pelo juntador). Raiz: terceira atestação no bloco 972195 (hash 00000000000000000001389393772fa88ecff4d3337a25a27c14d0f73d03142b, raiz de Merkle igual nas duas fontes, blockstream e mempool). ORO: terceira atestação no bloco 972115 (já comparado). `blocos:verify` passou a incluir o 972195 (6 atestações, 9 estragos); `raiz:verify`, `kit:verify`, `ancora:verify`, `maquinas:verify` passam. As três sandboxes foram paradas. Por fazer: redeploy de `orum-ora-x402` e leitura do domínio.
+
+## 20/10/2026 · autorização "Eu autorizo os 4 pontos" (livro 907)
+Citação registada antes de agir. Ponto 2: `scripts/arquivar-wayback.mjs` (Wayback Machine, só URLs públicas do gateway) e `scripts/verify-wayback.mjs` (`npm run wayback:verify`, 9 estragos propositados, apanhados). Falta correr na sandbox e registar o resultado em `ancora/arquivos-wayback.json`. Pontos 1 (transferência real: sem saldo e sem montante exacto) e 4 (quota Vercel: faturação de Unum): bloqueados. Ponto 3 (sonda) e verificador da função implantada: por construir.
