@@ -1,0 +1,96 @@
+{
+  "schema": "orum-raiz/v1",
+  "objecto": "Raiz dos registos do organismo ORUM",
+  "camada": 2,
+  "algoritmo": "raiz = sha256 do texto \"<caminho>\\t<sha256 do ficheiro>\\n\" por linha, linhas ordenadas por caminho (bytes), sem linha final em branco. Reproduz-se com sha256sum sobre esse texto.",
+  "commit_base": "471b380eefdba8a70ea3a990027e334114042550",
+  "ficheiros": [
+    {
+      "caminho": "CLAUDE.md",
+      "sha256": "1079c432db8055428062f2477a9dda6cf1415e20fa3e6742e0481c57de61a64c"
+    },
+    {
+      "caminho": "ancora/arquivos-wayback.json",
+      "sha256": "1f991c3792285973905614f8f8b0d50a91d0e7a8cec83eebedf2d0db178fd155"
+    },
+    {
+      "caminho": "ancora/oro-v1.json",
+      "sha256": "c39066650369cca03220463bb0510e39ad97750341b4b0ca57fcb056faaf2e6f"
+    },
+    {
+      "caminho": "ancora/oro-v1.ots",
+      "sha256": "648782560584262a30b29479a879333c0ea6db7e18b95812e3fc63e37a815123"
+    },
+    {
+      "caminho": "ancora/raiz-registos.json",
+      "sha256": "a78af26d87c999c308b59e3417e1871e396babb78a6b9ac8e444cdb6f227c539"
+    },
+    {
+      "caminho": "ancora/raiz-registos.ots",
+      "sha256": "be8abfc5818647e0b4f9a21ec7a9a7f1bd6b6050b5f32620ad48dde441e212ed"
+    },
+    {
+      "caminho": "docs/financeiro-mandato-v2.assinatura.json",
+      "sha256": "2a4351e6a2fefe65dbce66fb991ef62c5c364ab11ad9b9a9ae112311ab15a091"
+    },
+    {
+      "caminho": "economia/constituicao-v2.json",
+      "sha256": "ecb1008b76b2b842efef9d0a619d43f0c809b4adb42e35fbaccdd6e6db237f5e"
+    },
+    {
+      "caminho": "kit/LEIA-ME.txt",
+      "sha256": "a2c6bdb529e28157975e9b37350fd56f6a35b2559f7c6c9b25a2f2b5aa59f26f"
+    },
+    {
+      "caminho": "kit/blocos.mjs",
+      "sha256": "df311f39c156421eca96f72775f4d8691212cf1e5efaac85bd3bb9f9be74b516"
+    },
+    {
+      "caminho": "kit/raiz.mjs",
+      "sha256": "8001f9ff1499d03c7dc3fc84b2da7e2d4c1063a4778c9cf4f6650092013242c1"
+    },
+    {
+      "caminho": "kit/verificar.mjs",
+      "sha256": "663f8c42903bfec92488d9b108f9bae602b445ec4e97d9db5325f70007272a48"
+    },
+    {
+      "caminho": "scripts/lib/ots.mjs",
+      "sha256": "4859fa52e12d7acd1ee6f9ac07a2f541203a4823c20a75b57790c01f16c79e48"
+    },
+    {
+      "caminho": "scripts/lib/raiz.mjs",
+      "sha256": "e5ccafc1f349c13247a499c43505916deeb64896d693390c6944e9f8c514c20d"
+    },
+    {
+      "caminho": "scripts/ots-juntar.mjs",
+      "sha256": "2f989eb2007c01a86e2dd2879da4b1e56f84aab2a68051649cfadc9340221380"
+    },
+    {
+      "caminho": "scripts/raiz-ots.mjs",
+      "sha256": "5d8097b97552ebcae33823c46ffcd6350175cdc29a62dba1063ddd018574a491"
+    },
+    {
+      "caminho": "sensacoes/oro-v1.json",
+      "sha256": "b5a63e76543783beb9422a29fc8f98204d92ba2d18125cb61252d9f775671a78"
+    }
+  ],
+  "raiz_sha256": "34f2bdb0a812a4715d8d93113acc048b54759d7dbc47b00bbc172d5bf22ad28c",
+  "recibo": "ancora/raiz-registos-2.ots",
+  "selado_em_utc": "2026-10-20T06:54:43Z",
+  "calendarios_pedidos": [
+    "alice.btc.calendar.opentimestamps.org",
+    "bob.btc.calendar.opentimestamps.org",
+    "finney.calendar.eternitywall.com"
+  ],
+  "estado": "pendente",
+  "altura_bitcoin": null,
+  "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
+  "nao_incluido": [
+    "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
+    "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
+  ],
+  "nao_verificado": [
+    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
+    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
+  ]
+}
