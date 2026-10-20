@@ -1431,7 +1431,7 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 ## 20/10/2026 09:42 UTC · sonda diária (primeira da tarefa)
 `/oraculo` 402 (161000) e `/campo` 402 (330000), esquema exact, USDC Base, payTo = sagrada antiga; facilitador payai anuncia Base exact v2, mogami não. Igual à leitura das 06:02. Registo em `economia/sonda-pagamento.json` (só se acrescenta quando algo muda). Não verificado: pagamento completo ao vivo.
 
-## Segunda cópia dos segredos · 20/10/2026 (activa)
+## Segunda cópia dos segredos · 20/10/2026 (activa, livro 918)
 
 - Unum desbloqueou as ferramentas do Drive e do Notion ("Podes prosseguir com o armazenamento no drive", "Opção B"). Cifrado AES-256 (feito no Postgres) de 12 segredos de identidade e fundos no Drive de Unum; frase-passe numa página privada do Notion dele. Nenhum valor no repositório.
 - **Verificado:** lidos de volta dos dois sítios e decifrados no Postgres, 12 de 12 iguais aos do Vault; sha256 do ficheiro lido = `6b32c423…fd6a` (`economia/custodia.json`, `segunda_copia`). `custodia:verify` (37 estragos propositados) e três sabotagens ao código apanhadas.

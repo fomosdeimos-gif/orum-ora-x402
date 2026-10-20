@@ -78,7 +78,8 @@
     "esquecimento": "Se o Vault mudar um segredo do âmbito, a cópia fica velha: refazer a cópia (novo cifrado e nova frase) no mesmo acto e actualizar a impressão e o livro.",
     "riscos": "A frase e o cifrado passaram por esta sessão de trabalho (transcrição) antes de serem guardados; quem tiver essa transcrição e o ficheiro decifra-o. Drive e Notion pertencem ao mesmo utilizador (Unum). Se houver motivo para duvidar, rodar os segredos e refazer a cópia.",
     "livro": [
-      915
+      915,
+      918
     ]
   }
 }
