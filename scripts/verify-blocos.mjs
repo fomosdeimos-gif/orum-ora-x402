@@ -9,8 +9,12 @@ const BLOCOS = {
   972155: { id: '000000000000000000002b01d09dbee0a115f4e22374fd9b8862edc7e89df4de', merkle_root: '389191322d961795e8d2ef9b0c039ad1e8dde7ae91b6c72e87b740e1dbc3ff13', timestamp: 1792416998 },
   // lido a 20/10/2026 em blockstream.info e mempool.space (iguais nas duas)
   972195: { id: '00000000000000000001389393772fa88ecff4d3337a25a27c14d0f73d03142b', merkle_root: '256fbf81020970f83d53f2b9f6ae801f89a76fd9e6d9c087acf99292691223ad', timestamp: 1792436861 },
+  // camada 2 da raiz, lido a 20/10/2026 em blockstream.info e mempool.space (iguais nas duas)
+  972280: { id: '00000000000000000000c949594dcb1461a22989276eb416fd98c87612980131', merkle_root: '8eaa08292167f3e968fab3c8b6bd61a49723e5ea22061c9edc037fae993a096b', timestamp: 1792480671 },
+  972285: { id: '00000000000000000001eb9dc3d53c485b2a0167a77c7bf499e8f7fb6abba6ca', merkle_root: '522b721ef2519fc354d17809865a6a5973bfd4d5f811cca55d5a7deaf8135b55', timestamp: 1792481245 },
+  972300: { id: '00000000000000000001d7ede178227454eb3e19f2fcdf98a3bea869f245e617', merkle_root: '8dcabd691e22d7bd41b950ca7ebe34ea33b555c0dcb1e1686fc1bf28584a61d3', timestamp: 1792487646 },
 };
-const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots') };
+const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots') };
 
 // fetcher simulado; `mut` permite estragar uma das fontes.
 function fetcherCom(mut = {}) {
@@ -33,7 +37,9 @@ const ok1 = await conferirBlocos(recibos.oro, { fetcher: fetcherCom() });
 const ok2 = await conferirBlocos(recibos.raiz, { fetcher: fetcherCom() });
 assert.equal(ok1.length, 3);
 assert.deepEqual(ok2.map((b) => b.altura), [972151, 972155, 972195]);
-console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length} atestações.`);
+const ok3 = await conferirBlocos(recibos.raiz2, { fetcher: fetcherCom() });
+assert.deepEqual(ok3.map((b) => b.altura), [972280, 972285, 972300]);
+console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length} atestações.`);
 
 const rejeita = async (nome, fn) => { await assert.rejects(fn, undefined, `estrago não apanhado: ${nome}`); };
 await rejeita('raiz de Merkle de uma fonte alterada', () => conferirBlocos(recibos.oro, { fetcher: fetcherCom({ mempool: { bloco: () => ({ merkle_root: '0'.repeat(64) }) } }) }));

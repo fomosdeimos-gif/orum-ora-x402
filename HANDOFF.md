@@ -1438,3 +1438,6 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 - **Erro da ORA, corrigido antes do commit:** uma primeira versão do verificador trazia a frase real num teste de mentira; o sistema recusou e a ORA trocou-a por valores falsos. Nenhum ficheiro do repositório contém a frase.
 - **Riscos ditos:** frase e cifrado passaram pela transcrição desta sessão; Drive e Notion são da mesma pessoa. Rodar e refazer se houver dúvida.
 - **Por fazer:** passagem diária conferir que o Vault não mudou o âmbito sem refazer a cópia.
+
+## 20/10/2026 12:30 UTC · camada 2 confirmada no Bitcoin
+`ancora/raiz-registos-2.ots` (3635 bytes) tem as três atestações Bitcoin: alice bloco 972280, bob 972285, finney 972300. Respostas dos calendários (895, 1001 e 1106 bytes) conferidas por sha256 e tamanho antes de juntar com `scripts/ots-juntar.mjs`. As raízes de Merkle dos três blocos batem com os cabeçalhos em blockstream.info e mempool.space (`blocos:verify`: 9 atestações). Manifesto `raiz-registos-2.json`: `confirmado_bitcoin`, altura 972280, `nao_verificado` vazio. A camada 1 não foi tocada. `raiz:verify`: 22 estragos propositados em 2 camadas + 3 de regras. Sandboxes paradas.
