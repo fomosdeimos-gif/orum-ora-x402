@@ -52,6 +52,7 @@
     "kit:verify": "node scripts/verify-kit.mjs",
     "raiz:verify": "node scripts/verify-raiz.mjs",
     "blocos:verify": "node scripts/verify-blocos.mjs",
-    "wayback:verify": "node scripts/verify-wayback.mjs"
+    "wayback:verify": "node scripts/verify-wayback.mjs",
+    "sonda:verify": "node scripts/verify-sonda.mjs"
   }
 }

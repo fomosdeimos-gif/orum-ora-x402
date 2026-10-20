@@ -14,12 +14,14 @@ export const ALVOS = [
 const sha = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
 
 // fetcher(url) devolve { status, bytes }. Injectável para testar sem rede.
-export async function arquivar({ fetcher, raiz, alvos = ALVOS, pausaMs = 0, dormir = (ms) => new Promise((r) => setTimeout(r, ms)) }) {
+// `esperado(alvo)` devolve os bytes que o arquivo deve guardar (por omissão, o ficheiro do repositório em `raiz`;
+// com ORUM_ESPERADO=vivo, o que o domínio serve nesse momento, para correr onde o repositório não está).
+export async function arquivar({ fetcher, raiz, esperado = async (alvo) => fs.readFileSync(path.join(raiz, alvo)), alvos = ALVOS, pausaMs = 0, dormir = (ms) => new Promise((r) => setTimeout(r, ms)) }) {
   const resultados = [];
   for (const alvo of alvos) {
     if (!/^[A-Za-z0-9][A-Za-z0-9._/-]*$/.test(alvo) || alvo.includes('..')) throw new Error(`alvo inválido: ${alvo}`);
     const url = `${BASE}/${alvo}`;
-    const r = { alvo, url, sha256_local: sha(fs.readFileSync(path.join(raiz, alvo))), igual: false };
+    const r = { alvo, url, sha256_local: sha(await esperado(alvo)), igual: false };
     try {
       const guardar = await fetcher(`https://web.archive.org/save/${url}`);
       r.save_http = guardar.status;
@@ -49,7 +51,9 @@ const fetcherReal = async (url) => {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-  const saida = await arquivar({ fetcher: fetcherReal, raiz, pausaMs: 6000 });
+  const vivo = process.env.ORUM_ESPERADO === 'vivo';
+  const esperado = vivo ? async (alvo) => (await fetcherReal(`${BASE}/${alvo}`)).bytes : undefined;
+  const saida = await arquivar({ fetcher: fetcherReal, raiz, esperado, pausaMs: 6000 });
   console.log(JSON.stringify({ lido_em_utc: new Date().toISOString().replace(/\.\d+Z$/, 'Z'), ...saida }));
   if (!saida.ok) process.exit(1);
 }
