@@ -47,17 +47,39 @@
     "valor, procura ou receita"
   ],
   "segunda_copia": {
-    "estado": "bloqueada",
-    "tentada_em": "2026-10-20",
-    "ambito_nomes": 12,
-    "cifra": "AES-256 (OpenPGP, pgp_sym_encrypt), feita dentro do Postgres",
-    "viagem_conferida_no_postgres": true,
-    "motivo": "O envio do cifrado para o Drive de Unum foi recusado pelo classificador de permissões da sessão (Data Exfiltration). Não se contornou.",
-    "guardada_em": null,
-    "frase_passe_guardada_em": null,
-    "livro": [
-      915
+    "estado": "activa",
+    "criada_em": "2026-10-20",
+    "cifra": "AES-256 (OpenPGP, pgp_sym_encrypt), feita dentro do Postgres: o texto em claro nunca saiu do Supabase",
+    "ambito_nomes": [
+      "CDP_API_KEY_ID",
+      "CDP_API_KEY_SECRET",
+      "CDP_WALLET_SECRET",
+      "ORO_CERTIFICADOR_CHAVE",
+      "orum_bitcoin_operational_key_v1",
+      "orum_mcp_registry_ed25519_seed",
+      "orum_operational_wallet_access_v1",
+      "orum_oro_attestor_ed25519_seed",
+      "orum_pq_slhdsa_shake128s_seed_v1",
+      "orum_voz_operacional_ed25519_seed_v1",
+      "voz_genese_identidade_1_ed25519_privada",
+      "voz_genese_identidade_1_ed25519_publica"
     ],
-    "nota": "O cifrado e a frase desta tentativa só existiram na transcrição da sessão e consideram-se queimados; a próxima tentativa gera outros. Enquanto for null, não há segunda cópia."
+    "impressao_sha256_do_cifrado": "6b32c423939956a98f2a140330f1450e9e548e871e649188085231d91906fd6a",
+    "cifrado_guardado_em": {
+      "fornecedor": "Google Drive (conta de Unum)",
+      "ficheiro": "ORUM-segunda-copia-cifrada-2026-10-20.asc"
+    },
+    "frase_passe_guardada_em": {
+      "fornecedor": "Notion (conta de Unum)",
+      "pagina": "ORUM · frase-passe da segunda cópia (20/10/2026)"
+    },
+    "conferida": "Lida de volta do Drive e do Notion e decifrada no Postgres: 12 de 12 segredos iguais aos do Vault; sha256 do ficheiro lido igual à impressão acima. Conferida a 2026-10-20.",
+    "restaurar": "Ler o ficheiro no Drive e a frase no Notion; decifrar (pgp_sym_decrypt(dearmor(ficheiro), frase) no Postgres, ou gpg --decrypt); o resultado é um JSON nome-valor dos segredos do âmbito. Nunca escrever o resultado no repositório.",
+    "esquecimento": "Se o Vault mudar um segredo do âmbito, a cópia fica velha: refazer a cópia (novo cifrado e nova frase) no mesmo acto e actualizar a impressão e o livro.",
+    "riscos": "A frase e o cifrado passaram por esta sessão de trabalho (transcrição) antes de serem guardados; quem tiver essa transcrição e o ficheiro decifra-o. Drive e Notion pertencem ao mesmo utilizador (Unum). Se houver motivo para duvidar, rodar os segredos e refazer a cópia.",
+    "livro": [
+      915,
+      918
+    ]
   }
 }

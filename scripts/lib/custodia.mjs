@@ -3,7 +3,7 @@
 const HEX64 = /^[0-9a-f]{64}$/;
 const PROIBIDAS = /^(valor|value|secret|segredo|senha|password|passphrase|frase|token|chave_privada|private|privada|seed|semente_valor|pk|sk|mnemonic)$/i;
 // onde uma cadeia de 64 hex é uma impressão pública e não um segredo
-const PERMITIDOS_64 = new Set(['impressao_da_lista.sha256', 'chave_pos_quantica.impressao_sha256_da_semente']);
+const PERMITIDOS_64 = new Set(['impressao_da_lista.sha256', 'chave_pos_quantica.impressao_sha256_da_semente', 'segunda_copia.impressao_sha256_do_cifrado']);
 
 function percorrer(no, caminho, f) {
   if (Array.isArray(no)) no.forEach((v, i) => percorrer(v, `${caminho}[${i}]`, f));
@@ -24,6 +24,19 @@ export function validarCustodia(c) {
   if (Number.isNaN(Date.parse(imp?.conferida_antes_de_utc ?? ''))) e('falta a hora da última conferência');
   const pq = c?.chave_pos_quantica;
   if (pq && (!HEX64.test(pq.impressao_sha256_da_semente ?? '') || pq.semente_bytes !== 48 || !pq.nome_no_vault)) e('chave pós-quântica mal descrita');
+  const sc = c?.segunda_copia;
+  if (sc) {
+    if (!['activa', 'bloqueada'].includes(sc.estado)) e('segunda_copia.estado tem de ser activa ou bloqueada');
+    if (sc.estado === 'activa') {
+      if (!HEX64.test(sc.impressao_sha256_do_cifrado ?? '')) e('segunda_copia sem a impressão do cifrado');
+      if (!Array.isArray(sc.ambito_nomes) || !sc.ambito_nomes.length) e('segunda_copia sem o âmbito (nomes)');
+      const a = sc.cifrado_guardado_em?.fornecedor, b = sc.frase_passe_guardada_em?.fornecedor;
+      if (!a || !b) e('segunda_copia tem de dizer onde está o cifrado e onde está a frase');
+      else if (a === b) e('o cifrado e a frase não podem estar no mesmo sítio');
+      if (!/\d+ de \d+/.test(sc.conferida ?? '')) e('segunda_copia activa sem conferência de ida e volta');
+      if (!sc.restaurar || !sc.riscos) e('segunda_copia sem o modo de restaurar e os riscos');
+    }
+  }
   if (!Array.isArray(c?.regras) || !c.regras.some((r) => /Nenhum valor de segredo se escreve/.test(r))) e('falta a regra de nunca escrever valores');
   if (!Array.isArray(c?.riscos_ditos) || !c.riscos_ditos.some((r) => /Custodiante único/.test(r))) e('falta o risco do custodiante único: não se esconde');
   if (!Array.isArray(c?.nao_afirma) || !c.nao_afirma.length) e('falta nao_afirma');
