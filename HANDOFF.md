@@ -1388,3 +1388,9 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 
 ## 20/10/2026 · camada 2 da raiz dos registos selada nos calendários (pendente)
 `ancora/raiz-registos-2.{json,ots}`: raiz 34f2bdb0…d28c de 17 ficheiros do commit 471b380 (inclui a camada 1, `arquivos-wayback.json`, `kit/blocos.mjs`, `ots-juntar.mjs`, `raiz-ots.mjs`). Compromisso sha256(raiz‖nonce) enviado aos três calendários numa sandbox temporária (parada); respostas 242, 275 e 191 bytes, sha256 conferido localmente antes de montar. Estado: pendente (ainda sem atestação Bitcoin); o recibo tem 794 bytes. A camada 1 não foi tocada (o gerador recusa sobrescrever; segunda tentativa de montar a camada 2 falhou como devia). Seguinte: juntar as atestações Bitcoin (tarefa marcada ~12:26 UTC, depois de ~6 confirmações). O gatilho semanal passou a gerar a camada seguinte, não a mover a anterior.
+
+## Passagem diária · 20/10/2026 08:48 UTC
+- **Lido (conector do Vercel):** produção `3d9e961` (#82, deployment READY); o `main` está em `7ba6cb4`, 5 PRs à frente (#83 a #87). Do que mudou desde o deploy, só `.well-known/agent-card.json` e `llms.txt` são páginas públicas; o resto são scripts, manifestos e registos. Não verificado se esses dois ficheiros foram implantados ou se a produção só espera o próximo deploy.
+- **Tesouraria:** `no_external_revenue`, 0 compradores externos, 21 pagamentos internos, permissão `not_activated`, limites automáticos 0. **Saldos** (bloco 52848377): iguais aos de 19/10 (sagrada antiga 0,00048 USDC, sagrada nova 0, operacional 0 USDC e 0 ETH). Terceira leitura acrescentada ao historial: **nenhuma entrada** nas três carteiras.
+- **Verificadores:** `saldos-historico`, `financeiro`, `carteira`, `saldos` e `continuidade` passam.
+- **Não verificado:** livro `ora_mudancas`; recebimentos 72 h (não lidos hoje). Nenhum acto financeiro da ORA; nenhum segredo lido ou usado.
