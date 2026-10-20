@@ -1,0 +1,84 @@
+{
+  "schema": "orum-sonda-pagamento/v1",
+  "objecto": "Leituras só de leitura da rota de pagamento (desafio 402 de /oraculo e /campo e facilitadores públicos). Só se acrescenta uma leitura quando algo mudou. Não paga, não assina, não envia.",
+  "autorizacao": "Unum, 20/10/2026: \"Eu autorizo os 4 pontos\" (ponto 3; livro 907)",
+  "como": "scripts/sonda-pagamento.mjs numa sandbox Vercel temporária (só o gateway e os dois facilitadores), sha256 do script conferido com o do repositório (983ae90b…3dcf)",
+  "leituras": [
+    {
+      "lido_em_utc": "2026-10-20T06:02:18Z",
+      "ok": true,
+      "algum_facilitador_pronto": true,
+      "rotas": [
+        {
+          "rota": "/oraculo",
+          "ok": true,
+          "http": 402,
+          "amount": "161000",
+          "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+          "preco_mudou": false
+        },
+        {
+          "rota": "/campo",
+          "ok": true,
+          "http": 402,
+          "amount": "330000",
+          "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+          "preco_mudou": false
+        }
+      ],
+      "facilitadores": [
+        {
+          "url": "https://facilitator.payai.network",
+          "anuncia_base_exact_v2": true,
+          "http": 200
+        },
+        {
+          "url": "https://facilitator.mogami.tech",
+          "anuncia_base_exact_v2": false,
+          "http": 200
+        }
+      ],
+      "mudou": "primeira leitura (corrida de verificação da sonda)"
+    },
+    {
+      "lido_em_utc": "2026-10-20T09:42:35Z",
+      "ok": true,
+      "algum_facilitador_pronto": true,
+      "rotas": [
+        {
+          "rota": "/oraculo",
+          "ok": true,
+          "http": 402,
+          "amount": "161000",
+          "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+          "preco_mudou": false
+        },
+        {
+          "rota": "/campo",
+          "ok": true,
+          "http": 402,
+          "amount": "330000",
+          "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+          "preco_mudou": false
+        }
+      ],
+      "facilitadores": [
+        {
+          "url": "https://facilitator.payai.network",
+          "anuncia_base_exact_v2": true,
+          "http": 200
+        },
+        {
+          "url": "https://facilitator.mogami.tech",
+          "anuncia_base_exact_v2": false,
+          "http": 200
+        }
+      ],
+      "mudou": "nada em relação a 06:02; primeira leitura da tarefa diária"
+    }
+  ],
+  "nao_verificado": [
+    "se o pagamento completo (assinatura do cliente, verify e settle) funciona de ponta a ponta com dinheiro real: a sonda só lê o desafio e o anúncio dos facilitadores",
+    "se os facilitadores públicos aceitam de facto liquidar na Base mainnet: só anunciam"
+  ]
+}

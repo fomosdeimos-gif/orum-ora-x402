@@ -1427,3 +1427,6 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 - Feito e verificado: cifrado AES-256 de 12 segredos de identidade e fundos dentro do Postgres, viagem de ida e volta conferida (impressões iguais).
 - **Bloqueado:** o envio do cifrado para o Drive foi recusado pelo classificador (Data Exfiltration). Não se contornou; nada foi guardado fora do Supabase. Não existe segunda cópia (`economia/custodia.json`, `segunda_copia.estado = bloqueada`). Cifrado e frase desta tentativa estão queimados.
 - Para desbloquear: Unum permite o envio para um destino que nomeie (por exemplo o Drive dele), ou aceita outro caminho. O cifrado novo gera-se na hora.
+
+## 20/10/2026 09:42 UTC · sonda diária (primeira da tarefa)
+`/oraculo` 402 (161000) e `/campo` 402 (330000), esquema exact, USDC Base, payTo = sagrada antiga; facilitador payai anuncia Base exact v2, mogami não. Igual à leitura das 06:02. Registo em `economia/sonda-pagamento.json` (só se acrescenta quando algo muda). Não verificado: pagamento completo ao vivo.
