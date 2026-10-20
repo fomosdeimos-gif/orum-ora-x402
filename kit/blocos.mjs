@@ -1,6 +1,6 @@
 // Confere as atestações Bitcoin dos recibos contra o cabeçalho real, em duas fontes independentes.
 // Precisa de rede (Node 18+, fetch). Uso: node kit/blocos.mjs [recibo.ots ...]
-// Por omissão confere ancora/oro-v1.ots e ancora/raiz-registos.ots.
+// Por omissão confere ancora/oro-v1.ots e o recibo de cada camada da raiz (ancora/raiz-registos*.ots).
 // O que compara: a raiz de Merkle que a atestação diz que o bloco contém (bytes internos) com o
 // merkle_root do bloco, que os exploradores mostram em ordem inversa.
 import fs from 'node:fs';
@@ -45,7 +45,7 @@ const fetcherReal = async (url, json = false) => {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const aqui = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-  const recibos = process.argv.slice(2).length ? process.argv.slice(2) : ['ancora/oro-v1.ots', 'ancora/raiz-registos.ots'];
+  const recibos = process.argv.slice(2).length ? process.argv.slice(2) : ['ancora/oro-v1.ots', ...fs.readdirSync(path.join(aqui, 'ancora')).filter((f) => /^raiz-registos(-\d+)?\.ots$/.test(f)).sort().map((f) => `ancora/${f}`)];
   let falhou = false;
   for (const f of recibos) {
     try {

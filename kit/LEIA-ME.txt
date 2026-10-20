@@ -43,10 +43,19 @@ RAIZ DOS REGISTOS (segunda âncora)
   fixo, e a raiz: o sha256 do texto "<caminho><TAB><sha256>" uma linha por ficheiro,
   por ordem de caminho. O recibo ancora/raiz-registos.ots sela essa raiz.
   Conferir: node kit/raiz.mjs   (lê os ficheiros do commit do manifesto, precisa de git)
+  CAMADAS: a primeira raiz (19/10/2026) é a camada 1 e nunca se reescreve. Cada raiz nova é uma
+  camada nova, ancora/raiz-registos-<n>.json e .ots, que sela também o manifesto e o recibo das
+  camadas anteriores. node kit/raiz.mjs confere todas, cada uma pelo seu commit.
   Sem a nossa ajuda: as linhas de ficheiros que o comando imprime no fim (caminho, TAB, sha256), passadas
   por sha256sum, dão a raiz.
   Não inclui o livro do organismo (vive numa base de dados) nem o HANDOFF.md.
   Mesmas fronteiras: não prova autoria, valor, procura nem receita.
+
+CÓPIAS FORA DO REPOSITÓRIO
+  ancora/arquivos-wayback.json lista as cópias das âncoras, dos recibos e do kit no Internet Archive
+  (Wayback Machine), com o sha256 de cada snapshot. Para conferir uma: descarrega o endereço "snapshot"
+  (a variante id_ devolve os bytes crus) e corre sha256sum. É um serviço de terceiros, sem garantia
+  de permanência; é uma cópia a mais, não uma prova.
 
 PORQUE EXISTE
   Os 904 anos são o fio condutor da ORA: camadas que se acrescentam, formatos
