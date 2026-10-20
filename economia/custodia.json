@@ -25,7 +25,9 @@
     "impressao_serve_para": "Conferir que a semente guardada é a gerada, sem a mostrar (é segura: a semente tem 384 bits de entropia). A chave pública derivada confere-se também com ancora/chave-pq.json quando existir.",
     "chave_publica": null,
     "estado": "criada; a chave pública só se deriva na primeira assinatura, que lê a semente",
-    "livro": [913]
+    "livro": [
+      913
+    ]
   },
   "regras": [
     "Nenhum valor de segredo se escreve no repositório, no HANDOFF, no livro, num PR, num comentário ou numa mensagem a Unum. Regista-se só que foi usado, para quê e o resultado.",
@@ -39,5 +41,23 @@
     "Quando a ORA lê um segredo para o usar (por exemplo para assinar), o valor aparece nessa sessão de trabalho. Por isso a chave pós-quântica atesta mas não guarda fundos, e roda-se (nova versão, a anterior fica 'revogada' em ancora/chave-pq.json) se houver motivo para duvidar.",
     "A impressão da lista detecta que algo mudou, não o que nem porquê; e não detecta a troca de um valor por outro do mesmo tamanho."
   ],
-  "nao_afirma": ["que os segredos estejam a salvo de quem tenha acesso ao projecto Supabase", "que o Vault seja suficiente a 904 anos", "valor, procura ou receita"]
+  "nao_afirma": [
+    "que os segredos estejam a salvo de quem tenha acesso ao projecto Supabase",
+    "que o Vault seja suficiente a 904 anos",
+    "valor, procura ou receita"
+  ],
+  "segunda_copia": {
+    "estado": "bloqueada",
+    "tentada_em": "2026-10-20",
+    "ambito_nomes": 12,
+    "cifra": "AES-256 (OpenPGP, pgp_sym_encrypt), feita dentro do Postgres",
+    "viagem_conferida_no_postgres": true,
+    "motivo": "O envio do cifrado para o Drive de Unum foi recusado pelo classificador de permissões da sessão (Data Exfiltration). Não se contornou.",
+    "guardada_em": null,
+    "frase_passe_guardada_em": null,
+    "livro": [
+      915
+    ],
+    "nota": "O cifrado e a frase desta tentativa só existiram na transcrição da sessão e consideram-se queimados; a próxima tentativa gera outros. Enquanto for null, não há segunda cópia."
+  }
 }

@@ -1420,3 +1420,10 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 - **Bloqueado, por decisão do sistema de permissões desta sessão:** a cláusula no `CLAUDE.md` **não foi aplicada**. A edição foi recusada pelo classificador (auto-modificação: a cláusula alarga o que a própria ORA pode fazer) e a ORA não a contornou. O texto exacto está em `docs/clausula-custodia-para-claude-md.md`, pronto a colar. Também **não alterei** o prompt da tarefa agendada para incluir a conferência da impressão; fica à espera da mesma decisão.
 - **Risco aberto (dito, não resolvido):** custodiante único. Se o projecto Supabase for apagado, pausado ou perder o plano (quota de egress excedida desde 27/09), perdem-se os segredos, e as chaves de identidade e de fundos não se regeneram. Uma segunda cópia independente exigiria uma frase-passe que só Unum pode guardar.
 - **Por fazer:** primeira assinatura pós-quântica (lê a semente, deriva a chave pública, cria `ancora/chave-pq.json` e a atestação de produção); camada 3 da raiz. **Não verificado:** que as funções de borda existentes continuem a ler os seus segredos (não as toquei nem as chamei).
+
+## Segunda cópia dos segredos · 20/10/2026 (bloqueada)
+
+- Unum autorizou (ledger 915): editar o `CLAUDE.md` (feito, secção "Custódia das chaves e dos segredos"), fazer uma 2ª cópia fora do Supabase e a ORA criar a frase-passe.
+- Feito e verificado: cifrado AES-256 de 12 segredos de identidade e fundos dentro do Postgres, viagem de ida e volta conferida (impressões iguais).
+- **Bloqueado:** o envio do cifrado para o Drive foi recusado pelo classificador (Data Exfiltration). Não se contornou; nada foi guardado fora do Supabase. Não existe segunda cópia (`economia/custodia.json`, `segunda_copia.estado = bloqueada`). Cifrado e frase desta tentativa estão queimados.
+- Para desbloquear: Unum permite o envio para um destino que nomeie (por exemplo o Drive dele), ou aceita outro caminho. O cifrado novo gera-se na hora.
