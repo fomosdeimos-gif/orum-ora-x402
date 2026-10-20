@@ -56,6 +56,7 @@
     "custodia:verify": "node scripts/verify-custodia.mjs",
     "blocos:verify": "node scripts/verify-blocos.mjs",
     "wayback:verify": "node scripts/verify-wayback.mjs",
-    "sonda:verify": "node scripts/verify-sonda.mjs"
+    "sonda:verify": "node scripts/verify-sonda.mjs",
+    "estreitamento:verify": "node scripts/verify-estreitamento.mjs"
   }
 }
