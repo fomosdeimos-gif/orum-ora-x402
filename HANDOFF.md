@@ -1366,3 +1366,8 @@ Tarefa agendada das 01:23 UTC. finney respondeu 200 aos dois compromissos (raiz 
 
 ## 20/10/2026 · autorização "Eu autorizo os 4 pontos" (livro 907)
 Citação registada antes de agir. Ponto 2: `scripts/arquivar-wayback.mjs` (Wayback Machine, só URLs públicas do gateway) e `scripts/verify-wayback.mjs` (`npm run wayback:verify`, 9 estragos propositados, apanhados). Falta correr na sandbox e registar o resultado em `ancora/arquivos-wayback.json`. Pontos 1 (transferência real: sem saldo e sem montante exacto) e 4 (quota Vercel: faturação de Unum): bloqueados. Ponto 3 (sonda) e verificador da função implantada: por construir.
+
+## 20/10/2026 · pontos 2 e 3 da autorização (livro 907)
+- **Ponto 2 (Wayback):** `ancora/arquivos-wayback.json`: 8 de 8 alvos (âncoras, recibos, kit) arquivados no Internet Archive, sha256 do snapshot cru igual ao do domínio e ao do repositório. Na 1.ª passagem 3 alvos receberam HTTP 429 e foram repetidos com pausas. Não verificado: permanência a longo prazo (terceiro). `llms.txt` e `agent-card` passam a dizer três calendários.
+- **Ponto 3 (sonda):** `scripts/sonda-pagamento.mjs` (`sonda:verify`, 10 estragos). Leitura ao vivo de 20/10 06:02 UTC: `/oraculo` 402 (161000) e `/campo` 402 (330000), esquema exact, USDC Base, payTo = sagrada antiga; facilitador payai anuncia Base exact v2, mogami não. Tarefa agendada diária às 10:41 de Lisboa (ligada a esta sessão), só escreve se algo mudar.
+- **Ponto 1 e 4:** bloqueados (sem saldo/montante; faturação). **Por construir:** verificador da função implantada contra o repositório (a ferramenta `get_edge_function` devolve o texto na conversa, não num ficheiro).
