@@ -3,6 +3,18 @@
   "index": 3,
   "files": [
     {
+      "path": "android/stop.sh",
+      "bytes": 283,
+      "sha256": "7de09ec7c871de62e4864a08073e3ca25800ceb03de1d2435fde2cab9c362026",
+      "content_base64": "IyEvZGF0YS9kYXRhL2NvbS50ZXJtdXgvZmlsZXMvdXNyL2Jpbi9iYXNoCnNldCAtZXVvIHBpcGVmYWlsCk9SVU1fUk9PVD0iJHtQUkVGSVh9L3Zhci9saWIvb3J1bSIKZm9yIG5hbWUgaW4gdG9yIG5vZGU7IGRvCiAgcGlkX2ZpbGU9IiR7T1JVTV9ST09UfS9ydW4vJHtuYW1lfS5waWQiCiAgaWYgW1sgLWYgIiR7cGlkX2ZpbGV9IiBdXTsgdGhlbgogICAga2lsbCAiJChjYXQgIiR7cGlkX2ZpbGV9IikiIDI+L2Rldi9udWxsIHx8IHRydWUKICAgIHJtIC1mICIke3BpZF9maWxlfSIKICBmaQpkb25lCg=="
+    },
+    {
+      "path": "android/torrc.template",
+      "bytes": 200,
+      "sha256": "47efcdc3d572a9ba9771ba7e3ec72745e0c82f30d41d297ca4b578a6137ed94c",
+      "content_base64": "U29ja3NQb3J0IDkwNTAKRGF0YURpcmVjdG9yeSBAT1JVTV9ST09UQC90b3ItZGF0YQpIaWRkZW5TZXJ2aWNlRGlyIEBPUlVNX1JPT1RAL2lkZW50aXR5L29uaW9uCkhpZGRlblNlcnZpY2VWZXJzaW9uIDMKSGlkZGVuU2VydmljZVBvcnQgODAgMTI3LjAuMC4xOjg3ODcKTG9nIG5vdGljZSBmaWxlIEBPUlVNX1JPT1RAL2xvZy90b3Itbm90aWNlLmxvZwo="
+    },
+    {
       "path": "api/_bitcoin.js",
       "bytes": 7050,
       "sha256": "3e52ea06c95c03063cfa342863d8f0a7e6e4b8d7a245aa1c04ad420ea7129c7d",
