@@ -14,13 +14,11 @@
   "estado": "confirmado_bitcoin",
   "altura_bitcoin": 972115,
   "prova": "Prova que estes bytes existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
-  "nao_verificado": [
-    "o calendário finney (o recibo mantém esse ramo como pendente)"
-  ],
-  "atualizado_em_utc": "2026-10-19T12:58:00Z",
-  "atualizacao": "Pedido GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios). alice e bob devolveram a atestação Bitcoin do bloco 972115 e foram juntas ao recibo; finney continua pendente no recibo (não foi juntada a sua resposta).",
+  "nao_verificado": [],
+  "atualizado_em_utc": "2026-10-20T01:30:00Z",
+  "atualizacao": "Pedido GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios). alice e bob devolveram a atestação Bitcoin do bloco 972115 e foram juntas ao recibo; finney continua pendente no recibo (não foi juntada a sua resposta). Passagem de 20/10/2026 (01:23 UTC): finney respondeu 200 (965 bytes, sha256 33829d71…d438, medido na sandbox) com atestação Bitcoin do mesmo bloco 972115; juntada com scripts/ots-juntar.mjs (verifica o sha256). O recibo tem agora três atestações, todas no bloco 972115, já comparado com o cabeçalho.",
   "verificacao_bloco": {
-    "lido_em_utc": "2026-10-19T20:20:00Z",
+    "lido_em_utc": "2026-10-20T01:30:00Z",
     "fontes": [
       "blockstream.info",
       "mempool.space"

@@ -64,13 +64,11 @@
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
-  "nao_verificado": [
-    "o calendário finney (o recibo mantém esse ramo como pendente)"
-  ],
-  "atualizado_em_utc": "2026-10-19T19:20:10Z",
-  "atualizacao": "GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios, parada no fim). alice devolveu a atestação Bitcoin do bloco 972151 e bob a do bloco 972155; ambas foram juntas ao recibo. finney respondeu 404 \"waiting for 6 confirmations\": o ramo fica pendente no recibo. altura_bitcoin é a mais baixa das duas. Correcção (19/10/2026, 20:20 UTC): a primeira versão do ramo do bob, fundida no PR #78, tinha 36 bytes a menos por erro de cópia da ORA e não batia com o cabeçalho do bloco 972155; foi substituída pela resposta do calendário (930 bytes, sha256 7c1700bb…5aa3) e o juntador scripts/ots-juntar.mjs passou a recusar respostas sem o sha256 medido no calendário.",
+  "nao_verificado": [],
+  "atualizado_em_utc": "2026-10-20T01:30:00Z",
+  "atualizacao": "GET /timestamp/<compromisso> aos três calendários (sandbox Vercel temporária, só com esses três domínios, parada no fim). alice devolveu a atestação Bitcoin do bloco 972151 e bob a do bloco 972155; ambas foram juntas ao recibo. finney respondeu 404 \"waiting for 6 confirmations\": o ramo fica pendente no recibo. altura_bitcoin é a mais baixa das duas. Correcção (19/10/2026, 20:20 UTC): a primeira versão do ramo do bob, fundida no PR #78, tinha 36 bytes a menos por erro de cópia da ORA e não batia com o cabeçalho do bloco 972155; foi substituída pela resposta do calendário (930 bytes, sha256 7c1700bb…5aa3) e o juntador scripts/ots-juntar.mjs passou a recusar respostas sem o sha256 medido no calendário. Passagem de 20/10/2026 (01:23 UTC): finney respondeu 200 (1034 bytes, sha256 4983866c…145d, medido na sandbox) com atestação Bitcoin do bloco 972195; juntada com scripts/ots-juntar.mjs (verifica o sha256). O recibo tem agora três atestações Bitcoin (972151, 972155, 972195). altura_bitcoin continua a ser a mais baixa.",
   "verificacao_bloco": {
-    "lido_em_utc": "2026-10-19T20:20:00Z",
+    "lido_em_utc": "2026-10-20T01:30:00Z",
     "fontes": [
       "blockstream.info",
       "mempool.space"
@@ -88,6 +86,12 @@
         "hash": "000000000000000000002b01d09dbee0a115f4e22374fd9b8862edc7e89df4de",
         "merkle_root": "389191322d961795e8d2ef9b0c039ad1e8dde7ae91b6c72e87b740e1dbc3ff13",
         "hora_utc": "2026-10-19T13:36:38Z"
+      },
+      {
+        "altura": 972195,
+        "hash": "00000000000000000001389393772fa88ecff4d3337a25a27c14d0f73d03142b",
+        "merkle_root": "256fbf81020970f83d53f2b9f6ae801f89a76fd9e6d9c087acf99292691223ad",
+        "hora_utc": "2026-10-19T19:07:41Z"
       }
     ]
   }

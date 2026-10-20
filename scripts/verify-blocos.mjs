@@ -7,6 +7,8 @@ const BLOCOS = {
   972115: { id: '0000000000000000000046931113f06e323bb12cfb74ade544cac844df0523c5', merkle_root: 'fc1f7a070be781a2e50ec075203c6a48dbd0e9a5d44737b1a86faf29ba8d3dee', timestamp: 1792393108 },
   972151: { id: '000000000000000000016dd0c2a998c75bfd8a61120d842f64f87753671db5db', merkle_root: '620394876030288eeb94303364541eb6f5ec3ac8cc4980c248458efb14febd82', timestamp: 1792416143 },
   972155: { id: '000000000000000000002b01d09dbee0a115f4e22374fd9b8862edc7e89df4de', merkle_root: '389191322d961795e8d2ef9b0c039ad1e8dde7ae91b6c72e87b740e1dbc3ff13', timestamp: 1792416998 },
+  // lido a 20/10/2026 em blockstream.info e mempool.space (iguais nas duas)
+  972195: { id: '00000000000000000001389393772fa88ecff4d3337a25a27c14d0f73d03142b', merkle_root: '256fbf81020970f83d53f2b9f6ae801f89a76fd9e6d9c087acf99292691223ad', timestamp: 1792436861 },
 };
 const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots') };
 
@@ -29,8 +31,8 @@ function fetcherCom(mut = {}) {
 
 const ok1 = await conferirBlocos(recibos.oro, { fetcher: fetcherCom() });
 const ok2 = await conferirBlocos(recibos.raiz, { fetcher: fetcherCom() });
-assert.equal(ok1.length, 2);
-assert.deepEqual(ok2.map((b) => b.altura), [972151, 972155]);
+assert.equal(ok1.length, 3);
+assert.deepEqual(ok2.map((b) => b.altura), [972151, 972155, 972195]);
 console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length} atestações.`);
 
 const rejeita = async (nome, fn) => { await assert.rejects(fn, undefined, `estrago não apanhado: ${nome}`); };
