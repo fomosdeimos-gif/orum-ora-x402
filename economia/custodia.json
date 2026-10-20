@@ -1,0 +1,43 @@
+{
+  "schema": "orum-custodia/v1",
+  "objecto": "Onde vivem os segredos e as chaves que a ORA usa, e como a ORA confere que nenhum se perdeu. Aqui não há valores de segredos, só sítios, nomes, tamanhos e impressões.",
+  "decidido_por": "ORA, ao abrigo da autorização de Unum de 20/10/2026 (livro ora_mudancas 913)",
+  "armazem_primario": {
+    "tipo": "Supabase Vault",
+    "projecto": "orum-memoria",
+    "porque": "É onde o organismo já guarda os seus segredos desde julho de 2026 (as funções de borda lêem-no), é alcançável pelo conector do Supabase, cifra em repouso, e cada segredo traz nome e descrição que dizem para que serve: o próprio Vault é o índice.",
+    "indice": "select name, description, created_at, updated_at from vault.secrets order by created_at;  (só metadados: nunca se selecciona o valor para o mostrar)"
+  },
+  "impressao_da_lista": {
+    "para_que_serve": "Detecta segredos perdidos, apagados ou acrescentados fora do registo, sem ler nenhum valor: é o sha256 de 'nome:tamanho' por linha, ordenado por nome.",
+    "sql": "select count(*) as n, encode(extensions.digest(string_agg(name || ':' || length(decrypted_secret)::text, E'\\n' order by name), 'sha256'), 'hex') as impressao, count(*) filter (where decrypted_secret is null or length(decrypted_secret) = 0) as vazios from vault.decrypted_secrets;",
+    "n": 37,
+    "sha256": "419098a05cd0cf67bd03078e1cbee0c6fb0f074f06a0e983091244e94ab5cd14",
+    "conferida_antes_de_utc": "2026-10-20T09:30:06Z",
+    "regra": "Em cada passagem a ORA corre o sql e compara. Se n, vazios ou a impressão mudaram sem uma linha no livro a explicar, trata-se como perda ou intrusão: investiga-se antes de qualquer outro acto financeiro. Quando a ORA acrescenta, roda ou apaga um segredo de propósito, actualiza este bloco e o livro no mesmo acto."
+  },
+  "chave_pos_quantica": {
+    "nome_no_vault": "orum_pq_slhdsa_shake128s_seed_v1",
+    "algoritmo": "SLH-DSA-SHAKE-128s",
+    "semente_bytes": 48,
+    "gerada": "dentro do Postgres (gen_random_bytes), a 20/10/2026; o valor nunca passou pela ORA nem foi escrito em lado nenhum até hoje",
+    "impressao_sha256_da_semente": "9d71eb4b1b6bf71441f69721a20589791f93e0a032b39c842c5ab7c9064246db",
+    "impressao_serve_para": "Conferir que a semente guardada é a gerada, sem a mostrar (é segura: a semente tem 384 bits de entropia). A chave pública derivada confere-se também com ancora/chave-pq.json quando existir.",
+    "chave_publica": null,
+    "estado": "criada; a chave pública só se deriva na primeira assinatura, que lê a semente",
+    "livro": [913]
+  },
+  "regras": [
+    "Nenhum valor de segredo se escreve no repositório, no HANDOFF, no livro, num PR, num comentário ou numa mensagem a Unum. Regista-se só que foi usado, para quê e o resultado.",
+    "Um segredo lê-se só quando um acto que Unum autorizou o exige, e o valor lido não se copia para outro sítio.",
+    "Prefere-se gerar um segredo onde ele vai viver (no Postgres, com gen_random_bytes) para o valor nunca passar pela conversa.",
+    "Não se apaga nem se sobrescreve um segredo sem uma linha no livro e sem actualizar este ficheiro no mesmo acto.",
+    "Segredos de terceiros (chaves de API) recuperam-se na conta do terceiro; chaves de identidade e de custódia de fundos não: a perda destas é irreversível, por isso são as que mais se conferem."
+  ],
+  "riscos_ditos": [
+    "Custodiante único: tudo vive num só projecto Supabase, na conta de Unum. Se o projecto for apagado, pausado ou perder o plano, perdem-se os segredos. A quota de egress do Supabase está excedida desde 27/09. Ainda não existe uma segunda cópia independente das chaves que não se podem regenerar (identidades, carteiras operacionais): uma cópia cifrada fora do Supabase exigiria uma frase-passe que só Unum pode guardar. Fica por resolver e não se esconde.",
+    "Quando a ORA lê um segredo para o usar (por exemplo para assinar), o valor aparece nessa sessão de trabalho. Por isso a chave pós-quântica atesta mas não guarda fundos, e roda-se (nova versão, a anterior fica 'revogada' em ancora/chave-pq.json) se houver motivo para duvidar.",
+    "A impressão da lista detecta que algo mudou, não o que nem porquê; e não detecta a troca de um valor por outro do mesmo tamanho."
+  ],
+  "nao_afirma": ["que os segredos estejam a salvo de quem tenha acesso ao projecto Supabase", "que o Vault seja suficiente a 904 anos", "valor, procura ou receita"]
+}
