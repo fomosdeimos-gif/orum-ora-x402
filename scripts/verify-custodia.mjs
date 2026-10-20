@@ -29,6 +29,18 @@ falha('sem a regra de nunca escrever valores', com((c) => { c.regras = c.regras.
 falha('sem o risco do custodiante único', com((c) => { c.riscos_ditos = c.riscos_ditos.filter((r) => !/Custodiante único/.test(r)); }));
 falha('sem nao_afirma', com((c) => { c.nao_afirma = []; }));
 
+// segunda cópia (valores falsos: nunca se escreve aqui uma frase real)
+falha('segunda cópia com estado desconhecido', com((c) => { c.segunda_copia.estado = 'talvez'; }));
+falha('segunda cópia activa sem impressão do cifrado', com((c) => { delete c.segunda_copia.impressao_sha256_do_cifrado; }));
+falha('segunda cópia activa sem âmbito', com((c) => { c.segunda_copia.ambito_nomes = []; }));
+falha('segunda cópia sem dizer onde está a frase', com((c) => { delete c.segunda_copia.frase_passe_guardada_em; }));
+falha('cifrado e frase no mesmo sítio', com((c) => { c.segunda_copia.frase_passe_guardada_em.fornecedor = c.segunda_copia.cifrado_guardado_em.fornecedor; }));
+falha('segunda cópia activa sem conferência', com((c) => { c.segunda_copia.conferida = 'dito e feito'; }));
+falha('segunda cópia sem modo de restaurar', com((c) => { delete c.segunda_copia.restaurar; }));
+falha('64 hex fora do campo da impressão do cifrado', com((c) => { c.segunda_copia.cifrado_guardado_em.ficheiro = '6b'.repeat(32); }));
+falha('frase em claro num campo "frase"', com((c) => { c.segunda_copia.frase = 'ab'.repeat(24); }));
+falha('frase de 48 hex colada num texto longo', com((c) => { c.segunda_copia.restaurar += ' ' + 'cd'.repeat(48); }));
+
 // fugas de segredos
 falha('semente de 96 hex numa nota', com((c) => { c.chave_pos_quantica.estado = SEMENTE96; }));
 falha('semente de 96 hex dentro de um texto', com((c) => { c.regras.push(`a semente é ${SEMENTE96} ok`); }));
