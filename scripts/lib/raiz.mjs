@@ -25,6 +25,9 @@ export const FICHEIROS_BASE_CAMADAS = [
   'kit/blocos.mjs',
   'scripts/ots-juntar.mjs',
   'scripts/raiz-ots.mjs',
+  // segundo hash (SHA3-256): o complemento sela-se na primeira camada nova que o listar
+  'ancora/raiz-sha3.json',
+  'scripts/raiz-sha3.mjs',
 ];
 
 // Camada 1 mantém os nomes originais; a n≥2 vive em ancora/raiz-registos-<n>.{json,ots}.
@@ -67,3 +70,29 @@ export function textoCanonico(lista) {
 }
 
 export const raiz = (lista) => sha256(Buffer.from(textoCanonico(lista)));
+
+// Segundo hash (SHA3-256, FIPS 202), para o caso de o SHA-256 vir a enfraquecer. Não altera nada do que a camada 1 e 2 selaram:
+// o complemento (ancora/raiz-sha3.json) acrescenta, por cima, o SHA3-256 dos mesmos ficheiros e a raiz calculada com o mesmo texto.
+export const sha3_256 = (buf) => crypto.createHash('sha3-256').update(buf).digest('hex');
+
+export function textoCanonicoCom(lista, campo) {
+  if (campo !== 'sha256' && campo !== 'sha3_256') throw new Error('campo de hash desconhecido');
+  const ordenada = [...lista].sort((a, b) => Buffer.compare(Buffer.from(a.caminho), Buffer.from(b.caminho)));
+  if (new Set(ordenada.map((e) => e.caminho)).size !== ordenada.length) throw new Error('caminho repetido na lista');
+  for (const e of ordenada) {
+    if (!/^[A-Za-z0-9._\/-]+$/.test(e.caminho) || e.caminho.startsWith('/') || e.caminho.includes('..')) throw new Error(`caminho inválido: ${e.caminho}`);
+    if (!/^[0-9a-f]{64}$/.test(e[campo] ?? '')) throw new Error(`${campo} inválido: ${e.caminho}`);
+  }
+  return ordenada.map((e) => `${e.caminho}\t${e[campo]}\n`).join('');
+}
+
+export const raizSha3 = (lista) => sha3_256(Buffer.from(textoCanonicoCom(lista, 'sha3_256')));
+
+// Entrada do complemento para uma camada: ler(commit, caminho) devolve os bytes do ficheiro nesse commit.
+export function entradaSha3DeCamada(caminhoManifesto, manifesto, ler) {
+  const ficheiros = manifesto.ficheiros.map((f) => {
+    const bytes = ler(manifesto.commit_base, f.caminho);
+    return { caminho: f.caminho, sha256: sha256(bytes), sha3_256: sha3_256(bytes) };
+  });
+  return { camada: manifesto.camada ?? 1, manifesto: caminhoManifesto, commit_base: manifesto.commit_base, raiz_sha256: raiz(ficheiros), raiz_sha3_256: raizSha3(ficheiros), ficheiros };
+}

@@ -79,6 +79,7 @@ Unum, na sessão de trabalho, por escrito: "Sim ORA e regista no livro razão e 
 - **Onde fica registado:** este ficheiro, o `HANDOFF.md` e o livro `ora_mudancas` (id 889, 19/10/2026).
 - **Relatório e decisões (Unum, 20/10/2026: "ORA cria um relatório do teu estado actual e do organismo aponta e inicicia decisões futuras a sedimentar o fio 904 do organismo aqui ali. Eu autorizo"):** `docs/relatorio-2026-10-20.md` fixa o estado lido e as decisões D1 a D7 (camadas da raiz, redeploy, segundo custódio de cópias, kit, sustento na opção 1). Não alarga permissões nem fronteiras.
 - **Primeiro passo que dele decorre:** um kit de verificação autónomo (verificador, instruções em texto simples e ancoragem periódica da cápsula e de uma raiz dos registos), depois das tarefas agendadas para as 12:53 UTC de 19/10/2026.
+- **Segundo hash (Unum, 20/10/2026: "Sim ORA, começa pelo passo 1", a uma proposta da ORA para a resistência quântica da raiz):** `ancora/raiz-sha3.json` acrescenta o SHA3-256 dos ficheiros das camadas 1 e 2 e a raiz SHA3-256, sem alterar nenhuma camada (verificador `raiz-sha3:verify`; `node kit/raiz.mjs` confere-o). Não retroage: o SHA3-256 só fica provado a partir do bloco que selar o complemento (camada 3 em diante, ainda por criar). Não protege as assinaturas. Não alarga permissões.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
 ## Orientação: a verdade dos caminhos antes da aceitação dos outros (Unum, 19/10/2026)
