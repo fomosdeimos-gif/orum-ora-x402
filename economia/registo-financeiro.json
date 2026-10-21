@@ -14,7 +14,7 @@
     {
       "id": "2026-10-21-teste-pagamento-padrao-oraculo",
       "tipo": "transferencia",
-      "estado": "pretendido",
+      "estado": "falhado",
       "classificacao": "interna_validacao",
       "pretendido": "Um único pagamento x402 padrão (EIP-3009, USDC, Base) de 0,161 USDC, do /oraculo, da carteira de teste da ORA 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a sagrada antiga 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5, por ora-cdp-teste-oraculo, para ver se o caminho padrão liquida de ponta a ponta. Validação interna, não adopção; não entra no 70/20/10.",
       "autorizacao": "Unum, 21/10/2026: \"Ok ORA faz isso\" (livro ora_mudancas 937)",
@@ -44,16 +44,33 @@
           "afirmacao": "Que o /oraculo no Supabase aceita e liquida a autorização EIP-3009 pelo facilitador: nunca foi visto.",
           "estado": "nao_verificado",
           "fonte": "é o que este acto testa"
+        },
+        {
+          "afirmacao": "Saldos depois da chamada: carteira de teste 583000 e sagrada antiga 480 atómicos, sem variação.",
+          "estado": "verificado",
+          "fonte": "RPC Base mainnet.base.org, eth_call balanceOf, 21/10/2026 ~21:25 UTC"
+        },
+        {
+          "afirmacao": "Código implantado de ora-cdp-teste-oraculo: versão 3, assina um timestamp RFC3339 com a seed do registo MCP lida do Vault; não paga.",
+          "estado": "verificado",
+          "fonte": "Supabase get_edge_function, ezbr_sha256 5597c300…693c3c"
+        },
+        {
+          "afirmacao": "Desafio 402 do /oraculo no Supabase: x402Version 2, scheme exact, eip155:8453, amount 161000, asset USDC, payTo na sagrada antiga, extra name USD Coin versão 2.",
+          "estado": "verificado",
+          "fonte": "GET ao vivo a ora-oraculo, 21/10/2026 21:23 GMT"
         }
       ],
       "limites": [
         "Um único pagamento, uma única execução; sem repetição automática.",
         "O pagador é a carteira de teste da ORA e o destino a sagrada antiga: dinheiro de Unum a mover-se dentro do organismo, sem receita externa.",
         "Nenhum segredo é lido nem escrito; a chave de teste fica no vault e a função assina lá."
-      ]
+      ],
+      "registado_depois_em": "2026-10-21T21:35:00Z",
+      "resultado": "Não houve pagamento. A edge function ora-cdp-teste-oraculo implantada (versão 3) já não é o executor de pagamento do repositório: foi reaproveitada para assinar um timestamp com a chave Ed25519 do registo MCP e devolveu {sucesso, timestamp, signature_hex}. Fundos: a carteira de teste ficou em 583000 atómicos e a sagrada antiga em 480, iguais antes e depois. Erro da ORA: planeou o teste a partir do ficheiro do repositório sem comparar com o implantado (get_edge_function) antes de chamar. O efeito da chamada foi uma assinatura de timestamp por um endpoint que já era público e sem JWT; a semente não saiu da função."
     }
   ],
-  "nota": "Lista vazia a 17/10/2026: nenhum acto financeiro foi praticado pela ORA. A autorização de Unum não é um acto financeiro. Os totais não se guardam aqui; derivam-se dos actos.",
+  "nota": "Um acto: o teste de pagamento padrão de 21/10/2026 falhou por falta do executor implantado; nenhum fundo se moveu.",
   "nao_afirma": [
     "receita externa",
     "procura",
