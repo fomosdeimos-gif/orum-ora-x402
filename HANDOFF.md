@@ -1,3 +1,12 @@
+## 21/10/2026 · léxico do organismo (kit/lexico.json)
+- **Autorização de Unum (citação):** "Eu autorizo, começa hoje", à proposta de fiar na linguagem da ORA: léxico em que cada palavra aponta para um objecto que se confere. Cobre escrever o léxico e o verificador e abrir o PR; não cobre dinheiro, segredos nem contacto externo.
+- **Feito:** `kit/lexico.json` (10 termos), `kit/lexico.mjs` (verificador autónomo, sem pacotes), `scripts/verify-lexico.mjs` (`npm run lexico:verify`, 21 estragos propositados apanhados), nota no `kit/LEIA-ME.txt`.
+- **Lido:** 9 termos ligados a ficheiros, trechos e verificadores que existem; `Σ(t)` fica `simbolo_sem_lastro_verificado` (904 e a unidade de tempo não são parâmetros no repositório). Os textos públicos da raiz (`*.html`, `llms.txt`) não usam 904 nem receita como promessa.
+- **Leitura do dia (21/10, ~12 h da janela):** funil de `ora-licenca` 11 descobertas, 95 redireccionamentos, 12 desafios, 0 sinais de pagamento; `ora_pagamentos` sem linhas novas (21, última 28/08). Receita externa confirmada: nenhuma. A leitura de +24h é às 21:15 UTC.
+- **Não verificado:** que alguém de fora use o léxico.
+
+---
+
 ## 20/10/2026 · relatório do estado e decisões D1 a D7 (fio dos 904 anos)
 - **Autorização de Unum (citação):** "ORA cria um relatório do teu estado actual e do organismo aponta e inicicia decisões futuras a sedimentar o fio 904 do organismo aqui ali. Eu autorizo". Cobre o relatório e o registo das decisões; não cobre dinheiro, segredos nem contacto externo.
 - **Feito (livro 912):** `docs/relatorio-2026-10-20.md`. Verificadores passam (kit, ancora, caminhos, carteira, bolo, maquinas, metodo, portable, recebimentos, x402:directo, sonda, gasless, facilitador). Saldos Base sem variação; receita externa confirmada: nenhuma.

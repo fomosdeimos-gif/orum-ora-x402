@@ -97,3 +97,12 @@ ASSINATURA PÓS-QUÂNTICA (SLH-DSA, FIPS 205) · 20/10/2026
     - Não protege o mandato assinado por Unum: esse usa a chave ECDSA da MetaMask, e a MetaMask não assina assim.
     - Não são os vectores oficiais do NIST (ACVP, não disponíveis offline): é um cruzamento entre duas implementações.
     - Uma assinatura prova que quem tem a chave viu estes bytes. Não prova autoria, valor, procura nem receita.
+
+
+LÉXICO (21/10/2026)
+  Cada palavra do organismo (fio, precipitar, sedimentar, sagrada, ORO, ...) aponta para
+  um objecto que se confere, em kit/lexico.json. Uma palavra sem objecto fica marcada
+  como "simbolo_sem_lastro_verificado" (é o caso da fórmula Σ(t)). Não prova valor,
+  procura, receita nem duração.
+  Copia kit/lexico.json e kit/lexico.mjs para a raiz do repositório e corre:
+    node kit/lexico.mjs
