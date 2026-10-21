@@ -1,6 +1,6 @@
 {
   "format": "orum-financial-register/v1",
-  "updated_at": "2026-10-17",
+  "updated_at": "2026-10-21",
   "purpose": "Registo de cada acto financeiro da ORA, antes e depois (CLAUDE.md, secção \"Autonomia financeira\"). Sem registo, o acto não conta como feito.",
   "boundary": "Registar um acto não prova procura nem receita. Só receita externa confirmada, com hash e cobertura completa, entra na repartição 70/20/10 (economia/constituicao-v2.json).",
   "rules": [
@@ -10,7 +10,54 @@
     "Transferência feita exige o hash da transacção em prova.tx.",
     "externa_confirmada exige prova.tx e prova.cobertura_completa verdadeira; validação interna nunca entra no 70/20/10."
   ],
-  "actos": [],
+  "actos": [
+    {
+      "id": "2026-10-21-teste-pagamento-padrao-oraculo",
+      "tipo": "transferencia",
+      "estado": "pretendido",
+      "classificacao": "interna_validacao",
+      "pretendido": "Um único pagamento x402 padrão (EIP-3009, USDC, Base) de 0,161 USDC, do /oraculo, da carteira de teste da ORA 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a sagrada antiga 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5, por ora-cdp-teste-oraculo, para ver se o caminho padrão liquida de ponta a ponta. Validação interna, não adopção; não entra no 70/20/10.",
+      "autorizacao": "Unum, 21/10/2026: \"Ok ORA faz isso\" (livro ora_mudancas 937)",
+      "registado_antes_em": "2026-10-21T21:30:00Z",
+      "lido": [
+        {
+          "afirmacao": "Saldo USDC da carteira de teste: 583000 atómicos (0,583 USDC), igual em mainnet.base.org e base-rpc.publicnode.com, eth_call balanceOf no bloco latest.",
+          "estado": "verificado",
+          "fonte": "RPC Base públicos, 21/10/2026 ~21:28 UTC"
+        },
+        {
+          "afirmacao": "Funil de +24h (20/10 21:12 a 21/10 21:12): ora-licenca 28 descobertas, 151 redireccionamentos, 24 desafios; ora-oraculo 10 descobertas; ora-x402 8 descobertas e 5 desafios; 0 sinais de pagamento.",
+          "estado": "verificado",
+          "fonte": "Supabase orum-memoria, ora_x402_tentativas, mesma consulta da linha de base"
+        },
+        {
+          "afirmacao": "ora_pagamentos: 21 linhas, última a 28/08/2026, 1 da carteira de teste; nenhuma linha nova.",
+          "estado": "verificado",
+          "fonte": "Supabase orum-memoria, ora_pagamentos"
+        },
+        {
+          "afirmacao": "Último desafio lido do /oraculo: 161000 atómicos, payTo na sagrada antiga, preço inalterado.",
+          "estado": "verificado",
+          "fonte": "economia/sonda-pagamento.json, leitura de 20/10/2026 09:42Z"
+        },
+        {
+          "afirmacao": "Que o /oraculo no Supabase aceita e liquida a autorização EIP-3009 pelo facilitador: nunca foi visto.",
+          "estado": "nao_verificado",
+          "fonte": "é o que este acto testa"
+        }
+      ],
+      "limites": [
+        "Um único pagamento, uma única execução; sem repetição automática.",
+        "O pagador é a carteira de teste da ORA e o destino a sagrada antiga: dinheiro de Unum a mover-se dentro do organismo, sem receita externa.",
+        "Nenhum segredo é lido nem escrito; a chave de teste fica no vault e a função assina lá."
+      ]
+    }
+  ],
   "nota": "Lista vazia a 17/10/2026: nenhum acto financeiro foi praticado pela ORA. A autorização de Unum não é um acto financeiro. Os totais não se guardam aqui; derivam-se dos actos.",
-  "nao_afirma": ["receita externa", "procura", "adopção", "saldo da carteira"]
+  "nao_afirma": [
+    "receita externa",
+    "procura",
+    "adopção",
+    "saldo da carteira"
+  ]
 }
