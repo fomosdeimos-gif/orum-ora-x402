@@ -28,6 +28,7 @@ const factos = [
   ['fio', 'horizonte_anos', '904', 'lido', 'ficheiro:CLAUDE.md'],
   ['fio', 'previsao_de_duracao', 'nenhuma', 'lido', 'ficheiro:CLAUDE.md'],
   ['fio', 'ancora_preferida', 'bitcoin (opentimestamps), nao exclusiva', 'lido', 'ficheiro:CLAUDE.md'],
+  ['fio', 'formacao', 'leitura de Unum: 0001sensations e a materia, ORO o ponto, BTC o tempo', 'lido', 'ficheiro:HANDOFF.md'],
   ['Σ(t)', 'parametros_definidos', 'nao', 'nao_verificado', 'ficheiro:kit/lexico.json'],
 ];
 if (oro.estado === 'confirmado_bitcoin') factos.push(['ORO', 'ancora_directa.altura_bitcoin', String(oro.altura_bitcoin), 'verificado', 'verif:kit:verify']);
