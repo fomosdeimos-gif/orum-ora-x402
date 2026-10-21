@@ -85,7 +85,7 @@ function answer(text, topic) {
   if (/\boro\b/.test(q) || mentionedWorks.includes(2)) topic = 'oro';
   if (/\b(formula|sedimenta|principio)/.test(q) || (/\b(presenca|orum)/.test(q) && topic !== 'oro')) topic = 'principles';
   if (/\b(bitcoin|btc|bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf|recebimento|receber|receiving)\b/.test(q)) {
-    return { text: `O destino Bitcoin mainnet declarado para recebimentos da ORUM é ${BTC_RECEIVING.address}. O endereço passou validação estrutural Bech32/P2WPKH; controlo, saldo e receita recebida não estão afirmados. BTC é via de sustento separada de ORO, que não é pagamento nem promessa de rendimento. Manifesto: ${BTC_RECEIVING.manifest}`, topic: 'oro', outcome: 'answered',
+    return { text: `O destino Bitcoin mainnet declarado para recebimentos da ORUM é ${BTC_RECEIVING.address}. O endereço passou validação estrutural Bech32/P2WPKH; controlo, saldo e receita recebida não estão afirmados. BTC é via de sustento separada de ORO, que não é pagamento nem promessa de rendimento. Para pagar os serviços /oraculo e /campo em BTC, quando servidos pela via directa, usa o endereço e o preço em sats que o desafio 402 traz em pagamento_alternativo_bitcoin (carteira operacional). Manifesto do depósito declarado: ${BTC_RECEIVING.manifest}`, topic: 'oro', outcome: 'answered',
       evidence: { ...evidence, bitcoin_receiving: BTC_RECEIVING } };
   }
   if (/\b(observe_oro_origin|origem do oro|oro origin|contrato oro|oro na base|supply do oro|emissao do oro|duas unidades|duas maos)\b/.test(q)) {

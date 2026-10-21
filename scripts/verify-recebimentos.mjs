@@ -5,14 +5,15 @@ import { createRequire } from 'node:module';
 import { readdirSync, readFileSync } from 'node:fs';
 const require = createRequire(import.meta.url);
 const m = require('../api/_recebimentos.js');
-const WALLET = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
+const WALLET = '0x89460d9e0590559e63860197dfe2ac648A753584'; // operacional: payTo da via directa desde 21/10/2026
+const EDGE = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5'; // sagrada antiga: payTo implantado nas funcoes de borda
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
 const pad = (a) => '0x' + a.toLowerCase().replace(/^0x/, '').padStart(64, '0');
 const HEAD = 40_000_000, NOW = Date.now();
 const A1 = '0x1111111111111111111111111111111111111111', A2 = '0x2222222222222222222222222222222222222222', A3 = '0x3333333333333333333333333333333333333333';
-const log = (bn, from, val, i) => ({ blockNumber: '0x' + bn.toString(16), logIndex: '0x' + i.toString(16), transactionHash: '0x' + String(i).repeat(64).slice(0, 64),
-  address: USDC, topics: [TOPIC, pad(from), pad(WALLET)], data: '0x' + BigInt(val).toString(16) });
+const log = (bn, from, val, i, to = WALLET) => ({ blockNumber: '0x' + bn.toString(16), logIndex: '0x' + i.toString(16), transactionHash: '0x' + String(i).repeat(64).slice(0, 64),
+  address: USDC, topics: [TOPIC, pad(from), pad(to)], data: '0x' + BigInt(val).toString(16) });
 const ALL = [log(HEAD - 100, A1, 161000, 1), log(HEAD - 30000, A2, 330000, 2), log(HEAD - 50, A3, 5, 3)];
 const headBlock = { number: '0x' + HEAD.toString(16), timestamp: '0x' + Math.floor(NOW / 1000).toString(16) };
 const sizes = [];
@@ -20,7 +21,7 @@ const sizes = [];
 const rpcCom = (maxRange) => async (url, method, params) => {
   if (method === 'eth_getBlockByNumber') return headBlock;
   const [f] = params, a = parseInt(f.fromBlock, 16), b = parseInt(f.toBlock, 16);
-  assert.equal(f.address, USDC); assert.equal(f.topics[0], TOPIC); assert.equal(f.topics[2], pad(WALLET));
+  assert.equal(f.address, USDC); assert.equal(f.topics[0], TOPIC); assert.deepEqual(f.topics[2], [pad(WALLET), pad(EDGE)], 'le as duas carteiras de recebimento num so pedido');
   sizes.push(b - a + 1);
   if (b - a + 1 > maxRange) throw new Error(`eth_getLogs is limited to 0 - ${maxRange} blocks range`);
   return ALL.filter((l) => { const n = parseInt(l.blockNumber, 16); return n >= a && n <= b; });
@@ -28,7 +29,8 @@ const rpcCom = (maxRange) => async (url, method, params) => {
 const semRede = async () => { throw new Error('sem rede'); };
 const indexadorOk = async (url) => {
   if (!url.includes('blockscout')) return { ok: false, status: 500 };
-  assert.ok(url.includes(`/addresses/${WALLET}/token-transfers`) && url.includes('filter=to'));
+  const u = url.toLowerCase();
+  assert.ok((u.includes(`/addresses/${WALLET.toLowerCase()}/token-transfers`) || u.includes(`/addresses/${EDGE.toLowerCase()}/token-transfers`)) && url.includes('filter=to'));
   const item = (tx, val, ago, from) => ({ transaction_hash: tx, block_number: 39999900, log_index: 1, timestamp: new Date(NOW - ago).toISOString(),
     from: { hash: from }, to: { hash: WALLET }, token: { address_hash: USDC }, total: { value: String(val) } });
   return { ok: true, json: async () => ({ items: [item('0xaaa', 161000, 3600e3, A1), item('0xbbb', 330000, 5 * 3600e3, A2), item('0xold', 999, 200 * 3600e3, A3)] }) };
@@ -167,4 +169,19 @@ const vj = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), '
 assert.equal(vj.rewrites.find((x) => x.source === '/economia/recebimentos.json').destination, '/api/proxy?base=recebimentos');
 // o plano gratuito limita a 100 deploys/dia por equipa e este repo alimenta varios projectos: ramos claude/* nao fazem deploy
 assert.equal(vj.git.deploymentEnabled['claude/*'], false);
+// 7) Duas carteiras de recebimento: a operacional (via directa) e a sagrada antiga (funcoes de borda); cada transferencia diz para qual.
+{
+  const so = (to) => async (url, method, params) => method === 'eth_getBlockByNumber' ? headBlock
+    : [log(HEAD - 10, A1, 161000, 7, to)].filter(() => parseInt(params[0].fromBlock, 16) <= HEAD - 10 && parseInt(params[0].toBlock, 16) >= HEAD - 10);
+  for (const [to, rotulo] of [[WALLET, 'operacional'], [EDGE, 'sagrada antiga']]) {
+    const r = await m.recebimentos({ call: so(to), fetchFn: semRede, urls, pausa: 0 }, 24, NOW);
+    assert.equal(r.n_transferencias, 1, rotulo);
+    assert.equal(r.transferencias[0].para, to.toLowerCase(), rotulo);
+    assert.deepEqual(r.carteiras, [WALLET.toLowerCase(), EDGE.toLowerCase()]);
+  }
+  const lidas = [];
+  await m.recebimentos({ call: semRede, fetchFn: async (url) => { lidas.push(url.toLowerCase()); return { ok: true, json: async () => ({ items: [] }) }; }, urls, pausa: 0 }, 24, NOW);
+  assert.ok(lidas.some((u) => u.includes(WALLET.toLowerCase())) && lidas.some((u) => u.includes(EDGE.toLowerCase())), 'o indexador le as duas carteiras');
+}
+
 console.log('recebimentos: RPC com intervalo limitado, indexador alternativo, falhas com diagnostico, limites, proxy e limite de 12 funcoes passaram.');

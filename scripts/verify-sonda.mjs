@@ -8,6 +8,7 @@ const facilitador = require('../api/_facilitador.js');
 
 // A cópia dos valores fixos da sonda tem de bater com as fontes únicas do código.
 assert.equal(CONTRATO.payTo, carteira.RECEBIMENTO, 'payTo da sonda difere de api/_carteira.js');
+assert.deepEqual(CONTRATO.payToAceites, [carteira.RECEBIMENTO, carteira.RECEBIMENTO_EDGE], 'payTo aceites pela sonda diferem de api/_carteira.js');
 assert.equal(CONTRATO.network, facilitador.REDE, 'rede da sonda difere de api/_facilitador.js');
 assert.deepEqual(FACILITADORES, facilitador.URLS_PADRAO, 'facilitadores da sonda diferem de api/_facilitador.js');
 
@@ -31,7 +32,8 @@ console.log('Sonda simulada conferida: 2 rotas, 2 facilitadores.');
 
 const rotaMa = async (nome, rota) => assert.equal((await sondarRota('/oraculo', { fetcher: fetcherCom({ rota }) })).ok, false, `estrago não apanhado: ${nome}`);
 await rotaMa('200 em vez de 402', () => resp(200, { ok: true }));
-await rotaMa('payTo trocado', () => resp(402, desafio({ payTo: '0x89460d9e0590559e63860197dfe2ac648A753584' }), b64(desafio({ payTo: '0x89460d9e0590559e63860197dfe2ac648A753584' }))));
+for (const errado of [carteira.SAGRADA_NOVA, '0x' + '5'.repeat(40)]) await rotaMa('payTo trocado ' + errado.slice(0, 8), () => resp(402, desafio({ payTo: errado }), b64(desafio({ payTo: errado }))));
+for (const certo of [carteira.RECEBIMENTO, carteira.RECEBIMENTO_EDGE]) assert.equal((await sondarRota('/oraculo', { fetcher: fetcherCom({ rota: () => resp(402, desafio({ payTo: certo }), b64(desafio({ payTo: certo }))) }) })).ok, true, 'payTo legitimo recusado: ' + certo);
 await rotaMa('esquema upto', () => resp(402, desafio({ scheme: 'upto' }), b64(desafio({ scheme: 'upto' }))));
 await rotaMa('activo trocado', () => resp(402, desafio({ asset: '0x0000000000000000000000000000000000000001' }), b64(desafio({ asset: '0x0000000000000000000000000000000000000001' }))));
 await rotaMa('sem Base mainnet', () => resp(402, desafio({ network: 'eip155:1' }), b64(desafio({ network: 'eip155:1' }))));

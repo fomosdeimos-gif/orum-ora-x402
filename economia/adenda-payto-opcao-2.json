@@ -1,6 +1,6 @@
 {
   "format": "orum-financial-constitution/v3-adenda-payto",
-  "status": "substituida",
+  "status": "activa",
   "data": "2026-10-17",
   "base": "economia/constituicao-v3-proposta.json",
   "porque_um_ficheiro_novo": "O mandato v2 que Unum assinou cita o sha256 da proposta v3. Alterar a proposta quebraria essa ligação. Esta adenda regista o destino do payTo e dos 70% à parte e deixa a proposta e o mandato intactos.",
@@ -24,12 +24,17 @@
       "data": "2026-10-17",
       "citacao": "Eu autorizo ORA podes procurar novos caminhos e fontes de sustento completamente novas e 100% autónomas e e se quiseres podes manter as carteiras anteriores para o recebimento dos 70% das receitas novas",
       "cobre": "Procura de caminhos novos (economia/caminhos-de-sustento.json) e a escolha, deixada à ORA, de manter a sagrada antiga como destino dos 70%. A ORA escolheu manter: DESTINO_70 = SAGRADA_ANTIGA, igual ao executor implantado."
+    },
+    {
+      "data": "2026-10-21",
+      "citacao": "Eu autorizo, faz o merge do PR e utiliza a carteira operacional para receber pagamentos com total autonomia financeira e liberdade decisional. Eu autorizo ORA",
+      "cobre": "Activa a opção 2 na via directa da Vercel: o payTo dos serviços (Base, USDC) e o endereço de recepção da via Bitcoin passam para as carteiras operacionais (Base 0x89460d9e…3584; Bitcoin bc1qfs8967…9w7). Revoga, nessa via, a decisão de 17/10/2026 de serviços só nas sagradas antigas. Livro ora_mudancas 933."
     }
   ],
-  "regime_actual": "opcao_3",
+  "regime_actual": "opcao_2",
   "regimes": {
     "opcao_1": "Clientes pagam à carteira sagrada antiga. Nada na cadeia, sem código novo de custódia.",
-    "opcao_2": "Substituída: o payTo dos serviços passaria para a operacional. Unum decidiu que os serviços pagam só às sagradas antigas.",
+    "opcao_2": "Em vigor na via directa desde 21/10/2026 (Unum). Serviços pagam às operacionais (Base e Bitcoin); a ORA envia 70% das receitas externas confirmadas a uma sagrada de Unum (executor v13: operacional para sagrada antiga, destino fixo, sem tecto). Nada é enviado antes de haver receita externa confirmada.",
     "opcao_3": "Em vigor. Serviços: payTo = sagrada antiga (Base) e depósito BTC antigo. Receitas novas que a ORA procurar: depositadas nas operacionais (Base e BTC); a ORA envia 70% a uma sagrada de Unum. Unum deixou a escolha à ORA e a ORA mantém a sagrada antiga (Base 0xFEd69e8e…cDEe5; BTC bc1qhcsh…qqf), que é o que o executor implantado já faz. A sagrada nova (0x2ef8…d0d8C) assina o mandato e é alternativa admitida para os 70% (exige implantar o executor)."
   },
   "carteiras": {
@@ -41,19 +46,22 @@
     "DESTINO_70": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5"
   },
   "activacao": {
-    "requer": "Esta adenda não tem activação: o regime em vigor é a opção 3 e o payTo dos serviços fica na sagrada antiga. Voltar à opção 2 exigiria nova adenda e novo 'eu autorizo' de Unum.",
-    "citacao_activacao": null,
-    "activada_em": null
+    "citacao_activacao": "Eu autorizo, faz o merge do PR e utiliza a carteira operacional para receber pagamentos com total autonomia financeira e liberdade decisional. Eu autorizo ORA",
+    "activada_em": "2026-10-21",
+    "ambito": "Só a via directa da Vercel (api/_x402-directo.js, api/_pagamento-btc.js). As funções de borda do Supabase continuam com a sagrada antiga como payTo implantado e os textos públicos (agent-card, páginas, llms.txt) continuam a anunciá-la; este registo não implanta nada no Supabase e as listagens externas não mudam (contacto externo é de Unum).",
+    "leitura_dos_pagamentos": "api/_recebimentos.js passa a ler as duas carteiras Base (operacional e sagrada antiga), cada transferência com o campo `para`. A via Bitcoin recebe na operacional BTC."
   },
   "o_que_nao_muda": [
     "Só receita externa confirmada entra no 70/20/10; transferências entre as carteiras do organismo e de Unum são internas e nunca contam.",
     "A proposta v3 e o mandato v2 assinado ficam como estão (o mandato já lista as duas carteiras Base como sagradas e as operacionais como de uso livre).",
     "Depósito da receita nova nas operacionais e envio dos 70%: só depois de a receita ser externa e confirmada e registada no repositório antes e depois.",
-    "A permissão on-chain D7 fica preparada e parada (economia/d7-permissao-onchain.json); não é preciso neste regime."
+    "A permissão on-chain D7 fica preparada e parada (economia/d7-permissao-onchain.json); não é preciso neste regime.",
+    "Hoje não há receita externa confirmada: nenhum 70% é enviado. Enviar sem receita externa confirmada seria mover fundos sem causa; a ORA não o faz."
   ],
   "pendente": [
-    "Passar os 70% para a sagrada nova só se Unum o pedir: exige implantar o executor com o destino novo, depois de comparar os seis ficheiros implantados com o repositório.",
-    "Listagens externas não mudam: o payTo dos serviços é o mesmo."
+    "Funções de borda do Supabase (ora-x402, ora-licenca, ora-oraculo e outras): só mudam o payTo depois de comparar cada uma com a implantada (get_edge_function); quatro não estão no repositório. Hoje o Supabase está fora de quota e quem serve é a via directa.",
+    "Textos públicos, agent-card e listagens (Bazaar): continuam a anunciar a sagrada antiga; mudar listagens é contacto externo em nome de Unum.",
+    "Passar os 70% para a sagrada nova só se Unum o pedir: exige implantar o executor com o destino novo."
   ],
-  "fronteira_de_verdade": "Esta adenda não move dinheiro. Hoje não há receita externa confirmada; não promete receita, reembolso nem procura."
+  "fronteira_de_verdade": "Esta adenda não move dinheiro. Receber numa carteira operacional que a ORA controla põe os fundos sob a chave da ORA (conta CDP e Vault) até serem enviados; é o risco de custódia que Unum aceitou ao autorizar. Hoje não há receita externa confirmada; não promete receita, reembolso nem procura."
 }

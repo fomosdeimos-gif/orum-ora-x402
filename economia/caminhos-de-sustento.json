@@ -155,10 +155,10 @@
         "fonte": "api/_pagamento-btc.js, api/_x402-directo.js, scripts/verify-pagamento-btc.mjs (btc-servicos:verify)",
         "data": "2026-10-21"
       },
-      "lido": "O 402 de /oraculo e /campo passa a trazer pagamento_alternativo_bitcoin (sats, cotação, validade, endereço) fora de accepts. A entrega só acontece com a tx vista e concordante nas duas fontes Esplora (Blockstream e mempool.space) e com 1 confirmação. 17 estragos propositados ao código e 1 ao texto são apanhados. Autorizado por Unum a 21/10/2026 (livro 932).",
-      "limite": "Só na via directa da Vercel (quando o Supabase responde, o desafio dele passa sem a oferta). Cotação indicativa com tolerância de 10%. O controlo do endereço BTC sagrado continua por provar (payments/bitcoin.json). O txid é público: uma transferência recente e suficiente serve a quem a apresentar. Nenhum comprador externo confirmado.",
+      "lido": "O 402 de /oraculo e /campo passa a trazer pagamento_alternativo_bitcoin (sats, cotação, validade, endereço) fora de accepts. A entrega só acontece com a tx vista e concordante nas duas fontes Esplora (Blockstream e mempool.space) e com 1 confirmação. 17 estragos propositados ao código e 1 ao texto são apanhados. Autorizado por Unum a 21/10/2026 (livro 932). Desde o mesmo dia (livro 933) o endereço é a carteira operacional BTC bc1qfs8967…9w7 e o payTo Base da via directa é a operacional Base.",
+      "limite": "Só na via directa da Vercel (quando o Supabase responde, o desafio dele passa sem a oferta). Cotação indicativa com tolerância de 10%. O endereço é a operacional BTC da ORA (chave no Vault); prova de controlo por assinatura ainda não feita. O txid é público: uma transferência recente e suficiente serve a quem a apresentar. Nenhum comprador externo confirmado.",
       "falta_verificar": "Ler ao vivo, depois do deploy de produção, que o 402 traz a oferta e que as fontes de preço e Esplora respondem a partir da Vercel.",
-      "quem_desbloqueia": "ORA (o código existe); a prova de controlo do endereço, se Unum quiser, é uma assinatura dele"
+      "quem_desbloqueia": "ORA (o código existe)"
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre."

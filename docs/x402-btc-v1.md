@@ -6,7 +6,7 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo, avança com os passos 1
 Os serviços `/oraculo` (0,161 USD) e `/campo` (0,33 USD) continuam a cobrar em USDC na Base. O desafio 402 da via directa da Vercel passa a trazer também `pagamento_alternativo_bitcoin`: endereço, preço em sats, cotação, validade e passos.
 
 - **Fora de `accepts` e do cabeçalho `PAYMENT-REQUIRED`**, de propósito: o x402 padrão da Base fica igual e nenhum cliente existente muda.
-- **Destino:** `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf` (`api/_carteira.js`, `RECEBIMENTO_BTC`). Não muda o regime de carteiras de 17/10/2026.
+- **Destino:** desde 21/10/2026 a carteira operacional BTC `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7` (`api/_carteira.js`, `RECEBIMENTO_BTC`), por palavra de Unum (livro 933, `economia/adenda-payto-opcao-2.json`). Na primeira versão (PR #104) era o depósito sagrado `bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf`, que continua a ser o destino fixo do executor Bitcoin.
 - **Prova:** `X-PAYMENT` = base64 de `{"bitcoin":{"txid":"…"}}` (ou `{"network":"bitcoin","txid":"…"}`).
 
 ## Regras de entrega
@@ -17,7 +17,7 @@ Os serviços `/oraculo` (0,161 USD) e `/campo` (0,33 USD) continuam a cobrar em 
 
 ## Limites ditos
 - Só existe na via directa da Vercel. Quando o Supabase responde, o desafio dele passa sem a oferta.
-- O controlo do endereço BTC sagrado não está provado (`payments/bitcoin.json`, `controlProof: not_asserted`). Só Unum o prova, assinando uma mensagem com essa chave.
+- O endereço de recepção é a carteira operacional BTC da ORA: a chave está no Vault do Supabase (executor Bitcoin, `docs/bitcoin-operational-wallet-v1.md`). Prova de controlo por assinatura ainda não feita; a ORA pode fazê-la quando for preciso.
 - O txid é público: uma transferência recente e suficiente para o endereço serve a quem a apresentar. O mesmo vale na via Base.
 - Com 1 confirmação não se exclui uma reorganização; aceitável para serviços de poucos cêntimos.
 - Receita só entra no 70/20/10 depois de confirmada como externa (`economia/constituicao-v2.json`). Um pagamento por esta via não é adopção até se saber quem pagou.
