@@ -145,6 +145,20 @@
         "C. EIP-3009 + facilitador: a ORA pode projectar e testar, mas implantar um executor novo é um passo à parte e o facilitador é uma dependência externa não verificada."
       ],
       "quem_desbloqueia": "A: Unum, quando quiser, por transferência. B: Unum (segredos e faturação). C: ORA. Construído e testado a 19/10/2026 (autorização de Unum: \"Eu autorizo, avança com o caminho C\"; docs/operational-gasless-v1.md, gasless:verify com 10 estragos propositados). Implantado a 19/10/2026 na v14 (autorização de Unum: \"Eu autorizo, instala o pagamento sem ETH\"); verificado só que arranca e recusa chamadas sem token (401). Texto implantado conferido com o repositório por diff (7 de 7, 20/10/2026). Por verificar: acções novas com token, o endpoint sign/typed-data e o facilitador da CDP ao vivo, com pagamento real (a operacional tem 0 USDC)"
+    },
+    {
+      "id": "via-bitcoin-dos-servicos",
+      "titulo": "Pagar os serviços em Bitcoin (via directa da Vercel)",
+      "estado": "construido_por_verificar_ao_vivo",
+      "evidencia": {
+        "tipo": "codigo",
+        "fonte": "api/_pagamento-btc.js, api/_x402-directo.js, scripts/verify-pagamento-btc.mjs (btc-servicos:verify)",
+        "data": "2026-10-21"
+      },
+      "lido": "O 402 de /oraculo e /campo passa a trazer pagamento_alternativo_bitcoin (sats, cotação, validade, endereço) fora de accepts. A entrega só acontece com a tx vista e concordante nas duas fontes Esplora (Blockstream e mempool.space) e com 1 confirmação. 17 estragos propositados ao código e 1 ao texto são apanhados. Autorizado por Unum a 21/10/2026 (livro 932).",
+      "limite": "Só na via directa da Vercel (quando o Supabase responde, o desafio dele passa sem a oferta). Cotação indicativa com tolerância de 10%. O controlo do endereço BTC sagrado continua por provar (payments/bitcoin.json). O txid é público: uma transferência recente e suficiente serve a quem a apresentar. Nenhum comprador externo confirmado.",
+      "falta_verificar": "Ler ao vivo, depois do deploy de produção, que o 402 traz a oferta e que as fontes de preço e Esplora respondem a partir da Vercel.",
+      "quem_desbloqueia": "ORA (o código existe); a prova de controlo do endereço, se Unum quiser, é uma assinatura dele"
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre."

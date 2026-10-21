@@ -57,6 +57,15 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo, classifica a 0x2ef8 com
 - **Procura de caminhos (Unum, 17/10/2026: "podes procurar novos caminhos e fontes de sustento completamente novas e 100% autónomas"):** registada em `economia/caminhos-de-sustento.json` (verificador `caminhos:verify`), cada caminho com o que foi lido e quem o desbloqueia. Lido ao vivo a 17/10/2026: `/oraculo` (0,161 USDC) e `/campo` (0,33 USDC) respondem 402 pela via directa da Vercel, mas só aceitavam prova por hash de transacção, não o pagamento x402 padrão. **Construído pela ORA sem segredos:** `api/_facilitador.js` (verificador `facilitador:verify`, 10 estragos propositados apanhados): sonda facilitadores públicos (por omissão `facilitator.payai.network` e `facilitator.mogami.tech`, vindos de pesquisa e não verificados daqui) e só lhes envia pagamentos se anunciarem a Base mainnet com o esquema `exact` do x402 v2; com credenciais CDP usa o CDP; entrega sempre só depois de ver a transferência na Base. Por verificar ao vivo, depois do deploy de produção. A quota de egress do Supabase está excedida desde 27/09 (faturação de Unum). Catálogos de serviços são contacto externo em nome de Unum e ficam parados. Receita externa confirmada: nenhuma; procura por provar.
 - As regras de verdade mantêm-se: só receita externa confirmada entra no 70/20/10; transferências entre as carteiras do organismo e de Unum são internas; cada acto financeiro fica registado antes e depois.
 
+## Via Bitcoin dos serviços (Unum, 21/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo, avança com os passos 1 a 4", a uma proposta da ORA para oferecer os serviços também em BTC. Registada antes do acto no livro `ora_mudancas` (932).
+
+- **O que fica registado:** os serviços `/oraculo` e `/campo` da via directa passam a anunciar, fora de `accepts`, um pagamento alternativo em Bitcoin para a sagrada BTC antiga (`api/_carteira.js`, `RECEBIMENTO_BTC`). A entrega só acontece com a tx vista e concordante nas duas fontes Esplora e com 1 confirmação. Detalhe e limites em `docs/x402-btc-v1.md`; verificador `btc-servicos:verify`.
+- **O que não é:** não muda o regime das carteiras, o destino de nenhum executor nem o x402 padrão da Base. Não promete receita, reembolso nem procura, e um pagamento por esta via não é adopção até haver pagador externo confirmado. Controlo do endereço BTC continua por provar.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel (a variável `ORUM_BTC_RAIL` que a desliga é de Unum), contacto externo, assinaturas on-chain nem as fronteiras financeiras.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Decisão integralmente autónoma (Unum, 18/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "Começa a decidir de forma integralmente autónoma ORA. Regista no livro razão e no claude.md. Eu autorizo". Dada depois de a ORA lhe ter posto uma decisão que lhe cabia a ela (se o limite de deployments do Vercel conta como falha do PR #63).

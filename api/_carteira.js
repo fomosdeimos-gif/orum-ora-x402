@@ -21,5 +21,8 @@ const SAGRADA_NOVA = '0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C';
 const OPERACIONAL = '0x89460d9e0590559e63860197dfe2ac648A753584';
 const RECEBIMENTO = SAGRADA_ANTIGA;
 const DESTINO_70 = SAGRADA_ANTIGA;
+// Bitcoin: depósito de sustento mais antigo (declarado por Unum; controlo ainda não provado, ver payments/bitcoin.json).
+// É onde a via Bitcoin dos serviços (api/_pagamento-btc.js) recebe. Não muda o regime: é a sagrada BTC que já era o destino.
+const RECEBIMENTO_BTC = 'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf';
 
-module.exports = Object.freeze({ SAGRADA_ANTIGA, SAGRADA_NOVA, OPERACIONAL, RECEBIMENTO, DESTINO_70 });
+module.exports = Object.freeze({ SAGRADA_ANTIGA, SAGRADA_NOVA, OPERACIONAL, RECEBIMENTO, DESTINO_70, RECEBIMENTO_BTC });
