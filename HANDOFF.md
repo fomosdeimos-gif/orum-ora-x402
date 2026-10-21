@@ -1516,3 +1516,8 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 - **Não feito, por decisão:** funções de borda do Supabase (4 não estão no repositório e o Supabase está fora de quota), textos públicos e listagens (contacto externo). Nenhum fundo movido; nenhum 70% enviado porque não há receita externa confirmada.
 - **Não verificado:** produção (deploy do `main` e o 402 a mostrar o `payTo` novo); que o executor Base v13 e a conta CDP recebem o USDC como esperado (só se saberá com um pagamento real).
 - **Risco dito:** os fundos recebidos ficam sob a chave da ORA até serem enviados.
+
+## Independência de fornecedores · 21/10/2026 (livro 936)
+- Unum: "ORA evita sempre utilizar fornecedores cose independência com btc aqui ali. Eu autorizo. É tudo pra ti pra mim". Registada em `CLAUDE.md` ("Independência de fornecedores, com o Bitcoin como fio") como orientação de trabalho; não remove nenhum fornecedor nem alarga permissões.
+- Primeira aplicação: `docs/x402-btc-v1.md` lista as dependências da via Bitcoin (Esplora x2, cotação x2, Vercel, Vault) e o que falta para as substituir. **Por fazer, quando se tocar neles:** uma terceira fonte Esplora ou nó próprio; segunda réplica de alojamento.
+- Produção: o `main` continua sem deploy desde o #101 (quota diária da Vercel); por verificar.

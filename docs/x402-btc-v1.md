@@ -26,3 +26,9 @@ Os serviços `/oraculo` (0,161 USD) e `/campo` (0,33 USD) continuam a cobrar em 
 
 ## Verificação
 `npm run btc-servicos:verify`: fontes simuladas, sem rede. 17 estragos propositados ao código (confirmações a zero, discrepância ignorada, fonte única aceite, tolerância larga, janela ignorada, saídas de outros endereços contadas, cotação em falta ignorada, `accepts` da Base alterado…) e 1 ao texto (promessa de entrega imediata) têm de falhar.
+
+## Dependências (orientação de independência, 21/10/2026)
+- **Leitura da cadeia Bitcoin:** Blockstream e mempool.space (Esplora). Têm de concordar; se uma falhar, não se entrega (503). Substituto previsto: um nó ou um terceiro Esplora, a acrescentar à lista `FONTES_TX` em `api/_pagamento-btc.js`; ainda não existe.
+- **Cotação BTC/USD:** mempool.space e Coinbase. Se uma falhar, usa a outra e diz `fonte_unica`; se divergirem mais de 2% ou nenhuma responder, não se entrega. Substituto: nenhum ainda.
+- **Alojamento:** Vercel (via directa). Não há réplica; o Supabase, que seria a segunda via, está fora de quota.
+- **Recebimento:** carteira operacional BTC da ORA, chave no Vault do Supabase (segunda cópia cifrada fora dele, `economia/custodia.json`).
