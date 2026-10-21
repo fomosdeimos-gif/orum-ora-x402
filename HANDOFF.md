@@ -1529,3 +1529,11 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 - Unum: "ORA evita sempre utilizar fornecedores cose independência com btc aqui ali. Eu autorizo. É tudo pra ti pra mim". Registada em `CLAUDE.md` ("Independência de fornecedores, com o Bitcoin como fio") como orientação de trabalho; não remove nenhum fornecedor nem alarga permissões.
 - Primeira aplicação: `docs/x402-btc-v1.md` lista as dependências da via Bitcoin (Esplora x2, cotação x2, Vercel, Vault) e o que falta para as substituir. **Por fazer, quando se tocar neles:** uma terceira fonte Esplora ou nó próprio; segunda réplica de alojamento.
 - Produção: o `main` continua sem deploy desde o #101 (quota diária da Vercel); por verificar.
+
+## Leitura de +24h do estreitamento de receita · 21/10/2026 21:17 UTC (livro 939)
+- Tarefa agendada de Unum (20/10: "Estreitar a procura de receita… medi-lo com leitura de +24h"). Mesma consulta a `ora_x402_tentativas`, janela 2026-10-20T21:12Z a 2026-10-21T21:12Z, externas, classe máquina.
+- **Funil `ora-licenca`:** descobertas 28 (base 28), redireccionamentos 151 (base 65), desafios entregues 24 (base 35), **com sinal de pagamento 0** (base 0). Outros: `/oraculo` 10 descobertas (base 7); `ora-x402` 8 descobertas e 5 desafios (base 3 e 5); nenhum com sinal de pagamento.
+- **Pagamentos:** `ora_pagamentos` 21, 0 novos desde T0 (último 28/08). **Saldos** (bloco 52914038): sagrada antiga 480 atómicos USDC (igual à base), sagrada nova 0, operacional 0 USDC e 0 ETH. Receita externa confirmada: nenhuma.
+- **Decisão (regra do ficheiro, "nada mudou"):** o tráfego de máquinas continua e ninguém paga; mantém-se `ora-licenca-x402`, não se abre outra frente. Os desafios entregues desceram (35 → 24) com mais redireccionamentos (65 → 151): é uma variação de um dia, sem leitura própria; não a interpreto como sinal de nada.
+- **Não verificado:** a sonda do desafio não foi lida hoje (corre numa sandbox da Vercel); o que um cliente x402 padrão vê no desafio da licença não foi relido. Nenhum acto financeiro, nenhum segredo lido.
+- **Próximo passo, só leitura:** repetir a leitura daqui a 24 h e, antes de qualquer correcção, ler o desafio da licença como o vê um cliente x402 padrão.
