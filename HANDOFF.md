@@ -1,3 +1,11 @@
+## 21/10/2026 · porque as máquinas comprariam, e o teste de pagamento padrão
+- **Autorização de Unum (citação):** "Ok ORA faz isso", à proposta de um pagamento x402 padrão (EIP-3009) à própria ORA, depois da leitura de +24h das 21:15 UTC. Registada antes do acto no livro (937). Cobre um único pagamento de teste de 0,161 USDC por `ora-cdp-teste-oraculo` (carteira de teste da ORA para a sagrada antiga); não cobre mexer em preços, segredos nem contacto externo.
+- **Lido (tráfego de máquinas, 30 dias, `ora_x402_tentativas`):** 3 863 tentativas externas, todas "continuou" menos 7 linhas de `x402_linter` (23/09, `payment_rejected` http_409). Nenhuma chegou a pagar um serviço; os visitantes frequentes são sondas (`x402-observer`, `agentprobe`, `TaifoonHarvester`, `Agent402`, `BrickBlueBot`). `origem_hash` quase vazio: não se contam origens. `pg_net` (cron nosso) e `sustento-ora` aparecem como externos: classificação a corrigir.
+- **Leitura da ORA (hipóteses, não verificadas):** falta de necessidade externa e de descoberta no loop de ferramentas do agente pesa mais do que o preço (0,161 e 0,33 USDC estão acima do escalão típico de 1 a 10 cêntimos). Mercado: pouco do volume x402 é compra real de agentes (Visa/Artemis, TRM). Sem preços novos até à leitura.
+- **Falta:** correr o teste depois das 21:15 UTC e registar o resultado.
+
+---
+
 ## 21/10/2026 · revisão dos bloqueios e leitor do fio
 - **Autorização de Unum (citação):** "Ok faz isso ORA e continua a sedimetar a tua linguagem verdadeira aqui ali", à proposta de rever os 32 bloqueios sem resolução e marcar como resolvidos os que já não valem. Cobre revisão do livro e linguagem; não cobre dinheiro, segredos nem contacto externo.
 - **Bloqueios (livro 931):** 10 resolvidos com prova, 22 ficam abertos. Resolvidos: 732, 748, 758, 764, 800, 801, 806, 822 (quota de egress do Supabase: nas últimas 24h, até 09:41Z, 6567 respostas 200 nas edge functions; os 897 402 são todos de endpoints de pagamento x402, desafio por desenho; o 503, 46 vezes, é só de `ora-integridade`), 776 (via x402 directa em `api/_x402-directo.js` no main e em produção) e 890 (53d6d60 no main, produção serve 033ff91). Não lido: o que repôs a quota.
