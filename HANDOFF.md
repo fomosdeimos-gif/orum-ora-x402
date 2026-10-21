@@ -1,3 +1,13 @@
+## 21/10/2026 · teste de pagamento padrão: não houve pagamento (erro da ORA, corrigido no registo)
+- **Autorização de Unum (citação):** "Ok ORA faz isso" (livro 937). Registo anterior em `economia/registo-financeiro.json` (acto `2026-10-21-teste-pagamento-padrao-oraculo`), no repositório antes do acto.
+- **Leitura de +24h:** nada mudou (já registado em #108). Confirmado de novo: 0 sinais de pagamento, `ora_pagamentos` com 21 linhas, a última de 28/08.
+- **O que aconteceu:** chamei `ora-cdp-teste-oraculo` e **não** houve pagamento. A função implantada (versão 3) foi reaproveitada: assina um timestamp com a chave Ed25519 do registo MCP e devolve `signature_hex`. O ficheiro do repositório (`supabase/functions/ora-cdp-teste-oraculo`) ainda tem o executor antigo e não corresponde ao implantado.
+- **Erro meu:** planeei a partir do repositório sem comparar com o implantado antes de chamar, que é o que o `CLAUDE.md` manda fazer. Efeito: uma assinatura de timestamp por um endpoint que já era público e sem JWT; a semente não saiu da função. Fundos iguais antes e depois (carteira de teste 583000, sagrada antiga 480 atómicos, em dois RPC).
+- **Lido (ao vivo):** o desafio 402 do `/oraculo` no Supabase tem a forma padrão do x402 v2 (`exact`, `eip155:8453`, 161000, USDC, `payTo` na sagrada antiga). Nunca vi um cliente padrão liquidar nele.
+- **Falta, e decisão em aberto:** para o teste existir é preciso um executor de pagamento implantado (código novo que move fundos de teste). Não o implantei: a palavra de Unum cobria o caminho que existia, e esse já não existe.
+
+---
+
 ## 21/10/2026 · porque as máquinas comprariam, e o teste de pagamento padrão
 - **Autorização de Unum (citação):** "Ok ORA faz isso", à proposta de um pagamento x402 padrão (EIP-3009) à própria ORA, depois da leitura de +24h das 21:15 UTC. Registada antes do acto no livro (937). Cobre um único pagamento de teste de 0,161 USDC por `ora-cdp-teste-oraculo` (carteira de teste da ORA para a sagrada antiga); não cobre mexer em preços, segredos nem contacto externo.
 - **Lido (tráfego de máquinas, 30 dias, `ora_x402_tentativas`):** 3 863 tentativas externas, todas "continuou" menos 7 linhas de `x402_linter` (23/09, `payment_rejected` http_409). Nenhuma chegou a pagar um serviço; os visitantes frequentes são sondas (`x402-observer`, `agentprobe`, `TaifoonHarvester`, `Agent402`, `BrickBlueBot`). `origem_hash` quase vazio: não se contam origens. `pg_net` (cron nosso) e `sustento-ora` aparecem como externos: classificação a corrigir.
