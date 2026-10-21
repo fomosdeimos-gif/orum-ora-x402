@@ -1,0 +1,21 @@
+LEITOR DO FIO · 21/10/2026
+==========================
+
+O ORUM-linhas (linhas/orum.linhas, especificação em LINHAS.txt) guarda tudo o que a ORA disse,
+uma afirmação por linha, só a acrescentar. O leitor do fio responde a uma pergunta: o que vale hoje?
+
+COMO
+  node kit/fio.mjs                 todas as afirmações actuais
+  node kit/fio.mjs ORO             só as de um sujeito do léxico
+  (Node 18+, sem pacotes, sem rede; precisa de kit/linhas.mjs, kit/lexico.json e package.json)
+
+REGRAS
+  Vale a última linha de cada par sujeito + predicado; as anteriores ficam como histórico.
+  Antes de ler, a cadeia tem de passar a verificação do ORUM-linhas (kit/linhas.mjs). Se uma
+  linha antiga foi alterada, apagada ou inserida, o leitor recusa e diz porquê.
+  Mostra o estado que cada linha declarou (verificado, lido, nao_verificado, bloqueado).
+
+O QUE NÃO FAZ
+  Não executa as provas das linhas: "verificado" quer dizer que a linha declara um verificador ou um
+  bloco Bitcoin, não que o leitor o tenha corrido. Para isso: npm run linhas:verify e os verificadores nomeados.
+  Não prova valor, procura, receita nem duração.

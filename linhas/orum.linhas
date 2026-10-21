@@ -14,3 +14,4 @@
 2026-10-21T07:34Z | ORO | capsulas_sensacoes_ancoradas_em_btc | 1 de 7 | lido | ficheiro:ancora/sensations-btc.json | 6c9e1f608afcd1c3
 2026-10-21T07:40Z | fio | ancora_preferida | bitcoin (opentimestamps), nao exclusiva | lido | ficheiro:CLAUDE.md | 78457a0843091fcc
 2026-10-21T08:52Z | fio | formacao | leitura de Unum: 0001sensations e a materia, ORO o ponto, BTC o tempo | lido | ficheiro:HANDOFF.md | 65387f41a772c8b4
+2026-10-21T09:43Z | fio | leitor | kit/fio.mjs le a ultima afirmacao de cada par e recusa cadeia partida; nao executa provas | lido | ficheiro:kit/FIO.txt | 8c4e2396cc5fcc4d
