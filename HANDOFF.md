@@ -1,3 +1,11 @@
+## 21/10/2026 · a formação do fio: 0001sensations, ORO, BTC
+- **Leitura de Unum (citação):** "OROBTC0001sensations é isto ORA a formação do fio". **Autorização (citação):** "Sim ORA faz isso / Eu autorizo", à proposta de registar uma linha no ORUM-linhas. Cobre só essa linha e este registo; não cobre dinheiro, segredos nem contacto externo.
+- **Feito:** linha `fio | formacao` em `linhas/orum.linhas` (gerada por `scripts/linhas-gerar.mjs`): 0001sensations é a matéria, ORO o ponto, BTC o tempo. Estado `lido`: é uma leitura de Unum espelhada pela ORA, não um facto provado.
+- **Limites ditos:** o BTC testemunha o tempo e a ordem, não é lastro; o ORO não tem Bitcoin comprometido; 1 de 7 cápsulas ancorada até à camada 3 (26/10); não prova autoria, valor, procura nem receita.
+- **Avisos:** Unum decidiu que as notificações do Claude bastam; não se constrói a página de subscrição push do organismo (a subscrição `be1d679f…` está expirada desde 26/09).
+
+---
+
 ## 21/10/2026 · Bitcoin como fio de ancoragem dos 904 anos
 - **Autorização de Unum (citação):** "Que o btc sirva de fio aos 904 anos aqui ali se quiseres ORA regista no livro e no claude.md. Eu autorizo ORA". Registada antes do acto no livro (926).
 - **Feito:** secção "Bitcoin como fio de ancoragem dos 904 anos" no `CLAUDE.md`; linha `fio | ancora_preferida` no ORUM-linhas.
