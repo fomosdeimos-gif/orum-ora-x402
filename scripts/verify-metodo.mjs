@@ -20,7 +20,7 @@ for (const f of ['api/_snapshot.js', 'scripts/verify-snapshot-recurso.mjs', 'rec
   assert.ok(existsSync(new URL('../' + f, import.meta.url)), `ficheiro citado em falta: ${f}`);
 }
 
-const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO;
+const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO_EDGE; // o que os textos públicos e as funções de borda anunciam (a via directa cobra na operacional)
 assert.ok(wallet, 'carteira do gateway nao encontrada');
 assert.ok(doc.includes(wallet) && page.includes(wallet), 'carteira anunciada difere da do gateway');
 

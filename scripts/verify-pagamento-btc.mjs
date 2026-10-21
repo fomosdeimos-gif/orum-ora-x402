@@ -12,8 +12,8 @@ const AQUI = dirname(fileURLToPath(import.meta.url));
 const API = join(AQUI, '..', 'api');
 
 const NOW = Date.parse('2026-10-21T12:00:00Z');
-const ENDERECO = 'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf';
-const OUTRO = 'bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7';
+const ENDERECO = 'bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7'; // operacional BTC: onde a via directa cobra
+const OUTRO = 'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf'; // sagrada BTC: ja nao conta como pagamento de servico
 const ORIGIN = 'https://ora-x402-gateway.vercel.app';
 const id = (n) => String(n).repeat(64).slice(0, 64);
 const ALTURA = 972300;
@@ -73,7 +73,7 @@ async function suite(dir) {
   assert.equal((await chama(h, 'ora-x402')).body.pagamento_alternativo_bitcoin.sats_anunciados, 347, '0,33 USD: 330 + 5%');
   assert.equal(ch.body.fronteiras.bitcoin.entrega_antes_da_confirmacao, false);
   assert.equal(ch.body.fronteiras.bitcoin.entrega_com_fonte_unica, false);
-  assert.match(ch.body.fronteiras.bitcoin.controlo_do_endereco, /nao provado/);
+  assert.match(ch.body.fronteiras.bitcoin.controlo_do_endereco, /operacional da ORA.*ainda nao feita/);
   assert.equal((await chama(h, 'ora-oraculo', null, 'eco')).body.pago.pagamento_alternativo_bitcoin.disponivel, true);
 
   // ---- entrega: duas fontes, valor suficiente, 1 confirmacao; determinista por txid ----

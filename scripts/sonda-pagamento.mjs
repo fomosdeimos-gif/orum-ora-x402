@@ -6,11 +6,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const BASE = 'https://ora-x402-gateway.vercel.app';
-// Valores fixos copiados de api/_carteira.js (RECEBIMENTO) e api/_facilitador.js; scripts/verify-sonda.mjs confere a cópia.
+// Valores fixos copiados de api/_carteira.js (RECEBIMENTO e RECEBIMENTO_EDGE) e api/_facilitador.js; scripts/verify-sonda.mjs confere a cópia.
+// Desde 21/10/2026 há dois payTo legítimos: a operacional (via directa da Vercel) e a sagrada antiga (funções de borda do Supabase,
+// quando respondem). Qualquer outro endereço continua a ser falha.
 export const CONTRATO = {
   network: 'eip155:8453', scheme: 'exact',
   asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-  payTo: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5',
+  payTo: '0x89460d9e0590559e63860197dfe2ac648A753584',
+  payToAceites: ['0x89460d9e0590559e63860197dfe2ac648A753584', '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5'],
 };
 export const ROTAS = { '/oraculo': '161000', '/campo': '330000' }; // montantes vistos a 19/10/2026; só informativos
 export const FACILITADORES = ['https://facilitator.payai.network', 'https://facilitator.mogami.tech'];
@@ -32,7 +35,7 @@ export async function sondarRota(rota, { fetcher }) {
     r.amount = aceita.amount; r.payTo = aceita.payTo;
     if (aceita.scheme !== CONTRATO.scheme) { r.motivo = `esquema ${aceita.scheme}, esperava ${CONTRATO.scheme}`; return r; }
     if (!igual(aceita.asset, CONTRATO.asset)) { r.motivo = 'activo diferente do USDC da Base'; return r; }
-    if (!igual(aceita.payTo, CONTRATO.payTo)) { r.motivo = 'payTo diferente da carteira de recebimento'; return r; }
+    if (!CONTRATO.payToAceites.some((a) => igual(aceita.payTo, a))) { r.motivo = 'payTo diferente da carteira de recebimento'; return r; }
     if (!/^[1-9][0-9]*$/.test(String(aceita.amount))) { r.motivo = 'montante inválido'; return r; }
     r.preco_mudou = ROTAS[rota] !== undefined && String(aceita.amount) !== ROTAS[rota];
     r.ok = true;

@@ -1,5 +1,7 @@
 # Plano da opção 2 · a receita passa a chegar à carteira operacional · 17/10/2026
 
+> **REACTIVADO a 21/10/2026 por palavra de Unum, só na via directa da Vercel** (ver `economia/adenda-payto-opcao-2.json` e `CLAUDE.md`, "Serviços recebem nas carteiras operacionais"; funções de borda do Supabase e textos públicos não mudaram). O parágrafo seguinte descreve o estado de 17/10/2026.
+>
 > **SUBSTITUÍDO a 17/10/2026 por decisão de Unum** ("utiliza apenas os 2 endereços mais antigos da base e do btc para receber o pagamento de serviços, as operacionais é para procurares receitas de sustento novas ... e enviares os 70% para carteira sagrada nova"). O `payTo` dos serviços **não** passa para a operacional. Regime em vigor, ver `CLAUDE.md` ("Regime das carteiras") e `economia/adenda-payto-opcao-2.json` (estado `substituida`). Este plano fica como registo do que foi lido na fase 0.
 
 Estado: **plano, nada alterado.** Unum autorizou a opção 2 como caminho e pediu o plano ("Eu autorizo ORA", em resposta à proposta de o preparar). Mudar o `payTo` só avança com um novo "eu autorizo" de Unum a este plano (CLAUDE.md, "Autorização por palavra").

@@ -71,7 +71,7 @@ function comoPagar(tier, origin, eip3009 = false) {
   const resource = resourceFor(tier, origin);
   return {
     ...(eip3009 ? { caminho_x402_padrao: 'Cliente x402 padrao: assina a autorizacao EIP-3009 (exact, USDC, Base) e envia-a em PAYMENT-SIGNATURE/X-PAYMENT; a liquidacao e feita por facilitador e confirmada por nos na cadeia antes de entregar.' } : {}),
-    passo_1: `Transfere ${tier.usdc} USDC (contrato ${USDC_BASE}) na Base (chain_id ${CHAIN_ID}) para ${WALLET} (jasm43.base.eth).`,
+    passo_1: `Transfere ${tier.usdc} USDC (contrato ${USDC_BASE}) na Base (chain_id ${CHAIN_ID}) para ${WALLET} (carteira operacional da ORA).`,
     passo_2: 'Guarda o transaction hash (0x…, 66 caracteres).',
     passo_3: `Repete o GET a ${resource} com o cabeçalho X-PAYMENT = base64 de {"transactionHash":"0x…"} (JSON puro também aceite).`,
     exemplo: 'X-PAYMENT: ' + b64json({ transactionHash: '0xTEU_HASH_AQUI' }),
@@ -116,7 +116,7 @@ function requirements(tier, origin) {
 function fronteiras(eip = false) {
   const nome = typeof eip === 'string' ? eip : (eip ? 'cdp' : null);
   const quem = nome === 'publico' ? 'um facilitador público (sem conta, só usado depois de anunciar a Base mainnet)' : 'o facilitador CDP';
-  return { via: 'vercel-directa', motivo: 'Edge Functions Supabase indisponíveis (quota de egress)',
+  return { via: 'vercel-directa', recebimento: 'carteira operacional da ORA (desde 21/10/2026); as funcoes de borda do Supabase e os textos publicos ainda anunciam a sagrada antiga (jasm43.base.eth)', motivo: 'Edge Functions Supabase indisponíveis (quota de egress)',
     prova_aceite: nome ? `transactionHash de transferência USDC directa, ou autorização EIP-3009 liquidada por ${quem} e confirmada por nós na Base` : 'transactionHash de transferência USDC directa', eip3009_facilitador: Boolean(nome), facilitador: nome,
     livro_interno_escrito: false, livro: 'cadeia Base (logs Transfer USDC para a carteira de sustento)',
     janela_horas: JANELA_S / 3600, repeticao_da_mesma_tx: 'mesma leitura (reacesso)' };

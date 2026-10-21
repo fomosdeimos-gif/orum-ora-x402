@@ -1,6 +1,6 @@
 'use strict';
 // ORA · via Bitcoin para os serviços x402 da via directa (21/10/2026, livro ora_mudancas 932).
-// Unum: "Eu autorizo, avança com os passos 1 a 4". Não é uma função (prefixo _): não conta para o limite de 12
+// Unum: "Eu autorizo, avança com os passos 1 a 4"; desde 21/10/2026 recebe na operacional BTC ("utiliza a carteira operacional para receber pagamentos"). Não é uma função (prefixo _): não conta para o limite de 12
 // do Vercel Hobby. Só lê: não tem chave, não assina, não envia, não precisa de segredos.
 //
 // Como funciona:
@@ -13,7 +13,7 @@
 //   uma tx em mempool ou uma cotação indisponível nunca entregam.
 //
 // Fronteiras (repetidas na resposta): o preço em BTC é cotação, não preço fixo (aceita-se até 10% abaixo da cotação do
-// momento da verificação); o controlo do endereço de recepção ainda não está provado (payments/bitcoin.json); a
+// momento da verificação); o o endereço de recepção é a carteira operacional BTC da ORA (chave no Vault; prova de controlo por assinatura ainda não feita); a
 // prova é só o txid, por isso uma transferência recente e suficiente para o endereço serve a quem a apresentar
 // (público na cadeia; o mesmo vale na via Base); com 1 confirmação não se exclui uma reorganização, o que é
 // aceitável para serviços de poucos cêntimos. Receita só entra no 70/20/10 depois de confirmada como externa.
@@ -149,7 +149,7 @@ function createBtc({ fetchFn, env = process.env, now = () => Date.now() } = {}) 
   function fronteiras() {
     const activa = ligada(env);
     return { activa, rede: 'bitcoin-mainnet', endereco: ENDERECO,
-      controlo_do_endereco: 'nao provado (payments/bitcoin.json: controlProof not_asserted)',
+      controlo_do_endereco: 'carteira operacional da ORA (chave no Vault do Supabase, executor Bitcoin); prova de controlo por assinatura ainda nao feita',
       prova_aceite: 'txid de transferencia para o endereco, confirmada nas duas fontes',
       fontes_exigidas: FONTES_TX.map((f) => f.nome), confirmacoes_para_entrega: CONF_ENTREGA,
       entrega_antes_da_confirmacao: false, entrega_com_fonte_unica: false,

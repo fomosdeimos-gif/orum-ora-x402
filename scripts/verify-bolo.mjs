@@ -19,7 +19,7 @@ const pick = (src, re, what) => {
   return m[1];
 };
 
-const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO;
+const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO_EDGE; // o que os textos públicos e as funções de borda anunciam (a via directa cobra na operacional)
 const usdc = pick(directo, /const USDC_BASE = '(0x[0-9a-fA-F]{40})'/, 'USDC');
 assert.ok(doc.includes(wallet), 'carteira do documento difere da do gateway');
 assert.ok(doc.includes(usdc), 'USDC do documento difere do do gateway');

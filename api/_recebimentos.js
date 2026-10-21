@@ -15,7 +15,10 @@
 // (interno/externo vem de ora_carteiras_classificacao, nunca se infere aqui), não
 // prova identidade nem adopção, e transferências de qualquer valor entram (pó
 // incluído). Serve também para reconciliar a via directa, que não escreve livro.
-const { RECEBIMENTO: WALLET } = require('./_carteira');
+const { RECEBIMENTO: WALLET, RECEBIMENTO_EDGE } = require('./_carteira');
+// Desde 21/10/2026 a via directa cobra na operacional, mas as funções de borda do Supabase (quando voltarem) e os textos
+// públicos ainda anunciam a sagrada antiga. Lêem-se as duas; cada transferência diz para qual foi (`para`).
+const CARTEIRAS = [...new Set([WALLET, RECEBIMENTO_EDGE].map((a) => a.toLowerCase()))];
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
 // BASE_RPC_URL (variável de ambiente, opcional) vem primeiro: um RPC com chave que aceite eth_getLogs
@@ -96,7 +99,7 @@ async function viaRpc({ call, urls, pausa = 120 }, horas, limite) {
     const from = Math.max(0, latest - Math.ceil((horas * 3600) / BLOCK_S));
     const pedir = async ([a, b]) => {
       const params = [{ fromBlock: '0x' + a.toString(16), toBlock: '0x' + b.toString(16), address: USDC_BASE,
-        topics: [TRANSFER_TOPIC, null, pad(WALLET)] }];
+        topics: [TRANSFER_TOPIC, null, CARTEIRAS.map(pad)] }];
       try { return await call(url, 'eth_getLogs', params, ms()); }
       catch (e) { // uma só repetição, só para limite de taxa, depois de uma pausa curta
         if (!limiteDeTaxa(e) || Date.now() + 600 >= limite) throw e;
@@ -117,7 +120,7 @@ async function viaRpc({ call, urls, pausa = 120 }, horas, limite) {
         const brutos = lidas.flatMap((x) => x.logs).map((l) => {
           const bn = parseInt(l.blockNumber, 16);
           return { tx: l.transactionHash, bloco: bn, logIndex: parseInt(l.logIndex, 16), ts: (latestTs - (latest - bn) * BLOCK_S) * 1000,
-            de: '0x' + l.topics[1].slice(-40), atomic: BigInt(l.data).toString() };
+            de: '0x' + l.topics[1].slice(-40), para: '0x' + l.topics[2].slice(-40), atomic: BigInt(l.data).toString() };
         });
         const r = { brutos, origem: { tipo: 'rpc-base-publico', rpc: nomeRpc(url), hora: 'estimada (2 s por bloco)' },
           janela: { bloco_de: blocoDe, bloco_a: latest, cabeca_utc: new Date(latestTs * 1000).toISOString() },
@@ -140,27 +143,29 @@ async function viaRpc({ call, urls, pausa = 120 }, horas, limite) {
 async function viaIndexador({ fetchFn }, horas, agora, limite) {
   const corte = agora - horas * 3600 * 1000;
   const brutos = [];
-  let params = { type: 'ERC-20', filter: 'to', token: USDC_BASE };
   try {
-    for (let pagina = 0; pagina < MAX_PAGINAS; pagina++) {
-      if (Date.now() >= limite) throw new Error('prazo esgotado');
-      const r = await fetchFn(`${INDEXADOR}/addresses/${WALLET}/token-transfers?${new URLSearchParams(params)}`,
-        { headers: { accept: 'application/json', 'user-agent': UA }, signal: AbortSignal.timeout(Math.max(500, Math.min(4000, limite - Date.now()))) });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      const j = await r.json();
-      if (!Array.isArray(j.items)) throw new Error('formato inesperado');
-      let maisAntigo = false;
-      for (const t of j.items) {
-        const ts = Date.parse(t.timestamp);
-        if (!(ts >= corte)) { maisAntigo = true; continue; }
-        const token = String(t.token?.address_hash || t.token?.address || '').toLowerCase();
-        const para = String(t.to?.hash || '').toLowerCase();
-        if (token !== USDC_BASE.toLowerCase() || para !== WALLET.toLowerCase()) continue;
-        brutos.push({ tx: t.transaction_hash || t.tx_hash, bloco: Number(t.block_number), logIndex: Number(t.log_index || 0), ts,
-          de: String(t.from?.hash || '').toLowerCase(), atomic: String(t.total?.value ?? '0') });
+    for (const carteira of CARTEIRAS) {
+      let params = { type: 'ERC-20', filter: 'to', token: USDC_BASE };
+      for (let pagina = 0; pagina < MAX_PAGINAS; pagina++) {
+        if (Date.now() >= limite) throw new Error('prazo esgotado');
+        const r = await fetchFn(`${INDEXADOR}/addresses/${carteira}/token-transfers?${new URLSearchParams(params)}`,
+          { headers: { accept: 'application/json', 'user-agent': UA }, signal: AbortSignal.timeout(Math.max(500, Math.min(4000, limite - Date.now()))) });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        if (!Array.isArray(j.items)) throw new Error('formato inesperado');
+        let maisAntigo = false;
+        for (const t of j.items) {
+          const ts = Date.parse(t.timestamp);
+          if (!(ts >= corte)) { maisAntigo = true; continue; }
+          const token = String(t.token?.address_hash || t.token?.address || '').toLowerCase();
+          const para = String(t.to?.hash || '').toLowerCase();
+          if (token !== USDC_BASE.toLowerCase() || para !== carteira) continue;
+          brutos.push({ tx: t.transaction_hash || t.tx_hash, bloco: Number(t.block_number), logIndex: Number(t.log_index || 0), ts,
+            de: String(t.from?.hash || '').toLowerCase(), para, atomic: String(t.total?.value ?? '0') });
+        }
+        if (maisAntigo || !j.next_page_params) break;
+        params = { type: 'ERC-20', filter: 'to', token: USDC_BASE, ...Object.fromEntries(Object.entries(j.next_page_params).map(([k, v]) => [k, String(v)])) };
       }
-      if (maisAntigo || !j.next_page_params) break;
-      params = { type: 'ERC-20', filter: 'to', token: USDC_BASE, ...Object.fromEntries(Object.entries(j.next_page_params).map(([k, v]) => [k, String(v)])) };
     }
   } catch (e) { const err = new Error('indexador nao serviu'); err.tentativas = [{ fonte: INDEXADOR, erro: curto(e) }]; throw err; }
   return { brutos, origem: { tipo: 'indexador-blockscout', url: INDEXADOR, hora: 'do indexador' }, janela: { corte_utc: new Date(corte).toISOString() } };
@@ -168,11 +173,11 @@ async function viaIndexador({ fetchFn }, horas, agora, limite) {
 
 function formatar(fonte, horas, agora) {
   const ordenados = fonte.brutos.slice().sort((x, y) => y.bloco - x.bloco || y.logIndex - x.logIndex);
-  const linhas = ordenados.slice(0, MAX_ROWS).map((t) => ({ tx: t.tx, bloco: t.bloco, hora_utc: new Date(t.ts).toISOString(), de: t.de,
+  const linhas = ordenados.slice(0, MAX_ROWS).map((t) => ({ tx: t.tx, bloco: t.bloco, hora_utc: new Date(t.ts).toISOString(), de: t.de, para: t.para,
     valor_atomic: t.atomic, valor_usdc: Number(BigInt(t.atomic)) / 1e6, corresponde_ao_preco_de: PRECOS[t.atomic] || null, classificacao: 'nao_classificada' }));
   const total = ordenados.reduce((s, t) => s + BigInt(t.atomic), 0n);
   const cobertura = fonte.cobertura || { completa: true, horas_pedidas: horas, horas_cobertas: horas, motivo: null };
-  return { ok: true, carteira: WALLET, ativo: 'USDC (Base)', janela: { horas, ...fonte.janela }, cobertura,
+  return { ok: true, carteira: WALLET, carteiras: CARTEIRAS, ativo: 'USDC (Base)', janela: { horas, ...fonte.janela }, cobertura,
     ...(cobertura.completa ? {} : { aviso: `leitura PARCIAL: so as ultimas ${cobertura.horas_cobertas} h das ${horas} h pedidas; o total e as transferencias valem apenas para essa parte` }),
     ausencia_provada: cobertura.completa && ordenados.length === 0,
     n_transferencias: ordenados.length, total_usdc: Number(total) / 1e6, truncado: ordenados.length > MAX_ROWS, transferencias: linhas,

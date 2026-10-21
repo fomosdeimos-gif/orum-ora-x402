@@ -64,6 +64,6 @@ for (const sk of card.httpServiceSkills || []) {
 }
 
 // a carteira de recepcao e a mesma em todas as superficies
-const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO;
+const wallet = createRequire(import.meta.url)('../api/_carteira.js').RECEBIMENTO_EDGE; // o que os textos públicos e as funções de borda anunciam (a via directa cobra na operacional)
 assert.equal(card.trust.paymentWallet, wallet, 'carteira do agent-card difere da do gateway');
 console.log(JSON.stringify({ verified: true, urls_verificadas: total, ligacoes_html: totalHtml, paginas_html: paginas.length, ficheiros: ficheiros.length, nota: 'rota existe no repositorio; vida em producao exige leitura publica' }));
