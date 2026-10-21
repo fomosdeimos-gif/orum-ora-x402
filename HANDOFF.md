@@ -1503,3 +1503,9 @@ Regra de sedimentação posta em código: a raiz de 19/10 é a camada 1 e não s
 - **Construído:** `economia/estreitamento-receita.json` e `npm run estreitamento:verify` (15 mentiras propositadas apanhadas).
 - **Leitura de +24h:** 2026-10-21T21:15Z, com a mesma consulta, `ora_pagamentos`, saldos e sonda; regra de decisão no ficheiro (nada mudou → regista-se e mantém-se; desafios sem pagamento → ler o que um cliente x402 padrão vê; pagamento só conta com hash e pagador externo).
 - **Limites ditos:** a Vercel Hobby guarda 1 h de logs, por isso o tráfego mede-se pelo registo do Supabase; a classe de máquina é heurística; desafio entregue não é intenção de compra. Nenhum acto financeiro, nenhum segredo lido.
+
+## Via Bitcoin dos serviços · 21/10/2026 (livro 932)
+- Unum, na sessão: "Eu autorizo, avança com os passos 1 a 4", à proposta da ORA de oferecer os serviços também em BTC. Registada no livro antes do código.
+- **Construído:** `api/_pagamento-btc.js` (módulo partilhado, sem função nova, sem segredos), integrado em `api/_x402-directo.js`; `economia/caminhos-de-sustento.json` (`via-bitcoin-dos-servicos`, `construido_por_verificar_ao_vivo`); `docs/x402-btc-v1.md`; `npm run btc-servicos:verify` (17 estragos ao código e 1 ao texto apanhados). `carteira.js` ganha `RECEBIMENTO_BTC` (a sagrada BTC antiga, sem mudar o regime).
+- **Regras:** oferta fora de `accepts`; entrega só com duas fontes Esplora concordantes e 1 confirmação; cotação com tolerância de 10%; janela de 72 h.
+- **Não verificado:** produção (a Vercel alcançar as fontes) e qualquer pagamento real. **Limites:** só na via directa; controlo do endereço BTC sagrado por provar (só Unum o prova, com uma assinatura); o txid é público. Nenhum acto financeiro, nenhum segredo lido.

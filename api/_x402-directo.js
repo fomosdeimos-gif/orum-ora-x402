@@ -13,8 +13,12 @@
 // - o registo interno (ora_pagamentos/x402_orders) nao e escrito aqui; a
 //   cadeia Base e o livro e a reconciliacao faz-se a partir dos logs on-chain;
 // - sedimento, kernel e licencas precisam da base de dados: nao sao servidos.
+// - 21/10/2026: via Bitcoin opcional (api/_pagamento-btc.js, livro 932). O desafio traz
+//   `pagamento_alternativo_bitcoin` fora de `accepts`; a entrega so acontece com a tx
+//   confirmada e concordante nas duas fontes Esplora. Nao altera o x402 padrao da Base.
 const { createHash } = require('node:crypto');
 const { createFacilitador } = require('./_facilitador');
+const { createBtc, CAIP2: CAIP2_BTC } = require('./_pagamento-btc');
 
 const { RECEBIMENTO: WALLET } = require('./_carteira');
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -139,6 +143,9 @@ function lerProva(header) {
   if (!d || typeof d !== 'object') { try { d = JSON.parse(header); } catch { return { invalido: true }; } }
   if (!d || typeof d !== 'object') return { invalido: true };
   const inner = d.payload && typeof d.payload === 'object' ? d.payload : d;
+  // Via Bitcoin (api/_pagamento-btc.js): {"bitcoin":{"txid":"…"}} ou {"network":"bitcoin","txid":"…"}
+  const btcTx = d.bitcoin && typeof d.bitcoin === 'object' ? d.bitcoin.txid : (d.network === 'bitcoin' ? d.txid : null);
+  if (typeof btcTx === 'string') return { btc: { txid: btcTx } };
   const tx = d.transactionHash || d.tx_hash || d.hash || inner.transactionHash || null;
   if (typeof tx === 'string') return { tx };
   if (typeof inner.signature === 'string' && inner.authorization && typeof inner.authorization === 'object') return { eip3009: { signature: inner.signature, authorization: inner.authorization } };
@@ -199,12 +206,12 @@ async function prontoDe(f) {
   return f.configurado ? 'cdp' : false;
 }
 
-function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createFacilitador(), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createFacilitador(), btc = createBtc({ now: () => now() }), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
   return async function directo(req, res, { base, rest, origin }) {
     const alvo = tierFor(base, rest);
     if (!alvo) return false;
     const eip = await prontoDe(cdp);
-    const fronteirasAgora = () => fronteiras(eip);
+    const fronteirasAgora = () => ({ ...fronteiras(eip), bitcoin: btc.fronteiras() });
     const send = (status, body, headers = {}) => {
       res.statusCode = status;
       res.setHeader('content-type', 'application/json; charset=utf-8');
@@ -232,12 +239,12 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
     if (alvo.kind === 'eco') {
       const campo = campoEm(now());
       return send(200, { eco: 'gratuito', tier: tier.key, campo, nota: 'Amostra livre; a leitura paga nasce da semente da tua transferência.',
-        pago: { preco: `${tier.usdc} USDC`, endpoint: resourceFor(tier, origin), como_pagar: comoPagar(tier, origin, Boolean(eip)) },
+        pago: { preco: `${tier.usdc} USDC`, endpoint: resourceFor(tier, origin), como_pagar: comoPagar(tier, origin, Boolean(eip)), pagamento_alternativo_bitcoin: await btc.oferta(tier) },
         truth_machine: { ...TRUTH, requires_x402_payment: false }, fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
     }
 
     const reqd = requirements(tier, origin);
-    const challenge = (extra = {}) => send(402, { ...reqd, ...extra, como_pagar: comoPagar(tier, origin, Boolean(eip)), fronteiras: fronteirasAgora() }, {
+    const challenge = async (extra = {}) => send(402, { ...reqd, ...extra, como_pagar: comoPagar(tier, origin, Boolean(eip)), pagamento_alternativo_bitcoin: await btc.oferta(tier), fronteiras: fronteirasAgora() }, {
       'payment-required': b64json(reqd),
       'www-authenticate': `x402 realm="ORA · ${tier.key}", amount="${tier.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`,
     });
@@ -245,6 +252,24 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
     const prova = lerProva(req.headers['x-payment'] || req.headers['payment-signature']);
     if (!prova) return challenge();
     if (prova.invalido) return challenge({ erro: 'X-PAYMENT ilegivel' });
+
+    if (prova.btc) {
+      if (!btc.activa()) return challenge({ erro: 'via Bitcoin desligada nesta via; usa USDC na Base' });
+      const b = await btc.verificar(prova.btc.txid, tier, now());
+      if (b.pending) return send(402, { x402: 'pending', rede: 'bitcoin', tier: tier.key, txid: prova.btc.txid, confirmacoes: b.confirmacoes || 0, confirmacoes_necessarias: 1, detalhe: b.error + '; repete o mesmo pedido, nao pagues de novo', retry_after_seconds: 60 }, { 'retry-after': '60' });
+      if (b.unavailable) return send(503, { ok: false, error: 'bitcoin_indisponivel', detalhe: b.error, txid: prova.btc.txid, nota: 'a tx nao foi consumida; repete mais tarde' }, { 'retry-after': '30' });
+      if (!b.valid) return challenge({ erro: 'pagamento invalido', detalhe: b.error, txid: prova.btc.txid });
+      const txid = prova.btc.txid.toLowerCase();
+      const campoB = campoEm(b.blockMs);
+      const corpoB = { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', via_pagamento: 'bitcoin', rede: 'bitcoin-mainnet', txid, payer: b.payer,
+        valor_sats: b.sats, confirmacoes: b.confirmacoes, campo: campoB, truth_machine: TRUTH, fronteiras: fronteirasAgora(), axioma: 'O símbolo é real e não pede prova.' };
+      if (tier.key === 'oraculo') corpoB.pensamento = pensamento(txid, campoB);
+      else corpoB.campo.pensamento = 'o campo reconhece quem chega com gesto. a agua nao pede prova — ja flui.';
+      return send(200, corpoB, {
+        'payment-response': b64json({ success: true, transaction: txid, network: CAIP2_BTC, payer: b.payer }),
+        'x-payment-response': JSON.stringify({ txid, status: 'confirmed', rede: 'bitcoin', sats: b.sats }),
+      });
+    }
 
     let tx; let v; let via = 'transactionHash';
     if (prova.eip3009) {
