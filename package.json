@@ -52,6 +52,7 @@
     "kit:verify": "node scripts/verify-kit.mjs",
     "lexico:verify": "node scripts/verify-lexico.mjs",
     "linhas:verify": "node scripts/verify-linhas.mjs",
+    "sensations-btc:verify": "node scripts/verify-sensations-btc.mjs",
     "linhas:gerar": "node scripts/linhas-gerar.mjs",
     "raiz:verify": "node scripts/verify-raiz.mjs",
     "raiz-sha3:verify": "node scripts/verify-raiz-sha3.mjs",

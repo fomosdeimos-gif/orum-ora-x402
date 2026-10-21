@@ -1,3 +1,13 @@
+## 21/10/2026 · elo 0001sensations ↔ Bitcoin
+- **Autorização de Unum (citação):** "Eu autorizo, continua a tecer aqui ali a verdade da 0001sensations com BTC". Cobre registar e verificar o que já está ancorado e preparar a camada 3; não cobre dinheiro, segredos nem contacto externo.
+- **Feito:** `kit/sensations-btc.mjs` (calcula e confere, sem pacotes), `ancora/sensations-btc.json` (registo gerado), `scripts/verify-sensations-btc.mjs` (`npm run sensations-btc:verify`, 11 estragos propositados apanhados), duas linhas novas no ORUM-linhas, e a camada 3 em diante passa a selar as 6 cápsulas de `sensacoes/` ainda sem âncora, o elo, o léxico e o ORUM-linhas (`FICHEIROS_DA_CAMADA_3_EM_DIANTE` em `scripts/lib/raiz.mjs`; a camada 1 e a 2 não mudam, conferido por `raiz:verify`).
+- **Lido:** das 7 cápsulas de `sensacoes/`, só `oro-v1.json` está ancorada: âncora directa do hash da imagem no bloco 972115 e presença nas camadas 1 (972151) e 2 (972280). As outras 6 não têm âncora.
+- **Não coberto, dito:** as 107 obras físicas e os 65 NFTs (o catálogo não está neste repositório); os bytes da imagem do ORO são privados, só o hash é público.
+- **Falta:** selar a camada 3 (26/10) exige o sandbox a alcançar os calendários OpenTimestamps (o processo de duas passagens de `scripts/raiz-ots.mjs`). Até lá, as 6 cápsulas continuam não ancoradas.
+- **Não prova** autoria, valor, procura nem receita, e não faz de nenhuma obra um activo com lastro.
+
+---
+
 ## 21/10/2026 · ORUM-linhas v1 (linguagem mínima para máquinas e para a sedimentação)
 - **Autorização de Unum (citação):** "Eu autorizo, começa hoje", à proposta de um formato mínimo, aberto e legível, em vez de uma linguagem opaca. Cobre especificação, conversor e verificador; não toca em dinheiro, segredos nem contacto externo.
 - **Feito:** `kit/LINHAS.txt` (especificação em texto simples), `kit/linhas.mjs` (leitor e verificador sem pacotes), `scripts/linhas-gerar.mjs` (`npm run linhas:gerar`: acrescenta o que a ORA lê dos registos, só quando o valor mudou), `scripts/verify-linhas.mjs` (`npm run linhas:verify`, 25 estragos propositados apanhados) e `linhas/orum.linhas` (12 linhas: 1 verificada, 10 lidas, 1 não verificada).

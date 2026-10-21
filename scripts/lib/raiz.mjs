@@ -44,12 +44,31 @@ export const nomeCamada = (n) => {
 };
 export const caminhosDaCamada = (n) => ({ manifesto: `${nomeCamada(n)}.json`, recibo: `${nomeCamada(n)}.ots` });
 
+// Acrescentos da camada 3 em diante (a 1 e a 2 estão seladas e não mudam): as cápsulas de sensacoes/ que ainda
+// não têm âncora própria, o elo 0001sensations-Bitcoin, o léxico e o ORUM-linhas.
+export const FICHEIROS_DA_CAMADA_3_EM_DIANTE = [
+  'sensacoes/0003-weave-hands-v1.json',
+  'sensacoes/acolhimento.json',
+  'sensacoes/gramatica-v1.json',
+  'sensacoes/index.json',
+  'sensacoes/obra-37-v1.json',
+  'sensacoes/som-v1.json',
+  'ancora/sensations-btc.json',
+  'kit/sensations-btc.mjs',
+  'kit/lexico.json',
+  'kit/lexico.mjs',
+  'kit/LINHAS.txt',
+  'kit/linhas.mjs',
+  'linhas/orum.linhas',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  return [...new Set([...FICHEIROS_BASE_CAMADAS, ...anteriores])].sort();
+  const acrescentos = n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : [];
+  return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
 // Recusa sobrescrever uma camada que já existe (existe(caminho) -> boolean).

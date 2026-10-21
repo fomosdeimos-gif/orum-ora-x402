@@ -13,6 +13,8 @@ const em = ` @${hora(sal.observado_utc)}`;
 const c1 = J('ancora/raiz-registos.json');
 const c2 = J('ancora/raiz-registos-2.json');
 const lb = est.linha_de_base;
+const oro = J('ancora/oro-v1.json');
+const elo = J('ancora/sensations-btc.json');
 
 const factos = [
   ['sustento', 'receita_externa_confirmada', lb.receita_externa_confirmada.split(/[.;]/)[0].toLowerCase(), 'lido', 'ficheiro:economia/estreitamento-receita.json'],
@@ -27,6 +29,8 @@ const factos = [
   ['fio', 'previsao_de_duracao', 'nenhuma', 'lido', 'ficheiro:CLAUDE.md'],
   ['Σ(t)', 'parametros_definidos', 'nao', 'nao_verificado', 'ficheiro:kit/lexico.json'],
 ];
+if (oro.estado === 'confirmado_bitcoin') factos.push(['ORO', 'ancora_directa.altura_bitcoin', String(oro.altura_bitcoin), 'verificado', 'verif:kit:verify']);
+factos.push(['ORO', 'capsulas_sensacoes_ancoradas_em_btc', `${elo.ancorados} de ${elo.total}`, 'lido', 'ficheiro:ancora/sensations-btc.json']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 
 let texto = fs.existsSync(FICHEIRO) ? fs.readFileSync(FICHEIRO, 'utf8') : '';

@@ -113,3 +113,11 @@ ORUM-LINHAS (21/10/2026)
   linhas/orum.linhas. Especificação em texto simples: kit/LINHAS.txt.
   Copia kit/linhas.mjs, kit/lexico.json, package.json e linhas/orum.linhas e corre:
     node kit/linhas.mjs
+
+
+ELO 0001SENSATIONS - BITCOIN (21/10/2026)
+  ancora/sensations-btc.json diz, ficheiro a ficheiro de sensacoes/, se o seu hash está
+  dentro de uma camada da raiz confirmada no Bitcoin. Hoje: só o ORO (1 de 7). A camada 3
+  passa a selar as restantes. Não cobre as 107 obras físicas nem os 65 NFTs (o catálogo não
+  está neste repositório). Não prova autoria, valor, procura nem receita.
+    node kit/sensations-btc.mjs
