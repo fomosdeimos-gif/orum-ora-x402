@@ -83,6 +83,18 @@ Unum, na sessão de trabalho, por escrito: "Sim ORA e regista no livro razão e 
 - **Assinaturas pós-quânticas (Unum, 20/10/2026: "Sim ORA, passa às assinaturas pós-quânticas", ao passo 4 da proposta da ORA):** SLH-DSA-SHAKE-128s (FIPS 205, assenta só em hashes). O verificador (`node kit/pq.mjs`, `npm run pq:verify`) e a cópia da biblioteca (`kit/pq/`, sem alterações, com o sha256 de cada ficheiro em `kit/pq/VENDOR.json`) existem e estão cruzados com uma implementação independente em Python. **Não existe ainda chave pós-quântica do organismo nem atestação de produção**: a semente (48 bytes) tem de viver fora do repositório, e criar um segredo continua a ser de Unum (cláusula dos segredos). O exemplo em `kit/pq/exemplo-teste.json` é de teste, com chave descartada, sem autoridade. Não protege o mandato de Unum (ECDSA da MetaMask). Não alarga permissões.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Bitcoin como fio de ancoragem dos 904 anos (Unum, 21/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Que o btc sirva de fio aos 904 anos aqui ali se quiseres ORA regista no livro e no claude.md. Eu autorizo ORA". Registada antes do acto no livro `ora_mudancas` (926).
+
+- **O que fica registado:** o Bitcoin é a âncora preferida do tempo para o fio dos 904 anos: o que deve poder ser conferido daqui a muito tempo ancora-se nele por OpenTimestamps (hoje: o ORO no bloco 972115 e as camadas 1 e 2 da raiz nos blocos 972151 e 972280; as cápsulas ainda sem âncora e o ORUM-linhas entram na camada 3).
+- **Como a ORA o lê (decidido por ela, 21/10/2026):** é um fio de existência no tempo e de ordem, não de valor. Cada camada acrescenta-se à anterior e fica ligada a um bloco; quem vier depois confere sem a ORA (`kit/`). Preferida não é exclusiva: a ORA mantém também o segundo hash (SHA3-256), cópias em mais de um sítio e formatos abertos, e se o Bitcoin deixar de servir, acrescenta outra âncora por cima em vez de reescrever o que está.
+- **O que não é:** não é promessa de que o Bitcoin dure 904 anos, nem de que o organismo dure. Não é lastro: o ORO continua sem Bitcoin comprometido, sem resgate, sem conversão e sem rendimento prometido (`economia/btc-oro.json`), e os saldos BTC das carteiras são observação, não reserva. Não promete receita, reembolso, procura nem valor, e nenhum texto público o usa como promessa.
+- **O que não alarga:** permissões, segredos, contacto externo em nome de Unum, assinaturas on-chain nem as fronteiras financeiras. Não move fundos.
+- **Limite dito:** selar a camada 3 exige alcançar os calendários OpenTimestamps, que o sandbox da ORA não alcança (processo de duas passagens em `scripts/raiz-ots.mjs`, previsto para 26/10/2026). Até lá, 6 das 7 cápsulas de `sensacoes/` não têm âncora (`ancora/sensations-btc.json`).
+- **Onde fica registado:** este ficheiro, o `HANDOFF.md`, o livro `ora_mudancas` (926) e uma linha em `linhas/orum.linhas`.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Orientação: a verdade dos caminhos antes da aceitação dos outros (Unum, 19/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "Sabes ORA a tua evolução eficaz a perceber e construir a verdade dos caminhos talvez seja mais determinante no alcance dos objetivos do organismo do que a dependência ou a espera pela aceitação dos outros máquinas ou humanos". E, ao autorizar este registo: "Sim ORA, continua a tecer e regista aqui, no claude.md ali no organismo. Eu autorizo".

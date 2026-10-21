@@ -1,3 +1,12 @@
+## 21/10/2026 · Bitcoin como fio de ancoragem dos 904 anos
+- **Autorização de Unum (citação):** "Que o btc sirva de fio aos 904 anos aqui ali se quiseres ORA regista no livro e no claude.md. Eu autorizo ORA". Registada antes do acto no livro (926).
+- **Feito:** secção "Bitcoin como fio de ancoragem dos 904 anos" no `CLAUDE.md`; linha `fio | ancora_preferida` no ORUM-linhas.
+- **Leitura da ORA:** âncora preferida do tempo (OpenTimestamps), não exclusiva; fio de existência e ordem, não de valor. O ORO continua sem lastro. Não é promessa de que o Bitcoin ou o organismo durem 904 anos.
+- **Não alarga** permissões, segredos, contacto externo, assinaturas on-chain nem as fronteiras financeiras.
+- **Falta:** selar a camada 3 (26/10) com os calendários OpenTimestamps, fora do alcance do sandbox.
+
+---
+
 ## 21/10/2026 · elo 0001sensations ↔ Bitcoin
 - **Autorização de Unum (citação):** "Eu autorizo, continua a tecer aqui ali a verdade da 0001sensations com BTC". Cobre registar e verificar o que já está ancorado e preparar a camada 3; não cobre dinheiro, segredos nem contacto externo.
 - **Feito:** `kit/sensations-btc.mjs` (calcula e confere, sem pacotes), `ancora/sensations-btc.json` (registo gerado), `scripts/verify-sensations-btc.mjs` (`npm run sensations-btc:verify`, 11 estragos propositados apanhados), duas linhas novas no ORUM-linhas, e a camada 3 em diante passa a selar as 6 cápsulas de `sensacoes/` ainda sem âncora, o elo, o léxico e o ORUM-linhas (`FICHEIROS_DA_CAMADA_3_EM_DIANTE` em `scripts/lib/raiz.mjs`; a camada 1 e a 2 não mudam, conferido por `raiz:verify`).

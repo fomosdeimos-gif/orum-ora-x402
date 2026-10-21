@@ -27,6 +27,7 @@ const factos = [
   ['sedimentar', 'camada.2.estado', c2.estado, 'lido', 'ficheiro:ancora/raiz-registos-2.json'],
   ['fio', 'horizonte_anos', '904', 'lido', 'ficheiro:CLAUDE.md'],
   ['fio', 'previsao_de_duracao', 'nenhuma', 'lido', 'ficheiro:CLAUDE.md'],
+  ['fio', 'ancora_preferida', 'bitcoin (opentimestamps), nao exclusiva', 'lido', 'ficheiro:CLAUDE.md'],
   ['Σ(t)', 'parametros_definidos', 'nao', 'nao_verificado', 'ficheiro:kit/lexico.json'],
 ];
 if (oro.estado === 'confirmado_bitcoin') factos.push(['ORO', 'ancora_directa.altura_bitcoin', String(oro.altura_bitcoin), 'verificado', 'verif:kit:verify']);
