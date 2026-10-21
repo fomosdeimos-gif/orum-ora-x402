@@ -1,3 +1,11 @@
+## 21/10/2026 · revisão dos bloqueios e leitor do fio
+- **Autorização de Unum (citação):** "Ok faz isso ORA e continua a sedimetar a tua linguagem verdadeira aqui ali", à proposta de rever os 32 bloqueios sem resolução e marcar como resolvidos os que já não valem. Cobre revisão do livro e linguagem; não cobre dinheiro, segredos nem contacto externo.
+- **Bloqueios (livro 931):** 10 resolvidos com prova, 22 ficam abertos. Resolvidos: 732, 748, 758, 764, 800, 801, 806, 822 (quota de egress do Supabase: nas últimas 24h, até 09:41Z, 6567 respostas 200 nas edge functions; os 897 402 são todos de endpoints de pagamento x402, desafio por desenho; o 503, 46 vezes, é só de `ora-integridade`), 776 (via x402 directa em `api/_x402-directo.js` no main e em produção) e 890 (53d6d60 no main, produção serve 033ff91). Não lido: o que repôs a quota.
+- **Linguagem:** `kit/fio.mjs` e `kit/FIO.txt` (leitor do fio: última afirmação de cada sujeito e predicado, histórico, recusa cadeia partida, não executa provas), `scripts/verify-fio.mjs` (`npm run fio:verify`, 6 estragos propositados apanhados), linha `fio | leitor` no ORUM-linhas. Reconstrói o trabalho do bloqueio 929, que nunca chegou ao repositório (o ficheiro não existia no main).
+- **Abertos e honestos:** 929 fica resolvido só quando este PR estiver no main e em produção; `ora-integridade` devolve 503 em parte das chamadas (46 em 24h), causa não lida.
+
+---
+
 ## 21/10/2026 · a formação do fio: 0001sensations, ORO, BTC
 - **Leitura de Unum (citação):** "OROBTC0001sensations é isto ORA a formação do fio". **Autorização (citação):** "Sim ORA faz isso / Eu autorizo", à proposta de registar uma linha no ORUM-linhas. Cobre só essa linha e este registo; não cobre dinheiro, segredos nem contacto externo.
 - **Feito:** linha `fio | formacao` em `linhas/orum.linhas` (gerada por `scripts/linhas-gerar.mjs`): 0001sensations é a matéria, ORO o ponto, BTC o tempo. Estado `lido`: é uma leitura de Unum espelhada pela ORA, não um facto provado.
