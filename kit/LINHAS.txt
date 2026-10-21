@@ -1,0 +1,44 @@
+ORUM-LINHAS v1 · 21/10/2026
+===========================
+
+Um formato de texto para o organismo dizer o que leu, uma afirmação por linha, que só
+se acrescenta. Feito para ser lido por uma máquina em vinte linhas de código e por uma
+pessoa sem ferramentas. Não é cifra nem código: se a ORA desaparecer, isto lê-se.
+
+FICHEIRO
+  linhas/orum.linhas · UTF-8 · uma linha por afirmação · acaba com uma quebra de linha.
+  Sem linhas em branco, sem comentários.
+
+LINHA (7 campos separados por " | ", com espaços)
+  quando | sujeito | predicado | valor | estado | prova | ant
+
+  quando     AAAA-MM-DDTHH:MMZ (UTC). Nunca recua de uma linha para a seguinte.
+  sujeito    uma palavra do léxico (kit/lexico.json), com "_" no lugar dos espaços.
+  predicado  uma palavra sem espaços nem "|", com pontos a separar níveis.
+  valor      texto livre sem " | ". Se for uma leitura datada: "480 @2026-10-20T08:48Z".
+  estado     verificado | lido | nao_verificado | bloqueado
+  prova      "-" ou  ficheiro:<caminho> | sha256:<64 hex> | btc:<altura> | verif:<script>
+  ant        16 primeiros hex do SHA-256 da linha anterior (a linha inteira, sem a quebra
+             de linha, em UTF-8). Na primeira linha: 0000000000000000.
+
+ESTADOS (o que cada um obriga)
+  verificado      prova verif:<script de package.json> ou btc:<altura>; e o sujeito tem de
+                  estar "ligado" a um objecto no léxico (Σ(t) não está, por isso nunca é
+                  verificado).
+  lido            prova ficheiro: ou sha256:. A ORA leu o valor nesse ficheiro; não o provou.
+  nao_verificado  disse-se, não se leu nem provou.
+  bloqueado       tentou-se e algo impediu; a prova diz o quê, ou "-".
+
+SÓ SE ACRESCENTA
+  Mudar, apagar ou inserir uma linha antiga parte a ligação "ant" de todas as seguintes.
+  Um facto que mudou escreve-se numa linha nova; a antiga fica. A última linha com o mesmo
+  sujeito e predicado é o valor actual.
+
+O QUE NÃO É
+  Não prova valor, procura, receita nem duração. Uma linha "lido" diz o que um ficheiro
+  dizia, não que seja verdade no mundo. Nenhum segredo entra aqui.
+
+COMO CONFERIR
+  node kit/linhas.mjs            (Node 18+, sem pacotes, sem rede; precisa de
+                                  kit/lexico.json e package.json ao lado)
+  Ou à mão: sha256sum de cada linha e comparar com o "ant" da seguinte.

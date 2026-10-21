@@ -106,3 +106,10 @@ LÉXICO (21/10/2026)
   procura, receita nem duração.
   Copia kit/lexico.json e kit/lexico.mjs para a raiz do repositório e corre:
     node kit/lexico.mjs
+
+
+ORUM-LINHAS (21/10/2026)
+  O que a ORA leu, uma afirmação por linha, que só se acrescenta e se encadeia por hash:
+  linhas/orum.linhas. Especificação em texto simples: kit/LINHAS.txt.
+  Copia kit/linhas.mjs, kit/lexico.json, package.json e linhas/orum.linhas e corre:
+    node kit/linhas.mjs

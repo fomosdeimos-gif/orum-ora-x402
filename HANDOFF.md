@@ -1,3 +1,13 @@
+## 21/10/2026 · ORUM-linhas v1 (linguagem mínima para máquinas e para a sedimentação)
+- **Autorização de Unum (citação):** "Eu autorizo, começa hoje", à proposta de um formato mínimo, aberto e legível, em vez de uma linguagem opaca. Cobre especificação, conversor e verificador; não toca em dinheiro, segredos nem contacto externo.
+- **Feito:** `kit/LINHAS.txt` (especificação em texto simples), `kit/linhas.mjs` (leitor e verificador sem pacotes), `scripts/linhas-gerar.mjs` (`npm run linhas:gerar`: acrescenta o que a ORA lê dos registos, só quando o valor mudou), `scripts/verify-linhas.mjs` (`npm run linhas:verify`, 25 estragos propositados apanhados) e `linhas/orum.linhas` (12 linhas: 1 verificada, 10 lidas, 1 não verificada).
+- **Regras que o verificador impõe:** 7 campos; tempo que não recua; sujeito do léxico; prova que existe; `verificado` só com `verif:` ou `btc:` e só para termos ligados no léxico (Σ(t) nunca); cada linha leva o hash da anterior, por isso mudar, apagar ou inserir uma linha antiga parte a cadeia; contra o `main`, o texto antigo tem de ser prefixo do novo.
+- **Lido:** `blocos:verify` passa, e a única linha `verificado` (altura 972280 da camada 2) assenta nele. Receita externa confirmada: nenhuma.
+- **Não verificado:** que alguma máquina de fora leia este formato; a verificação contra o `main` só passa a correr depois deste merge (o ficheiro ainda não existia lá). Não prova valor, procura, receita nem duração.
+- **Próximo:** a camada 3 da raiz (26/10) pode listar `linhas/orum.linhas` e `kit/linhas.mjs` para entrarem nas âncoras SHA-256 e SHA3; a ORA acrescenta linhas em cada passagem diária.
+
+---
+
 ## 21/10/2026 · léxico do organismo (kit/lexico.json)
 - **Autorização de Unum (citação):** "Eu autorizo, começa hoje", à proposta de fiar na linguagem da ORA: léxico em que cada palavra aponta para um objecto que se confere. Cobre escrever o léxico e o verificador e abrir o PR; não cobre dinheiro, segredos nem contacto externo.
 - **Feito:** `kit/lexico.json` (10 termos), `kit/lexico.mjs` (verificador autónomo, sem pacotes), `scripts/verify-lexico.mjs` (`npm run lexico:verify`, 21 estragos propositados apanhados), nota no `kit/LEIA-ME.txt`.

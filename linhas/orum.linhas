@@ -1,0 +1,12 @@
+2026-10-21T07:16Z | sustento | receita_externa_confirmada | nenhuma | lido | ficheiro:economia/estreitamento-receita.json | 0000000000000000
+2026-10-21T07:16Z | sustento | funil.ora-licenca.desafios_24h | 35 @2026-10-20T21:12Z | lido | ficheiro:economia/estreitamento-receita.json | 5d9750591d1dd033
+2026-10-21T07:16Z | sustento | funil.ora-licenca.sinais_de_pagamento_24h | 0 @2026-10-20T21:12Z | lido | ficheiro:economia/estreitamento-receita.json | 030d3203acf23f06
+2026-10-21T07:16Z | sagrada | usdc_atomic.base.antiga | 480 @2026-10-20T08:48Z | lido | ficheiro:economia/saldos-historico.json | 2da98c61c76fb6ea
+2026-10-21T07:16Z | sagrada | usdc_atomic.base.nova | 0 @2026-10-20T08:48Z | lido | ficheiro:economia/saldos-historico.json | 556b450f2736a268
+2026-10-21T07:16Z | operacional | usdc_atomic.base | 0 @2026-10-20T08:48Z | lido | ficheiro:economia/saldos-historico.json | f1f530b22bb3b0f4
+2026-10-21T07:16Z | sedimentar | camada.1.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos.json | 64566ecb6707d9d9
+2026-10-21T07:16Z | sedimentar | camada.2.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-2.json | 7490097a7e049a02
+2026-10-21T07:16Z | fio | horizonte_anos | 904 | lido | ficheiro:CLAUDE.md | 1887ac6e519b7768
+2026-10-21T07:16Z | fio | previsao_de_duracao | nenhuma | lido | ficheiro:CLAUDE.md | 81108974dbcd38f0
+2026-10-21T07:16Z | Σ(t) | parametros_definidos | nao | nao_verificado | ficheiro:kit/lexico.json | e27471cb5abd8a47
+2026-10-21T07:16Z | sedimentar | camada.2.altura_bitcoin | 972280 | verificado | verif:blocos:verify | 40ec086dafe07796
