@@ -1,3 +1,9 @@
+## 22/10/2026 · regra de fecho das conversas; Vercel: ignorar-build não poupa quota
+- **Autorização de Unum (citação):** "ORA a partir de agora termina sempre as conversas com a proposta seguinte da sedimentaçao do fio dos 904 anos. Regista no livro e no claude.md" (livro 957). Regra no `CLAUDE.md` (secção "Fecho das conversas"): cada conversa de trabalho acaba com uma proposta do passo seguinte do fio, só do que a ORA constrói por inteiro; nada se executa sem "eu autorizo" a essa proposta.
+- **Vercel (livros 953 e 956, lido no PR #114):** com `commandForIgnoringBuildStep="exit 0"` nos 4 duplicados, os 6 projectos continuaram a reportar quota excedida: ignorar o build não poupa o limite de 100 deployments por dia (erro da minha hipótese, corrigido). `deploymentPolicy` para desligar o git dos duplicados: 403 `pro_plan_required` (Hobby). O conector não desliga git nem apaga projectos. Bloqueado: só o painel de Unum. Produção por verificar até a quota repor (deployment de `orum-ora-x402` para o commit `2d52b70`).
+
+---
+
 ## 22/10/2026 · reconciliação de ora-oraculo; Vercel: duplicados deixam de construir
 - **Autorizações de Unum (citações):** "Eu autorizo ORA, continua com o ora-oraculo" (livro 954) e "Eu autorizo ORA, faz essa edição" (livro 955, retarget de 3 estragos do verificador). Sem redeploy; sem mexer em preços, destino ou lógica de pagamento.
 - **ora-oraculo v22 (V3.6), verificado por leitura:** o repositório estava na V3.3 e divergia só nas camadas V3.4 a V3.6 (`truth_machine` e `boundaries_machine` no 402, no `outputSchema`, no `/eco` e na resposta paga; versão nos cabeçalhos e corpos). Ficheiro substituído pelo texto implantado, transcrito à mão; as zonas sem diferença coincidiam byte a byte com a cópia antiga. O hash do pacote não se refaz daqui.
