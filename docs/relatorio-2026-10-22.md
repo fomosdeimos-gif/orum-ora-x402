@@ -11,8 +11,8 @@ O organismo passou a saber, por leitura e com verificador, o que está implantad
 ### 2.1 Repositório e produção reconciliados (só leitura, salvo onde dito)
 | Função | Resultado | Livro |
 |---|---|---|
-| `ora-licenca`, `ora-x402`, `ora-oraculo` | repositório e implantado reconciliados; as três portas pagas redeployadas com o bloco `origem_hash` (v61, v39, v23). Verificado: 402 intacto, montante 161000 no oráculo | 946–961 |
-| `ora-cdp-teste-oraculo`, `ora-cdp-teste-payto-cdp`, `ora-cdp-agente-teste` | texto implantado trazido para o repositório; cópia antiga arquivada em `docs/supabase-funcoes-substituidas/` | 954–956 |
+| `ora-licenca`, `ora-x402`, `ora-oraculo` | repositório e implantado reconciliados; as três portas pagas redeployadas com o bloco `origem_hash` (v61, v39, v23). Verificado: 402 intacto, montante 161000 no oráculo | ver livro 946–962 |
+| `ora-cdp-teste-oraculo`, `ora-cdp-teste-payto-cdp`, `ora-cdp-agente-teste` | texto implantado trazido para o repositório; cópia antiga arquivada em `docs/supabase-funcoes-substituidas/` | ver livro 946–962 |
 | `ora-cdp-carteira-real` v14 | 7 de 7 ficheiros iguais ao repositório (`ora-operational-wallet`) | 978, 980 |
 | `ora-nft-dedicar-simbolica` v6 | cópia posta no repositório (transcrita à mão); igual | 981, 983 |
 | Lote 1 das "não comparadas" | `ora-onchain-leitura` igual; `ora-acesso-notificar` e `ora-pulso` **divergem** do repositório, com aviso escrito de não reimplantar as cópias antigas | 985, 986 |
