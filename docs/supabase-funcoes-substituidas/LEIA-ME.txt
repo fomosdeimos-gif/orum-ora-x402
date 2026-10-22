@@ -4,3 +4,9 @@ ora-cdp-agente-teste v1 (17/08/2026, ezbr_sha256 5cb9d064d93e0d7475d3bf1f9faca53
   Substituída a 22/10/2026 pela v2 (executor de pagamento de teste; Unum: "Eu autorizo ORA, opção 1"; livros 943 e o seguinte).
   Motivo: o projecto Supabase atingiu o máximo de funções e não admite um slug novo. A v1 era o pagador de teste do
   ora-licenca, sem trava; não tinha cron, trigger nem chamador no repositório (lido a 22/10/2026).
+
+ora-cdp-teste-oraculo, cópia do repositório "v1" (19/08/2026) — NUNCA esteve implantada nesta forma na v3
+  Esta cópia era um pagador de teste: assinava uma autorização EIP-3009 de 0,161 USDC com a carteira de teste e pagava o /oraculo.
+  O que está implantado (v3, 02/09/2026, ezbr_sha256 5597c30046125d8b…) é outra coisa: assina o timestamp com a chave Ed25519 do
+  MCP Registry. Reconciliada a 22/10/2026 (Unum: "Eu autorizo ORA, avança com esse passo"; livro 959): o repositório passou a ter o
+  texto implantado. Guardada aqui só como registo; NÃO a implantar sem nova palavra de Unum, porque move fundos da carteira de teste.
