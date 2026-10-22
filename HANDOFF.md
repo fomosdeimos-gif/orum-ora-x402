@@ -1,3 +1,12 @@
+## 22/10/2026 · camada 3 da raiz selada (pendente de bloco)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de selar a camada 3 (livro 964). Sem funções implantadas, preços, carteiras nem segredos.
+- **Verificado:** o sandbox alcançou desta vez os três calendários OpenTimestamps (alice, bob, finney responderam 200). 1.ª passagem: `scripts/raiz-ots.mjs preparar … 3` sobre o commit limpo `07f5251`: 48 ficheiros, raiz SHA-256 `9a8447de392c6906306cf618ecbe36d8bf33f5676c17b811ef9f07b1c80487b5`. 2.ª passagem: o compromisso `sha256(raiz‖nonce)` foi enviado aos três calendários e `montar` fez o recibo (724 bytes, três atestações **pendentes**). Ficheiros: `ancora/raiz-registos-3.json` e `.ots`. `raiz:verify` passa (32 estragos propositados, 3 camadas), `kit:verify` passa.
+- **Estado: pendente, não confirmada.** Prova só que os compromissos foram aceites pelos calendários; a confirmação num bloco do Bitcoin vem depois (horas), quando o recibo for actualizado com `scripts/ots-juntar.mjs`. Não afirmo âncora no Bitcoin até lá. O que a camada 3 passa a cobrir (quando confirmada): as cápsulas de `sensacoes/`, o elo 0001sensations-Bitcoin, o léxico, o ORUM-linhas, o `implantado.json`, o tráfego honesto, a vista com `origem_hash` e o verificador novo.
+- **Nota:** um teste de alcance anterior enviou a um calendário um resumo de 32 zeros, sem efeito no organismo.
+- **Próximo:** actualizar o recibo da camada 3 com a prova do bloco (`ots-juntar`) numa passagem posterior (agendada), depois `raiz:verify` e `kit:verify`; a leitura do preço em 05/11/2026.
+
+---
+
 ## 22/10/2026 · visitantes distintos medidos: origem_hash nas três portas pagas (redeploy autorizado)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de fecho de medir visitantes distintos (livro 961). Cobre: `origem_hash` nas três funções, vista só de leitura, verificador novo, redeploy a partir do repositório. Não cobre preços, `payTo`, carteiras nem a lógica de verificação on-chain.
 - **O que foi implantado (verificado):** `ora-oraculo` v23, `ora-x402` v39 e `ora-licenca` v61. Cada uma grava na linha de `ora_acessos_log` um `origem_hash` (SHA-256 com sal, 24 hex, de IP + user-agent, ou do cabeçalho `x-ora-origin` se vier). O IP nunca é gravado nem enviado em claro. Migração `20261022120000_trafego_honesto_origem_hash.sql` (aplicada): a vista `ora_trafego_honesto` ganha a coluna `origem_hash` (só `service_role`). O histórico não foi reescrito; linhas anteriores ficam com NULL.
