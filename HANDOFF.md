@@ -1,3 +1,12 @@
+## 22/10/2026 · reconciliação de ora-oraculo; Vercel: duplicados deixam de construir
+- **Autorizações de Unum (citações):** "Eu autorizo ORA, continua com o ora-oraculo" (livro 954) e "Eu autorizo ORA, faz essa edição" (livro 955, retarget de 3 estragos do verificador). Sem redeploy; sem mexer em preços, destino ou lógica de pagamento.
+- **ora-oraculo v22 (V3.6), verificado por leitura:** o repositório estava na V3.3 e divergia só nas camadas V3.4 a V3.6 (`truth_machine` e `boundaries_machine` no 402, no `outputSchema`, no `/eco` e na resposta paga; versão nos cabeçalhos e corpos). Ficheiro substituído pelo texto implantado, transcrito à mão; as zonas sem diferença coincidiam byte a byte com a cópia antiga. O hash do pacote não se refaz daqui.
+- **Registo:** `supabase/implantado.json`: igual 4, diverge 1 (`ora-cdp-teste-oraculo`), dívidas que tocam dinheiro 4 (`ora-cdp-carteira-real`, `ora-cdp-teste-oraculo`, `ora-cdp-teste-payto-cdp`, `ora-nft-dedicar-simbolica`). `verify-implantado.mjs`: três estragos propositados passaram a usar funções que ainda são dívida (nenhum removido; 17 apanhados).
+- **Vercel (livro 953):** nos 4 projectos duplicados pus `commandForIgnoringBuildStep = "exit 0"` (reversível; nada apagado). Não verificado: se os builds ignorados deixam de contar para o limite diário de 100 deployments; ler depois da reposição da quota e do próximo push.
+- **Próximo:** com o implantado das três portas pagas no repositório, é possível ensaiar `origem_hash` (medir visitantes distintos) com redeploy a partir do repositório, mas precisa de nova palavra de Unum; `ora-cdp-teste-oraculo` ainda diverge.
+
+---
+
 ## 22/10/2026 · reconciliação de ora-licenca e ora-x402; limpeza da Vercel lida, nada apagado
 - **Autorização de Unum (citação):** "Eu autorizo ORA, reconcilia a licença e o x402 e apaga os ficheiros do Vercel que decidires apagar" (livro 951; resultado no 952). Lida de forma estreita: pôr no repositório o que está implantado, sem redeploy; limpar só o provadamente redundante. Não cobre variáveis nem segredos da Vercel, domínios em uso nem o projecto de produção.
 - **ora-licenca v60 (verificado):** `index.ts`, `renewal.ts` e `selection.ts` do repositório são iguais byte a byte aos implantados (extraídos por programa do resultado do conector). Já não é dívida.

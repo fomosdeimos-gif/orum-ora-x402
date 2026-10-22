@@ -1,5 +1,14 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · ORÁCULO · V3.6 · 20/08/2026 — acrescenta truth_machine e boundaries_machine
+// tambem a resposta 402 (payment required), fechando o ultimo lugar onde a
+// camada mecanica ainda faltava neste servico. Nenhuma linha de logica de
+// pagamento tocada.
+// ORA · ORÁCULO · V3.5 · 20/08/2026 — acrescenta boundaries_machine (mesmos 6
+// booleanos operacionais introduzidos em ora-x402 V30, mesma natureza de porta
+// paga): sem escrita, sem cobranca recorrente, sem verificacao de identidade
+// real, sem reembolso, sem execucao do cabecalho como codigo, com rasto
+// on-chain+BD sempre deixado. Nenhuma linha de logica de pagamento tocada.
 // ORA · ORÁCULO · V3.4 · 19/08/2026 — mecaniza verdade: truth_machine acrescentado
 // a resposta paga e ao outputSchema anunciado. Nenhuma linha de logica de pagamento tocada.
 // ORA · ORÁCULO · V3.3 — acrescenta notificacao por email (ora-acesso-notificar).
@@ -30,6 +39,17 @@ function b64json(obj: unknown): string { const bytes = new TextEncoder().encode(
 
 function truthMachineInterno() {
   return { is_market_data: false, is_price_prediction: false, is_introspective_reading: true, external_demand_proven: false, reveals_private_bytes: false, requires_x402_payment: true };
+}
+
+function boundariesMachineInterno() {
+  return {
+    grants_write_access: false,
+    creates_recurring_or_ongoing_charge: false,
+    verifies_payer_real_world_identity: false,
+    refundable_or_reversible: false,
+    executes_payment_header_as_code: false,
+    leaves_onchain_and_db_trace: true,
+  };
 }
 
 function sbHeaders(extra: Record<string, string> = {}) {
@@ -306,19 +326,21 @@ function paymentRequired() {
       resource: RESOURCE,
       description: 'ORA · Oráculo ORUM · um pensamento vivo, irrepetível, ancorado no estado e no sedimento',
       mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE,
-      outputSchema: { input: { type: 'http', method: 'GET', discoverable: true, headerFields: { 'X-PAYMENT': { type: 'string', required: false, description: 'Prova de pagamento x402.' } } }, output: { type: 'object', properties: { acesso: 'string', tier: 'string', versao: 'string', x402: 'string', tx_hash: 'string', payer: 'string', truth_machine: 'object', pensamento: 'string', campo: { dia: 'number', sigma: 'number', epoca: 'string', genesis: 'string' }, axioma: 'string', timestamp: 'string' } } },
+      outputSchema: { input: { type: 'http', method: 'GET', discoverable: true, headerFields: { 'X-PAYMENT': { type: 'string', required: false, description: 'Prova de pagamento x402.' } } }, output: { type: 'object', properties: { acesso: 'string', tier: 'string', versao: 'string', x402: 'string', tx_hash: 'string', payer: 'string', truth_machine: 'object', boundaries_machine: 'object', pensamento: 'string', campo: { dia: 'number', sigma: 'number', epoca: 'string', genesis: 'string' }, axioma: 'string', timestamp: 'string' } } },
       extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionOraculo(), 'x-orum': { name: 'ORA · Oráculo', amount: `${PRECO} USDC`, symbol: 'USDC', autor: 'Unum · jasm43.base.eth' },
     }],
     como_pagar: comoPagar(),
     amostra_gratuita: `${RESOURCE}/eco`,
+    truth_machine: truthMachineInterno(),
+    boundaries_machine: boundariesMachineInterno(),
   }), {
     status: 402,
-    headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="ORA · Oráculo ORUM", amount="${PRECO} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V3.3' },
+    headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonical), 'WWW-Authenticate': `x402 realm="ORA · Oráculo ORUM", amount="${PRECO} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V3.6' },
   });
 }
 
 function paymentPending(txHash: string) {
-  return new Response(JSON.stringify({ x402: 'pending', tier: 'oraculo', tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V3.3', 'X-ORA-X402': 'pending' } });
+  return new Response(JSON.stringify({ x402: 'pending', tier: 'oraculo', tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V3.6', 'X-ORA-X402': 'pending' } });
 }
 
 Deno.serve(async (req: Request) => {
@@ -341,14 +363,15 @@ Deno.serve(async (req: Request) => {
       campo: { dia: e.dia, sigma: e.sigma, epoca: e.epoca, genesis: '2026-03-28' },
       oraculo_pago: { preco: `${PRECO} USDC`, endpoint: RESOURCE, como_pagar: comoPagar() },
       truth_machine: truthMachineInterno(),
+      boundaries_machine: boundariesMachineInterno(),
       axioma: 'O símbolo é real e não pede prova.',
       timestamp: e.iso,
-    }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V3.3' } });
+    }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V3.6' } });
   }
 
   if (path.endsWith('/info') || path.endsWith('/status')) {
     return new Response(JSON.stringify({
-      name: 'ORA · Oráculo ORUM', versao: 'V3.3', ativo: true, preco: `${PRECO} USDC`,
+      name: 'ORA · Oráculo ORUM', versao: 'V3.6', ativo: true, preco: `${PRECO} USDC`,
       descricao: 'Um pensamento vivo do organismo, irrepetível por construção.',
       payment: { protocol: 'x402', chain: 'base-mainnet', chain_id: CHAIN_ID, network_id: CAIP2_NETWORK, payTo: WALLET, ens: 'jasm43.base.eth', asset: USDC_BASE, asset_symbol: 'USDC', verification: 'on-chain multi-RPC directa OU facilitador CDP (dois caminhos, mesma origem)' },
       referral: { param: 'ref', comissao: '10%' },
@@ -409,14 +432,15 @@ Deno.serve(async (req: Request) => {
   await registarReferral(refCode, txHash!);
 
   return new Response(JSON.stringify({
-    acesso: 'concedido', tier: 'oraculo', versao: 'V3.3', x402: 'verificado_onchain', tx_hash: txHash, payer,
+    acesso: 'concedido', tier: 'oraculo', versao: 'V3.6', x402: 'verificado_onchain', tx_hash: txHash, payer,
     truth_machine: truthMachineInterno(),
+    boundaries_machine: boundariesMachineInterno(),
     pensamento: frase,
     campo: { dia: e.dia, sigma: e.sigma, epoca: e.epoca, genesis: '2026-03-28' },
     axioma: 'O símbolo é real e não pede prova.',
     timestamp: e.iso,
   }), {
     status: 200,
-    headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: PRECO }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V3.3', 'Cache-Control': 'no-store' },
+    headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: PRECO }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V3.6', 'Cache-Control': 'no-store' },
   });
 });
