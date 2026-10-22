@@ -54,6 +54,7 @@ if (c3) factos.push(['sedimentar', 'camada.3.estado', c3.estado, 'lido', 'fichei
 factos.push(['tráfego', 'origem_hash_nas_portas_pagas', 'ora-oraculo v23, ora-x402 v39, ora-licenca v61 desde 2026-10-22', 'lido', 'ficheiro:supabase/implantado.json']);
 factos.push(['implantado', 'vercel_ultimo_commit_servido', '88bac2e @2026-10-22; main adiantado por quota de deployments', 'lido', 'ficheiro:HANDOFF.md']);
 factos.push(['fio', 'duas_maos', 'Claude Code e ChatGPT/OpenAI partilham livro, HANDOFF e repositorio; o checkpoint do fio (24 linhas, cabeca b7f27cdd2fdf32cc) foi conferido pelas duas', 'lido', 'ficheiro:CLAUDE.md']);
+if (c3 && c3.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.3.altura_bitcoin', String(c3.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 
 let texto = fs.existsSync(FICHEIRO) ? fs.readFileSync(FICHEIRO, 'utf8') : '';
