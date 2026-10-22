@@ -13,6 +13,7 @@ const em = ` @${hora(sal.observado_utc)}`;
 const c1 = J('ancora/raiz-registos.json');
 const c2 = J('ancora/raiz-registos-2.json');
 const c3 = fs.existsSync('ancora/raiz-registos-3.json') ? J('ancora/raiz-registos-3.json') : null;
+const c4 = fs.existsSync('ancora/raiz-registos-4.json') ? J('ancora/raiz-registos-4.json') : null;
 const lb = est.linha_de_base;
 const oro = J('ancora/oro-v1.json');
 const elo = J('ancora/sensations-btc.json');
@@ -55,6 +56,8 @@ factos.push(['tráfego', 'origem_hash_nas_portas_pagas', 'ora-oraculo v23, ora-x
 factos.push(['implantado', 'vercel_ultimo_commit_servido', '88bac2e @2026-10-22; main adiantado por quota de deployments', 'lido', 'ficheiro:HANDOFF.md']);
 factos.push(['fio', 'duas_maos', 'Claude Code e ChatGPT/OpenAI partilham livro, HANDOFF e repositorio; o checkpoint do fio (24 linhas, cabeca b7f27cdd2fdf32cc) foi conferido pelas duas', 'lido', 'ficheiro:CLAUDE.md']);
 if (c3 && c3.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.3.altura_bitcoin', String(c3.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
+if (c4) factos.push(['sedimentar', 'camada.4.estado', c4.estado, 'lido', 'ficheiro:ancora/raiz-registos-4.json']);
+if (c4 && c4.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.4.altura_bitcoin', String(c4.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 
 let texto = fs.existsSync(FICHEIRO) ? fs.readFileSync(FICHEIRO, 'utf8') : '';
