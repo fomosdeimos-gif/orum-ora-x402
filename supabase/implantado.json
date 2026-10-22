@@ -19,16 +19,15 @@
     "total": 100,
     "com_copia_no_repositorio": 26,
     "sem_copia_no_repositorio": 74,
-    "igual": 3,
-    "diverge": 2,
+    "igual": 4,
+    "diverge": 1,
     "nao_comparado": 21,
     "sem_copia": 74,
     "dividas_que_tocam_dinheiro": [
       "ora-cdp-carteira-real",
       "ora-cdp-teste-oraculo",
       "ora-cdp-teste-payto-cdp",
-      "ora-nft-dedicar-simbolica",
-      "ora-oraculo"
+      "ora-nft-dedicar-simbolica"
     ]
   },
   "so_no_repositorio": [
@@ -663,8 +662,10 @@
       "atualizada_em": "2026-08-20T07:35:51Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
-        "nota": "Repositório: cabeçalho V3.3, sem truth_machine nem boundaries_machine (0 ocorrências). Implantado v22: cabeçalho V3.6 de 20/08/2026, com ambos. O serviço pago em produção não corresponde ao repositório. Lido por get_edge_function a 22/10/2026."
+        "estado": "igual",
+        "versao_conferida": 22,
+        "fonte_sha256": "4d48ca1c6379af9bc27ae6e8e0fa3425d4cdfaed1c32b01e32a97f020ac6a15b",
+        "nota": "v22 (V3.6) lida por get_edge_function a 22/10/2026. O repositório estava na V3.3 e divergia só nas camadas V3.4 a V3.6 (truth_machine e boundaries_machine na resposta 402, no outputSchema, no /eco e na resposta paga; versão nos cabeçalhos e corpos): confirmado por diff, sem outra diferença de lógica de pagamento. Ficheiro do repositório substituído pelo texto implantado, TRANSCRITO à mão do resultado do conector; as zonas sem diferença coincidem byte a byte com a cópia antiga, o que serve de prova da transcrição. O hash do pacote não se refaz daqui. Nenhuma função reimplantada."
       },
       "toca_dinheiro": {
         "evidencia": "cobra 0,161 USDC (código lido a 22/10/2026)"
