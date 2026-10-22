@@ -1,3 +1,13 @@
+## 22/10/2026 · ora-nft-dedicar-simbolica (v6) reconciliada: dívidas que tocam dinheiro 1 → 0
+- **Autorização de Unum (citação):** "Eu autorizo", à proposta de reconciliar a `ora-nft-dedicar-simbolica` só em leitura (livro 981, registado antes do acto).
+- **Lido (verificado):** `get_edge_function` devolveu a v6 (impressão `b035fdc8…`, 07/09/2026), um ficheiro. Serviço pago de 0,618 USDC (dedicatória simbólica, não transfere o NFT): devolve 402 com `payTo` na sagrada antiga, verifica por recibo a transferência USDC na Base (4 RPCs públicos) e regista em `ora_pagamentos` e `ora_nft_dedicatorias`. Não envia fundos nem assina.
+- **Feito:** o repositório não tinha cópia; passou a ter `supabase/functions/ora-nft-dedicar-simbolica/index.ts`, o texto implantado transcrito à mão. `implantado.json`: `igual`, 8 iguais, 29 com cópia, **dívidas que tocam dinheiro: nenhuma**.
+- **Verificador:** o caso de estrago "esconde uma dívida" deixou de poder usar uma dívida real (já não há); passou a marcar `ora-nft-dedicar` como tocando dinheiro sem o declarar no resumo. 20 estragos apanhados.
+- **Não verificado:** a transcrição não foi comparada byte a byte (não havia segunda cópia para diff) nem o hash do pacote se refaz daqui. Nenhuma função chamada nem reimplantada; nenhum segredo lido.
+- **Próximo:** confirmar a camada 4 (agendado 14:19 UTC); leitura do preço em 05/11/2026; as 21 funções "não comparadas" que não tocam dinheiro ficam por ordem de uso.
+
+---
+
 ## 22/10/2026 · ora-cdp-carteira-real (v14) reconciliada com o repositório: dívida que toca dinheiro 2 → 1
 - **Autorização de Unum (citação):** "Eu autorizo", à proposta de reconciliar a `ora-cdp-carteira-real` só em leitura (livro 978, registado antes do acto).
 - **Lido (verificado):** `get_edge_function` devolveu a v14 (impressão `a95cb377…`, actualizada a 19/10/2026), 7 ficheiros. Transcrevi-os à mão e comparei por `diff` com `supabase/functions/ora-operational-wallet`: **7 de 7 iguais**. Um desvio em `bazaar.mjs` era erro meu de transcrição (um carácter do endereço USDC), corrigido e re-conferido. Repete a conferência do livro 910 (20/10), que o registo `implantado.json` não tinha; a diferença v13→v14 é o caminho C (pagamento sem ETH: `gasless.mjs` e a prova `AuthorizationUsed` em `payments.mjs`).

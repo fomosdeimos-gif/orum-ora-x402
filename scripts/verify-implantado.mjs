@@ -85,7 +85,7 @@ const falha = (nome, reg, fs = fsReal) => { assert.ok(verificar(reg, fs).length 
 { const r = clone(); get(r, 'ora-cdp-teste-oraculo').reconciliacao = { estado: 'diverge', nota: 'x' }; falha('diverge sem prova escrita', r); }
 { const r = clone(); get(r, 'pensamento').reconciliacao = { estado: 'nao_comparado' }; falha('nao_comparado sem cópia', r); }
 { const r = clone(); get(r, 'ora-licenca').reconciliacao = { estado: 'sem_copia' }; falha('sem_copia com cópia no repositório', r); }
-{ const r = clone(); r.resumo.dividas_que_tocam_dinheiro = r.resumo.dividas_que_tocam_dinheiro.filter((s) => s !== 'ora-nft-dedicar-simbolica'); falha('esconde uma dívida que toca dinheiro', r); }
+{ const r = clone(); get(r, 'ora-nft-dedicar').toca_dinheiro = { evidencia: 'x' }; falha('esconde uma dívida que toca dinheiro (sem a declarar no resumo)', r); }
 { const r = clone(); r.resumo.igual += 1; falha('resumo inflacionado', r); }
 { const r = clone(); r.so_no_repositorio = []; falha('esconde pastas só no repositório', r); }
 { const r = clone(); r.funcoes.push({ ...get(r, 'pensamento') }); falha('slug repetido', r); }

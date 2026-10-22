@@ -17,15 +17,13 @@
   "como_conferir": "Chamar list_edge_functions e comparar, por slug, versao e impressão com este ficheiro; qualquer diferença é uma mudança que não passou por aqui. Depois de implantar uma função, acrescentar a nova linha e, se o código vier do repositório, reconciliar (igual) e fixar o sha256 do ficheiro.",
   "resumo": {
     "total": 100,
-    "com_copia_no_repositorio": 28,
-    "sem_copia_no_repositorio": 72,
-    "igual": 7,
+    "com_copia_no_repositorio": 29,
+    "sem_copia_no_repositorio": 71,
+    "igual": 8,
     "diverge": 0,
     "nao_comparado": 21,
-    "sem_copia": 72,
-    "dividas_que_tocam_dinheiro": [
-      "ora-nft-dedicar-simbolica"
-    ]
+    "sem_copia": 71,
+    "dividas_que_tocam_dinheiro": []
   },
   "so_no_repositorio": [
     "0001sensations-mcp"
@@ -841,12 +839,15 @@
       "verify_jwt": false,
       "ezbr_sha256_16": "b035fdc841b9c163",
       "atualizada_em": "2026-09-07T07:03:38Z",
-      "repo": false,
+      "repo": true,
       "reconciliacao": {
-        "estado": "sem_copia"
+        "estado": "igual",
+        "versao_conferida": 6,
+        "fonte_sha256": "32ecdf36fd0962b378e7558142464498dbc17bb00e68dfe554ba8393c8a9d7ab",
+        "nota": "v6 (07/09/2026, remove o nome legal das superfícies públicas) lida por get_edge_function a 22/10/2026 (Unum: \"Eu autorizo\", livro 981). O repositório não tinha cópia; passou a ter o texto implantado, TRANSCRITO à mão do resultado do conector (hash do pacote não se refaz daqui; não houve segunda cópia para diff). Serviço pago de 0,618 USDC (dedicatória simbólica, não transfere o NFT): devolve 402 com payTo na sagrada antiga, verifica a transferência USDC na Base por recibo (4 RPCs públicos) e regista em ora_pagamentos e ora_nft_dedicatorias; não envia fundos nem assina. Nenhuma função chamada nem reimplantada; nenhum segredo lido."
       },
       "toca_dinheiro": {
-        "evidencia": "devolve 402 (registos de 22/10/2026)"
+        "evidencia": "serviço pago de 0,618 USDC, devolve 402 com payTo na sagrada antiga e verifica a transferência on-chain (código lido a 22/10/2026)"
       },
       "uso_24h": {
         "pedidos": 8,
