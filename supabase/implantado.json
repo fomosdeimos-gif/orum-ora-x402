@@ -17,15 +17,14 @@
   "como_conferir": "Chamar list_edge_functions e comparar, por slug, versao e impressão com este ficheiro; qualquer diferença é uma mudança que não passou por aqui. Depois de implantar uma função, acrescentar a nova linha e, se o código vier do repositório, reconciliar (igual) e fixar o sha256 do ficheiro.",
   "resumo": {
     "total": 100,
-    "com_copia_no_repositorio": 26,
-    "sem_copia_no_repositorio": 74,
-    "igual": 5,
+    "com_copia_no_repositorio": 27,
+    "sem_copia_no_repositorio": 73,
+    "igual": 6,
     "diverge": 0,
     "nao_comparado": 21,
-    "sem_copia": 74,
+    "sem_copia": 73,
     "dividas_que_tocam_dinheiro": [
       "ora-cdp-carteira-real",
-      "ora-cdp-teste-payto-cdp",
       "ora-nft-dedicar-simbolica"
     ]
   },
@@ -1563,12 +1562,15 @@
       "verify_jwt": false,
       "ezbr_sha256_16": "eefab672be0cdbcb",
       "atualizada_em": "2026-09-26T10:15:20Z",
-      "repo": false,
+      "repo": true,
       "reconciliacao": {
-        "estado": "sem_copia"
+        "estado": "igual",
+        "versao_conferida": 4,
+        "fonte_sha256": "70af260cf7a843f60785dfae9e75dfa27524431ee786dc2dab1eae9a22ac16db",
+        "nota": "v4 (V1 da auditoria de descoberta, 26/09/2026) lida por get_edge_function a 22/10/2026. O repositório não tinha cópia; passou a ter o texto implantado, TRANSCRITO à mão do resultado do conector (hash do pacote não se refaz daqui). Apesar do nome (herdado de um utilitário de teste), é um serviço pago de 0,50 USDC com payTo na sagrada antiga e verificação on-chain; 0 pedidos em 24 h. Nenhuma função reimplantada nem chamada."
       },
       "toca_dinheiro": {
-        "evidencia": "ferramenta de teste de payTo CDP (HANDOFF)"
+        "evidencia": "serviço pago de 0,50 USDC, devolve 402 com payTo na sagrada antiga (código lido a 22/10/2026)"
       },
       "uso_24h": {
         "pedidos": 0
