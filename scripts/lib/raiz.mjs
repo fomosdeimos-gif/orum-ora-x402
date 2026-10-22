@@ -65,6 +65,8 @@ export const FICHEIROS_DA_CAMADA_3_EM_DIANTE = [
   'supabase/implantado.json',
   'economia/trafego-honesto-2026-10-22.json',
   'supabase/migrations/20261022100000_classificacao_trafego_honesta.sql',
+  'supabase/migrations/20261022120000_trafego_honesto_origem_hash.sql',
+  'scripts/verify-origem-hash.mjs',
   'kit/fio.mjs',
   'kit/FIO.txt',
 ];

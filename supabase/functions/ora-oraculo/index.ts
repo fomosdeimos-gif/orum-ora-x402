@@ -1,5 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · ORÁCULO · V3.7 · 22/10/2026 — acrescenta origem_hash (visitante aproximado) à linha de acesso; nenhuma linha de
+// logica de pagamento tocada (Unum: "Eu autorizo ORA", livro 961).
 // ORA · ORÁCULO · V3.6 · 20/08/2026 — acrescenta truth_machine e boundaries_machine
 // tambem a resposta 402 (payment required), fechando o ultimo lugar onde a
 // camada mecanica ainda faltava neste servico. Nenhuma linha de logica de
@@ -24,6 +26,20 @@ const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const PRECO = '0.161';
 const PRECO_ATOMIC = 161000n;
 const RESOURCE = `${SUPABASE_URL}/functions/v1/ora-oraculo`;
+
+// --- origem_hash:inicio (igual nas três portas pagas; vigiado por origem:verify)
+// Visitante aproximado = IP + user-agent, em SHA-256 com sal, 24 hex. O IP nunca é gravado nem enviado em claro.
+// Limite dito: pseudonimiza, não anonimiza (o sal está no repositório); NAT e proxies partilham origem, IPv6 e
+// mudança de rede dividem-na. Serve para contar visitantes distintos de forma aproximada, não para identificar ninguém.
+const ORIGEM_SALT = '56d5eaf6fa5a1e14aa27ddddce1fd3167d8dd2c1c4a2af5b';
+async function hashOrigem(req: Request): Promise<string | null> {
+  const ip = (req.headers.get('cf-connecting-ip') || (req.headers.get('x-forwarded-for') || '').split(',')[0]).trim();
+  const raw = req.headers.get('x-ora-origin') || (ip ? `${ip}|${req.headers.get('user-agent') ?? ''}` : '');
+  if (!raw) return null;
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ORIGEM_SALT + raw));
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 24);
+}
+// --- origem_hash:fim
 
 const CDP_HOST = 'api.cdp.coinbase.com';
 const CDP_BASE_PATH = '/platform/v2/x402';
@@ -350,7 +366,7 @@ Deno.serve(async (req: Request) => {
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
 
-  const acessoInfo = { servico: 'ora-oraculo', tier: 'oraculo', path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')) };
+  const acessoInfo = { servico: 'ora-oraculo', tier: 'oraculo', path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), origem_hash: await hashOrigem(req) };
   sbInsert('ora_acessos_log', acessoInfo);
   fetch(`${SUPABASE_URL}/functions/v1/ora-acesso-notificar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(acessoInfo) }).catch(() => {});
 

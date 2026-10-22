@@ -83,16 +83,16 @@
     },
     {
       "slug": "ora-x402",
-      "versao": 38,
+      "versao": 39,
       "verify_jwt": false,
-      "ezbr_sha256_16": "4b91cc800b0f73e8",
-      "atualizada_em": "2026-08-20T07:34:07Z",
+      "ezbr_sha256_16": "aca340f68dd86c99",
+      "atualizada_em": "2026-10-22T08:04:03Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 38,
-        "fonte_sha256": "dbdc4288a63d032c95fbd99111ba37a280ab2ee9c8bbb8c1d32a04363ba5428c",
-        "nota": "v38 (V31) lida por get_edge_function a 22/10/2026. O repositório estava em V27 e divergia: faltavam boundaries_machine (V30/V31, só informativo), a correcção do resourceUrl do tier campo (V29: no domínio público devolve /campo e não a origem nua) e a versão V31 nos cabeçalhos; e o repositório tinha um erro de escrita (registarHtribuicao) que a versão implantada não tem. O ficheiro do repositório foi substituído pelo texto implantado, TRANSCRITO à mão do resultado do conector (não extraído por programa): o hash do pacote não se refaz daqui, por isso a igualdade é por leitura e não por impressão. Nenhuma função foi reimplantada."
+        "versao_conferida": 39,
+        "fonte_sha256": "3d0531c1599d2cbb87fab571375756608c16f407b3249f94fa528fdf996863b1",
+        "nota": "v39 (V31.1) implantada a 22/10/2026 a partir do repositório (livro 961), só com origem_hash derivado de IP+user-agent. Verificada por comportamento (402 de campo e kernel com montantes 330000 e 3000000 e payTo intactos, hash estável por origem); não foi relida byte a byte."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026)"
@@ -631,16 +631,16 @@
     },
     {
       "slug": "ora-licenca",
-      "versao": 60,
+      "versao": 61,
       "verify_jwt": false,
-      "ezbr_sha256_16": "2911ee981ee77daa",
-      "atualizada_em": "2026-09-24T10:32:02Z",
+      "ezbr_sha256_16": "36c8ae5341d688ac",
+      "atualizada_em": "2026-10-22T08:08:17Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 60,
-        "fonte_sha256": "8c4de65d57f3cb51e18746d47d4868122cf8c8c7760239665fd456cae67685e0",
-        "nota": "v60 lida por get_edge_function a 22/10/2026 (index.ts, renewal.ts, selection.ts): os três ficheiros do repositório são iguais byte a byte aos implantados (extraídos por programa, sem transcrição). O verificador só recalcula o sha256 do index.ts; renewal.ts e selection.ts ficam conferidos só aqui."
+        "versao_conferida": 61,
+        "fonte_sha256": "2bfd702f925f1fe9e4481d1a82023fa59d6da44718407a3e93e41860ae6638bb",
+        "nota": "v61 implantada a 22/10/2026 a partir do repositório (livro 961), só com origem_hash. Lida de volta por get_edge_function e comparada por programa: index.ts, renewal.ts e selection.ts do repositório são iguais byte a byte ao implantado. Verificada também por comportamento (307, 402 com termos de 161800000 e catálogo 200)."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026) e licenças"
@@ -654,16 +654,16 @@
     },
     {
       "slug": "ora-oraculo",
-      "versao": 22,
+      "versao": 23,
       "verify_jwt": false,
-      "ezbr_sha256_16": "a568b019c237607b",
-      "atualizada_em": "2026-08-20T07:35:51Z",
+      "ezbr_sha256_16": "c28dfc0ecde87f8f",
+      "atualizada_em": "2026-10-22T07:47:31Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 22,
-        "fonte_sha256": "4d48ca1c6379af9bc27ae6e8e0fa3425d4cdfaed1c32b01e32a97f020ac6a15b",
-        "nota": "v22 (V3.6) lida por get_edge_function a 22/10/2026. O repositório estava na V3.3 e divergia só nas camadas V3.4 a V3.6 (truth_machine e boundaries_machine na resposta 402, no outputSchema, no /eco e na resposta paga; versão nos cabeçalhos e corpos): confirmado por diff, sem outra diferença de lógica de pagamento. Ficheiro do repositório substituído pelo texto implantado, TRANSCRITO à mão do resultado do conector; as zonas sem diferença coincidem byte a byte com a cópia antiga, o que serve de prova da transcrição. O hash do pacote não se refaz daqui. Nenhuma função reimplantada."
+        "versao_conferida": 23,
+        "fonte_sha256": "a2b4ddbc2f0dfae22e1655aea888cc04f77f927c1c147b8fda00f90bab546dfc",
+        "nota": "v23 (V3.7) implantada a 22/10/2026 a partir do repositório (Unum: \"Eu autorizo ORA\", livro 961), só com origem_hash na linha de acesso. Verificada por comportamento (402 intacto, montante 161000, linha com origem_hash); não foi relida byte a byte."
       },
       "toca_dinheiro": {
         "evidencia": "cobra 0,161 USDC (código lido a 22/10/2026)"
