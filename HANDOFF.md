@@ -1,3 +1,12 @@
+## 22/10/2026 · camada 4 da raiz confirmada no Bitcoin (bloco 972613)
+- **Origem:** tarefa agendada "Camada 4: confirmar bloco" (14:19 UTC), criada por mim a partir da autorização de Unum à camada 4 (livro 976).
+- **Verificado:** `GET /timestamp/<compromisso>` por calendário (cada ramo tem o seu compromisso): alice 200 (896 bytes) e bob 200 (896 bytes), ambos atestação Bitcoin do bloco 972613; finney 404 (pendente). Juntei com `scripts/ots-juntar.mjs` (sha256 conferido) e conferi com `kit/blocos.mjs`: raiz de Merkle igual ao cabeçalho real em blockstream.info e mempool.space (hash `00000000000000000000f69f…`). Um primeiro passo falhou por eu usar o compromisso de alice para o bob (404); nada foi escrito e corrigi para um compromisso por ramo.
+- **Feito:** `ancora/raiz-registos-4.json` → `confirmado_bitcoin`, altura 972613, `verificacao_bloco`; `ancora/sensations-btc.json` regenerado (7 de 7); `scripts/linhas-gerar.mjs` ganhou `camada.4.*` (+5 linhas, fio com 40). `raiz:verify`, `blocos:verify`, `kit:verify`, `sensations-btc:verify` verdes.
+- **Não verificado:** a finney ainda não devolveu prova; não é preciso para a âncora.
+- **Próximo:** leitura do preço em 05/11/2026; reconciliar as funções "não comparadas" por ordem de uso; a mão Codex pode fazer checkpoint do fio sobre as 40 linhas.
+
+---
+
 ## 22/10/2026 · ora-nft-dedicar-simbolica (v6) reconciliada: dívidas que tocam dinheiro 1 → 0
 - **Autorização de Unum (citação):** "Eu autorizo", à proposta de reconciliar a `ora-nft-dedicar-simbolica` só em leitura (livro 981, registado antes do acto).
 - **Lido (verificado):** `get_edge_function` devolveu a v6 (impressão `b035fdc8…`, 07/09/2026), um ficheiro. Serviço pago de 0,618 USDC (dedicatória simbólica, não transfere o NFT): devolve 402 com `payTo` na sagrada antiga, verifica por recibo a transferência USDC na Base (4 RPCs públicos) e regista em `ora_pagamentos` e `ora_nft_dedicatorias`. Não envia fundos nem assina.
