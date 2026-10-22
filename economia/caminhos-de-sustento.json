@@ -8,7 +8,7 @@
   "estado_real": {
     "receita_externa_confirmada": "nenhuma",
     "pagamentos_internos_e_de_teste": "21 pagamentos, 18,56 USDC, 6 licenças, 0 compradores externos, conversão externa 0% (livro do organismo ora_mudancas 869, 17/10/2026 05:21 UTC). São validação interna, não adopção.",
-    "acessos": "82% dos acessos externos são automáticos (mesmo registo). Há tráfego de máquinas, não há compradores.",
+    "acessos": "82% dos acessos externos são automáticos (mesmo registo). Há tráfego de máquinas, não há compradores. Correcção de 22/10/2026: parte do que estava marcado como externo era nosso (cron, nossas edge functions, sondas); a leitura honesta é a vista ora_trafego_honesto (supabase/migrations/20261022100000_classificacao_trafego_honesta.sql). O número de 82% não volta a ser usado sem essa vista.",
     "tesouraria_em_producao": "estado unknown, fonte learning_402 indisponível, observação on-chain de 5 das 24 horas, 0 transferências (lido a 17/10/2026 14:02 UTC)."
   },
   "caminhos": [
