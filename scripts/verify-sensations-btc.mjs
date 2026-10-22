@@ -19,7 +19,7 @@ assert.ok(FICHEIROS_DA_CAMADA_3_EM_DIANTE.includes('linhas/orum.linhas'));
 assert.ok(!ficheirosDaCamada(2).includes('linhas/orum.linhas'), 'a camada 2 não pode mudar');
 assert.ok(!ficheirosDaCamada(2).includes('sensacoes/som-v1.json'), 'a camada 2 não pode mudar');
 
-const FICHEIROS = ['ancora/raiz-registos.json', 'ancora/raiz-registos-2.json', 'ancora/raiz-registos-3.json', 'ancora/oro-v1.json', 'ancora/sensations-btc.json', ...fs.readdirSync('sensacoes').map((f) => `sensacoes/${f}`)];
+const FICHEIROS = ['ancora/raiz-registos.json', 'ancora/raiz-registos-2.json', 'ancora/raiz-registos-3.json', 'ancora/raiz-registos-4.json', 'ancora/oro-v1.json', 'ancora/sensations-btc.json', ...fs.readdirSync('sensacoes').map((f) => `sensacoes/${f}`)];
 let mentiras = 0;
 const falha = (nome, mutar) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'orum-elo-'));
