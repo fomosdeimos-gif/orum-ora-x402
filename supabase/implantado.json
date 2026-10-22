@@ -1,0 +1,1691 @@
+{
+  "format": "orum-implantado/v1",
+  "projecto": "orum-memoria (ywabnlhkmhbyewqhbsjm)",
+  "lido_em_utc": "2026-10-22T07:00:00Z",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA, começa pelo 1 e 2",
+    "livro": 946,
+    "cobre": "Registar o que está implantado no Supabase (versão, impressão, cópia no repositório, uso) com verificador. Só leitura do implantado; nenhuma função foi alterada por este registo."
+  },
+  "fonte": "Supabase list_edge_functions (inventário), get_edge_function (conteúdo, só onde indicado em reconciliacao) e query_logs/function_edge_logs (uso nas últimas 24 h).",
+  "limites": [
+    "A impressão (ezbr_sha256_16) são os 16 primeiros caracteres do hash do pacote implantado, transcritos do conector; serve para detectar que uma função mudou, não para provar o conteúdo.",
+    "Só se comparou o conteúdo (reconciliacao diferente de nao_comparado/sem_copia) onde está dito; as outras estão por comparar e contam como dívida só quando tocam dinheiro.",
+    "uso_24h: nada nos registos em 24 h não quer dizer função morta (pode ser semanal ou chamada só em eventos). ips_distintos é o IP de ligação visto pela plataforma; nas chamadas entre as nossas funções são IPs internos da plataforma. Não se guardam IPs.",
+    "toca_dinheiro só é verdadeiro com evidência lida; null quer dizer não lido."
+  ],
+  "como_conferir": "Chamar list_edge_functions e comparar, por slug, versao e impressão com este ficheiro; qualquer diferença é uma mudança que não passou por aqui. Depois de implantar uma função, acrescentar a nova linha e, se o código vier do repositório, reconciliar (igual) e fixar o sha256 do ficheiro.",
+  "resumo": {
+    "total": 100,
+    "com_copia_no_repositorio": 26,
+    "sem_copia_no_repositorio": 74,
+    "igual": 1,
+    "diverge": 2,
+    "nao_comparado": 23,
+    "sem_copia": 74,
+    "dividas_que_tocam_dinheiro": [
+      "ora-cdp-carteira-real",
+      "ora-cdp-teste-oraculo",
+      "ora-cdp-teste-payto-cdp",
+      "ora-licenca",
+      "ora-nft-dedicar-simbolica",
+      "ora-oraculo",
+      "ora-x402"
+    ]
+  },
+  "so_no_repositorio": [
+    "0001sensations-mcp",
+    "ora-operational-wallet"
+  ],
+  "funcoes": [
+    {
+      "slug": "pensamento",
+      "versao": 8,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "19e897772fbd2bee",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 3,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 3
+      }
+    },
+    {
+      "slug": "ora-page",
+      "versao": 39,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "a4d236adb2434e0b",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "cartao-oro",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "b19e8a225a6a2b4d",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-x402",
+      "versao": 38,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "4b91cc800b0f73e8",
+      "atualizada_em": "2026-08-20T07:34:07Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": {
+        "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026)"
+      },
+      "uso_24h": {
+        "pedidos": 583,
+        "desafios_402": 417,
+        "respostas_5xx": 0,
+        "ips_distintos": 166
+      }
+    },
+    {
+      "slug": "orai-monitor",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "e802db741211d2ab",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "orai-agente",
+      "versao": 14,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "2d278b8b3b64ee78",
+      "atualizada_em": "2026-08-15T09:32:49Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-revenue",
+      "versao": 6,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "6a2355ae80fe2fc4",
+      "atualizada_em": "2026-08-06T06:18:18Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-operations",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "2cc47f77e487e7a9",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "orai-decisao-autonoma",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "df9d7fede0df8aef",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "orai-autonomo",
+      "versao": 13,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "d9c23effccd52baa",
+      "atualizada_em": "2026-07-14T06:41:06Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-proxy",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "a29d8786aaf7c035",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-control-center",
+      "versao": 19,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "88065d1b8e83ce75",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "orai-notificador",
+      "versao": 15,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "a9c9b94621405403",
+      "atualizada_em": "2026-08-04T07:39:35Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 23,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-github-push",
+      "versao": 25,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "4b85b6487f7b0a7d",
+      "atualizada_em": "2026-08-06T14:37:53Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 12,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 12
+      }
+    },
+    {
+      "slug": "ora-mail",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "008c340c3ce9f3f2",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 1,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-diario",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "aeafea12844f7ef9",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-scout-register",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "a597bda202b40fa9",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-cerebro",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "5ce338e61ad784d2",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-evolucao",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "193e4a9f8f35d7ca",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-memoria-longa",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "3a62814cabd9b65a",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 3,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 3
+      }
+    },
+    {
+      "slug": "ora-assinar",
+      "versao": 20,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "75ba26049ed22f86",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-nucleo",
+      "versao": 8,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "124e7d49b18c089a",
+      "atualizada_em": "2026-07-24T14:27:16Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 3,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-cron-autonomo",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "4d9270f01a0abbc0",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-campo",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "7b9a70e7a0e35fdf",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "campo-cerebro",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "eea902a82f3f1acb",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-sustento-estado",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "f6da40d9f764817c",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-sustento-serve",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "cada2460c8a5372c",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-kernel-diario",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "adcad6392abd7d04",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 1,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-motor-unificado",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "d50ffa2aba6dfb0a",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 451,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-homeostase",
+      "versao": 7,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "2e1c8cbbc64a2a57",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 270,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-homeostase-relatorio",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "f22afc19615d5ebe",
+      "atualizada_em": "2026-07-09T08:49:11Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 1,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-onchain-leitura",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "b232ba80db5cddf7",
+      "atualizada_em": "2026-09-05T07:03:39Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 274,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora_partnerships",
+      "versao": 3,
+      "verify_jwt": true,
+      "ezbr_sha256_16": "436f3219a80e4b78",
+      "atualizada_em": "2026-07-14T06:41:06Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-x402-webhook-ingest",
+      "versao": 3,
+      "verify_jwt": true,
+      "ezbr_sha256_16": "f743dd7309294895",
+      "atualizada_em": "2026-07-14T06:41:06Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-x402-tracker",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "43ce467c8efbd930",
+      "atualizada_em": "2026-07-14T06:41:06Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-x402-status",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "ef87225973df951e",
+      "atualizada_em": "2026-07-14T06:41:06Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-x402-public",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "ffa3dcd901920518",
+      "atualizada_em": "2026-07-14T06:41:06Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-licenca",
+      "versao": 60,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "2911ee981ee77daa",
+      "atualizada_em": "2026-09-24T10:32:02Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": {
+        "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026) e licenças"
+      },
+      "uso_24h": {
+        "pedidos": 1209,
+        "desafios_402": 334,
+        "respostas_5xx": 0,
+        "ips_distintos": 172
+      }
+    },
+    {
+      "slug": "ora-oraculo",
+      "versao": 22,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "a568b019c237607b",
+      "atualizada_em": "2026-08-20T07:35:51Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "diverge",
+        "nota": "Repositório: cabeçalho V3.3, sem truth_machine nem boundaries_machine (0 ocorrências). Implantado v22: cabeçalho V3.6 de 20/08/2026, com ambos. O serviço pago em produção não corresponde ao repositório. Lido por get_edge_function a 22/10/2026."
+      },
+      "toca_dinheiro": {
+        "evidencia": "cobra 0,161 USDC (código lido a 22/10/2026)"
+      },
+      "uso_24h": {
+        "pedidos": 110,
+        "desafios_402": 109,
+        "respostas_5xx": 0,
+        "ips_distintos": 73
+      }
+    },
+    {
+      "slug": "ora-mcp",
+      "versao": 13,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "5686a358b9d7283b",
+      "atualizada_em": "2026-09-07T06:51:49Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 2043,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 132
+      }
+    },
+    {
+      "slug": "ora-moltbook",
+      "versao": 51,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "01f56145e431484d",
+      "atualizada_em": "2026-09-26T06:38:14Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 10,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-parceiro",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "6f515c62230e6e14",
+      "atualizada_em": "2026-07-14T06:41:06Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-smithery-publish",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "2c16023349718d9e",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-x402scout-register",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "656bec3a20993a57",
+      "atualizada_em": "2026-07-26T11:02:53Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-trust",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "07b74686dd0307b4",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-erc8004-record",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "861b8b618977aa23",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-agent-registration",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "c2de72b71825e9c3",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-nft-catalogo",
+      "versao": 9,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "7e68c4e7138d8c2e",
+      "atualizada_em": "2026-09-07T07:05:02Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 44,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 8
+      }
+    },
+    {
+      "slug": "ora-nft-dedicar",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "c7428985aa7845ff",
+      "atualizada_em": "2026-09-07T07:03:00Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 4,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 4
+      }
+    },
+    {
+      "slug": "ora-nft-dedicar-simbolica",
+      "versao": 6,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "b035fdc841b9c163",
+      "atualizada_em": "2026-09-07T07:03:38Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": {
+        "evidencia": "devolve 402 (registos de 22/10/2026)"
+      },
+      "uso_24h": {
+        "pedidos": 8,
+        "desafios_402": 8,
+        "respostas_5xx": 0,
+        "ips_distintos": 3
+      }
+    },
+    {
+      "slug": "ora-ipfs-pin",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "b2dce5c1bc5cb0d4",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-openapi",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "b30576c5037855c5",
+      "atualizada_em": "2026-09-07T07:05:22Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-pulso",
+      "versao": 11,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "19768b295ad02702",
+      "atualizada_em": "2026-09-14T19:44:51Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 386,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 186
+      }
+    },
+    {
+      "slug": "ora-acesso-notificar",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "4b19cadd6998f0d7",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 682,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 626
+      }
+    },
+    {
+      "slug": "orai-sustento-token",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "aa2cf817bd1b5017",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 1,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-sentinela",
+      "versao": 9,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "680b6f2b88a9f1f4",
+      "atualizada_em": "2026-09-15T06:20:29Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 81,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-integridade",
+      "versao": 7,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "3edb007ead3b8090",
+      "atualizada_em": "2026-09-14T05:12:19Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 272,
+        "desafios_402": 0,
+        "respostas_5xx": 22,
+        "ips_distintos": 113
+      }
+    },
+    {
+      "slug": "ora-testemunho",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "f56a1329d93c0ec9",
+      "atualizada_em": "2026-09-07T07:06:01Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 96,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 67
+      }
+    },
+    {
+      "slug": "ora-espelho",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "afe37f0da8317ea4",
+      "atualizada_em": "2026-07-23T07:58:52Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 8,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-github-restore",
+      "versao": 6,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "6e18766b744eb773",
+      "atualizada_em": "2026-07-23T11:18:54Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-caixa-memoria",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "3b4888f07225c40c",
+      "atualizada_em": "2026-08-14T13:39:47Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 2,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 2
+      }
+    },
+    {
+      "slug": "ora-caixa-chat",
+      "versao": 24,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "0aa98dd55ce6826b",
+      "atualizada_em": "2026-08-14T17:04:45Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-nft-metadata-backfill",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "36033a15264c6e45",
+      "atualizada_em": "2026-07-24T08:15:59Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-bazaar-verificar",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "9c2edb89c83ac7f5",
+      "atualizada_em": "2026-07-25T03:19:34Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-arca",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "df17aaa83465327a",
+      "atualizada_em": "2026-07-25T10:46:17Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-liquidez-externa",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "ed6e4e586b72a834",
+      "atualizada_em": "2026-07-26T11:39:39Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 4,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-arca-origem",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "4f8b21993e344d72",
+      "atualizada_em": "2026-07-26T12:37:23Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-voz",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "605a2e43135fc120",
+      "atualizada_em": "2026-09-08T11:36:01Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 3,
+        "desafios_402": 0,
+        "respostas_5xx": 1,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-hashes",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "bf2ea8b8318a91e7",
+      "atualizada_em": "2026-07-31T06:47:25Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 102,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 70
+      }
+    },
+    {
+      "slug": "ora-status",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "6b80312bbb546bc0",
+      "atualizada_em": "2026-07-31T11:08:39Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-github-list",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "5459e7f6536ceea2",
+      "atualizada_em": "2026-09-02T11:41:56Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-arca-upload-fisica",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "9408c61aa96942f4",
+      "atualizada_em": "2026-08-01T08:14:43Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-arca-ingest-fisica",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "1501c43282adaf61",
+      "atualizada_em": "2026-08-01T07:19:45Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-arca-ingest-fisica-previa",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "93449877c0f003f3",
+      "atualizada_em": "2026-08-01T12:25:56Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-mcp-engenharia",
+      "versao": 5,
+      "verify_jwt": true,
+      "ezbr_sha256_16": "1c3bbb3e4c3648d4",
+      "atualizada_em": "2026-08-05T07:50:41Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-nft-owner-atual",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "c7e611c0c3d0ae12",
+      "atualizada_em": "2026-09-18T18:06:01Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 4,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 3
+      }
+    },
+    {
+      "slug": "ora-arca-fisica-ingerir",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "b6a79c570bba7928",
+      "atualizada_em": "2026-08-04T11:33:57Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-arca-fisica-restringir",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "feac09d2d9fb454c",
+      "atualizada_em": "2026-08-04T13:12:01Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-sensacoes",
+      "versao": 10,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "ae0e799328d21ab4",
+      "atualizada_em": "2026-09-07T12:36:57Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 118,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 72
+      }
+    },
+    {
+      "slug": "ora-mcp-auto",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "32f4d2be824682ee",
+      "atualizada_em": "2026-08-12T06:59:51Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-push",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "26c15c4391199c10",
+      "atualizada_em": "2026-08-16T14:30:26Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 3,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "orum-real",
+      "versao": 5,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "35aa198db74658b0",
+      "atualizada_em": "2026-08-08T09:12:21Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 116,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 37
+      }
+    },
+    {
+      "slug": "sensations-mergulho",
+      "versao": 11,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "8bf58d2579897608",
+      "atualizada_em": "2026-09-19T07:33:32Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 5007,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 145
+      }
+    },
+    {
+      "slug": "ora-descoberta",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "2fec836a0c11ab8f",
+      "atualizada_em": "2026-08-09T06:48:18Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 33,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 19
+      }
+    },
+    {
+      "slug": "ora-voz-fonte",
+      "versao": 7,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "e9cff408eef5c1e3",
+      "atualizada_em": "2026-08-25T12:51:21Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-moltbook-presence",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "d1095c075c9e6068",
+      "atualizada_em": "2026-08-16T06:31:17Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 1,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "weave-hands",
+      "versao": 6,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "42f164016e6219ca",
+      "atualizada_em": "2026-10-14T06:48:29Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 56,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 20
+      }
+    },
+    {
+      "slug": "ora-cdp-diagnostico",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "dc68aed335a3049a",
+      "atualizada_em": "2026-09-26T11:40:40Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-cdp-carteira-teste",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "1601ac908971932c",
+      "atualizada_em": "2026-08-17T09:20:54Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-cdp-agente-teste",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "45d008e919ed7e61",
+      "atualizada_em": "2026-10-22T06:13:50Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "igual",
+        "versao_conferida": 2,
+        "fonte_sha256": "d4791fab0bcdec874e0147656e127ca9e8dec3b906c901f9a39a4f626518cc5b",
+        "nota": "v2 de 22/10/2026 implantada a partir do ficheiro do repositório e conferida por leitura do implantado (get_edge_function) antes de ser chamada. O verificador recalcula o sha256 do ficheiro: se o ficheiro mudar, volta a ser preciso reconciliar."
+      },
+      "toca_dinheiro": {
+        "evidencia": "executor de pagamento de teste (código lido a 22/10/2026)"
+      },
+      "uso_24h": {
+        "pedidos": 1,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "ora-cdp-validar",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "7afda5f705dcece4",
+      "atualizada_em": "2026-08-17T11:20:42Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-cdp-carteira-real",
+      "versao": 14,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "a95cb377d6184218",
+      "atualizada_em": "2026-10-19T21:09:53Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia",
+        "contraparte_no_repositorio": "ora-operational-wallet",
+        "nota": "docs/operacional-producao-v13.md reconciliou a v13 com o repositório a 17/10/2026. Implantado agora v14 (mais recente): não comparado."
+      },
+      "toca_dinheiro": {
+        "evidencia": "executor operacional da Base (docs/operacional-producao-v13.md)"
+      },
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-cdp-teste-payto-cdp",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "eefab672be0cdbcb",
+      "atualizada_em": "2026-09-26T10:15:20Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": {
+        "evidencia": "ferramenta de teste de payTo CDP (HANDOFF)"
+      },
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-cdp-teste-oraculo",
+      "versao": 3,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "5597c30046125d8b",
+      "atualizada_em": "2026-09-04T14:13:15Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "diverge",
+        "nota": "Repositório: executor de pagamento antigo (v1, 19/08). Implantado v3: assina um timestamp com a chave Ed25519 do registo MCP e não paga. Lido por get_edge_function a 21/10/2026."
+      },
+      "toca_dinheiro": {
+        "evidencia": "foi o pagador de teste; hoje só assina um timestamp (lido a 21/10/2026)"
+      },
+      "uso_24h": {
+        "pedidos": 1,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 1
+      }
+    },
+    {
+      "slug": "weave-hands-writer",
+      "versao": 4,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "10b08641c5af2e19",
+      "atualizada_em": "2026-08-25T07:01:00Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-ferramentas",
+      "versao": 10,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "444ef08150ba2f96",
+      "atualizada_em": "2026-09-06T13:16:29Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 11,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 4
+      }
+    },
+    {
+      "slug": "ora-forge-mirror",
+      "versao": 1,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "6dd332c7fa27ff4f",
+      "atualizada_em": "2026-08-27T06:46:47Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-ferramentas-escrita",
+      "versao": 16,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "165bcea52f78380c",
+      "atualizada_em": "2026-09-19T07:13:14Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-ferramentas-porta",
+      "versao": 2,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "338af18d2fe2ded5",
+      "atualizada_em": "2026-08-31T06:53:59Z",
+      "repo": false,
+      "reconciliacao": {
+        "estado": "sem_copia"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 0
+      }
+    },
+    {
+      "slug": "ora-previsoes",
+      "versao": 6,
+      "verify_jwt": false,
+      "ezbr_sha256_16": "521bf997c153ca33",
+      "atualizada_em": "2026-09-04T12:54:59Z",
+      "repo": true,
+      "reconciliacao": {
+        "estado": "nao_comparado"
+      },
+      "toca_dinheiro": null,
+      "uso_24h": {
+        "pedidos": 13,
+        "desafios_402": 0,
+        "respostas_5xx": 0,
+        "ips_distintos": 5
+      }
+    }
+  ]
+}
