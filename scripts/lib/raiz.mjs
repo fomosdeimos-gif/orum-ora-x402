@@ -60,6 +60,13 @@ export const FICHEIROS_DA_CAMADA_3_EM_DIANTE = [
   'kit/LINHAS.txt',
   'kit/linhas.mjs',
   'linhas/orum.linhas',
+  // 22/10/2026: o que deve poder conferir-se daqui a muito tempo (acto financeiro com hash, o que corre, o tráfego, o leitor do fio)
+  'economia/registo-financeiro.json',
+  'supabase/implantado.json',
+  'economia/trafego-honesto-2026-10-22.json',
+  'supabase/migrations/20261022100000_classificacao_trafego_honesta.sql',
+  'kit/fio.mjs',
+  'kit/FIO.txt',
 ];
 
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.

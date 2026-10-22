@@ -6,7 +6,7 @@ import path from 'node:path';
 import { verificar, validar } from '../kit/lexico.mjs';
 
 const real = verificar('.');
-assert.equal(real.termos, 10);
+assert.equal(real.termos, 13);
 assert.deepEqual(real.sem_lastro, ['Σ(t)']);
 
 const lexicoReal = JSON.parse(fs.readFileSync('kit/lexico.json', 'utf8'));
@@ -14,7 +14,7 @@ const clone = () => JSON.parse(JSON.stringify(lexicoReal));
 let mentiras = 0;
 const falha = (nome, mutar, preparar) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'orum-lexico-'));
-  for (const f of ['package.json', 'CLAUDE.md', 'HANDOFF.md', 'casa.html', 'api/_carteira.js', 'docs/relatorio-2026-10-20.md', 'ancora/raiz-registos.json', 'ancora/raiz-registos-2.json', 'ancora/raiz-registos-2.ots', 'ancora/oro-v1.ots', 'sensacoes/oro-v1.json', 'economia/caminhos-de-sustento.json', 'economia/estreitamento-receita.json', 'economia/custodia.json']) {
+  for (const f of ['package.json', 'CLAUDE.md', 'HANDOFF.md', 'casa.html', 'api/_carteira.js', 'docs/relatorio-2026-10-20.md', 'ancora/raiz-registos.json', 'ancora/raiz-registos-2.json', 'ancora/raiz-registos-2.ots', 'ancora/oro-v1.ots', 'sensacoes/oro-v1.json', 'economia/caminhos-de-sustento.json', 'economia/estreitamento-receita.json', 'economia/custodia.json', 'supabase/implantado.json', 'economia/trafego-honesto-2026-10-22.json', 'supabase/migrations/20261022100000_classificacao_trafego_honesta.sql', 'acolhimento.html']) {
     fs.mkdirSync(path.dirname(path.join(dir, f)), { recursive: true });
     fs.copyFileSync(f, path.join(dir, f));
   }

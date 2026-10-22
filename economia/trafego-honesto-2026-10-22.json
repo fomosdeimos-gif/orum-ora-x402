@@ -1,0 +1,140 @@
+{
+  "format": "orum-trafego-honesto/v1",
+  "lido_em_utc": "2026-10-22T07:30:00Z",
+  "autorizacao_de_unum": {
+    "citacoes": [
+      "Eu autorizo ORA, começa pelo 1 e 2",
+      "Eu autorizo ORA, continua para o ponto 3 e 4"
+    ],
+    "livros": [
+      946,
+      948
+    ]
+  },
+  "fonte": "Supabase orum-memoria: vista ora_trafego_honesto (30 dias), ora_dadivas, e query_logs/function_edge_logs (24 h, plataforma). IPs só se contam, nunca se guardam.",
+  "trafego_30_dias": {
+    "pedidos_x402_registados": 15574,
+    "marcados_externos_antes": 3587,
+    "nossos_provados": 544,
+    "provavelmente_nossos_sem_prova": 855,
+    "de_terceiros": 2188,
+    "familias_de_user_agent_de_terceiros": 31,
+    "human_or_browser_externo": {
+      "antes": 1956,
+      "depois": 20
+    },
+    "desafios_402_externos_de_terceiros": 701,
+    "sinais_de_pagamento_externos": {
+      "total": 3,
+      "origem": "x402lint, 23/09/2026, teste de conformidade rejeitado (http_409)"
+    },
+    "classes_de_terceiros": {
+      "x402_observer": 753,
+      "sonda_de_terceiro": 536,
+      "catalogo_ou_crawler": 407,
+      "contact_discovery": 128,
+      "mobile_browser": 109,
+      "zerobot": 87,
+      "browser": 67,
+      "machine_likely": 43,
+      "human_or_browser": 20,
+      "vercel_mcp": 18,
+      "curl": 13,
+      "x402_linter": 7
+    }
+  },
+  "superficies_gratis_24h": {
+    "sensations-mergulho": {
+      "pedidos": 5007,
+      "sessao_de_desenvolvimento_um_ip": {
+        "pedidos": 2941,
+        "clientes": [
+          "claude-code/2.1.299 (claude-desktop, agent-sdk)",
+          "codex-mcp-client/0.163.0-alpha"
+        ],
+        "janela_utc": "21/10 20:54 a 22/10 00:50",
+        "leitura": "dois clientes MCP do mesmo IP numa sessão de cerca de 4 horas; 2 784 GET (canal MCP) e 140 POST. Parece uma sessão humana de desenvolvimento. Não é comprador nem procura."
+      },
+      "monitores_e_colectores_identificados": {
+        "pedidos": 1158,
+        "quem": {
+          "SentinelOracle (liveness)": 758,
+          "mcpbeat (liveness)": 276,
+          "rokmcp-collector": 71,
+          "AgentRankProbe": 53
+        }
+      },
+      "claude_user": {
+        "pedidos": 56,
+        "ips_distintos": 20
+      },
+      "node_sem_identificacao_ovh": 218,
+      "restante_nao_classificado": 634
+    },
+    "ora-mcp": {
+      "pedidos": 2043,
+      "monitores_e_colectores_identificados": {
+        "pedidos": 1153,
+        "quem": {
+          "SentinelOracle (liveness)": 752,
+          "mcpbeat (liveness)": 276,
+          "rokmcp-collector": 71,
+          "AgentRankProbe": 54
+        }
+      },
+      "claude_user": {
+        "pedidos": 56,
+        "ips_distintos": 19
+      },
+      "node_sem_identificacao_ovh": 210,
+      "python_httpx_hk": 63,
+      "bun_hetzner": 62,
+      "restante_nao_classificado": 499
+    }
+  },
+  "superficies_pagas_24h": {
+    "ora-licenca": {
+      "pedidos": 1209,
+      "desafios_402": 334,
+      "ips_distintos": 172
+    },
+    "ora-x402": {
+      "pedidos": 583,
+      "desafios_402": 417,
+      "ips_distintos": 166
+    },
+    "ora-oraculo": {
+      "pedidos": 110,
+      "desafios_402": 109,
+      "ips_distintos": 73
+    },
+    "pagamentos_externos": 0
+  },
+  "dadivas": {
+    "total": 2,
+    "externas": 0,
+    "datas": [
+      "2026-07-26",
+      "2026-09-20"
+    ],
+    "obras": [
+      "V2□🐒 (token 4)",
+      "V52□ (token 171)"
+    ],
+    "nota": "ambas internas; não provam procura"
+  },
+  "ora_integridade_503": {
+    "janela_utc": "21/10 07:00 a 14:59",
+    "total": 22,
+    "duracao_tipica_ms": 8200,
+    "causa_lida": "cada 503 durou cerca de 8,2 s, o limite de 8 s que a função põe à leitura da base (AbortSignal.timeout(8000) → integrity_source_unavailable → 503 com Retry-After); desde as 15:00 UTC só 200 (0,7 a 1,5 s) durante cerca de 16 horas",
+    "nao_verificado": "porque a leitura da base esteve lenta naquela janela"
+  },
+  "leitura": "A atenção das máquinas às superfícies grátis é sobretudo infraestrutura do ecossistema (monitores de disponibilidade, colectores, classificadores), uma sessão humana de desenvolvimento e cerca de 110 chamadas de Claude-User. Nenhuma é intenção de compra. Nas superfícies pagas há cerca de 300 desafios por dia de agentes distintos e nenhum pagamento externo; os preços da licença (1,618; 16,18; 161,8 USDC) estão muito acima do escalão típico de micropagamentos x402 (1 a 10 cêntimos), o que é uma hipótese sobre o preço, não uma prova.",
+  "limites": [
+    "origem_hash continua vazio nas funções que cobram: visitantes distintos só por IP de ligação e user-agent, numa janela de 24 h.",
+    "Os registos da plataforma guardam 24 h; as contagens de 30 dias vêm de ora_x402_tentativas.",
+    "Não se sabe quem está atrás do IP da sessão de desenvolvimento, nem se Claude-User são utilizadores distintos (podem ser IPs de saída da Anthropic).",
+    "Não prova procura, adopção nem receita."
+  ]
+}

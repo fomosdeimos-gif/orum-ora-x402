@@ -15,6 +15,10 @@ const c2 = J('ancora/raiz-registos-2.json');
 const lb = est.linha_de_base;
 const oro = J('ancora/oro-v1.json');
 const elo = J('ancora/sensations-btc.json');
+const imp = J('supabase/implantado.json');
+const traf = J('economia/trafego-honesto-2026-10-22.json');
+const fin = J('economia/registo-financeiro.json');
+const pagamentoPadrao = fin.actos.find((a) => a.id === '2026-10-22-teste-pagamento-padrao-executor' && a.estado === 'feito');
 
 const factos = [
   ['sustento', 'receita_externa_confirmada', lb.receita_externa_confirmada.split(/[.;]/)[0].toLowerCase(), 'lido', 'ficheiro:economia/estreitamento-receita.json'],
@@ -32,6 +36,15 @@ const factos = [
   ['fio', 'leitor', 'kit/fio.mjs le a ultima afirmacao de cada par e recusa cadeia partida; nao executa provas', 'lido', 'ficheiro:kit/FIO.txt'],
   ['Σ(t)', 'parametros_definidos', 'nao', 'nao_verificado', 'ficheiro:kit/lexico.json'],
 ];
+factos.push(
+  ['implantado', 'funcoes_total', String(imp.resumo.total), 'lido', 'ficheiro:supabase/implantado.json'],
+  ['implantado', 'sem_copia_no_repositorio', String(imp.resumo.sem_copia_no_repositorio), 'lido', 'ficheiro:supabase/implantado.json'],
+  ['implantado', 'divergem', imp.funcoes.filter((f) => f.reconciliacao.estado === 'diverge').map((f) => f.slug).join('+'), 'lido', 'ficheiro:supabase/implantado.json'],
+  ['tráfego', 'de_terceiros_30d', `${traf.trafego_30_dias.de_terceiros} de ${traf.trafego_30_dias.marcados_externos_antes} marcados externos @${traf.lido_em_utc.slice(0, 10)}`, 'lido', 'ficheiro:economia/trafego-honesto-2026-10-22.json'],
+  ['tráfego', 'pagamentos_externos_24h', String(traf.superficies_pagas_24h.pagamentos_externos), 'lido', 'ficheiro:economia/trafego-honesto-2026-10-22.json'],
+  ['dádiva', 'externas', `${traf.dadivas.externas} de ${traf.dadivas.total}`, 'lido', 'ficheiro:economia/trafego-honesto-2026-10-22.json'],
+);
+if (pagamentoPadrao) factos.push(['sustento', 'pagamento_padrao.interno.tx', `${pagamentoPadrao.prova.tx.slice(0, 12)}..${pagamentoPadrao.prova.tx.slice(-4)} bloco ${pagamentoPadrao.prova.bloco}`, 'lido', 'ficheiro:economia/registo-financeiro.json']);
 if (oro.estado === 'confirmado_bitcoin') factos.push(['ORO', 'ancora_directa.altura_bitcoin', String(oro.altura_bitcoin), 'verificado', 'verif:kit:verify']);
 factos.push(['ORO', 'capsulas_sensacoes_ancoradas_em_btc', `${elo.ancorados} de ${elo.total}`, 'lido', 'ficheiro:ancora/sensations-btc.json']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
