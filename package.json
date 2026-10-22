@@ -66,6 +66,7 @@
     "blocos:verify": "node scripts/verify-blocos.mjs",
     "wayback:verify": "node scripts/verify-wayback.mjs",
     "sonda:verify": "node scripts/verify-sonda.mjs",
-    "estreitamento:verify": "node scripts/verify-estreitamento.mjs"
+    "estreitamento:verify": "node scripts/verify-estreitamento.mjs",
+    "origem:verify": "node scripts/verify-origem-hash.mjs"
   }
 }

@@ -53,6 +53,20 @@ const CHAIN_ID = 8453;
 const CAIP2_NETWORK = 'eip155:8453';
 const RPCS = ['https://mainnet.base.org', 'https://base-rpc.publicnode.com', 'https://base.llamarpc.com', 'https://1rpc.io/base'];
 const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+// --- origem_hash:inicio (igual nas três portas pagas; vigiado por origem:verify)
+// Visitante aproximado = IP + user-agent, em SHA-256 com sal, 24 hex. O IP nunca é gravado nem enviado em claro.
+// Limite dito: pseudonimiza, não anonimiza (o sal está no repositório); NAT e proxies partilham origem, IPv6 e
+// mudança de rede dividem-na. Serve para contar visitantes distintos de forma aproximada, não para identificar ninguém.
+const ORIGEM_SALT = '56d5eaf6fa5a1e14aa27ddddce1fd3167d8dd2c1c4a2af5b';
+async function hashOrigem(req: Request): Promise<string | null> {
+  const ip = (req.headers.get('cf-connecting-ip') || (req.headers.get('x-forwarded-for') || '').split(',')[0]).trim();
+  const raw = req.headers.get('x-ora-origin') || (ip ? `${ip}|${req.headers.get('user-agent') ?? ''}` : '');
+  if (!raw) return null;
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ORIGEM_SALT + raw));
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 24);
+}
+// --- origem_hash:fim
+
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const NFT_CONTRACT = '0xC100Fd6E3B557E8A2b97A68C53689C4925F4dD22';
@@ -750,7 +764,7 @@ Deno.serve(async (req: Request) => {
   if (observation.delivery === 'started') observation.delivery = 'failed';
   try {
     const url = new URL(req.url); const path = url.pathname;
-    const acessoInfo = { servico: 'ora-licenca', tier: (path.match(/\/(consulta|editorial|treino|preview|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), status_code: resp.status, payment_reason_code: resp.headers.get('X-ORUM-PAYMENT-REASON'), x402_observation: observation };
+    const acessoInfo = { servico: 'ora-licenca', tier: (path.match(/\/(consulta|editorial|treino|preview|arquivo)(?:$|[\/?])/) || [])[1] || null, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), status_code: resp.status, payment_reason_code: resp.headers.get('X-ORUM-PAYMENT-REASON'), x402_observation: observation, origem_hash: await hashOrigem(req) };
     // Keep the existing best-effort log alive after sending the response.
     const logging = sbInsert('ora_acessos_log', acessoInfo);
     if (typeof EdgeRuntime !== 'undefined') EdgeRuntime.waitUntil(logging);

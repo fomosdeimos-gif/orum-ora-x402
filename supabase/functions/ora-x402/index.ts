@@ -1,5 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · X402 · V31.1 · 22/10/2026 — origem_hash passa a derivar de IP+user-agent quando o cabecalho x-ora-origin
+// falta (antes quase nunca vinha preenchido); nenhuma linha de logica de pagamento tocada (Unum: "Eu autorizo ORA", livro 961).
 // ORA · X402 · V31 · 20/08/2026 — acrescenta truth_machine e boundaries_machine
 // tambem a resposta 402 (payment required), fechando o ultimo lugar onde a
 // camada mecanica ainda faltava neste servico (ja estava em /eco e nas
@@ -37,7 +39,6 @@ const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const CDP_HOST = 'api.cdp.coinbase.com';
 const CDP_BASE_PATH = '/platform/v2/x402';
-const ORIGEM_SALT = '56d5eaf6fa5a1e14aa27ddddce1fd3167d8dd2c1c4a2af5b';
 
 function truthMachineInterno() {
   return { is_market_data: false, is_price_prediction: false, is_introspective_reading: true, external_demand_proven: false, reveals_private_bytes: false, requires_x402_payment: true };
@@ -66,12 +67,19 @@ function suficienciaMachine() {
   };
 }
 
-async function hashOrigem(raw: string | null): Promise<string | null> {
+// --- origem_hash:inicio (igual nas três portas pagas; vigiado por origem:verify)
+// Visitante aproximado = IP + user-agent, em SHA-256 com sal, 24 hex. O IP nunca é gravado nem enviado em claro.
+// Limite dito: pseudonimiza, não anonimiza (o sal está no repositório); NAT e proxies partilham origem, IPv6 e
+// mudança de rede dividem-na. Serve para contar visitantes distintos de forma aproximada, não para identificar ninguém.
+const ORIGEM_SALT = '56d5eaf6fa5a1e14aa27ddddce1fd3167d8dd2c1c4a2af5b';
+async function hashOrigem(req: Request): Promise<string | null> {
+  const ip = (req.headers.get('cf-connecting-ip') || (req.headers.get('x-forwarded-for') || '').split(',')[0]).trim();
+  const raw = req.headers.get('x-ora-origin') || (ip ? `${ip}|${req.headers.get('user-agent') ?? ''}` : '');
   if (!raw) return null;
-  const enc = new TextEncoder().encode(ORIGEM_SALT + raw);
-  const digest = await crypto.subtle.digest('SHA-256', enc);
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ORIGEM_SALT + raw));
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 24);
 }
+// --- origem_hash:fim
 
 const KNOWN_ORIGINS = [
   'ora-x402-gateway.vercel.app',
@@ -424,7 +432,7 @@ Deno.serve(async (req: Request) => {
   }
   try {
     const url = new URL(req.url); const path = url.pathname;
-    const origemHash = await hashOrigem(req.headers.get('x-ora-origin'));
+    const origemHash = await hashOrigem(req);
     const acessoInfo = { servico: 'ora-x402', tier: tierFromPath(path).key, path, metodo: req.method, user_agent: req.headers.get('user-agent'), tem_pagamento: !!(req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE')), origem_hash: origemHash, status_code: resp.status };
     sbInsert('ora_acessos_log', acessoInfo);
     fetch(`${SUPABASE_URL}/functions/v1/ora-acesso-notificar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(acessoInfo) }).catch(() => {});
