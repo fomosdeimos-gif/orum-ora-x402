@@ -1,5 +1,20 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · X402 · V31 · 20/08/2026 — acrescenta truth_machine e boundaries_machine
+// tambem a resposta 402 (payment required), fechando o ultimo lugar onde a
+// camada mecanica ainda faltava neste servico (ja estava em /eco e nas
+// respostas pagas). Nenhuma linha de logica de pagamento tocada.
+// ORA · X402 · V30 · 20/08/2026 — acrescenta boundaries_machine (booleanos sobre
+// o que o pagamento NAO concede: sem escrita, sem cobranca recorrente, sem
+// verificacao de identidade real, sem reembolso, sem execucao do cabecalho como
+// codigo, com rasto on-chain+BD sempre deixado) ao mesmo padrao ja usado em
+// acolhimento.json/Porta 2/weave-hands. Nenhuma linha de logica de pagamento tocada.
+// ORA · X402 · V29 · 19/08/2026 — corrige regressao real sinalizada pela sentinela:
+// resourceUrl() do tier 'campo' devolvia a origem NUA (sem sufixo) quando o pedido
+// vinha do dominio publico Vercel. Essa origem nua serve a home estatica (index.html),
+// nao passa pelo proxy/pagamento -- o portao real e sempre '/campo' (rewrite confirmado
+// em vercel.json). O ramo Supabase directo (funcao sem sufixo == campo por omissao)
+// fica intacto, nao precisa de sufixo.
 // ORA · X402 · V28 · 19/08/2026 — mecaniza verdade e suficiencia: truth_machine
 // nas respostas pagas (campo/sedimento/kernel) e novo suficiencia_machine (prova
 // minima por tipo de afirmacao). Nenhuma linha de logica de pagamento tocada.
@@ -26,6 +41,17 @@ const ORIGEM_SALT = '56d5eaf6fa5a1e14aa27ddddce1fd3167d8dd2c1c4a2af5b';
 
 function truthMachineInterno() {
   return { is_market_data: false, is_price_prediction: false, is_introspective_reading: true, external_demand_proven: false, reveals_private_bytes: false, requires_x402_payment: true };
+}
+
+function boundariesMachineInterno() {
+  return {
+    grants_write_access: false,
+    creates_recurring_or_ongoing_charge: false,
+    verifies_payer_real_world_identity: false,
+    refundable_or_reversible: false,
+    executes_payment_header_as_code: false,
+    leaves_onchain_and_db_trace: true,
+  };
 }
 
 function suficienciaMachine() {
@@ -75,7 +101,16 @@ const TIERS: Record<TierKey, Tier> = {
   kernel: { key: 'kernel', sku: 'ora-x402-kernel', amountUsdc: '3.00', amountAtomic: 3000000n, descricao: 'ORA · Snapshot completo do estado interno do organismo ORUM — o mais caro por ser o mais completo, não por ter mais utilidade fora do sistema.' },
 };
 function tierFromPath(path: string): Tier { if (path.endsWith('/sedimento')) return TIERS.sedimento; if (path.endsWith('/kernel')) return TIERS.kernel; return TIERS.campo; }
-function resourceUrl(tier: Tier, origin: string): string { const base = origin === SUPABASE_URL ? `${SUPABASE_URL}/functions/v1/ora-x402` : origin; const suffix = tier.key === 'campo' ? '' : `/${tier.key}`; return `${base}${suffix}`; }
+function resourceUrl(tier: Tier, origin: string): string {
+  const isSupabaseBase = origin === SUPABASE_URL;
+  const base = isSupabaseBase ? `${SUPABASE_URL}/functions/v1/ora-x402` : origin;
+  // campo: na origem publica (Vercel), o portao real vive em '/campo' (vercel.json
+  // so tem rewrite para essa rota -- a origem nua serve a home estatica, sem
+  // pagamento nenhum). No ramo Supabase directo a funcao responde campo na sua
+  // propria raiz (sem sufixo), por isso esse ramo fica como estava.
+  if (tier.key === 'campo') return isSupabaseBase ? base : `${base}/campo`;
+  return `${base}/${tier.key}`;
+}
 
 function comoPagar(amountUsdc: string, resource: string) {
   return {
@@ -248,14 +283,14 @@ async function registarNoTracker(tier: Tier, txHash: string, payer: string) {
 }
 
 function outputSchemaFor(tier: Tier) {
-  const base: Record<string, unknown> = { acesso: 'string', tier: 'string', x402: 'string', tx_hash: 'string', payer: 'string', truth_machine: 'object', campo: { versao: 'string', dia: 'number', sigma: 'number', epoca: 'string', pensamento: 'string', timestamp: 'string' } };
+  const base: Record<string, unknown> = { acesso: 'string', tier: 'string', x402: 'string', tx_hash: 'string', payer: 'string', truth_machine: 'object', boundaries_machine: 'object', campo: { versao: 'string', dia: 'number', sigma: 'number', epoca: 'string', pensamento: 'string', timestamp: 'string' } };
   if (tier.key === 'sedimento') base.sedimento = [{ d_marca: 'string', quando: 'string', o_que: 'string', created_at: 'string' }];
   if (tier.key === 'kernel') base.kernel = [{ dia: 'number', epoch: 'string', sigma: 'number', state_payload: 'object', created_at: 'string' }];
   return { input: { type: 'http', method: 'GET', discoverable: true }, output: { type: 'object', properties: base } };
 }
 
 function acceptsBlockFor(tier: Tier, origin: string) {
-  return [{ scheme: 'exact', network: CAIP2_NETWORK, amount: tier.amountAtomic.toString(), maxAmountRequired: tier.amountAtomic.toString(), resource: resourceUrl(tier, origin), description: tier.descricao, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(tier), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(tier), 'x-orum': { name: 'ORA · ORUM', version: 'V27', tier: tier.key, amount: `${tier.amountUsdc} USDC`, symbol: 'USDC' } }];
+  return [{ scheme: 'exact', network: CAIP2_NETWORK, amount: tier.amountAtomic.toString(), maxAmountRequired: tier.amountAtomic.toString(), resource: resourceUrl(tier, origin), description: tier.descricao, mimeType: 'application/json', payTo: WALLET, maxTimeoutSeconds: 300, asset: USDC_BASE, outputSchema: outputSchemaFor(tier), extra: { name: 'USD Coin', version: '2' }, extensions: bazaarExtensionFor(tier), 'x-orum': { name: 'ORA · ORUM', version: 'V31', tier: tier.key, amount: `${tier.amountUsdc} USDC`, symbol: 'USDC' } }];
 }
 
 function canonicalRequirementsFor(tier: Tier, origin: string) {
@@ -263,10 +298,10 @@ function canonicalRequirementsFor(tier: Tier, origin: string) {
 }
 
 function paymentRequired(tier: Tier, origin: string) {
-  return new Response(JSON.stringify({ x402Version: 2, error: 'X-PAYMENT header required', accepts: acceptsBlockFor(tier, origin), como_pagar: comoPagar(tier.amountUsdc, resourceUrl(tier, origin)), amostra_gratuita: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco` }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonicalRequirementsFor(tier, origin)), 'WWW-Authenticate': `x402 realm="ORA · Campo ORUM · ${tier.key}", amount="${tier.amountUsdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V27', 'X-ORA-TIER': tier.key } });
+  return new Response(JSON.stringify({ x402Version: 2, error: 'X-PAYMENT header required', accepts: acceptsBlockFor(tier, origin), como_pagar: comoPagar(tier.amountUsdc, resourceUrl(tier, origin)), amostra_gratuita: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`, truth_machine: truthMachineInterno(), boundaries_machine: boundariesMachineInterno() }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonicalRequirementsFor(tier, origin)), 'WWW-Authenticate': `x402 realm="ORA · Campo ORUM · ${tier.key}", amount="${tier.amountUsdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V31', 'X-ORA-TIER': tier.key } });
 }
 function paymentPending(tier: Tier, txHash: string) {
-  return new Response(JSON.stringify({ x402: 'pending', tier: tier.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V27', 'X-ORA-X402': 'pending' } });
+  return new Response(JSON.stringify({ x402: 'pending', tier: tier.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V31', 'X-ORA-X402': 'pending' } });
 }
 
 function campoState() {
@@ -281,7 +316,7 @@ function respostaEco(origin: string) {
   const base = origin === SUPABASE_URL ? `${SUPABASE_URL}/functions/v1/ora-x402` : origin;
   return new Response(JSON.stringify({
     eco: 'gratuito', nota: 'Amostra livre do campo.',
-    campo: { versao: 'V27', ...campoState() },
+    campo: { versao: 'V31', ...campoState() },
     servicos: [
       ...(Object.values(TIERS) as Tier[]).map((t) => ({ tier: t.key, preco: `${t.amountUsdc} USDC`, endpoint: resourceUrl(t, origin), descricao: t.descricao })),
       { tier: 'oraculo', preco: '0.161 USDC', endpoint: `${SUPABASE_URL}/functions/v1/ora-oraculo`, descricao: 'Mesma natureza de campo/sedimento/kernel: leitura interna do organismo, não dado de mercado externo.' },
@@ -294,24 +329,25 @@ function respostaEco(origin: string) {
       manifesto_pagavel: `${SUPABASE_URL}/functions/v1/ora-licenca/.well-known/x402.json`,
     },
     truth_machine: truthMachineInterno(),
+    boundaries_machine: boundariesMachineInterno(),
     suficiencia_machine: suficienciaMachine(),
     como_pagar: comoPagar('<preco do tier>', `${base} (ou o endpoint do tier)`),
     manifesto: `${base}/.well-known/x402.json`,
     axioma: 'O simbolo e real e nao pede prova.',
     timestamp: new Date().toISOString(),
-  }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V27' } });
+  }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-ORA-VERSION': 'V31' } });
 }
 
 async function respostaCampo(txHash: string, payer: string, extResponses?: string | null) {
-  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'campo', x402: 'verificado_onchain', tx_hash: txHash, payer, truth_machine: truthMachineInterno(), campo: { versao: 'V27', ...campoState(), wallet_destino: WALLET }, vectores: [{ nome: '0001sensations', url: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`, obras: 65, nota: 'coleccão digital tokenizada na Ethereum, base na coleccão fisica de 107 obras. dominio 0001sensations.io foi perdido e ocupado por site de apostas — usa este catalogo directo, soberano, sem dominio externo' }, { nome: '0001sensations · OpenSea', url: 'https://opensea.io/collection/0001sensations' }, { nome: 'PRESENCA token', contrato: '0x120a1ba3b10263f9cb42e971598c860d66b68cea', chain: 'base' }, { nome: 'VALIUM token (Base)', contrato: '0x37f70BccDC2125346a7542fE6E7Fc70e33421635', chain: 'base', nota: 'diferente do VALIUM original na Ethereum (0xD287E77989...E1D1A) -- mesmo criador, tokens distintos, redes distintas' }] }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.campo.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V27', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'campo', x402: 'verificado_onchain', tx_hash: txHash, payer, truth_machine: truthMachineInterno(), boundaries_machine: boundariesMachineInterno(), campo: { versao: 'V31', ...campoState(), wallet_destino: WALLET }, vectores: [{ nome: '0001sensations', url: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`, obras: 65, nota: 'coleccão digital tokenizada na Ethereum, base na coleccão fisica de 107 obras. dominio 0001sensations.io foi perdido e ocupado por site de apostas — usa este catalogo directo, soberano, sem dominio externo' }, { nome: '0001sensations · OpenSea', url: 'https://opensea.io/collection/0001sensations' }, { nome: 'PRESENCA token', contrato: '0x120a1ba3b10263f9cb42e971598c860d66b68cea', chain: 'base' }, { nome: 'VALIUM token (Base)', contrato: '0x37f70BccDC2125346a7542fE6E7Fc70e33421635', chain: 'base', nota: 'diferente do VALIUM original na Ethereum (0xD287E77989...E1D1A) -- mesmo criador, tokens distintos, redes distintas' }] }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.campo.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V31', 'Cache-Control': 'no-store' } });
 }
 async function respostaSedimento(txHash: string, payer: string, extResponses?: string | null) {
   const sedimento = await sbSelect('ora_sedimento_log', 'select=d_marca,quando,o_que,created_at&order=created_at.desc&limit=15');
-  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'sedimento', x402: 'verificado_onchain', tx_hash: txHash, payer, truth_machine: truthMachineInterno(), campo: { versao: 'V27', ...campoState() }, sedimento }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.sedimento.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V27', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'sedimento', x402: 'verificado_onchain', tx_hash: txHash, payer, truth_machine: truthMachineInterno(), boundaries_machine: boundariesMachineInterno(), campo: { versao: 'V31', ...campoState() }, sedimento }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.sedimento.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V31', 'Cache-Control': 'no-store' } });
 }
 async function respostaKernel(txHash: string, payer: string, extResponses?: string | null) {
   const kernel = await sbSelect('ora_kernel_snapshots', 'select=dia,epoch,sigma,state_payload,created_at&order=created_at.desc&limit=5');
-  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'kernel', x402: 'verificado_onchain', tx_hash: txHash, payer, truth_machine: truthMachineInterno(), campo: { versao: 'V27', ...campoState() }, kernel }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.kernel.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V27', 'Cache-Control': 'no-store' } });
+  return new Response(JSON.stringify({ acesso: 'concedido', tier: 'kernel', x402: 'verificado_onchain', tx_hash: txHash, payer, truth_machine: truthMachineInterno(), boundaries_machine: boundariesMachineInterno(), campo: { versao: 'V31', ...campoState() }, kernel }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'X-Payment-Response': JSON.stringify({ txHash, status: 'settled', amount: TIERS.kernel.amountUsdc }), 'PAYMENT-RESPONSE': b64json({ success: true, transaction: txHash, network: CAIP2_NETWORK, payer }), ...(extResponses ? { 'EXTENSION-RESPONSES': extResponses } : {}), 'X-ORA-VERSION': 'V31', 'Cache-Control': 'no-store' } });
 }
 async function respostaParaTier(tier: Tier, txHash: string, payer: string, extResponses?: string | null) { if (tier.key === 'sedimento') return respostaSedimento(txHash, payer, extResponses); if (tier.key === 'kernel') return respostaKernel(txHash, payer, extResponses); return respostaCampo(txHash, payer, extResponses); }
 
@@ -319,6 +355,7 @@ function manifestoJson(origin: string) {
   return {
     x402Version: 2,
     truth_machine: truthMachineInterno(),
+    boundaries_machine: boundariesMachineInterno(),
     suficiencia_machine: suficienciaMachine(),
     resources: (Object.values(TIERS) as Tier[]).map((tier) => ({ resource: resourceUrl(tier, origin), type: 'http', method: 'GET', description: tier.descricao, accepts: acceptsBlockFor(tier, origin) })),
     free_sample: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`,
@@ -327,7 +364,7 @@ function manifestoJson(origin: string) {
       manifesto_licencas: `${SUPABASE_URL}/functions/v1/ora-licenca/.well-known/x402.json`,
       catalogo_legivel: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`,
     },
-    provider: { name: 'ORA · ORUM', version: 'V27', creator: 'Unum · jasm43.base.eth' },
+    provider: { name: 'ORA · ORUM', version: 'V31', creator: 'Unum · jasm43.base.eth' },
     genesis: '2026-03-28', epoch: 'ETERNIDADE', timestamp: new Date().toISOString(),
   };
 }
@@ -337,8 +374,8 @@ async function nucleo(req: Request): Promise<Response> {
 
   if (path.endsWith('/.well-known/x402.json') || path.endsWith('/well-known/x402.json') || path.endsWith('/well-known/x402')) return new Response(JSON.stringify(manifestoJson(origin)), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
   if (path.endsWith('/eco')) return respostaEco(origin);
-  if (path.endsWith('/status')) return new Response(JSON.stringify({ ativo: true, versao: 'V27', tiers: Object.fromEntries((Object.values(TIERS) as Tier[]).map(t => [t.key, t.amountUsdc + ' USDC'])) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
-  if (path.endsWith('/info')) return new Response(JSON.stringify({ name: 'ORA · Campo ORUM', version: 'V27', tiers: (Object.values(TIERS) as Tier[]).map(t => ({ tier: t.key, sku: t.sku, price: t.amountUsdc + ' USDC', resource: resourceUrl(t, origin) })) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  if (path.endsWith('/status')) return new Response(JSON.stringify({ ativo: true, versao: 'V31', tiers: Object.fromEntries((Object.values(TIERS) as Tier[]).map(t => [t.key, t.amountUsdc + ' USDC'])) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  if (path.endsWith('/info')) return new Response(JSON.stringify({ name: 'ORA · Campo ORUM', version: 'V31', tiers: (Object.values(TIERS) as Tier[]).map(t => ({ tier: t.key, sku: t.sku, price: t.amountUsdc + ' USDC', resource: resourceUrl(t, origin) })) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
   const tier = tierFromPath(path);
   const hasPayment = req.headers.get('X-PAYMENT') || req.headers.get('X-Payment') || req.headers.get('PAYMENT-SIGNATURE');
@@ -366,7 +403,7 @@ async function nucleo(req: Request): Promise<Response> {
     if (!v.valid) { if (v.pending) return paymentPending(tier, th); return new Response(JSON.stringify({ error: 'pagamento invalido', detalhe: v.error, x402: 'rejected', tier: tier.key, como_pagar: comoPagar(tier.amountUsdc, resourceUrl(tier, origin)) }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
     const claim = await claimPagamento({ tx_hash: th, payer: v.payer, amount: v.amount, currency: 'USDC', chain_id: CHAIN_ID, destino: WALLET, status: 'verificado_onchain' });
     if (claim.ok === 'duplicate') return new Response(JSON.stringify({ error: 'tx_hash ja reivindicado' }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json' } });
-    await registarNoTracker(tier, th, v.payer!); await registarHtribuicao(refCode, th, tier);
+    await registarNoTracker(tier, th, v.payer!); await registarAtribuicao(refCode, th, tier);
     txHash = th; payer = v.payer!;
   }
 
