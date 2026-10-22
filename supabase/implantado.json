@@ -19,9 +19,9 @@
     "total": 100,
     "com_copia_no_repositorio": 29,
     "sem_copia_no_repositorio": 71,
-    "igual": 8,
-    "diverge": 0,
-    "nao_comparado": 21,
+    "igual": 9,
+    "diverge": 2,
+    "nao_comparado": 18,
     "sem_copia": 71,
     "dividas_que_tocam_dinheiro": []
   },
@@ -540,7 +540,10 @@
       "atualizada_em": "2026-09-05T07:03:39Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "igual",
+        "versao_conferida": 5,
+        "fonte_sha256": "f87a0fddece13ae3323ba96404932f6f87a11299f05d69661ce92cd05124467b",
+        "nota": "v5 (05/09/2026, v4 do cabeçalho: lista de 4 RPCs com failover) lida por get_edge_function a 22/10/2026 (Unum: \"Eu autorizo\", livro 985) e TRANSCRITA à mão; comparada por diff com a cópia do repositório: igual (hash do pacote não se refaz daqui). Só lê saldos on-chain da sagrada antiga e escreve em orum_leituras_onchain; não assina nem move fundos."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -894,7 +897,9 @@
       "atualizada_em": "2026-09-14T19:44:51Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "diverge",
+        "versao_conferida": 11,
+        "nota": "v11 implantada (14/09/2026) é a V11 do cabeçalho (inclui sentinela, bloco sincronizador_onchain, acessos internos excluídos); a cópia do repositório é a V3 (só acessos e alertas da homeostase) e não tem 'sincronizador_onchain'. Lido por get_edge_function a 22/10/2026 (livro 985); prova: cabeçalhos V3 vs V11 e 0 ocorrências de sincronizador_onchain no repositório. NÃO reimplantar a cópia do repositório: apagaria os blocos sentinela e sincronizador_onchain da página de pulso. A cópia não foi substituída pelo texto implantado neste passo."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -912,7 +917,9 @@
       "atualizada_em": "2026-07-23T07:58:52Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "diverge",
+        "versao_conferida": 3,
+        "nota": "v3 implantada (23/07/2026) é a V2 do cabeçalho: só envia email quando acesso.tem_pagamento é verdadeiro, com rate-limit de 60 s e buildHtml 'PAGAMENTO'; a cópia do repositório é a V1 (avisa em qualquer acesso, com ou sem pagamento). Lido por get_edge_function a 22/10/2026 (livro 985); prova: cabeçalhos diferentes (V1 vs V2) e o corpo implantado tem a guarda 'if (!acesso.tem_pagamento) skipped sem_pagamento' que o repositório não tem. NÃO reimplantar a cópia do repositório: voltaria a inundar a caixa de correio. A cópia não foi substituída pelo texto implantado neste passo."
       },
       "toca_dinheiro": null,
       "uso_24h": {

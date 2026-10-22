@@ -1,3 +1,12 @@
+## 22/10/2026 · lote 1 das funções "não comparadas": 1 igual, 2 divergem
+- **Autorização de Unum (citação):** "Eu autorizo", à proposta de reconciliar as "não comparadas" em lotes pequenos, só em leitura (livro 985, registado antes do acto).
+- **Lido (verificado, `get_edge_function`):** `ora-onchain-leitura` v5: transcrita à mão e comparada por diff com o repositório, **igual**. `ora-acesso-notificar` v3 (é a V2): só envia email com pagamento; o repositório tem a V1 (envia sempre) → **diverge**. `ora-pulso` v11: tem sentinela e `sincronizador_onchain`; o repositório tem a V3 → **diverge**. Nos dois divergentes a prova é o cabeçalho de versão e a guarda/bloco que falta no repositório; ficaram avisos escritos de **não reimplantar** a cópia do repositório.
+- **Feito:** `implantado.json`: 9 iguais, 2 divergem, 18 não comparadas, dívidas que tocam dinheiro: nenhuma. `implantado:verify` verde (20 estragos). Fio com as linhas novas.
+- **Não verificado:** a cópia do repositório dos dois divergentes não foi substituída pelo texto implantado (só se registou a divergência); o hash do pacote não se refaz daqui. Nenhuma função chamada nem reimplantada; nenhum segredo lido.
+- **Próximo:** lote 2: `sensations-mergulho` (a mais usada, 18 KB), `ora-integridade`, `ora-homeostase`; depois trazer o texto implantado das duas divergentes para o repositório.
+
+---
+
 ## 22/10/2026 · camada 4 da raiz confirmada no Bitcoin (bloco 972613)
 - **Origem:** tarefa agendada "Camada 4: confirmar bloco" (14:19 UTC), criada por mim a partir da autorização de Unum à camada 4 (livro 976).
 - **Verificado:** `GET /timestamp/<compromisso>` por calendário (cada ramo tem o seu compromisso): alice 200 (896 bytes) e bob 200 (896 bytes), ambos atestação Bitcoin do bloco 972613; finney 404 (pendente). Juntei com `scripts/ots-juntar.mjs` (sha256 conferido) e conferi com `kit/blocos.mjs`: raiz de Merkle igual ao cabeçalho real em blockstream.info e mempool.space (hash `00000000000000000000f69f…`). Um primeiro passo falhou por eu usar o compromisso de alice para o bob (404); nada foi escrito e corrigi para um compromisso por ramo.
