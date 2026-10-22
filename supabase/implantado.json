@@ -19,13 +19,12 @@
     "total": 100,
     "com_copia_no_repositorio": 26,
     "sem_copia_no_repositorio": 74,
-    "igual": 4,
-    "diverge": 1,
+    "igual": 5,
+    "diverge": 0,
     "nao_comparado": 21,
     "sem_copia": 74,
     "dividas_que_tocam_dinheiro": [
       "ora-cdp-carteira-real",
-      "ora-cdp-teste-oraculo",
       "ora-cdp-teste-payto-cdp",
       "ora-nft-dedicar-simbolica"
     ]
@@ -1583,12 +1582,12 @@
       "atualizada_em": "2026-09-04T14:13:15Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
-        "nota": "Repositório: executor de pagamento antigo (v1, 19/08). Implantado v3: assina um timestamp com a chave Ed25519 do registo MCP e não paga. Lido por get_edge_function a 21/10/2026."
+        "estado": "igual",
+        "versao_conferida": 3,
+        "fonte_sha256": "d5438fc6b481c875ffa05fe1bca0c56e06815f99bac4b2cca1eb8e9dbe177901",
+        "nota": "v3 lida por get_edge_function a 22/10/2026. O repositório tinha outra função (pagador de teste EIP-3009 de 0,161 USDC); o implantado assina só o timestamp com a chave Ed25519 do MCP Registry (seed lida do Vault por RPC, nunca devolvida). Ficheiro do repositório substituído pelo texto implantado, TRANSCRITO à mão do resultado do conector (hash do pacote não se refaz daqui); a cópia antiga fica em docs/supabase-funcoes-substituidas/. Nenhuma função reimplantada nem chamada."
       },
-      "toca_dinheiro": {
-        "evidencia": "foi o pagador de teste; hoje só assina um timestamp (lido a 21/10/2026)"
-      },
+      "toca_dinheiro": null,
       "uso_24h": {
         "pedidos": 1,
         "desafios_402": 0,

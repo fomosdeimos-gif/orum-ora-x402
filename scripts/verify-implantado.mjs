@@ -78,11 +78,11 @@ const falha = (nome, reg, fs = fsReal) => { assert.ok(verificar(reg, fs).length 
 { const r = clone(); get(r, 'ora-cdp-agente-teste').versao = 3; falha('igual com a versão implantada mudada', r); }
 { const r = clone(); get(r, 'ora-cdp-agente-teste').reconciliacao.fonte_sha256 = 'b'.repeat(64); falha('sha da conferência adulterado', r); }
 { const fs = { ...fsReal, sha: (s) => (s === 'ora-cdp-agente-teste' ? 'c'.repeat(64) : fsReal.sha(s)) }; falha('ficheiro do repositório mudou depois de conferir', clone(), fs); }
-{ const r = clone(); get(r, 'ora-cdp-teste-oraculo').reconciliacao.nota = 'x'; falha('diverge sem prova escrita', r); }
+{ const r = clone(); get(r, 'ora-cdp-teste-oraculo').reconciliacao = { estado: 'diverge', nota: 'x' }; falha('diverge sem prova escrita', r); }
 { const r = clone(); get(r, 'pensamento').reconciliacao = { estado: 'nao_comparado' }; falha('nao_comparado sem cópia', r); }
 { const r = clone(); get(r, 'ora-licenca').reconciliacao = { estado: 'sem_copia' }; falha('sem_copia com cópia no repositório', r); }
 { const r = clone(); r.resumo.dividas_que_tocam_dinheiro = r.resumo.dividas_que_tocam_dinheiro.filter((s) => s !== 'ora-cdp-carteira-real'); falha('esconde uma dívida que toca dinheiro', r); }
-{ const r = clone(); r.resumo.igual = 5; falha('resumo inflacionado', r); }
+{ const r = clone(); r.resumo.igual += 1; falha('resumo inflacionado', r); }
 { const r = clone(); r.so_no_repositorio = []; falha('esconde pastas só no repositório', r); }
 { const r = clone(); r.funcoes.push({ ...get(r, 'pensamento') }); falha('slug repetido', r); }
 { const r = clone(); get(r, 'ora-licenca').toca_dinheiro = { evidencia: '' }; falha('toca_dinheiro sem evidência', r); }

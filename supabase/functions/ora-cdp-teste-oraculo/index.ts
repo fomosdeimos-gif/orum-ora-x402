@@ -1,58 +1,75 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { privateKeyToAccount } from "npm:viem@2/accounts";
 
-// ora-cdp-teste-oraculo v1 -- 19/08/2026
-// Mesma carteira de teste financiada por Jorge (ver ora-cdp-agente-teste),
-// mesma tecnica de assinatura EIP-3009 (transferWithAuthorization), mas
-// alvo diferente: paga o endpoint /oraculo (0.161 USDC) em vez de
-// ora-licenca, para verificar ao vivo que truth_machine chega na resposta
-// paga real. Nunca toca a Carteira Sagrada como pagadora, nunca usa chave
-// fora do vault.
+// REPURPOSED (era um util de teste CDP, descartavel, agora vazio de proposito antigo):
+// Assina o timestamp RFC3339 atual com a chave de identidade Ed25519 do ORUM para o
+// MCP Registry oficial. A seed nunca sai desta funcao: e' lida server-side do Vault
+// (via RPC SECURITY DEFINER, mesmo padrao de orum_smithery_key()), usada em memoria
+// para assinar via WebCrypto (JWK OKP/Ed25519), e descartada. So {timestamp,
+// signature_hex} e' devolvido — exactamente o que o handshake HTTP-auth do registry
+// (/v0/auth/http) precisa.
 
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
-const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-const sb = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
-const WALLET_SAGRADA = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
-const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
-const CHAIN_ID = 8453;
-const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, OPTIONS' };
+const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+const sb = createClient(SUPABASE_URL, SERVICE_KEY);
+const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS' };
 
-function b64json(obj: unknown): string { const bytes = new TextEncoder().encode(JSON.stringify(obj)); let bin = ''; for (const b of bytes) bin += String.fromCharCode(b); return btoa(bin); }
+// Chave publica ja publicada abertamente em /.well-known/mcp-registry-auth — nao e segredo.
+const PUBLIC_KEY_B64 = 'TM5MPb99loYa9aA0mMp02Dy/cmyPQH+B8oiwyPptIKo=';
 
-Deno.serve(async (req: Request) => {
+function hexToBytes(hex: string): Uint8Array {
+  const clean = hex.trim();
+  const out = new Uint8Array(clean.length / 2);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
+  return out;
+}
+
+function bytesToHex(bytes: Uint8Array): string {
+  return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+function base64ToBase64Url(b64: string): string {
+  return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function bytesToBase64Url(bytes: Uint8Array): string {
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return base64ToBase64Url(btoa(bin));
+}
+
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+
   try {
-    const { data: pkRows, error: pkErr } = await sb.rpc('orum_cdp_teste_pk');
-    const pk = pkRows && pkRows[0]?.pk;
-    if (pkErr || !pk) throw new Error('chave de teste nao encontrada no vault');
-    const conta = privateKeyToAccount(pk as `0x${string}`);
+    const { data: seedHex, error: seedErr } = await sb.rpc('orum_mcp_registry_seed');
+    if (seedErr || !seedHex) {
+      return new Response(JSON.stringify({ sucesso: false, etapa: 'vault', erro: seedErr?.message }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    }
 
-    const value = '161000'; // 0.161 USDC, preco real do /oraculo
+    const seedBytes = hexToBytes(seedHex as string);
+    if (seedBytes.length !== 32) {
+      return new Response(JSON.stringify({ sucesso: false, etapa: 'seed-length', tamanho: seedBytes.length }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    }
 
-    const nonceBytes = crypto.getRandomValues(new Uint8Array(32));
-    const nonce = '0x' + Array.from(nonceBytes).map((b) => b.toString(16).padStart(2, '0')).join('');
-    const now = Math.floor(Date.now() / 1000);
-    const authorization = { from: conta.address, to: WALLET_SAGRADA, value, validAfter: '0', validBefore: String(now + 3300), nonce };
+    const jwk = {
+      kty: 'OKP',
+      crv: 'Ed25519',
+      d: bytesToBase64Url(seedBytes),
+      x: base64ToBase64Url(PUBLIC_KEY_B64),
+      key_ops: ['sign'],
+      ext: true,
+    };
 
-    const domain = { name: 'USD Coin', version: '2', chainId: CHAIN_ID, verifyingContract: USDC_BASE as `0x${string}` };
-    const types = { TransferWithAuthorization: [
-      { name: 'from', type: 'address' }, { name: 'to', type: 'address' }, { name: 'value', type: 'uint256' },
-      { name: 'validAfter', type: 'uint256' }, { name: 'validBefore', type: 'uint256' }, { name: 'nonce', type: 'bytes32' },
-    ] } as const;
-    const message = { from: conta.address as `0x${string}`, to: WALLET_SAGRADA as `0x${string}`, value: BigInt(value), validAfter: 0n, validBefore: BigInt(now + 3300), nonce: nonce as `0x${string}` };
+    // RFC3339 sem fraccao de segundo — igual ao time.RFC3339 do Go usado pelo registry.
+    const timestamp = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
-    const signature = await conta.signTypedData({ domain, types, primaryType: 'TransferWithAuthorization', message });
+    const key = await crypto.subtle.importKey('jwk', jwk, { name: 'Ed25519' }, false, ['sign']);
+    const sig = await crypto.subtle.sign('Ed25519', key, new TextEncoder().encode(timestamp));
+    const signatureHex = bytesToHex(new Uint8Array(sig));
 
-    const paymentPayload = { x402Version: 2, scheme: 'exact', network: 'eip155:8453', payload: { signature, authorization } };
-    const header = b64json(paymentPayload);
-
-    const alvo = `${SUPABASE_URL}/functions/v1/ora-oraculo`;
-    const resp = await fetch(alvo, { headers: { 'X-PAYMENT': header } });
-    const respJson = await resp.json().catch(async () => ({ texto: await resp.text() }));
-
-    return new Response(JSON.stringify({ ok: resp.status < 400, status_ora_oraculo: resp.status, pagador: conta.address, corpo: respJson }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ sucesso: true, timestamp, signature_hex: signatureHex }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
   } catch (e) {
-    return new Response(JSON.stringify({ ok: false, erro: String((e as Error)?.message || e) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ sucesso: false, erro: String(e) }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
   }
 });
