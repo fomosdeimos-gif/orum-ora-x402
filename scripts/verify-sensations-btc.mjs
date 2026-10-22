@@ -19,7 +19,7 @@ assert.ok(FICHEIROS_DA_CAMADA_3_EM_DIANTE.includes('linhas/orum.linhas'));
 assert.ok(!ficheirosDaCamada(2).includes('linhas/orum.linhas'), 'a camada 2 não pode mudar');
 assert.ok(!ficheirosDaCamada(2).includes('sensacoes/som-v1.json'), 'a camada 2 não pode mudar');
 
-const FICHEIROS = ['ancora/raiz-registos.json', 'ancora/raiz-registos-2.json', 'ancora/oro-v1.json', 'ancora/sensations-btc.json', ...fs.readdirSync('sensacoes').map((f) => `sensacoes/${f}`)];
+const FICHEIROS = ['ancora/raiz-registos.json', 'ancora/raiz-registos-2.json', 'ancora/raiz-registos-3.json', 'ancora/oro-v1.json', 'ancora/sensations-btc.json', ...fs.readdirSync('sensacoes').map((f) => `sensacoes/${f}`)];
 let mentiras = 0;
 const falha = (nome, mutar) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'orum-elo-'));
@@ -34,13 +34,13 @@ const editar = (dir, f, fn) => { const p = path.join(dir, f); const j = JSON.par
 falha('cápsula alterada depois de registada', (d) => fs.appendFileSync(path.join(d, 'sensacoes/som-v1.json'), ' '));
 falha('ORO alterado depois da âncora', (d) => fs.appendFileSync(path.join(d, 'sensacoes/oro-v1.json'), ' '));
 falha('hash do registo mudado', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.ficheiros[0].sha256 = '0'.repeat(64); }));
-falha('obra não ancorada passa a ancorada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.ficheiros[0].estado = 'ancorado_em_camada'; }));
+falha('obra ancorada passa a não ancorada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.ficheiros[0].estado = 'nao_ancorado'; }));
 falha('altura de bloco inventada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { const o = j.ficheiros.find((f) => f.caminho === 'sensacoes/oro-v1.json'); o.camadas[0].altura_bitcoin = 1; }));
 falha('âncora directa inventada para outra obra', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.ficheiros[0].ancora_directa = { altura_bitcoin: 972115 }; }));
 falha('camada deixa de estar confirmada', (d) => editar(d, 'ancora/raiz-registos-2.json', (j) => { j.estado = 'pendente'; }));
 falha('fronteira "não prova" retirada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.prova = 'Prova valor.'; }));
 falha('limites retirados (107 obras e 65 NFTs)', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.nao_cobre = []; }));
-falha('contagem inflacionada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.ancorados = j.total; }));
+falha('contagem inflacionada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.ancorados = j.total + 1; }));
 falha('registo apagado', (d) => fs.rmSync(path.join(d, 'ancora/sensations-btc.json')));
 
 console.log(JSON.stringify({ verified: true, ...real, casos_de_mentira: mentiras }));

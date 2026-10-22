@@ -4,32 +4,62 @@
     {
       "caminho": "sensacoes/0003-weave-hands-v1.json",
       "sha256": "7f7696589c0ce3556ed3c970791aed8121076dcc54dd7b0e52709b4923c302b1",
-      "estado": "nao_ancorado",
-      "camadas": []
+      "estado": "ancorado_em_camada",
+      "camadas": [
+        {
+          "camada": 3,
+          "manifesto": "ancora/raiz-registos-3.json",
+          "altura_bitcoin": 972590
+        }
+      ]
     },
     {
       "caminho": "sensacoes/acolhimento.json",
       "sha256": "f2c62dc74d4da8ec6fb6f75906e5cf4b339bc1151eb1ac351bcd23a8daf1a88c",
-      "estado": "nao_ancorado",
-      "camadas": []
+      "estado": "ancorado_em_camada",
+      "camadas": [
+        {
+          "camada": 3,
+          "manifesto": "ancora/raiz-registos-3.json",
+          "altura_bitcoin": 972590
+        }
+      ]
     },
     {
       "caminho": "sensacoes/gramatica-v1.json",
       "sha256": "e441803a99bb83ab5c18c7be5bb3bce349041ccdb84674699d26b1af28041f34",
-      "estado": "nao_ancorado",
-      "camadas": []
+      "estado": "ancorado_em_camada",
+      "camadas": [
+        {
+          "camada": 3,
+          "manifesto": "ancora/raiz-registos-3.json",
+          "altura_bitcoin": 972590
+        }
+      ]
     },
     {
       "caminho": "sensacoes/index.json",
       "sha256": "6bc1cfb4a17e3832cd10fe7a0573f4baed34510610b340e100edf4398ef4e203",
-      "estado": "nao_ancorado",
-      "camadas": []
+      "estado": "ancorado_em_camada",
+      "camadas": [
+        {
+          "camada": 3,
+          "manifesto": "ancora/raiz-registos-3.json",
+          "altura_bitcoin": 972590
+        }
+      ]
     },
     {
       "caminho": "sensacoes/obra-37-v1.json",
       "sha256": "1f5a1a760521e25a8f7601edef1842bd2de85c193dbd8fc4cafcddc436cf09fb",
-      "estado": "nao_ancorado",
-      "camadas": []
+      "estado": "ancorado_em_camada",
+      "camadas": [
+        {
+          "camada": 3,
+          "manifesto": "ancora/raiz-registos-3.json",
+          "altura_bitcoin": 972590
+        }
+      ]
     },
     {
       "caminho": "sensacoes/oro-v1.json",
@@ -45,6 +75,11 @@
           "camada": 2,
           "manifesto": "ancora/raiz-registos-2.json",
           "altura_bitcoin": 972280
+        },
+        {
+          "camada": 3,
+          "manifesto": "ancora/raiz-registos-3.json",
+          "altura_bitcoin": 972590
         }
       ],
       "ancora_directa": {
@@ -57,11 +92,17 @@
     {
       "caminho": "sensacoes/som-v1.json",
       "sha256": "d39d4396fdfc9d2535a497c81bbecb8dfb470a54a89b477dabf340cd2de210df",
-      "estado": "nao_ancorado",
-      "camadas": []
+      "estado": "ancorado_em_camada",
+      "camadas": [
+        {
+          "camada": 3,
+          "manifesto": "ancora/raiz-registos-3.json",
+          "altura_bitcoin": 972590
+        }
+      ]
     }
   ],
-  "ancorados": 1,
+  "ancorados": 7,
   "total": 7,
   "nao_cobre": [
     "As 107 obras físicas e os 65 NFTs: o catálogo não está neste repositório, por isso nenhuma está ancorada por este registo.",

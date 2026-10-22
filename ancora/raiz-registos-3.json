@@ -206,15 +206,42 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 972590,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
-  "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+  "nao_verificado": [],
+  "atualizado_em_utc": "2026-10-22T11:08:55Z",
+  "atualizacao": "22/10/2026: GET /timestamp/<compromisso> aos três calendários (a partir do sandbox da ORA, que desta vez os alcançou). alice devolveu atestação Bitcoin do bloco 972590 (861 bytes, sha256 ba402de5…7200), bob do 972591 (896 bytes, sha256 469ef4f4…e7fb) e finney do 972602 (1070 bytes, sha256 78dea86b…7a03); sha256 conferido antes de juntar com scripts/ots-juntar.mjs. altura_bitcoin é a mais baixa das três. Livro 964 e 973.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-10-22T11:08:55Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam)",
+    "blocos": [
+      {
+        "altura": 972590,
+        "hash": "00000000000000000000bd1d6aa15e6538d2adc3154cdc0bf97e70a7ee19f0b5",
+        "merkle_root": "11deef0fc388be722beb109ae206009e48deda7a3b7cba834243ae5665a57873",
+        "hora_utc": "2026-10-22T08:21:34Z"
+      },
+      {
+        "altura": 972591,
+        "hash": "0000000000000000000102064bda23c134549bc7d8a48ff79b715fb3f5bf71c2",
+        "merkle_root": "20180137fcdbf9bbbcad143e0bc1a6ae11b2ef737988a4c0528311feaecac229",
+        "hora_utc": "2026-10-22T08:29:47Z"
+      },
+      {
+        "altura": 972602,
+        "hash": "00000000000000000000fef7e260f59a1583d7c69609b5622f34b2a0c129758e",
+        "merkle_root": "b7210b1d54a4805eab86a8b93449889b2e0b607b97309785935d8907ad395e4c",
+        "hora_utc": "2026-10-22T10:03:24Z"
+      }
+    ]
+  }
 }
