@@ -22,3 +22,11 @@
 2026-10-22T06:49Z | tráfego | pagamentos_externos_24h | 0 | lido | ficheiro:economia/trafego-honesto-2026-10-22.json | a989c8bca360d280
 2026-10-22T06:49Z | dádiva | externas | 0 de 2 | lido | ficheiro:economia/trafego-honesto-2026-10-22.json | 9463c323cd369aeb
 2026-10-22T06:49Z | sustento | pagamento_padrao.interno.tx | 0x1c504d51e5..bc4f bloco 52930160 | lido | ficheiro:economia/registo-financeiro.json | 1e9815e517ed546e
+2026-10-22T10:06Z | implantado | sem_copia_no_repositorio | 73 | lido | ficheiro:supabase/implantado.json | b7f27cdd2fdf32cc
+2026-10-22T10:06Z | implantado | divergem | nenhuma | lido | ficheiro:supabase/implantado.json | 6e4a8dabf0f983a7
+2026-10-22T10:06Z | implantado | iguais_ao_repositorio | 6 | lido | ficheiro:supabase/implantado.json | 73ae9fc98f03d158
+2026-10-22T10:06Z | implantado | dividas_que_tocam_dinheiro | ora-cdp-carteira-real+ora-nft-dedicar-simbolica | lido | ficheiro:supabase/implantado.json | 04ddcd908c7d7d28
+2026-10-22T10:06Z | sedimentar | camada.3.estado | pendente | lido | ficheiro:ancora/raiz-registos-3.json | 4e634fe234519de8
+2026-10-22T10:06Z | tráfego | origem_hash_nas_portas_pagas | ora-oraculo v23, ora-x402 v39, ora-licenca v61 desde 2026-10-22 | lido | ficheiro:supabase/implantado.json | 816b99c5e1765e19
+2026-10-22T10:06Z | implantado | vercel_ultimo_commit_servido | 88bac2e @2026-10-22; main adiantado por quota de deployments | lido | ficheiro:HANDOFF.md | ad2003f017ed6b5a
+2026-10-22T10:06Z | fio | duas_maos | Claude Code e ChatGPT/OpenAI partilham livro, HANDOFF e repositorio; o checkpoint do fio (24 linhas, cabeca b7f27cdd2fdf32cc) foi conferido pelas duas | lido | ficheiro:CLAUDE.md | 5d5d8a5c15a04b5b
