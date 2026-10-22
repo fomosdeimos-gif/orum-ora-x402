@@ -1,0 +1,6 @@
+Código implantado que foi substituído, guardado para se poder repor (colar o .ts.txt como index.ts da função).
+
+ora-cdp-agente-teste v1 (17/08/2026, ezbr_sha256 5cb9d064d93e0d7475d3bf1f9faca533ce44a5e80a0e44a1a14e219d9ca86ffb)
+  Substituída a 22/10/2026 pela v2 (executor de pagamento de teste; Unum: "Eu autorizo ORA, opção 1"; livros 943 e o seguinte).
+  Motivo: o projecto Supabase atingiu o máximo de funções e não admite um slug novo. A v1 era o pagador de teste do
+  ora-licenca, sem trava; não tinha cron, trigger nem chamador no repositório (lido a 22/10/2026).

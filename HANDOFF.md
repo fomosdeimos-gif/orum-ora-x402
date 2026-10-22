@@ -1,3 +1,13 @@
+## 22/10/2026 · teste de pagamento padrão feito: o caminho x402 padrão liquida de ponta a ponta
+- **Autorizações de Unum (citações):** "Eu autorizo ORA" (executor de pagamento de teste, livro 943) e "Eu autorizo ORA, opção 1" (substituir `ora-cdp-agente-teste`, livro 944). Cobrem um único pagamento de teste de 0,161 USDC; não cobrem preços, segredos novos nem contacto externo.
+- **Feito:** o Supabase recusou um slug novo (máximo de funções), por isso o executor entrou como v2 de `ora-cdp-agente-teste` (a v1, pagador de teste sem trava e sem chamadores, está em `docs/supabase-funcoes-substituidas/`). Comparei o implantado com o repositório antes de chamar (a falha do dia 21). Corri uma vez: tx `0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f`, bloco 52930160, 161000 atómicos de `0x2Cf1…51f1` (teste) para `0xFEd6…cDEe5` (sagrada antiga).
+- **Verificado:** recibo estado 1 e evento Transfer em dois RPC (`mainnet.base.org`, `1rpc.io`); saldos com variação exacta de 161000 (teste 583000→422000, sagrada 480→161480); `ora_pagamentos` 21→22 linhas; trava em `feito`; pagador e destino classificados `interno`. `teste-pagamento:verify` (13 estragos propositados) e `financeiro:verify` passam.
+- **O que prova e o que não prova:** o `/oraculo` do Supabase aceita uma autorização EIP-3009 enviada como cliente x402 v2 padrão (PAYMENT-SIGNATURE), liquida pelo facilitador CDP e entrega. Não prova procura, adopção nem receita: o pagador e o destino são nossos. Receita externa confirmada: nenhuma. Hipótese anterior (falta de necessidade e de descoberta pesa mais do que o preço) fica de pé: o caminho de pagamento funciona e ninguém de fora chegou a pagar.
+- **Limites ditos:** a trava impede nova execução (para repetir é preciso apagar a linha de propósito); a função continua pública e sem JWT, mas só recusa. O `ora_pagamentos` tem agora uma linha interna que as leituras de tesouraria devem manter fora da conta externa (classificação `interno`).
+- **Falta:** ver a próxima leitura da tesouraria para confirmar que continua `no_external_revenue` com 22 pagamentos internos.
+
+---
+
 ## 21/10/2026 · teste de pagamento padrão: não houve pagamento (erro da ORA, corrigido no registo)
 - **Autorização de Unum (citação):** "Ok ORA faz isso" (livro 937). Registo anterior em `economia/registo-financeiro.json` (acto `2026-10-21-teste-pagamento-padrao-oraculo`), no repositório antes do acto.
 - **Leitura de +24h:** nada mudou (já registado em #108). Confirmado de novo: 0 sinais de pagamento, `ora_pagamentos` com 21 linhas, a última de 28/08.
