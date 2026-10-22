@@ -17,20 +17,18 @@
   "como_conferir": "Chamar list_edge_functions e comparar, por slug, versao e impressão com este ficheiro; qualquer diferença é uma mudança que não passou por aqui. Depois de implantar uma função, acrescentar a nova linha e, se o código vier do repositório, reconciliar (igual) e fixar o sha256 do ficheiro.",
   "resumo": {
     "total": 100,
-    "com_copia_no_repositorio": 27,
-    "sem_copia_no_repositorio": 73,
-    "igual": 6,
+    "com_copia_no_repositorio": 28,
+    "sem_copia_no_repositorio": 72,
+    "igual": 7,
     "diverge": 0,
     "nao_comparado": 21,
-    "sem_copia": 73,
+    "sem_copia": 72,
     "dividas_que_tocam_dinheiro": [
-      "ora-cdp-carteira-real",
       "ora-nft-dedicar-simbolica"
     ]
   },
   "so_no_repositorio": [
-    "0001sensations-mcp",
-    "ora-operational-wallet"
+    "0001sensations-mcp"
   ],
   "funcoes": [
     {
@@ -1543,11 +1541,13 @@
       "verify_jwt": false,
       "ezbr_sha256_16": "a95cb377d6184218",
       "atualizada_em": "2026-10-19T21:09:53Z",
-      "repo": false,
+      "repo": true,
       "reconciliacao": {
-        "estado": "sem_copia",
+        "estado": "igual",
         "contraparte_no_repositorio": "ora-operational-wallet",
-        "nota": "docs/operacional-producao-v13.md reconciliou a v13 com o repositório a 17/10/2026. Implantado agora v14 (mais recente): não comparado."
+        "versao_conferida": 14,
+        "fonte_sha256": "e5b7c70968676cc64313f1844de9c090c266fecf8799a9728da98dd225a73568",
+        "nota": "v14 (caminho C, pagamento sem ETH; implantada a 19/10/2026, livro 902-903) lida por get_edge_function a 22/10/2026 (Unum: \"Eu autorizo\", livro 978): os 7 ficheiros (index.ts, bitcoin.mjs, cdp.mjs, core.mjs, bazaar.mjs, payments.mjs, gasless.mjs) foram TRANSCRITOS à mão do resultado do conector e comparados por diff com supabase/functions/ora-operational-wallet: 7 de 7 iguais (um desvio inicial em bazaar.mjs era erro meu de transcrição, corrigido contra o endereço USDC e re-conferido). Repete a conferência do livro 910 (20/10/2026) com a mesma impressão a95cb377…. fonte_sha256 = sha256 das linhas nome\\\\0sha256(ficheiro) da pasta contraparte, por ordem. Limite: o hash do pacote (ezbr) não se refaz daqui e uma transcrição à mão não prova bytes invisíveis; o comportamento (401 sem token) foi verificado no livro 903. Nenhuma função chamada nem reimplantada; nenhum segredo lido."
       },
       "toca_dinheiro": {
         "evidencia": "executor operacional da Base (docs/operacional-producao-v13.md)"
