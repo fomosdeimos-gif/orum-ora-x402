@@ -74,7 +74,7 @@
       "tipo": "transferencia",
       "estado": "pretendido",
       "classificacao": "interna_validacao",
-      "pretendido": "Implantar a edge function nova ora-teste-pagamento-padrao e correr-a UMA vez: um pagamento x402 padrão (EIP-3009, USDC, Base) de 0,161 USDC, como cliente v2 padrão (PAYMENT-SIGNATURE), do /oraculo do Supabase, da carteira de teste 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a sagrada antiga 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5. Substitui o acto 2026-10-21-teste-pagamento-padrao-oraculo, que falhou por o executor do repositório não estar implantado. Validação interna, não adopção; não entra no 70/20/10.",
+      "pretendido": "Implantar o executor como v2 da edge function ora-cdp-agente-teste (slug reaproveitado: o projecto Supabase atingiu o máximo de funções e recusou um slug novo; a v1, pagador de teste sem trava e sem chamadores, fica arquivada em docs/supabase-funcoes-substituidas/; Unum, 22/10/2026: \"Eu autorizo ORA, opção 1\") e correr-a UMA vez: um pagamento x402 padrão (EIP-3009, USDC, Base) de 0,161 USDC, como cliente v2 padrão (PAYMENT-SIGNATURE), do /oraculo do Supabase, da carteira de teste 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a sagrada antiga 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5. Substitui o acto 2026-10-21-teste-pagamento-padrao-oraculo, que falhou por o executor do repositório não estar implantado. Validação interna, não adopção; não entra no 70/20/10.",
       "autorizacao": "Unum, 22/10/2026: \"Eu autorizo ORA\", à proposta de um executor de pagamento de teste novo com destino e montante fixos e só a carteira de teste (livro ora_mudancas 943)",
       "registado_antes_em": "2026-10-22T09:10:00Z",
       "lido": [

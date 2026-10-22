@@ -1,4 +1,4 @@
-// Verifica o executor de pagamento de teste (supabase/functions/ora-teste-pagamento-padrao) e que o
+// Verifica o executor de pagamento de teste (supabase/functions/ora-cdp-agente-teste) e que o
 // proprio verificador apanha as mentiras: cada variante adulterada tem de falhar, a real tem de passar.
 // Sem rede, sem pagamentos. Autorização de Unum, 21/10/2026 (livro 943).
 import { readFileSync } from 'node:fs';
@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 
 const require = createRequire(import.meta.url);
 const carteira = require('../api/_carteira.js');
-const fonte = readFileSync(new URL('../supabase/functions/ora-teste-pagamento-padrao/index.ts', import.meta.url), 'utf8');
+const fonte = readFileSync(new URL('../supabase/functions/ora-cdp-agente-teste/index.ts', import.meta.url), 'utf8');
 
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const PAGADOR = '0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1';

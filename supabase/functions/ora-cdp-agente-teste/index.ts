@@ -2,7 +2,8 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { privateKeyToAccount } from "npm:viem@2/accounts";
 
-// ora-teste-pagamento-padrao v1 -- 22/10/2026
+// ora-cdp-agente-teste v2 -- 22/10/2026 (substitui a v1 de 17/08/2026, guardada em docs/supabase-funcoes-substituidas/)
+// Slug reaproveitado: o projecto Supabase atingiu o máximo de funções e não admite um slug novo.
 // Autorização de Unum, 21/10/2026: "Eu autorizo ORA" (livro ora_mudancas 943), a um executor de pagamento
 // de teste com destino e montante fixos e só a carteira de teste. Valida, como um cliente x402 v2 padrão,
 // se o /oraculo (ora-oraculo, Supabase) aceita uma autorização EIP-3009, liquida pelo facilitador e entrega.
