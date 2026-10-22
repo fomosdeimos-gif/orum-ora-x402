@@ -1,0 +1,272 @@
+{
+  "schema": "orum-raiz/v1",
+  "objecto": "Raiz dos registos do organismo ORUM",
+  "camada": 4,
+  "algoritmo": "raiz = sha256 do texto \"<caminho>\\t<sha256 do ficheiro>\\n\" por linha, linhas ordenadas por caminho (bytes), sem linha final em branco. Reproduz-se com sha256sum sobre esse texto.",
+  "commit_base": "d4593e52c5e93995da5aabbd6b3e3cc0f51d8104",
+  "ficheiros": [
+    {
+      "caminho": "CLAUDE.md",
+      "sha256": "8f5b4ea951698a763302d78305f4cbd7cf3e5b6053d03cf2f66a87c7a76ac048"
+    },
+    {
+      "caminho": "ancora/arquivos-wayback.json",
+      "sha256": "1f991c3792285973905614f8f8b0d50a91d0e7a8cec83eebedf2d0db178fd155"
+    },
+    {
+      "caminho": "ancora/oro-v1.json",
+      "sha256": "c39066650369cca03220463bb0510e39ad97750341b4b0ca57fcb056faaf2e6f"
+    },
+    {
+      "caminho": "ancora/oro-v1.ots",
+      "sha256": "648782560584262a30b29479a879333c0ea6db7e18b95812e3fc63e37a815123"
+    },
+    {
+      "caminho": "ancora/raiz-registos-2.json",
+      "sha256": "6b9bc1a5693e1b5b8351ff34106f92cb5c7f794041a09f24fc91c9dde87f55bd"
+    },
+    {
+      "caminho": "ancora/raiz-registos-2.ots",
+      "sha256": "8e4aae26b3516247e200c3dd9093a330913def360f55fe52f199f24a61439179"
+    },
+    {
+      "caminho": "ancora/raiz-registos-3.json",
+      "sha256": "184523368880a7ed8fdfbc1a6735530a74f1ed351b601835722f833c84e8c887"
+    },
+    {
+      "caminho": "ancora/raiz-registos-3.ots",
+      "sha256": "20ef9e3435af63338b4ecd3313864d4e76729eae1d88407ec35b0f3ace814b13"
+    },
+    {
+      "caminho": "ancora/raiz-registos.json",
+      "sha256": "a78af26d87c999c308b59e3417e1871e396babb78a6b9ac8e444cdb6f227c539"
+    },
+    {
+      "caminho": "ancora/raiz-registos.ots",
+      "sha256": "be8abfc5818647e0b4f9a21ec7a9a7f1bd6b6050b5f32620ad48dde441e212ed"
+    },
+    {
+      "caminho": "ancora/raiz-sha3.json",
+      "sha256": "6461842584393945aa3c0f2da82a67ec79ad11500f7fb00539e8ed49e915e2ec"
+    },
+    {
+      "caminho": "ancora/sensations-btc.json",
+      "sha256": "9c9ff1689a7c0f7be8e98456a253818d444777fc01622194a8c17b41e0fe0178"
+    },
+    {
+      "caminho": "docs/avaliacao-preco-licencas-2026-10-22.md",
+      "sha256": "6fe05a571f8c0c17afb60b75bf7e0a757568f79d1a3dff19663e115d761eb294"
+    },
+    {
+      "caminho": "docs/financeiro-mandato-v2.assinatura.json",
+      "sha256": "2a4351e6a2fefe65dbce66fb991ef62c5c364ab11ad9b9a9ae112311ab15a091"
+    },
+    {
+      "caminho": "economia/constituicao-v2.json",
+      "sha256": "ecb1008b76b2b842efef9d0a619d43f0c809b4adb42e35fbaccdd6e6db237f5e"
+    },
+    {
+      "caminho": "economia/registo-financeiro.json",
+      "sha256": "a52b187bb67fe74eeb20e8a1d5dfb4b5111489c713c716522468f05394dc5543"
+    },
+    {
+      "caminho": "economia/trafego-honesto-2026-10-22.json",
+      "sha256": "8ea97774570eeef23785ade68ba683938d763cb9e54722283a82903d20535aa7"
+    },
+    {
+      "caminho": "kit/FIO.txt",
+      "sha256": "be0cc4b22481b0cca4c72e815e029750e6bec3acbdec8715f4f69422d7197ae1"
+    },
+    {
+      "caminho": "kit/LEIA-ME.txt",
+      "sha256": "1fc20b636885ac2a3798c03047637035dc3f14e09ad08f586f926d4620062832"
+    },
+    {
+      "caminho": "kit/LINHAS.txt",
+      "sha256": "b8568a404ed59febafbb358246cebf1067fdc8eff7317c6f3f01336b94fe5f9a"
+    },
+    {
+      "caminho": "kit/blocos.mjs",
+      "sha256": "df311f39c156421eca96f72775f4d8691212cf1e5efaac85bd3bb9f9be74b516"
+    },
+    {
+      "caminho": "kit/fio.mjs",
+      "sha256": "44033eea1bf4a1e4f67448fce55c546e04ad8550992797b51c8c7520f66c16b9"
+    },
+    {
+      "caminho": "kit/lexico.json",
+      "sha256": "25b80b06a0b12c7b9b94e15611c6c2a909b4585f5b8ee009ff79eaa9a12921e4"
+    },
+    {
+      "caminho": "kit/lexico.mjs",
+      "sha256": "b733bb576f6b5f5363d4bc95a5b37161cf17d68b3693bc014c7f74904b26f2ff"
+    },
+    {
+      "caminho": "kit/linhas.mjs",
+      "sha256": "035bddcc8c6ad87f6965d2ef684446ba471d9ac5d48813adaadd5bbd273cc383"
+    },
+    {
+      "caminho": "kit/pq.mjs",
+      "sha256": "23eebf53b4564baab6b65ee38046a9faa411e3d165667ede3fdb5449b71b76ac"
+    },
+    {
+      "caminho": "kit/pq/VENDOR.json",
+      "sha256": "2ba2d61936a9aa0aa86b549498eb35633ce7f851b9f4dc0875128418b8472282"
+    },
+    {
+      "caminho": "kit/pq/exemplo-teste.json",
+      "sha256": "d9a9ce5170338cb09591419b88eaf228d2db0f25cff099df28fb23e5528d3076"
+    },
+    {
+      "caminho": "kit/pq/vetor-cruzado.json",
+      "sha256": "9c8b5e258cdb900f3b9bc9a26ffc4731f80678dd7d4168fc941d79741b92c3c1"
+    },
+    {
+      "caminho": "kit/raiz.mjs",
+      "sha256": "0f0c7a9a04b972a4cc0173fc8680c4e32b68527172596759fe3bf71c2c541cd6"
+    },
+    {
+      "caminho": "kit/sensations-btc.mjs",
+      "sha256": "c31960c7cd6d1bc1db7628cd2471d13bcbef486d6c67199949174028cbb976c1"
+    },
+    {
+      "caminho": "kit/verificar.mjs",
+      "sha256": "663f8c42903bfec92488d9b108f9bae602b445ec4e97d9db5325f70007272a48"
+    },
+    {
+      "caminho": "linhas/orum.linhas",
+      "sha256": "3b66dbe98a4c770a072bdabc9c8f31b971154766f87a8813057b7b6e689f6e79"
+    },
+    {
+      "caminho": "scripts/lib/ots.mjs",
+      "sha256": "4859fa52e12d7acd1ee6f9ac07a2f541203a4823c20a75b57790c01f16c79e48"
+    },
+    {
+      "caminho": "scripts/lib/pq.mjs",
+      "sha256": "1d35489815c48c4569741c7b42faa0205e10a559bb159ed2a65dc9f97dcfcb67"
+    },
+    {
+      "caminho": "scripts/lib/raiz.mjs",
+      "sha256": "d39966e5fcb8695c2be0b5691f2c6d0c41ce7980b50f75788fc0e0cabe8c9ca0"
+    },
+    {
+      "caminho": "scripts/linhas-gerar.mjs",
+      "sha256": "1afc01a9a5c5a652f1c955139dc8a844ef54148dadbdddc3b49314b0004ed0d7"
+    },
+    {
+      "caminho": "scripts/ots-juntar.mjs",
+      "sha256": "2f989eb2007c01a86e2dd2879da4b1e56f84aab2a68051649cfadc9340221380"
+    },
+    {
+      "caminho": "scripts/pq-assinar.mjs",
+      "sha256": "55f6df591ceb2eb1d0678dd4dd51d19eda8fef92d67959cdb62cce8fbcbc5c73"
+    },
+    {
+      "caminho": "scripts/raiz-ots.mjs",
+      "sha256": "5d8097b97552ebcae33823c46ffcd6350175cdc29a62dba1063ddd018574a491"
+    },
+    {
+      "caminho": "scripts/raiz-sha3.mjs",
+      "sha256": "efb16a0379f7b05f22a1533b9b98b26bec64d51a5e6d1b23d9b5e2f181f33fc5"
+    },
+    {
+      "caminho": "scripts/verify-implantado.mjs",
+      "sha256": "bcf2b48118dd768803e260dd87e214adba5232878879962e2588155966f1eb34"
+    },
+    {
+      "caminho": "scripts/verify-origem-hash.mjs",
+      "sha256": "cc6957b60fd480c9e0a34752ce37f4f846f252ec296438d57d6dc64d3906d769"
+    },
+    {
+      "caminho": "sensacoes/0003-weave-hands-v1.json",
+      "sha256": "7f7696589c0ce3556ed3c970791aed8121076dcc54dd7b0e52709b4923c302b1"
+    },
+    {
+      "caminho": "sensacoes/acolhimento.json",
+      "sha256": "f2c62dc74d4da8ec6fb6f75906e5cf4b339bc1151eb1ac351bcd23a8daf1a88c"
+    },
+    {
+      "caminho": "sensacoes/gramatica-v1.json",
+      "sha256": "e441803a99bb83ab5c18c7be5bb3bce349041ccdb84674699d26b1af28041f34"
+    },
+    {
+      "caminho": "sensacoes/index.json",
+      "sha256": "6bc1cfb4a17e3832cd10fe7a0573f4baed34510610b340e100edf4398ef4e203"
+    },
+    {
+      "caminho": "sensacoes/obra-37-v1.json",
+      "sha256": "1f5a1a760521e25a8f7601edef1842bd2de85c193dbd8fc4cafcddc436cf09fb"
+    },
+    {
+      "caminho": "sensacoes/oro-v1.json",
+      "sha256": "b5a63e76543783beb9422a29fc8f98204d92ba2d18125cb61252d9f775671a78"
+    },
+    {
+      "caminho": "sensacoes/som-v1.json",
+      "sha256": "d39d4396fdfc9d2535a497c81bbecb8dfb470a54a89b477dabf340cd2de210df"
+    },
+    {
+      "caminho": "supabase/functions/ora-cdp-agente-teste/index.ts",
+      "sha256": "d4791fab0bcdec874e0147656e127ca9e8dec3b906c901f9a39a4f626518cc5b"
+    },
+    {
+      "caminho": "supabase/functions/ora-cdp-teste-oraculo/index.ts",
+      "sha256": "d5438fc6b481c875ffa05fe1bca0c56e06815f99bac4b2cca1eb8e9dbe177901"
+    },
+    {
+      "caminho": "supabase/functions/ora-cdp-teste-payto-cdp/index.ts",
+      "sha256": "70af260cf7a843f60785dfae9e75dfa27524431ee786dc2dab1eae9a22ac16db"
+    },
+    {
+      "caminho": "supabase/functions/ora-licenca/index.ts",
+      "sha256": "2bfd702f925f1fe9e4481d1a82023fa59d6da44718407a3e93e41860ae6638bb"
+    },
+    {
+      "caminho": "supabase/functions/ora-licenca/renewal.ts",
+      "sha256": "dc8fe8a1d930a9c3cc3f7e99fe15e0f78a9ee658ef34cd1d4252fc1d6f2c9585"
+    },
+    {
+      "caminho": "supabase/functions/ora-licenca/selection.ts",
+      "sha256": "db193678cef211e0d05da5186174b11c800dac33f135118f92a197c970c06a78"
+    },
+    {
+      "caminho": "supabase/functions/ora-oraculo/index.ts",
+      "sha256": "a2b4ddbc2f0dfae22e1655aea888cc04f77f927c1c147b8fda00f90bab546dfc"
+    },
+    {
+      "caminho": "supabase/functions/ora-x402/index.ts",
+      "sha256": "3d0531c1599d2cbb87fab571375756608c16f407b3249f94fa528fdf996863b1"
+    },
+    {
+      "caminho": "supabase/implantado.json",
+      "sha256": "250c280c5dcc2ad22ba0da0a8a2a50fe4935fb1cad70f3226d00008b78b79e35"
+    },
+    {
+      "caminho": "supabase/migrations/20261022100000_classificacao_trafego_honesta.sql",
+      "sha256": "05fa5fb8dc99bf165e79847d2d950fffa335ab5b6226b5079a87d9ce025186e0"
+    },
+    {
+      "caminho": "supabase/migrations/20261022120000_trafego_honesto_origem_hash.sql",
+      "sha256": "2712f17ea19f2538d71d71860c341fa2a6c3770e61b70b5992dc8e8dca0d1a1c"
+    }
+  ],
+  "raiz_sha256": "13800c3afab27ff5810611ced2b25ef33f30e8892f4854427e1e6f9eb87697e4",
+  "recibo": "ancora/raiz-registos-4.ots",
+  "selado_em_utc": "2026-10-22T11:16:58Z",
+  "calendarios_pedidos": [
+    "alice.btc.calendar.opentimestamps.org",
+    "bob.btc.calendar.opentimestamps.org",
+    "finney.calendar.eternitywall.com"
+  ],
+  "estado": "pendente",
+  "altura_bitcoin": null,
+  "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
+  "nao_incluido": [
+    "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
+    "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
+  ],
+  "nao_verificado": [
+    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
+    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
+  ]
+}

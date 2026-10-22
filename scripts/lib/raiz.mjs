@@ -71,12 +71,28 @@ export const FICHEIROS_DA_CAMADA_3_EM_DIANTE = [
   'kit/FIO.txt',
 ];
 
+// Acrescentos da camada 4 em diante (a 1, 2 e 3 estão seladas e não mudam): a regra de decisão do preço escrita antes dos dados,
+// o código que está implantado nas portas pagas e nas funções reconciliadas, o gerador do fio e o verificador do implantado.
+export const FICHEIROS_DA_CAMADA_4_EM_DIANTE = [
+  'docs/avaliacao-preco-licencas-2026-10-22.md',
+  'scripts/linhas-gerar.mjs',
+  'scripts/verify-implantado.mjs',
+  'supabase/functions/ora-oraculo/index.ts',
+  'supabase/functions/ora-x402/index.ts',
+  'supabase/functions/ora-licenca/index.ts',
+  'supabase/functions/ora-licenca/renewal.ts',
+  'supabase/functions/ora-licenca/selection.ts',
+  'supabase/functions/ora-cdp-teste-oraculo/index.ts',
+  'supabase/functions/ora-cdp-teste-payto-cdp/index.ts',
+  'supabase/functions/ora-cdp-agente-teste/index.ts',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : [];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
