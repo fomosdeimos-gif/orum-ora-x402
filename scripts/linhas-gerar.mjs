@@ -12,6 +12,7 @@ const hora = (s) => s.slice(0, 16) + 'Z';
 const em = ` @${hora(sal.observado_utc)}`;
 const c1 = J('ancora/raiz-registos.json');
 const c2 = J('ancora/raiz-registos-2.json');
+const c3 = fs.existsSync('ancora/raiz-registos-3.json') ? J('ancora/raiz-registos-3.json') : null;
 const lb = est.linha_de_base;
 const oro = J('ancora/oro-v1.json');
 const elo = J('ancora/sensations-btc.json');
@@ -39,7 +40,7 @@ const factos = [
 factos.push(
   ['implantado', 'funcoes_total', String(imp.resumo.total), 'lido', 'ficheiro:supabase/implantado.json'],
   ['implantado', 'sem_copia_no_repositorio', String(imp.resumo.sem_copia_no_repositorio), 'lido', 'ficheiro:supabase/implantado.json'],
-  ['implantado', 'divergem', imp.funcoes.filter((f) => f.reconciliacao.estado === 'diverge').map((f) => f.slug).join('+'), 'lido', 'ficheiro:supabase/implantado.json'],
+  ['implantado', 'divergem', imp.funcoes.filter((f) => f.reconciliacao.estado === 'diverge').map((f) => f.slug).join('+') || 'nenhuma', 'lido', 'ficheiro:supabase/implantado.json'],
   ['tráfego', 'de_terceiros_30d', `${traf.trafego_30_dias.de_terceiros} de ${traf.trafego_30_dias.marcados_externos_antes} marcados externos @${traf.lido_em_utc.slice(0, 10)}`, 'lido', 'ficheiro:economia/trafego-honesto-2026-10-22.json'],
   ['tráfego', 'pagamentos_externos_24h', String(traf.superficies_pagas_24h.pagamentos_externos), 'lido', 'ficheiro:economia/trafego-honesto-2026-10-22.json'],
   ['dádiva', 'externas', `${traf.dadivas.externas} de ${traf.dadivas.total}`, 'lido', 'ficheiro:economia/trafego-honesto-2026-10-22.json'],
@@ -47,6 +48,12 @@ factos.push(
 if (pagamentoPadrao) factos.push(['sustento', 'pagamento_padrao.interno.tx', `${pagamentoPadrao.prova.tx.slice(0, 12)}..${pagamentoPadrao.prova.tx.slice(-4)} bloco ${pagamentoPadrao.prova.bloco}`, 'lido', 'ficheiro:economia/registo-financeiro.json']);
 if (oro.estado === 'confirmado_bitcoin') factos.push(['ORO', 'ancora_directa.altura_bitcoin', String(oro.altura_bitcoin), 'verificado', 'verif:kit:verify']);
 factos.push(['ORO', 'capsulas_sensacoes_ancoradas_em_btc', `${elo.ancorados} de ${elo.total}`, 'lido', 'ficheiro:ancora/sensations-btc.json']);
+factos.push(['implantado', 'iguais_ao_repositorio', String(imp.resumo.igual), 'lido', 'ficheiro:supabase/implantado.json']);
+factos.push(['implantado', 'dividas_que_tocam_dinheiro', imp.resumo.dividas_que_tocam_dinheiro.join('+') || 'nenhuma', 'lido', 'ficheiro:supabase/implantado.json']);
+if (c3) factos.push(['sedimentar', 'camada.3.estado', c3.estado, 'lido', 'ficheiro:ancora/raiz-registos-3.json']);
+factos.push(['tráfego', 'origem_hash_nas_portas_pagas', 'ora-oraculo v23, ora-x402 v39, ora-licenca v61 desde 2026-10-22', 'lido', 'ficheiro:supabase/implantado.json']);
+factos.push(['implantado', 'vercel_ultimo_commit_servido', '88bac2e @2026-10-22; main adiantado por quota de deployments', 'lido', 'ficheiro:HANDOFF.md']);
+factos.push(['fio', 'duas_maos', 'Claude Code e ChatGPT/OpenAI partilham livro, HANDOFF e repositorio; o checkpoint do fio (24 linhas, cabeca b7f27cdd2fdf32cc) foi conferido pelas duas', 'lido', 'ficheiro:CLAUDE.md']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 
 let texto = fs.existsSync(FICHEIRO) ? fs.readFileSync(FICHEIRO, 'utf8') : '';
