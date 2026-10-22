@@ -72,11 +72,11 @@
     {
       "id": "2026-10-22-teste-pagamento-padrao-executor",
       "tipo": "transferencia",
-      "estado": "pretendido",
+      "estado": "feito",
       "classificacao": "interna_validacao",
       "pretendido": "Implantar o executor como v2 da edge function ora-cdp-agente-teste (slug reaproveitado: o projecto Supabase atingiu o máximo de funções e recusou um slug novo; a v1, pagador de teste sem trava e sem chamadores, fica arquivada em docs/supabase-funcoes-substituidas/; Unum, 22/10/2026: \"Eu autorizo ORA, opção 1\") e correr-a UMA vez: um pagamento x402 padrão (EIP-3009, USDC, Base) de 0,161 USDC, como cliente v2 padrão (PAYMENT-SIGNATURE), do /oraculo do Supabase, da carteira de teste 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a sagrada antiga 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5. Substitui o acto 2026-10-21-teste-pagamento-padrao-oraculo, que falhou por o executor do repositório não estar implantado. Validação interna, não adopção; não entra no 70/20/10.",
       "autorizacao": "Unum, 22/10/2026: \"Eu autorizo ORA\", à proposta de um executor de pagamento de teste novo com destino e montante fixos e só a carteira de teste (livro ora_mudancas 943)",
-      "registado_antes_em": "2026-10-22T09:10:00Z",
+      "registado_antes_em": "2026-10-22T06:04:03Z",
       "lido": [
         {
           "afirmacao": "Saldo USDC da carteira de teste 583000 atómicos e da sagrada antiga 480, lidos a 21/10/2026 depois da chamada falhada.",
@@ -102,6 +102,36 @@
           "afirmacao": "Que o facilitador CDP liquida a autorização assinada por esta carteira: nunca foi visto.",
           "estado": "nao_verificado",
           "fonte": "é o que este acto testa"
+        },
+        {
+          "afirmacao": "Recibo da transacção: estado 0x1, bloco 52930160, evento Transfer do USDC de 0x2Cf1…51f1 para 0xFEd6…cDEe5, valor 161000.",
+          "estado": "verificado",
+          "fonte": "RPC Base mainnet.base.org e 1rpc.io, eth_getTransactionReceipt, 22/10/2026 (um terceiro RPC, publicnode, ainda não indexava o recibo)"
+        },
+        {
+          "afirmacao": "Saldos depois: carteira de teste 422000 (antes 583000) e sagrada antiga 161480 (antes 480) atómicos de USDC, variação de exactamente 161000.",
+          "estado": "verificado",
+          "fonte": "RPC Base mainnet.base.org, eth_call balanceOf"
+        },
+        {
+          "afirmacao": "ora_pagamentos passou de 21 para 22 linhas; a nova (id 22, verificado_onchain) tem o hash acima. A trava ora_teste_pagamento_padrao ficou em 'feito' com o mesmo hash.",
+          "estado": "verificado",
+          "fonte": "Supabase orum-memoria"
+        },
+        {
+          "afirmacao": "Pagador e destino estão classificados como interno.",
+          "estado": "verificado",
+          "fonte": "Supabase ora_carteiras_classificacao"
+        },
+        {
+          "afirmacao": "Que um cliente externo com carteira própria consiga pagar do mesmo modo: o que se provou é o caminho padrão com uma carteira nossa, não um comprador.",
+          "estado": "nao_verificado",
+          "fonte": "limite do teste"
+        },
+        {
+          "afirmacao": "Correcção: o registo anterior trazia uma hora inventada (2026-10-22T09:10:00Z), posterior ao pagamento; a hora certa é a do commit 3173f4f. Erro da ORA, apanhado por financeiro:verify.",
+          "estado": "verificado",
+          "fonte": "git log e scripts/verify-registo-financeiro.mjs"
         }
       ],
       "limites": [
@@ -110,10 +140,18 @@
         "Pagador, destino e montante são constantes; a chave de teste vive no Vault e não sai da função.",
         "Efeito esperado em ora_pagamentos: uma 22.ª linha, da carteira de teste (interna); não é adopção.",
         "Dependências: Supabase (Vault, trava, /oraculo), facilitador CDP, Base."
-      ]
+      ],
+      "registado_depois_em": "2026-10-22T06:30:00Z",
+      "resultado": "Feito, uma vez. A ora-cdp-agente-teste v2 pagou 0,161 USDC (161000 atómicos) da carteira de teste 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a sagrada antiga 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5, como cliente x402 v2 padrão (PAYMENT-SIGNATURE) ao /oraculo do Supabase, que verificou e liquidou pelo facilitador CDP e entregou (acesso concedido). Transacção confirmada na Base, bloco 52930160. É validação interna: pagador e destino estão classificados como interno em ora_carteiras_classificacao; não é adopção, não é receita externa e não entra no 70/20/10.",
+      "prova": {
+        "tx": "0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f",
+        "cobertura_completa": false,
+        "rede": "Base mainnet (8453)",
+        "bloco": 52930160
+      }
     }
   ],
-  "nota": "Dois actos: o de 21/10 (falhado, sem fundos movidos) e o de 22/10 (executor novo, pretendido).",
+  "nota": "Dois actos: 21/10 falhado (sem fundos movidos) e 22/10 feito (0,161 USDC interno, tx confirmada).",
   "nao_afirma": [
     "receita externa",
     "procura",
