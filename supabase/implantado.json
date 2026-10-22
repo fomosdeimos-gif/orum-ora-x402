@@ -19,18 +19,16 @@
     "total": 100,
     "com_copia_no_repositorio": 26,
     "sem_copia_no_repositorio": 74,
-    "igual": 1,
+    "igual": 3,
     "diverge": 2,
-    "nao_comparado": 23,
+    "nao_comparado": 21,
     "sem_copia": 74,
     "dividas_que_tocam_dinheiro": [
       "ora-cdp-carteira-real",
       "ora-cdp-teste-oraculo",
       "ora-cdp-teste-payto-cdp",
-      "ora-licenca",
       "ora-nft-dedicar-simbolica",
-      "ora-oraculo",
-      "ora-x402"
+      "ora-oraculo"
     ]
   },
   "so_no_repositorio": [
@@ -94,7 +92,10 @@
       "atualizada_em": "2026-08-20T07:34:07Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "igual",
+        "versao_conferida": 38,
+        "fonte_sha256": "dbdc4288a63d032c95fbd99111ba37a280ab2ee9c8bbb8c1d32a04363ba5428c",
+        "nota": "v38 (V31) lida por get_edge_function a 22/10/2026. O repositório estava em V27 e divergia: faltavam boundaries_machine (V30/V31, só informativo), a correcção do resourceUrl do tier campo (V29: no domínio público devolve /campo e não a origem nua) e a versão V31 nos cabeçalhos; e o repositório tinha um erro de escrita (registarHtribuicao) que a versão implantada não tem. O ficheiro do repositório foi substituído pelo texto implantado, TRANSCRITO à mão do resultado do conector (não extraído por programa): o hash do pacote não se refaz daqui, por isso a igualdade é por leitura e não por impressão. Nenhuma função foi reimplantada."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026)"
@@ -639,7 +640,10 @@
       "atualizada_em": "2026-09-24T10:32:02Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "igual",
+        "versao_conferida": 60,
+        "fonte_sha256": "8c4de65d57f3cb51e18746d47d4868122cf8c8c7760239665fd456cae67685e0",
+        "nota": "v60 lida por get_edge_function a 22/10/2026 (index.ts, renewal.ts, selection.ts): os três ficheiros do repositório são iguais byte a byte aos implantados (extraídos por programa, sem transcrição). O verificador só recalcula o sha256 do index.ts; renewal.ts e selection.ts ficam conferidos só aqui."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026) e licenças"
