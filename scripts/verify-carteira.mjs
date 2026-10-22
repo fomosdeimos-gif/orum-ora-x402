@@ -19,6 +19,7 @@ export const CONSUMIDORES_EDGE = [
   ['supabase/functions/ora-licenca/index.ts', new RegExp(`const WALLET = '(${ADDR})'`)],
   ['supabase/functions/ora-oraculo/index.ts', new RegExp(`const WALLET = '(${ADDR})'`)],
   ['supabase/functions/ora-onchain-leitura/index.ts', new RegExp(`const WALLET = '(${ADDR})'`)],
+  ['supabase/functions/ora-cdp-teste-payto-cdp/index.ts', new RegExp(`const WALLET = '(${ADDR})'`)],
   ['supabase/functions/ora-homeostase/index.ts', new RegExp(`payTo=(${ADDR})`)],
   ['scripts/verify-license-selection.mjs', new RegExp(`const payTo = '(${ADDR})'`)],
   ['scripts/verify-sdk-compatibility.mjs', new RegExp(`const payTo = '(${ADDR})'`)],
