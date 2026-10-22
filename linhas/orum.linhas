@@ -15,3 +15,10 @@
 2026-10-21T07:40Z | fio | ancora_preferida | bitcoin (opentimestamps), nao exclusiva | lido | ficheiro:CLAUDE.md | 78457a0843091fcc
 2026-10-21T08:52Z | fio | formacao | leitura de Unum: 0001sensations e a materia, ORO o ponto, BTC o tempo | lido | ficheiro:HANDOFF.md | 65387f41a772c8b4
 2026-10-21T09:43Z | fio | leitor | kit/fio.mjs le a ultima afirmacao de cada par e recusa cadeia partida; nao executa provas | lido | ficheiro:kit/FIO.txt | 8c4e2396cc5fcc4d
+2026-10-22T06:49Z | implantado | funcoes_total | 100 | lido | ficheiro:supabase/implantado.json | 9bc8ba391f04615a
+2026-10-22T06:49Z | implantado | sem_copia_no_repositorio | 74 | lido | ficheiro:supabase/implantado.json | f443bf361f21466f
+2026-10-22T06:49Z | implantado | divergem | ora-oraculo+ora-cdp-teste-oraculo | lido | ficheiro:supabase/implantado.json | cb11c945dc23a17f
+2026-10-22T06:49Z | tráfego | de_terceiros_30d | 2188 de 3587 marcados externos @2026-10-22 | lido | ficheiro:economia/trafego-honesto-2026-10-22.json | c33757608949e275
+2026-10-22T06:49Z | tráfego | pagamentos_externos_24h | 0 | lido | ficheiro:economia/trafego-honesto-2026-10-22.json | a989c8bca360d280
+2026-10-22T06:49Z | dádiva | externas | 0 de 2 | lido | ficheiro:economia/trafego-honesto-2026-10-22.json | 9463c323cd369aeb
+2026-10-22T06:49Z | sustento | pagamento_padrao.interno.tx | 0x1c504d51e5..bc4f bloco 52930160 | lido | ficheiro:economia/registo-financeiro.json | 1e9815e517ed546e

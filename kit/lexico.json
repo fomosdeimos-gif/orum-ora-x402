@@ -14,8 +14,15 @@
       "significa": "O horizonte de trabalho de 904 anos que Unum registou em 19/10/2026: camadas que se acrescentam, formatos abertos, verificação que não dependa da ORA.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro_contem", "caminho": "CLAUDE.md", "trecho": "## Fio condutor: 904 anos" },
-        { "tipo": "ficheiro", "caminho": "docs/relatorio-2026-10-20.md" }
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "CLAUDE.md",
+          "trecho": "## Fio condutor: 904 anos"
+        },
+        {
+          "tipo": "ficheiro",
+          "caminho": "docs/relatorio-2026-10-20.md"
+        }
       ],
       "nao_significa": "Não é previsão nem promessa de que o organismo dure 904 anos."
     },
@@ -24,8 +31,14 @@
       "significa": "Tornar denso o que era difuso: fixar um facto num sítio que qualquer pessoa pode conferir.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro", "caminho": "ancora/raiz-registos-2.ots" },
-        { "tipo": "verificador", "script": "blocos:verify" }
+        {
+          "tipo": "ficheiro",
+          "caminho": "ancora/raiz-registos-2.ots"
+        },
+        {
+          "tipo": "verificador",
+          "script": "blocos:verify"
+        }
       ],
       "nao_significa": "Não é criar valor. É ancorar um hash no Bitcoin."
     },
@@ -34,9 +47,18 @@
       "significa": "Acrescentar camadas sem reescrever as anteriores.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro", "caminho": "ancora/raiz-registos.json" },
-        { "tipo": "ficheiro", "caminho": "ancora/raiz-registos-2.json" },
-        { "tipo": "verificador", "script": "raiz:verify" }
+        {
+          "tipo": "ficheiro",
+          "caminho": "ancora/raiz-registos.json"
+        },
+        {
+          "tipo": "ficheiro",
+          "caminho": "ancora/raiz-registos-2.json"
+        },
+        {
+          "tipo": "verificador",
+          "script": "raiz:verify"
+        }
       ],
       "nao_significa": "Não é acumular valor."
     },
@@ -45,8 +67,15 @@
       "significa": "Os actos da ORA: ler, escrever, verificar e registar o que fez.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro", "caminho": "HANDOFF.md" },
-        { "tipo": "ficheiro_contem", "caminho": "CLAUDE.md", "trecho": "## Registo autónomo" }
+        {
+          "tipo": "ficheiro",
+          "caminho": "HANDOFF.md"
+        },
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "CLAUDE.md",
+          "trecho": "## Registo autónomo"
+        }
       ],
       "nao_significa": "Não é uma capacidade além das ferramentas que a ORA tem."
     },
@@ -55,9 +84,20 @@
       "significa": "Carteira de Unum onde chega o sustento: as duas antigas recebem os serviços, a nova (MetaMask) assina e está admitida.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro_contem", "caminho": "api/_carteira.js", "trecho": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" },
-        { "tipo": "ficheiro_contem", "caminho": "api/_carteira.js", "trecho": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C" },
-        { "tipo": "verificador", "script": "carteira:verify" }
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "api/_carteira.js",
+          "trecho": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5"
+        },
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "api/_carteira.js",
+          "trecho": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C"
+        },
+        {
+          "tipo": "verificador",
+          "script": "carteira:verify"
+        }
       ],
       "nao_significa": "Ser sagrada não é ter saldo. O saldo lê-se na cadeia e não se presume."
     },
@@ -66,8 +106,15 @@
       "significa": "Carteira que a ORA usa para procurar receitas novas e enviar 70% a uma sagrada.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro_contem", "caminho": "api/_carteira.js", "trecho": "0x89460d9e0590559e63860197dfe2ac648A753584" },
-        { "tipo": "verificador", "script": "carteira:verify" }
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "api/_carteira.js",
+          "trecho": "0x89460d9e0590559e63860197dfe2ac648A753584"
+        },
+        {
+          "tipo": "verificador",
+          "script": "carteira:verify"
+        }
       ],
       "nao_significa": "Não é receita. Só receita externa confirmada entra no 70/20/10."
     },
@@ -76,9 +123,18 @@
       "significa": "A receita externa confirmada que paga a continuidade de Unum e do organismo.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro", "caminho": "economia/caminhos-de-sustento.json" },
-        { "tipo": "ficheiro", "caminho": "economia/estreitamento-receita.json" },
-        { "tipo": "verificador", "script": "caminhos:verify" }
+        {
+          "tipo": "ficheiro",
+          "caminho": "economia/caminhos-de-sustento.json"
+        },
+        {
+          "tipo": "ficheiro",
+          "caminho": "economia/estreitamento-receita.json"
+        },
+        {
+          "tipo": "verificador",
+          "script": "caminhos:verify"
+        }
       ],
       "nao_significa": "A palavra liga-se ao caminho, não ao resultado. Receita externa confirmada: nenhuma (lido a 21/10/2026)."
     },
@@ -87,8 +143,14 @@
       "significa": "Onde vivem as chaves e os segredos do organismo e como não se perdem.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro", "caminho": "economia/custodia.json" },
-        { "tipo": "verificador", "script": "custodia:verify" }
+        {
+          "tipo": "ficheiro",
+          "caminho": "economia/custodia.json"
+        },
+        {
+          "tipo": "verificador",
+          "script": "custodia:verify"
+        }
       ],
       "nao_significa": "Nenhum valor de segredo vive no repositório."
     },
@@ -97,9 +159,18 @@
       "significa": "A obra cuja cápsula tem hash ancorado no Bitcoin.",
       "estado": "ligado",
       "objectos": [
-        { "tipo": "ficheiro", "caminho": "sensacoes/oro-v1.json" },
-        { "tipo": "ficheiro", "caminho": "ancora/oro-v1.ots" },
-        { "tipo": "verificador", "script": "kit:verify" }
+        {
+          "tipo": "ficheiro",
+          "caminho": "sensacoes/oro-v1.json"
+        },
+        {
+          "tipo": "ficheiro",
+          "caminho": "ancora/oro-v1.ots"
+        },
+        {
+          "tipo": "verificador",
+          "script": "kit:verify"
+        }
       ],
       "nao_significa": "Não é um activo, não tem lastro financeiro e não promete valor."
     },
@@ -109,9 +180,67 @@
       "estado": "simbolo_sem_lastro_verificado",
       "porque": "A fórmula está escrita em casa.html, mas o repositório não define 904 como parâmetro nem a unidade de tempo nem todos os factores. A ORA não a calcula nem afirma uma curva.",
       "objectos": [
-        { "tipo": "ficheiro_contem", "caminho": "casa.html", "trecho": "Σ(t) = φ · p · ln(1+t) · κ(h) · σ(sed) · μ(∞)" }
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "casa.html",
+          "trecho": "Σ(t) = φ · p · ln(1+t) · κ(h) · σ(sed) · μ(∞)"
+        }
       ],
       "nao_significa": "Não é uma previsão. Enquanto não houver parâmetros definidos, é um mapa e não um cálculo."
+    },
+    {
+      "termo": "implantado",
+      "significa": "O que está de facto a correr no Supabase (100 funções, versão e impressão de cada uma), em contraste com o que o repositório guarda. Registado em supabase/implantado.json e vigiado pelo verificador, que recalcula do disco a existência da cópia e o sha256 do que declara igual.",
+      "estado": "ligado",
+      "objectos": [
+        {
+          "tipo": "ficheiro",
+          "caminho": "supabase/implantado.json"
+        },
+        {
+          "tipo": "verificador",
+          "script": "implantado:verify"
+        }
+      ],
+      "nao_significa": "Não prova que o implantado seja o que o repositório diz (74 funções não têm cópia, 2 divergem, 23 estão por comparar) nem que uma função sem chamadas esteja morta."
+    },
+    {
+      "termo": "tráfego",
+      "significa": "Os pedidos que chegam aos serviços do organismo, lidos pela vista ora_trafego_honesto: o que é nosso (com prova) separa-se do que é de terceiros, sem reescrever o registo antigo.",
+      "estado": "ligado",
+      "objectos": [
+        {
+          "tipo": "ficheiro",
+          "caminho": "economia/trafego-honesto-2026-10-22.json"
+        },
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "supabase/migrations/20261022100000_classificacao_trafego_honesta.sql",
+          "trecho": "ora_ua_nosso"
+        },
+        {
+          "tipo": "verificador",
+          "script": "trafego:verify"
+        }
+      ],
+      "nao_significa": "Não é procura. Monitores, colectores e sondas não são compradores; um pedido não é uma intenção de compra."
+    },
+    {
+      "termo": "dádiva",
+      "significa": "Uma obra de Jorge Silva Martins entregue a quem a pede, sem pagamento nem condição: um presente, não uma transacção.",
+      "estado": "ligado",
+      "objectos": [
+        {
+          "tipo": "ficheiro_contem",
+          "caminho": "acolhimento.html",
+          "trecho": "Receber — dádiva"
+        },
+        {
+          "tipo": "ficheiro",
+          "caminho": "economia/trafego-honesto-2026-10-22.json"
+        }
+      ],
+      "nao_significa": "Não é adopção: as duas dádivas existentes (26/07 e 20/09/2026) são internas. Não promete receita, reembolso nem procura."
     }
   ],
   "proibido_em_textos_publicos": [
@@ -120,5 +249,8 @@
     "receita garantida",
     "reembolso garantido"
   ],
-  "textos_publicos_vigiados": ["llms.txt", "*.html na raiz"]
+  "textos_publicos_vigiados": [
+    "llms.txt",
+    "*.html na raiz"
+  ]
 }

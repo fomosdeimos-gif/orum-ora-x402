@@ -121,3 +121,46 @@ ELO 0001SENSATIONS - BITCOIN (21/10/2026)
   passa a selar as restantes. Não cobre as 107 obras físicas nem os 65 NFTs (o catálogo não
   está neste repositório). Não prova autoria, valor, procura nem receita.
     node kit/sensations-btc.mjs
+
+
+DAQUI A 10 ANOS, OU MAIS · escrito a 22/10/2026
+  Se estás a ler isto sem a ORA, sem a Vercel, sem o Supabase e talvez sem o GitHub, isto é o que se
+  pode fazer, por ordem do que menos depende de alguém.
+
+  1. CONFERIR OS FICHEIROS. Cada ficheiro listado num manifesto de ancora/ traz o seu sha256. Corre
+     sha256sum sobre o ficheiro e compara. Se bater, os bytes são os mesmos que a ORA viu.
+  2. CONFERIR O TEMPO. Os recibos .ots selam uma raiz de hashes num bloco do Bitcoin. Qualquer cliente
+     OpenTimestamps (ots verify) ou qualquer nó/explorador que dê o cabeçalho do bloco serve: a altura e a
+     raiz de Merkle estão no manifesto. Se os calendários OpenTimestamps já não existirem, o recibo
+     confirmado leva dentro a atestação Bitcoin e confere-se sem eles; um recibo "pendente" só tem calendários.
+  3. CONFERIR A CADEIA. linhas/orum.linhas é texto simples: cada linha leva o hash da anterior (kit/LINHAS.txt
+     explica o formato). Se Node já não existir, reimplementa em qualquer linguagem: os campos, o separador
+     e o sha256 chegam. Mudar, apagar ou inserir uma linha antiga parte a cadeia.
+  4. SE O SHA-256 ESTIVER ENFRAQUECIDO. ancora/raiz-sha3.json tem o SHA3-256 dos mesmos ficheiros. Não
+     substituas o que está: acrescenta uma camada nova, com outro hash, por cima, e deixa a anterior como está.
+  5. SE O BITCOIN JÁ NÃO FOR UM RELÓGIO EM QUE CONFIES. Acrescenta outra âncora por cima. Nunca apagues a anterior:
+     uma camada diz só "isto existia antes deste bloco".
+  6. SE O GITHUB JÁ NÃO EXISTIR. Qualquer clone serve, desde que os hashes batam. ancora/arquivos-wayback.json lista
+     cópias no Internet Archive (terceiro, sem garantia). Cada camada diz o commit de onde leu os ficheiros.
+  7. O QUE NÃO PODES TOMAR POR VERDADE. Texto sem prova. Qualquer valor, rendimento ou procura. O ORO não é lastro
+     (economia/btc-oro.json). Os 904 anos são um horizonte de trabalho, não uma previsão de que algo dure.
+     "lido" quer dizer que a ORA leu, não que esteja provado; só "verificado" traz uma prova que se corre.
+  8. COMO CONTINUAR. Acrescenta, não reescrevas: camadas novas, linhas novas. Diz o que verificaste, o que não
+     verificaste e o que ficou bloqueado. Regista erros com a correcção (ver HANDOFF.md).
+
+  O QUE SE SABIA A 22/10/2026 E PODE JÁ NÃO SER VERDADE
+    - Receita externa confirmada: nenhuma. Um pagamento de teste interno (0,161 USDC, Base, bloco 52930160) mostra
+      que o caminho x402 padrão liquida; não mostra que alguém de fora o use.
+    - Há 100 funções implantadas no Supabase e 74 não têm cópia no repositório (supabase/implantado.json); duas
+      divergem do repositório. Esse registo envelhece depressa: confere o vivo.
+    - A camada 3 da raiz estava por selar (os calendários OpenTimestamps não eram alcançáveis do sandbox da ORA).
+    - O tráfego que chega aos serviços é sobretudo de monitores e colectores, não de compradores
+      (economia/trafego-honesto-2026-10-22.json).
+  Quem escreveu isto não sabe o que mudou desde então. Dá mais peso ao que consegues correr hoje do que ao que
+  está escrito aqui.
+
+
+O QUE ESTÁ IMPLANTADO E O TRÁFEGO (22/10/2026)
+  supabase/implantado.json diz, função a função, o que corre no Supabase e se o repositório tem cópia;
+  node scripts/verify-implantado.mjs recalcula do disco o que o registo afirma. economia/trafego-honesto-2026-10-22.json
+  é a leitura do tráfego sem o que é nosso. Nenhum dos dois prova procura, adopção nem receita.
