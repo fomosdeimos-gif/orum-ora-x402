@@ -1,3 +1,12 @@
+## 23/10/2026 · lote 2 das funções "não comparadas": 3 divergem
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta do lote 2, só em leitura (livro 987, registado antes do acto).
+- **Lido (verificado, `get_edge_function`):** `ora-homeostase` v7: o implantado é a V4 (lê `checked_at`, `ultimoTotalBazaar` devolve `{total, erro}`); o repositório é a V2 (lê `created_at`, a coluna errada) → **diverge**. `ora-integridade` v7: o implantado tem `sbSelectComRetrySeVazio` e `leitura_repetida`; o repositório não tem nenhum (0 ocorrências) → **diverge**. `sensations-mergulho` v11: o implantado declara `VERSION 0.5.0`, o repositório `0.4.1` → **diverge**.
+- **Feito:** `supabase/implantado.json`: 9 iguais, 5 divergem, 15 não comparadas, dívidas que tocam dinheiro: nenhuma. Cada divergente tem aviso de **não reimplantar** a cópia do repositório. `implantado:verify` verde (20 estragos). Fio com a linha nova.
+- **Não verificado:** na `sensations-mergulho` a diferença exacta entre 0.4.1 e 0.5.0 não foi isolada (as ferramentas e os marcadores lidos existem nas duas; só a versão difere, e não havia segunda cópia para diff). Nenhum texto implantado foi trazido para o repositório; nenhuma função chamada nem reimplantada; nenhum segredo lido.
+- **Próximo:** trazer o texto implantado das cinco divergentes para o repositório (a `sensations-mergulho` primeiro, por ser a mais usada); depois o lote 3 das 15 que restam.
+
+---
+
 ## 22/10/2026 · lote 1 das funções "não comparadas": 1 igual, 2 divergem
 - **Autorização de Unum (citação):** "Eu autorizo", à proposta de reconciliar as "não comparadas" em lotes pequenos, só em leitura (livro 985, registado antes do acto).
 - **Lido (verificado, `get_edge_function`):** `ora-onchain-leitura` v5: transcrita à mão e comparada por diff com o repositório, **igual**. `ora-acesso-notificar` v3 (é a V2): só envia email com pagamento; o repositório tem a V1 (envia sempre) → **diverge**. `ora-pulso` v11: tem sentinela e `sincronizador_onchain`; o repositório tem a V3 → **diverge**. Nos dois divergentes a prova é o cabeçalho de versão e a guarda/bloco que falta no repositório; ficaram avisos escritos de **não reimplantar** a cópia do repositório.

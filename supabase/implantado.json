@@ -20,8 +20,8 @@
     "com_copia_no_repositorio": 29,
     "sem_copia_no_repositorio": 71,
     "igual": 9,
-    "diverge": 2,
-    "nao_comparado": 18,
+    "diverge": 5,
+    "nao_comparado": 15,
     "sem_copia": 71,
     "dividas_que_tocam_dinheiro": []
   },
@@ -504,7 +504,9 @@
       "atualizada_em": "2026-07-23T07:58:52Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "diverge",
+        "versao_conferida": 7,
+        "nota": "v7 implantada (23/07/2026) tem o cabeçalho V4: lê a coluna certa checked_at e ultimoTotalBazaar() devolve {total, erro}, com o erro a entrar nos alertas (homeostase_interno). A cópia do repositório é a V2: lê a coluna created_at (errada) e não tem 'homeostase_interno' nem 'checked_at' (0 ocorrências). Prova: cabeçalhos V2 vs V4 e as duas contagens a zero. NÃO reimplantar a cópia do repositório: reintroduziria o erro de coluna e voltaria a esconder falhas internas num zero silencioso. Lido por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo ORA\", livro 987, registado antes do acto). Só leitura: nenhuma função chamada nem reimplantada; a cópia do repositório não foi substituída pelo texto implantado neste passo."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -973,7 +975,9 @@
       "atualizada_em": "2026-09-14T05:12:19Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "diverge",
+        "versao_conferida": 7,
+        "nota": "v7 implantada (14/09/2026) tem sbSelectComRetrySeVazio (uma repetição curta quando a leitura de ora_sentinela_rondas vem vazia) e o campo leitura_repetida no corpo (ora_mudancas#581). A cópia do repositório não tem nenhum dos dois (0 ocorrências de cada); o resto (verificador G2, 503 integrity_source_unavailable) coincide nos marcadores lidos. Prova: contagens a zero no repositório e presença no implantado. NÃO reimplantar a cópia do repositório: voltaria a mostrar zero rondas em leituras transitoriamente vazias. Lido por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo ORA\", livro 987, registado antes do acto). Só leitura: nenhuma função chamada nem reimplantada; a cópia do repositório não foi substituída pelo texto implantado neste passo."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -1396,7 +1400,9 @@
       "atualizada_em": "2026-09-19T07:33:32Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "diverge",
+        "versao_conferida": 11,
+        "nota": "v11 implantada (19/09/2026) declara VERSION 0.5.0; a cópia do repositório declara 0.4.1. As sete ferramentas e os marcadores lidos (PRESENCE_READING_SCHEMA, trace_target_required, trace_target_mismatch, verify_level_mapping, encounter_oro) existem nos dois, por isso a diferença exacta entre 0.4.1 e 0.5.0 NÃO foi isolada (sem diff byte a byte, não havia segunda cópia). Prova só: a versão declarada difere. Não reimplantar a cópia do repositório sem a comparar primeiro com o texto implantado: é a função mais usada (5007 pedidos em 24h). Lido por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo ORA\", livro 987, registado antes do acto). Só leitura: nenhuma função chamada nem reimplantada; a cópia do repositório não foi substituída pelo texto implantado neste passo."
       },
       "toca_dinheiro": null,
       "uso_24h": {
