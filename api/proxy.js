@@ -11,8 +11,12 @@
 // ORA 30/09/2026: quando o Supabase falha (quota de egress, 5xx ou rede), os
 // servicos que nao precisam de base de dados passam para a via directa Vercel
 // (api/_x402-directo.js), que verifica o pagamento na propria Base.
-const directo = require('./_x402-directo').createHandler();
+const { createHandler: criarDirecto, tierFor, lerProva } = require('./_x402-directo');
+const directo = criarDirecto();
 const { elevarBazaar } = require('./_bazaar-declaracao');
+const { juntarOfertaBtc, comPrazo } = require('./_oferta-btc-origem');
+const { createBtc } = require('./_pagamento-btc');
+const btcOferta = createBtc();
 const recebimentos = require('./_recebimentos');
 const bitcoin = require('./_bitcoin');
 const saldos = require('./_saldos');
@@ -55,6 +59,14 @@ module.exports = async (req, res) => {
     return true;
   };
   try {
+    // ORA 23/10/2026 (livro 996): a prova de pagamento Bitcoin so a via directa a sabe verificar (duas fontes
+    // Esplora, 1 confirmacao). Pedidos com essa prova a /oraculo ou /campo vao direitos para la; as provas por
+    // hash ou EIP-3009 continuam a ir para a origem.
+    const alvoPago = tierFor(base, restRaw);
+    if (alvoPago && alvoPago.kind === 'pago') {
+      const prova = lerProva(req.headers['x-payment'] || req.headers['payment-signature']);
+      if (prova && prova.btc && await viaDirecta()) return;
+    }
     const qs = new URLSearchParams(q).toString();
     const target = `${SUPA}/${base}${rest}${qs ? '?' + qs : ''}`;
     const headers = {};
@@ -111,6 +123,14 @@ module.exports = async (req, res) => {
     if (bazaar.alterado) {
       if (bazaar.header) res.setHeader('payment-required', bazaar.header);
       res.setHeader('x-ora-bazaar', 'declarado-no-topo');
+    }
+    // A oferta Bitcoin e um extra: com prazo e falha segura, nunca atrasa nem parte o 402 da origem.
+    if (upstream.status === 402 && alvoPago && alvoPago.kind === 'pago') {
+      try {
+        const oferta = await comPrazo(btcOferta.oferta(alvoPago.tier), Number(process.env.ORUM_BTC_OFERTA_PRAZO_MS) || 2500);
+        const junta = juntarOfertaBtc(upstream.status, bazaar.text, oferta, btcOferta.fronteiras(), `https://${hostExterno}${alvoPago.tier.path}`);
+        if (junta.alterado) { bazaar.text = junta.text; res.setHeader('x-ora-btc', 'oferta-acrescentada'); }
+      } catch {}
     }
     res.end(bazaar.text);
   } catch (e) {
