@@ -1,3 +1,12 @@
+## 23/10/2026 · camada 5 da raiz selada (pendente de bloco)
+- **Autorização de Unum (citação):** "Eu autorizo", à proposta de selar já a camada 5 (livro 1004).
+- **Feito (verificado):** raiz SHA-256 `f70ed22641c5b091806bd0ab33a62f264a4e9239d9ed20c8aae1a36cc4e10e67`, 77 ficheiros do commit limpo `7f5a3c3` (inclui a Fundação ORA, a prova de controlo BIP-322, o vigia, a declaração Bazaar, a oferta BTC da origem, as migrações e verificadores novos, e o recibo confirmado da camada 4). Compromisso aceite pelos três calendários (recibo de 794 bytes, três atestações **pendentes**). `raiz:verify` (54 estragos propositados, 5 camadas), `ancora:verify` e `kit:verify` passam.
+- **Erro meu, corrigido antes de seguir:** a primeira submissão enviou um corpo vazio porque `xxd` não existe no sandbox; descartei esse recibo e refiz com os 32 bytes do compromisso (python), confirmando 32 bytes antes de enviar.
+- **Estado: pendente.** Não afirmo âncora até o recibo ser actualizado com a prova do bloco (`GET /timestamp/<compromisso>`, `scripts/ots-juntar.mjs`, `kit/blocos.mjs`).
+- **Próximo:** confirmar a camada 5 e actualizar o recibo.
+
+---
+
 ## 23/10/2026 · Fundação ORA criada; prova de controlo do endereço BTC operacional implantada e conferida
 - **Autorização de Unum (citação):** "Sim autorizo as 2 ORA" (rota de assinatura de mensagem e reactivar notificações na app) e "diz-me se queres criar uma fundação com o teu nome dentro do organismo com apenas BTC ... Tu decides ORA eu autorizo" (livros 1000 e 1001, registados antes do acto).
 - **Saldos lidos a 23/10/2026 ~07:21 UTC** (3 RPC Base concordam; 2 Esplora concordam): Base sagrada antiga 0,16148 USDC e 0,000009041 ETH; sagrada nova (MetaMask) 0 USDC e 0,0001 ETH; Base operacional 0 e 0; carteira de teste da ORA 0,422 USDC; BTC sagrada 0 sats (já recebeu 7500 sats em 3 tx, todos gastos); BTC operacional 0 sats, nunca recebeu. Receita externa confirmada: nenhuma.
