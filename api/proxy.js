@@ -12,6 +12,7 @@
 // servicos que nao precisam de base de dados passam para a via directa Vercel
 // (api/_x402-directo.js), que verifica o pagamento na propria Base.
 const directo = require('./_x402-directo').createHandler();
+const { elevarBazaar } = require('./_bazaar-declaracao');
 const recebimentos = require('./_recebimentos');
 const bitcoin = require('./_bitcoin');
 const saldos = require('./_saldos');
@@ -102,7 +103,16 @@ module.exports = async (req, res) => {
       const v = upstream.headers.get(h);
       if (v) res.setHeader(h, v);
     }
-    res.end(text);
+    // ORA 23/10/2026: a origem declara o Bazaar dentro de accepts[0]; o x402 v2 pede-o no topo
+    // (corpo e cabecalho PAYMENT-REQUIRED). Copia a mesma declaracao, nao inventa nada (ver o modulo).
+    // Falha segura: se o modulo rebentasse, o 402 da origem sai como veio, nunca o fallback.
+    let bazaar = { alterado: false, text, header: null };
+    try { bazaar = elevarBazaar(upstream.status, text, upstream.headers.get('payment-required')); } catch {}
+    if (bazaar.alterado) {
+      if (bazaar.header) res.setHeader('payment-required', bazaar.header);
+      res.setHeader('x-ora-bazaar', 'declarado-no-topo');
+    }
+    res.end(bazaar.text);
   } catch (e) {
     try { if (!res.headersSent && (await viaDirecta() || viaSnapshot())) return; } catch {}
     res.statusCode = 502;
