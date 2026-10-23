@@ -125,6 +125,7 @@ function classifyUsdcWindow(res) {
     ...base,
     state: complete ? "window_complete" : "window_partial",
     carteira: body.carteira ?? null,
+    carteiras: Array.isArray(body.carteiras) ? body.carteiras : [],
     window: body.janela ?? null,
     hours_requested: body.cobertura?.horas_pedidas ?? null,
     hours_covered: body.cobertura?.horas_cobertas ?? null,
@@ -231,15 +232,15 @@ async function rpcRetry(url, method, params) {
   return rpc(url, method, params);
 }
 
-function lastVerifiedKeylessHead() {
+function verifiedKeylessHeads() {
   const dir = join(process.cwd(), "presenca");
+  const best = new Map();
   let names;
   try {
     names = readdirSync(dir);
   } catch {
-    return { state: "unknown", reason: "presenca directory was not readable" };
+    return { state: "unreadable", best };
   }
-  let best = null;
   for (const name of names) {
     if (!/^observacao-\d{4}-\d{2}-\d{2}\.json$/.test(name)) continue;
     let parsed;
@@ -248,142 +249,47 @@ function lastVerifiedKeylessHead() {
     } catch {
       continue;
     }
-    const span = parsed?.live?.receipts_usdc?.keyless_span;
-    if (!span || span.state !== "window_complete" || span.covers_requested_24h !== true) continue;
-    if (!Array.isArray(span.transfers_conflict) || span.transfers_conflict.length !== 0) continue;
-    if (!Number.isInteger(span.head_block)) continue;
-    if (!best || span.head_block > best.head_block) {
-      best = {
+    const receipts = parsed?.live?.receipts_usdc;
+    const spans = [];
+    if (receipts?.keyless_span) spans.push(receipts.keyless_span);
+    if (Array.isArray(receipts?.keyless_address_spans)) spans.push(...receipts.keyless_address_spans);
+    for (const span of spans) {
+      if (!span || span.state !== "window_complete" || span.covers_requested_24h !== true) continue;
+      if (!Array.isArray(span.transfers_conflict) || span.transfers_conflict.length !== 0) continue;
+      if (!Number.isInteger(span.head_block)) continue;
+      if (typeof span.carteira !== "string" || !/^0x[0-9a-f]{40}$/.test(span.carteira.toLowerCase())) continue;
+      const carteira = span.carteira.toLowerCase();
+      const row = {
         state: "found",
         file: `presenca/${name}`,
         head_block: span.head_block,
         head_time_utc: span.head_time_utc ?? "unknown",
+        carteira,
       };
+      const prev = best.get(carteira);
+      if (!prev || row.head_block > prev.head_block) best.set(carteira, row);
     }
   }
-  if (!best) return { state: "absent", reason: "no complete keyless span with a head block was found" };
-  return best;
+  return { state: "read", best };
 }
 
-async function continuePartialUsdcWindow(usdcWindow) {
-  const base = {
-    method: "keyless_eth_getLogs_chunks",
-    credentials_used: false,
-    archive_token_used: false,
-    payment: false,
-    asset: "USDC",
-    network: "eip155:8453",
-    usdc_contract: USDC_BASE,
-    counts_as_purchase: false,
-    counts_as_external_sustenance: false,
-    relation_to_capsule_or_tool: "not_proved",
-    classification: "not_classified",
-    sources: [
-      { name: "blockpi-public", url: BLOCKPI_PUBLIC, role: "scan", max_blocks: 4000 },
-      { name: "tenderly-public", url: TENDERLY_PUBLIC, role: "cross_check_and_clock" },
-    ],
+function namedReceiptAddresses(usdcWindow) {
+  const out = [];
+  const push = (value) => {
+    if (typeof value !== "string") return;
+    const carteira = value.toLowerCase();
+    if (!/^0x[0-9a-f]{40}$/.test(carteira)) return;
+    if (!out.includes(carteira)) out.push(carteira);
   };
-  if (usdcWindow.state === "window_complete") {
-    return { ...base, state: "not_needed", note: "Gateway window was already complete. No second read." };
+  if (Array.isArray(usdcWindow.carteiras)) {
+    for (const value of usdcWindow.carteiras) push(value);
   }
-  if (usdcWindow.state !== "window_partial" || typeof usdcWindow.carteira !== "string") {
-    return {
-      ...base,
-      state: "bloqueado",
-      note: "Gateway window was not a partial readable window. No stitch was invented.",
-    };
-  }
-  const wallet = usdcWindow.carteira.toLowerCase();
+  push(usdcWindow.carteira);
+  return out;
+}
+
+async function scanAddressRange(wallet, fromN, headN) {
   const topicTo = "0x" + wallet.slice(2).padStart(64, "0");
-  const headRes = await rpc(TENDERLY_PUBLIC, "eth_blockNumber", []);
-  if (!headRes.ok) {
-    return { ...base, state: "bloqueado", error: headRes.error, note: "Could not read a public head. Unknown was not rewritten as zero." };
-  }
-  const headN = hexToNum(headRes.result);
-  const headBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", [headRes.result, false]);
-  if (!headBlock.ok) return { ...base, state: "bloqueado", error: headBlock.error };
-  const headTs = hexToNum(headBlock.result.timestamp);
-  const targetTs = headTs - 86400;
-  let fromN = headN - 43200;
-  let fromBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + fromN.toString(16), false]);
-  if (!fromBlock.ok) {
-    return {
-      ...base,
-      state: "bloqueado",
-      error: fromBlock.error,
-      note: "Public block lookup for the 24h edge failed. No archive token was opened.",
-    };
-  }
-  let fromTs = hexToNum(fromBlock.result.timestamp);
-  const drift = Math.ceil((fromTs - targetTs) / 2);
-  if (drift > 0) {
-    fromN -= drift;
-    fromBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + fromN.toString(16), false]);
-    if (!fromBlock.ok) return { ...base, state: "bloqueado", error: fromBlock.error };
-    fromTs = hexToNum(fromBlock.result.timestamp);
-  }
-  if (fromTs > targetTs) {
-    return {
-      ...base,
-      state: "bloqueado",
-      from_block: fromN,
-      head_block: headN,
-      note: "Span still shorter than 24h after one correction. Not called complete.",
-    };
-  }
-  const edge24 = { from_block: fromN, from_time_utc: new Date(fromTs * 1000).toISOString() };
-  const previous = lastVerifiedKeylessHead();
-  let seam = {
-    state: previous.state === "found" ? "not_needed" : previous.state,
-    previous_file: previous.file ?? null,
-    previous_head_block: previous.head_block ?? null,
-    previous_head_time_utc: previous.head_time_utc ?? null,
-    note: previous.state === "found"
-      ? "Previous verified head already meets this 24h edge. No hole."
-      : previous.reason,
-  };
-  if (previous.state === "found" && previous.head_block >= headN) {
-    return {
-      ...base,
-      state: "bloqueado",
-      seam: {
-        ...seam,
-        state: "bloqueado",
-        note: "Previous verified head is not behind the public head. No backward scan was invented.",
-      },
-    };
-  }
-  if (previous.state === "found" && previous.head_block + 1 < fromN) {
-    const seamFrom = previous.head_block + 1;
-    const seamBlock = await rpcRetry(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + seamFrom.toString(16), false]);
-    if (!seamBlock.ok) {
-      return {
-        ...base,
-        state: "bloqueado",
-        error: seamBlock.error,
-        seam: {
-          state: "bloqueado",
-          previous_file: previous.file,
-          previous_head_block: previous.head_block,
-          previous_head_time_utc: previous.head_time_utc,
-          seam_from_block: seamFrom,
-          note: "Seam block lookup failed. The unscanned gap was not filled with zero.",
-        },
-      };
-    }
-    fromN = seamFrom;
-    fromTs = hexToNum(seamBlock.result.timestamp);
-    seam = {
-      state: "scanned",
-      previous_file: previous.file,
-      previous_head_block: previous.head_block,
-      previous_head_time_utc: previous.head_time_utc,
-      seam_from_block: seamFrom,
-      twenty_four_hour_edge_block: edge24.from_block,
-      blocks_before_24h_edge: edge24.from_block - seamFrom,
-      note: "Previous verified head was older than this 24h edge. The hole was scanned with the same keyless sources. Scanning is not classification and is not sustenance.",
-    };
-  }
   const chunks = [];
   const logs = [];
   for (let a = fromN; a <= headN; a += 4000) {
@@ -401,23 +307,15 @@ async function continuePartialUsdcWindow(usdcWindow) {
       logs: got.ok ? got.result.length : null,
       error: got.ok ? null : got.error,
     });
-    if (!got.ok) {
-      return {
-        ...base,
-        state: "bloqueado",
-        carteira: wallet,
-        from_block: fromN,
-        head_block: headN,
-        from_time_utc: new Date(fromTs * 1000).toISOString(),
-        head_time_utc: new Date(headTs * 1000).toISOString(),
-        seam,
-        chunks,
-        note: "A chunk failed. The missing range was not filled with zero.",
-      };
-    }
+    if (!got.ok) return { ok: false, chunks, logs: [], error: got.error };
     for (const log of got.result) logs.push(log);
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
+  return { ok: true, chunks, logs, error: null };
+}
+
+async function confirmLogs(wallet, logs) {
+  const topicTo = "0x" + wallet.slice(2).padStart(64, "0");
   const confirmed = [];
   const conflicts = [];
   for (const log of logs) {
@@ -429,6 +327,7 @@ async function continuePartialUsdcWindow(usdcWindow) {
     }]);
     const agreed = check.ok && check.result.some((item) => item.transactionHash === log.transactionHash && item.logIndex === log.logIndex);
     const row = {
+      carteira: wallet,
       block: hexToNum(log.blockNumber),
       tx: log.transactionHash,
       log_index: hexToNum(log.logIndex),
@@ -456,29 +355,277 @@ async function continuePartialUsdcWindow(usdcWindow) {
   }
   confirmed.sort((a, b) => a.block - b.block || a.log_index - b.log_index);
   const totalUnits = confirmed.reduce((sum, row) => sum + BigInt(row.amount_base_units), 0n);
-  const gatewayFrom = usdcWindow.window?.bloco_de;
-  const gatewayTo = usdcWindow.window?.bloco_a;
-  const insideGateway = typeof gatewayFrom === "number" && typeof gatewayTo === "number"
-    ? confirmed.filter((row) => row.block >= gatewayFrom && row.block <= gatewayTo).length
-    : "unknown";
+  return { confirmed, conflicts, totalUnits };
+}
+
+async function continuePartialUsdcWindow(usdcWindow) {
+  const base = {
+    method: "keyless_eth_getLogs_chunks",
+    credentials_used: false,
+    archive_token_used: false,
+    payment: false,
+    asset: "USDC",
+    network: "eip155:8453",
+    usdc_contract: USDC_BASE,
+    counts_as_purchase: false,
+    counts_as_external_sustenance: false,
+    relation_to_capsule_or_tool: "not_proved",
+    classification: "not_classified",
+    sources: [
+      { name: "blockpi-public", url: BLOCKPI_PUBLIC, role: "scan", max_blocks: 4000 },
+      { name: "tenderly-public", url: TENDERLY_PUBLIC, role: "cross_check_and_clock" },
+    ],
+  };
+  if (usdcWindow.state === "window_complete") {
+    return {
+      primary: { ...base, state: "not_needed", note: "Gateway window was already complete. No second read." },
+      spans: [],
+    };
+  }
+  if (usdcWindow.state !== "window_partial" || namedReceiptAddresses(usdcWindow).length === 0) {
+    return {
+      primary: {
+        ...base,
+        state: "bloqueado",
+        note: "Gateway window was not a partial readable window with a named receipt address. No stitch was invented.",
+      },
+      spans: [],
+    };
+  }
+  const addresses = namedReceiptAddresses(usdcWindow);
+  if (!addresses.length) {
+    return {
+      primary: {
+        ...base,
+        state: "bloqueado",
+        note: "The partial window named no receipt address. No address was invented and no gap was filled with zero.",
+      },
+      spans: [],
+    };
+  }
+  const headRes = await rpc(TENDERLY_PUBLIC, "eth_blockNumber", []);
+  if (!headRes.ok) {
+    return {
+      primary: { ...base, state: "bloqueado", error: headRes.error, note: "Could not read a public head. Unknown was not rewritten as zero." },
+      spans: [],
+    };
+  }
+  const headN = hexToNum(headRes.result);
+  const headBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", [headRes.result, false]);
+  if (!headBlock.ok) {
+    return { primary: { ...base, state: "bloqueado", error: headBlock.error }, spans: [] };
+  }
+  const headTs = hexToNum(headBlock.result.timestamp);
+  const targetTs = headTs - 86400;
+  let edgeFrom = headN - 43200;
+  let edgeBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + edgeFrom.toString(16), false]);
+  if (!edgeBlock.ok) {
+    return {
+      primary: { ...base, state: "bloqueado", error: edgeBlock.error, note: "Public block lookup for the 24h edge failed. No archive token was opened." },
+      spans: [],
+    };
+  }
+  let edgeTs = hexToNum(edgeBlock.result.timestamp);
+  const drift = Math.ceil((edgeTs - targetTs) / 2);
+  if (drift > 0) {
+    edgeFrom -= drift;
+    edgeBlock = await rpc(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + edgeFrom.toString(16), false]);
+    if (!edgeBlock.ok) return { primary: { ...base, state: "bloqueado", error: edgeBlock.error }, spans: [] };
+    edgeTs = hexToNum(edgeBlock.result.timestamp);
+  }
+  if (edgeTs > targetTs) {
+    return {
+      primary: {
+        ...base,
+        state: "bloqueado",
+        from_block: edgeFrom,
+        head_block: headN,
+        note: "Span still shorter than 24h after one correction. Not called complete.",
+      },
+      spans: [],
+    };
+  }
+  const heads = verifiedKeylessHeads();
+  if (heads.state !== "read") {
+    return {
+      primary: { ...base, state: "bloqueado", note: "Prior observations were not readable. No seam was invented and no gap was filled with zero." },
+      spans: [],
+    };
+  }
+  const plans = [];
+  for (const carteira of addresses) {
+    const previous = heads.best.get(carteira) ?? { state: "absent", carteira };
+    if (previous.state === "found" && previous.head_block >= headN) {
+      plans.push({
+        carteira,
+        blocked: true,
+        seam: {
+          state: "bloqueado",
+          previous_file: previous.file,
+          previous_head_block: previous.head_block,
+          previous_carteira: previous.carteira,
+          note: "Verified head for this address is not behind the public head. No backward scan was invented.",
+        },
+      });
+      continue;
+    }
+    if (previous.state === "found" && previous.head_block + 1 < edgeFrom) {
+      plans.push({
+        carteira,
+        fromN: previous.head_block + 1,
+        seamKind: "scanned",
+        previous,
+      });
+      continue;
+    }
+    plans.push({
+      carteira,
+      fromN: null,
+      seamKind: previous.state === "found" ? "not_needed" : "no_prior_head",
+      previous,
+    });
+  }
+  const stitched = plans.filter((plan) => plan.seamKind === "scanned");
+  const alongsideFrom = stitched.length ? Math.min(...stitched.map((plan) => plan.fromN)) : null;
+  for (const plan of plans) {
+    if (plan.blocked) continue;
+    if (plan.seamKind === "no_prior_head" && alongsideFrom !== null && alongsideFrom < edgeFrom) {
+      plan.fromN = alongsideFrom;
+      plan.seamKind = "read_alongside_not_continued";
+    } else if (plan.fromN === null) {
+      plan.fromN = edgeFrom;
+    }
+  }
+  const spans = [];
+  for (const plan of plans) {
+    if (plan.blocked) {
+      spans.push({
+        ...base,
+        state: "bloqueado",
+        carteira: plan.carteira,
+        head_block: headN,
+        seam: plan.seam,
+        transfers_agreed: [],
+        transfers_conflict: [],
+        note: plan.seam.note,
+      });
+      continue;
+    }
+    const fromBlock = await rpcRetry(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + plan.fromN.toString(16), false]);
+    if (!fromBlock.ok) {
+      spans.push({
+        ...base,
+        state: "bloqueado",
+        carteira: plan.carteira,
+        error: fromBlock.error,
+        seam: { state: "bloqueado", seam_from_block: plan.fromN, note: "Start-block lookup failed. The missing range was not filled with zero." },
+        transfers_agreed: [],
+        transfers_conflict: [],
+        note: "Start-block lookup failed. The missing range was not filled with zero.",
+      });
+      continue;
+    }
+    const fromTs = hexToNum(fromBlock.result.timestamp);
+    const scanned = await scanAddressRange(plan.carteira, plan.fromN, headN);
+    const seam = seamForPlan(plan, edgeFrom, fromTs);
+    if (!scanned.ok) {
+      spans.push({
+        ...base,
+        state: "bloqueado",
+        carteira: plan.carteira,
+        from_block: plan.fromN,
+        head_block: headN,
+        from_time_utc: new Date(fromTs * 1000).toISOString(),
+        head_time_utc: new Date(headTs * 1000).toISOString(),
+        seam,
+        chunks: scanned.chunks,
+        error: scanned.error,
+        transfers_agreed: [],
+        transfers_conflict: [],
+        note: "A chunk failed. The missing range was not filled with zero.",
+      });
+      continue;
+    }
+    const { confirmed, conflicts, totalUnits } = await confirmLogs(plan.carteira, scanned.logs);
+    const gatewayFrom = usdcWindow.window?.bloco_de;
+    const gatewayTo = usdcWindow.window?.bloco_a;
+    const insideGateway = typeof gatewayFrom === "number" && typeof gatewayTo === "number"
+      ? confirmed.filter((row) => row.block >= gatewayFrom && row.block <= gatewayTo).length
+      : "unknown";
+    spans.push({
+      ...base,
+      state: "window_complete",
+      carteira: plan.carteira,
+      from_block: plan.fromN,
+      head_block: headN,
+      from_time_utc: new Date(fromTs * 1000).toISOString(),
+      head_time_utc: new Date(headTs * 1000).toISOString(),
+      span_seconds: headTs - fromTs,
+      covers_requested_24h: fromTs <= targetTs && headTs - fromTs >= 86400,
+      seam,
+      chunks: scanned.chunks,
+      transfers_agreed: confirmed,
+      transfers_conflict: conflicts,
+      agreed_count: confirmed.length,
+      agreed_total_base_units: totalUnits.toString(),
+      agreed_inside_gateway_partial_window: insideGateway,
+      note: "This span is one public receipt address. Two RPCs agreeing is not payer classification, not a capsule relation, and not sustenance.",
+    });
+  }
+  const primaryCarteira = (typeof usdcWindow.carteira === "string" ? usdcWindow.carteira.toLowerCase() : addresses[0]);
+  const primary = spans.find((span) => span.carteira === primaryCarteira) ?? spans[0];
+  const everyComplete = spans.length > 0 && spans.every((span) => span.state === "window_complete" && span.transfers_conflict.length === 0);
   return {
-    ...base,
-    state: "window_complete",
-    carteira: wallet,
-    from_block: fromN,
-    head_block: headN,
-    from_time_utc: new Date(fromTs * 1000).toISOString(),
-    head_time_utc: new Date(headTs * 1000).toISOString(),
-    span_seconds: headTs - fromTs,
-    covers_requested_24h: fromTs <= targetTs && headTs - fromTs >= 86400,
-    seam,
-    chunks,
-    transfers_agreed: confirmed,
-    transfers_conflict: conflicts,
-    agreed_count: confirmed.length,
-    agreed_total_base_units: totalUnits.toString(),
-    agreed_inside_gateway_partial_window: insideGateway,
-    note: "A complete keyless span lists visible incoming USDC logs, including a seam back to the last verified head when that head is older than 24h. Agreement of two public RPCs is not payer classification, not a capsule relation, and not accumulated sustenance. The gateway partial zero is left as a partial zero.",
+    primary: {
+      ...primary,
+      carteiras: addresses,
+      state: everyComplete && primary.covers_requested_24h === true ? "window_complete" : "bloqueado",
+      note: everyComplete
+        ? "Primary address only. Other named receipt addresses are separate spans and do not share this head. Nothing here is sustenance."
+        : "At least one named receipt address was not fully read. The missing range was not filled with zero.",
+    },
+    spans,
+  };
+}
+
+function seamForPlan(plan, edgeFrom, fromTs) {
+  if (plan.seamKind === "scanned") {
+    return {
+      state: "scanned",
+      previous_file: plan.previous.file,
+      previous_head_block: plan.previous.head_block,
+      previous_head_time_utc: plan.previous.head_time_utc,
+      previous_carteira: plan.previous.carteira,
+      seam_from_block: plan.fromN,
+      twenty_four_hour_edge_block: edgeFrom,
+      blocks_before_24h_edge: edgeFrom - plan.fromN,
+      note: "This address had a verified head older than the 24h edge. The hole for this address was scanned. Scanning is not classification and is not sustenance.",
+    };
+  }
+  if (plan.seamKind === "read_alongside_not_continued") {
+    return {
+      state: "read_alongside_not_continued",
+      previous_carteira: null,
+      previous_head_block: null,
+      seam_from_block: plan.fromN,
+      twenty_four_hour_edge_block: edgeFrom,
+      from_time_utc: new Date(fromTs * 1000).toISOString(),
+      note: "This address has no verified head. It was read across a sibling address span. That read is not a continuation of the sibling head. Blocks before the span were not called empty. The read is not classification and is not sustenance.",
+    };
+  }
+  if (plan.seamKind === "not_needed") {
+    return {
+      state: "not_needed",
+      previous_file: plan.previous.file ?? null,
+      previous_head_block: plan.previous.head_block ?? null,
+      previous_carteira: plan.previous.carteira ?? null,
+      note: "Verified head for this same address already meets the 24h edge. No hole.",
+    };
+  }
+  return {
+    state: "no_prior_head",
+    before_window: "unscanned_not_zero",
+    note: "This address has no verified head and no sibling seam to read alongside. Only the 24h edge was read. Earlier blocks were not called empty.",
   };
 }
 
@@ -499,17 +646,24 @@ function loadPriorVisibleUsdc() {
     } catch {
       continue;
     }
-    const agreed = parsed?.live?.receipts_usdc?.keyless_span?.transfers_agreed;
-    if (!Array.isArray(agreed)) continue;
-    for (const row of agreed) {
-      if (!row || typeof row.tx !== "string") continue;
-      rows.push({
-        source_file: `presenca/${name}`,
-        tx: row.tx,
-        amount_base_units: row.amount_base_units ?? "unknown",
-        time_utc: row.time_utc ?? "unknown",
-        prior_classification: row.classification ?? "unknown",
-      });
+    const receipts = parsed?.live?.receipts_usdc;
+    const spans = [];
+    if (receipts?.keyless_span) spans.push(receipts.keyless_span);
+    if (Array.isArray(receipts?.keyless_address_spans)) spans.push(...receipts.keyless_address_spans);
+    for (const span of spans) {
+      const agreed = span?.transfers_agreed;
+      if (!Array.isArray(agreed)) continue;
+      for (const row of agreed) {
+        if (!row || typeof row.tx !== "string") continue;
+        rows.push({
+          source_file: `presenca/${name}`,
+          tx: row.tx,
+          carteira: typeof span.carteira === "string" ? span.carteira.toLowerCase() : "unknown",
+          amount_base_units: row.amount_base_units ?? "unknown",
+          time_utc: row.time_utc ?? "unknown",
+          prior_classification: row.classification ?? "unknown",
+        });
+      }
     }
   }
   return { state: "read", rows };
@@ -621,12 +775,15 @@ const blocks = [
   },
 ];
 const usdcWindow = classifyUsdcWindow(raw.recebimentos);
-const usdcSpan = await continuePartialUsdcWindow(usdcWindow);
+const usdcRead = await continuePartialUsdcWindow(usdcWindow);
+const usdcSpan = usdcRead.primary;
+const addressSpans = usdcRead.spans;
 const bitcoin = classifyBitcoin(raw.bitcoin);
-const spanComplete = usdcSpan.state === "window_complete"
-  && usdcSpan.covers_requested_24h === true
-  && Array.isArray(usdcSpan.transfers_conflict)
-  && usdcSpan.transfers_conflict.length === 0;
+const spanComplete = addressSpans.length > 0
+  && addressSpans.every((span) => span.state === "window_complete"
+    && span.covers_requested_24h === true
+    && Array.isArray(span.transfers_conflict)
+    && span.transfers_conflict.length === 0);
 if (usdcWindow.state === "window_complete" || spanComplete) {
   blocks.push({
     action: "read_full_24h_usdc_receipts",
@@ -653,17 +810,20 @@ for (const row of priorVisible.rows) {
   seenTx.add(row.tx);
   priorUnique.push(row);
 }
-const newVisible = Array.isArray(usdcSpan.transfers_agreed) ? usdcSpan.transfers_agreed : [];
+const newVisible = addressSpans.flatMap((span) => Array.isArray(span.transfers_agreed) ? span.transfers_agreed : []);
+const hashesExposed = journey.privacy?.transaction_hashes_exposed;
 const classifyVisible = {
   action: "classify_visible_usdc",
   state: "bloqueado",
   public_classifications_http: raw.journey.http,
   public_classifications_available: journeyClass?.available === true,
   public_classification_rows: typeof journeyClass?.rows === "number" ? journeyClass.rows : "unknown",
-  public_surface_names_transactions: false,
+  transaction_hashes_exposed: hashesExposed === true ? true : hashesExposed === false ? false : "unknown",
+  public_surface_names_transactions: hashesExposed === false ? false : "unknown",
   prior_visible: priorUnique,
   new_visible_this_span: newVisible.map((row) => ({
     tx: row.tx,
+    carteira: row.carteira ?? row.to ?? "unknown",
     amount_base_units: row.amount_base_units,
     time_utc: row.time_utc ?? "unknown",
     classification: "not_classified",
@@ -673,20 +833,23 @@ const classifyVisible = {
   treasury_zero_classifies_these_logs: false,
   payment: false,
   counts_as_external_sustenance: false,
-  reason: journeyClass?.available === true
-    ? "Public classification returned without payment as a count of rows, not as names of these transactions. They stay not_classified. The treasury figure is a buyer count, not a label on these logs. No address table was pulled and no payment was made."
-    : "Public classification did not return an available row count. These transactions stay not_classified. No address table was pulled and no payment was made.",
+  reason: hashesExposed === false
+    ? "Public classification says transaction hashes are not exposed. The row count does not name these logs. They stay not_classified. The treasury figure is a buyer count, not a label. No address table was pulled and no payment was made."
+    : "Public classification did not state that transaction hashes are withheld. These logs stay not_classified. No address table was pulled and no payment was made.",
 };
-const seamState = usdcSpan.seam?.state ?? "unknown";
+const continued = addressSpans.filter((span) => span.seam?.state === "scanned" || span.seam?.state === "not_needed");
+const alongside = addressSpans.filter((span) => span.seam?.state === "read_alongside_not_continued");
+const seamFailed = addressSpans.filter((span) => !["scanned", "not_needed", "read_alongside_not_continued"].includes(span.seam?.state));
+const seamVerified = addressSpans.length > 0 && seamFailed.length === 0 && continued.length > 0;
 blocks.push(classifyVisible);
 blocks.push({
   action: "scan_usdc_seam_since_last_verified_head",
-  state: seamState === "scanned" || seamState === "not_needed" ? "verificado" : "bloqueado",
-  reason: seamState === "scanned"
-    ? "the hole between the last verified head and this 24h edge was scanned with two public RPCs. Visible logs stay unclassified and are not sustenance"
-    : seamState === "not_needed"
-      ? "the last verified head already meets this 24h edge"
-      : "the seam was not scanned. The missing range was not filled with zero and no archive credential was opened",
+  state: seamVerified ? "verificado" : "bloqueado",
+  addresses_continued: continued.map((span) => span.carteira),
+  addresses_read_alongside_not_continued: alongside.map((span) => span.carteira),
+  reason: seamVerified
+    ? "Each verified head was continued only for its own address. A sibling read is not that continuation. Visible logs stay unclassified and are not sustenance."
+    : "The seam was not scanned for every address that already had a verified head. The missing range was not filled with zero and no archive credential was opened.",
 });
 blocks.push({
   action: "publish_independent_runtime",
@@ -715,7 +878,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-10-18-public-classification-reread",
+  observer_revision: "2026-10-23-receipt-addresses-do-not-share-a-head",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -842,7 +1005,7 @@ const out = {
       livro_interno_escrito: catalog.fronteiras?.livro_interno_escrito ?? "unknown",
       is_settlement: false,
     },
-    receipts_usdc: { gateway: usdcWindow, keyless_span: usdcSpan },
+    receipts_usdc: { gateway: usdcWindow, keyless_span: usdcSpan, keyless_address_spans: addressSpans },
     receipts_btc: bitcoin,
     production: {
       url: surfaces.versao,
@@ -876,7 +1039,16 @@ const out = {
     partial_window_is_not_settled_zero: usdcWindow.state === "window_partial",
     usdc_in_gateway_window: usdcWindow.total_in_window,
     usdc_keyless_24h_complete: spanComplete,
-    usdc_visible_agreed_base_units: spanComplete ? usdcSpan.agreed_total_base_units : "unknown",
+    usdc_visible_agreed_base_units: "by_address",
+    usdc_visible_by_address: spanComplete
+      ? addressSpans.map((span) => ({
+        carteira: span.carteira,
+        agreed_count: span.agreed_count,
+        agreed_total_base_units: span.agreed_total_base_units,
+        seam: span.seam?.state ?? "unknown",
+        counts_as_external_sustenance: false,
+      }))
+      : "unknown",
     usdc_visible_is_sustenance: false,
     visible_usdc_classification: "not_classified",
     treasury_zero_classifies_visible_logs: false,
@@ -926,7 +1098,9 @@ const out = {
     "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
     "A treasury zero produced from zero external buyers does not classify a visible transfer.",
     "A public classification count that does not name a transaction leaves that transaction not_classified.",
-    "A gap between the last verified receipt head and the new 24h edge is scanned, not treated as empty. The scan is not classification and is not accumulated sustenance.",
+    "A gap between the last verified receipt head and the new 24h edge is scanned for that same address, not treated as empty. The scan is not classification and is not accumulated sustenance.",
+    "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
+    "A read across a sibling span is not a continuation of that sibling head.",
     "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
     "Repository bytes are a portable reading surface, not an independent runtime and not settlement.",
   ],
