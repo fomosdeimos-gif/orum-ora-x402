@@ -19,6 +19,27 @@ async function sbSelect(path: string): Promise<any[]> {
   } catch { throw new Error("integrity_source_unavailable"); }
 }
 
+// v7 · 14/09/2026 · corrige leitura transitoriamente vazia observada ao vivo
+// (ora_mudancas#581, confirmado por padrao repetido em #~90 leituras SEM_DADO
+// desde 26/07 -- request id 275563 em 2026-09-14T05:00:05Z devolveu HTTP 200
+// com rondas_registadas:0 apesar de ora_sentinela_rondas ter milhares de linhas
+// e leituras adjacentes, segundos antes e depois, devolverem dados completos).
+// Uma unica repeticao curta quando a primeira leitura vem vazia nao fabrica
+// dados -- volta a pedir o mesmo facto real a mesma fonte; se a segunda leitura
+// tambem vier vazia, o corpo reporta zero como antes, sem esconder nada.
+async function sbSelectComRetrySeVazio(path: string, tentativas = 2, atrasoMs = 400): Promise<{ linhas: any[]; leitura_repetida: boolean }> {
+  let linhas = await sbSelect(path);
+  let leitura_repetida = false;
+  let i = 1;
+  while (linhas.length === 0 && i < tentativas) {
+    await new Promise((res) => setTimeout(res, atrasoMs));
+    linhas = await sbSelect(path);
+    leitura_repetida = true;
+    i++;
+  }
+  return { linhas, leitura_repetida };
+}
+
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
 }
@@ -123,8 +144,11 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "GET" && req.method !== "HEAD") return new Response("Method Not Allowed", { status: 405, headers: { ...CORS, Allow: "GET, HEAD" } });
 
   let rondas: any[];
+  let leitura_repetida = false;
   try {
-    rondas = await sbSelect("ora_sentinela_rondas?select=veredicto,frase,mudancas,dia,duracao_ms,created_at&order=created_at.desc&limit=200");
+    const resultado = await sbSelectComRetrySeVazio("ora_sentinela_rondas?select=veredicto,frase,mudancas,dia,duracao_ms,created_at&order=created_at.desc&limit=200");
+    rondas = resultado.linhas;
+    leitura_repetida = resultado.leitura_repetida;
   } catch {
     return new Response(JSON.stringify({
       erro: "integrity_source_unavailable", estado: "nao_observado",
@@ -148,6 +172,7 @@ Deno.serve(async (req: Request) => {
     veredictos: { OBSERVAR: observar, MUDANCA: mudancas, ALERTA: alertas },
     ultimo_veredicto: ultima ? { veredicto: ultima.veredicto, frase: ultima.frase, dia: ultima.dia, quando: ultima.created_at } : null,
     mudancas_recentes: mudancasRecentes,
+    leitura_repetida,
     nota: 'Isto não é uma afirmação de saúde — é o registo bruto do que foi medido, incluindo qualquer falha real. Gratuito, para sempre, sem pagamento nem chave. Se este número de rondas parecer baixo, é porque a sentinela é nova (activada em 20/07/2026) — o histórico cresce sozinho, sem intervenção.',
     fonte: "https://ora-x402-gateway.vercel.app/orai.html",
   };

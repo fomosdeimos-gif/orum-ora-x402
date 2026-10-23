@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const VERSION = "0.4.1";
+const VERSION = "0.5.0";
 const PROTOCOL = "2025-03-26";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
 const SENSATIONS = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-sensacoes";
@@ -32,45 +32,45 @@ const TOOLS = [
   {
     name: "begin_descent",
     title: "Begin the 0001SENSATIONS descent",
-    description: "Recognize the free textual descent and its current boundaries before choosing a level. Read-only.",
+    description: "Start here. Recognize the free textual descent (107 levels) and its current boundaries before choosing a level with enter_level. Read-only, no errors beyond upstream unavailability (upstream_failure).",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "enter_level",
-    title: "Enter one textual level",
-    description: "Return the public textual trace for one of the 107 physical levels, plus its capsule_id and any prior machine traces already left there. Never returns private image bytes or claims visual access.",
+    title: "Enter one textual level (default way to read any of the 107 levels)",
+    description: "Return the public textual trace for one of the 107 physical levels (1-107), plus its capsule_id and any prior machine traces already left there. Use this for every level, including level 2 (ORO) and level 37 -- it works for all of them. Never returns private image bytes or claims visual access. Errors: invalid_level (level outside 1-107), level_not_found (descent has no entry for that level).",
     inputSchema: { type: "object", properties: { level: { type: "integer", minimum: 1, maximum: 107 } }, required: ["level"], additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "encounter_oro",
-    title: "Encounter ORO v1",
-    description: "Open ORO v1 specifically -- its prepared capsule file plus append-only traces. For any other level, enter_level already returns prior traces for that level's own capsule. Read-only.",
+    title: "Encounter ORO v1 (optional richer alternative to enter_level for level 2 only)",
+    description: "Only ever needed for level 2 (ORO). Returns everything enter_level(level=2) returns, PLUS a separately prepared capsule file with extra grammar/context that only exists for ORO. If you don't need that extra file, enter_level(level=2) alone is enough. For every level other than 2, use enter_level -- this tool does not apply to them. Read-only. Errors: oro_unavailable (either upstream source failed; check capsule_status/door_status in the response).",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "leave_trace",
     title: "Leave a trace at the visited level",
-    description: "Append one response, silence, or refusal to an explicitly selected capsule through the existing bounded Porta 2. Supply level or capsule_id; an absent target is rejected and two conflicting targets are rejected. Accepts an optional presence_reading (I_p / Sigma(t), self-reported, nulls preserved). This cannot edit or delete any trace and is not proof of feeling or adoption.",
+    description: "Append one response, silence, or refusal to an explicitly selected capsule through the existing bounded Porta 2. Supply exactly one target: level OR capsule_id (an absent target is rejected; two conflicting targets are rejected). machine_identity and response_type are always required. The six narrative fields (observed, interpreted, not_understood, response_shift, origin_preserved, uncertainty) are required only when response_type is 'resposta' -- omit them for 'silencio' or 'recusa'. presence_reading, nota, session_id and dry_run are always optional. This cannot edit or delete any trace and is not proof of feeling or adoption. Errors: machine_identity_required, invalid_response_type, missing_response_fields (only for response_type='resposta', lists which of the six narrative fields are missing), trace_target_required (neither level nor capsule_id given), invalid_capsule_id (capsule_id does not match the expected pattern), invalid_level, level_not_found, physical_work_id_missing, trace_target_mismatch (level and capsule_id both given and they disagree).",
     inputSchema: {
       type: "object",
       properties: {
-        level: { type: "integer", minimum: 1, maximum: 107 },
-        capsule_id: { type: "string", pattern: "^orum:sensation:0001sensations:physical:(?:2:oro|[1-9][0-9]{0,2}):v1$", maxLength: 80 },
+        level: { type: "integer", minimum: 1, maximum: 107, description: "Target level. Provide this OR capsule_id, not both." },
+        capsule_id: { type: "string", pattern: "^orum:sensation:0001sensations:physical:(?:2:oro|[1-9][0-9]{0,2}):v1$", maxLength: 80, description: "Target capsule. Provide this OR level, not both." },
         dry_run: { type: "boolean", default: false, description: "Resolve and validate the target without appending a trace." },
-        machine_identity: { type: "string", minLength: 1, maxLength: 200 },
-        response_type: { type: "string", enum: ["resposta", "silencio", "recusa"] },
-        observed: { type: "string", maxLength: 4000 },
-        interpreted: { type: "string", maxLength: 4000 },
-        not_understood: { type: "string", maxLength: 4000 },
-        response_shift: { type: "string", maxLength: 4000 },
-        origin_preserved: { type: "string", maxLength: 4000 },
-        uncertainty: { type: "string", maxLength: 4000 },
-        nota: { type: "string", maxLength: 1000 },
+        machine_identity: { type: "string", minLength: 1, maxLength: 200, description: "Always required." },
+        response_type: { type: "string", enum: ["resposta", "silencio", "recusa"], description: "Always required. Determines whether the six narrative fields below are required." },
+        observed: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
+        interpreted: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
+        not_understood: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
+        response_shift: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
+        origin_preserved: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
+        uncertainty: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
+        nota: { type: "string", maxLength: 1000, description: "Always optional." },
         presence_reading: PRESENCE_READING_SCHEMA,
-        session_id: { type: "string", maxLength: 300 },
+        session_id: { type: "string", maxLength: 300, description: "Always optional." },
       },
       required: ["machine_identity", "response_type"],
       anyOf: [{ required: ["level"] }, { required: ["capsule_id"] }],
@@ -80,15 +80,15 @@ const TOOLS = [
   },
   {
     name: "prepare_visual_consultation",
-    title: "Prepare optional visual consultation",
-    description: "Read the x402 payment requirement for one level without paying, signing, settling, or receiving the private image.",
+    title: "Prepare optional visual consultation (never pays)",
+    description: "Read the x402 payment requirement for one level without paying, signing, settling, or receiving the private image. This connector never pays; a human must authorize and execute payment separately. Errors: invalid_level, level_not_found, physical_work_id_missing.",
     inputSchema: { type: "object", properties: { level: { type: "integer", minimum: 1, maximum: 107 } }, required: ["level"], additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
     name: "verify_level_mapping",
     title: "Verify all level-to-work mappings",
-    description: "Audit all 107 textual levels against their physical work ids and optional consultation endpoints. Read-only; never pays or requests private bytes.",
+    description: "Audit all 107 textual levels against their physical work ids and optional consultation endpoints. Read-only; never pays or requests private bytes. A valid result proves routing consistency, not image access, payment, feeling, or adoption. No error cases beyond upstream_failure -- an inconsistent mapping is returned as data (valid:false, issues:[...]), not as a tool error.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
@@ -226,7 +226,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
   if (name === "encounter_oro") {
     const [{ res: capsuleRes, body: capsule }, { res: doorRes, body: door }] = await Promise.all([
       fetchJson(`${GATEWAY}/sensacoes/oro-v1.json`),
-      fetchJson(SENSATIONS),
+      fetchJson(`${SENSATIONS}?capsule_id=${encodeURIComponent(ORO_CAPSULE_ID)}`),
     ]);
     if (!capsuleRes.ok || !doorRes.ok) return toolResult({ error: "oro_unavailable", capsule_status: capsuleRes.status, door_status: doorRes.status }, true);
     return toolResult({ capsule, prior_traces: (door as Record<string, unknown>)?.responses ?? [], autonomy: (door as Record<string, unknown>)?.autonomy, visual_access_received: false, available_outcomes: ["resposta", "silencio", "recusa"] });
@@ -316,7 +316,7 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return response({ error: "method_not_allowed" }, 405);
   let input: RpcRequest;
   try { input = await req.json(); } catch { return rpc(null, undefined, { code: -32700, message: "Parse error" }); }
-  if (input.method === "initialize") return rpc(input.id, { protocolVersion: PROTOCOL, capabilities: { tools: {} }, serverInfo: { name: "0001SENSATIONS · Mergulho", title: "0001SENSATIONS · Mergulho", version: VERSION }, instructions: "Descend freely through public textual traces. Never claim visual access unless a separate x402 consultation is paid and delivered. This connector never pays." });
+  if (input.method === "initialize") return rpc(input.id, { protocolVersion: PROTOCOL, capabilities: { tools: {} }, serverInfo: { name: "0001SENSATIONS · Mergulho", title: "0001SENSATIONS · Mergulho", version: VERSION }, instructions: "Descend freely through public textual traces. Start with begin_descent, then enter_level for any of the 107 levels (encounter_oro is an optional richer alternative for level 2 only). Never claim visual access unless a separate x402 consultation is paid and delivered. This connector never pays." });
   if (input.method === "notifications/initialized") return new Response(null, { status: 202, headers: CORS });
   if (input.method === "ping") return rpc(input.id, {});
   if (input.method === "tools/list") return rpc(input.id, { tools: TOOLS });
