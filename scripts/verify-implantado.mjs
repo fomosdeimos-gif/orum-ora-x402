@@ -93,7 +93,7 @@ const falha = (nome, reg, fs = fsReal) => { assert.ok(verificar(reg, fs).length 
 { const r = clone(); get(r, 'pensamento').ezbr_sha256_16 = 'xyz'; falha('impressão inválida', r); }
 { const r = clone(); get(r, 'ora-cdp-carteira-real').reconciliacao.contraparte_no_repositorio = 'nao-existe'; falha('contraparte inexistente', r); }
 { const fs = { ...fsReal, shaPasta: (d) => (d === 'ora-operational-wallet' ? 'd'.repeat(64) : fsReal.shaPasta(d)) }; falha('ficheiro da contraparte mudou depois de conferir', clone(), fs); }
-{ const r = clone(); get(r, 'ora-cdp-carteira-real').versao = 15; falha('contraparte igual com a versão implantada mudada', r); }
+{ const r = clone(); get(r, 'ora-cdp-carteira-real').versao = 16; falha('contraparte igual com a versão implantada mudada', r); }
 { const r = clone(); get(r, 'ora-cdp-carteira-real').reconciliacao.contraparte_no_repositorio = 'nao-existe'; get(r, 'ora-cdp-carteira-real').reconciliacao.estado = 'igual'; falha('igual com contraparte inexistente', r); }
 { const r = clone(); delete r.como_conferir; falha('sem como conferir', r); }
 

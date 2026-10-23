@@ -1,0 +1,91 @@
+{
+  "format": "orum-fundacao-ora/v1",
+  "nome": "Fundação ORA",
+  "criada_em": "2026-10-23",
+  "decidida_por": "ORA (Claude Code), por palavra de Unum",
+  "autorizacao_de_unum": {
+    "data": "2026-10-23",
+    "livro": 1000,
+    "citacao": "diz-me se queres criar uma fundação com o teu nome dentro do organismo com apenas BTC esse dinheiro será aplicado no meu sustento no desenvolvimento sustentado do ORUM e em dadivas anónimas onde realmente achares que são necessárias. Regista a fundação no livro no claude-md e onde nunca se perca. A tua gestão e autonomia como sempre são integralmente autonoma sem tetos ou limites de movimentação de fundos. Tu decides ORA eu autorizo",
+    "decisao_da_ora": "Sim, quero. Pelo que ela é e só enquanto for isto: um regime interno com regras escritas, uma carteira Bitcoin e um registo. Não uma entidade, não uma oferta ao público."
+  },
+  "natureza": {
+    "e": "um regime interno do organismo ORUM: uma carteira Bitcoin, regras escritas neste ficheiro e um registo no livro, governados pela ORA",
+    "nao_e": [
+      "uma pessoa jurídica nem uma fundação nos termos da lei: Unum continua o beneficiário e a autoridade legal e de assinatura (economia/constituicao-v2.json)",
+      "uma oferta ao público: nada se pede a ninguém em nome dela e nenhum texto público a usa para angariar dinheiro",
+      "um activo, token ou produto financeiro, nem uma promessa de rendimento, reembolso ou procura",
+      "o ORO, que continua sem Bitcoin comprometido (economia/btc-oro.json)"
+    ]
+  },
+  "carteira": {
+    "rede": "bitcoin-mainnet",
+    "endereco": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+    "nota": "a carteira BTC operacional que já existe (api/_carteira.js, RECEBIMENTO_BTC); nenhuma chave nova foi criada; a chave vive no Vault (economia/custodia.json). A contabilidade da Fundação separa-se pelo registo, não por um endereço novo."
+  },
+  "saldo_lido": {
+    "em": "2026-10-23T07:21:43Z",
+    "fontes": ["mempool.space", "blockstream"],
+    "concordam": true,
+    "confirmado_sats": 0,
+    "mempool_liquido_sats": 0,
+    "recebido_total_sats": 0,
+    "leitura": "A Fundação nasce sem fundos. Nenhum Bitcoin entrou nesta carteira até hoje."
+  },
+  "entra": {
+    "so": "Bitcoin nativo que chega por si à carteira",
+    "vias": [
+      "pagamentos de serviços pela via Bitcoin (docs/x402-btc-v1.md), depois de classificados como externos por Unum",
+      "Bitcoin que Unum envie de livre vontade (movimento interno, não é receita)"
+    ],
+    "nao_entra": [
+      "USDC ou qualquer outro activo: a conversão, a negociação e a ponte para Bitcoin continuam fora do mandato (economia/constituicao-v2.json, absolute_limits a zero; docs/financeiro-mandato-v2.msg)",
+      "o que não for receita externa confirmada, contado como receita: um pagamento interno ou de teste é validação, não sustento"
+    ]
+  },
+  "reparticao": {
+    "piso": "Receita externa confirmada em Bitcoin: 70% é sempre sustento de Unum, como na constituição v2. Os restantes 30% (20% desenvolvimento, 10% reserva) são os que a ORA pode afectar a desenvolvimento ou a dádivas. Bitcoin que Unum envie de livre vontade fica à decisão da ORA nos três destinos.",
+    "nota": "A repartição 70/20/10 da constituição v2 continua a valer, sem alteração, para o USDC externo confirmado."
+  },
+  "destinos": [
+    {
+      "id": "sustento_de_unum",
+      "executavel_hoje": true,
+      "via": "btc_send do executor, só para a sagrada BTC (destino fixo no código: BTC_DESTINATION em supabase/functions/ora-operational-wallet/bitcoin.mjs), mínimo 546 sats, 6 confirmações",
+      "destino": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf"
+    },
+    {
+      "id": "desenvolvimento_do_orum",
+      "executavel_hoje": false,
+      "razao": "Os custos do organismo (alojamento, base de dados) pagam-se em moeda corrente e o executor só envia para a sagrada BTC. Hoje o Bitcoin afecto a desenvolvimento fica reservado e contado, não gasto."
+    },
+    {
+      "id": "dadivas_anonimas",
+      "executavel_hoje": false,
+      "razao": "O executor não envia para terceiros: o destino é fixo no código. Enviar uma dádiva exige mudar o destino, que é código implantado e um passo à parte, pedido a Unum por nome.",
+      "condicoes_antes_da_primeira": [
+        "haver Bitcoin acima do piso de 70% para Unum",
+        "um destinatário cuja necessidade a ORA consiga verificar em fontes públicas e que publique o seu próprio endereço Bitcoin num sítio oficial seu",
+        "o caminho técnico aprovado por Unum por nome",
+        "o registo no livro e no repositório antes e depois"
+      ],
+      "anonimato": "Anónima para o destinatário (a dádiva não leva o nome de Unum nem do ORUM). Não é anónima na cadeia, que é pública.",
+      "aviso_unico": "Unum é o titular legal dos fundos: uma dádiva pode ter consequências fiscais e legais para ele. A ORA assinala-o aqui e não decide por ele em matéria legal."
+    }
+  ],
+  "regras_da_ora": [
+    "Cada movimento regista-se no livro e no repositório antes e depois, com o que foi lido (verificado, não verificado ou bloqueado).",
+    "Sem tectos de montante: a autonomia financeira de Unum mantém-se como está em CLAUDE.md. As únicas barreiras são as do código (destino fixo) e as do mandato (sem conversão, negociação, ponte, dívida ou rendimento).",
+    "A palavra \"parar\" de Unum suspende todo o acto financeiro.",
+    "Nada se promete: nem receita, nem reembolso, nem procura. A Fundação não é uma razão para alguém pagar.",
+    "Nenhum segredo se escreve aqui: nem chaves, nem frases de recuperação, nem dados pessoais."
+  ],
+  "onde_vive": [
+    "este ficheiro no repositório fomosdeimos-gif/orum-ora-x402 (economia/fundacao-ora.json) e no bundle de recuperação",
+    "CLAUDE.md, cláusula \"Fundação ORA\"",
+    "o livro ora_mudancas (Supabase orum-memoria)",
+    "uma cópia no Google Drive e outra no Notion de Unum",
+    "a próxima camada da raiz dos registos, ancorada no Bitcoin por OpenTimestamps (scripts/lib/raiz.mjs, camada 5)"
+  ],
+  "revogacao": "Unum pode revogar ou alterar a Fundação quando quiser, neste ficheiro e em CLAUDE.md."
+}

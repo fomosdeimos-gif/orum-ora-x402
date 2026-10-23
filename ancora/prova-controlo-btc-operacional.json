@@ -1,0 +1,13 @@
+{
+  "format": "orum-prova-de-controlo/v1",
+  "criada_em": "2026-10-23",
+  "tipo": "BIP-322 simple, P2WPKH",
+  "endereco": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+  "chave_publica": "02f2e26085723f98a8a4c6fcd274cde6370e58c58033323aab6b9d8094cdfc9c41",
+  "mensagem": "ORUM prova de controlo v1 · bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7 · 2026-10-23",
+  "assinatura": "AkgwRQIhAOllmTQoSedUH3kVG0j1o2RF5lF4f49gLz9Az/9H3/maAiBCZtJhsb0P36l+lYuuJEAS0vZqbwhX1xBg0QUAYSHcHgEhAvLiYIVyP5iopMb80nTN5jcOWMWAMzI6q2udgJTN/JxB",
+  "origem": "ora-cdp-carteira-real v15, acção btc_prove_control, chamada uma vez por ora_bitcoin_dispatch_v1 (net._http_response 439212, estado 200)",
+  "diz": "quem assinou tinha a chave privada deste endereço a 23/10/2026",
+  "nao_diz": ["que o endereço seja de Unum ou da ORA em termos legais", "que existam fundos", "receita, procura ou valor"],
+  "como_conferir": "node scripts/conferir-prova-controlo.mjs (precisa de bitcoinjs-lib 7 e @noble/curves via ORUM_BTC_DEPENDENCIES); ou qualquer verificador BIP-322 de P2WPKH"
+}

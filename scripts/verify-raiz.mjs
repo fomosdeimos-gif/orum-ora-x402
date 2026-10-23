@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { verificarRaiz, manifestosDeCamadas } from '../kit/raiz.mjs';
 import { lerRecibo } from './lib/ots.mjs';
-import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE } from './lib/raiz.mjs';
+import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE } from './lib/raiz.mjs';
 
 function verificarCamada(caminhoManifesto) {
   const manifestoBytes = fs.readFileSync(caminhoManifesto);
@@ -55,6 +55,12 @@ const f4 = ficheirosDaCamada(4);
 assert.ok(f4.includes('ancora/raiz-registos-3.json') && f4.includes('ancora/raiz-registos-3.ots'), 'a camada 4 sela a 3');
 for (const x of FICHEIROS_DA_CAMADA_4_EM_DIANTE) { assert.ok(f4.includes(x), `a camada 4 devia selar ${x}`); assert.ok(!f3.includes(x), `a camada 3 não pode mudar: ${x}`); }
 assert.equal(new Set(f4).size, f4.length, 'caminho repetido na camada 4');
+const f5 = ficheirosDaCamada(5);
+assert.ok(f5.includes('ancora/raiz-registos-4.json') && f5.includes('ancora/raiz-registos-4.ots'), 'a camada 5 sela a 4');
+for (const x of FICHEIROS_DA_CAMADA_5_EM_DIANTE) { assert.ok(f5.includes(x), `a camada 5 devia selar ${x}`); assert.ok(!f4.includes(x), `a camada 4 não pode mudar: ${x}`); }
+for (const x of FICHEIROS_DA_CAMADA_4_EM_DIANTE) assert.ok(f5.includes(x), `a camada 5 tem de continuar a selar ${x}`);
+assert.equal(new Set(f5).size, f5.length, 'caminho repetido na camada 5');
+for (const x of FICHEIROS_DA_CAMADA_5_EM_DIANTE) assert.ok(fs.existsSync(x), `o ficheiro da camada 5 tem de existir: ${x}`);
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
