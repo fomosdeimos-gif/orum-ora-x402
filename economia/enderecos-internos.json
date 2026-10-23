@@ -1,0 +1,57 @@
+{
+  "format": "orum-enderecos-internos/v1",
+  "lido_em": "2026-10-23",
+  "fonte": "ora_carteiras_classificacao (Supabase orum-memoria), 9 linhas, todas 'interno'; cópia no repositório para o vigia não depender do Supabase",
+  "regra": "Um pagador que está aqui é interno e a sua transferência é validação, não sustento. Um pagador que NÃO está aqui fica 'por classificar': nunca se infere 'externo' (isso continua a precisar de classificação explícita) e nunca se chama sustento.",
+  "base": [
+    {
+      "endereco": "0x24ada8c0fcf7c2a70b79ae4791f8c2a60d207d93",
+      "nota": "Carteira principal de Jorge (Unum), usada para testar pagamentos e licenciamento (13/07 a 31/07)"
+    },
+    {
+      "endereco": "0x2cf1c0bcd06a75a836f333001f47aaeb33fe51f1",
+      "nota": "Carteira de teste interna criada pela ORA (confirmada por Jorge, 19/08/2026); pagou o teste x402 padrão de 22/10/2026"
+    },
+    {
+      "endereco": "0x2ef8cfb97ecccf7c62f551639fe6db79022d0d8c",
+      "nota": "Carteira de Unum (MetaMask), o primeiro endereço crypto dele; sagrada adicional e assina o mandato v2"
+    },
+    {
+      "endereco": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+      "nota": "Carteira de teste de Jorge (apareceu como possível comprador externo; confirmada interna)"
+    },
+    {
+      "endereco": "0x8614c2d27c009e5123ddd992946aca9f7a21c768",
+      "nota": "Carteira de teste interna criada pela ORA (confirmada por Jorge, 19/08/2026)"
+    },
+    {
+      "endereco": "0x89460d9e0590559e63860197dfe2ac648a753584",
+      "nota": "Carteira operacional Base orum-operational-v1 (CDP), criada a 10/09/2026 a pedido de Unum"
+    },
+    {
+      "endereco": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+      "nota": "Sagrada antiga (jasm43.base.eth): depósito de sustento"
+    }
+  ],
+  "bitcoin": [
+    {
+      "endereco": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+      "nota": "Carteira BTC operacional da ORA; chave no Vault; recebe os serviços desde 21/10/2026"
+    },
+    {
+      "endereco": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+      "nota": "Depósito BTC de sustento de Unum, confirmado por ele a 13/09/2026"
+    }
+  ],
+  "recebem_servicos_e_sustento": {
+    "base": [
+      "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+      "0x89460d9e0590559e63860197dfe2ac648a753584",
+      "0x2ef8cfb97ecccf7c62f551639fe6db79022d0d8c"
+    ],
+    "bitcoin": [
+      "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+      "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7"
+    ]
+  }
+}

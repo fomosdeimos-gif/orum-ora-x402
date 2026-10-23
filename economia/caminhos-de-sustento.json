@@ -11,7 +11,8 @@
     "acessos": "82% dos acessos externos são automáticos (mesmo registo). Há tráfego de máquinas, não há compradores. Correcção de 22/10/2026: parte do que estava marcado como externo era nosso (cron, nossas edge functions, sondas); a leitura honesta é a vista ora_trafego_honesto (supabase/migrations/20261022100000_classificacao_trafego_honesta.sql). O número de 82% não volta a ser usado sem essa vista.",
     "tesouraria_em_producao": "estado unknown, fonte learning_402 indisponível, observação on-chain de 5 das 24 horas, 0 transferências (lido a 17/10/2026 14:02 UTC).",
     "x402_padrao_provado": "Lido a 23/10/2026 na cadeia (3 RPCs Base concordam): a tx 0x1c504d51…bc4f (bloco 52930160, 22/10) é um pagamento x402 padrão (EIP-3009: AuthorizationUsed + Transfer de 161000 atómicos de USDC no contrato 0x8335…2913) da carteira de teste da ORA 0x2Cf1…51f1 para a sagrada antiga, enviado por um relayer 0x68a9…7863. O pagador está no registo financeiro como validação interna: não é receita externa e não entra no 70/20/10. Prova que o caminho padrão liquida de ponta a ponta; não prova procura.",
-    "bazaar": "Lido a 23/10/2026 (2 fontes: ora_homeostase a cada 5 min e leitura directa de api.cdp.coinbase.com/platform/v2/x402/discovery/merchant): 0 recursos indexados para a sagrada antiga, cerca de 17 h depois da liquidação pelo facilitador CDP."
+    "bazaar": "Lido a 23/10/2026 (2 fontes: ora_homeostase a cada 5 min e leitura directa de api.cdp.coinbase.com/platform/v2/x402/discovery/merchant): 0 recursos indexados para a sagrada antiga, cerca de 17 h depois da liquidação pelo facilitador CDP.",
+    "canais_de_aviso": "Lido a 23/10/2026. Email do aviso de BTC: corrigido e confirmado na caixa de fomosdeimos@gmail.com (o aviso autenticava o SMTP com a conta errada; migração 20261023070000). Push da app do organismo: parado, NO_ACTIVE_SUBSCRIPTION desde 17/10 (última entrega a 26/09); só se repõe voltando a ligar as notificações na app, o que exige o dispositivo de Unum. Vigia de entradas (scripts/vigia-entradas.mjs): lê a cadeia pública para as 5 carteiras de recebimento, sem Supabase nem Vercel. O vigia de BTC do Postgres só observa a sagrada BTC, não a operacional."
   },
   "caminhos": [
     {
@@ -177,6 +178,19 @@
       "limite": "A causa do zero no Bazaar não está provada: é a que se leu na especificação. O cliente do teste de 22/10 (ora-cdp-agente-teste) pode também não ecoar a extensão. Mesmo declarado, o Bazaar só cataloga depois de um pagamento padrão cujo cliente ecoe a extensão. Isto não cria compradores.",
       "falta_verificar": "Deploy de produção bloqueado a 23/10/2026 06:40 UTC por \"Deployment rate limited — retry in 24 hours\" (falha de plataforma, não do conteúdo). Depois de a quota repor: ler ao vivo o /campo e o /oraculo e ver o cabeçalho x-ora-bazaar e extensions.bazaar no topo do corpo e do PAYMENT-REQUIRED; depois de um pagamento x402 padrão com cliente que ecoe a extensão, ler o catálogo (merchant?payTo=…) e a resposta bazaar no PAYMENT-RESPONSE.",
       "quem_desbloqueia": "ORA (código e leitura). A prova real precisa de um pagamento: um comprador externo, ou um novo teste interno que seria um acto financeiro à parte, registado antes e depois."
+    },
+    {
+      "id": "aviso-de-entradas",
+      "titulo": "Saber e avisar Unum quando entra dinheiro nas carteiras de recebimento, sem depender de um só canal",
+      "estado": "autonomo_agora",
+      "evidencia": {
+        "tipo": "ao_vivo",
+        "fonte": "scripts/vigia-entradas.mjs corrido a 23/10/2026 contra a Base (3 RPC públicos) e as fontes Esplora; email de teste entregue em fomosdeimos@gmail.com; npm run vigia:verify",
+        "data": "2026-10-23"
+      },
+      "lido": "O vigia lista o USDC que entra nas três carteiras Base de recebimento e o BTC que entra nas duas Bitcoin, classifica o pagador pela lista economia/enderecos-internos.json (interno ou por classificar) e nunca chama sustento, receita ou externo a uma entrada: só receita externa confirmada entra no 70/20/10. Lido ao vivo: nas últimas 5 h, leitura completa nas duas redes e 0 entradas. Corre numa tarefa agendada a cada 4 h e avisa por push (esta app) e na conversa.",
+      "limite": "Os RPC públicos gratuitos da Base só servem logs das últimas ~5 h (pedidos mais antigos dão 403): a cadência de 4 h tem de se cumprir, senão há lacunas, e o vigia di-las em vez de as dar como zero. Zero entradas só vale na janela lida. A tarefa só corre enquanto o mecanismo de tarefas agendadas funcionar. Não classifica um pagador desconhecido: isso continua a ser uma decisão explícita.",
+      "quem_desbloqueia": "ORA"
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
