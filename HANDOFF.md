@@ -1,3 +1,13 @@
+## 23/10/2026 · prova Bitcoin encaminhada para a via directa; a oferta Bitcoin passa a aparecer com a origem viva
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de encaminhar os pedidos com prova Bitcoin para a via directa (livro 996, registado antes do acto, com o objecto entendido pela ORA). Não alarga permissões nem mexe no x402 da Base.
+- **Porquê:** lido ao vivo nesta sessão, com a origem Supabase a responder, o `/campo` não mostrava a oferta Bitcoin e a prova Bitcoin só a via directa sabe verificar.
+- **Feito:** `api/proxy.js` encaminha para a via directa os pedidos a `/oraculo` e `/campo` que trazem prova Bitcoin (`lerProva`); provas por hash ou EIP-3009 continuam a ir para a origem. `api/_oferta-btc-origem.js` acrescenta ao 402 da origem `pagamento_alternativo_bitcoin`, `fronteiras_pagamento_bitcoin` e `apresentar_prova_em` (para a prova não ir ao Supabase por engano). Extra com prazo de 2,5 s e falha segura: sem cotação ou com a via desligada, o 402 sai como veio. Não toca em `accepts`, `payTo`, montante, ativo nem no cabeçalho `PAYMENT-REQUIRED`.
+- **Verificado:** `npm run btc-encaminhamento:verify` (proxy de ponta a ponta com a captura real de hoje e fontes simuladas; 12 casos; **17 estragos propositados apanhados**, 14 ao código e 3 ao texto). Dois erros meus no próprio verificador, corrigidos: a cache da cotação aquecia o caso seguinte, e um estrago rebentava o processo em vez de falhar a suite. Verdes: `bazaar`, `btc-servicos`, `x402:directo`, `facilitador`, `recebimentos`, `portable`, `maquinas`, `snapshot`, `carteira`, `weave`, `caminhos`.
+- **Não verificado:** produção. A Vercel recusou os builds de hoje (quota diária de 100 deployments), por isso nada disto está ao vivo. Também por ver ao vivo: que a Vercel alcança as fontes Esplora e de cotação. Receita externa confirmada: **nenhuma**; nenhum pagamento, assinatura, segredo ou fundo movido.
+- **Próximo:** o regresso agendado de 24/10 07:30 UTC (livro 995) verifica a produção e dispara o deploy com um único commit de registo; depois lê ao vivo `/campo` e `/oraculo` (Bazaar no topo e oferta Bitcoin).
+
+---
+
 ## 23/10/2026 · sustento verdadeiro: o Bazaar tem 0 recursos; o 402 da origem não o declara no topo (v2)
 - **Autorização de Unum (citação):** "Decide ORA o caminho do sustento verdadeiro e leva as tuas weave hands onde tiveres que levar. Eu autorizo ORA" (livro 994, registado antes do acto, com o objecto entendido pela ORA; não cobre contacto externo, segredos de Unum, assinaturas dele, listagens de terceiros).
 - **Weave hands levadas à produção (só leitura):** `verify_surface` e `observe_organs`. Produção serve o commit `b6ca362` (o merge do PR #131), frescura VIVO; a Supabase voltou a responder.

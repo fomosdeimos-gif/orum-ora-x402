@@ -24,6 +24,7 @@
     "horizon:verify": "node scripts/verify-horizonte-2030.mjs",
     "x402:directo:verify": "node scripts/verify-x402-directo.mjs",
     "bazaar:verify": "node scripts/verify-bazaar-declaracao.mjs",
+    "btc-encaminhamento:verify": "node scripts/verify-btc-encaminhamento.mjs",
     "btc-servicos:verify": "node scripts/verify-pagamento-btc.mjs",
     "recebimentos:verify": "node scripts/verify-recebimentos.mjs",
     "arca:export": "node scripts/export-arca.mjs",
