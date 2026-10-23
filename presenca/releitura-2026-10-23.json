@@ -1,0 +1,19 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-10-23",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "commit": "e310da7e788874cc94c0f07d93eefa3692b0ba51",
+  "reread_at": "2026-10-23T05:14:38Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/observacao-2026-10-23.json": "6f212f213625813c8e87f0c79a0ec7e068d868fb1003d5952e135f1622e79e38",
+    "presenca/nota-diaria-2026-10-23.md": "2c3e6efca9338a1fb7bb4f8762d8789ec99ce7fd3dae4a793dddbe5a325bce66",
+    "presenca/weave_presence.json": "0d97d06cdf4347df403109eab2707c891ae08b9f0030f6a20cf03b79706752b3",
+    "presenca/ciclo-2026-10-23.json": "ff2eda87308ecfb0eb2ff78405827a03d2d0b993b3e53023aceb903f04b75895",
+    "openclaw/orum-weave-observe/scripts/observe-presence.mjs": "88ca841bd2e27014d351a5db5862c54303d63509aba0111ba344dcd6d2ca518c"
+  },
+  "livro_vivo_escrito": false,
+  "note": "The cycle file still says portable_sediment state proposto because that sentence was hashed before this reread. This file is the reread. It does not rewrite the cycle. The visible 161000 base units stay not_classified."
+}
