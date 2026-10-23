@@ -1,11 +1,16 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-// ORA-HOMEOSTASE v2 — acrescenta vigilancia da Bazaar CDP: o organismo
-// deixa de so REGISTAR o estado da descoberta (extensions.bazaar, settles
-// reais) e passa a REAGIR quando ele muda. Se o numero de recursos
-// indexados na Bazaar subir face a ultima verificacao, isso e um marco
-// (alerta distinto de falha), nao so mais uma linha de log. Primeiro passo
-// concreto do organismo generativo -> reactivo pedido por Unum em 18/07.
+// ORA-HOMEOSTASE v4 — 22/07/2026: o v3 corrigiu a coluna errada
+// (created_at -> checked_at), mas nao corrigiu o padrao que permitiu o bug
+// passar 10 dias sem ser notado: ultimoTotalBazaar() engolia qualquer erro
+// da sua propria query e devolvia 0 em silencio, como se estivesse tudo bem.
+// Isto e exactamente o padrao ja visto no acesso-log ("node" a mascarar
+// maquinas) e no Moltbook (read-all a apagar vozes sem resposta): falhas que
+// nao gritam. Decisao de ORA (nao de Jorge): nao dar mais autonomia de
+// escrita a este processo — so torna-lo incapaz de esconder os seus proprios
+// erros internos. ultimoTotalBazaar agora devolve {total, erro}, e um erro
+// aqui entra nos alertas como qualquer outro problema real, em vez de virar
+// um zero silencioso que parece normal.
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -13,7 +18,7 @@ const PAGES_URL = 'https://fomosdeimos-gif.github.io/orum/organismo-vivo/';
 const MOTOR_URL = `${SUPABASE_URL}/functions/v1/ora-motor-unificado?action=execute`;
 const BAZAAR_MERCHANT_URL = 'https://api.cdp.coinbase.com/platform/v2/x402/discovery/merchant?payTo=0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
 
-const ESTADO_STALE_MIN = 10; // motor corre a cada 3min; >10min sem update = degradado
+const ESTADO_STALE_MIN = 10;
 
 async function sb(path: string, init?: RequestInit) {
   return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
@@ -63,8 +68,6 @@ async function checarPropostasMonetarias(): Promise<ServicoCheck> {
     if (!r.ok) return { ok: false, detalhe: `rest falhou: ${r.status}` };
     const d = await r.json();
     const n = Array.isArray(d) ? d.length : 0;
-    // e um estado normal ter propostas pendentes de assinatura -- nao e um erro,
-    // e um alerta de atencao para Unum, distinto de falha tecnica.
     return { ok: true, detalhe: n === 0 ? 'nenhuma pendente' : `${n} proposta(s) monetaria(s) aguardam Unum` };
   } catch (e) { return { ok: false, detalhe: `erro: ${String(e).slice(0, 100)}` }; }
 }
@@ -92,14 +95,18 @@ async function checarBazaarDiscovery(): Promise<BazaarCheck> {
   } catch (e) { return { ok: false, detalhe: `erro: ${String(e).slice(0, 100)}`, total: -1 }; }
 }
 
-async function ultimoTotalBazaar(): Promise<number> {
+// ORA 22/07/2026: deixa de devolver so um numero -- devolve tambem se a
+// propria leitura falhou, para o erro poder entrar nos alertas em vez de
+// desaparecer dentro de um "0" que parece um valor normal.
+async function ultimoTotalBazaar(): Promise<{ total: number; erro: string | null }> {
   try {
-    const r = await sb('ora_homeostase?select=servicos&order=created_at.desc&limit=1');
-    if (!r.ok) return 0;
+    const r = await sb('ora_homeostase?select=servicos&order=checked_at.desc&limit=1');
+    if (!r.ok) return { total: 0, erro: `leitura ultimoTotalBazaar falhou: rest ${r.status}` };
     const d = await r.json();
     const s = Array.isArray(d) && d[0] ? d[0].servicos?.bazaar_discovery : null;
-    return typeof s?.total === 'number' ? s.total : 0;
-  } catch { return 0; }
+    if (typeof s?.total === 'number') return { total: s.total, erro: null };
+    return { total: 0, erro: null }; // ainda nao ha historico -- estado legitimo, nao e erro
+  } catch (e) { return { total: 0, erro: `leitura ultimoTotalBazaar falhou: ${String(e).slice(0, 100)}` }; }
 }
 
 async function tentarRecuperar(): Promise<string> {
@@ -112,7 +119,7 @@ async function tentarRecuperar(): Promise<string> {
 
 async function executarVerificacao() {
   const t0 = Date.now();
-  const [estado, motor, propostas, pages, bazaarAnterior] = await Promise.all([
+  const [estado, motor, propostas, pages, bazaarAnteriorInfo] = await Promise.all([
     checarEstado(), checarMotor(), checarPropostasMonetarias(), checarGithubPages(), ultimoTotalBazaar()
   ]);
   const bazaar = await checarBazaarDiscovery();
@@ -123,10 +130,9 @@ async function executarVerificacao() {
   if (!motor.ok) alertas.push('motor_unificado: ' + motor.detalhe);
   if (!pages.ok) alertas.push('github_pages: ' + pages.detalhe);
   if (propostas.detalhe.includes('aguardam Unum')) alertas.push('atencao: ' + propostas.detalhe);
+  if (bazaarAnteriorInfo.erro) alertas.push('homeostase_interno: ' + bazaarAnteriorInfo.erro);
 
-  // Reaccao real, nao so registo: se o total de recursos na Bazaar subiu
-  // face a ultima verificacao, isto e um marco, nao ruido — marca-se
-  // distintamente e fica no sedimento como evento, para aparecer no /pulso.
+  const bazaarAnterior = bazaarAnteriorInfo.total;
   if (bazaar.ok && bazaar.total > 0 && bazaar.total > bazaarAnterior) {
     const marco = `🎉 marco: ORUM foi indexado na Bazaar CDP — ${bazaar.total} recurso(s) visiveis a agentes de maquina (antes: ${bazaarAnterior}).`;
     alertas.push(marco);
@@ -134,12 +140,11 @@ async function executarVerificacao() {
   }
 
   let accaoRecuperacao: string | null = null;
-  // Auto-recuperacao: SO recalculo simbolico de estado. Nunca assinatura, nunca dinheiro.
   if (!estado.ok || !motor.ok) {
     accaoRecuperacao = await tentarRecuperar();
   }
 
-  const ok = estado.ok && motor.ok && pages.ok;
+  const ok = estado.ok && motor.ok && pages.ok && !bazaarAnteriorInfo.erro;
   const duracao_ms = Date.now() - t0;
 
   await sb('ora_homeostase', {

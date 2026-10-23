@@ -19,8 +19,8 @@
     "total": 100,
     "com_copia_no_repositorio": 29,
     "sem_copia_no_repositorio": 71,
-    "igual": 9,
-    "diverge": 5,
+    "igual": 14,
+    "diverge": 0,
     "nao_comparado": 15,
     "sem_copia": 71,
     "dividas_que_tocam_dinheiro": []
@@ -504,9 +504,10 @@
       "atualizada_em": "2026-07-23T07:58:52Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
+        "estado": "igual",
         "versao_conferida": 7,
-        "nota": "v7 implantada (23/07/2026) tem o cabeçalho V4: lê a coluna certa checked_at e ultimoTotalBazaar() devolve {total, erro}, com o erro a entrar nos alertas (homeostase_interno). A cópia do repositório é a V2: lê a coluna created_at (errada) e não tem 'homeostase_interno' nem 'checked_at' (0 ocorrências). Prova: cabeçalhos V2 vs V4 e as duas contagens a zero. NÃO reimplantar a cópia do repositório: reintroduziria o erro de coluna e voltaria a esconder falhas internas num zero silencioso. Lido por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo ORA\", livro 987, registado antes do acto). Só leitura: nenhuma função chamada nem reimplantada; a cópia do repositório não foi substituída pelo texto implantado neste passo."
+        "fonte_sha256": "cbe801bcd83773ab49874b8e4838613de1a6f02e10a75daf6953df0a96f6f975",
+        "nota": "v7 (V4 do cabeçalho, 22/07/2026) lida por get_edge_function a 23/10/2026 (livro 990) e TRANSCRITA à mão; a cópia antiga (V2) está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado é exactamente o que o cabeçalho V4 declara: coluna checked_at em vez de created_at e ultimoTotalBazaar devolve {total, erro} com 'homeostase_interno' nos alertas (o implantado também tem menos comentários). Sem segunda cópia para diff byte a byte; hash do pacote não se refaz daqui."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -899,9 +900,10 @@
       "atualizada_em": "2026-09-14T19:44:51Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
+        "estado": "igual",
         "versao_conferida": 11,
-        "nota": "v11 implantada (14/09/2026) é a V11 do cabeçalho (inclui sentinela, bloco sincronizador_onchain, acessos internos excluídos); a cópia do repositório é a V3 (só acessos e alertas da homeostase) e não tem 'sincronizador_onchain'. Lido por get_edge_function a 22/10/2026 (livro 985); prova: cabeçalhos V3 vs V11 e 0 ocorrências de sincronizador_onchain no repositório. NÃO reimplantar a cópia do repositório: apagaria os blocos sentinela e sincronizador_onchain da página de pulso. A cópia não foi substituída pelo texto implantado neste passo."
+        "fonte_sha256": "cbb790adb778cb771d6d279f465d329cff1bc9af10797d4bc0f3beaef3fd2160",
+        "nota": "v11 (14/09/2026) lida por get_edge_function a 23/10/2026 (livro 990) e TRANSCRITA à mão; a cópia antiga (V3) está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado acrescenta os blocos sentinela e sincronizador_onchain, o convite com contagens (acessos internos excluídos), links nos eventos e deduplicação do sedimento e dos alertas, como os cabeçalhos V7 a V11 declaram. Só lê e agrega; não assina nem move fundos. Sem segunda cópia para diff byte a byte; hash do pacote não se refaz daqui."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -919,9 +921,10 @@
       "atualizada_em": "2026-07-23T07:58:52Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
+        "estado": "igual",
         "versao_conferida": 3,
-        "nota": "v3 implantada (23/07/2026) é a V2 do cabeçalho: só envia email quando acesso.tem_pagamento é verdadeiro, com rate-limit de 60 s e buildHtml 'PAGAMENTO'; a cópia do repositório é a V1 (avisa em qualquer acesso, com ou sem pagamento). Lido por get_edge_function a 22/10/2026 (livro 985); prova: cabeçalhos diferentes (V1 vs V2) e o corpo implantado tem a guarda 'if (!acesso.tem_pagamento) skipped sem_pagamento' que o repositório não tem. NÃO reimplantar a cópia do repositório: voltaria a inundar a caixa de correio. A cópia não foi substituída pelo texto implantado neste passo."
+        "fonte_sha256": "31dc10c47d11e12f60e329120b85623df544866d278db897bc0c43870efd2daf",
+        "nota": "v3 (é a V2 do cabeçalho, 21/07/2026) lida por get_edge_function a 23/10/2026 (livro 990) e TRANSCRITA à mão; a cópia antiga (V1, envia email em qualquer acesso) está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado: só envia email quando tem_pagamento é verdadeiro (devolve skipped sem_pagamento), assunto e HTML só de pagamento. Os segredos são lidos do Vault por RPC e nunca escritos; nenhum foi lido aqui. Sem segunda cópia para diff byte a byte."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -975,9 +978,10 @@
       "atualizada_em": "2026-09-14T05:12:19Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
+        "estado": "igual",
         "versao_conferida": 7,
-        "nota": "v7 implantada (14/09/2026) tem sbSelectComRetrySeVazio (uma repetição curta quando a leitura de ora_sentinela_rondas vem vazia) e o campo leitura_repetida no corpo (ora_mudancas#581). A cópia do repositório não tem nenhum dos dois (0 ocorrências de cada); o resto (verificador G2, 503 integrity_source_unavailable) coincide nos marcadores lidos. Prova: contagens a zero no repositório e presença no implantado. NÃO reimplantar a cópia do repositório: voltaria a mostrar zero rondas em leituras transitoriamente vazias. Lido por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo ORA\", livro 987, registado antes do acto). Só leitura: nenhuma função chamada nem reimplantada; a cópia do repositório não foi substituída pelo texto implantado neste passo."
+        "fonte_sha256": "dfad69b4487a20f447a3606f418faec49e42839d9de138ecc73e58c7528cf433",
+        "nota": "v7 (14/09/2026) lida por get_edge_function a 23/10/2026 (livro 990) e TRANSCRITA à mão; a cópia antiga está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado é só o que o cabeçalho v7 declara: sbSelectComRetrySeVazio (uma repetição curta se a leitura de ora_sentinela_rondas vem vazia) e o campo leitura_repetida no corpo; o verificador G2 e o 503 coincidem. Sem segunda cópia para diff byte a byte; hash do pacote não se refaz daqui."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -1400,9 +1404,10 @@
       "atualizada_em": "2026-09-19T07:33:32Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
+        "estado": "igual",
         "versao_conferida": 11,
-        "nota": "v11 implantada (19/09/2026) declara VERSION 0.5.0; a cópia do repositório declara 0.4.1. As sete ferramentas e os marcadores lidos (PRESENCE_READING_SCHEMA, trace_target_required, trace_target_mismatch, verify_level_mapping, encounter_oro) existem nos dois, por isso a diferença exacta entre 0.4.1 e 0.5.0 NÃO foi isolada (sem diff byte a byte, não havia segunda cópia). Prova só: a versão declarada difere. Não reimplantar a cópia do repositório sem a comparar primeiro com o texto implantado: é a função mais usada (5007 pedidos em 24h). Lido por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo ORA\", livro 987, registado antes do acto). Só leitura: nenhuma função chamada nem reimplantada; a cópia do repositório não foi substituída pelo texto implantado neste passo."
+        "fonte_sha256": "fbbf98402f8aa5e30ab2c8e48ac154d8b5c088c7f0a39acbee91597fa9350ade",
+        "nota": "v11 (19/09/2026, VERSION 0.5.0) lida por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo\", livro 990) e TRANSCRITA à mão para o repositório; a cópia antiga (0.4.1) está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado isola a diferença: descrições das ferramentas e instruções do initialize (erros documentados, enter_level como via por omissão) e uma mudança de comportamento em encounter_oro (a porta passa a ser pedida com ?capsule_id=<ORO>, antes sem filtro). A lógica de callTool e das outras ferramentas coincide. Sem segunda cópia para diff byte a byte; hash do pacote não se refaz daqui."
       },
       "toca_dinheiro": null,
       "uso_24h": {

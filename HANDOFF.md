@@ -1,3 +1,13 @@
+## 23/10/2026 · as 5 funções divergentes passam a ter o texto implantado no repositório: 14 iguais, 0 divergem
+- **Autorização de Unum (citação):** "Eu autorizo", à proposta de trazer o texto implantado das cinco divergentes (livro 990, registado antes do acto).
+- **Feito (verificado, `get_edge_function`):** `sensations-mergulho` v11, `ora-homeostase` v7, `ora-integridade` v7, `ora-acesso-notificar` v3 e `ora-pulso` v11 foram **transcritas à mão** para `supabase/functions/<slug>/index.ts`. As cópias antigas ficam em `supabase/arquivo/<slug>.repo-anterior.ts`, fora de `functions/`, com aviso de **não reimplantar**.
+- **Diferenças isoladas pelo diff antigo→implantado (antes ficavam por dizer):** `ora-homeostase` lia `created_at` (coluna errada) e engolia o erro num zero; `ora-integridade` não repetia a leitura vazia; `ora-acesso-notificar` enviava email em qualquer acesso, a implantada só com pagamento; `ora-pulso` não tinha sentinela, sincronizador on-chain nem links. **`sensations-mergulho` 0.4.1→0.5.0** (a dúvida do lote 2): descrições das ferramentas, instruções do `initialize` e uma mudança de comportamento em `encounter_oro` (a porta passa a ser pedida com `?capsule_id=` do ORO).
+- **Estado:** `implantado.json` com 14 iguais, 0 divergem, 15 não comparadas, dívidas que tocam dinheiro: nenhuma. `implantado:verify` verde (20 estragos); `carteira`, `portable`, `snapshot`, `weave` e `weave-hands-connector:verify` verdes.
+- **Não verificado:** não houve segunda cópia para diff byte a byte contra o implantado; o `igual` assenta na transcrição à mão e no diff coerente com os cabeçalhos de versão, e o hash do pacote não se refaz daqui. Nenhuma função chamada nem reimplantada; nenhum segredo lido (a `ora-acesso-notificar` lê-os do Vault por RPC; não os li).
+- **Próximo:** lote 3 das 15 que restam e não tocam dinheiro (por `uso_24h`); a leitura do preço em 05/11/2026.
+
+---
+
 ## 23/10/2026 · lote 2 das funções "não comparadas": 3 divergem
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta do lote 2, só em leitura (livro 987, registado antes do acto).
 - **Lido (verificado, `get_edge_function`):** `ora-homeostase` v7: o implantado é a V4 (lê `checked_at`, `ultimoTotalBazaar` devolve `{total, erro}`); o repositório é a V2 (lê `created_at`, a coluna errada) → **diverge**. `ora-integridade` v7: o implantado tem `sbSelectComRetrySeVazio` e `leitura_repetida`; o repositório não tem nenhum (0 ocorrências) → **diverge**. `sensations-mergulho` v11: o implantado declara `VERSION 0.5.0`, o repositório `0.4.1` → **diverge**.
