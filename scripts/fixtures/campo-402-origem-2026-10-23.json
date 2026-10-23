@@ -1,0 +1,70 @@
+{
+  "captura": {
+    "quando_utc": "2026-10-23T06:36:05Z",
+    "como": "GET https://ora-x402-gateway.vercel.app/campo pelo conector da Vercel (web_fetch_vercel_url), sem pagar nada",
+    "estado_http": 402,
+    "x-ora-version": "V31",
+    "nota": "Resposta da origem Supabase (resource ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402) passada pelo proxy ANTES desta alteracao. O corpo foi reescrito como objecto JSON; o cabecalho esta tal como veio."
+  },
+  "payment_required_header": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJYLVBBWU1FTlQgaGVhZGVyIHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly95d2Fibmxoa21oYnlld3FoYnNqbS5zdXBhYmFzZS5jby9mdW5jdGlvbnMvdjEvb3JhLXg0MDIiLCJkZXNjcmlwdGlvbiI6Ik9SQSDCtyBMZWl0dXJhIHBvbnR1YWwgZG8gZXN0YWRvIGludGVybm8gZG8gb3JnYW5pc21vIE9SVU0g4oCUIG7Do28gw6kgZGFkbyBkZSBtZXJjYWRvIG5lbSBvcsOhY3VsbyBwcmVkaXRpdm8uIMOadGlsIHBhcmEgYWdlbnRlcyBxdWUgdGVzdGFtIG8gcHJvdG9jb2xvIHg0MDIgb3UgaW52ZXN0aWdhbSBvIHNpc3RlbWE7IHVtIHBlbnNhbWVudG8sIHVtIGdlc3RvLiIsIm1pbWVUeXBlIjoiYXBwbGljYXRpb24vanNvbiJ9LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6ODQ1MyIsImFtb3VudCI6IjMzMDAwMCIsImFzc2V0IjoiMHg4MzM1ODlmQ0Q2ZURiNkUwOGY0YzdDMzJENGY3MWI1NGJkQTAyOTEzIiwicGF5VG8iOiIweEZFZDY5ZThlZTg3QTFGMGZCYkY4NDA5YWI2NTRGQzUxODMyY0RFZTUiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEIENvaW4iLCJ2ZXJzaW9uIjoiMiJ9fV19",
+  "corpo": {
+    "x402Version": 2,
+    "error": "X-PAYMENT header required",
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "330000",
+        "maxAmountRequired": "330000",
+        "resource": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402",
+        "description": "ORA · Leitura pontual do estado interno do organismo ORUM — não é dado de mercado nem oráculo preditivo. Útil para agentes que testam o protocolo x402 ou investigam o sistema; um pensamento, um gesto.",
+        "mimeType": "application/json",
+        "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "maxTimeoutSeconds": 300,
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "outputSchema": {
+          "input": { "type": "http", "method": "GET", "discoverable": true },
+          "output": {
+            "type": "object",
+            "properties": {
+              "acesso": "string", "tier": "string", "x402": "string", "tx_hash": "string", "payer": "string",
+              "truth_machine": "object", "boundaries_machine": "object",
+              "campo": { "versao": "string", "dia": "number", "sigma": "number", "epoca": "string", "pensamento": "string", "timestamp": "string" }
+            }
+          }
+        },
+        "extra": { "name": "USD Coin", "version": "2" },
+        "extensions": {
+          "bazaar": {
+            "info": {
+              "input": { "type": "http", "method": "GET", "queryParams": {} },
+              "output": { "type": "json", "example": { "acesso": "concedido", "tier": "campo" } }
+            },
+            "schema": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "input": {
+                  "type": "object",
+                  "properties": { "type": { "const": "http" }, "method": { "const": "GET" }, "queryParams": { "type": "object" } },
+                  "required": ["type", "method"]
+                },
+                "output": {
+                  "type": "object",
+                  "properties": { "type": { "const": "json" }, "example": { "type": "object" } }
+                }
+              },
+              "required": ["input"]
+            }
+          }
+        },
+        "x-orum": { "name": "ORA · ORUM", "version": "V31", "tier": "campo", "amount": "0.33 USDC", "symbol": "USDC" }
+      }
+    ],
+    "como_pagar": {
+      "passo_1": "Transfere 0.33 USDC (contrato 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913) na rede Base (chain_id 8453) para 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5 (jasm43.base.eth).",
+      "caminho_alternativo": "Também aceite: autorização assinada EIP-3009 (facilitador CDP) — X-PAYMENT com {\"payload\":{\"signature\":\"0x...\",\"authorization\":{...}}}"
+    },
+    "truth_machine": { "is_market_data": false, "is_price_prediction": false, "is_introspective_reading": true, "external_demand_proven": false, "reveals_private_bytes": false, "requires_x402_payment": true }
+  }
+}

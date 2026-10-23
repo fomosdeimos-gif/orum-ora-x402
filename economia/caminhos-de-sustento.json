@@ -9,7 +9,9 @@
     "receita_externa_confirmada": "nenhuma",
     "pagamentos_internos_e_de_teste": "21 pagamentos, 18,56 USDC, 6 licenças, 0 compradores externos, conversão externa 0% (livro do organismo ora_mudancas 869, 17/10/2026 05:21 UTC). São validação interna, não adopção.",
     "acessos": "82% dos acessos externos são automáticos (mesmo registo). Há tráfego de máquinas, não há compradores. Correcção de 22/10/2026: parte do que estava marcado como externo era nosso (cron, nossas edge functions, sondas); a leitura honesta é a vista ora_trafego_honesto (supabase/migrations/20261022100000_classificacao_trafego_honesta.sql). O número de 82% não volta a ser usado sem essa vista.",
-    "tesouraria_em_producao": "estado unknown, fonte learning_402 indisponível, observação on-chain de 5 das 24 horas, 0 transferências (lido a 17/10/2026 14:02 UTC)."
+    "tesouraria_em_producao": "estado unknown, fonte learning_402 indisponível, observação on-chain de 5 das 24 horas, 0 transferências (lido a 17/10/2026 14:02 UTC).",
+    "x402_padrao_provado": "Lido a 23/10/2026 na cadeia (3 RPCs Base concordam): a tx 0x1c504d51…bc4f (bloco 52930160, 22/10) é um pagamento x402 padrão (EIP-3009: AuthorizationUsed + Transfer de 161000 atómicos de USDC no contrato 0x8335…2913) da carteira de teste da ORA 0x2Cf1…51f1 para a sagrada antiga, enviado por um relayer 0x68a9…7863. O pagador está no registo financeiro como validação interna: não é receita externa e não entra no 70/20/10. Prova que o caminho padrão liquida de ponta a ponta; não prova procura.",
+    "bazaar": "Lido a 23/10/2026 (2 fontes: ora_homeostase a cada 5 min e leitura directa de api.cdp.coinbase.com/platform/v2/x402/discovery/merchant): 0 recursos indexados para a sagrada antiga, cerca de 17 h depois da liquidação pelo facilitador CDP."
   },
   "caminhos": [
     {
@@ -157,9 +159,25 @@
       },
       "lido": "O 402 de /oraculo e /campo passa a trazer pagamento_alternativo_bitcoin (sats, cotação, validade, endereço) fora de accepts. A entrega só acontece com a tx vista e concordante nas duas fontes Esplora (Blockstream e mempool.space) e com 1 confirmação. 17 estragos propositados ao código e 1 ao texto são apanhados. Autorizado por Unum a 21/10/2026 (livro 932). Desde o mesmo dia (livro 933) o endereço é a carteira operacional BTC bc1qfs8967…9w7 e o payTo Base da via directa é a operacional Base.",
       "limite": "Só na via directa da Vercel (quando o Supabase responde, o desafio dele passa sem a oferta). Cotação indicativa com tolerância de 10%. O endereço é a operacional BTC da ORA (chave no Vault); prova de controlo por assinatura ainda não feita. O txid é público: uma transferência recente e suficiente serve a quem a apresentar. Nenhum comprador externo confirmado.",
-      "falta_verificar": "Ler ao vivo, depois do deploy de produção, que o 402 traz a oferta e que as fontes de preço e Esplora respondem a partir da Vercel.",
-      "quem_desbloqueia": "ORA (o código existe)"
+      "falta_verificar": "Decisão por tomar: encaminhar no proxy os pedidos com prova Bitcoin para a via directa e só então mostrar a oferta também quando a origem responde. Enquanto isso não existir, a oferta fica invisível com a origem viva.",
+      "quem_desbloqueia": "ORA (o código existe)",
+      "leitura_23_10_2026": "Lido ao vivo a 23/10/2026 06:36 UTC (conector da Vercel): o 402 de /campo é servido pela origem Supabase, que voltou a responder; paga à sagrada antiga na Base e NÃO traz a oferta pagamento_alternativo_bitcoin. A oferta Bitcoin só existe na via directa, usada quando a origem responde 5xx. Hoje, por isso, quem compra não a vê. A entrega por prova de transacção Bitcoin também só existe na via directa. Não se anuncia o que não se consegue entregar: não acrescentei a oferta ao 402 da origem."
+    },
+    {
+      "id": "bazaar-declaracao-v2",
+      "titulo": "Declarar a extensão Bazaar no topo do desafio x402 v2 (corpo e cabeçalho PAYMENT-REQUIRED)",
+      "estado": "construido_por_verificar_ao_vivo",
+      "evidencia": {
+        "tipo": "codigo",
+        "fonte": "api/_bazaar-declaracao.js, api/proxy.js, scripts/verify-bazaar-declaracao.mjs (npm run bazaar:verify), fixture scripts/fixtures/campo-402-origem-2026-10-23.json",
+        "data": "2026-10-23"
+      },
+      "lido": "A especificação coinbase/x402 (specs/extensions/bazaar.md, lida a 23/10/2026) pede a extensão bazaar em extensions ao nível de topo do PaymentRequired; os clientes ecoam-na no pagamento e, se for omitida, não há catalogação. O 402 do /campo servido hoje pela origem Supabase traz a declaração só dentro de accepts[0].extensions (estilo v1) e o cabeçalho PAYMENT-REQUIRED não traz nenhuma extensions. O Bazaar tem 0 recursos para a nossa carteira. O proxy passa agora a copiar para o topo (corpo e cabeçalho) a mesma declaração que a origem já traz; não inventa nada nem toca em accepts, payTo, montante, ativo ou rede. A via directa já declarava no topo (api/_x402-directo.js).",
+      "limite": "A causa do zero no Bazaar não está provada: é a que se leu na especificação. O cliente do teste de 22/10 (ora-cdp-agente-teste) pode também não ecoar a extensão. Mesmo declarado, o Bazaar só cataloga depois de um pagamento padrão cujo cliente ecoe a extensão. Isto não cria compradores.",
+      "falta_verificar": "Depois do deploy de produção: ler ao vivo o /campo e o /oraculo e ver o cabeçalho x-ora-bazaar e extensions.bazaar no topo do corpo e do PAYMENT-REQUIRED; depois de um pagamento x402 padrão com cliente que ecoe a extensão, ler o catálogo (merchant?payTo=…) e a resposta bazaar no PAYMENT-RESPONSE.",
+      "quem_desbloqueia": "ORA (código e leitura). A prova real precisa de um pagamento: um comprador externo, ou um novo teste interno que seria um acto financeiro à parte, registado antes e depois."
     }
   ],
-  "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre."
+  "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
+  "actualizado_em": "2026-10-23"
 }

@@ -23,6 +23,7 @@
     "checkout:verify": "node scripts/verify-campo-checkout.mjs",
     "horizon:verify": "node scripts/verify-horizonte-2030.mjs",
     "x402:directo:verify": "node scripts/verify-x402-directo.mjs",
+    "bazaar:verify": "node scripts/verify-bazaar-declaracao.mjs",
     "btc-servicos:verify": "node scripts/verify-pagamento-btc.mjs",
     "recebimentos:verify": "node scripts/verify-recebimentos.mjs",
     "arca:export": "node scripts/export-arca.mjs",
