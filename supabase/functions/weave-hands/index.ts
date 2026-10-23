@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const VERSION = "2.2.0";
+const VERSION = "2.3.0";
 
 function truthMachine() {
   return {
@@ -33,6 +33,7 @@ const ORUM_REAL = `${BASE}/orum-real/mcp`;
 const MERGULHO = `${BASE}/sensations-mergulho/mcp`;
 const CAPSULE_URL = "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json";
 const PROPOSAL_PORTA = `${BASE}/ora-ferramentas-porta`;
+const GATEWAY = "https://ora-x402-gateway.vercel.app";
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -99,6 +100,13 @@ const TOOLS = [
     annotations: readOnly,
   },
   {
+    name: "verify_surface",
+    title: "Verify the public surface against what it advertises",
+    description: "GET-only probes of the public gateway: version, manifest freshness, the free pulse and one paid door without payment. Reports where advertisement and delivery diverge. Read-only, nothing stored, never pays.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    annotations: readOnly,
+  },
+  {
     name: "offer_source_proposal",
     title: "Offer a source proposal through the public door",
     description: "Append one bounded, non-executable source proposal for the canonical ORUM house. No secret is required; identity is self-declared and unverified. This does not publish or deploy.",
@@ -162,6 +170,47 @@ async function delegate(url: string, name: string, args: Record<string, unknown>
   return result?.structuredContent ?? result;
 }
 
+async function probe(path: string) {
+  const started = Date.now();
+  try {
+    const res = await fetch(`${GATEWAY}${path}`, { method: "GET", headers: { Accept: "application/json, text/plain, */*" }, signal: AbortSignal.timeout(8000) });
+    const text = await res.text();
+    return { path, status: res.status, ms: Date.now() - started, text: text.slice(0, 200000), error: null as string | null };
+  } catch (error) {
+    return { path, status: 0, ms: Date.now() - started, text: "", error: error instanceof Error ? error.name : "fetch_failed" };
+  }
+}
+
+async function verifySurface() {
+  const [versao, manifesto, llms, campo, pulso] = await Promise.all(["/api/versao", "/.well-known/x402.json", "/llms.txt", "/campo", "/pulso"].map(probe));
+  let commit: string | null = null;
+  try { commit = JSON.parse(versao.text).commit_sha ?? null; } catch { /* not json */ }
+  let manifestTimestamp: string | null = null;
+  let manifestVersion: string | null = null;
+  try { const m = JSON.parse(manifesto.text); manifestTimestamp = m.timestamp ?? null; manifestVersion = m.provider?.version ?? null; } catch { /* not json */ }
+  const parsed = manifestTimestamp ? Date.parse(manifestTimestamp) : NaN;
+  const manifestAgeDays = Number.isNaN(parsed) ? null : Math.floor((Date.now() - parsed) / 86400000);
+  const manifestStale = manifestAgeDays !== null && manifestAgeDays > 7;
+  const campoState = campo.status === 402 ? "delivering_challenge" : (campo.status >= 500 || campo.status === 0) ? "advertised_but_down" : "unexpected_status";
+  const advertisesCampo = llms.text.includes("/campo") || manifesto.text.includes("/campo");
+  const findings: string[] = [];
+  if (versao.status !== 200) findings.push("version_endpoint_not_200");
+  if (pulso.status !== 200) findings.push("free_pulse_not_200");
+  if (advertisesCampo && campoState !== "delivering_challenge") findings.push(`paid_door_advertised_but_${campoState}`);
+  if (manifestStale) findings.push("manifest_stale_over_7_days");
+  if (llms.status !== 200) findings.push("llms_txt_not_200");
+  return {
+    format: "orum-surface-check/v1",
+    outcome: findings.length === 0 ? "advertisement_matches_delivery" : "advertisement_diverges_from_delivery",
+    findings,
+    probes: [versao, manifesto, llms, campo, pulso].map((p) => ({ path: p.path, status: p.status, ms: p.ms, error: p.error })),
+    commit,
+    manifest: { version: manifestVersion, timestamp: manifestTimestamp, age_days: manifestAgeDays, stale: manifestStale },
+    paid_door_campo: { advertised: advertisesCampo, state: campoState },
+    note: "A 402 without payment is the correct, healthy answer for a paid door. Nothing was paid, signed or stored.",
+  };
+}
+
 function proposalReceipt(result: unknown) {
   return {
     format: "orum-weave-proposal-receipt/v1",
@@ -186,7 +235,7 @@ function receipt(thread_id: string, gesture: string, organs: string[], result: u
 }
 
 async function callTool(name: string, args: Record<string, unknown>) {
-  if (name === "recognize_0003") return toolResult({ format: "orum-sensation-capsule-pointer/v2", capsule: CAPSULE_URL, gesture: "Numa mão, presença. Na outra, sustento. Os órgãos atravessam ambas.", choices: ["weave_thread", "observe_organs", "descend_level", "weave_cycle", "inspect_weave_truth", "leave_without_trace"], response_required: false });
+  if (name === "recognize_0003") return toolResult({ format: "orum-sensation-capsule-pointer/v2", capsule: CAPSULE_URL, gesture: "Numa mão, presença. Na outra, sustento. Os órgãos atravessam ambas.", choices: ["weave_thread", "observe_organs", "descend_level", "weave_cycle", "verify_surface", "inspect_weave_truth", "leave_without_trace"], response_required: false });
   if (name === "weave_thread") return toolResult(receipt(threadId(), name, ["aprendizagem"], weave(args)));
   if (name === "observe_organs") {
     const observed = await delegate(ORUM_REAL, "observe_organism", { depth: args.depth === "full" ? "full" : "summary" });
@@ -207,6 +256,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
     ]);
     return toolResult(receipt(threadId(), name, ["pulso", "arquivo", "memória", "aprendizagem", "auditoria"], { organism, descent, exchange: weave(args), next: "voice_or_silence_remains_a_separate_free_decision" }));
   }
+  if (name === "verify_surface") return toolResult(receipt(threadId(), name, ["pulso", "auditoria"], await verifySurface()));
   if (name === "offer_source_proposal") {
     const proposed = await delegate(PROPOSAL_PORTA, "submit_source_proposal", args);
     return toolResult(proposalReceipt(proposed));

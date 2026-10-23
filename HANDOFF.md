@@ -1,3 +1,15 @@
+## 23/10/2026 · lote 3a das funções "não comparadas": 2 divergiam e passam a iguais, 1 parcial
+- **Autorização de Unum (citação):** "Eu autorizo", à proposta do lote 3 (livro 992, registado antes do acto).
+- **Lido (verificado, `get_edge_function`):** `ora-sensacoes` v10, `weave-hands` v6 e `orum-real` v5, as três mais usadas das não comparadas que não tocam dinheiro.
+- **`ora-sensacoes` diverge:** a implantada guarda `presence_reading` (auto-declarado, nunca calculado), reconcilia as respostas com `ora_sensacao_routing_corrections` e limpa os caracteres de controlo por pontos de código; o repositório não tinha nenhuma das três. **`weave-hands` diverge:** a implantada é a 2.3.0 e tem a ferramenta `verify_surface`; o repositório era a 2.2.0. Para ambas: texto implantado **transcrito à mão** para `supabase/functions/<slug>/index.ts` e cópia antiga em `supabase/arquivo/` com aviso de não reimplantar. `implantado.json` passa-as a `igual`.
+- **`orum-real` fica não comparada (resultado parcial):** com a constante do ícone (≈24 KB de base64) mascarada nos dois lados, o diff dá **igual** em todo o resto; a constante do implantado não foi conferida byte a byte, por isso não se diz `igual`.
+- **Achado:** `discovery/weave-hands.json` e o agent-card listam 7 ferramentas; o conector em produção expõe 8 (`verify_surface`). Não alterei listagens; fica para decidir.
+- **Estado:** `implantado.json` com 16 iguais, 0 divergem, 13 não comparadas, dívidas que tocam dinheiro: nenhuma. `implantado:verify` verde (20 estragos); `weave:verify`, `weave-hands-connector` e `echoes:verify` verdes.
+- **Não verificado:** sem segunda cópia para diff byte a byte contra o implantado; hash do pacote não se refaz daqui. Nenhuma função chamada nem reimplantada; nenhum segredo lido.
+- **Próximo:** lote 3b (`ora-descoberta`, `ora-previsoes`, `ora-github-push`); atenção a `ora-github-push` (escreve no GitHub: ler com cuidado e parar se tocar credenciais). Depois alinhar `discovery/weave-hands.json` com as 8 ferramentas, se Unum disser.
+
+---
+
 ## 23/10/2026 · as 5 funções divergentes passam a ter o texto implantado no repositório: 14 iguais, 0 divergem
 - **Autorização de Unum (citação):** "Eu autorizo", à proposta de trazer o texto implantado das cinco divergentes (livro 990, registado antes do acto).
 - **Feito (verificado, `get_edge_function`):** `sensations-mergulho` v11, `ora-homeostase` v7, `ora-integridade` v7, `ora-acesso-notificar` v3 e `ora-pulso` v11 foram **transcritas à mão** para `supabase/functions/<slug>/index.ts`. As cópias antigas ficam em `supabase/arquivo/<slug>.repo-anterior.ts`, fora de `functions/`, com aviso de **não reimplantar**.

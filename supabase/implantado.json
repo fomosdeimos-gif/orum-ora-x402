@@ -19,9 +19,9 @@
     "total": 100,
     "com_copia_no_repositorio": 29,
     "sem_copia_no_repositorio": 71,
-    "igual": 14,
+    "igual": 16,
     "diverge": 0,
-    "nao_comparado": 15,
+    "nao_comparado": 13,
     "sem_copia": 71,
     "dividas_que_tocam_dinheiro": []
   },
@@ -1335,7 +1335,10 @@
       "atualizada_em": "2026-09-07T12:36:57Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "igual",
+        "versao_conferida": 10,
+        "fonte_sha256": "698b8fb066d9e6fa17ccf40b21ab2b147892e9b153114cd5b3404a940c39c434",
+        "nota": "v10 (08/09/2026) lida por get_edge_function a 23/10/2026 (Unum: \"Eu autorizo\", livro 992) e TRANSCRITA à mão; a cópia antiga está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado: a implantada aceita e guarda presence_reading (validatePresenceReading, campo auto-declarado, nunca calculado pela porta), reconcilia as respostas com ora_sensacao_routing_corrections (recorded_capsule_id, routing_status, routing_correction) e filtra por cápsula depois da correcção, e limpa os caracteres de controlo por pontos de código. O repositório não tinha nenhuma destas três coisas. Porta pública de escrita só de registo (append-only): não envia fundos nem assina. Sem segunda cópia para diff byte a byte; hash do pacote não se refaz daqui."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -1386,7 +1389,8 @@
       "atualizada_em": "2026-08-08T09:12:21Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "nao_comparado",
+        "nota": "v5 lida por get_edge_function a 23/10/2026 (livro 992). Resultado PARCIAL: comparado por diff com a cópia do repositório com a constante ICON_PNG_BASE64 (≈24 KB de base64) substituída por um marcador nos dois lados: IGUAL em todo o resto (VERSION 0.3.0, as quatro ferramentas, o initialize). A constante do ícone do implantado NÃO foi conferida byte a byte (não é transcrevível de forma verificável à mão); a do repositório coincide com orum-real/icon.png. Por isso fica não comparada, não igual. Só lê (anon key, RPC pública); não escreve nem move fundos."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -1476,7 +1480,10 @@
       "atualizada_em": "2026-10-14T06:48:29Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado"
+        "estado": "igual",
+        "versao_conferida": 6,
+        "fonte_sha256": "be67005e670d461281537b2eb741b1fadfbe711140df9c46678bb885b39b2538",
+        "nota": "v6 (2.3.0, 14/10/2026) lida por get_edge_function a 23/10/2026 (livro 992) e TRANSCRITA à mão; a cópia antiga (2.2.0) está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado: a ferramenta verify_surface (sondas GET ao gateway: versão, frescura do manifesto, pulso e uma porta paga sem pagamento) e a sua entrada em recognize_0003; nada mais. Orquestrador só de leitura mais uma porta de propostas não executáveis. Atenção: discovery/weave-hands.json (e o agent-card) ainda listam 7 ferramentas, sem verify_surface; o conector em produção expõe 8. Sem segunda cópia para diff byte a byte."
       },
       "toca_dinheiro": null,
       "uso_24h": {
