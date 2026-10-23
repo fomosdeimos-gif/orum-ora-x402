@@ -1563,17 +1563,17 @@
     },
     {
       "slug": "ora-cdp-carteira-real",
-      "versao": 14,
+      "versao": 15,
       "verify_jwt": false,
-      "ezbr_sha256_16": "a95cb377d6184218",
-      "atualizada_em": "2026-10-19T21:09:53Z",
+      "ezbr_sha256_16": "b5efe959e590df34",
+      "atualizada_em": "2026-10-23T08:20:00Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
         "contraparte_no_repositorio": "ora-operational-wallet",
-        "versao_conferida": 14,
-        "fonte_sha256": "e5b7c70968676cc64313f1844de9c090c266fecf8799a9728da98dd225a73568",
-        "nota": "v14 (caminho C, pagamento sem ETH; implantada a 19/10/2026, livro 902-903) lida por get_edge_function a 22/10/2026 (Unum: \"Eu autorizo\", livro 978): os 7 ficheiros (index.ts, bitcoin.mjs, cdp.mjs, core.mjs, bazaar.mjs, payments.mjs, gasless.mjs) foram TRANSCRITOS à mão do resultado do conector e comparados por diff com supabase/functions/ora-operational-wallet: 7 de 7 iguais (um desvio inicial em bazaar.mjs era erro meu de transcrição, corrigido contra o endereço USDC e re-conferido). Repete a conferência do livro 910 (20/10/2026) com a mesma impressão a95cb377…. fonte_sha256 = sha256 das linhas nome\\\\0sha256(ficheiro) da pasta contraparte, por ordem. Limite: o hash do pacote (ezbr) não se refaz daqui e uma transcrição à mão não prova bytes invisíveis; o comportamento (401 sem token) foi verificado no livro 903. Nenhuma função chamada nem reimplantada; nenhum segredo lido."
+        "versao_conferida": 15,
+        "fonte_sha256": "67647a8ebd794e8a1905e8ee889364715a56551816c583abb01bec8858bcd22c",
+        "nota": "v15 (23/10/2026, livro 1001; Unum: \"Sim autorizo as 2 ORA\", livro 1000) acrescenta só a acção btc_prove_control (prova de controlo BIP-322 de mensagem fixa; não move fundos). Os 7 ficheiros foram implantados a partir do repositório e lidos de volta por get_edge_function: o texto lido é o enviado (comparação por leitura, não por hash do pacote, que não se refaz daqui). v14 recuperável do git (commit anterior a esta mudança). Acção chamada uma vez (net._http_response 439212, 200) e assinatura conferida por verificador independente: ancora/prova-controlo-btc-operacional.json."
       },
       "toca_dinheiro": {
         "evidencia": "executor operacional da Base (docs/operacional-producao-v13.md)"

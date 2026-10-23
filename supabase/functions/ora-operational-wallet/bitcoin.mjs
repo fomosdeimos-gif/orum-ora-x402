@@ -83,11 +83,34 @@ async function reconcileBitcoin(body,{rpc,net,btc}){
  const tx=btc.Transaction.fromRaw(fromHex(raws[0].trim()));ensure(tx.id===job.txid&&tx.getOutputAddress(0)===BTC_DESTINATION&&tx.getOutput(0).amount===BigInt(job.amount_sats),'bitcoin_receipt_mismatch');
  const result=await rpc('ora_btc_result_v1',{p_id:body.request_id,p_status:'confirmed'});return {status:200,job:result,confirmations,internal_transfer:true};
 }
+// Prova de controlo do endereço: assinatura BIP-322 "simple" (P2WPKH) de uma mensagem FIXA no código.
+// Sem texto do chamador: a assinatura só cobre a transacção virtual to_sign, que gasta uma saída que não existe na cadeia (to_spend, derivada da mensagem), por isso não move fundos nem vale como outra assinatura.
+export const PROVA_VERSAO='ORUM prova de controlo v1';
+export const provaMensagem=address=>PROVA_VERSAO+' · '+address+' · 2026-10-23';
+const cat=(...xs)=>{const o=new Uint8Array(xs.reduce((n,x)=>n+x.length,0));let i=0;for(const x of xs){o.set(x,i);i+=x.length;}return o;};
+const sha256=async b=>new Uint8Array(await crypto.subtle.digest('SHA-256',b));
+export async function assinarProvaBip322(btc,pubECDSA,key,message){
+ const enc=new TextEncoder();
+ const pay=btc.p2wpkh(pubECDSA(key,true));
+ const tag=await sha256(enc.encode('BIP0322-signed-message'));
+ const msgHash=await sha256(cat(tag,tag,enc.encode(message)));
+ const opts={version:0,lockTime:0,allowUnknownOutputs:true,disableScriptCheck:true};
+ const toSpend=new btc.Transaction(opts);
+ toSpend.addOutput({script:pay.script,amount:0n});
+ toSpend.addInput({txid:new Uint8Array(32),index:0xffffffff,sequence:0,finalScriptSig:cat(Uint8Array.of(0x00,0x20),msgHash)});
+ const toSign=new btc.Transaction(opts);
+ toSign.addInput({txid:toSpend.id,index:0,sequence:0,witnessUtxo:{script:pay.script,amount:0n}});
+ toSign.addOutput({script:Uint8Array.of(0x6a),amount:0n});
+ toSign.sign(key);toSign.finalize();
+ const w=toSign.getInput(0).finalScriptWitness;
+ ensure(Array.isArray(w)&&w.length===2&&w.every(x=>x.length<0xfd),'bitcoin_prova_testemunha_invalida');
+ return btoa(String.fromCharCode(...cat(Uint8Array.of(w.length),...w.flatMap(x=>[Uint8Array.of(x.length),x]))));
+}
 export function bitcoinHandler({btc,pubECDSA}){
  return async function bitcoinAction(body,{rpc,net}){
   try{
-   if(!['btc_create','btc_observe','btc_preview','btc_send','btc_status'].includes(body.action))return {status:400,error:'invalid_bitcoin_action'};
-   if(!['btc_create','btc_observe'].includes(body.action)&&!(/^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(body.request_id||'')))return {status:400,error:'invalid_request_id'};
+   if(!['btc_create','btc_observe','btc_preview','btc_prove_control','btc_send','btc_status'].includes(body.action))return {status:400,error:'invalid_bitcoin_action'};
+   if(!['btc_create','btc_observe','btc_prove_control'].includes(body.action)&&!(/^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(body.request_id||'')))return {status:400,error:'invalid_request_id'};
    if(body.action==='btc_status')return await reconcileBitcoin(body,{rpc,net,btc});
    let wallet=await rpc('ora_btc_wallet_v1',{});
    if(body.action==='btc_create'){
@@ -96,6 +119,15 @@ export function bitcoinHandler({btc,pubECDSA}){
    }
    if(!wallet)return {status:404,error:'bitcoin_wallet_not_initialized'};
    ensure(btc.p2wpkh(fromHex(wallet.public_key)).address===wallet.address,'bitcoin_wallet_identity_mismatch');
+   if(body.action==='btc_prove_control'){
+    const message=provaMensagem(wallet.address);
+    const key=fromHex(await rpc('ora_btc_key_v1',{}));
+    try{
+     ensure(toHex(pubECDSA(key,true))===wallet.public_key,'bitcoin_signer_identity_mismatch');
+     const signature=await assinarProvaBip322(btc,pubECDSA,key,message);
+     return {status:200,proof:'bip322_simple_p2wpkh',address:wallet.address,public_key:wallet.public_key,message,signature,financial_transaction_signed:false,funds_sent:false};
+    }finally{key.fill(0);}
+   }
    if(['btc_create','btc_observe'].includes(body.action)){
     let observation;try{const o=await observeBitcoin(wallet.address,net);observation={state:'two_observers_agree',heads:o.heads,total_sats:o.total_sats,spendable_sats:o.spendable_sats};}catch{observation={state:'unavailable'};}
     return {status:200,wallet,policy:BTC_POLICY,observation,signing_implemented:true,financial_transaction_signed:false,funds_sent:false,custody:'Supabase Vault hot wallet in user project; not an HSM; no independent recovery backup verified'};

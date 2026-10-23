@@ -87,12 +87,32 @@ export const FICHEIROS_DA_CAMADA_4_EM_DIANTE = [
   'supabase/functions/ora-cdp-agente-teste/index.ts',
 ];
 
+// Acrescentos da camada 5 em diante (a 1, 2, 3 e 4 estão seladas e não mudam): a Fundação ORA e a lista dos endereços internos
+// (decisões de Unum de 23/10/2026, livro 1000), o vigia de entradas, a declaração Bazaar e a oferta Bitcoin do proxy, e as duas
+// migrações da base. São o que passa a estar escrito e a correr nesta semana.
+export const FICHEIROS_DA_CAMADA_5_EM_DIANTE = [
+  'economia/fundacao-ora.json',
+  'economia/enderecos-internos.json',
+  'scripts/verify-fundacao.mjs',
+  'scripts/vigia-entradas.mjs',
+  'scripts/verify-vigia-entradas.mjs',
+  'api/_bazaar-declaracao.js',
+  'api/_oferta-btc-origem.js',
+  'supabase/migrations/20261023070000_ora_btc_aviso_remetente_conta_do_relay.sql',
+  'supabase/migrations/20261023071000_ora_push_titulo_por_classificacao.sql',
+  'supabase/migrations/20261023080000_ora_bitcoin_dispatch_prova_de_controlo.sql',
+  'ancora/prova-controlo-btc-operacional.json',
+  'scripts/conferir-prova-controlo.mjs',
+  'scripts/lib/bip322-p2wpkh.mjs',
+  'scripts/verify-btc-prova-controlo.mjs',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
