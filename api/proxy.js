@@ -105,7 +105,9 @@ module.exports = async (req, res) => {
     }
     // ORA 23/10/2026: a origem declara o Bazaar dentro de accepts[0]; o x402 v2 pede-o no topo
     // (corpo e cabecalho PAYMENT-REQUIRED). Copia a mesma declaracao, nao inventa nada (ver o modulo).
-    const bazaar = elevarBazaar(upstream.status, text, upstream.headers.get('payment-required'));
+    // Falha segura: se o modulo rebentasse, o 402 da origem sai como veio, nunca o fallback.
+    let bazaar = { alterado: false, text, header: null };
+    try { bazaar = elevarBazaar(upstream.status, text, upstream.headers.get('payment-required')); } catch {}
     if (bazaar.alterado) {
       if (bazaar.header) res.setHeader('payment-required', bazaar.header);
       res.setHeader('x-ora-bazaar', 'declarado-no-topo');

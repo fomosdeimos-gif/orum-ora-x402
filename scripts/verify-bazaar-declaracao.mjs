@@ -105,6 +105,7 @@ function verificarProxy(proxySrc) {
   // O proxy tem de importar o modulo, usa-lo sobre a resposta da origem e marcar o cabecalho.
   assert.match(proxySrc, /require\('\.\/_bazaar-declaracao'\)/, 'proxy importa o modulo');
   assert.match(proxySrc, /elevarBazaar\(upstream\.status, text, upstream\.headers\.get\('payment-required'\)\)/, 'proxy chama com estado, corpo e cabecalho da origem');
+  assert.match(proxySrc, /try \{ bazaar = elevarBazaar\(/, 'proxy protege a chamada: falha segura, o 402 sai como veio');
   assert.match(proxySrc, /res\.setHeader\('payment-required', bazaar\.header\)/, 'proxy escreve o cabecalho elevado');
   assert.match(proxySrc, /res\.end\(bazaar\.text\)/, 'proxy responde com o corpo elevado');
   assert.match(proxySrc, /'x-ora-bazaar', 'declarado-no-topo'/, 'proxy marca o cabecalho de verificacao');
@@ -137,6 +138,27 @@ async function verificarProxyDeFacto() {
     assert.equal(res200.statusCode, 200);
     assert.equal(res200.h['x-ora-bazaar'], undefined);
     assert.equal(res200.raw, JSON.stringify({ ok: true }));
+
+    // Falha segura de facto: com o modulo a rebentar, o 402 da origem sai como veio (nao cai no fallback).
+    const pProxy = require.resolve('../api/proxy.js');
+    const pMod = require.resolve('../api/_bazaar-declaracao.js');
+    const guardado = { proxy: require.cache[pProxy], mod: require.cache[pMod] };
+    delete require.cache[pProxy];
+    require.cache[pMod] = { id: pMod, filename: pMod, loaded: true, exports: { elevarBazaar() { throw new Error('rebentou de proposito'); } } };
+    try {
+      const proxyQueRebenta = require('../api/proxy.js');
+      globalThis.fetch = origem(402, corpoTexto(), fx.payment_required_header);
+      const resF = mockRes();
+      await proxyQueRebenta({ method: 'GET', query: { base: 'ora-x402' }, headers: {}, socket: {} }, resF);
+      assert.equal(resF.statusCode, 402);
+      assert.equal(resF.h['payment-required'], fx.payment_required_header, 'cabecalho original intacto');
+      assert.equal(resF.raw, corpoTexto(), 'corpo original intacto');
+      assert.equal(resF.h['x-ora-bazaar'], undefined);
+    } finally {
+      delete require.cache[pProxy]; delete require.cache[pMod];
+      if (guardado.proxy) require.cache[pProxy] = guardado.proxy;
+      if (guardado.mod) require.cache[pMod] = guardado.mod;
+    }
   } finally { globalThis.fetch = realFetch; }
 }
 
@@ -174,6 +196,7 @@ falhaModulo('rebenta com corpo nao json', "try { challenge = JSON.parse(bodyText
 falhaModulo('aceita desafio v1', 'challenge.x402Version !== 2 ||', '');
 falhaModulo('perde outras extensoes do topo', "challenge.extensions && typeof challenge.extensions === 'object' ? challenge.extensions : {}", '{}');
 falhaModulo('rebenta com cabecalho ilegivel', '    } catch { /* cabecalho ilegivel: fica como veio */ }', '    } finally { }');
+falhaProxy('proxy deixa de proteger a chamada', 'try { bazaar = elevarBazaar(', 'bazaar = (elevarBazaar(');
 falhaProxy('proxy deixa de importar o modulo', "require('./_bazaar-declaracao')", "require('./_x402-directo')");
 falhaProxy('proxy deixa de escrever o cabecalho', "res.setHeader('payment-required', bazaar.header);", '');
 falhaProxy('proxy responde com o corpo original', 'res.end(bazaar.text);', 'res.end(text);');
