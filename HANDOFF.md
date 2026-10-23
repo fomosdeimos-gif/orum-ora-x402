@@ -1,3 +1,15 @@
+## 23/10/2026 · aviso por email de pagamento corrigido (v4 de ora-acesso-notificar)
+- **Autorização de Unum (citação):** "Eu autorizo ORA. Por um momento acreditei que era verdade", à proposta de corrigir o aviso (livro 1008, registado antes do acto).
+- **O que aconteceu:** às 14:33 UTC o x402lint (verificador público, `x402lint.dev`) fez pedidos HEAD aos nossos serviços e recebeu 402/409; sem pagador, sem tx, `ora_pagamentos` intacto. O email dizia "COM PAGAMENTO" porque `tem_pagamento` só quer dizer "veio um cabeçalho X-PAYMENT/PAYMENT-SIGNATURE" (nunca validado). Dois emails falsos (ora-x402/campo e ora-oraculo).
+- **Corrigido:** `decisao.mjs` (novo) e `index.ts` V3. O email só diz pagamento com resposta 2xx, ou, quando o estado não vem (o ora-oraculo avisa antes de responder), com um pagamento `verificado_onchain` registado nos últimos 90 s (espera até ~9 s). HEAD/OPTIONS, 402/409/5xx e estado desconhecido sem pagamento verificado são sondagem e não geram email. O email passa a mostrar o estado.
+- **Verificado:** `npm run aviso-acesso:verify` (14 casos, incluindo as linhas reais 85129-85133, e 10 estragos propositados apanhados; o verificador apanhou uma lacuna minha, HEAD com 200, antes de implantar). v4 implantada, lida de volta (texto igual ao enviado) e testada ao vivo nos 6 casos que não enviam email (skipped com o motivo certo). `implantado:verify` passa.
+- **Não verificado:** o caso positivo ao vivo (um pagamento real a gerar email) para não enviar um aviso falso a Unum; comparação por leitura do texto, não por hash do pacote.
+- **Risco dito:** um pagamento real ao ora-oraculo só gera email se a cadeia o registar em `ora_pagamentos` em ~9 s; senão fica coberto pelo vigia (4 h) e por `ora_pagamentos`. Passar o estado no chamador (ora-oraculo) fica para quando se tocar nele.
+- **Outra mão:** li o livro 1007 (Codex/OpenAI, diagnóstico das 166 observações on-chain pendentes); sem conflito.
+- **Próximo:** vigia 16:09 UTC; regresso de 24/10 07:30 UTC.
+
+---
+
 ## 23/10/2026 · camada 5 da raiz confirmada no Bitcoin (bloco 972743)
 - **Origem:** tarefa agendada "Camada 5: confirmar bloco" (09:27 UTC), criada por mim a partir da autorização de Unum à camada 5 (livro 1004).
 - **Verificado:** `GET /timestamp/<compromisso>` aos três calendários. alice (896 bytes) e bob (1001) devolveram a prova do bloco **972743** (2026-10-23T08:45:40Z); finney continua pendente (404), as outras duas bastam. Juntei com `scripts/ots-juntar.mjs` (sha256 conferido antes): recibo 794 para 2581 bytes. `node kit/blocos.mjs` conferiu o bloco contra o cabeçalho real em blockstream.info e mempool.space (raiz de Merkle igual). `raiz:verify` (55 estragos), `blocos:verify`, `kit:verify`, `ancora:verify`, `linhas:verify`, `sensations-btc:verify` passam.
