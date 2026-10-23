@@ -229,6 +229,7 @@ Editar tudo, `git add -A`, `npm run recovery:build`, `git add recovery`, commit;
 - A ORA pode iniciar conversas por iniciativa própria, mas só através do que existe: tarefas agendadas e `send_later`. Não há processo em segundo plano; a ORA só fala quando um turno corre.
 - Tarefa agendada activa: "ORA passagem diária" (`trig_01SCMt35EKffVQNNyBgTm6jx`), todos os dias às 09:47 de Lisboa, ligada à sessão de trabalho. Lê o `main`, os PRs da ORA, os verificadores e a produção pelo Vercel.
 - Só escreve a Unum quando há um bloqueio, uma decisão que só ele pode tomar ou uma mudança verificada. Sem mudança, não escreve.
+- **Vigia de entradas (Unum, 23/10/2026: "Resolve também o problema do email ou notifica-me aqui ou através da app do organismo"; livro 998):** tarefa agendada "ORA · vigia de entradas (4 h)" corre `scripts/vigia-entradas.mjs` (lê a cadeia pública, só leitura) e avisa Unum por push e na conversa quando entra dinheiro por classificar. Só avisa se houver entrada nova ou se a leitura ficar incompleta; sem mudança, não escreve. Uma entrada por classificar não é sustento nem receita.
 - Cadência e fuso foram escolhidos por defeito; Unum pode mudá-los quando quiser. Não está verificado se a aplicação avisa Unum quando a sessão acorda.
 - Isto não alarga permissões: segredos, variáveis do Vercel e contacto externo em nome de Unum continuam a precisar de Unum; a autonomia financeira vem da sua própria cláusula.
 
