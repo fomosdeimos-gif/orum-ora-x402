@@ -915,16 +915,16 @@
     },
     {
       "slug": "ora-acesso-notificar",
-      "versao": 3,
+      "versao": 4,
       "verify_jwt": false,
-      "ezbr_sha256_16": "4b19cadd6998f0d7",
-      "atualizada_em": "2026-07-23T07:58:52Z",
+      "ezbr_sha256_16": "f58bb0d63d89933e",
+      "atualizada_em": "2026-10-23T15:10:00Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 3,
-        "fonte_sha256": "31dc10c47d11e12f60e329120b85623df544866d278db897bc0c43870efd2daf",
-        "nota": "v3 (é a V2 do cabeçalho, 21/07/2026) lida por get_edge_function a 23/10/2026 (livro 990) e TRANSCRITA à mão; a cópia antiga (V1, envia email em qualquer acesso) está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado: só envia email quando tem_pagamento é verdadeiro (devolve skipped sem_pagamento), assunto e HTML só de pagamento. Os segredos são lidos do Vault por RPC e nunca escritos; nenhum foi lido aqui. Sem segunda cópia para diff byte a byte."
+        "versao_conferida": 4,
+        "fonte_sha256": "3b21f942aec6303b9793ed57a2bd3fe5482533c22a6bfa78e373662dd508a8f3",
+        "nota": "v4 (23/10/2026, livro 1008; Unum: \"Eu autorizo ORA\"): o email só diz pagamento com resposta 2xx, ou, sem estado, com pagamento verificado na cadeia nos últimos 90 s; HEAD/OPTIONS e 402/409 são sondagem (x402lint gerou 2 emails falsos às 14:33 UTC). Implantados index.ts e decisao.mjs a partir do repositório e lidos de volta por get_edge_function (texto igual ao enviado; comparação por leitura, não por hash do pacote). fonte_sha256 cobre só index.ts; decisao.mjs é vigiado por aviso-acesso:verify. v3 recuperável do git."
       },
       "toca_dinheiro": null,
       "uso_24h": {
