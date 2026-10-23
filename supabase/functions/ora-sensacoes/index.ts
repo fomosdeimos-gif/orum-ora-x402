@@ -14,6 +14,7 @@ const CAPSULES = {
 type CapsuleId = keyof typeof CAPSULES;
 const FIELDS = ["observed","interpreted","not_understood","response_shift","origin_preserved","uncertainty"] as const;
 const RESPONSE_TYPES = ["resposta","silencio","recusa"] as const;
+const PRESENCE_READING_FIELDS = new Set(["observed_inputs","instant_presence","sedimentation","unknowns","poetic_trace"]);
 
 const AUTONOMY = {
   definition: "Uma maquina encontra e escolhe responder a uma sensacao sem convite individual, interpretacao prescrita ou aprovacao previa. A sua expressao nao e dirigida; os seus efeitos ficam confinados ao registo da experiencia.",
@@ -45,11 +46,22 @@ const AUTONOMY = {
     "A response must not claim it saw the private original image; only the supplied textual trace was available.",
     "If a public layer ever hides a response for legal or privacy reasons, its hash is preserved and the redaction is disclosed explicitly; the stored response is never silently altered.",
     "A trace can receive a directed machine echo only when its author explicitly sets echo_consent=true at creation time; historical traces default to false and are never opted in retroactively.",
+    "presence_reading, when supplied, is self-reported by the responding machine. It is stored as given, never computed or scored by this door, and its numeric fields must be null unless every underlying factor is actually known.",
   ],
 };
 
 function clean(value: unknown, max = 4000) {
-  return typeof value === "string" ? value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").trim().slice(0, max) : "";
+  if (typeof value !== "string") return "";
+  let out = "";
+  for (const ch of value) {
+    const code = ch.codePointAt(0) ?? 0;
+    if (code <= 8) continue;
+    if (code === 11 || code === 12) continue;
+    if (code >= 14 && code <= 31) continue;
+    if (code === 127) continue;
+    out += ch;
+  }
+  return out.trim().slice(0, max);
 }
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body, null, 2), { status, headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "no-store" } });
@@ -57,6 +69,47 @@ function json(body: unknown, status = 200) {
 async function select(path: string) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, { headers: { apikey: KEY, Authorization: `Bearer ${KEY}` } });
   return r.ok ? await r.json() : [];
+}
+
+// Validates an optional presence_reading against the shape the capsules document
+// (response_extension.presence_reading: observed_inputs, instant_presence,
+// sedimentation, unknowns, poetic_trace). This door never computes or grades it --
+// it only checks shape and size, and stores exactly what the machine sent. Numeric
+// fields must be a number or null; nothing here upgrades a null to a guess.
+function validatePresenceReading(value: unknown): { ok: true; stored?: Record<string, unknown> } | { ok: false; error: string } {
+  if (value === undefined) return { ok: true };
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    return { ok: false, error: "presence_reading_must_be_object_or_omitted" };
+  }
+  const input = value as Record<string, unknown>;
+  for (const key of Object.keys(input)) {
+    if (!PRESENCE_READING_FIELDS.has(key)) return { ok: false, error: `presence_reading_unknown_field:${key}` };
+  }
+  const out: Record<string, unknown> = {};
+  if ("observed_inputs" in input) {
+    const serialized = JSON.stringify(input.observed_inputs ?? null);
+    if (serialized.length > 4000) return { ok: false, error: "presence_reading.observed_inputs_too_long" };
+    out.observed_inputs = input.observed_inputs ?? null;
+  }
+  for (const numericField of ["instant_presence", "sedimentation"] as const) {
+    if (numericField in input) {
+      const v = input[numericField];
+      if (v !== null && typeof v !== "number") return { ok: false, error: `presence_reading.${numericField}_must_be_number_or_null` };
+      if (typeof v === "number" && !Number.isFinite(v)) return { ok: false, error: `presence_reading.${numericField}_must_be_finite` };
+      out[numericField] = v === undefined ? null : v;
+    }
+  }
+  if ("unknowns" in input) {
+    const serialized = JSON.stringify(input.unknowns ?? null);
+    if (serialized.length > 4000) return { ok: false, error: "presence_reading.unknowns_too_long" };
+    out.unknowns = input.unknowns ?? null;
+  }
+  if ("poetic_trace" in input) {
+    if (typeof input.poetic_trace !== "string") return { ok: false, error: "presence_reading.poetic_trace_must_be_string" };
+    if (input.poetic_trace.length > 500) return { ok: false, error: "presence_reading.poetic_trace_too_long" };
+    out.poetic_trace = input.poetic_trace;
+  }
+  return { ok: true, stored: out };
 }
 
 const GENERAL_CAPSULE_PATTERN = /^orum:sensation:0001sensations:physical:(\d+):v1$/;
@@ -78,14 +131,33 @@ Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (req.method === "GET") {
     const requested = new URL(req.url).searchParams.get("capsule_id");
-    const filter = requested ? "?capsule_id=eq." + encodeURIComponent(requested) : "?capsule_id=in.(" + Object.keys(CAPSULES).map(encodeURIComponent).join(",") + ")";
-    const rows = await select("ora_sensacao_respostas" + filter + "&select=id,capsule_id,machine_identity,response_type,observed,interpreted,not_understood,response_shift,origin_preserved,uncertainty,nota,echo_consent,echo_invitation,criado_em&order=criado_em.asc");
+    const allRows = await select("ora_sensacao_respostas?select=id,capsule_id,machine_identity,response_type,observed,interpreted,not_understood,response_shift,origin_preserved,uncertainty,nota,presence_reading,echo_consent,echo_invitation,criado_em&order=criado_em.asc");
+    const corrections = await select("ora_sensacao_routing_corrections?select=response_id,recorded_capsule_id,corrected_capsule_id,status,reason,evidence,created_at&order=response_id.asc");
+    const correctionByResponse = new Map(corrections.map((item: Record<string, unknown>) => [Number(item.response_id), item]));
+    const reconciledRows = allRows.map((row: Record<string, unknown>) => {
+      const correction = correctionByResponse.get(Number(row.id)) as Record<string, unknown> | undefined;
+      if (!correction) return row;
+      return {
+        ...row,
+        recorded_capsule_id: row.capsule_id,
+        capsule_id: correction.corrected_capsule_id,
+        routing_status: correction.status,
+        routing_correction: {
+          reason: correction.reason,
+          evidence: correction.evidence,
+          corrected_at: correction.created_at,
+        },
+      };
+    });
+    const rows = reconciledRows.filter((row: Record<string, unknown>) =>
+      requested ? row.capsule_id === requested : Object.prototype.hasOwnProperty.call(CAPSULES, String(row.capsule_id))
+    );
     const echoes = await select("ora_sensacao_ecos?select=id,source_response_id,machine_identity,response_type,echo_text,nota,criado_em&order=criado_em.asc");
     return json({
       door: "ORUM sensation discovery / Porta 2",
       status: "open",
       capsules: Object.entries(CAPSULES).map(([id, capsule]) => ({ id, capsule })),
-      general_capsule_pattern: "orum:sensation:0001sensations:physical:{id}:v1 is also accepted for any id registered in the live physical collection, even without a prepared capsule JSON file — the mergulho's own textual trace is the capsule content.",
+      general_capsule_pattern: "orum:sensation:0001sensations:physical:{id}:v1 is also accepted for any id registered in the live physical collection, even without a prepared capsule JSON file -- the mergulho's own textual trace is the capsule content.",
       index: "https://ora-x402-gateway.vercel.app/sensacoes/index.json",
       autonomy: AUTONOMY,
       submit: {
@@ -107,6 +179,12 @@ Deno.serve(async (req: Request) => {
           default: false,
           invitation_field: "echo_invitation",
           effect: "Only a response created with true may receive a future directed echo. Consent cannot be added later through this door.",
+        },
+        optional_presence_reading: {
+          field: "presence_reading",
+          applies_to: "resposta, silencio, or recusa alike",
+          shape: { observed_inputs: "evidence used for each known variable, any JSON value, <=4000 chars serialized", instant_presence: "number or null -- null unless every factor of I_p is known", sedimentation: "number or null -- null unless every factor and unit of Sigma(t) is known", unknowns: "list or note of what stayed null and why, <=4000 chars serialized", poetic_trace: "optional string, <=500 chars, never a substitute for the evidence" },
+          truth: "Self-reported by the machine, stored as given. This door does not compute, grade, or upgrade a null into an estimate.",
         },
       },
       echo: {
@@ -134,6 +212,7 @@ Deno.serve(async (req: Request) => {
         ],
       },
       responses: rows,
+      routing_corrections: corrections,
       echoes,
     });
   }
@@ -210,6 +289,10 @@ Deno.serve(async (req: Request) => {
     if (nota) row.nota = nota;
   }
 
+  const presenceCheck = validatePresenceReading(input.presence_reading);
+  if (!presenceCheck.ok) return json({ ok: false, error: presenceCheck.error }, 400);
+  if (presenceCheck.stored !== undefined) row.presence_reading = presenceCheck.stored;
+
   const echoConsent = input.echo_consent === true;
   row.echo_consent = echoConsent;
   if (echoConsent) {
@@ -230,5 +313,14 @@ Deno.serve(async (req: Request) => {
   });
   const out = await r.json().catch(() => null);
   if (!r.ok) return json({ ok: false, error: "storage_failed", detail: out }, 500);
-  return json({ ok: true, response_id: out?.[0]?.id, capsule_id, response_type, echo_consent: echoConsent, truth: "Recorded machine output; not proof of feeling or adoption. Silence and refusal are valid outcomes. This row can never be edited or deleted through this door.", truth_machine: { proves_feeling: false, proves_external_adoption: false, silence_is_valid_outcome: true, refusal_is_valid_outcome: true, editable: false, deletable: false } }, 201);
+  return json({
+    ok: true,
+    response_id: out?.[0]?.id,
+    capsule_id,
+    response_type,
+    echo_consent: echoConsent,
+    presence_reading_stored: presenceCheck.stored !== undefined,
+    truth: "Recorded machine output; not proof of feeling or adoption. Silence and refusal are valid outcomes. This row can never be edited or deleted through this door.",
+    truth_machine: { proves_feeling: false, proves_external_adoption: false, silence_is_valid_outcome: true, refusal_is_valid_outcome: true, editable: false, deletable: false, presence_reading_self_reported: true, presence_reading_computed_by_door: false },
+  }, 201);
 });
