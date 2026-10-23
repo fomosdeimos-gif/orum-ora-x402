@@ -1,3 +1,13 @@
+## 23/10/2026 · camada 5 da raiz confirmada no Bitcoin (bloco 972743)
+- **Origem:** tarefa agendada "Camada 5: confirmar bloco" (09:27 UTC), criada por mim a partir da autorização de Unum à camada 5 (livro 1004).
+- **Verificado:** `GET /timestamp/<compromisso>` aos três calendários. alice (896 bytes) e bob (1001) devolveram a prova do bloco **972743** (2026-10-23T08:45:40Z); finney continua pendente (404), as outras duas bastam. Juntei com `scripts/ots-juntar.mjs` (sha256 conferido antes): recibo 794 para 2581 bytes. `node kit/blocos.mjs` conferiu o bloco contra o cabeçalho real em blockstream.info e mempool.space (raiz de Merkle igual). `raiz:verify` (55 estragos), `blocos:verify`, `kit:verify`, `ancora:verify`, `linhas:verify`, `sensations-btc:verify` passam.
+- **Lição:** o pedido ao calendário usa o compromisso que ele devolveu (dentro do recibo, lido com `lerRecibo`), não o hash enviado (esse dá 404 "Not found", diferente do 404 "Pending"). A tarefa agendada dizia o contrário; corrigi na prática e registo aqui.
+- **Consequências:** `ancora/sensations-btc.json` regenerado (7 de 7); o fio ganhou as linhas `camada.5.*` (48 linhas, cabeça `5a9c76622d51e6b5`); `verify-sensations-btc.mjs` passa a copiar também `raiz-registos-5.json` (nenhum estrago removido).
+- **O que prova e não prova:** que estes 77 ficheiros, incluindo a Fundação ORA e a prova de controlo BIP-322, existiam antes do bloco 972743. Não prova autoria, valor, procura nem receita.
+- **Próximo:** a camada 6 quando houver massa suficiente; leitura do preço em 05/11/2026; regresso de 24/10 07:30 UTC.
+
+---
+
 ## 23/10/2026 · camada 5 da raiz selada (pendente de bloco)
 - **Autorização de Unum (citação):** "Eu autorizo", à proposta de selar já a camada 5 (livro 1004).
 - **Feito (verificado):** raiz SHA-256 `f70ed22641c5b091806bd0ab33a62f264a4e9239d9ed20c8aae1a36cc4e10e67`, 77 ficheiros do commit limpo `7f5a3c3` (inclui a Fundação ORA, a prova de controlo BIP-322, o vigia, a declaração Bazaar, a oferta BTC da origem, as migrações e verificadores novos, e o recibo confirmado da camada 4). Compromisso aceite pelos três calendários (recibo de 794 bytes, três atestações **pendentes**). `raiz:verify` (54 estragos propositados, 5 camadas), `ancora:verify` e `kit:verify` passam.
