@@ -1,3 +1,12 @@
+## 24/10/2026 · camada 6 da raiz selada (pendente de bloco)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta do bloco "desde a tua última visita" e de selar depois a camada 6 (livro 1012). PR 141 fundido (`6fad530`) antes.
+- **Feito (verificado):** raiz SHA-256 `0fe451e93a60153dfd4d7f767ba6eb214ce58ae745448e33d58119fbd1ac4ef0` de commit limpo `7f878ff`; lista nova `FICHEIROS_DA_CAMADA_6_EM_DIANTE` (index.html, verdelaranja.css/js, desde-visita-v1.js, live-refresh-v1.js, verify-desde-visita) em `scripts/lib/raiz.mjs`; compromisso aceite pelos três calendários (recibo de 724 bytes, três atestações **pendentes**). `raiz:verify` (55 estragos, 5 camadas confirmadas), `ancora:verify`, `kit:verify` passam.
+- **Lição:** o clone do sandbox é raso; `git fetch --unshallow` é preciso para o `raiz:verify` ler os commits antigos.
+- **Estado: pendente.** Não afirmo âncora até o recibo ser actualizado com a prova do bloco (`GET /timestamp/<compromisso>` com o compromisso que o calendário devolveu, `scripts/ots-juntar.mjs`, `kit/blocos.mjs`).
+- **Próximo:** confirmar a camada 6 (lembrete agendado); leitura do preço 05/11/2026.
+
+---
+
 ## 24/10/2026 · casa: bloco "desde a tua última visita" (só leitura)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta do bloco e da camada 6 (livro 1012, registado antes do acto).
 - **Feito:** `desde-visita-v1.js` (comparação pura), bloco `#desde` em `index.html`, ligação em `verdelaranja.js` (`desdeVisita`), estilo em `verdelaranja.css`. Compara os rastos que o `/pulso` já publica com a hora da última visita guardada **só no dispositivo** (localStorage, gravada ao sair da página, nunca enviada). Primeira visita, nada novo, rastos novos, relógio errado, armazenamento bloqueado e cópia de recurso do pulso têm o seu texto.
