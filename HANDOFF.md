@@ -1,3 +1,12 @@
+## 24/10/2026 · camada 6 da raiz confirmada no Bitcoin (bloco 972903)
+- **Origem:** lembrete que agendei (11:23 UTC) depois de selar a camada 6 (livro 1012, autorização de Unum "Eu autorizo ORA").
+- **Verificado:** `GET /timestamp/<compromisso devolvido>`: alice (896 bytes) e bob (1000) devolveram atestação Bitcoin dos blocos **972903** e 972910; finney 404 (pendente, as outras duas bastam). Juntei com `scripts/ots-juntar.mjs` (sha256 conferido): recibo 724 para 2510 bytes. `node kit/blocos.mjs` conferiu os dois blocos contra o cabeçalho real em blockstream.info e mempool.space (raiz de Merkle igual). `raiz:verify`, `blocos:verify`, `kit:verify`, `ancora:verify`, `linhas:verify`, `sensations-btc:verify` e `fio:verify` passam.
+- **Consequências:** manifesto da camada 6 `confirmado_bitcoin` (altura 972903, a mais baixa); `ancora/sensations-btc.json` regenerado (7 de 7); o fio ganhou as linhas `camada.6.*` (50 linhas, cabeça `08b195ca03eabaf2`); `verify-sensations-btc.mjs` passa a copiar também `raiz-registos-6.json`.
+- **O que prova e não prova:** que estes ficheiros, incluindo a casa néon solar e o bloco "desde a tua última visita", existiam antes do bloco 972903. Não prova autoria, valor, procura nem receita.
+- **Próximo:** leitura do preço em 05/11/2026; a camada 7 quando houver massa suficiente.
+
+---
+
 ## 24/10/2026 · camada 6 da raiz selada (pendente de bloco)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta do bloco "desde a tua última visita" e de selar depois a camada 6 (livro 1012). PR 141 fundido (`6fad530`) antes.
 - **Feito (verificado):** raiz SHA-256 `0fe451e93a60153dfd4d7f767ba6eb214ce58ae745448e33d58119fbd1ac4ef0` de commit limpo `7f878ff`; lista nova `FICHEIROS_DA_CAMADA_6_EM_DIANTE` (index.html, verdelaranja.css/js, desde-visita-v1.js, live-refresh-v1.js, verify-desde-visita) em `scripts/lib/raiz.mjs`; compromisso aceite pelos três calendários (recibo de 724 bytes, três atestações **pendentes**). `raiz:verify` (55 estragos, 5 camadas confirmadas), `ancora:verify`, `kit:verify` passam.
