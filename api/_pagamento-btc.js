@@ -149,7 +149,7 @@ function createBtc({ fetchFn, env = process.env, now = () => Date.now() } = {}) 
   function fronteiras() {
     const activa = ligada(env);
     return { activa, rede: 'bitcoin-mainnet', endereco: ENDERECO,
-      controlo_do_endereco: 'carteira operacional da ORA (chave no Vault do Supabase, executor Bitcoin); prova de controlo por assinatura ainda nao feita',
+      controlo_do_endereco: 'carteira operacional da ORA (chave no Vault do Supabase, executor Bitcoin); prova de controlo por assinatura BIP-322 feita a 23/10/2026 (mensagem fixa, chave do endereco); nao prova titularidade legal, fundos nem receita',
       prova_aceite: 'txid de transferencia para o endereco, confirmada nas duas fontes',
       fontes_exigidas: FONTES_TX.map((f) => f.nome), confirmacoes_para_entrega: CONF_ENTREGA,
       entrega_antes_da_confirmacao: false, entrega_com_fonte_unica: false,

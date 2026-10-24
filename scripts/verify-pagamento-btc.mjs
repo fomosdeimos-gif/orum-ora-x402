@@ -73,7 +73,8 @@ async function suite(dir) {
   assert.equal((await chama(h, 'ora-x402')).body.pagamento_alternativo_bitcoin.sats_anunciados, 347, '0,33 USD: 330 + 5%');
   assert.equal(ch.body.fronteiras.bitcoin.entrega_antes_da_confirmacao, false);
   assert.equal(ch.body.fronteiras.bitcoin.entrega_com_fonte_unica, false);
-  assert.match(ch.body.fronteiras.bitcoin.controlo_do_endereco, /operacional da ORA.*ainda nao feita/);
+  assert.match(ch.body.fronteiras.bitcoin.controlo_do_endereco, /operacional da ORA.*BIP-322 feita a 23\/10\/2026.*nao prova titularidade legal/);
+  assert.doesNotMatch(ch.body.fronteiras.bitcoin.controlo_do_endereco, /ainda nao feita/, 'a prova de controlo existe (ancora/prova-controlo-btc-operacional.json)');
   assert.equal((await chama(h, 'ora-oraculo', null, 'eco')).body.pago.pagamento_alternativo_bitcoin.disponivel, true);
 
   // ---- entrega: duas fontes, valor suficiente, 1 confirmacao; determinista por txid ----
