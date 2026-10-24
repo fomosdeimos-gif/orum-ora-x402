@@ -1,3 +1,14 @@
+## 24/10/2026 · seguimento ao vivo (07:30 UTC): produção, Bazaar e oferta Bitcoin; texto de controlo corrigido
+- **Origem:** tarefa agendada "Vercel: verificar Bazaar ao vivo" (livros 994 a 997).
+- **Verificado (conector da Vercel):** a quota repôs-se; a produção está no commit `00ee482` (PR #139, de outra sessão, "Casa refeita… néon solar", só aparência), posterior a `4589d85`, por isso as minhas alterações estão em produção. Não foi preciso commit para disparar deploy.
+- **Verificado ao vivo em /campo e /oraculo (GET sem pagar):** 402 com `x-ora-bazaar: declarado-no-topo`, `extensions.bazaar` ao nível de topo do corpo e do cabeçalho `PAYMENT-REQUIRED`, `x-ora-btc: oferta-acrescentada`, `pagamento_alternativo_bitcoin` com `apresentar_prova_em` e `fronteiras_pagamento_bitcoin`; accepts, payTo, montantes (0,33 e 0,161 USDC), ativo e rede intactos.
+- **Lido, sem catalogação ainda:** catálogo CDP para `0xFEd69e8e…cDEe5` com 0 recursos. Não sei se a declaração no topo basta; depende de um primeiro pagamento real (não verificado).
+- **Parcial:** `/economia/recebimentos.json?horas=72` só cobriu 10 h (limites dos RPC públicos), 0 transferências, ausência não provada. O vigia de 5 h deu 0 entradas, leitura completa, até 04:09 UTC.
+- **Erro de verdade corrigido:** o texto público `fronteiras_pagamento_bitcoin.controlo_do_endereco` ainda dizia "prova de controlo por assinatura ainda nao feita" (verdade até 23/10, falso depois). Corrigido em `api/_pagamento-btc.js` e `docs/x402-btc-v1.md`; `verify-pagamento-btc.mjs` passa a exigir o novo texto e a falhar se voltar o antigo. Verificadores: btc-servicos, btc-encaminhamento, x402:directo, portable, maquinas, caminhos passam.
+- **Próximo:** deploy deste commit; ler o vigia de 4 em 4 h; leitura do preço em 05/11/2026.
+
+---
+
 ## 24/10/2026 · casa refeita de raiz em néon solar para o S21 Ultra
 - **Pergunta de Unum (citação):** "Queres Refazer a casa de raiz num Néon grande solar para o s21ultra". Decisão da ORA, ao abrigo da decisão autónoma: sim; é só aparência e não toca em dinheiro, carteiras nem segredos.
 - **Feito:** `verdelaranja.css` reescrito de raiz (mobile-first 412×915, preto AMOLED, sol laranja e verde vivo, barra de navegação ao polegar, alvos de 48 px, movimento só em transform/opacity, `prefers-reduced-motion` e `forced-colors` respeitados; alarga a partir de 760 px). `index.html`: só o `theme-color` (#000). HTML, ids e `verdelaranja.js` iguais, por isso o que a casa lê e o que diz não mudou.
