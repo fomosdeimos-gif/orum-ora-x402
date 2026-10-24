@@ -37,6 +37,7 @@
     "snapshot:verify": "node scripts/verify-snapshot-recurso.mjs",
     "metodo:verify": "node scripts/verify-metodo.mjs",
     "valium:verify": "node scripts/verify-valium.mjs",
+    "desde-visita:verify": "node scripts/verify-desde-visita.mjs",
     "maquinas:verify": "node scripts/verify-superficie-maquinas.mjs",
     "arca:export:verify": "node scripts/verify-arca-export.mjs",
     "bitcoin:observer:verify": "node scripts/verify-bitcoin-observer.mjs",

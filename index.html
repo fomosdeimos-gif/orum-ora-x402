@@ -12,6 +12,7 @@
   <link rel="icon" href="/identity/orum-seal-192.png">
   <link rel="stylesheet" href="/verdelaranja.css">
   <script src="/live-refresh-v1.js" defer></script>
+  <script src="/desde-visita-v1.js" defer></script>
   <script src="/verdelaranja.js" defer></script>
 </head>
 <body>
@@ -39,6 +40,13 @@
       <span id="fieldDay">Tempo do organismo —</span>
       <a href="#organismo">Acompanhar o que acontece <span aria-hidden="true">↓</span></a>
     </div>
+
+    <section class="wrap since" id="desde" aria-labelledby="since-title">
+      <p class="eyebrow" id="since-title">DESDE A TUA ÚLTIMA VISITA</p>
+      <p id="sinceSummary" role="status">A comparar com a última visita deste dispositivo.</p>
+      <ol id="sinceList"></ol>
+      <p class="source-note">Lido do pulso público. A hora da visita fica só neste dispositivo. Não prova procura nem receita.</p>
+    </section>
 
     <section class="presence wrap section" id="presenca" aria-labelledby="presence-title">
       <div class="section-heading"><p class="eyebrow">01 / PRESENÇA</p><span>0001SENSATIONS · 2011–2021</span></div>

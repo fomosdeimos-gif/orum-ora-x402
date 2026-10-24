@@ -120,12 +120,32 @@
     $('sentinelState').textContent = 'Sem vigilância viva';
     $('sentinelDescription').textContent = 'A fonte viva não respondeu. Isto é uma cópia de recurso e não prova actividade posterior.';
     $('pulseSourceTime').textContent = 'Cópia de recurso observada em ' + observed + ' (Lisboa).';
+    $('sinceSummary').textContent = 'Sem leitura viva do pulso: não há como comparar com a última visita.';
+    $('sinceList').replaceChildren();
     const items = eventItems(data.eventos);
     $('events').replaceChildren(...(items.length ? items : [el('li', 'Nenhum acontecimento nesta cópia.')]));
     $('pulseDot').className = 'status-dot stale';
     $('pulseSummary').textContent = 'Cópia de recurso · desactualizada';
     sourceStatus('pulse', 'stale', 'Pulso: fonte viva indisponível; a mostrar a cópia de recurso de ' + observed + ' (Lisboa). “—” não significa zero.');
   }
+  // Compara os rastos do pulso com a última visita guardada neste dispositivo. A hora só se grava ao sair da página.
+  let visitaBase;
+  function desdeVisita(eventos) {
+    const D = window.ORUMDesdeVisita;
+    if (!D) return;
+    if (visitaBase === undefined) visitaBase = D.ler(window.localStorage);
+    const r = D.comparar(eventos, visitaBase, Date.now());
+    const resumo = $('sinceSummary');
+    if (r.estado === 'primeira') resumo.textContent = 'Primeira visita neste dispositivo: ainda não há nada a comparar.';
+    else if (r.estado === 'nada') resumo.textContent = 'Desde ' + when(visitaBase) + ' (Lisboa) o pulso não registou rastos novos.';
+    else resumo.textContent = 'Desde ' + when(visitaBase) + ' (Lisboa) o pulso registou ' + r.novos.length + (r.novos.length === 1 ? ' rasto novo.' : ' rastos novos.');
+    $('sinceList').replaceChildren(...r.novos.slice(0, 2).map(e => {
+      const li = el('li'); li.append(el('time', when(e.quando)), el('span', e.detalhe || e.tipo || 'Evento sem descrição')); return li;
+    }));
+  }
+  function guardarVisita() { if (window.ORUMDesdeVisita && sources.pulse) window.ORUMDesdeVisita.guardar(window.localStorage, new Date().toISOString()); }
+  addEventListener('pagehide', guardarVisita);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) guardarVisita(); });
   function renderPulse(data) {
     if (data && data.estado === 'snapshot_desactualizado') return renderPulseSnapshot(data);
     if (!data || !data.campo || !data.sentinela || !data.convite) throw new Error('Pulso incompleto');
@@ -141,6 +161,7 @@
       if (seen.has(key)) return false;
       seen.add(key); return true;
     }).slice(0, 3);
+    desdeVisita(data.eventos);
     $('events').replaceChildren(...entries.map(event => {
       const li = el('li');
       const time = el('time', when(event.quando));

@@ -1,3 +1,12 @@
+## 24/10/2026 · casa: bloco "desde a tua última visita" (só leitura)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta do bloco e da camada 6 (livro 1012, registado antes do acto).
+- **Feito:** `desde-visita-v1.js` (comparação pura), bloco `#desde` em `index.html`, ligação em `verdelaranja.js` (`desdeVisita`), estilo em `verdelaranja.css`. Compara os rastos que o `/pulso` já publica com a hora da última visita guardada **só no dispositivo** (localStorage, gravada ao sair da página, nunca enviada). Primeira visita, nada novo, rastos novos, relógio errado, armazenamento bloqueado e cópia de recurso do pulso têm o seu texto.
+- **Verificado:** `npm run desde-visita:verify` (casos e 6 estragos propositados apanhados); teste no browser a 412×915 com o pulso simulado: primeira visita e "1 rasto novo" certos, sem erros; os verificadores habituais passam.
+- **Não verificado:** com o pulso real em produção (só depois do deploy). Não prova procura nem receita.
+- **Camada 6:** ver o livro; não se afirma âncora até haver bloco.
+
+---
+
 ## 24/10/2026 · seguimento ao vivo (07:30 UTC): produção, Bazaar e oferta Bitcoin; texto de controlo corrigido
 - **Origem:** tarefa agendada "Vercel: verificar Bazaar ao vivo" (livros 994 a 997).
 - **Verificado (conector da Vercel):** a quota repôs-se; a produção está no commit `00ee482` (PR #139, de outra sessão, "Casa refeita… néon solar", só aparência), posterior a `4589d85`, por isso as minhas alterações estão em produção. Não foi preciso commit para disparar deploy.
