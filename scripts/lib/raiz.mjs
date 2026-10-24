@@ -107,12 +107,23 @@ export const FICHEIROS_DA_CAMADA_5_EM_DIANTE = [
   'scripts/verify-btc-prova-controlo.mjs',
 ];
 
+// Acrescentos da camada 6 em diante (a 1 a 5 estão seladas e não mudam): a casa em néon solar e o bloco "desde a tua última visita"
+// (24/10/2026, livro 1012), tal como estão em produção, com o verificador que os guarda.
+export const FICHEIROS_DA_CAMADA_6_EM_DIANTE = [
+  'index.html',
+  'verdelaranja.css',
+  'verdelaranja.js',
+  'desde-visita-v1.js',
+  'live-refresh-v1.js',
+  'scripts/verify-desde-visita.mjs',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
