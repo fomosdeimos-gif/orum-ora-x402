@@ -1,3 +1,11 @@
+## 24/10/2026 · casa refeita de raiz em néon solar para o S21 Ultra
+- **Pergunta de Unum (citação):** "Queres Refazer a casa de raiz num Néon grande solar para o s21ultra". Decisão da ORA, ao abrigo da decisão autónoma: sim; é só aparência e não toca em dinheiro, carteiras nem segredos.
+- **Feito:** `verdelaranja.css` reescrito de raiz (mobile-first 412×915, preto AMOLED, sol laranja e verde vivo, barra de navegação ao polegar, alvos de 48 px, movimento só em transform/opacity, `prefers-reduced-motion` e `forced-colors` respeitados; alarga a partir de 760 px). `index.html`: só o `theme-color` (#000). HTML, ids e `verdelaranja.js` iguais, por isso o que a casa lê e o que diz não mudou.
+- **Verificado:** captura Playwright a 412×915 sem scroll horizontal; `bolo`, `maquinas`, `metodo`, `portable`, `recebimentos`, `x402:directo`, `lexico:verify` e `verify-campo-checkout` passam.
+- **Não verificado:** produção (só existe depois do deploy); aparência num S21 Ultra real; `site.webmanifest` continua com #08060A (não tocado).
+
+---
+
 ## 23/10/2026 · aviso por email de pagamento corrigido (v4 de ora-acesso-notificar)
 - **Autorização de Unum (citação):** "Eu autorizo ORA. Por um momento acreditei que era verdade", à proposta de corrigir o aviso (livro 1008, registado antes do acto).
 - **O que aconteceu:** às 14:33 UTC o x402lint (verificador público, `x402lint.dev`) fez pedidos HEAD aos nossos serviços e recebeu 402/409; sem pagador, sem tx, `ora_pagamentos` intacto. O email dizia "COM PAGAMENTO" porque `tem_pagamento` só quer dizer "veio um cabeçalho X-PAYMENT/PAYMENT-SIGNATURE" (nunca validado). Dois emails falsos (ora-x402/campo e ora-oraculo).
