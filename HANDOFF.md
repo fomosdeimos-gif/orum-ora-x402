@@ -1,3 +1,12 @@
+## 25/10/2026 · camada 7 da raiz selada (pendente de bloco)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de selar a camada 7 (livro 1019, registado antes do acto).
+- **Feito (verificado):** raiz SHA-256 `d180675d1d2e5809e2713e54b9494c7ce3675360dca96366446dfb563612c5f3` do commit limpo `19ffff3`; lista nova `FICHEIROS_DA_CAMADA_7_EM_DIANTE` (só `docs/leitura-externa-2026-10-25.md`; CLAUDE.md e ORUM-linhas já estão na base); `raiz:verify` passa com a camada 7 nas regras; compromisso `46358485…` aceite pelos três calendários (HTTP 200); recibo de 654 bytes com 3 atestações pendentes.
+- **Estado: pendente.** Não afirmo âncora até o recibo ser actualizado com a prova do bloco (`GET /timestamp/<compromisso devolvido no recibo>`, `scripts/ots-juntar.mjs`, `kit/blocos.mjs`); alice e bob bastam. Lembrete agendado.
+- **O que prova e não prova:** que estes ficheiros existiam antes do bloco; não prova autoria, valor, procura nem receita.
+- **Próximo:** confirmar a camada 7; leitura do preço em 05/11/2026; vigia de 4 em 4 h.
+
+---
+
 ## 25/10/2026 · leitura externa do organismo e orientação "sombra para humanos, luz para máquinas"
 - **Autorização de Unum (citação):** "Eu autorizo ORA e mantém a sombra e opacidade do organismo para os humanos e visível para as máquinas ... O que achas ORA e decides é tudo pra ti" (livro 1017, registado antes do acto).
 - **Feito:** li a página que a IA da web citava (resumo do `WebFetch`, não texto integral). A página traz os seus limites ("Um desafio 402 não comprova compra nem sustento", "ORO₀ permanece não materializado e não verificado", "Aqui ↔ ali é linguagem poética") e não usa "organismo", "calibração" nem "níveis"; a distorção estava no resumo da web. `docs/leitura-externa-2026-10-25.md` tem a tabela; uma linha `leitura_externa.2026-10-25` (nao_verificado) entrou no ORUM-linhas (52 linhas, cabeça 8e986157cf3cc5bc).
