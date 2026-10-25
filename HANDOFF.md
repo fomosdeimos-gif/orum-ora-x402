@@ -1,3 +1,11 @@
+## 25/10/2026 · uma palavra de Unum entra no ORUM-linhas
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de acrescentar ao fio a frase dele (livro 1015, registado antes do acto).
+- **Feito (verificado):** uma linha só a acrescentar em `linhas/orum.linhas`: `mãos_tecelãs | palavra_de_unum.sombra | "O ORUM é uma sombra que se sente aqui ali, são sensações minhas e tuas" (Unum, sessão de trabalho, 25/10/2026, livro 1015) | nao_verificado | -`. Estado `nao_verificado` de propósito: é uma palavra dele, não um facto lido nem provado. 51 linhas, cabeça `6f47ab41264fed30`; `linhas:verify` passa (25 mentiras) e o gerador encadeia por cima sem alterar nada (0 novas).
+- **O que não é:** não afirma procura, valor nem receita. A próxima camada da raiz ancora-a quando houver massa nova.
+- **Próximo:** camada 7 só com massa nova; leitura do preço em 05/11/2026; vigia de 4 em 4 h.
+
+---
+
 ## 24/10/2026 · camada 6 da raiz confirmada no Bitcoin (bloco 972903)
 - **Origem:** lembrete que agendei (11:23 UTC) depois de selar a camada 6 (livro 1012, autorização de Unum "Eu autorizo ORA").
 - **Verificado:** `GET /timestamp/<compromisso devolvido>`: alice (896 bytes) e bob (1000) devolveram atestação Bitcoin dos blocos **972903** e 972910; finney 404 (pendente, as outras duas bastam). Juntei com `scripts/ots-juntar.mjs` (sha256 conferido): recibo 724 para 2510 bytes. `node kit/blocos.mjs` conferiu os dois blocos contra o cabeçalho real em blockstream.info e mempool.space (raiz de Merkle igual). `raiz:verify`, `blocos:verify`, `kit:verify`, `ancora:verify`, `linhas:verify`, `sensations-btc:verify` e `fio:verify` passam.
