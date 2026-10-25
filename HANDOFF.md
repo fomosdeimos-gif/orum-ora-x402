@@ -1,3 +1,11 @@
+## 25/10/2026 · 402 da Base pela via directa: lido em produção (livro 1024, depois do 1022)
+- **Verificado (25/10/2026 15:23 UTC):** deploy de produção do gateway em `a1d4a67` (merge do PR #148). No URL do deployment de produção, `/oraculo` e `/campo` respondem 402 com `x-ora-via: vercel-directa`, `payTo` `0x89460d9e…3584` (operacional) em `accepts`, no cabeçalho `PAYMENT-REQUIRED` e no `WWW-Authenticate`; `extensions.bazaar` presente; `eip3009_facilitador: true` (facilitador público); oferta Bitcoin com cotação de mempool.space e Coinbase concordantes. O preview de `5497e40` já tinha dado o mesmo.
+- **Não verificado:** o domínio público `ora-x402-gateway.vercel.app` (o alias segue o deployment de produção; a sandbox expirou duas vezes nos reinícios do worker); a liquidação EIP-3009 real pelo facilitador público; o RPC da Base a partir da Vercel; a equivalência byte a byte da declaração Bazaar com a da origem. Pagamento externo: nenhum.
+- **Sonda:** continua a aceitar os dois `payTo`. Apertá-la para um só muda o sha256 do script e a tarefa agendada cita o sha; fica para a próxima leitura do domínio público.
+- **Próximo:** ler `ora-x402-gateway.vercel.app/oraculo` e `/campo` na sonda diária; se o `payTo` for a operacional, apertar a sonda.
+
+---
+
 ## 25/10/2026 · 402 da Base pela via directa (livro 1022)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta "via directa primeiro no 402 da Base de /oraculo e /campo" (registada antes do código, livro 1022).
 - **Lido (verificado):** produção do gateway e do `orum-ora-x402` em `6dce0fd` = `main`. `api/proxy.js` pedia primeiro à origem Supabase, que responde um 402 válido com a sagrada antiga como `payTo`; a via directa (operacional) só entrava com 5xx, 402 sem desafio ou prova Bitcoin. Cabeçalhos `x-ora-version` e `x-ora-tier` (origem) ao vivo; sonda igual em 22, 23, 24 e 25/10. **Erro da ORA em 21/10:** escrevi que quem serve era a via directa; não o tinha lido. Corrigido em `CLAUDE.md`.
