@@ -378,8 +378,8 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 973095,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
@@ -388,5 +388,25 @@
   "nao_verificado": [
     "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
     "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+  ],
+  "atualizado_em_utc": "2026-10-25T20:10:00Z",
+  "atualizacao": "25/10/2026 (lembrete agendado 20:00 UTC, livro 1025): GET /timestamp/<compromisso devolvido pelo calendário> aos três calendários. alice (930 bytes) e bob (965) devolveram atestação Bitcoin do bloco 973095 e finney (1071) a do bloco 973112. sha256 da resposta calculado sobre os bytes recebidos antes de juntar com scripts/ots-juntar.mjs. altura_bitcoin é a mais baixa.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-10-25T20:10:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam)",
+    "blocos": [
+      {
+        "altura": 973095,
+        "hora_utc": "2026-10-25T16:37:04Z"
+      },
+      {
+        "altura": 973112,
+        "hora_utc": "2026-10-25T19:08:49Z"
+      }
+    ]
+  }
 }
