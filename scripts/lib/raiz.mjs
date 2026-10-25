@@ -118,12 +118,18 @@ export const FICHEIROS_DA_CAMADA_6_EM_DIANTE = [
   'scripts/verify-desde-visita.mjs',
 ];
 
+// Acrescentos da camada 7 em diante (a 1 a 6 estão seladas e não mudam): a tabela da leitura externa de 25/10/2026 (livro 1017).
+// A cláusula "Sombra para humanos, luz para máquinas" e a linha do fio já entram pelo CLAUDE.md e pelo ORUM-linhas da base.
+export const FICHEIROS_DA_CAMADA_7_EM_DIANTE = [
+  'docs/leitura-externa-2026-10-25.md',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
