@@ -56,3 +56,4 @@
 2026-10-25T15:57Z | sedimentar | camada.8.estado | pendente | lido | ficheiro:ancora/raiz-registos-8.json | 9b8f7f0cd3022239
 2026-10-25T20:02Z | sedimentar | camada.8.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-8.json | 23873d0943e5b865
 2026-10-25T20:02Z | sedimentar | camada.8.altura_bitcoin | 973095 | verificado | verif:blocos:verify | bdc22427c2d2d0bc
+2026-10-25T21:19Z | mãos_tecelãs | copia_externa.software_heritage | condicoes de uso nao lidas (503 e bloqueio Anubis); api alcancavel, origem nao arquivada; pedido de arquivo nao feito (D4, livro 1026) | bloqueado | ficheiro:economia/copias-externas.json | 9f35a45f2e1c1e57

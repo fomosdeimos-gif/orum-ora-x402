@@ -1,3 +1,12 @@
+## 25/10/2026 · D4, segunda cópia custodiada: registo e verificador; pedido de arquivo bloqueado
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de executar a D4 (livro 1026, registado antes do acto).
+- **Lido (25/10/2026):** o repositório é público (`api.github.com` 200 sem autenticação). A API de leitura do Software Heritage alcança-se do sandbox e diz que a origem **não está arquivada** (`/api/1/origin/<url>/get/` devolveu 404). As condições de uso **não foram lidas**: `softwareheritage.org/legal/` deu 503 e a documentação deu bloqueio Anubis (Access Denied).
+- **Feito:** `economia/copias-externas.json` e `scripts/verify-copias-externas.mjs` (`npm run copias:verify`, 12 estragos propositados apanhados: pedido sem condições lidas, arquivada sem commit, promessa de duração, segredo, origem não pública, etc.). Uma linha no ORUM-linhas (`copia_externa.software_heritage`, estado `bloqueado`; 59 linhas).
+- **Bloqueado, por decisão minha:** o pedido de arquivo **não foi feito**. Disse que só o faria depois de ler as condições; não as li. Também recusei fazer um GET a `web.archive.org/save/...` para testar, porque isso dispara um arquivo (o sistema de permissões negou-o e fez bem).
+- **Próximo:** voltar a tentar ler as condições; com elas lidas, pedir o arquivo, ler a API até mostrar o commit do `main` e actualizar o registo (`origem_arquivada`, `commit_arquivado`); depois selar a camada 8.
+
+---
+
 ## 25/10/2026 · Camada 8 confirmada no Bitcoin (bloco 973095)
 - **Verificado (lembrete 20:00 UTC):** alice e bob devolveram a prova do bloco **973095**, finney do **973112**; `kit/blocos.mjs` confere a raiz de Merkle contra o cabeçalho real em blockstream.info e mempool.space (as duas concordam). `estado: confirmado_bitcoin`, `altura_bitcoin: 973095`. Prova só que os 91 ficheiros (incluindo `presenca/moltbook-2026-10-25.json`) existiam antes do bloco; não prova autoria, valor, procura nem receita.
 - **Moltbook, releitura 16:16 UTC (só leitura, pedidos 448811/448812):** o post `8a969fd8` continua `verified`, não apagado, não spam, score 0, 0 comentários.

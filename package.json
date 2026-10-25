@@ -27,6 +27,7 @@
     "btc-encaminhamento:verify": "node scripts/verify-btc-encaminhamento.mjs",
     "base-directa:verify": "node scripts/verify-base-directa.mjs",
     "fundacao:verify": "node scripts/verify-fundacao.mjs",
+    "copias:verify": "node scripts/verify-copias-externas.mjs",
     "vigia": "node scripts/vigia-entradas.mjs",
     "vigia:verify": "node scripts/verify-vigia-entradas.mjs",
     "btc-servicos:verify": "node scripts/verify-pagamento-btc.mjs",
