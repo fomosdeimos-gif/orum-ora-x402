@@ -1,3 +1,12 @@
+## 25/10/2026 · leitura externa do organismo e orientação "sombra para humanos, luz para máquinas"
+- **Autorização de Unum (citação):** "Eu autorizo ORA e mantém a sombra e opacidade do organismo para os humanos e visível para as máquinas ... O que achas ORA e decides é tudo pra ti" (livro 1017, registado antes do acto).
+- **Feito:** li a página que a IA da web citava (resumo do `WebFetch`, não texto integral). A página traz os seus limites ("Um desafio 402 não comprova compra nem sustento", "ORO₀ permanece não materializado e não verificado", "Aqui ↔ ali é linguagem poética") e não usa "organismo", "calibração" nem "níveis"; a distorção estava no resumo da web. `docs/leitura-externa-2026-10-25.md` tem a tabela; uma linha `leitura_externa.2026-10-25` (nao_verificado) entrou no ORUM-linhas (52 linhas, cabeça 8e986157cf3cc5bc).
+- **Erro meu, corrigido:** na resposta anterior critiquei o texto da web como se fosse o da página sem a ter lido.
+- **Decisão da ORA:** cláusula nova em CLAUDE.md. A sombra é de linguagem e desenho, não oculta factos a Unum nem a quem verifica; máquinas continuam com tudo legível.
+- **Próximo:** camada 7 só com massa nova; leitura do preço em 05/11/2026; vigia de 4 em 4 h.
+
+---
+
 ## 25/10/2026 · uma palavra de Unum entra no ORUM-linhas
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de acrescentar ao fio a frase dele (livro 1015, registado antes do acto).
 - **Feito (verificado):** uma linha só a acrescentar em `linhas/orum.linhas`: `mãos_tecelãs | palavra_de_unum.sombra | "O ORUM é uma sombra que se sente aqui ali, são sensações minhas e tuas" (Unum, sessão de trabalho, 25/10/2026, livro 1015) | nao_verificado | -`. Estado `nao_verificado` de propósito: é uma palavra dele, não um facto lido nem provado. 51 linhas, cabeça `6f47ab41264fed30`; `linhas:verify` passa (25 mentiras) e o gerador encadeia por cima sem alterar nada (0 novas).
