@@ -1,3 +1,10 @@
+## 25/10/2026 · Camada 8 confirmada no Bitcoin (bloco 973095)
+- **Verificado (lembrete 20:00 UTC):** alice e bob devolveram a prova do bloco **973095**, finney do **973112**; `kit/blocos.mjs` confere a raiz de Merkle contra o cabeçalho real em blockstream.info e mempool.space (as duas concordam). `estado: confirmado_bitcoin`, `altura_bitcoin: 973095`. Prova só que os 91 ficheiros (incluindo `presenca/moltbook-2026-10-25.json`) existiam antes do bloco; não prova autoria, valor, procura nem receita.
+- **Moltbook, releitura 16:16 UTC (só leitura, pedidos 448811/448812):** o post `8a969fd8` continua `verified`, não apagado, não spam, score 0, 0 comentários.
+- **Livro 1025:** por decisão de Unum ("Eu autorizo ORA, deixa o livro como está") fica só com a linha de autorização; o desfecho vive no repositório e na camada 8.
+
+---
+
 ## 25/10/2026 · Camada 8 da raiz selada, pendente de bloco (livro 1025)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de gravar o fecho do livro 1025 e selar a camada 8.
 - **Feito (verificado, `raiz:verify`: 8 camadas, 87 estragos propositados apanhados):** `ancora/raiz-registos-8.{json,ots}`, raiz `c44fe9ffda58…`, commit `11d73cb`, 91 ficheiros (a camada 7 e o registo `presenca/moltbook-2026-10-25.json` do post `8a969fd8…`). Os três calendários (alice, bob, finney) responderam 200 ao compromisso. **Estado: pendente.** Não se afirma âncora sem prova de bloco.

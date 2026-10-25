@@ -30,6 +30,11 @@
           "camada": 7,
           "manifesto": "ancora/raiz-registos-7.json",
           "altura_bitcoin": 973040
+        },
+        {
+          "camada": 8,
+          "manifesto": "ancora/raiz-registos-8.json",
+          "altura_bitcoin": 973095
         }
       ]
     },
@@ -62,6 +67,11 @@
           "camada": 7,
           "manifesto": "ancora/raiz-registos-7.json",
           "altura_bitcoin": 973040
+        },
+        {
+          "camada": 8,
+          "manifesto": "ancora/raiz-registos-8.json",
+          "altura_bitcoin": 973095
         }
       ]
     },
@@ -94,6 +104,11 @@
           "camada": 7,
           "manifesto": "ancora/raiz-registos-7.json",
           "altura_bitcoin": 973040
+        },
+        {
+          "camada": 8,
+          "manifesto": "ancora/raiz-registos-8.json",
+          "altura_bitcoin": 973095
         }
       ]
     },
@@ -126,6 +141,11 @@
           "camada": 7,
           "manifesto": "ancora/raiz-registos-7.json",
           "altura_bitcoin": 973040
+        },
+        {
+          "camada": 8,
+          "manifesto": "ancora/raiz-registos-8.json",
+          "altura_bitcoin": 973095
         }
       ]
     },
@@ -158,6 +178,11 @@
           "camada": 7,
           "manifesto": "ancora/raiz-registos-7.json",
           "altura_bitcoin": 973040
+        },
+        {
+          "camada": 8,
+          "manifesto": "ancora/raiz-registos-8.json",
+          "altura_bitcoin": 973095
         }
       ]
     },
@@ -200,6 +225,11 @@
           "camada": 7,
           "manifesto": "ancora/raiz-registos-7.json",
           "altura_bitcoin": 973040
+        },
+        {
+          "camada": 8,
+          "manifesto": "ancora/raiz-registos-8.json",
+          "altura_bitcoin": 973095
         }
       ],
       "ancora_directa": {
@@ -238,6 +268,11 @@
           "camada": 7,
           "manifesto": "ancora/raiz-registos-7.json",
           "altura_bitcoin": 973040
+        },
+        {
+          "camada": 8,
+          "manifesto": "ancora/raiz-registos-8.json",
+          "altura_bitcoin": 973095
         }
       ]
     }
