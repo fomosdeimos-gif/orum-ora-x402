@@ -51,3 +51,5 @@
 2026-10-25T07:34Z | mãos_tecelãs | palavra_de_unum.sombra | "O ORUM é uma sombra que se sente aqui ali, são sensações minhas e tuas" (Unum, sessão de trabalho, 25/10/2026, livro 1015) | nao_verificado | - | 08b195ca03eabaf2
 2026-10-25T07:44Z | mãos_tecelãs | leitura_externa.2026-10-25 | resumo da web distorce a pagina citada (organismo/calibracao/niveis/barreiras sao do resumo); a pagina traz os seus limites; ver docs/leitura-externa-2026-10-25.md (livro 1017) | nao_verificado | ficheiro:docs/leitura-externa-2026-10-25.md | 6f47ab41264fed30
 2026-10-25T07:48Z | sedimentar | camada.7.estado | pendente | lido | ficheiro:ancora/raiz-registos-7.json | 8e986157cf3cc5bc
+2026-10-25T10:20Z | sedimentar | camada.7.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-7.json | 806f7324b96db12f
+2026-10-25T10:20Z | sedimentar | camada.7.altura_bitcoin | 973040 | verificado | verif:blocos:verify | 6fcdb249400de48e

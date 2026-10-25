@@ -1,3 +1,12 @@
+## 25/10/2026 · camada 7 da raiz confirmada no Bitcoin (bloco 973040)
+- **Origem:** lembrete que agendei (10:19 UTC) depois de selar a camada 7 (livro 1019, autorização de Unum "Eu autorizo ORA").
+- **Verificado:** `GET /timestamp/<compromisso devolvido no recibo>` aos três calendários, todos 200. alice (1001 bytes) e bob (1001) devolveram a prova do bloco **973040** (2026-10-25T08:02:40Z); finney (1106) a do **973046** (09:03:05Z). Juntei com `scripts/ots-juntar.mjs` (sha256 conferido antes): recibo 654 para 3601 bytes. `node kit/blocos.mjs ancora/raiz-registos-7.ots`: as três atestações conferem com o cabeçalho real em blockstream.info e mempool.space.
+- **Consequências:** manifesto da camada 7 `confirmado_bitcoin` (altura 973040, a mais baixa); `sensations-btc:verify` e o fio (`linhas:gerar`) com as linhas `camada.7.*`.
+- **O que prova e não prova:** que estes ficheiros, incluindo a tabela da leitura externa, existiam antes do bloco 973040. Não prova autoria, valor, procura nem receita.
+- **Próximo:** leitura do preço em 05/11/2026; a camada 8 só com massa nova; vigia de 4 em 4 h.
+
+---
+
 ## 25/10/2026 · camada 7 da raiz selada (pendente de bloco)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de selar a camada 7 (livro 1019, registado antes do acto).
 - **Feito (verificado):** raiz SHA-256 `d180675d1d2e5809e2713e54b9494c7ce3675360dca96366446dfb563612c5f3` do commit limpo `19ffff3`; lista nova `FICHEIROS_DA_CAMADA_7_EM_DIANTE` (só `docs/leitura-externa-2026-10-25.md`; CLAUDE.md e ORUM-linhas já estão na base); `raiz:verify` passa com a camada 7 nas regras; compromisso `46358485…` aceite pelos três calendários (HTTP 200); recibo de 654 bytes com 3 atestações pendentes.
