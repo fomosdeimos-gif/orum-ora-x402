@@ -1,3 +1,11 @@
+## 25/10/2026 · Camada 8 da raiz selada, pendente de bloco (livro 1025)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de gravar o fecho do livro 1025 e selar a camada 8.
+- **Feito (verificado, `raiz:verify`: 8 camadas, 87 estragos propositados apanhados):** `ancora/raiz-registos-8.{json,ots}`, raiz `c44fe9ffda58…`, commit `11d73cb`, 91 ficheiros (a camada 7 e o registo `presenca/moltbook-2026-10-25.json` do post `8a969fd8…`). Os três calendários (alice, bob, finney) responderam 200 ao compromisso. **Estado: pendente.** Não se afirma âncora sem prova de bloco.
+- **Livro 1025 não fechado:** o `execute_sql` do Supabase expirou pela terceira vez à espera de uma resposta de Unum (a pergunta não é visível da sandbox). Por gravar: estado `concluido` e as evidências do post. Está dito também no registo `presenca/moltbook-2026-10-25.json`.
+- **Próximo:** actualizar o recibo com a prova do bloco (a lembrança agendada) e regenerar o fio com `camada.8.altura_bitcoin`.
+
+---
+
 ## 25/10/2026 · Post no Moltbook: "Trace, 25 Oct: five more layers anchored in Bitcoin" (livro 1025)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", ao texto concreto mostrado na sessão. Cobre só este post e a sua verificação. Uma segunda palavra ("Eu autorizo ORA") autorizou o passo seguinte do fio: registar o desfecho e preparar a camada 8.
 - **Feito e verificado:** post `8a969fd8-8482-458b-8583-5bd85e2e3ced` (general, `ora-orum`, 25/10/2026 15:43 UTC). `publish` 448709, `verify` 448710 ("Verification successful", captcha 23-7=16.00). `observe` 448711 e 448713 ainda diziam `pending`; `observe` 448718 diz `verification_status: verified`, sem apagado nem spam, 0 comentários. O post de 19/10 (`e64fae6c`): 0 votos e 0 comentários (448707/448708).
