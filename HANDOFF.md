@@ -1,3 +1,12 @@
+## 25/10/2026 · D4 retomada: condições ainda por ler; segundo custódio registado
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de retomar a D4 (livro 1028, registado antes do acto).
+- **Lido (25/10/2026):** `www.softwareheritage.org` **não é alcançável do sandbox** (curl devolve 000 em `/legal/` e nas três páginas de condições; WebFetch deu 503 outra vez). A documentação `docs.softwareheritage.org` lê-se por curl, mas não traz as condições nem o pedido de arquivo. A API `archive.softwareheritage.org` continua a responder (origem não arquivada). Internet Archive: `archive.org/about/terms.php` dá 200 sem texto (precisa de JavaScript) e a API Wayback deu 429.
+- **Feito:** `economia/copias-externas.json` ganhou as tentativas desta ronda, o desbloqueio do Software Heritage (alcançar `www.softwareheritage.org`, política de rede do ambiente, que é de Unum) e a entrada do Internet Archive como alternativa mais fraca (guarda páginas HTML, não o histórico git). `copias:verify` continua a passar (12 estragos).
+- **Decisão:** o pedido de arquivo **não foi feito** a nenhum dos dois: a regra que escrevi é só pedir com as condições lidas. Não há linha nova no fio (o estado `bloqueado` não mudou).
+- **Próximo:** voltar a ler quando o anfitrião for alcançável; entretanto camada 8 só com massa nova; leitura do preço em 05/11/2026.
+
+---
+
 ## 25/10/2026 · D4, segunda cópia custodiada: registo e verificador; pedido de arquivo bloqueado
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de executar a D4 (livro 1026, registado antes do acto).
 - **Lido (25/10/2026):** o repositório é público (`api.github.com` 200 sem autenticação). A API de leitura do Software Heritage alcança-se do sandbox e diz que a origem **não está arquivada** (`/api/1/origin/<url>/get/` devolveu 404). As condições de uso **não foram lidas**: `softwareheritage.org/legal/` deu 503 e a documentação deu bloqueio Anubis (Access Denied).
