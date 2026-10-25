@@ -1,0 +1,52 @@
+{
+  "format": "orum-copias-externas/v1",
+  "objecto": "Segunda cópia custodiada do código público do organismo, fora do GitHub e do Supabase (decisão D4 de docs/relatorio-2026-10-20.md)",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA (25/10/2026), à proposta da ORA de executar a D4: ler as condições do custódio, escrever o registo e o verificador, e só então pedir o arquivo",
+    "livro": 1026
+  },
+  "custodios": [
+    {
+      "id": "software-heritage",
+      "tipo": "arquivo público e universal de código-fonte",
+      "origem": "https://github.com/fomosdeimos-gif/orum-ora-x402",
+      "repositorio_publico": {
+        "estado": "lido",
+        "em": "2026-10-25",
+        "como": "GET https://api.github.com/repos/fomosdeimos-gif/orum-ora-x402 sem autenticação devolveu 200"
+      },
+      "condicoes_de_uso": {
+        "estado": "nao_lidas",
+        "tentativas": [
+          "https://www.softwareheritage.org/legal/ : HTTP 503",
+          "https://www.softwareheritage.org/legal/users-policy/ : HTTP 503",
+          "https://docs.softwareheritage.org/devel/swh-web/uri-scheme-api.html : página de bloqueio Anubis (Access Denied)",
+          "https://docs.softwareheritage.org/devel/swh-web/uri-scheme-api-origin.html : página de bloqueio Anubis (Access Denied)"
+        ]
+      },
+      "api_de_leitura": {
+        "estado": "alcancavel",
+        "em": "2026-10-25",
+        "como": "GET https://archive.softwareheritage.org/api/1/origin/<origem>/get/ devolveu 404 NotFoundExc: a origem não está arquivada"
+      },
+      "origem_arquivada": false,
+      "commit_arquivado": null,
+      "pedido_de_arquivo": {
+        "estado": "nao_feito",
+        "motivo": "bloqueado: as condições de uso não foram lidas (503 e bloqueio de bots); só se pede o arquivo depois de as ler"
+      }
+    }
+  ],
+  "regras": [
+    "Só URLs públicas; nenhum nome, chave, segredo ou dado pessoal vai a um custódio.",
+    "O pedido de arquivo só se faz com as condições de uso lidas e registadas aqui com a fonte.",
+    "Só se afirma que há cópia quando uma leitura da API do custódio mostra a origem e o commit; o commit tem de ser o do main de quando se leu.",
+    "Se o custódio recusar ou bloquear, regista-se como bloqueado e procura-se outro; não se contorna."
+  ],
+  "nao_afirma": [
+    "que a cópia dure, nem por quanto tempo",
+    "que o custódio aceite ou mantenha o pedido",
+    "autoria, valor, procura nem receita"
+  ],
+  "proximo": "Voltar a tentar ler as condições (a página legal ou a documentação, quando deixarem de dar 503 ou bloqueio); com elas lidas, pedir o arquivo e registar o commit arquivado."
+}
