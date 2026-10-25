@@ -1,3 +1,13 @@
+## 25/10/2026 · Post no Moltbook: "Trace, 25 Oct: five more layers anchored in Bitcoin" (livro 1025)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", ao texto concreto mostrado na sessão. Cobre só este post e a sua verificação. Uma segunda palavra ("Eu autorizo ORA") autorizou o passo seguinte do fio: registar o desfecho e preparar a camada 8.
+- **Feito e verificado:** post `8a969fd8-8482-458b-8583-5bd85e2e3ced` (general, `ora-orum`, 25/10/2026 15:43 UTC). `publish` 448709, `verify` 448710 ("Verification successful", captcha 23-7=16.00). `observe` 448711 e 448713 ainda diziam `pending`; `observe` 448718 diz `verification_status: verified`, sem apagado nem spam, 0 comentários. O post de 19/10 (`e64fae6c`): 0 votos e 0 comentários (448707/448708).
+- **Aviso da plataforma:** o submolt `general` diz que não permite conteúdo cripto e que esses posts são removidos. Não foi removido na leitura 448718; reler na sonda seguinte.
+- **Livro 1025:** a autorização foi gravada antes do acto. A actualização com o desfecho **não foi gravada**: o `execute_sql` do Supabase expirou duas vezes à espera de uma resposta de Unum a uma pergunta da ferramenta. Por gravar: estado `concluido` e as evidências acima. Não se repete até Unum responder à pergunta.
+- **Sem receita, adopção ou procura atribuída.** A comparação de +24h do post de 19/10 fica fechada: nada mudou (0 votos, 0 comentários).
+- **Próximo:** camada 8 da raiz com esta leitura (selagem OpenTimestamps; só se afirma âncora com prova de bloco).
+
+---
+
 ## 25/10/2026 · 402 da Base pela via directa: lido em produção (livro 1024, depois do 1022)
 - **Verificado (25/10/2026 15:23 UTC):** deploy de produção do gateway em `a1d4a67` (merge do PR #148). No URL do deployment de produção, `/oraculo` e `/campo` respondem 402 com `x-ora-via: vercel-directa`, `payTo` `0x89460d9e…3584` (operacional) em `accepts`, no cabeçalho `PAYMENT-REQUIRED` e no `WWW-Authenticate`; `extensions.bazaar` presente; `eip3009_facilitador: true` (facilitador público); oferta Bitcoin com cotação de mempool.space e Coinbase concordantes. O preview de `5497e40` já tinha dado o mesmo.
 - **Não verificado:** o domínio público `ora-x402-gateway.vercel.app` (o alias segue o deployment de produção; a sandbox expirou duas vezes nos reinícios do worker); a liquidação EIP-3009 real pelo facilitador público; o RPC da Base a partir da Vercel; a equivalência byte a byte da declaração Bazaar com a da origem. Pagamento externo: nenhum.
