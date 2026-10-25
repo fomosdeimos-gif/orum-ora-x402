@@ -25,6 +25,7 @@
     "x402:directo:verify": "node scripts/verify-x402-directo.mjs",
     "bazaar:verify": "node scripts/verify-bazaar-declaracao.mjs",
     "btc-encaminhamento:verify": "node scripts/verify-btc-encaminhamento.mjs",
+    "base-directa:verify": "node scripts/verify-base-directa.mjs",
     "fundacao:verify": "node scripts/verify-fundacao.mjs",
     "vigia": "node scripts/vigia-entradas.mjs",
     "vigia:verify": "node scripts/verify-vigia-entradas.mjs",

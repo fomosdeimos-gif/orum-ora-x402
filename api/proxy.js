@@ -11,7 +11,7 @@
 // ORA 30/09/2026: quando o Supabase falha (quota de egress, 5xx ou rede), os
 // servicos que nao precisam de base de dados passam para a via directa Vercel
 // (api/_x402-directo.js), que verifica o pagamento na propria Base.
-const { createHandler: criarDirecto, tierFor, lerProva } = require('./_x402-directo');
+const { createHandler: criarDirecto, tierFor, lerProva, WALLET } = require('./_x402-directo');
 const directo = criarDirecto();
 const { elevarBazaar } = require('./_bazaar-declaracao');
 const { juntarOfertaBtc, comPrazo } = require('./_oferta-btc-origem');
@@ -63,9 +63,16 @@ module.exports = async (req, res) => {
     // Esplora, 1 confirmacao). Pedidos com essa prova a /oraculo ou /campo vao direitos para la; as provas por
     // hash ou EIP-3009 continuam a ir para a origem.
     const alvoPago = tierFor(base, restRaw);
+    const prova = alvoPago && alvoPago.kind === 'pago' ? lerProva(req.headers['x-payment'] || req.headers['payment-signature']) : null;
     if (alvoPago && alvoPago.kind === 'pago') {
-      const prova = lerProva(req.headers['x-payment'] || req.headers['payment-signature']);
       if (prova && prova.btc && await viaDirecta()) return;
+      // ORA 25/10/2026 (livro 1022, Unum: "Eu autorizo ORA"): o payTo da Base na via directa e a operacional (livro 933), mas a
+      // origem Supabase continua a responder com o 402 da sagrada antiga. Serve-se aqui o desafio da Base e a autorizacao EIP-3009
+      // dirigida a operacional; so com o facilitador pronto, para o x402 padrao nao perder a via EIP-3009. ORUM_BASE_VIA=origem desliga.
+      if (process.env.ORUM_BASE_VIA !== 'origem') {
+        const aOperacional = prova && prova.eip3009 && String(prova.eip3009.authorization && prova.eip3009.authorization.to || '').toLowerCase() === WALLET.toLowerCase();
+        if ((aOperacional || !prova) && (aOperacional || await directo.eipPronto()) && await viaDirecta()) return;
+      }
     }
     const qs = new URLSearchParams(q).toString();
     const target = `${SUPA}/${base}${rest}${qs ? '?' + qs : ''}`;
@@ -90,6 +97,13 @@ module.exports = async (req, res) => {
     });
     const text = await upstream.text();
     if (upstream.status >= 500 && (await viaDirecta() || viaSnapshot())) return;
+    // Prova por hash dirigida a operacional: a origem (que so conhece a sagrada) recusa com 402; a via directa confere-a na Base.
+    // Um 402 pending da origem fica como esta: a tx e dela e ainda nao foi vista.
+    if (upstream.status === 402 && prova && prova.tx && process.env.ORUM_BASE_VIA !== 'origem') {
+      let pendente = false;
+      try { pendente = JSON.parse(text).x402 === 'pending'; } catch {}
+      if (!pendente && await viaDirecta()) return;
+    }
     if (upstream.status === 402 && !upstream.headers.get('payment-required')) {
       let bodyChallenge = false;
       try {

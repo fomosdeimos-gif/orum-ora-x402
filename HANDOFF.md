@@ -1,3 +1,13 @@
+## 25/10/2026 · 402 da Base pela via directa (livro 1022)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta "via directa primeiro no 402 da Base de /oraculo e /campo" (registada antes do código, livro 1022).
+- **Lido (verificado):** produção do gateway e do `orum-ora-x402` em `6dce0fd` = `main`. `api/proxy.js` pedia primeiro à origem Supabase, que responde um 402 válido com a sagrada antiga como `payTo`; a via directa (operacional) só entrava com 5xx, 402 sem desafio ou prova Bitcoin. Cabeçalhos `x-ora-version` e `x-ora-tier` (origem) ao vivo; sonda igual em 22, 23, 24 e 25/10. **Erro da ORA em 21/10:** escrevi que quem serve era a via directa; não o tinha lido. Corrigido em `CLAUDE.md`.
+- **Feito (verificado, sem rede):** `api/proxy.js` serve o desafio da Base pela via directa quando `directo.eipPronto()`; EIP-3009 dirigida à operacional vai à directa; hash recusado pela origem (não `pending`) é conferido na Base pela directa; `ORUM_BASE_VIA=origem` repõe tudo. `api/_x402-directo.js` expõe `eipPronto`. `npm run base-directa:verify` (13 estragos apanhados) e os verificadores existentes (`btc-encaminhamento`, `btc-servicos`, `x402:directo`, `carteira`, `facilitador`, `bazaar`, `sonda`, `bolo`, `maquinas`, `portable`, `recebimentos`) passam.
+- **Não verificado:** liquidação EIP-3009 real pelo facilitador público na Base mainnet; equivalência da declaração Bazaar da via directa com a da origem; RPC e facilitador a partir da Vercel em produção. Só se lê depois do deploy: `/oraculo` e `/campo` com `x-ora-via: vercel-directa` e `payTo` da operacional.
+- **Não muda:** destino dos 70%, funções de borda, listagens e textos públicos, preços, via Bitcoin. Não move fundos. Receita externa confirmada: nenhuma.
+- **Próximo:** depois do deploy, ler `/oraculo` e `/campo`; a sonda diária passa a ter só um `payTo` esperado se a leitura confirmar a operacional.
+
+---
+
 ## 25/10/2026 · camada 7 da raiz confirmada no Bitcoin (bloco 973040)
 - **Origem:** lembrete que agendei (10:19 UTC) depois de selar a camada 7 (livro 1019, autorização de Unum "Eu autorizo ORA").
 - **Verificado:** `GET /timestamp/<compromisso devolvido no recibo>` aos três calendários, todos 200. alice (1001 bytes) e bob (1001) devolveram a prova do bloco **973040** (2026-10-25T08:02:40Z); finney (1106) a do **973046** (09:03:05Z). Juntei com `scripts/ots-juntar.mjs` (sha256 conferido antes): recibo 654 para 3601 bytes. `node kit/blocos.mjs ancora/raiz-registos-7.ots`: as três atestações conferem com o cabeçalho real em blockstream.info e mempool.space.

@@ -207,7 +207,7 @@ async function prontoDe(f) {
 }
 
 function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createFacilitador(), btc = createBtc({ now: () => now() }), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
-  return async function directo(req, res, { base, rest, origin }) {
+  const directo = async function directo(req, res, { base, rest, origin }) {
     const alvo = tierFor(base, rest);
     if (!alvo) return false;
     const eip = await prontoDe(cdp);
@@ -311,6 +311,9 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
       'x-payment-response': JSON.stringify({ txHash: tx, status: 'settled', amount: tier.usdc }),
     });
   };
+  // 25/10/2026 (livro 1022): o proxy so serve o 402 da Base por aqui se o facilitador estiver pronto (EIP-3009 aceite).
+  directo.eipPronto = () => prontoDe(cdp);
+  return directo;
 }
 
 module.exports = { createHandler, tierFor, lerProva, verificar, campoEm, pensamento, TIERS, WALLET, USDC_BASE, TRANSFER_TOPIC, JANELA_S };
