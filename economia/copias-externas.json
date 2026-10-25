@@ -21,8 +21,12 @@
           "https://www.softwareheritage.org/legal/ : HTTP 503",
           "https://www.softwareheritage.org/legal/users-policy/ : HTTP 503",
           "https://docs.softwareheritage.org/devel/swh-web/uri-scheme-api.html : página de bloqueio Anubis (Access Denied)",
-          "https://docs.softwareheritage.org/devel/swh-web/uri-scheme-api-origin.html : página de bloqueio Anubis (Access Denied)"
-        ]
+          "https://docs.softwareheritage.org/devel/swh-web/uri-scheme-api-origin.html : página de bloqueio Anubis (Access Denied)",
+          "25/10/2026, segunda ronda: https://www.softwareheritage.org/legal/ por WebFetch deu 503 outra vez",
+          "25/10/2026: curl a www.softwareheritage.org/legal/, /legal/terms-of-use/, /legal/users-policy/ e /legal/bulk-access-terms-of-use/ não ligou (código 000); o anfitrião www.softwareheritage.org não é alcançável do sandbox",
+          "25/10/2026: a documentação docs.softwareheritage.org lê-se por curl (200), mas a página da API de origem não traz as condições de uso nem o pedido de arquivo"
+        ],
+        "desbloqueio": "alcançar www.softwareheritage.org do sandbox (política de rede do ambiente, que é de Unum), ou outra fonte oficial legível das condições"
       },
       "api_de_leitura": {
         "estado": "alcancavel",
@@ -33,7 +37,34 @@
       "commit_arquivado": null,
       "pedido_de_arquivo": {
         "estado": "nao_feito",
-        "motivo": "bloqueado: as condições de uso não foram lidas (503 e bloqueio de bots); só se pede o arquivo depois de as ler"
+        "motivo": "bloqueado: as condições de uso continuam por ler (www.softwareheritage.org inalcançável e 503); só se pede o arquivo depois de as ler"
+      }
+    },
+    {
+      "id": "internet-archive",
+      "tipo": "arquivo público de páginas web (Wayback Machine)",
+      "origem": "https://github.com/fomosdeimos-gif/orum-ora-x402",
+      "repositorio_publico": {
+        "estado": "lido",
+        "em": "2026-10-25",
+        "como": "GET https://api.github.com/repos/fomosdeimos-gif/orum-ora-x402 sem autenticação devolveu 200"
+      },
+      "condicoes_de_uso": {
+        "estado": "nao_lidas",
+        "tentativas": [
+          "25/10/2026: https://archive.org/about/terms.php devolve 200 mas sem texto (a página precisa de JavaScript)"
+        ]
+      },
+      "api_de_leitura": {
+        "estado": "limitada",
+        "em": "2026-10-25",
+        "como": "GET https://archive.org/wayback/available?url=... devolveu 429 (limite de taxa)"
+      },
+      "origem_arquivada": false,
+      "commit_arquivado": null,
+      "pedido_de_arquivo": {
+        "estado": "nao_feito",
+        "motivo": "bloqueado: condições de uso não lidas e leitura limitada; além disso a Wayback guarda páginas HTML do GitHub e não o histórico git, por isso seria uma cópia mais fraca do que o Software Heritage"
       }
     }
   ],
@@ -48,5 +79,5 @@
     "que o custódio aceite ou mantenha o pedido",
     "autoria, valor, procura nem receita"
   ],
-  "proximo": "Voltar a tentar ler as condições (a página legal ou a documentação, quando deixarem de dar 503 ou bloqueio); com elas lidas, pedir o arquivo e registar o commit arquivado."
+  "proximo": "Voltar a ler as condições quando www.softwareheritage.org for alcançável do sandbox (ou existir outra fonte oficial legível); com elas lidas, pedir o arquivo, ler a API até mostrar o commit do main e actualizar o registo. Entretanto o Internet Archive fica como alternativa mais fraca."
 }
