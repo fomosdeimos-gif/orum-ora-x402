@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { verificarRaiz, manifestosDeCamadas } from '../kit/raiz.mjs';
 import { lerRecibo } from './lib/ots.mjs';
-import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE } from './lib/raiz.mjs';
+import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE } from './lib/raiz.mjs';
 
 function verificarCamada(caminhoManifesto) {
   const manifestoBytes = fs.readFileSync(caminhoManifesto);
@@ -71,6 +71,11 @@ assert.ok(f7.includes('ancora/raiz-registos-6.json') && f7.includes('ancora/raiz
 for (const x of FICHEIROS_DA_CAMADA_7_EM_DIANTE) { assert.ok(f7.includes(x), `a camada 7 devia selar ${x}`); assert.ok(!f6.includes(x), `a camada 6 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 7 tem de existir: ${x}`); }
 for (const x of FICHEIROS_DA_CAMADA_6_EM_DIANTE) assert.ok(f7.includes(x), `a camada 7 tem de continuar a selar ${x}`);
 assert.equal(new Set(f7).size, f7.length, 'caminho repetido na camada 7');
+const f8 = ficheirosDaCamada(8);
+assert.ok(f8.includes('ancora/raiz-registos-7.json') && f8.includes('ancora/raiz-registos-7.ots'), 'a camada 8 sela a 7');
+for (const x of FICHEIROS_DA_CAMADA_8_EM_DIANTE) { assert.ok(f8.includes(x), `a camada 8 devia selar ${x}`); assert.ok(!f7.includes(x), `a camada 7 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 8 tem de existir: ${x}`); }
+for (const x of FICHEIROS_DA_CAMADA_7_EM_DIANTE) assert.ok(f8.includes(x), `a camada 8 tem de continuar a selar ${x}`);
+assert.equal(new Set(f8).size, f8.length, 'caminho repetido na camada 8');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
