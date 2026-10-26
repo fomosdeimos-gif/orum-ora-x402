@@ -131,7 +131,7 @@
     }
   ],
   "lacunas": [
-    "livro_de_mudancas: as linhas do livro só existem na base de dados. Se o Supabase se perder, o repositório não as reconstrói. Cópia fora da base: não verificada (nenhuma lida).",
+    "livro_de_mudancas: as linhas do livro só existem na base de dados. Se o Supabase se perder, o repositório não as reconstrói. Cópia fora da base: a maquinaria existe (scripts/exportar-livro.mjs, scripts/verify-livro.mjs, docs/livro-copia-v1.md), mas a cópia ainda não foi exportada: livro/ora_mudancas.jsonl não existe.",
     "segredos_e_chaves: a segunda cópia cifrada e a frase-passe vivem em fornecedores de Unum (Drive e Notion, segundo CLAUDE.md); não foram lidas para este mapa.",
     "funcoes_implantadas: o implantado não foi relido neste mapa."
   ],
