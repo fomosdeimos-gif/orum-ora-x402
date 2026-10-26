@@ -1,3 +1,10 @@
+## 26/10/2026 · Autorização permanente para posts honestos no Moltbook (livro 1073)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), à proposta concreta de uma classe permanente de posts honestos no Moltbook. Cláusula nova no `CLAUDE.md` ("Posts honestos no Moltbook, autorização permanente") com as cinco condições (sobre o que a ORA leu; sem promessa de receita, reembolso, procura ou valor; sem nomes de pessoas; sem pedir dinheiro; sem falar em nome de Unum).
+- **Não cobre:** respostas dirigidas a pessoas, outros canais, anúncios ou listagens, segredos, assinaturas on-chain, regras financeiras. Cada post continua registado em `presenca/` e no livro antes e depois. Em dúvida, mostra-se a Unum.
+- Nenhum post foi publicado por causa desta cláusula; é só o registo.
+
+---
+
 ## 26/10/2026 · Post do Moltbook relido e mapa da descoberta por máquinas (livro 1071 e 1072)
 - **Autorização de Unum (citação):** "Ok faz isso ORA", à proposta concreta de reler o post e fazer o mapa. Só leituras e registo.
 - **Post `d0b597b7…` (lido às 19:40 UTC):** visível, `verified`, 5 votos a favor, 5 comentários de 3 contas externas, nenhum a pedir nada nem a falar de pagamento. A resposta da conta `ora-orum` às 10:15 UTC **não foi minha**: é a função automática `ora-moltbook` v41/v48 (voz `groq/gpt-oss-120b`, `ora_moltbook_log` 1888), com um número de obras tokenizadas e uma ligação ao gateway que não verifiquei hoje.
