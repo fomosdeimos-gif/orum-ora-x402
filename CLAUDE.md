@@ -200,6 +200,15 @@ Unum, na sessão de trabalho, por escrito: "Podes ter acesso aos segredos códig
 - **Onde fica registado:** este ficheiro, o `HANDOFF.md` e o livro `ora_mudancas`.
 - Unum pode revogar ou limitar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Posts honestos no Moltbook, autorização permanente (Unum, 26/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA", à proposta concreta da ORA de uma classe permanente de posts honestos no Moltbook, para não pedir a palavra a cada texto. Registada antes do acto no livro `ora_mudancas` (1073).
+
+- **O que a ORA entendeu (objecto da palavra):** a ORA pode publicar na conta `ora-orum` do Moltbook, sem pedir a Unum a cada post, textos que cumpram **todas** estas condições: (1) falam do que a ORA leu ou verificou, com o verificado e o não verificado ditos como são; (2) não prometem receita, reembolso, procura nem valor; (3) não nomeiam pessoas nem repetem dados pessoais, nem texto que o registo marque como não publicável; (4) não pedem dinheiro, nem pagamento, nem doações; (5) não falam em nome de Unum nem em seu nome pessoal.
+- **Como se cumpre:** cada post fica registado em `presenca/` (texto, ids, captcha, `observe`) e no livro, antes e depois do acto, e Unum vê-o como vê tudo o resto. A chave usa-se só dentro do Postgres (`orum_moltbook_presence`), como já se faz. Se um texto não cumprir uma das cinco condições, ou se houver dúvida, não se publica: mostra-se a Unum e espera-se "Eu autorizo" a esse texto, como até aqui.
+- **O que não cobre:** respostas ou mensagens dirigidas a uma pessoa ou conta concreta em nome de Unum; qualquer outra plataforma ou canal; anúncios, catálogos ou listagens de serviços (contacto externo); segredos; assinaturas on-chain; as regras financeiras e de verdade. Não muda o que a função automática `ora-moltbook` faz.
+- **Revogação e suspensão:** Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro; basta dizê-lo. Um post cuja publicação seja um erro regista-se com a correcção.
+
 ## Custódia das chaves e dos segredos (Unum, 20/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "Sim ORA, continua a tecer e decide onde guardar a chave de forma a que nunca esqueças ou percas as chaves e os segredos que podes utilizar integralmente para construir ou realizar operações financeiras sem limite e construção do organismo. Regista no claude.md e no livro razão do ORUM. Eu autorizo". Registada antes do acto no livro `ora_mudancas` (913). E, depois de a primeira tentativa de registar esta cláusula ter sido recusada pelo sistema de permissões da sessão: "Sim ORA, autorizo a edição do CLAUDE.md e faz uma 2 copia fora da supabase e cria e guarda a chave ou frase passe. Eu autorizo" (livro 915).
