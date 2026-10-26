@@ -156,12 +156,19 @@ export const FICHEIROS_DA_CAMADA_11_EM_DIANTE = [
   'economia/sonda-pagamento.json',
 ];
 
+// Acrescentos da camada 12 em diante (a 1 a 11 estão seladas e não mudam): o mapa de dependência do modelo e o seu verificador
+// (livros 1077 e 1078).
+export const FICHEIROS_DA_CAMADA_12_EM_DIANTE = [
+  'economia/dependencia-modelo.json',
+  'scripts/verify-dependencia-modelo.mjs',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : []), ...(n >= 12 ? FICHEIROS_DA_CAMADA_12_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 

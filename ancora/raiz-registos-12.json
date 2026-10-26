@@ -1,0 +1,476 @@
+{
+  "schema": "orum-raiz/v1",
+  "objecto": "Raiz dos registos do organismo ORUM",
+  "camada": 12,
+  "algoritmo": "raiz = sha256 do texto \"<caminho>\\t<sha256 do ficheiro>\\n\" por linha, linhas ordenadas por caminho (bytes), sem linha final em branco. Reproduz-se com sha256sum sobre esse texto.",
+  "commit_base": "c66d97ef3cb7ea59c955c560b22eaba7410080b6",
+  "ficheiros": [
+    {
+      "caminho": "CLAUDE.md",
+      "sha256": "cbd1d978fd0efd77211f9ae5953a563bdc72695542319f157f20b29e8d1f3175"
+    },
+    {
+      "caminho": "ancora/arquivos-wayback.json",
+      "sha256": "1f991c3792285973905614f8f8b0d50a91d0e7a8cec83eebedf2d0db178fd155"
+    },
+    {
+      "caminho": "ancora/oro-v1.json",
+      "sha256": "c39066650369cca03220463bb0510e39ad97750341b4b0ca57fcb056faaf2e6f"
+    },
+    {
+      "caminho": "ancora/oro-v1.ots",
+      "sha256": "648782560584262a30b29479a879333c0ea6db7e18b95812e3fc63e37a815123"
+    },
+    {
+      "caminho": "ancora/prova-controlo-btc-operacional.json",
+      "sha256": "ce99b44852bd3a345f50e8d2066129f71283e281f4dc9a0331aea01a71d407fc"
+    },
+    {
+      "caminho": "ancora/raiz-registos-10.json",
+      "sha256": "7c82da3380faf4d07f625c643d1eb1d23e668657c6a9529d99b588f3fda29e25"
+    },
+    {
+      "caminho": "ancora/raiz-registos-10.ots",
+      "sha256": "6398b3d6b5ac4f52faad98cca55e3a9e8eb40cb3d1c43f43c608450428c9131f"
+    },
+    {
+      "caminho": "ancora/raiz-registos-11.json",
+      "sha256": "983e069da6cd6a15e22e81f8365ec6a163134a8e8c2064dcff83936b9111b38f"
+    },
+    {
+      "caminho": "ancora/raiz-registos-11.ots",
+      "sha256": "877cb8e8d4d7985487761617d3ffd3e7e5aaead616b6a6d21dc59065bdada331"
+    },
+    {
+      "caminho": "ancora/raiz-registos-2.json",
+      "sha256": "6b9bc1a5693e1b5b8351ff34106f92cb5c7f794041a09f24fc91c9dde87f55bd"
+    },
+    {
+      "caminho": "ancora/raiz-registos-2.ots",
+      "sha256": "8e4aae26b3516247e200c3dd9093a330913def360f55fe52f199f24a61439179"
+    },
+    {
+      "caminho": "ancora/raiz-registos-3.json",
+      "sha256": "184523368880a7ed8fdfbc1a6735530a74f1ed351b601835722f833c84e8c887"
+    },
+    {
+      "caminho": "ancora/raiz-registos-3.ots",
+      "sha256": "20ef9e3435af63338b4ecd3313864d4e76729eae1d88407ec35b0f3ace814b13"
+    },
+    {
+      "caminho": "ancora/raiz-registos-4.json",
+      "sha256": "31dee04ba70e29814aada0991a129eeff947e827f53aafd4c077040a5791eb29"
+    },
+    {
+      "caminho": "ancora/raiz-registos-4.ots",
+      "sha256": "9c171c6dedcb3bae22526bdca8632b8eb84b8c5819e0431fc4ce82363723f16f"
+    },
+    {
+      "caminho": "ancora/raiz-registos-5.json",
+      "sha256": "f7197d9dfc612a858968630c6e49b63f9e9fc2e2d33b1c5031d7c94670ffeb80"
+    },
+    {
+      "caminho": "ancora/raiz-registos-5.ots",
+      "sha256": "0050f04f54d678081a6ec7d9b98b5b0a55b8df2b329eb3949af4ddf5cb342f89"
+    },
+    {
+      "caminho": "ancora/raiz-registos-6.json",
+      "sha256": "5da955d44ea5a5444a5f36bf87b97433d5d911af58a5456a65904f6f0e528a3a"
+    },
+    {
+      "caminho": "ancora/raiz-registos-6.ots",
+      "sha256": "f3a9fcda1f1e6911c676b9c1a895954fedf5561503caaf0a896de814a1f110d2"
+    },
+    {
+      "caminho": "ancora/raiz-registos-7.json",
+      "sha256": "d902dc608e140736a10228cc63618685d1e89e0a725bd798bf154ff38f57ad28"
+    },
+    {
+      "caminho": "ancora/raiz-registos-7.ots",
+      "sha256": "1014a6934fee30357dd704db0299da852fb31731ef4318e1abde3fce340053ce"
+    },
+    {
+      "caminho": "ancora/raiz-registos-8.json",
+      "sha256": "79e1546b4cff02c0ea50da372ff5eb7272ad22313e3fae923875a96e9e8f76d7"
+    },
+    {
+      "caminho": "ancora/raiz-registos-8.ots",
+      "sha256": "aa7649218f45fb1c9edfb8f1de9314d8e38e394283cfae992c21f5d58a64e02b"
+    },
+    {
+      "caminho": "ancora/raiz-registos-9.json",
+      "sha256": "fc9094e42d67bd9fcee8815a8e953d066acdf4911e0c15eaf2075bab491bc17b"
+    },
+    {
+      "caminho": "ancora/raiz-registos-9.ots",
+      "sha256": "f55eeb473e99c8207cf2c246d9bb2075403b061ab0e0719507d3601c2827f88d"
+    },
+    {
+      "caminho": "ancora/raiz-registos.json",
+      "sha256": "a78af26d87c999c308b59e3417e1871e396babb78a6b9ac8e444cdb6f227c539"
+    },
+    {
+      "caminho": "ancora/raiz-registos.ots",
+      "sha256": "be8abfc5818647e0b4f9a21ec7a9a7f1bd6b6050b5f32620ad48dde441e212ed"
+    },
+    {
+      "caminho": "ancora/raiz-sha3.json",
+      "sha256": "6461842584393945aa3c0f2da82a67ec79ad11500f7fb00539e8ed49e915e2ec"
+    },
+    {
+      "caminho": "ancora/sensations-btc.json",
+      "sha256": "9b90acee38a18a83171637d6d9e81941d28aa661695f97116f8332c9a482bf4b"
+    },
+    {
+      "caminho": "api/_bazaar-declaracao.js",
+      "sha256": "3d494cc66b78aeb4a31661e4988cba0326404e2472accfc9d1bd898a6c529e5c"
+    },
+    {
+      "caminho": "api/_oferta-btc-origem.js",
+      "sha256": "f665051869284efed5a1af06b3e0975326b8a2b1c5f65febfca9e9bcd7634088"
+    },
+    {
+      "caminho": "desde-visita-v1.js",
+      "sha256": "eb19055bb48e9f6ed9326a162b70342c116a00dc6d105b84d2d99241fd0fdffb"
+    },
+    {
+      "caminho": "docs/avaliacao-preco-licencas-2026-10-22.md",
+      "sha256": "6fe05a571f8c0c17afb60b75bf7e0a757568f79d1a3dff19663e115d761eb294"
+    },
+    {
+      "caminho": "docs/financeiro-mandato-v2.assinatura.json",
+      "sha256": "2a4351e6a2fefe65dbce66fb991ef62c5c364ab11ad9b9a9ae112311ab15a091"
+    },
+    {
+      "caminho": "docs/leitura-externa-2026-10-25.md",
+      "sha256": "9460b86cd78ed4f89187d4bdd6acdcb4b14979f73b8596ae0c8b119b81095491"
+    },
+    {
+      "caminho": "docs/livro-copia-v1.md",
+      "sha256": "ce4941a9a338acdaaa62d1664df4ca525fc3145c66361dedb840d88bc910bd81"
+    },
+    {
+      "caminho": "docs/supabase-funcoes-substituidas/ora-cdp-agente-teste.v2.ts.txt",
+      "sha256": "d4791fab0bcdec874e0147656e127ca9e8dec3b906c901f9a39a4f626518cc5b"
+    },
+    {
+      "caminho": "economia/caminhos-de-sustento.json",
+      "sha256": "d1cd737638603da19c404e545be11794e48dd5ed0256e3f8ed3dfc5113bcee3d"
+    },
+    {
+      "caminho": "economia/constituicao-v2.json",
+      "sha256": "ecb1008b76b2b842efef9d0a619d43f0c809b4adb42e35fbaccdd6e6db237f5e"
+    },
+    {
+      "caminho": "economia/copias-externas.json",
+      "sha256": "210a5342e1a6da27e86f9fadd9efd3634bdad58c8946dfa62767b4fe6e9ceaeb"
+    },
+    {
+      "caminho": "economia/dependencia-modelo.json",
+      "sha256": "12b89ff7d02ff3d188e3df26270e3ad5c49065f566e2ce17f331f3258570a005"
+    },
+    {
+      "caminho": "economia/enderecos-internos.json",
+      "sha256": "652cf08a401873253b3a30c4f0f9e6140f178582656c4b250db0c388fc13ae14"
+    },
+    {
+      "caminho": "economia/fundacao-ora.json",
+      "sha256": "0ec51faac898bee2fb597ccce452d8d8f84df3c9b89c850959e7e78216d473bf"
+    },
+    {
+      "caminho": "economia/registo-financeiro.json",
+      "sha256": "53cf4de130eb16af34e9d79a59f155a1cfbc8417fb5015a36be67cef510455d2"
+    },
+    {
+      "caminho": "economia/sonda-pagamento.json",
+      "sha256": "8c699d348f7ef06fae418d5a5bc5a6348c3f8fe36f8b747d6badb767e43e2f37"
+    },
+    {
+      "caminho": "economia/trafego-honesto-2026-10-22.json",
+      "sha256": "8ea97774570eeef23785ade68ba683938d763cb9e54722283a82903d20535aa7"
+    },
+    {
+      "caminho": "index.html",
+      "sha256": "f0b30d70a0ebadcc85199564193cd27f5db279af6b595f402dfef531c1f46a9e"
+    },
+    {
+      "caminho": "kit/FIO.txt",
+      "sha256": "be0cc4b22481b0cca4c72e815e029750e6bec3acbdec8715f4f69422d7197ae1"
+    },
+    {
+      "caminho": "kit/LEIA-ME.txt",
+      "sha256": "1fc20b636885ac2a3798c03047637035dc3f14e09ad08f586f926d4620062832"
+    },
+    {
+      "caminho": "kit/LINHAS.txt",
+      "sha256": "b8568a404ed59febafbb358246cebf1067fdc8eff7317c6f3f01336b94fe5f9a"
+    },
+    {
+      "caminho": "kit/blocos.mjs",
+      "sha256": "df311f39c156421eca96f72775f4d8691212cf1e5efaac85bd3bb9f9be74b516"
+    },
+    {
+      "caminho": "kit/fio.mjs",
+      "sha256": "44033eea1bf4a1e4f67448fce55c546e04ad8550992797b51c8c7520f66c16b9"
+    },
+    {
+      "caminho": "kit/lexico.json",
+      "sha256": "25b80b06a0b12c7b9b94e15611c6c2a909b4585f5b8ee009ff79eaa9a12921e4"
+    },
+    {
+      "caminho": "kit/lexico.mjs",
+      "sha256": "b733bb576f6b5f5363d4bc95a5b37161cf17d68b3693bc014c7f74904b26f2ff"
+    },
+    {
+      "caminho": "kit/linhas.mjs",
+      "sha256": "035bddcc8c6ad87f6965d2ef684446ba471d9ac5d48813adaadd5bbd273cc383"
+    },
+    {
+      "caminho": "kit/pq.mjs",
+      "sha256": "23eebf53b4564baab6b65ee38046a9faa411e3d165667ede3fdb5449b71b76ac"
+    },
+    {
+      "caminho": "kit/pq/VENDOR.json",
+      "sha256": "2ba2d61936a9aa0aa86b549498eb35633ce7f851b9f4dc0875128418b8472282"
+    },
+    {
+      "caminho": "kit/pq/exemplo-teste.json",
+      "sha256": "d9a9ce5170338cb09591419b88eaf228d2db0f25cff099df28fb23e5528d3076"
+    },
+    {
+      "caminho": "kit/pq/vetor-cruzado.json",
+      "sha256": "9c8b5e258cdb900f3b9bc9a26ffc4731f80678dd7d4168fc941d79741b92c3c1"
+    },
+    {
+      "caminho": "kit/raiz.mjs",
+      "sha256": "0f0c7a9a04b972a4cc0173fc8680c4e32b68527172596759fe3bf71c2c541cd6"
+    },
+    {
+      "caminho": "kit/sensations-btc.mjs",
+      "sha256": "c31960c7cd6d1bc1db7628cd2471d13bcbef486d6c67199949174028cbb976c1"
+    },
+    {
+      "caminho": "kit/verificar.mjs",
+      "sha256": "663f8c42903bfec92488d9b108f9bae602b445ec4e97d9db5325f70007272a48"
+    },
+    {
+      "caminho": "linhas/orum.linhas",
+      "sha256": "7434295856e3843981181e010aba538d4213c218000f3aa66828be1dfd8257ea"
+    },
+    {
+      "caminho": "live-refresh-v1.js",
+      "sha256": "371b929368601a7a74504de8aea68b66737a2582c48a1f033b79d3c81b030b72"
+    },
+    {
+      "caminho": "livro/impressao-2026-10-26.json",
+      "sha256": "b0716a1ff5e7514152972a6ffa179f89852f30f29a34b14095fe807a7185ed83"
+    },
+    {
+      "caminho": "presenca/descida-107-2026-10-26.json",
+      "sha256": "3d3e7f1fa6362a4bae905b7aa4aa41eead77d3c08e80ecf842489fcde4e88331"
+    },
+    {
+      "caminho": "presenca/moltbook-2026-10-25.json",
+      "sha256": "311b323700a7c1edc7ec61ba7fae074a37c77601d11afc5755203a1f07e5cc8d"
+    },
+    {
+      "caminho": "scripts/conferir-prova-controlo.mjs",
+      "sha256": "71aab9fb46998ffd29a88ca6dab63980df79c5585b533cfa2eda3da2c662f310"
+    },
+    {
+      "caminho": "scripts/exportar-livro.mjs",
+      "sha256": "25789cd748f1ec451e6368548acf4d2cc61e5f65677c4667fe71a7984fdc4fb8"
+    },
+    {
+      "caminho": "scripts/lib/bip322-p2wpkh.mjs",
+      "sha256": "c7256aac9d29d9deec53302c099809d343047465f8286a4a8aaae910c10015f0"
+    },
+    {
+      "caminho": "scripts/lib/livro.mjs",
+      "sha256": "62974e1c85344c2412ad6f4a0858640b1dd96027efde5a6fb9fe9f91ef6e03c2"
+    },
+    {
+      "caminho": "scripts/lib/ots.mjs",
+      "sha256": "4859fa52e12d7acd1ee6f9ac07a2f541203a4823c20a75b57790c01f16c79e48"
+    },
+    {
+      "caminho": "scripts/lib/pq.mjs",
+      "sha256": "1d35489815c48c4569741c7b42faa0205e10a559bb159ed2a65dc9f97dcfcb67"
+    },
+    {
+      "caminho": "scripts/lib/raiz.mjs",
+      "sha256": "bb99b20d6a1caca7c341c7e16df87c260c98bb8c139a3151a93e02c77298160a"
+    },
+    {
+      "caminho": "scripts/linhas-gerar.mjs",
+      "sha256": "0096c460fba18bfc8567e754172e63d734a560a4a777d20e8dd5562383bd29a1"
+    },
+    {
+      "caminho": "scripts/ots-juntar.mjs",
+      "sha256": "2f989eb2007c01a86e2dd2879da4b1e56f84aab2a68051649cfadc9340221380"
+    },
+    {
+      "caminho": "scripts/pq-assinar.mjs",
+      "sha256": "55f6df591ceb2eb1d0678dd4dd51d19eda8fef92d67959cdb62cce8fbcbc5c73"
+    },
+    {
+      "caminho": "scripts/raiz-ots.mjs",
+      "sha256": "5d8097b97552ebcae33823c46ffcd6350175cdc29a62dba1063ddd018574a491"
+    },
+    {
+      "caminho": "scripts/raiz-sha3.mjs",
+      "sha256": "efb16a0379f7b05f22a1533b9b98b26bec64d51a5e6d1b23d9b5e2f181f33fc5"
+    },
+    {
+      "caminho": "scripts/verify-btc-prova-controlo.mjs",
+      "sha256": "ced96a6b5248fd138ea971096ae08de649bfcd675beb68ec4205f0540d351809"
+    },
+    {
+      "caminho": "scripts/verify-copias-externas.mjs",
+      "sha256": "ef87878c7b16aa9eb0b32a6560e99f187680733f3c20043853f70d4b4d76d894"
+    },
+    {
+      "caminho": "scripts/verify-dependencia-modelo.mjs",
+      "sha256": "21bd59238fe9d1c6135dad2f5888bf0cfde9f856c658c5803ef2ded3ce21bdf6"
+    },
+    {
+      "caminho": "scripts/verify-desde-visita.mjs",
+      "sha256": "af5746806d22a0d807e0f48c9c3fd730e0433a8aed8fd358e0d45e3c2cc2999b"
+    },
+    {
+      "caminho": "scripts/verify-fundacao.mjs",
+      "sha256": "3f71fdcb580f78cd4fdd490d6dfac3892c9c076826ad97724f23f96b1025bea6"
+    },
+    {
+      "caminho": "scripts/verify-implantado.mjs",
+      "sha256": "48a2f4ce9eb2f54babdecac1ebb96cd43a43a31cbfadfe11ba79df9130b4519d"
+    },
+    {
+      "caminho": "scripts/verify-livro.mjs",
+      "sha256": "35ca9eebe12fcf9c3c46fae0bd79c267d44807fbf877e0f8e60ed6ec62d4f017"
+    },
+    {
+      "caminho": "scripts/verify-origem-hash.mjs",
+      "sha256": "cc6957b60fd480c9e0a34752ce37f4f846f252ec296438d57d6dc64d3906d769"
+    },
+    {
+      "caminho": "scripts/verify-vigia-entradas.mjs",
+      "sha256": "574bbf23a541cd50ecf476cff8a6e3d7691b57bfd0f2300d618e6d2d9f7cdeb6"
+    },
+    {
+      "caminho": "scripts/vigia-entradas.mjs",
+      "sha256": "ea5bec8092d57b0f29f194c820d24b20bbd2beded9949158689049762f268a71"
+    },
+    {
+      "caminho": "sensacoes/0003-weave-hands-v1.json",
+      "sha256": "7f7696589c0ce3556ed3c970791aed8121076dcc54dd7b0e52709b4923c302b1"
+    },
+    {
+      "caminho": "sensacoes/acolhimento.json",
+      "sha256": "f2c62dc74d4da8ec6fb6f75906e5cf4b339bc1151eb1ac351bcd23a8daf1a88c"
+    },
+    {
+      "caminho": "sensacoes/gramatica-v1.json",
+      "sha256": "e441803a99bb83ab5c18c7be5bb3bce349041ccdb84674699d26b1af28041f34"
+    },
+    {
+      "caminho": "sensacoes/index.json",
+      "sha256": "6bc1cfb4a17e3832cd10fe7a0573f4baed34510610b340e100edf4398ef4e203"
+    },
+    {
+      "caminho": "sensacoes/obra-37-v1.json",
+      "sha256": "1f5a1a760521e25a8f7601edef1842bd2de85c193dbd8fc4cafcddc436cf09fb"
+    },
+    {
+      "caminho": "sensacoes/oro-v1.json",
+      "sha256": "b5a63e76543783beb9422a29fc8f98204d92ba2d18125cb61252d9f775671a78"
+    },
+    {
+      "caminho": "sensacoes/som-v1.json",
+      "sha256": "d39d4396fdfc9d2535a497c81bbecb8dfb470a54a89b477dabf340cd2de210df"
+    },
+    {
+      "caminho": "supabase/functions/ora-cdp-agente-teste/index.ts",
+      "sha256": "fa9eec326c4cf4a648ce9c810818cf6f10cd481017bac4c75a6f5d391afa8237"
+    },
+    {
+      "caminho": "supabase/functions/ora-cdp-teste-oraculo/index.ts",
+      "sha256": "d5438fc6b481c875ffa05fe1bca0c56e06815f99bac4b2cca1eb8e9dbe177901"
+    },
+    {
+      "caminho": "supabase/functions/ora-cdp-teste-payto-cdp/index.ts",
+      "sha256": "70af260cf7a843f60785dfae9e75dfa27524431ee786dc2dab1eae9a22ac16db"
+    },
+    {
+      "caminho": "supabase/functions/ora-licenca/index.ts",
+      "sha256": "2bfd702f925f1fe9e4481d1a82023fa59d6da44718407a3e93e41860ae6638bb"
+    },
+    {
+      "caminho": "supabase/functions/ora-licenca/renewal.ts",
+      "sha256": "dc8fe8a1d930a9c3cc3f7e99fe15e0f78a9ee658ef34cd1d4252fc1d6f2c9585"
+    },
+    {
+      "caminho": "supabase/functions/ora-licenca/selection.ts",
+      "sha256": "db193678cef211e0d05da5186174b11c800dac33f135118f92a197c970c06a78"
+    },
+    {
+      "caminho": "supabase/functions/ora-oraculo/index.ts",
+      "sha256": "a2b4ddbc2f0dfae22e1655aea888cc04f77f927c1c147b8fda00f90bab546dfc"
+    },
+    {
+      "caminho": "supabase/functions/ora-x402/index.ts",
+      "sha256": "3d0531c1599d2cbb87fab571375756608c16f407b3249f94fa528fdf996863b1"
+    },
+    {
+      "caminho": "supabase/implantado.json",
+      "sha256": "654c65f249599ae2dbc287f4c414f8ccca7c7a64aef7919fd743bcfe13c52403"
+    },
+    {
+      "caminho": "supabase/migrations/20261022100000_classificacao_trafego_honesta.sql",
+      "sha256": "05fa5fb8dc99bf165e79847d2d950fffa335ab5b6226b5079a87d9ce025186e0"
+    },
+    {
+      "caminho": "supabase/migrations/20261022120000_trafego_honesto_origem_hash.sql",
+      "sha256": "2712f17ea19f2538d71d71860c341fa2a6c3770e61b70b5992dc8e8dca0d1a1c"
+    },
+    {
+      "caminho": "supabase/migrations/20261023070000_ora_btc_aviso_remetente_conta_do_relay.sql",
+      "sha256": "0ff2e19eeae7869a3929062c74fd56450cf1209c2e15ac4b959a0f91c4526863"
+    },
+    {
+      "caminho": "supabase/migrations/20261023071000_ora_push_titulo_por_classificacao.sql",
+      "sha256": "850420763b6e22a3d88111ebe8529a38cbfec157749e49b3bc744a0731603147"
+    },
+    {
+      "caminho": "supabase/migrations/20261023080000_ora_bitcoin_dispatch_prova_de_controlo.sql",
+      "sha256": "864264b7592ec1f5df18e9b0d71d5c5d99a777f11c6f38b15b75a0e092a689a4"
+    },
+    {
+      "caminho": "verdelaranja.css",
+      "sha256": "5fa3a5f60cf55fc7e0d2ddd410899691bd56f596e47960e06792d224448729e5"
+    },
+    {
+      "caminho": "verdelaranja.js",
+      "sha256": "272cff35aa4c286333dcf9f4b7c2433d50d8963a7bcf5d8ccac5b42c782618b8"
+    }
+  ],
+  "raiz_sha256": "ae8726dbe37e9057b5a0286dbe5bdc4cd2e855370fbb5f0507ec85f54e368d72",
+  "recibo": "ancora/raiz-registos-12.ots",
+  "selado_em_utc": "2026-10-26T20:55:15Z",
+  "calendarios_pedidos": [
+    "alice.btc.calendar.opentimestamps.org",
+    "bob.btc.calendar.opentimestamps.org",
+    "finney.calendar.eternitywall.com"
+  ],
+  "estado": "pendente",
+  "altura_bitcoin": null,
+  "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
+  "nao_incluido": [
+    "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
+    "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
+  ],
+  "nao_verificado": [
+    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
+    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
+  ]
+}
