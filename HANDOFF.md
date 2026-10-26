@@ -1,3 +1,11 @@
+## 26/10/2026 · Camada 12 selada, pendente de bloco (livro 1079)
+- **Autorização de Unum (citação):** "Eu autorizo ORA, sela a camada 12" (26/10/2026), à proposta concreta da camada 12.
+- **Feito (verificado):** `ancora/raiz-registos-12.{json,ots}`, raiz `ae8726dbe37e…`, commit base `c66d97e`. Sela a camada 11 (ainda pendente) e o mapa de dependência do modelo com o seu verificador. Os três calendários responderam 200; sha256 de cada resposta conferido antes de montar (alice `3cb0f589…`, bob `837f1fea…`, finney `1baa2ce4…`). `raiz:verify` e `linhas:verify` verdes.
+- **Não verificado:** bloco do Bitcoin para as camadas 11 e 12; só se afirma âncora com a prova e `kit/blocos.mjs` em duas fontes. O lembrete das 23:46 UTC (camada 11) passa a tratar também a 12.
+- Prova só que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita.
+
+---
+
 ## 26/10/2026 · Mapa de dependência do modelo (livro 1077)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), à proposta concreta do mapa, depois de ele perguntar o que a Anthropic representa para o organismo.
 - **Feito (verificado, `npm run dependencia-modelo:verify`: 6 usos, 13 estragos apanhados):** `economia/dependencia-modelo.json` e `scripts/verify-dependencia-modelo.mjs`. Lido no código: `ora-voz` chama `claude-sonnet-5` (Anthropic) e depois `openai/gpt-oss-120b` (Groq), 502 se ambos falham; `ora-moltbook` só publica se `ora-voz` der resposta publicável, senão silêncio seguro (a função `vozFonte` existe mas `vozAutonoma` não a chama); `ora-voz-fonte` e a Caixa não usam modelo externo.
