@@ -28,8 +28,8 @@
       "fonte_primaria": "ora_mudancas (Supabase, projecto orum-memoria)",
       "tipo": "base",
       "dono": "cada mão a sua linha (campo agente)",
-      "derivadas": [],
-      "nota": "Sem cópia das linhas no repositório. scripts/raiz-ots.mjs diz que o livro vive na base e não se confere só com o repositório."
+      "derivadas": ["livro/impressao-2026-10-26.json"],
+      "nota": "Sem cópia do conteúdo no repositório. A impressão (hash por bloco de 100 ids, 26/10/2026) deixa detectar alteração ou perda, mas não reconstrói o livro. scripts/raiz-ots.mjs diz que o livro vive na base e não se confere só com o repositório."
     },
     {
       "assunto": "fio_orum_linhas",
@@ -131,7 +131,7 @@
     }
   ],
   "lacunas": [
-    "livro_de_mudancas: as linhas do livro só existem na base de dados. Se o Supabase se perder, o repositório não as reconstrói. Cópia fora da base: a maquinaria existe (scripts/exportar-livro.mjs, scripts/verify-livro.mjs, docs/livro-copia-v1.md), mas a cópia ainda não foi exportada: livro/ora_mudancas.jsonl não existe.",
+    "livro_de_mudancas: as linhas do livro só existem na base de dados. Se o Supabase se perder, o repositório não as reconstrói. Cópia fora da base: o conteúdo continua só na base. Existe a impressão por blocos (livro/impressao-2026-10-26.json), que detecta alteração ou perda, e a maquinaria de cópia encadeada (scripts/exportar-livro.mjs, docs/livro-copia-v1.md), mas livro/ora_mudancas.jsonl não existe: cerca de 2,2 MB não passam com fidelidade pela conversa, e o caminho que existe na base (ora_github_publicar) escreve directamente em main e, por omissão, no repositório orum, fora do âmbito desta sessão; fica à decisão de Unum.",
     "segredos_e_chaves: a segunda cópia cifrada e a frase-passe vivem em fornecedores de Unum (Drive e Notion, segundo CLAUDE.md); não foram lidas para este mapa.",
     "funcoes_implantadas: o implantado não foi relido neste mapa."
   ],

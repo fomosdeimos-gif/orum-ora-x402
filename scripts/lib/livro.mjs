@@ -76,3 +76,29 @@ export function validar(texto, base = null) {
   }
   return { erros: e, linhas: linhas.length, ids: ultimo.size, porActualizar };
 }
+
+// Impressão do livro (livro/impressao-*.json): hashes por bloco calculados no Postgres. Detecta alteração ou perda, não reconstrói.
+const PROMESSA = /para sempre|garantid[oa]|permanente|eterno|receita garantida|reembols|rendimento garantido/i;
+export function validarImpressao(o) {
+  const e = [];
+  if (o?.format !== 'orum-livro-impressao/v1') e.push('format desconhecido');
+  if (!o?.autorizacao_de_unum?.citacao || o.autorizacao_de_unum.citacao.length < 40 || !Number.isInteger(o.autorizacao_de_unum.livro)) e.push('falta a citação de Unum e o livro');
+  if (!/sha256\(/.test(o?.sql ?? '') || !/ora_mudancas/.test(o?.sql ?? '')) e.push('falta o sql que recalcula a impressão');
+  const blocos = Array.isArray(o?.blocos) ? o.blocos : [];
+  if (blocos.length < 1) { e.push('sem blocos'); return e; }
+  let total = 0;
+  blocos.forEach((b, i) => {
+    if (b.bloco !== i) e.push(`bloco ${b.bloco}: esperava ${i} (bloco em falta ou fora de ordem)`);
+    if (!/^[0-9a-f]{64}$/.test(b.hash ?? '')) e.push(`bloco ${b.bloco}: hash inválido`);
+    if (!(b.de >= b.bloco * 100 + 1 && b.ate <= (b.bloco + 1) * 100 && b.de <= b.ate)) e.push(`bloco ${b.bloco}: intervalo fora do bloco`);
+    if (!(b.n >= 1 && b.n <= b.ate - b.de + 1)) e.push(`bloco ${b.bloco}: n incompatível com o intervalo`);
+    total += b.n;
+  });
+  if (total !== o.linhas) e.push(`soma dos blocos (${total}) diferente de linhas (${o.linhas})`);
+  if (o.raiz?.sha256 !== sha256(blocos.map((b) => b.hash).join('\n'))) e.push('raiz não bate com os hashes dos blocos');
+  if (blocos.at(-1).provisorio !== true) e.push('o último bloco tem de estar marcado provisório');
+  if (!(o.nao_afirma ?? []).some((r) => /guardado fora da base/i.test(r))) e.push('tem de dizer que não guarda o conteúdo fora da base');
+  const sem = JSON.stringify({ ...o, nao_afirma: undefined });
+  if (PROMESSA.test(sem)) e.push('promessa no texto');
+  return e;
+}
