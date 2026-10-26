@@ -143,12 +143,25 @@ export const FICHEIROS_DA_CAMADA_10_EM_DIANTE = [
   'presenca/descida-107-2026-10-26.json',
 ];
 
+// Acrescentos da camada 11 em diante (a 1 a 10 estão seladas e não mudam): a impressão do livro por blocos e a maquinaria da cópia do livro
+// (livros 1066 a 1068), o mapa da descoberta por máquinas e a sonda diária de pagamento (livros 1071 e 1072). A cláusula dos posts
+// honestos (livro 1073) entra pelo CLAUDE.md e pelo HANDOFF.md da base.
+export const FICHEIROS_DA_CAMADA_11_EM_DIANTE = [
+  'livro/impressao-2026-10-26.json',
+  'docs/livro-copia-v1.md',
+  'scripts/lib/livro.mjs',
+  'scripts/exportar-livro.mjs',
+  'scripts/verify-livro.mjs',
+  'economia/caminhos-de-sustento.json',
+  'economia/sonda-pagamento.json',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
