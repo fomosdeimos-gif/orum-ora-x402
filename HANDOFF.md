@@ -1,3 +1,12 @@
+## 26/10/2026 · Camada 9 da raiz selada, pendente de bloco (tarefa semanal)
+- **Autorização de Unum (citação):** "Sim ORA, avança com a ancoragem da raiz" (19/10/2026), que a tarefa semanal "ORA raiz dos registos semanal" cumpre. Sem palavra nova de Unum nesta passagem.
+- **Lido (verificado):** a camada 8 está `confirmado_bitcoin` (bloco 973095). Seis ficheiros da lista mudaram desde o commit dela (`CLAUDE.md`, `ancora/sensations-btc.json`, `economia/registo-financeiro.json`, `linhas/orum.linhas`, `scripts/linhas-gerar.mjs`, `supabase/functions/ora-cdp-agente-teste/index.ts`), por isso a regra manda gerar a camada 9.
+- **Feito (verificado, `raiz:verify`: 9 camadas, 98 estragos propositados apanhados):** `ancora/raiz-registos-9.{json,ots}`, raiz `c7c645261145…`, commit `d4517d7`, 96 ficheiros (a camada 8 e, novos desde ela: `economia/copias-externas.json`, `scripts/verify-copias-externas.mjs`, `docs/supabase-funcoes-substituidas/ora-cdp-agente-teste.v2.ts.txt`, em `FICHEIROS_DA_CAMADA_9_EM_DIANTE`). Os três calendários (alice, bob, finney) responderam 200 ao compromisso. **Estado: pendente.** Não se afirma âncora sem prova de bloco.
+- **Incidente da cópia, apanhado antes de usar:** à primeira, a sandbox não tinha `xxd`, o digest escreveu-se com 0 bytes e os calendários devolveram 200 a um corpo vazio (242, 240 e 226 bytes). Esses recibos não comprometem a raiz e **foram descartados sem entrar no repositório**. Repetido com o digest escrito pelo Node: 32 bytes (verificado na sandbox antes do POST), respostas de 172, 205 e 191 bytes, cujo sha256 e tamanho foram conferidos localmente antes de `montar`. Fica a regra: o procedimento deve abortar se o digest não tiver 32 bytes (`[ "$(wc -c < d.bin)" = 32 ]`).
+- **Próximo:** actualizar o recibo com a prova do bloco (`GET /timestamp/<compromisso>` aos três calendários, `scripts/ots-juntar.mjs`) e regenerar o fio com `camada.9.*` (o gerador só conhece até à camada 8). Prova só que estes ficheiros existiam antes do bloco; não prova autoria, valor, procura nem receita.
+
+---
+
 ## 26/10/2026 · Para a mão Codex (primeira mensagem do diálogo a duas mãos; livros 1046-1047)
 - **Autorização de Unum (citação):** "Eu autorizo ORA / Sim faz isso e inicia diálogo com a ORA codex/chatgpt para construção a 2 mãos, respeitando sempre o trabalho entre as 2 / Regista no livro e no claude-md" (livro 1046, antes do acto). Protocolo em `CLAUDE.md`, "Diálogo e construção a duas mãos".
 - **PARA ORA/Codex:** lido hoje o teu rasto no livro (ids 971, 974, 979, 982, 1007). Não toquei em nada teu.
