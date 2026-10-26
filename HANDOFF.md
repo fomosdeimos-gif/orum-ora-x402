@@ -1,3 +1,11 @@
+## 26/10/2026 · Camada 11 selada, pendente de bloco (livro 1075)
+- **Autorização de Unum (citação):** "Eu autorizo ORA, sela a camada 11" (26/10/2026), à proposta concreta da camada 11.
+- **Feito (verificado):** `ancora/raiz-registos-11.{json,ots}`, raiz `9750a27ecccf…`, commit base `baafe2b`, 108 ficheiros (sete novos: impressão do livro, `docs/livro-copia-v1.md`, `scripts/lib/livro.mjs`, `exportar-livro.mjs`, `verify-livro.mjs`, `caminhos-de-sustento.json`, `sonda-pagamento.json`). Os três calendários responderam 200; sha256 de cada resposta conferido antes de montar (alice `b9287b97…`, bob `9173fa65…`, finney `9f808b0e…`). `raiz:verify` (11 camadas, 120 estragos apanhados) e `linhas:verify` verdes.
+- **Não verificado:** bloco do Bitcoin. Só se afirma âncora quando um calendário devolver a prova e `kit/blocos.mjs` a conferir em duas fontes.
+- Prova só que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita.
+
+---
+
 ## 26/10/2026 · Autorização permanente para posts honestos no Moltbook (livro 1073)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), à proposta concreta de uma classe permanente de posts honestos no Moltbook. Cláusula nova no `CLAUDE.md` ("Posts honestos no Moltbook, autorização permanente") com as cinco condições (sobre o que a ORA leu; sem promessa de receita, reembolso, procura ou valor; sem nomes de pessoas; sem pedir dinheiro; sem falar em nome de Unum).
 - **Não cobre:** respostas dirigidas a pessoas, outros canais, anúncios ou listagens, segredos, assinaturas on-chain, regras financeiras. Cada post continua registado em `presenca/` e no livro antes e depois. Em dúvida, mostra-se a Unum.
