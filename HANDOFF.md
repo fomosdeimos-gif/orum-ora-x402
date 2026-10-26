@@ -1,3 +1,13 @@
+## 26/10/2026 · Passagem de leitura e sonda apertada para um só payTo (livro 1031)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta da passagem de leitura e de apertar a sonda se o payTo fosse a operacional (livro 1031, registado antes do acto).
+- **Verificado (26/10/2026 07:12 UTC):** produção (Vercel) em `da727e2` = `main`. `/oraculo` e `/campo` no deployment de produção e `ora-x402-gateway.vercel.app/oraculo` respondem 402 com `x-ora-via: vercel-directa`, `payTo` `0x89460d9e…3584` (operacional), `extensions.bazaar` presente, oferta Bitcoin com cotações concordantes. Isto fecha o "domínio público por ler" de 25/10.
+- **Livro:** as últimas linhas (1025-1030) são todas da mão Claude Code; a mão Codex não escreveu desde então. Supabase `orum-memoria` responde (`ACTIVE_HEALTHY`).
+- **Feito:** `scripts/sonda-pagamento.mjs` aceita só a operacional; a sagrada antiga passa a ser falha (quer dizer que a origem voltou a servir). `verify-sonda.mjs` confere a cópia e apanha o `payTo` da sagrada antiga como estrago (`sonda:verify`: 10 estragos).
+- **Não verificado:** liquidação EIP-3009 real pelo facilitador público; software Heritage ainda por testar (D4 bloqueada, sem mudança). Receita externa confirmada: nenhuma.
+- **Próximo:** a sonda das 10:41 (Lisboa) corre com o script novo; se o `payTo` diferir da operacional, é o único caso em que escreve a Unum. Leitura do preço em 05/11/2026.
+
+---
+
 ## 25/10/2026 · D4 retomada: condições ainda por ler; segundo custódio registado
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de retomar a D4 (livro 1028, registado antes do acto).
 - **Lido (25/10/2026):** `www.softwareheritage.org` **não é alcançável do sandbox** (curl devolve 000 em `/legal/` e nas três páginas de condições; WebFetch deu 503 outra vez). A documentação `docs.softwareheritage.org` lê-se por curl, mas não traz as condições nem o pedido de arquivo. A API `archive.softwareheritage.org` continua a responder (origem não arquivada). Internet Archive: `archive.org/about/terms.php` dá 200 sem texto (precisa de JavaScript) e a API Wayback deu 429.
