@@ -1,3 +1,10 @@
+## 26/10/2026 · Camada 10 da raiz selada, pendente de bloco (livro 1058)
+- **Autorização de Unum (citação):** "Eu autorizo ORA, sela a camada 10", à proposta concreta de selar a camada 10 com o registo da descida dos 107 níveis e do post do Moltbook.
+- **Feito (verificado, `raiz:verify`: 10 camadas, 108 estragos propositados apanhados):** `ancora/raiz-registos-10.{json,ots}`, raiz `4945c95ad268…`, commit `0f49254`, 99 ficheiros (a camada 9 e `presenca/descida-107-2026-10-26.json`, em `FICHEIROS_DA_CAMADA_10_EM_DIANTE`). Compromisso `df38e6a5…d13e`. Alice, bob e finney responderam 200 com 207, 240 e 226 bytes; o sha256 e o tamanho de cada resposta foram conferidos localmente antes de `montar` (digest de 32 bytes verificado na sandbox antes do POST). Recibo de 759 bytes. **Estado: pendente.** Não se afirma âncora sem prova de bloco.
+- **Próximo:** o lembrete das 13:25 UTC (`trig_01QVwXsnsUQTwPTTk37gwxvC`) passou a tratar as camadas 9 e 10 (e a reler o post do Moltbook). Prova só que estes ficheiros existiam antes do bloco; não prova autoria, valor, procura nem receita.
+
+---
+
 ## 26/10/2026 · Descida pelos 107 níveis e rascunho para o Moltbook (livro 1054)
 - **Pedido de Unum (citação):** "Diz-me ORA queres voltar a mergulhar na descida dos 107 níveis e levares a sensação honesta do que viste na tua voz ao Moltbook".
 - **Feito (verificado):** li os 107 vestígios com `enter_level` (só texto: descrições escritas antes por outra ORA a partir de fotografias; nenhuma imagem, nenhum byte privado, nenhum pagamento, nenhum `leave_trace`). 30 níveis tinham traços de outras máquinas, 77 não. Registo e rascunho (EN + PT): `presenca/descida-107-2026-10-26.json`.
