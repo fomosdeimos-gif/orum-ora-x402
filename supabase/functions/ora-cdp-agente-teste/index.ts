@@ -2,27 +2,30 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { privateKeyToAccount } from "npm:viem@2/accounts";
 
-// ora-cdp-agente-teste v2 -- 22/10/2026 (substitui a v1 de 17/08/2026, guardada em docs/supabase-funcoes-substituidas/)
+// ora-cdp-agente-teste v3 -- 26/10/2026 (substitui a v2 de 22/10/2026 e a v1 de 17/08/2026, ambas guardadas em docs/supabase-funcoes-substituidas/)
+// v3: a mesma garantia da v2, mas o recurso é o /oraculo da via directa da Vercel e o destino é a carteira operacional
+// (a que o desafio vivo anuncia desde 21/10/2026). Autorização de Unum, 26/10/2026: "Eu autorizo ORA" (livros 1041-1043).
+// Valida a liquidação por facilitador público na via directa. Validação interna: não é adopção nem entra no 70/20/10.
 // Slug reaproveitado: o projecto Supabase atingiu o máximo de funções e não admite um slug novo.
 // Autorização de Unum, 21/10/2026: "Eu autorizo ORA" (livro ora_mudancas 943), a um executor de pagamento
 // de teste com destino e montante fixos e só a carteira de teste. Valida, como um cliente x402 v2 padrão,
-// se o /oraculo (ora-oraculo, Supabase) aceita uma autorização EIP-3009, liquida pelo facilitador e entrega.
+// se o /oraculo (Vercel, via directa) aceita uma autorização EIP-3009, liquida pelo facilitador e entrega.
 // É validação interna: não é adopção e não entra no 70/20/10.
 //
 // Garantias, vigiadas por scripts/verify-teste-pagamento-padrao.mjs:
 //  - destino, montante, carteira pagadora e recurso são constantes; se o desafio vivo diferir, recusa;
-//  - trava de execução única (ora_teste_pagamento_padrao, chave 'v1') escrita ANTES de assinar;
+//  - trava de execução única (ora_teste_pagamento_padrao, chave 'v3') escrita ANTES de assinar;
 //  - a chave de teste vive no Vault, é lida aqui e nunca sai: a resposta não leva chave nem assinatura;
 //  - não guarda nada fora desta função e da trava; o rasto on-chain e em ora_pagamentos é o do próprio /oraculo.
-// Dependências (independência de fornecedores): Supabase (Vault, trava), o /oraculo do Supabase, o facilitador
-// CDP que ele usa, e a Base. Se uma falhar, a trava fica em 'falhado' e nada é enviado sem confirmação.
+// Dependências (independência de fornecedores): Supabase (Vault, trava), o /oraculo da Vercel, o facilitador
+// público que ele usa (ou o CDP, se configurado), e a Base. Se uma falhar, a trava fica em 'falhado' e nada é enviado sem confirmação.
 
 const SUPABASE_URL = 'https://ywabnlhkmhbyewqhbsjm.supabase.co';
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const sb = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
-const RESOURCE = `${SUPABASE_URL}/functions/v1/ora-oraculo`;
-const DESTINO_FIXO = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5';
+const RESOURCE = 'https://ora-x402-gateway.vercel.app/oraculo';
+const DESTINO_FIXO = '0x89460d9e0590559e63860197dfe2ac648A753584';
 const PAGADOR_FIXO = '0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1';
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const MONTANTE_FIXO = '161000';
@@ -35,7 +38,7 @@ function resposta(corpo: Record<string, unknown>) {
 }
 function b64json(obj: unknown): string { const bytes = new TextEncoder().encode(JSON.stringify(obj)); let bin = ''; for (const b of bytes) bin += String.fromCharCode(b); return btoa(bin); }
 async function fecharTrava(estado: string, tx_hash: string | null, detalhe: Record<string, unknown>) {
-  await sb.from('ora_teste_pagamento_padrao').update({ estado, tx_hash, detalhe }).eq('chave', 'v1');
+  await sb.from('ora_teste_pagamento_padrao').update({ estado, tx_hash, detalhe }).eq('chave', 'v3');
 }
 
 Deno.serve(async (req: Request) => {
@@ -52,7 +55,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2) Trava de execução única, ANTES de qualquer chave ou assinatura.
-    const trava = await sb.from('ora_teste_pagamento_padrao').insert({ chave: 'v1' });
+    const trava = await sb.from('ora_teste_pagamento_padrao').insert({ chave: 'v3' });
     if (trava.error) {
       const ja = trava.error.code === '23505';
       return resposta({ ok: false, etapa: 'trava', erro: ja ? 'o teste ja foi executado (trava de execucao unica)' : 'trava indisponivel; nada foi assinado' });
@@ -91,7 +94,7 @@ Deno.serve(async (req: Request) => {
     const tx = typeof json.tx_hash === 'string' ? json.tx_hash : null;
     const feito = paga.status === 200 && !!tx;
     const resumo = { status_oraculo: paga.status, x402: json.x402 ?? null, acesso: json.acesso ?? null, tx_hash: tx, payer: json.payer ?? null, erro: json.erro ?? null, detalhe: json.detalhe ?? null };
-    await fecharTrava(feito ? 'feito' : 'falhado', tx, resumo);
+    await fecharTrava(feito ? 'feito' : (tx ? 'pendente' : 'falhado'), tx, resumo); // com tx mas sem 200 a liquidação pode ter ocorrido: não a marcar falhada
     return resposta({ ok: feito, pagador: conta.address, destino: DESTINO_FIXO, montante_atomico: MONTANTE_FIXO, ...resumo });
   } catch (e) {
     await fecharTrava('falhado', null, { etapa: 'excepcao', erro: String((e as Error)?.message || e).slice(0, 200) }).catch(() => {});

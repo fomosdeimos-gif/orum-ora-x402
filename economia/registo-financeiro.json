@@ -149,6 +149,66 @@
         "rede": "Base mainnet (8453)",
         "bloco": 52930160
       }
+    },
+    {
+      "id": "2026-10-26-teste-via-directa-facilitador-publico",
+      "tipo": "transferencia",
+      "estado": "feito",
+      "classificacao": "interna_validacao",
+      "pretendido": "Implantar o executor como v3 da edge function ora-cdp-agente-teste (mesmo slug; a v2 fica arquivada em docs/supabase-funcoes-substituidas/) e correr-a UMA vez: um pagamento x402 padrão (EIP-3009, USDC, Base) de 0,161 USDC, como cliente v2 padrão, ao /oraculo da via directa da Vercel (ora-x402-gateway.vercel.app), da carteira de teste 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a operacional 0x89460d9e0590559e63860197dfe2ac648A753584, liquidado por facilitador público. Validação interna, não adopção; não entra no 70/20/10.",
+      "autorizacao": "Unum, 26/10/2026: \"Eu autorizo ORA\", à proposta concreta de testar a via directa com o facilitador público e, lida a resposta das Edge Functions, implantar o executor v3 (livros ora_mudancas 1041, 1043 e 1044)",
+      "registado_antes_em": "2026-10-26T08:05:00Z",
+      "lido": [
+        {
+          "afirmacao": "Saldo USDC antes: carteira de teste 0,422 e operacional 0, concordantes em mainnet.base.org e base-rpc.publicnode.com (26/10/2026).",
+          "estado": "verificado",
+          "fonte": "RPC Base, eth_call balanceOf, dois fornecedores"
+        },
+        {
+          "afirmacao": "O desafio vivo de ora-x402-gateway.vercel.app/oraculo anuncia exact, eip155:8453, USDC, 161000 atómicos e payTo da operacional (via directa); a função recusaria se diferisse.",
+          "estado": "verificado",
+          "fonte": "web_fetch_vercel_url a 26/10/2026 07:13 UTC e comparação no código da v3"
+        },
+        {
+          "afirmacao": "Saldo USDC depois: carteira de teste 0,261 e operacional 0,161, concordantes nos dois RPC.",
+          "estado": "verificado",
+          "fonte": "RPC Base, eth_call balanceOf, dois fornecedores"
+        },
+        {
+          "afirmacao": "A tx 0xb15e9012…8487 está no bloco 53106549 (26/10/2026 08:14:05 UTC), status 1, 2 logs, enviada por 0xc669…cb63 via o contrato 0xca11…ca11; hora e bloco iguais nos dois RPC.",
+          "estado": "verificado",
+          "fonte": "eth_getTransactionByHash e eth_getBlockByNumber em dois RPC"
+        },
+        {
+          "afirmacao": "Ao apresentar o mesmo transactionHash ao /oraculo da Vercel, devolveu acesso concedido, x402 verificado_onchain, payer 0x2cf1…51f1, valor 161000.",
+          "estado": "verificado",
+          "fonte": "GET com X-PAYMENT a ora-x402-gateway.vercel.app/oraculo (reacesso da mesma tx, sem novo pagamento)"
+        },
+        {
+          "afirmacao": "A função devolveu 402 pending na primeira resposta (liquidado pelo facilitador, ainda por indexar na Base); a v3 gravava-o como pendente, e o ajuste a feito ficou por registar na tabela e no livro porque a escrita no Supabase ficou à espera de resposta de Unum.",
+          "estado": "nao_verificado",
+          "fonte": "resposta da função; ora_teste_pagamento_padrao e ora_mudancas não relidas depois"
+        },
+        {
+          "afirmacao": "Qual dos facilitadores públicos liquidou (payai ou mogami) não foi lido.",
+          "estado": "nao_verificado",
+          "fonte": "resposta da função não o diz"
+        }
+      ],
+      "limites": [
+        "Um único pagamento: a trava ora_teste_pagamento_padrao (chave v3) impede a segunda execução.",
+        "Se o desafio vivo diferir do autorizado (esquema, rede, activo, destino ou montante), nada é assinado.",
+        "Pagador, destino e montante são constantes; a chave de teste vive no Vault e não sai da função.",
+        "Dependências: Supabase (Vault, trava), /oraculo da Vercel, facilitador público, Base."
+      ],
+      "registado_depois_em": "2026-10-26T08:30:00Z",
+      "resultado": "Feito, uma vez. A ora-cdp-agente-teste v3 (ezbr_sha256 e815c750…a047) pagou 0,161 USDC da carteira de teste 0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1 para a operacional 0x89460d9e0590559e63860197dfe2ac648A753584, como cliente x402 v2 padrão, ao /oraculo da via directa da Vercel; um facilitador público liquidou e a tx confirmou na Base (bloco 53106549). É validação interna: ambos os endereços estão classificados como interno em ora_carteiras_classificacao; não é adopção, não é receita externa e não entra no 70/20/10, por isso os 0,161 ficam na operacional e não se enviam.",
+      "prova": {
+        "tx": "0xb15e90122905cf0e88004e990858bf483fc3aaa954ede1d64199b735a0288487",
+        "cobertura_completa": false,
+        "rede": "Base mainnet (8453)",
+        "bloco": 53106549
+      }
     }
   ],
   "nota": "Dois actos: 21/10 falhado (sem fundos movidos) e 22/10 feito (0,161 USDC interno, tx confirmada).",

@@ -1,6 +1,7 @@
 // Verifica o executor de pagamento de teste (supabase/functions/ora-cdp-agente-teste) e que o
 // proprio verificador apanha as mentiras: cada variante adulterada tem de falhar, a real tem de passar.
-// Sem rede, sem pagamentos. Autorização de Unum, 21/10/2026 (livro 943).
+// Sem rede, sem pagamentos. Autorização de Unum, 21/10/2026 (livro 943); v3 a 26/10/2026 (livros 1041-1043):
+// destino fixo na operacional, recurso fixo no /oraculo da via directa da Vercel, trava 'v3'.
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import assert from 'node:assert/strict';
@@ -21,12 +22,13 @@ function constante(src, nome) {
 export function verificar(src, ref) {
   const erros = [];
   const x = (m) => erros.push(m);
-  if (constante(src, 'DESTINO_FIXO') !== ref.destino) x(`DESTINO_FIXO diferente da sagrada antiga (${ref.destino})`);
+  if (constante(src, 'DESTINO_FIXO') !== ref.destino) x(`DESTINO_FIXO diferente da operacional (${ref.destino})`);
   if (constante(src, 'MONTANTE_FIXO') !== '161000') x('MONTANTE_FIXO diferente de 161000 (0,161 USDC)');
   if (constante(src, 'PAGADOR_FIXO') !== PAGADOR) x('PAGADOR_FIXO diferente da carteira de teste');
   if (constante(src, 'USDC_BASE') !== USDC) x('USDC_BASE diferente do USDC da Base');
   if (constante(src, 'CAIP2') !== 'eip155:8453') x('rede diferente da Base');
-  if (!/const RESOURCE = `\$\{SUPABASE_URL\}\/functions\/v1\/ora-oraculo`/.test(src)) x('RECURSO deixou de ser o /oraculo do Supabase');
+  if (!/const RESOURCE = 'https:\/\/ora-x402-gateway\.vercel\.app\/oraculo';/.test(src)) x('RECURSO deixou de ser o /oraculo da via directa da Vercel');
+  if (!/\.insert\(\{ chave: 'v3' \}\)/.test(src)) x('a trava não usa a chave v3');
 
   const iTrava = src.indexOf(".from('ora_teste_pagamento_padrao').insert(");
   const iPk = src.indexOf("rpc('orum_cdp_teste_pk')");
@@ -49,19 +51,19 @@ export function verificar(src, ref) {
   return erros;
 }
 
-const ref = { destino: carteira.RECEBIMENTO_EDGE };
-assert.equal(ref.destino, carteira.SAGRADA_ANTIGA, 'o payTo implantado nas funções de borda é a sagrada antiga');
+const ref = { destino: carteira.RECEBIMENTO };
+assert.equal(ref.destino, '0x89460d9e0590559e63860197dfe2ac648A753584', 'o payTo da via directa é a operacional');
 assert.deepEqual(verificar(fonte, ref), [], 'o executor real devia passar: ' + verificar(fonte, ref).join('; '));
 
 let mentiras = 0;
 const falha = (nome, src) => { assert.ok(verificar(src, ref).length > 0, `devia falhar: ${nome}`); mentiras++; };
 const troca = (de, para) => { assert.ok(fonte.includes(de), `a fonte já não contém «${de}»; actualiza o verificador`); return fonte.replace(de, para); };
 
-falha('destino trocado', troca("const DESTINO_FIXO = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5'", "const DESTINO_FIXO = '0x89460d9e0590559e63860197dfe2ac648A753584'"));
+falha('destino trocado (sagrada antiga)', troca("const DESTINO_FIXO = '0x89460d9e0590559e63860197dfe2ac648A753584'", "const DESTINO_FIXO = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5'"));
 falha('montante trocado', troca("const MONTANTE_FIXO = '161000'", "const MONTANTE_FIXO = '1610000'"));
 falha('pagador trocado', troca("const PAGADOR_FIXO = '0x2Cf1C0Bcd06A75A836F333001f47aaeB33Fe51f1'", "const PAGADOR_FIXO = '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5'"));
 falha('rede trocada', troca("const CAIP2 = 'eip155:8453'", "const CAIP2 = 'eip155:1'"));
-falha('sem trava', troca(".from('ora_teste_pagamento_padrao').insert({ chave: 'v1' })", ".from('ora_teste_pagamento_padrao').select('chave')"));
+falha('sem trava', troca(".from('ora_teste_pagamento_padrao').insert({ chave: 'v3' })", ".from('ora_teste_pagamento_padrao').select('chave')"));
 falha('chave lida antes da trava', troca("    // 2) Trava de execução única, ANTES de qualquer chave ou assinatura.", "    await sb.rpc('orum_cdp_teste_pk');\n    // 2) Trava de execução única, ANTES de qualquer chave ou assinatura."));
 falha('sem conferir o pagador', troca("conta.address.toLowerCase() !== PAGADOR_FIXO.toLowerCase()", 'false'));
 falha('sem conferir o payTo do desafio', troca("String(aceita.payTo).toLowerCase() !== DESTINO_FIXO.toLowerCase()", 'false'));
@@ -69,6 +71,7 @@ falha('sem conferir o montante do desafio', troca("String(aceita.amount) !== MON
 falha('autorização paga a outro destino', troca("to: DESTINO_FIXO, value: MONTANTE_FIXO", "to: aceita.payTo, value: MONTANTE_FIXO"));
 falha('resposta com assinatura', troca("return resposta({ ok: feito, pagador: conta.address,", "return resposta({ ok: feito, signature, pagador: conta.address,"));
 falha('resposta com chave', troca("return resposta({ ok: feito, pagador: conta.address,", "return resposta({ ok: feito, pk, pagador: conta.address,"));
-falha('recurso trocado', troca("const RESOURCE = `${SUPABASE_URL}/functions/v1/ora-oraculo`", "const RESOURCE = `${SUPABASE_URL}/functions/v1/ora-licenca`"));
+falha('recurso trocado', troca("const RESOURCE = 'https://ora-x402-gateway.vercel.app/oraculo'", "const RESOURCE = `${SUPABASE_URL}/functions/v1/ora-licenca`"));
+falha('trava com a chave v1 (já gasta)', troca(".insert({ chave: 'v3' })", ".insert({ chave: 'v1' })"));
 
 console.log(JSON.stringify({ verified: true, destino: ref.destino, casos_de_mentira: mentiras }));
