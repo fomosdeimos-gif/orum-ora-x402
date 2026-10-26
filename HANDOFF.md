@@ -1,3 +1,11 @@
+## 26/10/2026 · Camadas 9 e 10 confirmadas no Bitcoin (lembrete 13:25 UTC; livro 1067)
+- **Feito (verificado):** GET `/timestamp/<compromisso>` aos calendários numa sandbox Vercel temporária (parada no fim). A **bob** devolveu atestação Bitcoin: camada 9 no bloco **973223** (966 bytes, sha256 `92ad51d9…`) e camada 10 no bloco **973225** (1001 bytes, sha256 `2da88b9b…`). sha256 e tamanho conferidos por `scripts/ots-juntar.mjs` antes de juntar. A raiz de Merkle de cada atestação (ordem interna) é o `merkle_root` do cabeçalho invertido, **nas duas fontes** (blockstream.info e mempool.space): `blocos:verify` com os dois blocos no fixture (11 atestações), `raiz:verify` (10 camadas, 110 estragos), `linhas:verify` (63 linhas, 4 novas `camada.9.*` e `camada.10.*`).
+- **Não usado:** a resposta da alice à camada 9 (966 bytes, sha256 `9266b946…`): a minha transcrição do base64 falhou a conferência do sha256 e `montar`/`juntar` teria recusado; uma atestação conferida basta. A alice da camada 10 deu 404 (pendente); a finney continua pendente nas duas.
+- **Incidentes ditos:** o worker reiniciou quatro vezes e as sandboxes expiraram (410 `sandbox_stopped`), por isso esta passagem acabou à noite, não às 13:25. O log dos comandos é truncado acima de ~3 KB: uma resposta por comando.
+- Prova só que estes ficheiros existiam antes do bloco; não prova autoria, valor, procura nem receita.
+
+---
+
 ## 26/10/2026 · Livro: impressão por blocos feita, cópia integral por decidir (livros 1066, 1068)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), duas vezes seguidas, à proposta de exportar o livro para o repositório. Gravada no livro como **1068**, depois do PR #165 (o conector do Supabase tinha expirado); o 1067 não é meu.
 - **Lido (verificado):** `ora_mudancas` tem 1063 linhas (ids 1 a 1068), cerca de 2,2 MB, dos quais 1,3 MB em `evidencia`. Transcrever isto pela conversa para um ficheiro não é fiel (mais de meio milhão de tokens de ida e de volta, e um erro de transcrição não se distingue de uma alteração). Por isso **não fiz a cópia integral**.

@@ -398,15 +398,32 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 973223,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+    "a atestação da alice e a da finney ainda estão pendentes neste recibo (uma atestação confirmada basta; a da bob foi conferida)",
+    "a raiz do bloco contra o cabeçalho real só vale pelo que as duas fontes devolveram a 26/10/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)"
+  ],
+  "atualizado_em_utc": "2026-10-26T19:40:00Z",
+  "atualizacao": "26/10/2026 (lembrete agendado 13:25 UTC, livros 1067 e seguintes): GET /timestamp/<compromisso devolvido pelo calendário> à bob (e à alice e à finney). A bob devolveu atestação Bitcoin do bloco 973223; a alice também (966 bytes, sha256 medido 9266b946…), mas a transcrição dessa resposta falhou a conferência do sha256 e não foi usada; a finney ficou pendente. sha256 da resposta da bob calculado sobre os bytes recebidos antes de juntar com scripts/ots-juntar.mjs (92ad51d9…). altura_bitcoin é a da atestação conferida.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-10-26T19:35:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam)",
+    "blocos": [
+      {
+        "altura": 973223,
+        "hora_utc": "2026-10-26T09:50:28Z",
+        "id": "000000000000000000010c4c42514fb8c0aeaa2f2cfff343ea8cdffb28a81980"
+      }
+    ]
+  }
 }
