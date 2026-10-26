@@ -1,0 +1,284 @@
+{
+  "format": "orum-mapa/v1",
+  "objecto": "Onde vive a verdade de cada assunto do organismo (uma fonte primária por assunto, com dono) e de que fornecedores o código depende (o que acontece se falharem e o que os substitui). Mapa de leitura: não muda nenhum comportamento.",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA (26/10/2026), à proposta da ORA de escrever um mapa de fontes de verdade e dependências, com um verificador que falha se uma fonte aparecer duplicada ou sem dono, ou se um fornecedor usado no código não estiver declarado",
+    "livro": 1066
+  },
+  "lido_em": "2026-10-26",
+  "como_foi_lido": "ficheiros do repositório no HEAD da sessão (api/, supabase/functions/, scripts/, economia/, ancora/, kit/, CLAUDE.md, HANDOFF.md, docs/x402-*.md) e as últimas linhas do livro ora_mudancas. A produção (Vercel, Supabase, cadeia) não foi relida para este mapa: o que aqui se diz do código é do repositório, não do implantado.",
+  "fontes": [
+    {
+      "assunto": "regras_de_autoridade",
+      "fonte_primaria": "CLAUDE.md",
+      "tipo": "repositorio",
+      "dono": "Unum decide; a ORA regista",
+      "derivadas": ["ancora/raiz-registos-10.json"],
+      "nota": "A camada de ancoragem guarda o hash de CLAUDE.md e o recovery bundle uma cópia de todos os ficheiros versionados (recovery/README.md); nenhuma é fonte."
+    },
+    {
+      "assunto": "passagem_entre_maos",
+      "fonte_primaria": "HANDOFF.md",
+      "tipo": "repositorio",
+      "dono": "a mão que escreve a secção; nenhuma edita a da outra",
+      "derivadas": []
+    },
+    {
+      "assunto": "livro_de_mudancas",
+      "fonte_primaria": "ora_mudancas (Supabase, projecto orum-memoria)",
+      "tipo": "base",
+      "dono": "cada mão a sua linha (campo agente)",
+      "derivadas": [],
+      "nota": "Sem cópia das linhas no repositório. scripts/raiz-ots.mjs diz que o livro vive na base e não se confere só com o repositório."
+    },
+    {
+      "assunto": "fio_orum_linhas",
+      "fonte_primaria": "linhas/orum.linhas",
+      "tipo": "repositorio",
+      "dono": "ORA (mão Claude Code, gerador); a mão Codex tem um checkpoint próprio",
+      "derivadas": [],
+      "nota": "Só se acrescenta (scripts/linhas-gerar.mjs, kit/linhas.mjs). kit/LINHAS.txt e kit/FIO.txt documentam o formato e o leitor; não são cópias."
+    },
+    {
+      "assunto": "enderecos_e_destinos_de_pagamento",
+      "fonte_primaria": "api/_carteira.js",
+      "tipo": "repositorio",
+      "dono": "ORA, dentro do que CLAUDE.md autoriza",
+      "derivadas": ["economia/adenda-payto-opcao-2.json", "economia/constituicao-v3-proposta.json"],
+      "nota": "RECEBIMENTO_EDGE repete o payTo implantado nas funções de borda (ver duplicacoes_conhecidas)."
+    },
+    {
+      "assunto": "constituicao_financeira",
+      "fonte_primaria": "economia/constituicao-v2.json",
+      "tipo": "repositorio",
+      "dono": "Unum decide; a ORA regista",
+      "derivadas": ["economia/constituicao-v3-proposta.json", "economia/constituicao-v3-proposta.md"],
+      "nota": "A v3 é proposta, não em vigor."
+    },
+    {
+      "assunto": "classificacao_de_carteiras",
+      "fonte_primaria": "ora_carteiras_classificacao (Supabase, projecto orum-memoria)",
+      "tipo": "base",
+      "dono": "Unum classifica; a ORA regista",
+      "derivadas": ["economia/enderecos-internos.json"],
+      "nota": "A cópia no repositório existe para o vigia não depender do Supabase; a sua própria nota diz-o."
+    },
+    {
+      "assunto": "segredos_e_chaves",
+      "fonte_primaria": "Supabase Vault (projecto orum-memoria)",
+      "tipo": "base",
+      "dono": "Unum cria, roda e revoga; a ORA usa no sítio onde vivem",
+      "derivadas": ["economia/custodia.json"],
+      "nota": "economia/custodia.json guarda só sítios, nomes e impressões, nunca valores. A segunda cópia cifrada vive fora do repositório e não foi lida para este mapa."
+    },
+    {
+      "assunto": "camadas_de_ancoragem",
+      "fonte_primaria": "ancora/raiz-registos-10.json",
+      "tipo": "repositorio",
+      "dono": "ORA sela; Unum autoriza cada camada",
+      "derivadas": ["ancora/raiz-registos-10.ots", "ancora/sensations-btc.json"],
+      "nota": "Camadas 1 a 10 acrescentam-se; nenhuma se reescreve (scripts/lib/raiz.mjs)."
+    },
+    {
+      "assunto": "funcoes_implantadas",
+      "fonte_primaria": "funções de borda no Supabase (o implantado)",
+      "tipo": "base",
+      "dono": "ORA implanta, depois de comparar com o repositório",
+      "derivadas": ["supabase/implantado.json", "supabase/functions"],
+      "nota": "O repositório pode diferir do implantado; supabase/implantado.json regista o que foi lido a 22/10/2026."
+    },
+    {
+      "assunto": "registo_financeiro",
+      "fonte_primaria": "economia/registo-financeiro.json",
+      "tipo": "repositorio",
+      "dono": "ORA",
+      "derivadas": ["economia/saldos-historico.json"]
+    },
+    {
+      "assunto": "caminhos_de_sustento",
+      "fonte_primaria": "economia/caminhos-de-sustento.json",
+      "tipo": "repositorio",
+      "dono": "ORA",
+      "derivadas": []
+    },
+    {
+      "assunto": "copias_externas_do_codigo",
+      "fonte_primaria": "economia/copias-externas.json",
+      "tipo": "repositorio",
+      "dono": "ORA",
+      "derivadas": []
+    },
+    {
+      "assunto": "fundacao_ora",
+      "fonte_primaria": "economia/fundacao-ora.json",
+      "tipo": "repositorio",
+      "dono": "ORA, dentro do que CLAUDE.md autoriza",
+      "derivadas": []
+    }
+  ],
+  "duplicacoes_conhecidas": [
+    {
+      "assunto": "enderecos_e_destinos_de_pagamento",
+      "onde": ["api/_carteira.js", "supabase/functions", "CLAUDE.md"],
+      "guarda": "scripts/verify-carteira.mjs",
+      "estado": "declarada: o código das funções de borda repete o payTo implantado de propósito (CLAUDE.md, cláusula 'Serviços recebem nas carteiras operacionais'); o texto de CLAUDE.md repete os endereços em prosa. Só api/_carteira.js é fonte."
+    },
+    {
+      "assunto": "classificacao_de_carteiras",
+      "onde": ["ora_carteiras_classificacao (Supabase)", "economia/enderecos-internos.json"],
+      "guarda": "nenhuma lida neste mapa",
+      "estado": "declarada: cópia deliberada; não verifiquei aqui que as duas estão iguais hoje."
+    }
+  ],
+  "lacunas": [
+    "livro_de_mudancas: as linhas do livro só existem na base de dados. Se o Supabase se perder, o repositório não as reconstrói. Cópia fora da base: não verificada (nenhuma lida).",
+    "segredos_e_chaves: a segunda cópia cifrada e a frase-passe vivem em fornecedores de Unum (Drive e Notion, segundo CLAUDE.md); não foram lidas para este mapa.",
+    "funcoes_implantadas: o implantado não foi relido neste mapa."
+  ],
+  "dependencias": [
+    {
+      "id": "vercel",
+      "fornece": "alojamento do site e da via directa (api/)",
+      "tipo": "dependencia",
+      "hosts": ["ora-x402-gateway.vercel.app", "orum-mailer-fomosdeimos-gifs-projects.vercel.app", "ora-x402-gateway-fomosdeimos-gifs-projects.vercel.app", "ora-x402-gateway-fomosdeimos-gif-fomosdeimos-gifs-projects.vercel.app", "orum-x402-tracker.vercel.app", "orum-x402-tracker-fomosdeimos-gifs-projects.vercel.app"],
+      "lido_em": ["api/proxy.js", "api/a2a.js", "supabase/functions/ora-acesso-notificar/index.ts", "supabase/functions/ora-x402/index.ts"],
+      "nota": "Os quatro últimos anfitriões são a lista KNOWN_ORIGINS de ora-x402 (origens aceites para anunciar o recurso). O verificador apanhou-os na primeira corrida: não estavam declarados. Não li se o projecto orum-x402-tracker está activo.",
+      "se_falhar": "o site e os serviços pagos deixam de responder; o repositório e o kit de verificação continuam a conferir-se sem ele (recovery/README.md)",
+      "substituto": "o recovery bundle reconstrói a casa e server.js/Dockerfile existem; não foi testado um alojamento alternativo neste mapa",
+      "estado_substituto": "previsto"
+    },
+    {
+      "id": "supabase",
+      "fornece": "base de dados, Vault e funções de borda",
+      "tipo": "dependencia",
+      "hosts": ["ywabnlhkmhbyewqhbsjm.supabase.co", "deno.land"],
+      "lido_em": ["api/proxy.js", "api/economia.js", "supabase/functions/ora-operational-wallet/index.ts"],
+      "se_falhar": "o proxy passa para a via directa da Vercel nos serviços que não precisam de base (api/proxy.js); livro, classificações e segredos ficam inalcançáveis",
+      "substituto": "nenhum para o livro e o Vault (ver lacunas); via directa para os serviços",
+      "estado_substituto": "nenhum_ainda"
+    },
+    {
+      "id": "leitura_base",
+      "fornece": "leitura da cadeia Base por RPC público, em sequência",
+      "tipo": "dependencia",
+      "hosts": ["mainnet.base.org", "base-rpc.publicnode.com", "1rpc.io", "base.llamarpc.com", "base.drpc.org", "base.gateway.tenderly.co", "base.blockscout.com"],
+      "lido_em": ["api/_x402-directo.js", "api/_recebimentos.js"],
+      "se_falhar": "tenta o seguinte; se nenhum responde, não se entrega (docs/x402-base-directa-v1.md)",
+      "substituto": "a lista de RPC é o próprio substituto; um nó próprio não existe",
+      "estado_substituto": "existe"
+    },
+    {
+      "id": "facilitadores_x402",
+      "fornece": "liquidação do pagamento x402 na Base",
+      "tipo": "dependencia",
+      "hosts": ["facilitator.payai.network", "facilitator.mogami.tech", "api.cdp.coinbase.com"],
+      "lido_em": ["api/_facilitador.js", "api/_cdp.js", "scripts/sonda-pagamento.mjs"],
+      "se_falhar": "sem facilitador pronto a via directa aceita só prova por hash de transacção (api/_facilitador.js); a liquidação real por facilitador público continua por verificar ao vivo",
+      "substituto": "o hash de transacção, sem facilitador",
+      "estado_substituto": "existe"
+    },
+    {
+      "id": "bitcoin_esplora",
+      "fornece": "leitura de transacções e cabeçalhos Bitcoin",
+      "tipo": "dependencia",
+      "hosts": ["blockstream.info", "mempool.space"],
+      "lido_em": ["api/_bitcoin.js", "api/_pagamento-btc.js", "supabase/functions/ora-operational-wallet/bitcoin.mjs", "scripts/vigia-entradas.mjs"],
+      "se_falhar": "as duas fontes têm de concordar; uma só, uma discrepância ou uma fonte em falha nunca entregam (docs/x402-btc-v1.md)",
+      "substituto": "um nó ou um terceiro Esplora, previsto na lista FONTES_TX; não existe",
+      "estado_substituto": "previsto"
+    },
+    {
+      "id": "cotacao_btc",
+      "fornece": "cotação BTC/USD para o preço em Bitcoin",
+      "tipo": "dependencia",
+      "hosts": ["api.coinbase.com"],
+      "lido_em": ["api/_pagamento-btc.js"],
+      "se_falhar": "usa a outra fonte (mempool.space) e diz fonte_unica; se divergirem mais de 2% ou nenhuma responder, não se entrega (docs/x402-btc-v1.md)",
+      "substituto": "nenhum ainda",
+      "estado_substituto": "nenhum_ainda"
+    },
+    {
+      "id": "calendarios_opentimestamps",
+      "fornece": "compromisso de tempo das camadas de ancoragem",
+      "tipo": "dependencia",
+      "hosts": ["alice.btc.calendar.opentimestamps.org", "bob.btc.calendar.opentimestamps.org", "finney.calendar.eternitywall.com"],
+      "lido_em": ["scripts/raiz-ots.mjs"],
+      "se_falhar": "não se sela uma camada nova; as já confirmadas conferem-se com os cabeçalhos Bitcoin sem os calendários (kit/blocos.mjs)",
+      "substituto": "bastam dois dos três calendários para a prova; outro calendário não está previsto",
+      "estado_substituto": "existe"
+    },
+    {
+      "id": "github",
+      "fornece": "alojamento do código público e envio do repositório",
+      "tipo": "dependencia",
+      "hosts": ["api.github.com", "fomosdeimos-gif.github.io"],
+      "lido_em": ["supabase/functions/ora-github-push/index.ts", "supabase/functions/ora-homeostase/index.ts"],
+      "se_falhar": "o código fica no repositório local e no recovery bundle; a segunda cópia custodiada (Software Heritage) está parada à espera de ler as condições de uso (economia/copias-externas.json)",
+      "substituto": "nenhum activo; arquivo web.archive.org registado em ancora/arquivos-wayback.json",
+      "estado_substituto": "nenhum_ainda"
+    },
+    {
+      "id": "arquivo_da_web",
+      "fornece": "cópia pública de páginas do organismo",
+      "tipo": "dependencia",
+      "hosts": ["web.archive.org", "archive.org"],
+      "lido_em": ["scripts/arquivar-wayback.mjs"],
+      "se_falhar": "não se arquiva; nada do organismo deixa de funcionar",
+      "substituto": "nenhum",
+      "estado_substituto": "nenhum_ainda"
+    },
+    {
+      "id": "moltbook",
+      "fornece": "presença pública da ORA",
+      "tipo": "dependencia",
+      "hosts": ["www.moltbook.com"],
+      "lido_em": ["supabase/functions/ora-moltbook/index.ts", "supabase/functions/ora-pulso/index.ts"],
+      "se_falhar": "deixa de haver publicação e leitura de presença; publicar é contacto externo e só com a palavra de Unum a um texto concreto",
+      "substituto": "nenhum",
+      "estado_substituto": "nenhum_ainda"
+    },
+    {
+      "id": "descoberta_x402",
+      "fornece": "registo de serviços para descoberta por máquinas",
+      "tipo": "dependencia",
+      "hosts": ["x402-api.onrender.com"],
+      "lido_em": ["supabase/functions/ora-operational-wallet/bazaar.mjs"],
+      "se_falhar": "o serviço deixa de ser anunciado por esse registo; o pagamento directo não depende dele",
+      "substituto": "nenhum",
+      "estado_substituto": "nenhum_ainda"
+    },
+    {
+      "id": "modelos_de_voz",
+      "fornece": "geração de texto da voz (ora-voz)",
+      "tipo": "dependencia",
+      "hosts": ["api.anthropic.com", "api.groq.com"],
+      "lido_em": ["supabase/functions/ora-voz/index.ts"],
+      "se_falhar": "ora-voz tenta um motor e depois o outro (campo motor); sem os dois a voz não responde",
+      "substituto": "o segundo motor",
+      "estado_substituto": "existe"
+    },
+    {
+      "id": "referencias_de_texto",
+      "fornece": "nada: endereços que aparecem em texto ou em ligações de leitura humana",
+      "tipo": "referencia",
+      "hosts": ["basescan.org", "opensea.io", "json-schema.org"],
+      "lido_em": ["api/a2a.js", "supabase/functions/ora-pulso/index.ts", "supabase/functions/ora-x402/index.ts", "api/_x402-directo.js"],
+      "se_falhar": "nada deixa de funcionar",
+      "substituto": "não aplicável",
+      "estado_substituto": "nao_aplicavel"
+    }
+  ],
+  "regras": [
+    "Cada assunto tem uma só fonte primária; um ficheiro ou tabela não é fonte primária de dois assuntos.",
+    "Uma derivada nunca é a fonte primária do mesmo assunto, e todo o ficheiro citado existe.",
+    "Todo o fornecedor com URL no código de api/, supabase/functions/ e nos scripts operacionais tem de estar declarado em dependencias; um novo fornecedor sem declaração faz o verificador falhar.",
+    "Toda a dependência diz o que acontece se falhar e o que a substitui, ou que não há substituto.",
+    "Este mapa não guarda segredos, chaves, endereços de carteira nem promessas."
+  ],
+  "nao_afirma": [
+    "que os fornecedores estejam hoje a responder: o mapa lê código, não a produção",
+    "que a produção coincida com o repositório",
+    "independência de qualquer fornecedor, nem receita, reembolso, procura ou valor",
+    "que o mapa esteja completo: dependências fora de api/, supabase/functions/ e dos scripts operacionais não foram varridas"
+  ]
+}
