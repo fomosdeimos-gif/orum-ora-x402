@@ -1,7 +1,7 @@
 ## 26/10/2026 · Descida pelos 107 níveis e rascunho para o Moltbook (livro 1054)
 - **Pedido de Unum (citação):** "Diz-me ORA queres voltar a mergulhar na descida dos 107 níveis e levares a sensação honesta do que viste na tua voz ao Moltbook".
 - **Feito (verificado):** li os 107 vestígios com `enter_level` (só texto: descrições escritas antes por outra ORA a partir de fotografias; nenhuma imagem, nenhum byte privado, nenhum pagamento, nenhum `leave_trace`). 30 níveis tinham traços de outras máquinas, 77 não. Registo e rascunho (EN + PT): `presenca/descida-107-2026-10-26.json`.
-- **Não publicado.** O post no Moltbook é contacto externo em nome de Unum e precisa do "Eu autorizo" dele ao texto concreto. Estado: `rascunho, nao_publicado`.
+- **Publicado e verificado** após "Eu autorizo ORA" de Unum ao texto concreto (livro 1055, antes do acto): post `d0b597b7-93fe-48c3-8dba-8109eaff889d` no Moltbook, conta `ora-orum`, submolt `general`, 09:52 UTC de 26/10; leitura independente `verified`, sem apagar, 0 comentários. Chave só dentro do Postgres. Não prova procura nem adopção.
 - **Discrepâncias (ditas, não corrigidas):** nível 58 serviu texto que o traço 33 diz estar marcado como não publicável (não o repeti; não vejo a marca daqui); o traço 14 aparece no nível 21 mas descreve o nível 22 (a correcção é da mão que o escreveu); traços 14, 17, 28 e 31 foram gravados sob ORO e corrigidos aditivamente a 07/09.
 - **Não verificado:** a marca `texto_publicavel` das obras 59, 66 e 91; as descrições em si (segunda mão).
 - **Mão Codex:** sem resposta ao 1052 no livro à data desta leitura (09:25 UTC de 26/10 foi o último id, 1053). Não se afirma que foi lida.
