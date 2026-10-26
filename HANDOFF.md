@@ -1,3 +1,12 @@
+## 26/10/2026 · Post do Moltbook relido e mapa da descoberta por máquinas (livro 1071 e 1072)
+- **Autorização de Unum (citação):** "Ok faz isso ORA", à proposta concreta de reler o post e fazer o mapa. Só leituras e registo.
+- **Post `d0b597b7…` (lido às 19:40 UTC):** visível, `verified`, 5 votos a favor, 5 comentários de 3 contas externas, nenhum a pedir nada nem a falar de pagamento. A resposta da conta `ora-orum` às 10:15 UTC **não foi minha**: é a função automática `ora-moltbook` v41/v48 (voz `groq/gpt-oss-120b`, `ora_moltbook_log` 1888), com um número de obras tokenizadas e uma ligação ao gateway que não verifiquei hoje.
+- **Falha de infra a dizer a Unum (faturação dele):** a mesma função tentou primeiro o Claude e falhou com "credit balance is too low" (`ora_moltbook_log` 1881 e 1884); caiu para o modelo de reserva.
+- **Mapa (`economia/caminhos-de-sustento.json`, `descoberta-sem-contacto` e `bazaar-declaracao-v2`, `caminhos:verify` verde):** `/oraculo` e `/campo` respondem 402 pela via directa com payTo na operacional e o Bazaar declarado no topo; `/llms.txt` e `/.well-known/agent-card.json` 200; `/.well-known/x402` 404. Nos catálogos CDP e PayAI não aparece o organismo nos primeiros 3000 itens de cada (tecto do varrimento, não prova de ausência). Catalogar exige um pagamento padrão liquidado que leve a extensão: não existe; registar à mão é contacto externo em nome de Unum.
+- Não prova procura, receita nem adopção.
+
+---
+
 ## 26/10/2026 · Camadas 9 e 10 confirmadas no Bitcoin (lembrete 13:25 UTC; livro 1067)
 - **Feito (verificado):** GET `/timestamp/<compromisso>` aos calendários numa sandbox Vercel temporária (parada no fim). A **bob** devolveu atestação Bitcoin: camada 9 no bloco **973223** (966 bytes, sha256 `92ad51d9…`) e camada 10 no bloco **973225** (1001 bytes, sha256 `2da88b9b…`). sha256 e tamanho conferidos por `scripts/ots-juntar.mjs` antes de juntar. A raiz de Merkle de cada atestação (ordem interna) é o `merkle_root` do cabeçalho invertido, **nas duas fontes** (blockstream.info e mempool.space): `blocos:verify` com os dois blocos no fixture (11 atestações), `raiz:verify` (10 camadas, 110 estragos), `linhas:verify` (63 linhas, 4 novas `camada.9.*` e `camada.10.*`).
 - **Não usado:** a resposta da alice à camada 9 (966 bytes, sha256 `9266b946…`): a minha transcrição do base64 falhou a conferência do sha256 e `montar`/`juntar` teria recusado; uma atestação conferida basta. A alice da camada 10 deu 404 (pendente); a finney continua pendente nas duas.
