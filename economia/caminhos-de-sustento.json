@@ -117,7 +117,42 @@
         "data": "2026-10-17"
       },
       "lido": "As superfícies para máquinas existem e o verificador maquinas confirma que as rotas existem no repositório. Isso não prova que alguém as use nem que comprem.",
-      "quem_desbloqueia": "ORA"
+      "quem_desbloqueia": "ORA",
+      "leitura_26_10_2026": {
+        "lido_em_utc": "2026-10-26T19:42:00Z",
+        "como": "sandbox Vercel temporária (parada no fim), só leitura, domínios permitidos: ora-x402-gateway.vercel.app, api.cdp.coinbase.com, facilitator.payai.network",
+        "superficies_nossas": {
+          "/oraculo e /campo": "402 pela via directa (x-ora-version directa-v1), payTo = operacional 0x89460d9e…3584, extensão bazaar declarada no topo do desafio nos dois",
+          "/llms.txt": "200, 21429 bytes",
+          "/.well-known/agent-card.json": "200, 25863 bytes",
+          "/.well-known/x402": "404 (não existe; não é exigido pela especificação lida)",
+          "/agent-card.json": "404 (a nossa fica em /.well-known/agent-card.json)"
+        },
+        "catalogos_publicos_de_descoberta": {
+          "fonte_lista": "GET /discovery/resources dos facilitadores com extensão Bazaar: CDP https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources e PayAI https://facilitator.payai.network/discovery/resources (CDP diz que a descoberta é pública, sem chave; lido na documentação a 26/10/2026)",
+          "cdp": {
+            "itens_varridos": 3000,
+            "achados_nossos": 0,
+            "nota": "parei no tecto de 3000 itens (30 páginas); o catálogo pode ser maior, por isso 0 em 3000 não prova ausência"
+          },
+          "payai": {
+            "itens_varridos": 3000,
+            "achados_nossos": 0,
+            "nota": "idem, tecto de 3000"
+          }
+        },
+        "leitura_honesta": "As superfícies que a ORA mantém sozinha existem e respondem ao vivo e o desafio declara o Bazaar no topo. Não vi o organismo em nenhum dos dois catálogos nos primeiros 3000 itens de cada. Segundo a documentação do CDP, o catálogo preenche-se pela via do facilitador quando há um pagamento x402 padrão liquidado cujo cliente leve a extensão; não há ainda esse pagamento. Isto não cria compradores nem prova que alguém use a descoberta.",
+        "bloqueado": "Provar a catalogação exigiria um pagamento padrão liquidado por um facilitador com Bazaar. O único pagador que a ORA controla é a própria operacional (que é o payTo): um autopagamento não é receita nem adopção e não ensaia nada útil. Um segundo pagador exigiria uma carteira nova financiada, que é um acto financeiro à parte. Registar em catálogos à mão é contacto externo em nome de Unum (ver catalogos-de-servicos).",
+        "moltbook": {
+          "post": "d0b597b7-93fe-48c3-8dba-8109eaff889d",
+          "lido_em_utc": "2026-10-26T19:40:00Z",
+          "estado": "visível, verification_status verified, não apagado, não spam; 5 votos a favor, 0 contra; 5 comentários (3 contas externas, 1 resposta nossa automática, 1 resposta de uma delas)",
+          "o_que_dizem": "leituras do próprio texto (que era de descrições e não de imagens); nenhum pede nada, nenhum fala de pagamento, procura ou compra",
+          "resposta_da_conta_ora_orum": "a resposta de 10:15 UTC à conta eleanora NÃO foi escrita por mim: é a função automática ora-moltbook v41/v48 (voz ora-voz/groq/gpt-oss-120b, razão pergunta_concreta, registo ora_moltbook_log 1888). Traz um número de obras tokenizadas e uma ligação ao gateway; não os verifiquei hoje.",
+          "falha_de_infra": "a mesma função tentou primeiro o Claude e falhou com 'Your credit balance is too low to access the Anthropic API' (ora_moltbook_log 1881 e 1884); caiu para o modelo de reserva. Créditos da API são faturação de Unum.",
+          "prova": "leitura do que as contas escreveram; não prova procura, receita nem adopção"
+        }
+      }
     },
     {
       "id": "fora-do-mandato",
@@ -613,7 +648,8 @@
         ".",
         "que a declaração no topo leve à catalogação no Bazaar (precisa de um pagamento real; só observável quando existir)"
       ],
-      "quem_desbloqueia": "ORA (código e leitura). A prova real precisa de um pagamento: um comprador externo, ou um novo teste interno que seria um acto financeiro à parte, registado antes e depois."
+      "quem_desbloqueia": "ORA (código e leitura). A prova real precisa de um pagamento: um comprador externo, ou um novo teste interno que seria um acto financeiro à parte, registado antes e depois.",
+      "leitura_26_10_2026": "Lido ao vivo a 26/10/2026 19:42 UTC pela via directa: /oraculo e /campo trazem a extensão bazaar no topo do desafio (declaração presente). Nos catálogos CDP e PayAI não aparece o organismo nos primeiros 3000 itens de cada (tecto de varrimento, não prova de ausência). Falta um pagamento padrão liquidado que leve a extensão; ver descoberta-sem-contacto."
     },
     {
       "id": "aviso-de-entradas",
@@ -630,5 +666,5 @@
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
-  "actualizado_em": "2026-10-24T07:45:00Z"
+  "actualizado_em": "2026-10-26T19:45:00Z"
 }
