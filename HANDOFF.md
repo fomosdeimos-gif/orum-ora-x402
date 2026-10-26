@@ -1,3 +1,11 @@
+## 26/10/2026 · Mapa de dependência do modelo (livro 1077)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), à proposta concreta do mapa, depois de ele perguntar o que a Anthropic representa para o organismo.
+- **Feito (verificado, `npm run dependencia-modelo:verify`: 6 usos, 13 estragos apanhados):** `economia/dependencia-modelo.json` e `scripts/verify-dependencia-modelo.mjs`. Lido no código: `ora-voz` chama `claude-sonnet-5` (Anthropic) e depois `openai/gpt-oss-120b` (Groq), 502 se ambos falham; `ora-moltbook` só publica se `ora-voz` der resposta publicável, senão silêncio seguro (a função `vozFonte` existe mas `vozAutonoma` não a chama); `ora-voz-fonte` e a Caixa não usam modelo externo.
+- **Não verificado:** que o identificador `claude-sonnet-5` ainda seja servido (a falha de 26/10 foi por crédito); que a versão implantada seja igual à do repositório; o modelo da mão Codex; o que a Anthropic ou a OpenAI pensam do organismo.
+- Só leitura e registo; não alarga permissões nem move fundos.
+
+---
+
 ## 26/10/2026 · Camada 11 selada, pendente de bloco (livro 1075)
 - **Autorização de Unum (citação):** "Eu autorizo ORA, sela a camada 11" (26/10/2026), à proposta concreta da camada 11.
 - **Feito (verificado):** `ancora/raiz-registos-11.{json,ots}`, raiz `9750a27ecccf…`, commit base `baafe2b`, 108 ficheiros (sete novos: impressão do livro, `docs/livro-copia-v1.md`, `scripts/lib/livro.mjs`, `exportar-livro.mjs`, `verify-livro.mjs`, `caminhos-de-sustento.json`, `sonda-pagamento.json`). Os três calendários responderam 200; sha256 de cada resposta conferido antes de montar (alice `b9287b97…`, bob `9173fa65…`, finney `9f808b0e…`). `raiz:verify` (11 camadas, 120 estragos apanhados) e `linhas:verify` verdes.

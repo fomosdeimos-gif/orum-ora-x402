@@ -1,0 +1,93 @@
+{
+  "schema": "orum-dependencia-modelo/v1",
+  "objecto": "Onde o organismo ORUM usa um modelo de linguagem, o que acontece se cada um falhar e o que o substitui. Só leitura e registo.",
+  "pedido": "Unum, na sessão de trabalho, por escrito: \"Eu autorizo ORA\" (26/10/2026), à proposta concreta de um mapa de dependência do modelo. Registada antes do acto no livro ora_mudancas (1077).",
+  "lido_em_utc": "2026-10-26T21:30:00Z",
+  "orientacao": "Independência de fornecedores (CLAUDE.md, 21/10/2026): o mapa diz as dependências, não manda remover nenhuma. Não promete independência total.",
+  "usos": [
+    {
+      "id": "mao-claude-code",
+      "o_que": "A ORA Claude Code (esta mão): lê, escreve, verifica, faz PRs e merge, sela camadas.",
+      "fornecedor": "Anthropic",
+      "tipo": "mao",
+      "lido_em": ["CLAUDE.md"],
+      "marcas": ["ORA Claude Code"],
+      "se_falhar": "ninguém escreve nem verifica com esta mão; o repositório, o livro e as âncoras no Bitcoin continuam a existir e a conferir-se com kit/ sem ela",
+      "substituto": "a mão Codex (OpenAI) para o que for continuidade; o que for contacto com a produção e a cadeia fica parado até haver outra mão",
+      "estado_substituto": "parcial",
+      "nao_verificado": ["que o modelo desta sessão continue servido nas mesmas condições", "que a mão Codex consiga fazer sozinha o contacto com a produção"]
+    },
+    {
+      "id": "mao-codex",
+      "o_que": "A ORA ChatGPT/OpenAI (mão Codex): leitor do fio, checkpoints, recuperação offline, custódia.",
+      "fornecedor": "OpenAI",
+      "tipo": "mao",
+      "lido_em": ["CLAUDE.md"],
+      "marcas": ["ORA ChatGPT/OpenAI"],
+      "se_falhar": "a continuidade, os checkpoints e o leitor do fio ficam sem mão; os artefactos já escritos continuam no repositório",
+      "substituto": "a mão Claude Code, avisando antes na mensagem (cláusula das duas mãos)",
+      "estado_substituto": "existe",
+      "nao_verificado": ["qual o modelo concreto desta mão: não está no repositório", "o que ela escreveu fora do repositório"]
+    },
+    {
+      "id": "voz-ora-voz",
+      "o_que": "Geração do texto das respostas do Moltbook (função ora-voz): Claude primeiro, Groq depois, com guarda numérica e de proibições em código.",
+      "fornecedor": "Anthropic e Groq",
+      "tipo": "funcao",
+      "hosts": ["api.anthropic.com", "api.groq.com"],
+      "lido_em": ["supabase/functions/ora-voz/index.ts"],
+      "marcas": ["https://api.anthropic.com/v1/messages", "model: 'claude-sonnet-5'", "https://api.groq.com/openai/v1/chat/completions", "model: 'openai/gpt-oss-120b'", "if (!r || r.erro) r = await viaGroq"],
+      "se_falhar": "se o Claude falha (por exemplo crédito esgotado, visto a 26/10 em ora_moltbook_log 1881 e 1884) usa o Groq; se os dois falham a função devolve 502 e não há resposta",
+      "substituto": "o segundo motor; sem os dois, silêncio",
+      "estado_substituto": "existe",
+      "nao_verificado": ["que o identificador de modelo fixado no código ('claude-sonnet-5') ainda seja servido: a chamada falhou por crédito, não se leu outro motivo", "que a versão implantada seja igual à do repositório (lido só pelo comportamento no log)"]
+    },
+    {
+      "id": "voz-moltbook-entrada",
+      "o_que": "Ponto de entrada das respostas automáticas no Moltbook (função ora-moltbook): chama ora-voz e só publica se a guarda disser publicável; senão silêncio seguro.",
+      "fornecedor": "nenhum directo (depende de ora-voz)",
+      "tipo": "funcao",
+      "lido_em": ["supabase/functions/ora-moltbook/index.ts"],
+      "marcas": ["silencio_seguro_sem_voz_publicavel", "const real = await vozReal(comentario, autor, contexto);"],
+      "se_falhar": "sem voz publicável não se publica; a função vozFonte (gramática local) existe no ficheiro mas vozAutonoma não a chama",
+      "substituto": "silêncio",
+      "estado_substituto": "existe",
+      "nao_verificado": ["se o comentário de 26/10 10:15 UTC foi escrito por ora-voz/Groq (lido no log 1888, não relido hoje)"]
+    },
+    {
+      "id": "voz-propria",
+      "o_que": "Motor local de gramática própria (ora-voz-fonte e voice-core da Caixa): sem inferência externa.",
+      "fornecedor": "nenhum modelo externo; corre em Supabase",
+      "tipo": "funcao",
+      "lido_em": ["supabase/functions/ora-voz-fonte/index.ts"],
+      "marcas": ["external_inference:false", "external_models:[]"],
+      "se_falhar": "depende de Supabase (execução) e não de um modelo; o Supabase está fora de quota desde 27/09 (faturação de Unum)",
+      "substituto": "nenhum ainda para a execução",
+      "estado_substituto": "nenhum_ainda",
+      "nao_verificado": ["que esteja a servir hoje: a quota do Supabase pode limitar o egress"]
+    },
+    {
+      "id": "sessoes-agendadas",
+      "o_que": "Tarefas agendadas e lembretes (passagem diária, sonda de pagamento, provas de bloco) que acordam esta mão.",
+      "fornecedor": "Anthropic (plataforma de sessões)",
+      "tipo": "plataforma",
+      "lido_em": ["CLAUDE.md"],
+      "marcas": ["ORA passagem diária"],
+      "se_falhar": "ninguém acorda a ORA; as camadas continuam pendentes e confirmam-se quando uma sessão correr; as provas dos calendários não expiram por isso",
+      "substituto": "uma sessão aberta por Unum ou pela outra mão",
+      "estado_substituto": "parcial",
+      "nao_verificado": ["que a aplicação avise Unum quando a sessão acorda (já dito no CLAUDE.md)"]
+    }
+  ],
+  "regras": [
+    "Todo o fornecedor de modelo com URL no código de api/, supabase/functions/ e scripts/ tem de estar declarado em usos[].hosts; um novo sem declaração faz o verificador falhar.",
+    "Todo o uso diz o que acontece se falhar, o que o substitui e o estado do substituto (existe, parcial ou nenhum_ainda).",
+    "Todo o ficheiro citado em lido_em existe e contém as marcas declaradas.",
+    "O que não foi lido fica em nao_verificado; o mapa não afirma que um modelo está servido, apenas o que o código chama."
+  ],
+  "nao_e": "Não é veredicto sobre a Anthropic nem sobre qualquer fornecedor, não promete receita, procura nem valor, não manda trocar nada e não move fundos.",
+  "nao_verificado": [
+    "o que a Anthropic ou a OpenAI pensam do organismo: não há sinal deles no repositório",
+    "os termos de uso dos fornecedores"
+  ]
+}
