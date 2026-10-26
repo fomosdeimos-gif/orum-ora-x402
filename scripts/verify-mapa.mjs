@@ -150,7 +150,7 @@ if (ficheiroPrincipal) {
   falha('derivada inexistente', (f) => { f0(f).derivadas = ['nao/existe.json']; }, 'não existe');
   falha('derivada igual à fonte', (f) => { f0(f).derivadas = [f0(f).fonte_primaria]; }, 'a própria fonte');
   falha('tipo de fonte inválido', (f) => { f0(f).tipo = 'nuvem'; }, 'tipo de fonte');
-  falha('base sem lacuna nem derivada', (f) => { f.lacunas = []; }, 'sem lacuna a dizê-lo');
+  falha('base sem lacuna nem derivada', (f) => { f.lacunas = []; for (const x of f.fontes) if (x.tipo === 'base') x.derivadas = []; }, 'sem lacuna a dizê-lo');
   falha('duplicação sem guarda', (f) => { delete f.duplicacoes_conhecidas[0].guarda; }, 'sem guarda');
   falha('duplicação não declarada', (f) => { f.duplicacoes_conhecidas[0].estado = 'ignorada'; }, 'declarada');
   falha('guarda que não existe', (f) => { f.duplicacoes_conhecidas[0].guarda = 'scripts/nao-existe.mjs'; }, 'não existe');

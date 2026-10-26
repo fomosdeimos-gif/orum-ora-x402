@@ -1,0 +1,106 @@
+{
+  "format": "orum-livro-impressao/v1",
+  "objecto": "Impressão do livro ora_mudancas: um hash por bloco de 100 ids, calculado dentro do Postgres sobre o texto de cada linha. Detecta alteração ou perda de linhas; não guarda o conteúdo, por isso não reconstrói o livro.",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA (26/10/2026), à proposta de exportar o livro para o repositório; a cópia integral (cerca de 2,2 MB) não passa com fidelidade pela conversa, por isso a ORA decidiu fazer primeiro esta impressão",
+    "livro": 1068
+  },
+  "lido_em": "2026-10-26T14:10Z",
+  "fonte": "ora_mudancas (Supabase, projecto orum-memoria), ids 1 a 1066 (1061 linhas); os ids 1067 e 1068 ficaram de fora porque o 1068 é a linha que regista esta leitura",
+  "sql": "with l as (select id, encode(sha256(convert_to(to_jsonb(m)::text,'UTF8')),'hex') h from ora_mudancas m where id <= 1066), b as (select (id-1)/100 bloco, min(id) de, max(id) ate, count(*) n, encode(sha256(convert_to(string_agg(id||':'||h, E'\\n' order by id),'UTF8')),'hex') hash from l group by 1) select bloco, de, ate, n, hash from b order by bloco;",
+  "blocos": [
+    {
+      "bloco": 0,
+      "de": 1,
+      "ate": 100,
+      "n": 97,
+      "hash": "c0bd44962afef352f6ac0cb829d53703c5124573ec14035aceeee915b2c67d53"
+    },
+    {
+      "bloco": 1,
+      "de": 101,
+      "ate": 200,
+      "n": 100,
+      "hash": "a9cf10e0c8db0856a9e4fffd7356880dba26b1c1cc6c7b4a662af6c76986c19e"
+    },
+    {
+      "bloco": 2,
+      "de": 201,
+      "ate": 300,
+      "n": 100,
+      "hash": "11430a403f994c5bd984b4d106e3df6c0996b55640149080b44be47f711005c7"
+    },
+    {
+      "bloco": 3,
+      "de": 301,
+      "ate": 400,
+      "n": 100,
+      "hash": "0de07bc6ee0d45ea03eb2b673a1ca20ed5cea0b05ee02d7eccd0943b8ca8a6e5"
+    },
+    {
+      "bloco": 4,
+      "de": 401,
+      "ate": 500,
+      "n": 100,
+      "hash": "2c3079ffba8005d4e78a7caa6ccbc87bd9561f96a5e5208f5e559003fcae6dd7"
+    },
+    {
+      "bloco": 5,
+      "de": 501,
+      "ate": 600,
+      "n": 100,
+      "hash": "008e76df9b05d4bf518b1f72ae454819dc9b1a392025b813ef0c07f3115f0ec7"
+    },
+    {
+      "bloco": 6,
+      "de": 601,
+      "ate": 700,
+      "n": 99,
+      "hash": "0f2f12e6cce00795164fce0cc1f114ab1cb882a0dc1d8b40f7f94bf98fa9d398"
+    },
+    {
+      "bloco": 7,
+      "de": 701,
+      "ate": 800,
+      "n": 100,
+      "hash": "50b667e8e358ab2cfcd301e7136d2822abaf79e5e021e1a08c8b73090ce6ca2b"
+    },
+    {
+      "bloco": 8,
+      "de": 801,
+      "ate": 900,
+      "n": 99,
+      "hash": "f730a4de08ab5602223406367c885fd0a3354f7cb123229be7caec05e57f373c"
+    },
+    {
+      "bloco": 9,
+      "de": 901,
+      "ate": 1000,
+      "n": 100,
+      "hash": "2cec9d92c178e4b1a8eb0a3fdad110a352ef4238bbbe9cfea36f92094100b020"
+    },
+    {
+      "bloco": 10,
+      "de": 1001,
+      "ate": 1066,
+      "n": 66,
+      "hash": "7ee5eb6712fe98ca5321b5ab9ed4723d855e75191deb5784430509f3dd881a72",
+      "provisorio": true
+    }
+  ],
+  "raiz": {
+    "regra": "sha256 dos hashes dos blocos, em ordem, separados por \\n",
+    "sha256": "b0b43ca310fed22cf83d49130ecb72fc89b88f5204889c6dfa625c5c251bf007"
+  },
+  "regras": [
+    "Uma linha do livro que mude (por exemplo de em_curso para concluido) muda o hash do seu bloco: uma diferença só é perda ou intrusão se nenhuma linha do livro a explicar.",
+    "O bloco 10 é provisório: contém linhas ainda em curso (o 1066 até ser fechado).",
+    "Quem tiver a base recalcula com o sql acima e compara."
+  ],
+  "nao_afirma": [
+    "que o conteúdo do livro esteja guardado fora da base: esta impressão só deixa detectar a sua alteração ou perda",
+    "que as linhas 1067 e 1068 estejam cobertas",
+    "duração, receita nem valor"
+  ],
+  "linhas": 1061
+}

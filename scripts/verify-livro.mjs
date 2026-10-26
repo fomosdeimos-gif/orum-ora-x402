@@ -3,7 +3,8 @@
 // Cada mentira testada aqui tem de falhar.
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
-import { CAMINHO, ZERO, acrescentar, ler, novaLinha, validar } from './lib/livro.mjs';
+import { CAMINHO, ZERO, acrescentar, ler, novaLinha, validar, validarImpressao } from './lib/livro.mjs';
+import { readdirSync } from 'node:fs';
 
 const i = process.argv.indexOf('--base');
 const base = i > 0 ? JSON.parse(readFileSync(process.argv[i + 1], 'utf8')) : null;
@@ -57,3 +58,30 @@ assert.deepEqual(validar(depois, [L(1), L(2), L(3, { estado: 'x' }), L(4)]).porA
 // Uma linha da outra mão copia-se tal como está.
 assert.equal(ler(bom)[1].linha.agente, 'Codex/OpenAI');
 console.log(`Maquinaria do livro conferida: ${n} estragos propositados apanhados.`);
+
+// Impressão do livro: a real tem de passar, e cada mentira tem de falhar.
+const impressoes = existsSync('livro') ? readdirSync('livro').filter((f) => /^impressao-.*\.json$/.test(f)) : [];
+for (const f of impressoes) {
+  const real = JSON.parse(readFileSync(`livro/${f}`, 'utf8'));
+  assert.deepEqual(validarImpressao(real), [], `${f}: a impressão real tem de passar`);
+  let m = 0;
+  const estraga = (nome, mexer, trecho) => {
+    const o = JSON.parse(JSON.stringify(real)); mexer(o);
+    const er = validarImpressao(o);
+    assert.ok(er.some((x) => x.includes(trecho)), `estrago não apanhado (${nome}): ${JSON.stringify(er)}`);
+    m++;
+  };
+  estraga('hash de um bloco alterado', (o) => { o.blocos[3].hash = 'f'.repeat(64); }, 'raiz não bate');
+  estraga('hash inválido', (o) => { o.blocos[2].hash = 'xyz'; }, 'hash inválido');
+  estraga('bloco apagado', (o) => { o.blocos.splice(4, 1); }, 'esperava 4');
+  estraga('blocos trocados', (o) => { [o.blocos[1], o.blocos[2]] = [o.blocos[2], o.blocos[1]]; }, 'esperava 1');
+  estraga('n alterado', (o) => { o.blocos[0].n = 50; }, 'soma dos blocos');
+  estraga('intervalo fora do bloco', (o) => { o.blocos[1].de = 5; }, 'intervalo fora');
+  estraga('raiz alterada', (o) => { o.raiz.sha256 = '0'.repeat(64); }, 'raiz não bate');
+  estraga('sem sql', (o) => { o.sql = ''; }, 'sql');
+  estraga('último bloco não provisório', (o) => { delete o.blocos.at(-1).provisorio; }, 'provisório');
+  estraga('sem citação de Unum', (o) => { delete o.autorizacao_de_unum; }, 'citação de Unum');
+  estraga('afirma guardar o conteúdo', (o) => { o.nao_afirma = []; }, 'fora da base');
+  estraga('promessa', (o) => { o.objecto += ' para sempre'; }, 'promessa');
+  console.log(`Impressão ${f}: ${real.blocos.length} blocos, ${real.linhas} linhas, ${m} estragos propositados apanhados.`);
+}
