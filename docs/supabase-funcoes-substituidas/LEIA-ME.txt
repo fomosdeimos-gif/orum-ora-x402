@@ -10,3 +10,9 @@ ora-cdp-teste-oraculo, cópia do repositório "v1" (19/08/2026) — NUNCA esteve
   O que está implantado (v3, 02/09/2026, ezbr_sha256 5597c30046125d8b…) é outra coisa: assina o timestamp com a chave Ed25519 do
   MCP Registry. Reconciliada a 22/10/2026 (Unum: "Eu autorizo ORA, avança com esse passo"; livro 959): o repositório passou a ter o
   texto implantado. Guardada aqui só como registo; NÃO a implantar sem nova palavra de Unum, porque move fundos da carteira de teste.
+
+ora-cdp-agente-teste v2 (22/10/2026, ezbr_sha256 45d008e919ed7e61144523dffd19840fe731a009f83246cc908f80d388b70cd6)
+  Substituída a 26/10/2026 pela v3 (Unum: "Eu autorizo ORA"; livros 1041-1044). A v2 pagava 0,161 USDC da carteira de teste à sagrada
+  antiga pelo /oraculo do Supabase (tx 0x1c504d51…bc4f, livro 945) e tinha a trava 'v1' já gasta. Guardada em
+  ora-cdp-agente-teste.v2.ts.txt (copia do repositório; não comparada byte a byte com a implantada, só pelas constantes). A v3 paga à operacional
+  pelo /oraculo da Vercel (trava 'v3', gasta a 26/10/2026). Não voltar a implantar sem nova palavra de Unum: move fundos da carteira de teste.

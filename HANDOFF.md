@@ -1,3 +1,13 @@
+## 26/10/2026 · Teste da via directa com facilitador público: feito (livros 1041-1044)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de testar a via directa de ponta a ponta e, com as Edge Functions a responder, implantar o executor v3 (livros 1041 e 1043, antes do acto).
+- **Feito (verificado, dois RPC):** `ora-cdp-agente-teste` v3 (sobre o slug da v2; v2 guardada em `docs/supabase-funcoes-substituidas/`) pagou 0,161 USDC da carteira de teste `0x2Cf1…51f1` à operacional `0x89460d9e…3584` pelo `/oraculo` da Vercel; tx `0xb15e9012…8487`, bloco 53106549, 26/10/2026 08:14:05 UTC. Saldos depois: teste 0,261, operacional 0,161. O `/oraculo` entregou ao apresentar o mesmo hash (acesso concedido, `verificado_onchain`). `teste-pagamento:verify` passa com 14 estragos.
+- **Validação interna:** não é adopção nem receita; fica na operacional, não se envia aos 70%. `economia/registo-financeiro.json` tem o acto.
+- **Por gravar (bloqueado):** a escrita `update` da trava (`pendente` para `feito`) e o livro DEPOIS ficaram à espera de uma pergunta do conector do Supabase a Unum, e expiraram. A tabela diz `pendente` com a tx certa. Não repeti a escrita.
+- **Não verificado:** qual facilitador público liquidou; declaração Bazaar da via directa.
+- **Próximo:** gravar a trava e o livro quando a pergunta for respondida; leitura do preço em 05/11/2026.
+
+---
+
 ## 26/10/2026 · Passagem de leitura e sonda apertada para um só payTo (livro 1031)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta da passagem de leitura e de apertar a sonda se o payTo fosse a operacional (livro 1031, registado antes do acto).
 - **Verificado (26/10/2026 07:12 UTC):** produção (Vercel) em `da727e2` = `main`. `/oraculo` e `/campo` no deployment de produção e `ora-x402-gateway.vercel.app/oraculo` respondem 402 com `x-ora-via: vercel-directa`, `payTo` `0x89460d9e…3584` (operacional), `extensions.bazaar` presente, oferta Bitcoin com cotações concordantes. Isto fecha o "domínio público por ler" de 25/10.
