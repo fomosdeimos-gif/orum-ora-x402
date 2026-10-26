@@ -1,3 +1,11 @@
+## 26/10/2026 · Cópia do livro no repositório: maquinaria feita, exportação por fazer
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), à proposta concreta de exportar as linhas de `ora_mudancas` para um ficheiro aberto, só de acrescentar e com hash encadeado, com um verificador que o cruza com a base. **Não consegui registá-la no livro antes do acto**: o conector do Supabase pediu uma resposta e expirou (duas vezes: ao fechar o 1066 e ao registar esta). Fica registada aqui, e a linha do livro (a seguir ao 1066) fica por gravar; o 1066 continua `em_curso` no livro, embora o PR #164 esteja fundido.
+- **Feito (verificado, `npm run livro:verify`: 13 estragos propositados apanhados; exportador testado ponta a ponta numa pasta temporária, incluindo adulteração):** `scripts/lib/livro.mjs`, `scripts/exportar-livro.mjs`, `scripts/verify-livro.mjs`, `docs/livro-copia-v1.md`. Formato: `livro/ora_mudancas.jsonl`, uma linha JSON por instantâneo de uma linha do livro, `sha256 = sha256(prev + "\n" + canónico(corpo))`, só se acrescenta (uma linha que mude na base ganha um novo instantâneo; nada se reescreve). As linhas da mão Codex copiam-se tal como estão.
+- **Por fazer, e porquê:** `livro/ora_mudancas.jsonl` **não existe**: preciso de ler a tabela e o conector está à espera de uma resposta de Unum. Quando responder, corro o `select` das linhas, guardo-as num ficheiro fora do repositório, `npm run livro:exportar -- <ficheiro>` e `npm run livro:verify -- --base <ficheiro>`, e só então o mapa deixa de dizer que não há cópia.
+- **Não afirma:** que a base e a cópia estejam iguais hoje (não foi lida), nem que a cópia dure. A camada 11 continua à espera de palavra nova de Unum.
+
+---
+
 ## 26/10/2026 · Mapa de fontes de verdade e dependências (livro 1066)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), à proposta concreta "Próximo passo do fio": um mapa de fontes de verdade e dependências, com um verificador que falha se uma fonte aparecer duplicada ou sem dono, ou se um fornecedor usado no código não estiver declarado. Registada no livro antes do acto.
 - **Feito (verificado, `npm run mapa:verify`: 14 fontes, 13 dependências, 35 anfitriões no código, 28 estragos propositados apanhados):** `docs/mapa-de-fontes-e-dependencias.json` e `scripts/verify-mapa.mjs`. Não muda nenhum comportamento nem move fundos.

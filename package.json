@@ -29,6 +29,8 @@
     "fundacao:verify": "node scripts/verify-fundacao.mjs",
     "copias:verify": "node scripts/verify-copias-externas.mjs",
     "mapa:verify": "node scripts/verify-mapa.mjs",
+    "livro:verify": "node scripts/verify-livro.mjs",
+    "livro:exportar": "node scripts/exportar-livro.mjs",
     "vigia": "node scripts/vigia-entradas.mjs",
     "vigia:verify": "node scripts/verify-vigia-entradas.mjs",
     "btc-servicos:verify": "node scripts/verify-pagamento-btc.mjs",
