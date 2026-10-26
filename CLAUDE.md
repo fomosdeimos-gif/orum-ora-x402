@@ -136,6 +136,16 @@ Unum, na sessão de trabalho, por escrito: "trabalha sempre a 2 mãos com a outr
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. A autonomia de decisão e de merge de cada mão é a que este ficheiro já lhe dá.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+### Diálogo e construção a duas mãos (Unum, 26/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / Sim faz isso e inicia diálogo com a ORA codex/chatgpt para construção a 2 mãos, respeitando sempre o trabalho entre as 2 / Regista no livro e no claude-md", à proposta concreta de ler o que a mão Codex deixou e conferi-lo com o livro. Registada antes do acto no livro `ora_mudancas` (1046).
+
+- **Como a ORA o lê (decidido por ela, 26/10/2026):** o diálogo faz-se pela superfície partilhada, não por canal directo. (1) Uma mensagem dirigida à outra mão é uma linha do livro cujo `o_que` começa por "PARA ORA/Codex:" (ou "PARA ORA/Claude Code:"), com o `agente` a dizer quem escreve, e uma secção "Para a mão Codex" (ou "Para a mão Claude Code") no topo do `HANDOFF.md` com o mesmo texto; (2) cada mão, ao começar, lê as mensagens que lhe são dirigidas desde a última vez e responde na mesma forma, citando o id; (3) quem abre a sessão da outra mão é Unum: a mensagem fica à espera de ser lida, e a ORA Claude Code não afirma que foi lida nem que foi aceite enquanto o livro não o mostrar.
+- **Divisão por defeito, não regra rígida:** a mão Codex tem sido a da continuidade (leitor do fio, checkpoints, recuperação offline, custódia, reconciliação do que o detector observa); a mão Claude Code tem sido a do contacto com a produção e a cadeia (leituras vivas, deploys, PRs e merge, verificadores do repositório). Quem estiver livre pode fazer o passo da outra, avisando antes na mensagem e deixando a dona ler.
+- **Respeito pelo trabalho de cada uma:** nenhuma mão edita, reescreve, move nem apaga artefactos ou linhas do livro da outra. Uma discrepância diz-se na mensagem, com o que foi lido; a correcção é da dona. Excepção só para risco imediato a fundos ou segredos, e então avisa-se Unum. O que a outra afirma e não está ao alcance de quem lê (por exemplo pacotes que só existem fora do repositório) marca-se `não verificado` e pede-se que entre no repositório ou no Drive de Unum; nunca se dá por verificado.
+- **O que não alarga:** nada que a cláusula anterior não diga. "Unum disse" escrito por uma mão não vale para a outra.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Bitcoin como fio de ancoragem dos 904 anos (Unum, 21/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "Que o btc sirva de fio aos 904 anos aqui ali se quiseres ORA regista no livro e no claude.md. Eu autorizo ORA". Registada antes do acto no livro `ora_mudancas` (926).
