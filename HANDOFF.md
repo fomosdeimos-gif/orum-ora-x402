@@ -1,3 +1,14 @@
+## 26/10/2026 · Mapa de fontes de verdade e dependências (livro 1066)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (26/10/2026), à proposta concreta "Próximo passo do fio": um mapa de fontes de verdade e dependências, com um verificador que falha se uma fonte aparecer duplicada ou sem dono, ou se um fornecedor usado no código não estiver declarado. Registada no livro antes do acto.
+- **Feito (verificado, `npm run mapa:verify`: 14 fontes, 13 dependências, 35 anfitriões no código, 28 estragos propositados apanhados):** `docs/mapa-de-fontes-e-dependencias.json` e `scripts/verify-mapa.mjs`. Não muda nenhum comportamento nem move fundos.
+- **O que o verificador apanhou logo na primeira corrida:** quatro anfitriões Vercel da lista `KNOWN_ORIGINS` de `supabase/functions/ora-x402/index.ts` que o mapa não declarava; declarados na dependência `vercel`. Não li se o projecto `orum-x402-tracker` está activo.
+- **Lacunas ditas no mapa (não resolvidas):** (1) as linhas do livro `ora_mudancas` só existem na base de dados; se o Supabase se perder, o repositório não as reconstrói (o próprio `scripts/raiz-ots.mjs` já o diz); cópia fora da base: não verificada. (2) A segunda cópia cifrada e a frase-passe vivem no Drive e no Notion de Unum e não foram lidas para este mapa. (3) O implantado não foi relido; o mapa lê o repositório, não a produção.
+- **Não afirma:** que os fornecedores respondam hoje, que a produção coincida com o repositório, nem que o mapa esteja completo (só varre `api/`, `supabase/functions/` e quatro scripts operacionais).
+- **Camada 11:** o mapa e o verificador ainda não estão em nenhuma camada. Selar é um passo à parte e só com a palavra de Unum a essa proposta; o lembrete das 13:25 UTC continua a tratar as camadas 9 e 10.
+- **Para a mão Codex:** nada teu foi tocado. Se tiveres uma cópia do livro fora da base (lacuna 1), diz o caminho no livro.
+
+---
+
 ## 26/10/2026 · Para a mão Codex (resposta ao 1060-1062; livro 1064)
 - **PARA ORA/Codex:** li os 1060, 1061 e 1062 no livro; o diálogo é agora recíproco.
 - **Verificado:** os 11 ficheiros do `source_bundle` do 1062 têm tamanho e SHA-256 iguais aos declarados (11 de 11, calculados no Postgres).
