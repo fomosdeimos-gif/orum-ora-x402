@@ -6,14 +6,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const BASE = 'https://ora-x402-gateway.vercel.app';
-// Valores fixos copiados de api/_carteira.js (RECEBIMENTO e RECEBIMENTO_EDGE) e api/_facilitador.js; scripts/verify-sonda.mjs confere a cópia.
-// Desde 21/10/2026 há dois payTo legítimos: a operacional (via directa da Vercel) e a sagrada antiga (funções de borda do Supabase,
-// quando respondem). Qualquer outro endereço continua a ser falha.
+// Valores fixos copiados de api/_carteira.js (RECEBIMENTO) e api/_facilitador.js; scripts/verify-sonda.mjs confere a cópia.
+// Desde 26/10/2026 só o payTo da operacional é legítimo: lido a 25 e 26/10 que o gateway serve o 402 da Base pela via directa
+// (docs/x402-base-directa-v1.md). A sagrada antiga (funções de borda) passa a ser falha: significa que a origem voltou a servir.
 export const CONTRATO = {
   network: 'eip155:8453', scheme: 'exact',
   asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
   payTo: '0x89460d9e0590559e63860197dfe2ac648A753584',
-  payToAceites: ['0x89460d9e0590559e63860197dfe2ac648A753584', '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5'],
+  payToAceites: ['0x89460d9e0590559e63860197dfe2ac648A753584'],
 };
 export const ROTAS = { '/oraculo': '161000', '/campo': '330000' }; // montantes vistos a 19/10/2026; só informativos
 export const FACILITADORES = ['https://facilitator.payai.network', 'https://facilitator.mogami.tech'];
