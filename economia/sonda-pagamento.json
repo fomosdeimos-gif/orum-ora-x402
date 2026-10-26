@@ -2,7 +2,7 @@
   "schema": "orum-sonda-pagamento/v1",
   "objecto": "Leituras só de leitura da rota de pagamento (desafio 402 de /oraculo e /campo e facilitadores públicos). Só se acrescenta uma leitura quando algo mudou. Não paga, não assina, não envia.",
   "autorizacao": "Unum, 20/10/2026: \"Eu autorizo os 4 pontos\" (ponto 3; livro 907)",
-  "como": "scripts/sonda-pagamento.mjs numa sandbox Vercel temporária (só o gateway e os dois facilitadores), sha256 do script conferido com o do repositório (983ae90b…3dcf)",
+  "como": "scripts/sonda-pagamento.mjs numa sandbox Vercel temporária (só o gateway e os dois facilitadores), sha256 do script conferido com o do repositório (4ef60486…a50a desde 26/10/2026; 983ae90b…3dcf até 20/10)",
   "leituras": [
     {
       "lido_em_utc": "2026-10-20T06:02:18Z",
@@ -75,6 +75,42 @@
         }
       ],
       "mudou": "nada em relação a 06:02; primeira leitura da tarefa diária"
+    },
+    {
+      "lido_em_utc": "2026-10-26T12:17:00Z",
+      "ok": true,
+      "algum_facilitador_pronto": true,
+      "rotas": [
+        {
+          "rota": "/oraculo",
+          "ok": true,
+          "http": 402,
+          "amount": "161000",
+          "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584",
+          "preco_mudou": false
+        },
+        {
+          "rota": "/campo",
+          "ok": true,
+          "http": 402,
+          "amount": "330000",
+          "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584",
+          "preco_mudou": false
+        }
+      ],
+      "facilitadores": [
+        {
+          "url": "https://facilitator.payai.network",
+          "anuncia_base_exact_v2": true,
+          "http": 200
+        },
+        {
+          "url": "https://facilitator.mogami.tech",
+          "anuncia_base_exact_v2": false,
+          "http": 200
+        }
+      ],
+      "mudou": "o payTo de /oraculo e /campo passou da sagrada antiga (0xFEd69e8e…cDEe5, última leitura 20/10) para a operacional 0x89460d9e…3584: o 402 da Base sai agora da via directa (PR #148, docs/x402-base-directa-v1.md, livro 1022). Preços e facilitadores iguais. Script com sha256 4ef60486…a50a (o contrato do script passou a aceitar só a operacional); o sha de 20/10 (983ae90b…3dcf) já não é o do repositório."
     }
   ],
   "nao_verificado": [
