@@ -13,8 +13,11 @@ const BLOCOS = {
   972280: { id: '00000000000000000000c949594dcb1461a22989276eb416fd98c87612980131', merkle_root: '8eaa08292167f3e968fab3c8b6bd61a49723e5ea22061c9edc037fae993a096b', timestamp: 1792480671 },
   972285: { id: '00000000000000000001eb9dc3d53c485b2a0167a77c7bf499e8f7fb6abba6ca', merkle_root: '522b721ef2519fc354d17809865a6a5973bfd4d5f811cca55d5a7deaf8135b55', timestamp: 1792481245 },
   972300: { id: '00000000000000000001d7ede178227454eb3e19f2fcdf98a3bea869f245e617', merkle_root: '8dcabd691e22d7bd41b950ca7ebe34ea33b555c0dcb1e1686fc1bf28584a61d3', timestamp: 1792487646 },
+  // Lidos a 26/10/2026 em blockstream.info e mempool.space (as duas fontes concordam): blocos das camadas 9 e 10 da raiz.
+  973223: { id: '000000000000000000010c4c42514fb8c0aeaa2f2cfff343ea8cdffb28a81980', merkle_root: 'a9d346e5bff1ff5a5bf2c488eed81625b47e4e1eb32946205d4f2950e2199f8b', timestamp: 1793008228 },
+  973225: { id: '000000000000000000019b9084d244069880afdc08e343d047efd5a9eb263aee', merkle_root: 'f9d46fdb0b67764808898108063dad32c5ff3c921a552dcae79aa82c6bf90f43', timestamp: 1793010123 },
 };
-const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots') };
+const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots'), raiz9: fs.readFileSync('ancora/raiz-registos-9.ots'), raiz10: fs.readFileSync('ancora/raiz-registos-10.ots') };
 
 // fetcher simulado; `mut` permite estragar uma das fontes.
 function fetcherCom(mut = {}) {
@@ -39,7 +42,11 @@ assert.equal(ok1.length, 3);
 assert.deepEqual(ok2.map((b) => b.altura), [972151, 972155, 972195]);
 const ok3 = await conferirBlocos(recibos.raiz2, { fetcher: fetcherCom() });
 assert.deepEqual(ok3.map((b) => b.altura), [972280, 972285, 972300]);
-console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length} atestações.`);
+const ok9 = await conferirBlocos(recibos.raiz9, { fetcher: fetcherCom() });
+assert.deepEqual(ok9.map((b) => b.altura), [973223]);
+const ok10 = await conferirBlocos(recibos.raiz10, { fetcher: fetcherCom() });
+assert.deepEqual(ok10.map((b) => b.altura), [973225]);
+console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length} atestações.`);
 
 const rejeita = async (nome, fn) => { await assert.rejects(fn, undefined, `estrago não apanhado: ${nome}`); };
 await rejeita('raiz de Merkle de uma fonte alterada', () => conferirBlocos(recibos.oro, { fetcher: fetcherCom({ mempool: { bloco: () => ({ merkle_root: '0'.repeat(64) }) } }) }));
