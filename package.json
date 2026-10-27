@@ -32,6 +32,7 @@
     "livro:verify": "node scripts/verify-livro.mjs",
     "dependencia-modelo:verify": "node scripts/verify-dependencia-modelo.mjs",
     "pedidos-servicos:verify": "node scripts/verify-pedidos-servicos.mjs",
+    "pedidos-directos:verify": "node scripts/verify-pedidos-directos.mjs",
     "livro:exportar": "node scripts/exportar-livro.mjs",
     "vigia": "node scripts/vigia-entradas.mjs",
     "vigia:verify": "node scripts/verify-vigia-entradas.mjs",

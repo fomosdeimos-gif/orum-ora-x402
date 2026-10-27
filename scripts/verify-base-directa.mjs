@@ -15,6 +15,7 @@ const API = join(AQUI, '..', 'api');
 process.env.ORUM_BTC_OFERTA_PRAZO_MS = '60';
 delete process.env.ORUM_FACILITATOR_URL;
 delete process.env.ORUM_BASE_VIA;
+process.env.ORUM_PEDIDOS = 'off'; // o registo de pedidos (api/_pedidos.js) adia res.end; tem o seu verificador (verify-pedidos-directos.mjs)
 
 const fx = JSON.parse(readFileSync(join(AQUI, 'fixtures', 'campo-402-origem-2026-10-23.json'), 'utf8'));
 const OPERACIONAL = '0x89460d9e0590559e63860197dfe2ac648A753584';

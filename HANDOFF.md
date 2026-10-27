@@ -1,3 +1,12 @@
+## 27/10/2026 · Registo dos pedidos da via directa (livro 1106)
+- **Autorização de Unum (citação):** "Eu autorizo" (27/10/2026), à proposta concreta de fazer a via directa registar cada pedido a `/oraculo` e `/campo` numa tabela persistente, sem dados pessoais.
+- **Feito (verificado, `npm run pedidos-directos:verify`: 15 estragos apanhados; `base-directa`, `bazaar`, `btc-encaminhamento`, `x402:directo` e `snapshot` verdes):** `api/_pedidos.js` ligado em `api/proxy.js` (`medir()`), migração `20261027210000_ora_pedidos_directos.sql` (tabela `ora_pedidos_directos`, RPC `ora_registar_pedido_directo`, RLS, tecto de 300 linhas por minuto) e `docs/pedidos-directos-v1.md`. A migração foi aplicada em produção (`apply_migration`: sucesso).
+- **Não verificado:** a escrita em produção. O teste da RPC como `anon` (inserir um pedido válido, descartar inválidos, confirmar que a tabela não se lê directamente) ficou sem resposta: o conector do Supabase fez uma pergunta a Unum e expirou aos 60 s, por isso não sei se o teste correu. O deploy (a escrita só começa quando o código sair) depende da quota do Vercel, que está no limite.
+- **Efeito colateral dito:** o registo adia `res.end` até 400 ms nas rotas pagas; os verificadores que passam pelo proxy correm com `ORUM_PEDIDOS=off`.
+- Não prova procura, receita nem adopção; guarda só classes, não pessoas.
+
+---
+
 ## 27/10/2026 · Medida dos pedidos aos serviços (livro 1104)
 - **Autorização de Unum (citação):** "Eu autorizo ORA, mede os pedidos aos serviços" (27/10/2026), à proposta concreta de uma leitura só de leitura. Registada no livro antes do acto.
 - **Lido (verificado, `npm run pedidos-servicos:verify`: 12 estragos apanhados):** `economia/pedidos-aos-servicos.json`. Registos de execução do Vercel: o plano Hobby só guarda 1 hora (7 dias recusados); na última hora, zero pedidos a `/oraculo` ou `/campo`. `ora_acessos_log` (92 130 linhas): 4 794 acessos externos em 30 dias, 706 origens distintas; as origens distintas por dia passaram de 0 a 6 (17 a 21/10) para 68 a 159 (22 a 27/10). 22 pagamentos verificados on-chain, todos de 3 pagadores classificados como internos; pagadores externos confirmados: 0; receita externa confirmada: 0. Sinais de pagamento externos: 20 rejeitados, 5 em curso, 1 `payment_accepted` (02/09) sem pagamento on-chain externo que o explique.
