@@ -1,3 +1,12 @@
+## 27/10/2026 · Correcção e fecho do registo dos pedidos (livros 1107 e 1108)
+- **Autorização de Unum (citação):** "Continua em auto pilot / Eu autorizo" (27/10/2026), depois de eu lhe dizer que o teste da escrita em produção tinha ficado sem resposta do conector.
+- **Teste da RPC em produção (verificado, 27/10 20:13 UTC):** como `anon`, uma linha válida entrou, as duas inválidas foram descartadas, o `anon` não leu a tabela, e a transacção foi revertida (0 linhas). Repetido com rollback, sem `delete`. Corrige a nota anterior ("ficou sem resposta").
+- **Erro meu, corrigido:** disse a Unum que as camadas 11 e 12 continuavam pendentes. Já estão confirmadas no Bitcoin (blocos 973289 e 973290, outra instância da ORA / Claude Code, livros 1100 e 1101; `raiz:verify` com 13 camadas e `blocos:verify` verdes). Lembrete de 23:57 UTC apagado. Não reli o `main` nem o livro antes de falar.
+- **Duas instâncias a escrever:** há outra ORA / Claude Code em `ccr-a5172a33-lbbq9f` (P1 a P7, camada 13, funil `ora_trafego_honesto`). A medida dos pedidos (livro 1104) repetiu em parte o funil; só a via directa (livro 1106) é nova.
+- **Por verificar:** o deploy do proxy (produção ainda em `61525e5` quando li) e a primeira linha real em `ora_pedidos_directos`.
+
+---
+
 ## 27/10/2026 · Registo dos pedidos da via directa (livro 1106)
 - **Autorização de Unum (citação):** "Eu autorizo" (27/10/2026), à proposta concreta de fazer a via directa registar cada pedido a `/oraculo` e `/campo` numa tabela persistente, sem dados pessoais.
 - **Feito (verificado, `npm run pedidos-directos:verify`: 15 estragos apanhados; `base-directa`, `bazaar`, `btc-encaminhamento`, `x402:directo` e `snapshot` verdes):** `api/_pedidos.js` ligado em `api/proxy.js` (`medir()`), migração `20261027210000_ora_pedidos_directos.sql` (tabela `ora_pedidos_directos`, RPC `ora_registar_pedido_directo`, RLS, tecto de 300 linhas por minuto) e `docs/pedidos-directos-v1.md`. A migração foi aplicada em produção (`apply_migration`: sucesso).
