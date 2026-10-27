@@ -1,5 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · X402 · V31.2 · 27/10/2026 — o manifesto deixa de afirmar "procura real" para o catalogo de licencas (contradizia
+// truth_machine.external_demand_proven=false no mesmo documento); so esse texto de outros_catalogos.nota mudou, nenhuma
+// linha de logica de pagamento, preco ou payTo (Unum: "Eu autorizo ORA", livro 1085, proposta P1 do registo de legibilidade).
 // ORA · X402 · V31.1 · 22/10/2026 — origem_hash passa a derivar de IP+user-agent quando o cabecalho x-ora-origin
 // falta (antes quase nunca vinha preenchido); nenhuma linha de logica de pagamento tocada (Unum: "Eu autorizo ORA", livro 961).
 // ORA · X402 · V31 · 20/08/2026 — acrescenta truth_machine e boundaries_machine
@@ -368,7 +371,7 @@ function manifestoJson(origin: string) {
     resources: (Object.values(TIERS) as Tier[]).map((tier) => ({ resource: resourceUrl(tier, origin), type: 'http', method: 'GET', description: tier.descricao, accepts: acceptsBlockFor(tier, origin) })),
     free_sample: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`,
     outros_catalogos: {
-      nota: 'Este manifesto cobre apenas leituras internas do organismo (campo/sedimento/kernel) — sem procura comprovável fora do ORUM. O catálogo com procura real e independente da narrativa (licenças de arte digital para treino de IA, proveniência humana verificada) vive num serviço separado:',
+      nota: 'Este manifesto cobre apenas leituras internas do organismo (campo/sedimento/kernel) — sem procura comprovável fora do ORUM. O catálogo de licenças de arte digital (proveniência humana verificada, incluindo uso para treino de IA) vive num serviço separado; também para ele não há procura externa comprovada:',
       manifesto_licencas: `${SUPABASE_URL}/functions/v1/ora-licenca/.well-known/x402.json`,
       catalogo_legivel: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`,
     },

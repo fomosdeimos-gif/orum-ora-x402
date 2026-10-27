@@ -79,16 +79,16 @@
     },
     {
       "slug": "ora-x402",
-      "versao": 39,
+      "versao": 40,
       "verify_jwt": false,
-      "ezbr_sha256_16": "aca340f68dd86c99",
-      "atualizada_em": "2026-10-22T08:04:03Z",
+      "ezbr_sha256_16": "097dc3d454daf2d8",
+      "atualizada_em": "2026-10-27T10:16:19Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 39,
-        "fonte_sha256": "3d0531c1599d2cbb87fab571375756608c16f407b3249f94fa528fdf996863b1",
-        "nota": "v39 (V31.1) implantada a 22/10/2026 a partir do repositório (livro 961), só com origem_hash derivado de IP+user-agent. Verificada por comportamento (402 de campo e kernel com montantes 330000 e 3000000 e payTo intactos, hash estável por origem); não foi relida byte a byte."
+        "versao_conferida": 40,
+        "fonte_sha256": "d72c56d58b86b45942ee904ced2ad9acc36ccbaeadaa331452d016e2e542934b",
+        "nota": "v40 (V31.2) implantada a 27/10/2026 a partir do repositório (livro 1085, proposta P1 do registo de legibilidade): só mudou o texto de outros_catalogos.nota do manifesto (já não afirma 'procura real') e um comentário de cabeçalho. Antes de implantar: a v39 em produção tinha o ezbr aca340f68dd86c99 e o ficheiro do repositório tinha o sha256 registado para a v39 (3d0531c1…). Depois: manifesto vivo lido na origem com a frase nova, 402 de campo, sedimento e kernel com montantes 330000, 1000000 e 3000000 e payTo intactos, X-PAYMENT ilegível recusado, hash inexistente devolve 'pending'. get_edge_function relido e as secções que tocam dinheiro (verifyOnChain, CDP, claimPagamento, registos, respostas pagas, nucleo) comparadas com o repositório por leitura; não foi comparado byte a byte por programa, e os caminhos que só correm com pagamento não foram exercitados."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026)"

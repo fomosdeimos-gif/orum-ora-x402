@@ -5,9 +5,19 @@
   "autorizacao_de_unum": {
     "citacao": "Eu autorizo ORA",
     "objecto": "ler as superfícies que um agente vê antes de pagar e registar a legibilidade como serviço, com verificador (a hipótese de Unum: a sombra para humanos pode custar legibilidade às máquinas compradoras)",
-    "livros": [1083, 1084],
-    "nao_cobre": "mudar textos públicos, preços, payTo, funções implantadas, contacto externo ou fundos"
+    "livros": [1083, 1084, 1085],
+    "nao_cobre": "mudar textos públicos, preços, payTo, funções implantadas, contacto externo ou fundos",
+    "p1": {
+      "citacao": "Eu autorizo ORA",
+      "objecto": "P1: retirar do manifesto x402 a frase «O catálogo com procura real e independente da narrativa» (função ora-x402), com redeploy e leitura de volta",
+      "livro": 1085,
+      "cobriu": "só essa frase e um comentário de cabeçalho em supabase/functions/ora-x402/index.ts",
+      "nao_cobriu": "o /eco da mesma função (L12), preços, payTo, lógica de pagamento, as propostas P2 a P4"
+    }
   },
+  "correcoes": [
+    "27/10/2026: a L5 estava incompleta. O registo só via a frase do manifesto; o /eco da mesma função tem uma afirmação de procura parecida (L12). Descoberta ao ler o ficheiro inteiro para implantar a P1. Não a corrigi no mesmo redeploy porque a palavra de Unum foi à frase do manifesto."
+  ],
   "hipotese_de_unum": "Um serviço descrito em linguagem poética pode ficar sem comprador por não ser legível como serviço e não por falta de valor. É uma hipótese, não uma conclusão.",
   "teste": "Para cada serviço pago, procurar nas superfícies que um agente lê antes de pagar quatro respostas: o quê (o que recebo), para quê (em que tarefa se usa), quanto (preço, moeda, rede) e como (o passo seguinte para pagar). Classificação da ORA a partir do que está escrito: explicito, parcial ou ausente. É leitura, não medição de compradores.",
   "superficies_lidas": [
@@ -17,7 +27,8 @@
     { "id": "manifesto-x402", "onde": "https://ora-x402-gateway.vercel.app/.well-known/x402.json", "como": "ao vivo, 27/10/2026 09:43 UTC, conector da Vercel, sem pagar" },
     { "id": "402-campo", "onde": "https://ora-x402-gateway.vercel.app/campo", "como": "ao vivo, 09:42 UTC, resposta 402, via directa" },
     { "id": "402-oraculo", "onde": "https://ora-x402-gateway.vercel.app/oraculo", "como": "ao vivo, 09:42 UTC, resposta 402, via directa" },
-    { "id": "402-licenca-consulta", "onde": "https://ora-x402-gateway.vercel.app/licenca/consulta", "como": "ao vivo, 09:43 UTC, 307 seguido, resposta 402, origem Supabase (cabeçalho x-ora-version V53)" }
+    { "id": "402-licenca-consulta", "onde": "https://ora-x402-gateway.vercel.app/licenca/consulta", "como": "ao vivo, 09:43 UTC, 307 seguido, resposta 402, origem Supabase (cabeçalho x-ora-version V53)" },
+    { "id": "manifesto-x402-v40", "onde": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/.well-known/x402.json", "como": "ao vivo, 27/10/2026 depois do redeploy da v40 (cerca das 10:17 UTC), curl directo à origem, sem pagar" }
   ],
   "nao_lido": [
     "o 402 vivo de /sedimento, /kernel, /licenca/editorial e /licenca/treino (só os vi nos ficheiros e no manifesto)",
@@ -71,12 +82,13 @@
       ]
     },
     {
-      "id": "L5", "tipo": "contradicao", "servicos": ["licenca_consulta", "licenca_editorial_treino"], "estado": "aberta",
-      "resumo": "O manifesto x402 diz que o catálogo de licenças tem 'procura real e independente da narrativa', no mesmo documento em que o bloco truth_machine declara external_demand_proven: false. Os registos lidos hoje não mostram nenhum pagamento externo. É um texto público que afirma procura; a regra da casa é não a afirmar. Está em função implantada (ora-x402): corrigir exige redeploy, que precisa da palavra de Unum.",
+      "id": "L5", "tipo": "contradicao", "servicos": ["licenca_consulta", "licenca_editorial_treino"], "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (ora-x402 v40, livro 1085, P1). O manifesto x402 dizia que o catálogo de licenças tem 'procura real e independente da narrativa', no mesmo documento em que o bloco truth_machine declara external_demand_proven: false. A frase foi trocada por 'também para ele não há procura externa comprovada'. Lido ao vivo na origem depois do redeploy: frase nova, external_demand_proven false, montantes e payTo dos três escalões intactos. Fica o /eco da mesma função com afirmação parecida (L12).",
       "prova": [
-        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "O catálogo com procura real e independente da narrativa" },
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "nao_contem": "O catálogo com procura real e independente da narrativa" },
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "também para ele não há procura externa comprovada" },
         { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "external_demand_proven" },
-        { "leitura_viva": "manifesto-x402", "citacao": "outros_catalogos.nota: 'O catálogo com procura real e independente da narrativa (...)'; truth_machine.external_demand_proven: false" }
+        { "leitura_viva": "manifesto-x402-v40", "citacao": "outros_catalogos.nota: '... vive num serviço separado; também para ele não há procura externa comprovada:'; truth_machine.external_demand_proven: false; campo 330000, sedimento 1000000, kernel 3000000, payTo 0xFEd69e8e…" }
       ]
     },
     {
@@ -125,6 +137,15 @@
       ]
     },
     {
+      "id": "L12", "tipo": "contradicao", "servicos": ["licenca_consulta", "licenca_editorial_treino"], "estado": "aberta",
+      "resumo": "A amostra grátis da mesma função (/eco) traz um campo 'produto_com_procura_real' que diz que a licença de treino de IA é 'o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM'. É a mesma contradição de L5 (o /eco também declara external_demand_proven: false) e não tem prova de procura externa: nenhum pagamento externo confirmado. Descoberta a 27/10/2026 ao ler o ficheiro inteiro para o redeploy da P1; a P1 só cobria a frase do manifesto, por isso ficou como estava. Corrigir é a proposta P5.",
+      "prova": [
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "produto_com_procura_real" },
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "É o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM" },
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "external_demand_proven" }
+      ]
+    },
+    {
       "id": "L11", "tipo": "estrutura", "servicos": ["oraculo", "campo", "licenca_consulta", "licenca_editorial_treino"], "estado": "aberta",
       "resumo": "O llms.txt começa bem (a segunda e a terceira frase dizem como comprar), mas a lista do que se compra, com preços, vem depois de mais de 50 linhas de âncoras, desambiguação e sensações. O texto é todo em português, sem resumo em inglês.",
       "prova": [
@@ -143,12 +164,15 @@
   "leitura_da_hipotese": {
     "preco_e_pagamento_escondidos_pela_poesia": "não apoiado: quanto e como são a parte mais clara de cada 402.",
     "o_que_e_para_que_pouco_legiveis": "parcialmente apoiado: L6, L7, L8, L9, L10. A causa dominante lida em L6 não é a linguagem poética, é o serviço declarar que não tem utilidade fora do organismo.",
-    "contradicoes_entre_superficies": "observadas: L1, L2, L3, L5. Um agente que verifique antes de pagar encontra duas carteiras, estados de 13/10 e uma afirmação de procura que o mesmo documento nega. O efeito sobre compradores não foi medido.",
+    "contradicoes_entre_superficies": "observadas: L1, L2, L3, L12 (abertas) e L5 (fechada a 27/10 pela P1). Um agente que verifique antes de pagar encontra duas carteiras, estados de 13/10 e uma afirmação de procura que o mesmo documento nega. O efeito sobre compradores não foi medido.",
     "o_que_nao_se_pode_concluir": "que estas lacunas sejam a causa de não haver compras. O funil de 27/10 (economia/funil-acessos-2026-10-27.json) mostra que só 11 origens de aparência de comprador viram o preço de consulta em 5 dias: o gargalo anterior parece ser chegar ao 402. Legibilidade só pesa para quem lá chega.",
     "nao_prova": "procura, adopção nem receita"
   },
+  "propostas_executadas": [
+    { "id": "P1", "sobre": "L5", "quando_utc": "2026-10-27T10:16:19Z", "resultado": "ora-x402 v40 implantada a partir do repositório; manifesto vivo lido na origem com a frase nova; montantes e payTo dos três escalões intactos; leitura comparada das secções que tocam dinheiro (não byte a byte); caminhos que só correm com pagamento não exercitados", "livro": 1085 }
+  ],
   "propostas_nao_executadas": [
-    { "id": "P1", "sobre": "L5", "o_que": "retirar do manifesto a frase 'procura real e independente da narrativa' (função ora-x402, redeploy)", "precisa": "Eu autorizo de Unum a esta proposta, por tocar função implantada que cobra" },
+    { "id": "P5", "sobre": "L12", "o_que": "retirar do /eco da função ora-x402 o campo 'produto_com_procura_real' ou trocar a razão por texto que não afirme procura (mesma função, outro redeploy)", "precisa": "Eu autorizo de Unum a esta proposta, por tocar função implantada que cobra" },
     { "id": "P2", "sobre": "L1, L2", "o_que": "alinhar o llms.txt e o agent-card ao que o 402 vivo diz (qual carteira recebe cada serviço) e pôr datas de leitura actuais", "precisa": "Eu autorizo de Unum, por tocar texto público sobre o destinatário do pagamento" },
     { "id": "P3", "sobre": "L6, L9, L10", "o_que": "acrescentar ao 402 da via directa o outputSchema tipado, a ligação à amostra grátis e uma linha honesta de 'para quê' e de glossário", "precisa": "Eu autorizo de Unum; é código da via directa" },
     { "id": "P4", "sobre": "L7, L8", "o_que": "descrever os direitos de cada licença no openapi e o título da obra no 402 da licença", "precisa": "Eu autorizo de Unum; o 402 da licença é função implantada" }
