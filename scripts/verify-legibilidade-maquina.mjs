@@ -42,10 +42,11 @@ export function verificar(r, ler = lerFicheiro) {
       }
       let texto;
       try { texto = ler(p.ficheiro); } catch { x(`${l.id}: ficheiro ${p.ficheiro} não existe`); continue; }
-      const aberta = l.estado === 'aberta';
-      if (p.contem !== undefined && aberta && !texto.includes(p.contem)) x(`${l.id}: ${p.ficheiro} já não contém «${p.contem}» (lacuna fechada? actualiza o registo)`);
-      if (p.nao_contem !== undefined && aberta && texto.includes(p.nao_contem)) x(`${l.id}: ${p.ficheiro} passou a conter «${p.nao_contem}» (lacuna fechada? actualiza o registo)`);
-      if (p.cabecalho !== undefined && aberta) {
+      // As provas descrevem o estado actual: numa lacuna aberta mostram que ela existe, numa fechada que o fecho se mantém.
+      const dica = l.estado === 'aberta' ? 'lacuna já fechada? actualiza o registo' : 'a lacuna fechada voltou a abrir? actualiza o registo';
+      if (p.contem !== undefined && !texto.includes(p.contem)) x(`${l.id}: ${p.ficheiro} já não contém «${p.contem}» (${dica})`);
+      if (p.nao_contem !== undefined && texto.includes(p.nao_contem)) x(`${l.id}: ${p.ficheiro} passou a conter «${p.nao_contem}» (${dica})`);
+      if (p.cabecalho !== undefined) {
         const i = texto.split('\n').findIndex((ln) => ln.trim() === p.cabecalho);
         if (i < 0) x(`${l.id}: cabeçalho «${p.cabecalho}» não encontrado em ${p.ficheiro}`);
         else if (i + 1 <= p.depois_da_linha) x(`${l.id}: o cabeçalho está na linha ${i + 1}, não depois da ${p.depois_da_linha}`);
@@ -54,6 +55,22 @@ export function verificar(r, ler = lerFicheiro) {
     }
   }
 
+  // Uma lacuna fechada tem de provar o fecho no ficheiro (não só numa leitura viva).
+  for (const l of r.lacunas || []) {
+    if (l.estado === 'fechada' && !(l.prova || []).some((p) => p.ficheiro)) x(`${l.id}: lacuna fechada sem prova de fecho em ficheiro`);
+  }
+  // Propostas executadas: apontam para lacunas fechadas e dizem o que foi lido; as por executar não se confundem com elas.
+  const executadas = new Set();
+  for (const p of r.propostas_executadas || []) {
+    executadas.add(p.id);
+    if (!p.livro || !p.resultado || !p.quando_utc) x(`${p.id}: proposta executada sem livro, resultado ou data`);
+    for (const id of String(p.sobre || '').split(/[,\s]+/).filter(Boolean)) {
+      const l = (r.lacunas || []).find((q) => q.id === id);
+      if (!l) x(`${p.id}: cita a lacuna ${id}, que não existe`);
+      else if (l.estado !== 'fechada') x(`${p.id}: executada mas a lacuna ${id} não está fechada`);
+    }
+  }
+  for (const p of r.propostas_nao_executadas || []) if (executadas.has(p.id)) x(`${p.id}: está nas executadas e nas por executar`);
   // Propostas: nada se executa sem a palavra de Unum.
   for (const p of r.propostas_nao_executadas || []) {
     if (!/Eu autorizo/.test(p.precisa || '')) x(`${p.id}: a proposta não diz que precisa do «Eu autorizo» de Unum`);
@@ -99,6 +116,11 @@ falha('IP em claro', (c) => { c.limites.push('visto em 203.0.113.7'); });
 falha('sem a citação de Unum', (c) => { delete c.autorizacao_de_unum.citacao; });
 // A lacuna aberta deixa de ser verdade: o verificador obriga a actualizar o registo.
 falha('lacuna aberta cuja ausência já foi corrigida (openapi passa a descrever /sedimento)', () => {}, lerCom('x', (nome, t) => (nome === 'openapi.json' ? t + ' /sedimento' : t)));
-falha('lacuna aberta cuja frase já foi retirada (manifesto sem «procura real»)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('O catálogo com procura real e independente da narrativa', '') : t)));
+falha('lacuna fechada que voltou a abrir (a frase «procura real» do manifesto é reposta)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t + "\n// O catálogo com procura real e independente da narrativa" : t)));
+falha('lacuna aberta cuja frase já foi retirada (o /eco deixa de afirmar «único item … procura comprovável»)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('É o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM', '') : t)));
+falha('lacuna fechada só com leitura viva', (c) => { L(c, 'L5').prova = L(c, 'L5').prova.filter((p) => p.leitura_viva); });
+falha('proposta executada sobre lacuna ainda aberta', (c) => { c.propostas_executadas[0].sobre = 'L12'; });
+falha('proposta executada sem livro', (c) => { delete c.propostas_executadas[0].livro; });
+falha('proposta nas executadas e nas por executar', (c) => { c.propostas_nao_executadas.push({ id: 'P1', sobre: 'L5', o_que: 'x', precisa: 'Eu autorizo' }); });
 
 console.log(JSON.stringify({ verified: true, casos_de_mentira: mentiras, lacunas_abertas: real.lacunas.filter((l) => l.estado === 'aberta').length }));
