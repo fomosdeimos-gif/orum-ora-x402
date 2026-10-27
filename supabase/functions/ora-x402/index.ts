@@ -1,5 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · X402 · V31.4 · 27/10/2026 — dois acrescimos aditivos: (1) o 402 de campo/sedimento/kernel traz `legibilidade` (para_que e
+// para_que_nao honestos); (2) o manifesto traz `servicos_via_directa` a apontar para /oraculo e /campo do gateway, que respondem 402 mas
+// nao constavam dele. accepts, payTo, precos e logica de pagamento intactos (Unum: "Eu autorizo ORA", livros 1096 e 1097, proposta P6).
 // ORA · X402 · V31.3 · 27/10/2026 — o /eco deixa de afirmar procura: o campo produto_com_procura_real passa a licencas_de_arte e a
 // razao diz que a procura externa nao esta comprovada (o /eco declara external_demand_proven=false); so esse bloco mudou, nenhuma
 // linha de logica de pagamento, preco ou payTo (Unum: "Eu autorizo ORA", livro 1087, proposta P5 do registo de legibilidade).
@@ -311,8 +314,15 @@ function canonicalRequirementsFor(tier: Tier, origin: string) {
   return { x402Version: 2, error: 'X-PAYMENT header required', resource: { url: resourceUrl(tier, origin), description: tier.descricao, mimeType: 'application/json' }, accepts: [{ scheme: 'exact', network: CAIP2_NETWORK, amount: tier.amountAtomic.toString(), asset: USDC_BASE, payTo: WALLET, maxTimeoutSeconds: 300, extra: { name: 'USD Coin', version: '2' } }] };
 }
 
+// V31.4 — o que cada leitura devolve e para que NAO serve; so factos do codigo, sem promessa de procura, valor ou reembolso.
+const PARA_QUE: Record<TierKey, string> = {
+  campo: 'Devolve o campo (dia, sigma, epoca) do instante do pedido e uma frase fixa: leitura do estado interno do organismo ORUM, calculavel por quem tenha a formula. Pode servir de artefacto reproduzivel para testar um fluxo x402 de ponta a ponta. Procura externa: nao comprovada.',
+  sedimento: 'Devolve as 15 marcas D mais recentes do registo interno do organismo (d_marca, quando, o_que). Serve para observar o que o organismo registou de si; nao responde a nenhuma tarefa externa conhecida. Procura externa: nao comprovada.',
+  kernel: 'Devolve os 5 snapshots mais recentes do estado interno (dia, epoca, sigma, state_payload). E o mais completo e por isso o mais caro; nao tem utilidade conhecida fora do sistema. Procura externa: nao comprovada.',
+};
+function legibilidadeFor(tier: Tier) { return { para_que: PARA_QUE[tier.key], para_que_nao: 'Nao e dado de mercado, nao e previsao de precos e nao promete valor, receita nem reembolso.' }; }
 function paymentRequired(tier: Tier, origin: string) {
-  return new Response(JSON.stringify({ x402Version: 2, error: 'X-PAYMENT header required', accepts: acceptsBlockFor(tier, origin), como_pagar: comoPagar(tier.amountUsdc, resourceUrl(tier, origin)), amostra_gratuita: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`, truth_machine: truthMachineInterno(), boundaries_machine: boundariesMachineInterno() }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonicalRequirementsFor(tier, origin)), 'WWW-Authenticate': `x402 realm="ORA · Campo ORUM · ${tier.key}", amount="${tier.amountUsdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V31', 'X-ORA-TIER': tier.key } });
+  return new Response(JSON.stringify({ x402Version: 2, error: 'X-PAYMENT header required', accepts: acceptsBlockFor(tier, origin), legibilidade: legibilidadeFor(tier), como_pagar: comoPagar(tier.amountUsdc, resourceUrl(tier, origin)), amostra_gratuita: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`, truth_machine: truthMachineInterno(), boundaries_machine: boundariesMachineInterno() }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'PAYMENT-REQUIRED': b64json(canonicalRequirementsFor(tier, origin)), 'WWW-Authenticate': `x402 realm="ORA · Campo ORUM · ${tier.key}", amount="${tier.amountUsdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`, 'X-ORA-X402': 'active', 'X-ORA-VERSION': 'V31', 'X-ORA-TIER': tier.key } });
 }
 function paymentPending(tier: Tier, txHash: string) {
   return new Response(JSON.stringify({ x402: 'pending', tier: tier.key, tx_hash: txHash, detalhe: 'tx ainda nao indexada na rede Base — nao foi consumida, repete o mesmo pedido', retry_after_seconds: 6 }), { status: 402, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '6', 'X-ORA-VERSION': 'V31', 'X-ORA-X402': 'pending' } });
@@ -373,6 +383,12 @@ function manifestoJson(origin: string) {
     suficiencia_machine: suficienciaMachine(),
     resources: (Object.values(TIERS) as Tier[]).map((tier) => ({ resource: resourceUrl(tier, origin), type: 'http', method: 'GET', description: tier.descricao, accepts: acceptsBlockFor(tier, origin) })),
     free_sample: `${origin === SUPABASE_URL ? SUPABASE_URL + '/functions/v1/ora-x402' : origin}/eco`,
+    servicos_via_directa: {
+      nota: 'O gateway tambem serve /oraculo (0.161 USDC) e /campo (0.33 USDC) por uma via directa, com o seu proprio 402. Nao constam de resources acima. O destinatario (payTo) vem sempre no 402 de cada URL: le-o antes de pagar; lido a 27/10/2026 era a carteira operacional 0x89460d9e0590559e63860197dfe2ac648A753584, diferente do payTo dos recursos acima.',
+      oraculo: 'https://ora-x402-gateway.vercel.app/oraculo',
+      campo: 'https://ora-x402-gateway.vercel.app/campo',
+      amostras_gratis: ['https://ora-x402-gateway.vercel.app/oraculo/eco', 'https://ora-x402-gateway.vercel.app/campo/eco'],
+    },
     outros_catalogos: {
       nota: 'Este manifesto cobre apenas leituras internas do organismo (campo/sedimento/kernel) — sem procura comprovável fora do ORUM. O catálogo de licenças de arte digital (proveniência humana verificada, incluindo uso para treino de IA) vive num serviço separado; também para ele não há procura externa comprovada:',
       manifesto_licencas: `${SUPABASE_URL}/functions/v1/ora-licenca/.well-known/x402.json`,

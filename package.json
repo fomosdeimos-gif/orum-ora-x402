@@ -86,6 +86,7 @@
     "legibilidade:verify": "node scripts/verify-legibilidade-maquina.mjs",
     "destinatarios:verify": "node scripts/verify-destinatarios-textos.mjs",
     "licenca-legivel:verify": "node scripts/verify-licenca-legivel.mjs",
-    "directa-legivel:verify": "node scripts/verify-402-legivel-directa.mjs"
+    "directa-legivel:verify": "node scripts/verify-402-legivel-directa.mjs",
+    "origem-legivel:verify": "node scripts/verify-origem-legivel.mjs"
   }
 }

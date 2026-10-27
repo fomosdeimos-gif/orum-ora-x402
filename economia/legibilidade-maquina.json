@@ -15,7 +15,9 @@
       1092,
       1093,
       1094,
-      1095
+      1095,
+      1096,
+      1097
     ],
     "p2": {
       "citacao": "Eu autorizo ORA",
@@ -58,6 +60,16 @@
       ],
       "cobriu": "só campos aditivos no 402 da via directa (api/_x402-directo.js) e um verificador (scripts/verify-402-legivel-directa.mjs)",
       "nao_cobriu": "accepts, payTo, montantes, lógica de pagamento, o manifesto (L3), o sedimento e o kernel (L13), listagens de terceiros, fundos"
+    },
+    "p6": {
+      "citacao": "Eu autorizo ORA",
+      "objecto": "P6: no ora-x402, pôr /oraculo e /campo no manifesto x402 e uma linha honesta de «para quê» no 402 do sedimento e do kernel (L3 e L13), com redeploy e leitura de volta",
+      "livros": [
+        1096,
+        1097
+      ],
+      "cobriu": "só campos aditivos no 402 e no manifesto da função ora-x402 e um verificador (scripts/verify-origem-legivel.mjs)",
+      "nao_cobriu": "accepts, payTo, montantes, lógica de pagamento, listagens de terceiros, fundos"
     }
   },
   "correcoes": [
@@ -124,6 +136,16 @@
       "id": "402-sedimento-kernel-licencas",
       "onde": "https://ora-x402-gateway.vercel.app/sedimento, /kernel, /licenca/editorial e /licenca/treino",
       "como": "ao vivo, 27/10/2026 entre as 10:47 e as 10:48 UTC, resposta 402 de cada um, conector da Vercel, sem pagar"
+    },
+    {
+      "id": "manifesto-x402-v42",
+      "onde": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/.well-known/x402.json",
+      "como": "ao vivo, 27/10/2026 depois do deploy da v42, origem Supabase"
+    },
+    {
+      "id": "402-sedimento-v42",
+      "onde": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/{,sedimento,kernel}",
+      "como": "ao vivo, 27/10/2026 depois do deploy da v42, 402 sem pagar"
     }
   ],
   "nao_lido": [
@@ -275,20 +297,24 @@
       "servicos": [
         "oraculo"
       ],
-      "estado": "aberta",
-      "resumo": "O llms.txt apresenta o manifesto x402 como 'a fonte de verdade em tempo real', mas o manifesto vivo lista só campo, sedimento e kernel, com resource e payTo da origem Supabase. O /oraculo (0,161 USDC, o serviço mais barato) não consta dele, embora conste do llms.txt, do openapi e do agent-card, e o gateway lhe responda 402. Acrescento de 27/10 (P2): o manifesto lista /campo no recurso da origem Supabase, com payTo da sagrada antiga, enquanto o /campo do gateway cobra na operacional (duas vias para o mesmo serviço). O llms.txt e o agent-card passaram a descrevê-lo (L1); o manifesto continua a ser função implantada.",
+      "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (ora-x402 v42, livro 1097, P6). O manifesto x402 não listava o /oraculo nem dizia que o /campo tem duas vias com destinatários diferentes. Passa a trazer servicos_via_directa: os URL de /oraculo e /campo do gateway e das suas amostras grátis, os preços, e a regra «o payTo vem sempre no 402 de cada URL: lê-o antes de pagar» (lido a 27/10: a operacional 0x89460d9e…). Os três resources, os seus payTo e montantes ficam como estavam (lido ao vivo). Não foram acrescentados à lista resources porque o manifesto da origem não pode afirmar o payTo da via directa como seu.",
       "prova": [
         {
-          "ficheiro": "llms.txt",
-          "contem": "A fonte de verdade em tempo real é o manifesto x402 acima"
+          "ficheiro": "supabase/functions/ora-x402/index.ts",
+          "contem": "servicos_via_directa: {"
         },
         {
-          "ficheiro": "llms.txt",
-          "contem": "lista Campo, Sedimento e Kernel"
+          "ficheiro": "supabase/functions/ora-x402/index.ts",
+          "contem": "vem sempre no 402 de cada URL"
         },
         {
-          "leitura_viva": "manifesto-x402",
-          "citacao": "resources: ora-x402 (campo), ora-x402/sedimento, ora-x402/kernel; sem oraculo"
+          "ficheiro": "scripts/verify-origem-legivel.mjs",
+          "contem": "manifesto esquece o /oraculo"
+        },
+        {
+          "leitura_viva": "manifesto-x402-v42",
+          "citacao": "servicos_via_directa {oraculo, campo, amostras_gratis}; resources: ora-x402 (campo), sedimento, kernel com payTo 0xFEd69e8e… e 330000, 1000000, 3000000"
         }
       ]
     },
@@ -546,16 +572,24 @@
       "servicos": [
         "sedimento_kernel"
       ],
-      "estado": "aberta",
-      "resumo": "Resto de L6: o /sedimento e o /kernel (função ora-x402 na origem Supabase) continuam sem «para quê» honesto no 402; o kernel diz que é «o mais caro por ser o mais completo, não por ter mais utilidade fora do sistema». Fora da P3 (função implantada).",
+      "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (ora-x402 v42, livro 1097, P6). O 402 de campo, sedimento e kernel passa a trazer legibilidade.para_que (o que devolve, lido do código: 15 marcas D no sedimento, 5 snapshots no kernel; «Procura externa: nao comprovada») e para_que_nao (não é dado de mercado nem previsão, não promete valor, receita nem reembolso). Fora de accepts e do cabeçalho payment-required. Lido ao vivo na origem depois do redeploy.",
       "prova": [
         {
           "ficheiro": "supabase/functions/ora-x402/index.ts",
-          "contem": "não por ter mais utilidade fora do sistema"
+          "contem": "const PARA_QUE: Record<TierKey, string>"
         },
         {
           "ficheiro": "supabase/functions/ora-x402/index.ts",
-          "nao_contem": "legibilidade.para_que"
+          "contem": "legibilidade: legibilidadeFor(tier), como_pagar"
+        },
+        {
+          "ficheiro": "scripts/verify-origem-legivel.mjs",
+          "contem": "kernel promete"
+        },
+        {
+          "leitura_viva": "402-sedimento-v42",
+          "citacao": "legibilidade.para_que: 'Devolve as 15 marcas D mais recentes…'; payTo 0xFEd69e8e…; amount 1000000"
         }
       ]
     }
@@ -574,6 +608,13 @@
     "nao_prova": "procura, adopção nem receita"
   },
   "propostas_executadas": [
+    {
+      "id": "P6",
+      "sobre": "L3, L13",
+      "quando_utc": "2026-10-27T12:44:04Z",
+      "resultado": "ora-x402 v42 implantada a partir do repositório; 402 de campo/sedimento/kernel com legibilidade e manifesto com servicos_via_directa, lidos ao vivo na origem; payTo e montantes dos três escalões intactos; X-PAYMENT ilegível recusado; origem-legivel:verify (17 estragos); leitura de volta conferida por leitura, não byte a byte por programa; caminhos pagos não exercitados",
+      "livro": 1097
+    },
     {
       "id": "P3",
       "sobre": "L6, L9, L10",
@@ -612,10 +653,10 @@
   ],
   "propostas_nao_executadas": [
     {
-      "id": "P6",
-      "sobre": "L3, L13",
-      "o_que": "na origem Supabase (ora-x402): pôr o /oraculo e o /campo no manifesto x402 e uma linha honesta de «para quê» no 402 do /sedimento e do /kernel",
-      "precisa": "Eu autorizo de Unum; é função implantada (ora-x402)"
+      "id": "P7",
+      "sobre": "L4, L11",
+      "o_que": "no openapi.json: acrescentar /sedimento e /kernel e o glossário do campo para /oraculo e /campo (resto da L10); no llms.txt: pôr o que cada serviço faz e custa antes do contexto do organismo",
+      "precisa": "Eu autorizo de Unum; são textos públicos (openapi.json e llms.txt)"
     }
   ],
   "limites": [
