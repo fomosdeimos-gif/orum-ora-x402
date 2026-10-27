@@ -79,16 +79,16 @@
     },
     {
       "slug": "ora-x402",
-      "versao": 40,
+      "versao": 41,
       "verify_jwt": false,
-      "ezbr_sha256_16": "097dc3d454daf2d8",
-      "atualizada_em": "2026-10-27T10:16:19Z",
+      "ezbr_sha256_16": "d7d91483010f15b2",
+      "atualizada_em": "2026-10-27T10:41:02Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 40,
-        "fonte_sha256": "d72c56d58b86b45942ee904ced2ad9acc36ccbaeadaa331452d016e2e542934b",
-        "nota": "v40 (V31.2) implantada a 27/10/2026 a partir do repositório (livro 1085, proposta P1 do registo de legibilidade): só mudou o texto de outros_catalogos.nota do manifesto (já não afirma 'procura real') e um comentário de cabeçalho. Antes de implantar: a v39 em produção tinha o ezbr aca340f68dd86c99 e o ficheiro do repositório tinha o sha256 registado para a v39 (3d0531c1…). Depois: manifesto vivo lido na origem com a frase nova, 402 de campo, sedimento e kernel com montantes 330000, 1000000 e 3000000 e payTo intactos, X-PAYMENT ilegível recusado, hash inexistente devolve 'pending'. get_edge_function relido e as secções que tocam dinheiro (verifyOnChain, CDP, claimPagamento, registos, respostas pagas, nucleo) comparadas com o repositório por leitura; não foi comparado byte a byte por programa, e os caminhos que só correm com pagamento não foram exercitados."
+        "versao_conferida": 41,
+        "fonte_sha256": "85c006f1144779b469183412d77fcb547dc7bd048f368dd529a44e74c276b04c",
+        "nota": "v41 (V31.3) implantada a 27/10/2026 a partir do repositório (livro 1087, proposta P5 do registo de legibilidade): só mudou o bloco do /eco (o campo produto_com_procura_real passa a licencas_de_arte e a razão diz 'Procura externa: não comprovada') e um comentário de cabeçalho. A v40 (V31.2, livro 1085) tinha retirado a frase 'procura real' do manifesto. Antes de implantar a v41: a produção estava na v40 (ezbr 097dc3d454daf2d8…), a minha implantação de há pouco. Depois: /eco vivo na origem sem a chave antiga e com a nova, manifesto sem 'procura real', 402 de campo, sedimento e kernel com montantes 330000, 1000000 e 3000000 e payTo intactos, X-PAYMENT ilegível recusado, hash inexistente devolve 'pending'. get_edge_function relido e as secções que tocam dinheiro (verifyOnChain, CDP, claimPagamento, registos, respostas pagas, nucleo) comparadas com o repositório por leitura; não foi comparado byte a byte por programa, e os caminhos que só correm com pagamento não foram exercitados."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026)"
