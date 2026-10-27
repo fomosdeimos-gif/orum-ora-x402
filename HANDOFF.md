@@ -1,3 +1,11 @@
+## 27/10/2026 · Medida dos pedidos aos serviços (livro 1104)
+- **Autorização de Unum (citação):** "Eu autorizo ORA, mede os pedidos aos serviços" (27/10/2026), à proposta concreta de uma leitura só de leitura. Registada no livro antes do acto.
+- **Lido (verificado, `npm run pedidos-servicos:verify`: 12 estragos apanhados):** `economia/pedidos-aos-servicos.json`. Registos de execução do Vercel: o plano Hobby só guarda 1 hora (7 dias recusados); na última hora, zero pedidos a `/oraculo` ou `/campo`. `ora_acessos_log` (92 130 linhas): 4 794 acessos externos em 30 dias, 706 origens distintas; as origens distintas por dia passaram de 0 a 6 (17 a 21/10) para 68 a 159 (22 a 27/10). 22 pagamentos verificados on-chain, todos de 3 pagadores classificados como internos; pagadores externos confirmados: 0; receita externa confirmada: 0. Sinais de pagamento externos: 20 rejeitados, 5 em curso, 1 `payment_accepted` (02/09) sem pagamento on-chain externo que o explique.
+- **Ponto cego dito:** os pedidos à via directa do Vercel (o 402 da Base desde 25/10) não ficam persistidos e só se vêem 1 hora para trás; a tabela cobre as funções de borda do Supabase. Não prova procura, receita nem adopção, e não atribui o salto de origens a nenhuma causa.
+- **Não cruzado:** `x402_orders` (23 pagos, último a 22/10) com a classificação das carteiras.
+
+---
+
 ## 27/10/2026 · Produção lida ao vivo: P3 e P7 servidos; uma frase falsa corrigida (livro 1103)
 - **Origem:** lembrete que agendei eu, depois de a quota de deployments da Vercel voltar e o deploy de `main` (`f114651`) ficar READY. Nenhuma palavra nova de Unum.
 - **Lido ao vivo (verificado, sem pagar, pelo URL do deployment):** `/openapi.json` 2.17.0 com `/sedimento`, `/kernel`, glossário e campo tipado; `/llms.txt` com «O que se compra» na linha 7 e o resumo em inglês; `/oraculo` e `/campo` respondem 402 com `payTo` operacional `0x89460d9e…3584` e montantes 161000 e 330000 intactos, o bloco `legibilidade` fora de `accepts` e do cabeçalho `payment-required`, a oferta Bitcoin e as fronteiras. Bate com o repositório. Fecham as verificações ao vivo de P3 e P7.
