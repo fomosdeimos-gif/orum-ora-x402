@@ -49,7 +49,8 @@ export function verificar(r, ler = lerFicheiro) {
       if (p.cabecalho !== undefined) {
         const i = texto.split('\n').findIndex((ln) => ln.trim() === p.cabecalho);
         if (i < 0) x(`${l.id}: cabeçalho «${p.cabecalho}» não encontrado em ${p.ficheiro}`);
-        else if (i + 1 <= p.depois_da_linha) x(`${l.id}: o cabeçalho está na linha ${i + 1}, não depois da ${p.depois_da_linha}`);
+        else if (p.depois_da_linha !== undefined && i + 1 <= p.depois_da_linha) x(`${l.id}: o cabeçalho está na linha ${i + 1}, não depois da ${p.depois_da_linha}`);
+        else if (p.antes_da_linha !== undefined && i + 1 > p.antes_da_linha) x(`${l.id}: o cabeçalho está na linha ${i + 1}, não antes da ${p.antes_da_linha + 1}`);
       }
       if (p.contem === undefined && p.nao_contem === undefined && p.cabecalho === undefined) x(`${l.id}: prova de ficheiro sem condição`);
     }
@@ -108,23 +109,24 @@ falha('ficheiro que não existe', (c) => { L(c, 'L1').prova[0].ficheiro = 'nao-e
 falha('leitura viva fora das superfícies lidas', (c) => { L(c, 'L1').prova.find((p) => p.leitura_viva).leitura_viva = 'outra-superficie'; });
 falha('lacuna fechada que voltou a abrir (o llms.txt volta a anunciar uma só carteira)', () => {}, lerCom('x', (nome, t) => (nome === 'llms.txt' ? t + '\nPagamentos directos para jasm43.base.eth (0x0)' : t)));
 falha('lacuna fechada que voltou a abrir (o agent-card volta a ter a fotografia de 13/10)', () => {}, lerCom('x', (nome, t) => (nome === '.well-known/agent-card.json' ? t.replace('"observedAt": "2026-10-27"', '"observedAt": "2026-10-13"') : t)));
-falha('cabeçalho que afinal está no início', (c) => { L(c, 'L11').prova[1].depois_da_linha = 500; });
-falha('proposta que não pede a palavra de Unum', (c) => { c.propostas_nao_executadas[0].precisa = 'nada'; });
-falha('proposta sobre lacuna inexistente', (c) => { c.propostas_nao_executadas[0].sobre = 'L77'; });
+falha('cabeçalho que afinal está depois do limite', (c) => { L(c, 'L11').prova[1].antes_da_linha = 1; });
+const comPendente = (c) => { if (!c.propostas_nao_executadas.length) c.propostas_nao_executadas.push({ id: 'P99', sobre: 'L1', o_que: 'teste', precisa: 'Eu autorizo de Unum' }); };
+falha('proposta que não pede a palavra de Unum', (c) => { comPendente(c); c.propostas_nao_executadas[0].precisa = 'nada'; });
+falha('proposta sobre lacuna inexistente', (c) => { comPendente(c); c.propostas_nao_executadas[0].sobre = 'L77'; });
+falha('lacuna fechada que voltou a abrir (a secção «O que se compra» desce no llms.txt)', () => {}, lerCom('x', (nome, t) => (nome === 'llms.txt' ? t.replace('## O que se compra', '## Resumo') : t)));
+falha('lacuna fechada que voltou a abrir (o openapi perde o /sedimento)', () => {}, lerCom('x', (nome, t) => (nome === 'openapi.json' ? t.replace('"/sedimento"', '"/outro"') : t)));
 falha('promessa de receita', (c) => { c.leitura_da_hipotese.o_que_nao_se_pode_concluir += ' Receita garantida.'; });
 falha('sem a fronteira de procura', (c) => { c.leitura_da_hipotese.nao_prova = 'nada'; c.limites = ['a', 'b', 'c']; });
 falha('sem dizer o que não foi lido', (c) => { c.nao_lido = []; });
 falha('IP em claro', (c) => { c.limites.push('visto em 203.0.113.7'); });
 falha('sem a citação de Unum', (c) => { delete c.autorizacao_de_unum.citacao; });
-// A lacuna aberta deixa de ser verdade: o verificador obriga a actualizar o registo.
-falha('lacuna aberta cuja ausência já foi corrigida (openapi passa a descrever /sedimento)', () => {}, lerCom('x', (nome, t) => (nome === 'openapi.json' ? t + ' /sedimento' : t)));
 falha('lacuna fechada que voltou a abrir (a frase «procura real» do manifesto é reposta)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t + "\n// O catálogo com procura real e independente da narrativa" : t)));
 falha('lacuna fechada que voltou a abrir (o /eco volta a afirmar «único item … procura comprovável»)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t + "\n// É o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM" : t)));
 falha('lacuna fechada que voltou a abrir (a chave produto_com_procura_real: { regressa ao /eco)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('licencas_de_arte: {', 'produto_com_procura_real: {') : t)));
 falha('lacuna fechada que voltou a abrir (o 402 da origem perde a legibilidade)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('legibilidade: legibilidadeFor(tier), como_pagar', 'como_pagar') : t)));
 falha('lacuna fechada que voltou a abrir (o manifesto da origem perde o servicos_via_directa)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('servicos_via_directa: {', 'servicos_x: {') : t)));
 falha('lacuna fechada só com leitura viva', (c) => { L(c, 'L5').prova = L(c, 'L5').prova.filter((p) => p.leitura_viva); });
-falha('proposta executada sobre lacuna ainda aberta', (c) => { c.propostas_executadas[0].sobre = 'L4'; });
+falha('proposta executada sobre lacuna ainda aberta', (c) => { L(c, 'L4').estado = 'aberta'; c.propostas_executadas[0].sobre = 'L4'; });
 falha('proposta executada sem livro', (c) => { delete c.propostas_executadas[0].livro; });
 falha('proposta nas executadas e nas por executar', (c) => { c.propostas_nao_executadas.push({ id: 'P1', sobre: 'L5', o_que: 'x', precisa: 'Eu autorizo' }); });
 
