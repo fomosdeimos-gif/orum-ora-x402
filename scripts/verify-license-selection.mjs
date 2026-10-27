@@ -115,6 +115,13 @@ assert.equal(new Set([attempt, ...concurrentIds]).size, 3, 'same-second selectio
 const challenge=await call(selectedUrl);assert.equal(challenge.status,402);
 const c=await challenge.json();assert.equal(c.selection.work_id,String(sample.obra.id));assert.equal(c.selection.sha256,sample.obra.sha256);assert.equal(c.resource.url,selectedUrl);
 assert.equal(JSON.parse(Buffer.from(challenge.headers.get('payment-required'),'base64')).resource.url,selectedUrl);
+// V53.1: o 402 diz qual obra se compra, sem expor o caminho nem os bytes, e coerente com a selecao assinada
+assert.deepEqual(Object.keys(c.obra).sort(),['ano','descricao_visivel','fotografia_publica','id','nota','sha256','titulo']);
+assert.equal(c.obra.id,sample.obra.id);assert.equal(c.obra.titulo,sample.obra.titulo);assert.equal(c.obra.descricao_visivel,sample.obra.descricao_visivel);
+assert.equal(String(c.obra.id),c.selection.work_id);assert.equal(c.obra.sha256,c.selection.sha256);assert.equal(c.obra.fotografia_publica,false);
+assert.match(c.obra.nota,/\?obra=<id numerico>/);
+assert.ok(!JSON.stringify(c).includes('.jpg'),'the 402 never carries the private storage path');
+assert.deepEqual(JSON.parse(Buffer.from(challenge.headers.get('payment-required'),'base64')).accepts,c.accepts,'accepts in the header and in the body agree');
 assert.equal(tables.ora_acessos_log.at(-1).x402_observation.attempt_id, attempt);
 assert.equal(tables.ora_acessos_log.at(-1).x402_observation.challenge, true);
 const bad = new URL(selectedUrl);
