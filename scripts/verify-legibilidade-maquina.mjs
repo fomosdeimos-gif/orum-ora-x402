@@ -105,7 +105,9 @@ falha('lacuna ligada que não existe', (c) => { c.matriz.oraculo.lacunas.push('L
 falha('lacuna sem prova', (c) => { L(c, 'L4').prova = []; });
 falha('citação de ficheiro inventada', (c) => { L(c, 'L1').prova[0].contem = 'texto que nunca esteve lá'; });
 falha('ficheiro que não existe', (c) => { L(c, 'L1').prova[0].ficheiro = 'nao-existe.txt'; });
-falha('leitura viva fora das superfícies lidas', (c) => { L(c, 'L1').prova[3].leitura_viva = 'outra-superficie'; });
+falha('leitura viva fora das superfícies lidas', (c) => { L(c, 'L1').prova.find((p) => p.leitura_viva).leitura_viva = 'outra-superficie'; });
+falha('lacuna fechada que voltou a abrir (o llms.txt volta a anunciar uma só carteira)', () => {}, lerCom('x', (nome, t) => (nome === 'llms.txt' ? t + '\nPagamentos directos para jasm43.base.eth (0x0)' : t)));
+falha('lacuna fechada que voltou a abrir (o agent-card volta a ter a fotografia de 13/10)', () => {}, lerCom('x', (nome, t) => (nome === '.well-known/agent-card.json' ? t.replace('"observedAt": "2026-10-27"', '"observedAt": "2026-10-13"') : t)));
 falha('cabeçalho que afinal está no início', (c) => { L(c, 'L11').prova[1].depois_da_linha = 500; });
 falha('proposta que não pede a palavra de Unum', (c) => { c.propostas_nao_executadas[0].precisa = 'nada'; });
 falha('proposta sobre lacuna inexistente', (c) => { c.propostas_nao_executadas[0].sobre = 'L77'; });

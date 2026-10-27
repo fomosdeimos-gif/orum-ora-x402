@@ -5,7 +5,14 @@
   "autorizacao_de_unum": {
     "citacao": "Eu autorizo ORA",
     "objecto": "ler as superfícies que um agente vê antes de pagar e registar a legibilidade como serviço, com verificador (a hipótese de Unum: a sombra para humanos pode custar legibilidade às máquinas compradoras)",
-    "livros": [1083, 1084, 1085, 1087],
+    "livros": [1083, 1084, 1085, 1087, 1089, 1090],
+    "p2": {
+      "citacao": "Eu autorizo ORA",
+      "objecto": "P2: alinhar o llms.txt e o agent-card ao que o 402 vivo diz sobre quem recebe cada serviço, tirar do agent-card as fotografias de 13/10 e pôr datas de leitura actuais (lacunas L1 e L2), com um verificador que compara os textos com api/_carteira.js",
+      "livro": 1089,
+      "cobriu": "só texto do llms.txt e do agent-card e um verificador novo (scripts/verify-destinatarios-textos.mjs)",
+      "nao_cobriu": "o manifesto x402 e o 402 (funções implantadas; L3), P3, P4, preços, payTo, destinos dos executores, listagens de terceiros, fundos"
+    },
     "p5": {
       "citacao": "Eu autorizo ORA",
       "objecto": "P5: retirar do /eco da função ora-x402 a afirmação de procura (campo produto_com_procura_real), com redeploy e leitura de volta",
@@ -23,6 +30,8 @@
     }
   },
   "correcoes": [
+    "27/10/2026: ao fechar a P2 li os 402 de /sedimento, /kernel, /licenca/editorial e /licenca/treino, que o registo dava como não lidos: todos respondem 402 com desafio completo e o payTo da sagrada antiga. O agent-card dava a licença, o sedimento e o kernel como indisponíveis (fotografia de 13/10).",
+    "27/10/2026: a proposta P2 falava de acrescentar o /oraculo aos textos onde faltasse, mas o /oraculo já constava do llms.txt, do agent-card e do openapi. Só falta no manifesto x402 (L3), que é função implantada e a P2 não cobre.",
     "27/10/2026: a L5 estava incompleta. O registo só via a frase do manifesto; o /eco da mesma função tem uma afirmação de procura parecida (L12). Descoberta ao ler o ficheiro inteiro para implantar a P1. Não a corrigi no mesmo redeploy porque a palavra de Unum foi à frase do manifesto."
   ],
   "hipotese_de_unum": "Um serviço descrito em linguagem poética pode ficar sem comprador por não ser legível como serviço e não por falta de valor. É uma hipótese, não uma conclusão.",
@@ -36,10 +45,11 @@
     { "id": "402-oraculo", "onde": "https://ora-x402-gateway.vercel.app/oraculo", "como": "ao vivo, 09:42 UTC, resposta 402, via directa" },
     { "id": "402-licenca-consulta", "onde": "https://ora-x402-gateway.vercel.app/licenca/consulta", "como": "ao vivo, 09:43 UTC, 307 seguido, resposta 402, origem Supabase (cabeçalho x-ora-version V53)" },
     { "id": "manifesto-x402-v40", "onde": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/.well-known/x402.json", "como": "ao vivo, 27/10/2026 depois do redeploy da v40 (cerca das 10:17 UTC), curl directo à origem, sem pagar" },
-    { "id": "eco-x402-v41", "onde": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/eco", "como": "ao vivo, 27/10/2026 depois do redeploy da v41 (10:41 UTC), curl directo à origem, sem pagar" }
+    { "id": "eco-x402-v41", "onde": "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/eco", "como": "ao vivo, 27/10/2026 depois do redeploy da v41 (10:41 UTC), curl directo à origem, sem pagar" },
+    { "id": "402-sedimento-kernel-licencas", "onde": "https://ora-x402-gateway.vercel.app/sedimento, /kernel, /licenca/editorial e /licenca/treino", "como": "ao vivo, 27/10/2026 entre as 10:47 e as 10:48 UTC, resposta 402 de cada um, conector da Vercel, sem pagar" }
   ],
   "nao_lido": [
-    "o 402 vivo de /sedimento, /kernel, /licenca/editorial e /licenca/treino (só os vi nos ficheiros e no manifesto)",
+    "o estado vivo de /integridade, /testemunho, a auditoria de descoberta (ora-cdp-teste-payto-cdp) e o certificado (ora-cdp-diagnostico) a 27/10/2026",
     "a resposta paga (nenhum pagamento foi feito nem simulado)",
     "o que um cliente x402 real faria com estas respostas"
   ],
@@ -52,28 +62,35 @@
   },
   "lacunas": [
     {
-      "id": "L1", "tipo": "contradicao", "servicos": ["oraculo", "campo", "licenca_consulta"], "estado": "aberta",
-      "resumo": "O destinatário do pagamento não é o mesmo em todas as superfícies. O llms.txt, o agent-card, o manifesto x402 e o 402 da licença anunciam a sagrada antiga (0xFEd69e8e…); o 402 vivo de /campo e /oraculo anuncia a operacional (0x89460d9e…). O próprio 402 admite-o ('os textos publicos ainda anunciam a sagrada antiga'). O llms.txt diz 'confirma sempre o destinatário no desafio 402': um agente prudente que cruze as duas fontes vê duas carteiras. Efeito sobre compradores: não medido.",
+      "id": "L1", "tipo": "contradicao", "servicos": ["oraculo", "campo", "licenca_consulta"], "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 para o llms.txt e o agent-card (P2, livro 1089). O destinatário do pagamento não era o mesmo em todas as superfícies: os dois textos anunciavam a sagrada antiga (0xFEd69e8e…) para tudo, enquanto o 402 vivo de /campo e /oraculo anuncia a operacional (0x89460d9e…) e o próprio 402 admitia que os textos ainda anunciavam a antiga. Os dois textos passam a dizer, por serviço, quem recebe (lido nos 402 a 27/10 entre as 09:42 e as 10:47 UTC): operacional para /oraculo e /campo (e a oferta Bitcoin deles), sagrada antiga para /sedimento, /kernel e as três licenças; e a regra «se o payTo do 402 não for um destes dois endereços, não pagues». Um verificador (destinatarios:verify) compara os textos com api/_carteira.js. Fica o manifesto x402, função implantada, fora da P2: ver L3.",
       "prova": [
-        { "ficheiro": "llms.txt", "contem": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" },
-        { "ficheiro": ".well-known/agent-card.json", "contem": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" },
+        { "ficheiro": "llms.txt", "contem": "## Quem recebe o pagamento" },
+        { "ficheiro": "llms.txt", "nao_contem": "Pagamentos directos para jasm43.base.eth" },
+        { "ficheiro": ".well-known/agent-card.json", "contem": "\"paymentWalletScope\"" },
+        { "ficheiro": ".well-known/agent-card.json", "contem": "\"servedBy\": \"vercel-directa\"" },
+        { "ficheiro": "scripts/verify-destinatarios-textos.mjs", "contem": "RECEBIMENTO_EDGE" },
         { "ficheiro": "api/_carteira.js", "contem": "0x89460d9e0590559e63860197dfe2ac648A753584" },
-        { "leitura_viva": "402-campo", "citacao": "payTo 0x89460d9e0590559e63860197dfe2ac648A753584; fronteiras.recebimento: 'os textos publicos ainda anunciam a sagrada antiga (jasm43.base.eth)'" },
-        { "leitura_viva": "402-licenca-consulta", "citacao": "payTo 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" }
+        { "leitura_viva": "402-campo", "citacao": "payTo 0x89460d9e0590559e63860197dfe2ac648A753584; fronteiras.recebimento: 'os textos publicos ainda anunciam a sagrada antiga (jasm43.base.eth)' (lido antes de P2)" },
+        { "leitura_viva": "402-licenca-consulta", "citacao": "payTo 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" },
+        { "leitura_viva": "402-sedimento-kernel-licencas", "citacao": "27/10/2026 10:47 UTC: /sedimento, /kernel, /licenca/editorial e /licenca/treino com payTo 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5; consulta às 09:43" }
       ]
     },
     {
-      "id": "L2", "tipo": "desactualizado", "servicos": ["sedimento_kernel", "licenca_consulta"], "estado": "aberta",
-      "resumo": "O agent-card traz fotografias de 13/10/2026 que já não valem: 'unavailable' por quota de egress em seis serviços (a licença responde hoje 402 com desafio completo), 21 pagamentos internos (ora_pagamentos tem hoje 22 linhas) e contadores 'congelados'. O llms.txt, de 19/10, descreve outro estado. Um agente que leia só o agent-card vê serviços indisponíveis.",
+      "id": "L2", "tipo": "desactualizado", "servicos": ["sedimento_kernel", "licenca_consulta"], "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (P2, livro 1089). O agent-card trazia fotografias de 13/10/2026 que já não valiam: 'unavailable' por quota de egress em seis serviços (a licença, o sedimento e o kernel respondem hoje 402 com desafio completo), 21 pagamentos internos (ora_pagamentos tem 22 linhas) e contadores 'congelados' (voltaram a correr: 8653 pedidos entre 22 e 27/10). Os blocos passaram a ter a data de 27/10: 'available' para consulta, sedimento e kernel (desafio 402 lido, entrega paga não lida) e 'unknown' para integridade, testemunho, auditoria e certificado (não lidos hoje; a fotografia de 13/10 foi retirada em vez de substituída por um palpite). O llms.txt ganhou a leitura de 27/10 ao lado do bloco de 19/10, que fica datado. Não toquei em verifiableAnchors (19/10), que continua datado.",
       "prova": [
-        { "ficheiro": ".well-known/agent-card.json", "contem": "\"observedAt\": \"2026-10-13\"" },
-        { "ficheiro": ".well-known/agent-card.json", "contem": "quota de egress do fornecedor de base de dados (Supabase) esgotada" },
-        { "ficheiro": "llms.txt", "contem": "Estado observado em 19/10/2026" }
+        { "ficheiro": ".well-known/agent-card.json", "nao_contem": "\"observedAt\": \"2026-10-13\"" },
+        { "ficheiro": ".well-known/agent-card.json", "nao_contem": "quota de egress do fornecedor de base de dados (Supabase) esgotada" },
+        { "ficheiro": ".well-known/agent-card.json", "nao_contem": "congelados desde" },
+        { "ficheiro": ".well-known/agent-card.json", "contem": "\"internalValidationPayments\": 22" },
+        { "ficheiro": "llms.txt", "contem": "Lido a 27/10/2026 (09:42 a 10:47 UTC)" },
+        { "ficheiro": "scripts/verify-destinatarios-textos.mjs", "contem": "é anterior à leitura dos destinatários" }
       ]
     },
     {
       "id": "L3", "tipo": "contradicao", "servicos": ["oraculo"], "estado": "aberta",
-      "resumo": "O llms.txt apresenta o manifesto x402 como 'a fonte de verdade em tempo real', mas o manifesto vivo lista só campo, sedimento e kernel, com resource e payTo da origem Supabase. O /oraculo (0,161 USDC, o serviço mais barato) não consta dele, embora conste do llms.txt, do openapi e do agent-card, e o gateway lhe responda 402.",
+      "resumo": "O llms.txt apresenta o manifesto x402 como 'a fonte de verdade em tempo real', mas o manifesto vivo lista só campo, sedimento e kernel, com resource e payTo da origem Supabase. O /oraculo (0,161 USDC, o serviço mais barato) não consta dele, embora conste do llms.txt, do openapi e do agent-card, e o gateway lhe responda 402. Acrescento de 27/10 (P2): o manifesto lista /campo no recurso da origem Supabase, com payTo da sagrada antiga, enquanto o /campo do gateway cobra na operacional (duas vias para o mesmo serviço). O llms.txt e o agent-card passaram a descrevê-lo (L1); o manifesto continua a ser função implantada.",
       "prova": [
         { "ficheiro": "llms.txt", "contem": "A fonte de verdade em tempo real é o manifesto x402 acima" },
         { "ficheiro": "llms.txt", "contem": "lista Campo, Sedimento e Kernel" },
@@ -175,16 +192,16 @@
   "leitura_da_hipotese": {
     "preco_e_pagamento_escondidos_pela_poesia": "não apoiado: quanto e como são a parte mais clara de cada 402.",
     "o_que_e_para_que_pouco_legiveis": "parcialmente apoiado: L6, L7, L8, L9, L10. A causa dominante lida em L6 não é a linguagem poética, é o serviço declarar que não tem utilidade fora do organismo.",
-    "contradicoes_entre_superficies": "observadas: L1, L2, L3 (abertas); L5 (manifesto) e L12 (/eco) fechadas a 27/10 pelas P1 e P5. Um agente que verifique antes de pagar encontra duas carteiras, estados de 13/10 e uma afirmação de procura que o mesmo documento nega. O efeito sobre compradores não foi medido.",
+    "contradicoes_entre_superficies": "observadas: L3 (aberta); L1 e L2 (llms.txt e agent-card), L5 (manifesto) e L12 (/eco) fechadas a 27/10 pelas P2, P1 e P5. Um agente que verificasse antes de pagar encontrava duas carteiras sem explicação, estados de 13/10 e uma afirmação de procura que o mesmo documento negava. O efeito sobre compradores nunca foi medido.",
     "o_que_nao_se_pode_concluir": "que estas lacunas sejam a causa de não haver compras. O funil de 27/10 (economia/funil-acessos-2026-10-27.json) mostra que só 11 origens de aparência de comprador viram o preço de consulta em 5 dias: o gargalo anterior parece ser chegar ao 402. Legibilidade só pesa para quem lá chega.",
     "nao_prova": "procura, adopção nem receita"
   },
   "propostas_executadas": [
+    { "id": "P2", "sobre": "L1, L2", "quando_utc": "2026-10-27T11:00:00Z", "resultado": "llms.txt e agent-card alinhados ao que os 402 vivos dizem sobre quem recebe cada serviço (operacional para /oraculo e /campo, sagrada antiga para /sedimento, /kernel e as licenças; oferta Bitcoin de /oraculo e /campo na operacional BTC); fotografias de 13/10 retiradas do agent-card (available para consulta, sedimento e kernel, unknown para os quatro não lidos); destinatarios:verify compara os textos com api/_carteira.js (24 estragos apanhados); nenhuma função implantada, preço, payTo nem fundos tocados", "livro": 1089 },
     { "id": "P5", "sobre": "L12", "quando_utc": "2026-10-27T10:41:02Z", "resultado": "ora-x402 v41 implantada a partir do repositório; /eco vivo na origem sem a chave produto_com_procura_real e com licencas_de_arte; montantes e payTo dos três escalões intactos; leitura comparada das secções que tocam dinheiro (não byte a byte); caminhos que só correm com pagamento não exercitados", "livro": 1087 },
     { "id": "P1", "sobre": "L5", "quando_utc": "2026-10-27T10:16:19Z", "resultado": "ora-x402 v40 implantada a partir do repositório; manifesto vivo lido na origem com a frase nova; montantes e payTo dos três escalões intactos; leitura comparada das secções que tocam dinheiro (não byte a byte); caminhos que só correm com pagamento não exercitados", "livro": 1085 }
   ],
   "propostas_nao_executadas": [
-    { "id": "P2", "sobre": "L1, L2", "o_que": "alinhar o llms.txt e o agent-card ao que o 402 vivo diz (qual carteira recebe cada serviço) e pôr datas de leitura actuais", "precisa": "Eu autorizo de Unum, por tocar texto público sobre o destinatário do pagamento" },
     { "id": "P3", "sobre": "L6, L9, L10", "o_que": "acrescentar ao 402 da via directa o outputSchema tipado, a ligação à amostra grátis e uma linha honesta de 'para quê' e de glossário", "precisa": "Eu autorizo de Unum; é código da via directa" },
     { "id": "P4", "sobre": "L7, L8", "o_que": "descrever os direitos de cada licença no openapi e o título da obra no 402 da licença", "precisa": "Eu autorizo de Unum; o 402 da licença é função implantada" }
   ],

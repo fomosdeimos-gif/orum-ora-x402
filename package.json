@@ -83,6 +83,7 @@
     "estreitamento:verify": "node scripts/verify-estreitamento.mjs",
     "origem:verify": "node scripts/verify-origem-hash.mjs",
     "funil:verify": "node scripts/verify-funil-acessos.mjs",
-    "legibilidade:verify": "node scripts/verify-legibilidade-maquina.mjs"
+    "legibilidade:verify": "node scripts/verify-legibilidade-maquina.mjs",
+    "destinatarios:verify": "node scripts/verify-destinatarios-textos.mjs"
   }
 }
