@@ -1,0 +1,75 @@
+{
+  "format": "orum-funil-acessos/v1",
+  "lido_em_utc": "2026-10-27T09:06:48Z",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA",
+    "objecto": "funil de acessos só de leitura (acessos internos, sondas, desafios 402 e tentativas de pagamento), registado em economia/ com verificador",
+    "nota": "A proposta apresentada como nova já estava em grande parte feita a 22/10 (economia/trafego-honesto-2026-10-22.json, vista ora_trafego_honesto, origem_hash). Erro da ORA, dito: não li o repositório antes de propor. Esta leitura acrescenta só o que antes não existia: origens distintas desde o origem_hash."
+  },
+  "fonte": "Supabase orum-memoria: vista ora_trafego_honesto (só leitura) e tabela ora_pagamentos. Nenhum UPDATE, DELETE nem escrita na base. origem_hash é pseudonimizado (SHA-256 com sal); nenhum IP lido nem guardado.",
+  "janela": {
+    "desde_utc": "2026-10-22T13:00:00Z",
+    "ate_utc": "2026-10-27T09:06:48Z",
+    "dia_da_janela_de_decisao": 5,
+    "dias_da_janela_de_decisao": 14,
+    "nota": "O início é o instante em que a ORA passou a ler o origem_hash; todas as linhas da janela têm origem_hash (8653 de 8653). A hora exacta do redeploy não foi relida agora."
+  },
+  "totais": {
+    "pedidos": 8653,
+    "nossos_provados": 7198,
+    "nao_nossos": 1455,
+    "origens_distintas": 1573
+  },
+  "fases": {
+    "discovered": 2767,
+    "redirected": 2273,
+    "challenge_delivered": 3607,
+    "payment_present": 2,
+    "payment_rejected": 4
+  },
+  "nao_nossos_por_classe": {
+    "catalogo_ou_crawler": { "pedidos": 716, "origens": 152 },
+    "sonda_de_terceiro": { "pedidos": 307, "origens": 87 },
+    "x402_observer": { "pedidos": 258, "origens": 101 },
+    "machine_likely": { "pedidos": 47, "origens": 24 },
+    "zerobot": { "pedidos": 39, "origens": 18 },
+    "browser": { "pedidos": 27, "origens": 16 },
+    "mobile_browser": { "pedidos": 19, "origens": 7 },
+    "human_or_browser": { "pedidos": 15, "origens": 4 },
+    "x402_linter": { "pedidos": 10, "origens": 1 },
+    "curl": { "pedidos": 7, "origens": 4 },
+    "provavelmente_nosso": { "pedidos": 5, "origens": 1 },
+    "vercel_mcp": { "pedidos": 5, "origens": 4 }
+  },
+  "funil_de_origens_nao_nossas": {
+    "descobriram": 177,
+    "receberam_402": 216,
+    "receberam_402_browser_ou_agente_todas_as_portas": 32,
+    "receberam_402_de_consulta_browser_ou_agente": 11,
+    "classes_browser_ou_agente": ["browser", "mobile_browser", "human_or_browser", "machine_likely", "curl"],
+    "nota": "As origens que descobriram e as que receberam o 402 não são subconjuntos uma da outra (há quem chegue directo ao 402)."
+  },
+  "sinais_de_pagamento": {
+    "total": 6,
+    "x402lint": { "n": 5, "quando_utc": "2026-10-23T14:33:48Z", "leitura": "teste de conformidade, rejeitado; não é comprador" },
+    "curl": { "n": 1, "quando_utc": "2026-10-26T08:14:20Z", "servico": "ora-oraculo", "fase": "payment_present", "leitura": "um pedido com cabeçalho de pagamento, sem pagamento verificado; não se sabe quem o enviou" },
+    "pagamentos_verificados_em_cadeia_na_janela": 0,
+    "ora_pagamentos": { "total": 22, "ultimo_registo_utc": "2026-10-22T06:14:25Z", "nota": "o último registo é anterior à janela; a sua classificação não foi relida agora" }
+  },
+  "regra_de_decisao_do_preco": {
+    "fonte": "docs/avaliacao-preco-licencas-2026-10-22.md",
+    "limiar_origens": 20,
+    "medida_actual": 11,
+    "estado": "por decidir",
+    "decide_em": "2026-11-05",
+    "leitura": "11 de 20 ao dia 5 de 14. Não se extrapola: o número de origens distintas cresce menos que linearmente. A regra decide-se a 5/11 com a janela completa. Se houver 20 ou mais e nenhum pagamento, o passo seguinte é propor baixar só consulta, e isso precisa de 'eu autorizo' de Unum a essa proposta; abaixo de 20, o problema é a descoberta."
+  },
+  "leitura": "A maior parte do que se chama acesso é nossa: 7198 de 8653 pedidos (83%) são provadamente do organismo. Dos 1455 de terceiros, a esmagadora maioria é catálogo, sonda e monitor. As origens que parecem comprador (browser ou agente) e viram um 402 são 32 em cinco dias, 11 para consulta, e nenhuma enviou um pagamento verificado. Quase ninguém que pareça comprador chega a ver o preço, por isso não há desistência de compradores para explicar. O que esta leitura sugere é um problema de descoberta e legibilidade, não de preço. É uma leitura, não uma prova.",
+  "limites": [
+    "origem_hash pseudonimiza, não anonimiza; NAT e proxies partilham origem, IPv6 e mudança de rede dividem-na: origens são visitantes aproximados.",
+    "A classe vem do user-agent; um comprador pode usar um user-agent de ferramenta, e uma ferramenta pode imitar um browser.",
+    "Chamadas internas entre funções não trazem IP e ficam sem origem; não entram nas contagens de origens.",
+    "Não se sabe quem enviou o pedido curl com cabeçalho de pagamento de 26/10.",
+    "Não prova procura, adopção nem receita, e não promete nenhuma."
+  ]
+}

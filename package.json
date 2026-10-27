@@ -81,6 +81,7 @@
     "wayback:verify": "node scripts/verify-wayback.mjs",
     "sonda:verify": "node scripts/verify-sonda.mjs",
     "estreitamento:verify": "node scripts/verify-estreitamento.mjs",
-    "origem:verify": "node scripts/verify-origem-hash.mjs"
+    "origem:verify": "node scripts/verify-origem-hash.mjs",
+    "funil:verify": "node scripts/verify-funil-acessos.mjs"
   }
 }
