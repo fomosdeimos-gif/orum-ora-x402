@@ -1,3 +1,15 @@
+## 27/10/2026 · Legibilidade para máquinas lida (livros 1083 e 1084)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (27/10/2026), à proposta do verificador de legibilidade, depois de ele levantar a hipótese de a "sombra para humanos" custar legibilidade às máquinas compradoras. Cobre só leitura e registo; não cobre textos públicos, preços, `payTo`, funções implantadas, contacto externo nem fundos.
+- **Lido (verificado, 27/10 09:42-09:43 UTC, sem pagar):** `llms.txt`, `agent-card.json`, `openapi.json` (main `0250110`), e ao vivo o manifesto x402 e os 402 de `/campo`, `/oraculo` e `/licenca/consulta`.
+- **Resultado:** quanto e como estão explícitos em todos os 402 (USDC e BTC). O preço e o pagamento **não** estão escondidos pela poesia. Faltam o quê e o para quê: as leituras internas declaram não ter utilidade fora do organismo (L6, honestidade e não poesia), o 402 da licença não traz o título da obra (L7), o openapi não descreve os direitos (L8), o 402 da via directa não traz `outputSchema` nem a amostra grátis (L9), `sigma`/`época` sem glossário (L10).
+- **Contradições entre superfícies:** `payTo` diferente (llms, agent-card, manifesto e licença anunciam `0xFEd6…`; `/campo` e `/oraculo` vivos anunciam `0x8946…`, e o 402 admite-o); agent-card com fotografias de 13/10; manifesto sem `/oraculo`; o manifesto diz "procura real" no mesmo documento em que `external_demand_proven` é false (L5).
+- **Feito:** `economia/legibilidade-maquina.json` (11 lacunas abertas) e `scripts/verify-legibilidade-maquina.mjs` (`npm run legibilidade:verify`, 18 estragos propositados apanhados; relê cada citação nos ficheiros, e uma lacuna "aberta" que deixe de ser verdade obriga a actualizar o registo).
+- **Não se conclui** que as lacunas sejam a causa de não haver compras: só 11 origens de aparência de comprador viram o preço de `consulta` em 5 dias (funil de 27/10). O gargalo anterior parece ser chegar ao 402.
+- **Não verificado:** 402 vivo de `/sedimento`, `/kernel`, `/licenca/editorial` e `/licenca/treino`; qualquer resposta paga; o que um cliente x402 real faria; se a quota do Supabase continua excedida (o 402 da via directa diz que sim; a licença respondeu da origem Supabase).
+- **Nada alterado** em texto público, preço, `payTo` ou função. Quatro propostas à espera de "Eu autorizo" por nome (P1 retirar «procura real» do manifesto, que exige redeploy de `ora-x402`; P2 alinhar llms e agent-card ao 402 vivo; P3 `outputSchema` e amostra no 402 da via directa; P4 direitos no openapi e título da obra no 402 da licença).
+
+---
+
 ## 27/10/2026 · Funil de acessos lido (livro 1082)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (27/10/2026), à proposta do funil de acessos só de leitura, depois de ele perguntar porque há milhares de acessos, quase todos internos, e nenhuma compra.
 - **Erro meu, dito:** propus o funil como se fosse novo; já existia desde 22/10 (vista `ora_trafego_honesto`, `origem_hash`, `economia/trafego-honesto-2026-10-22.json`). Li o repositório depois de propor, não antes. Foi isso que mudou o trabalho: em vez de reconstruir, li o que só agora é possível, as origens distintas.

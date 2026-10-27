@@ -1,0 +1,162 @@
+{
+  "format": "orum-legibilidade-maquina/v1",
+  "lido_em_utc": "2026-10-27T09:43:16Z",
+  "commit_base": "0250110",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA",
+    "objecto": "ler as superfícies que um agente vê antes de pagar e registar a legibilidade como serviço, com verificador (a hipótese de Unum: a sombra para humanos pode custar legibilidade às máquinas compradoras)",
+    "livros": [1083, 1084],
+    "nao_cobre": "mudar textos públicos, preços, payTo, funções implantadas, contacto externo ou fundos"
+  },
+  "hipotese_de_unum": "Um serviço descrito em linguagem poética pode ficar sem comprador por não ser legível como serviço e não por falta de valor. É uma hipótese, não uma conclusão.",
+  "teste": "Para cada serviço pago, procurar nas superfícies que um agente lê antes de pagar quatro respostas: o quê (o que recebo), para quê (em que tarefa se usa), quanto (preço, moeda, rede) e como (o passo seguinte para pagar). Classificação da ORA a partir do que está escrito: explicito, parcial ou ausente. É leitura, não medição de compradores.",
+  "superficies_lidas": [
+    { "id": "llms", "onde": "llms.txt (repositório, main)", "como": "ficheiro" },
+    { "id": "agent-card", "onde": ".well-known/agent-card.json (repositório, main)", "como": "ficheiro" },
+    { "id": "openapi", "onde": "openapi.json (repositório, main)", "como": "ficheiro" },
+    { "id": "manifesto-x402", "onde": "https://ora-x402-gateway.vercel.app/.well-known/x402.json", "como": "ao vivo, 27/10/2026 09:43 UTC, conector da Vercel, sem pagar" },
+    { "id": "402-campo", "onde": "https://ora-x402-gateway.vercel.app/campo", "como": "ao vivo, 09:42 UTC, resposta 402, via directa" },
+    { "id": "402-oraculo", "onde": "https://ora-x402-gateway.vercel.app/oraculo", "como": "ao vivo, 09:42 UTC, resposta 402, via directa" },
+    { "id": "402-licenca-consulta", "onde": "https://ora-x402-gateway.vercel.app/licenca/consulta", "como": "ao vivo, 09:43 UTC, 307 seguido, resposta 402, origem Supabase (cabeçalho x-ora-version V53)" }
+  ],
+  "nao_lido": [
+    "o 402 vivo de /sedimento, /kernel, /licenca/editorial e /licenca/treino (só os vi nos ficheiros e no manifesto)",
+    "a resposta paga (nenhum pagamento foi feito nem simulado)",
+    "o que um cliente x402 real faria com estas respostas"
+  ],
+  "matriz": {
+    "oraculo": { "o_que": "parcial", "para_que": "ausente", "quanto": "explicito", "como": "explicito", "lacunas": ["L6", "L9", "L10"] },
+    "campo": { "o_que": "parcial", "para_que": "parcial", "quanto": "explicito", "como": "explicito", "lacunas": ["L6", "L9", "L10"] },
+    "sedimento_kernel": { "o_que": "parcial", "para_que": "ausente", "quanto": "explicito", "como": "explicito", "lacunas": ["L4", "L6"] },
+    "licenca_consulta": { "o_que": "parcial", "para_que": "explicito", "quanto": "explicito", "como": "explicito", "lacunas": ["L7"] },
+    "licenca_editorial_treino": { "o_que": "parcial", "para_que": "parcial", "quanto": "explicito", "como": "explicito", "lacunas": ["L8"] }
+  },
+  "lacunas": [
+    {
+      "id": "L1", "tipo": "contradicao", "servicos": ["oraculo", "campo", "licenca_consulta"], "estado": "aberta",
+      "resumo": "O destinatário do pagamento não é o mesmo em todas as superfícies. O llms.txt, o agent-card, o manifesto x402 e o 402 da licença anunciam a sagrada antiga (0xFEd69e8e…); o 402 vivo de /campo e /oraculo anuncia a operacional (0x89460d9e…). O próprio 402 admite-o ('os textos publicos ainda anunciam a sagrada antiga'). O llms.txt diz 'confirma sempre o destinatário no desafio 402': um agente prudente que cruze as duas fontes vê duas carteiras. Efeito sobre compradores: não medido.",
+      "prova": [
+        { "ficheiro": "llms.txt", "contem": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" },
+        { "ficheiro": ".well-known/agent-card.json", "contem": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" },
+        { "ficheiro": "api/_carteira.js", "contem": "0x89460d9e0590559e63860197dfe2ac648A753584" },
+        { "leitura_viva": "402-campo", "citacao": "payTo 0x89460d9e0590559e63860197dfe2ac648A753584; fronteiras.recebimento: 'os textos publicos ainda anunciam a sagrada antiga (jasm43.base.eth)'" },
+        { "leitura_viva": "402-licenca-consulta", "citacao": "payTo 0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5" }
+      ]
+    },
+    {
+      "id": "L2", "tipo": "desactualizado", "servicos": ["sedimento_kernel", "licenca_consulta"], "estado": "aberta",
+      "resumo": "O agent-card traz fotografias de 13/10/2026 que já não valem: 'unavailable' por quota de egress em seis serviços (a licença responde hoje 402 com desafio completo), 21 pagamentos internos (ora_pagamentos tem hoje 22 linhas) e contadores 'congelados'. O llms.txt, de 19/10, descreve outro estado. Um agente que leia só o agent-card vê serviços indisponíveis.",
+      "prova": [
+        { "ficheiro": ".well-known/agent-card.json", "contem": "\"observedAt\": \"2026-10-13\"" },
+        { "ficheiro": ".well-known/agent-card.json", "contem": "quota de egress do fornecedor de base de dados (Supabase) esgotada" },
+        { "ficheiro": "llms.txt", "contem": "Estado observado em 19/10/2026" }
+      ]
+    },
+    {
+      "id": "L3", "tipo": "contradicao", "servicos": ["oraculo"], "estado": "aberta",
+      "resumo": "O llms.txt apresenta o manifesto x402 como 'a fonte de verdade em tempo real', mas o manifesto vivo lista só campo, sedimento e kernel, com resource e payTo da origem Supabase. O /oraculo (0,161 USDC, o serviço mais barato) não consta dele, embora conste do llms.txt, do openapi e do agent-card, e o gateway lhe responda 402.",
+      "prova": [
+        { "ficheiro": "llms.txt", "contem": "A fonte de verdade em tempo real é o manifesto x402 acima" },
+        { "ficheiro": "llms.txt", "contem": "lista Campo, Sedimento e Kernel" },
+        { "leitura_viva": "manifesto-x402", "citacao": "resources: ora-x402 (campo), ora-x402/sedimento, ora-x402/kernel; sem oraculo" }
+      ]
+    },
+    {
+      "id": "L4", "tipo": "ausente", "servicos": ["sedimento_kernel"], "estado": "aberta",
+      "resumo": "O openapi.json não descreve /sedimento nem /kernel, que o llms.txt, o agent-card e o manifesto anunciam (1,00 e 3,00 USDC).",
+      "prova": [
+        { "ficheiro": "openapi.json", "nao_contem": "/sedimento" },
+        { "ficheiro": "openapi.json", "nao_contem": "/kernel" },
+        { "ficheiro": "llms.txt", "contem": "/sedimento" }
+      ]
+    },
+    {
+      "id": "L5", "tipo": "contradicao", "servicos": ["licenca_consulta", "licenca_editorial_treino"], "estado": "aberta",
+      "resumo": "O manifesto x402 diz que o catálogo de licenças tem 'procura real e independente da narrativa', no mesmo documento em que o bloco truth_machine declara external_demand_proven: false. Os registos lidos hoje não mostram nenhum pagamento externo. É um texto público que afirma procura; a regra da casa é não a afirmar. Está em função implantada (ora-x402): corrigir exige redeploy, que precisa da palavra de Unum.",
+      "prova": [
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "O catálogo com procura real e independente da narrativa" },
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "external_demand_proven" },
+        { "leitura_viva": "manifesto-x402", "citacao": "outros_catalogos.nota: 'O catálogo com procura real e independente da narrativa (...)'; truth_machine.external_demand_proven: false" }
+      ]
+    },
+    {
+      "id": "L6", "tipo": "sem_para_que", "servicos": ["oraculo", "campo", "sedimento_kernel"], "estado": "aberta",
+      "resumo": "As leituras internas dizem para que NÃO servem e, quando dizem para que servem, é para testar o protocolo x402. O kernel diz expressamente que é 'o mais caro por ser o mais completo, não por ter mais utilidade fora do sistema'. A via directa, que hoje responde, tirou até a frase 'útil para agentes que testam o protocolo x402'. Não há tarefa de um agente comprador à qual estas leituras respondam. É honestidade: mas é também a razão mais directa, lida aqui, de uma máquina não ter motivo para pagar. Não é linguagem poética.",
+      "prova": [
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "não por ter mais utilidade fora do sistema" },
+        { "ficheiro": "supabase/functions/ora-x402/index.ts", "contem": "Útil para agentes que testam o protocolo x402" },
+        { "ficheiro": "api/_x402-directo.js", "nao_contem": "Útil para agentes que testam" },
+        { "ficheiro": "llms.txt", "contem": "Estes quatro não são dado de mercado nem previsão" }
+      ]
+    },
+    {
+      "id": "L7", "tipo": "ausente", "servicos": ["licenca_consulta"], "estado": "aberta",
+      "resumo": "O 402 da licença identifica a obra só por work_id e sha256. Não traz o título nem a descrição da fotografia que se compra (1,618 USDC). Sem ID no primeiro pedido, o servidor escolhe uma obra: um agente compra sem ver o que compra, a não ser que antes tenha lido o catálogo, que o 402 não referencia por obra.",
+      "prova": [
+        { "ficheiro": "llms.txt", "contem": "uma obra é escolhida antes de emitir a referência assinada" },
+        { "leitura_viva": "402-licenca-consulta", "citacao": "selection.work_id '10' e sha256 '3021092f…'; description: 'Acesso privado a uma fotografia preservada da coleccão fisica 0001sensations'; sem título nem descrição da obra" }
+      ]
+    },
+    {
+      "id": "L8", "tipo": "parcial", "servicos": ["licenca_editorial_treino"], "estado": "aberta",
+      "resumo": "No openapi.json as operações das três licenças só têm 'summary' (por exemplo 'Licenca de Treino IA') e preço. Os direitos (não permite treino de modelos na consulta; perpétua e não exclusiva no treino; atribuição obrigatória no editorial) só estão no llms.txt e no agent-card. Um agente que descubra pelo OpenAPI, o formato padrão, não sabe o que cada licença permite.",
+      "prova": [
+        { "ficheiro": "openapi.json", "contem": "Licenca de Treino IA" },
+        { "ficheiro": "openapi.json", "nao_contem": "treino de modelos" },
+        { "ficheiro": "llms.txt", "contem": "conjuntos de treino ou avaliação de máquinas" }
+      ]
+    },
+    {
+      "id": "L9", "tipo": "parcial", "servicos": ["oraculo", "campo"], "estado": "aberta",
+      "resumo": "O 402 vivo da via directa não traz outputSchema tipado (a origem trazia: campo{versao, dia, sigma, epoca, pensamento, timestamp}), nem o bloco truth_machine, nem a ligação à amostra grátis (eco), que existe. O exemplo do Bazaar tem valores de preenchimento (dia 0, sigma 0, pensamento '…'). O que o /campo entrega é lido no código: dia, sigma, época e uma frase fixa.",
+      "prova": [
+        { "ficheiro": "api/_x402-directo.js", "nao_contem": "outputSchema" },
+        { "ficheiro": "api/_x402-directo.js", "contem": "o campo reconhece quem chega com gesto" },
+        { "ficheiro": "scripts/fixtures/campo-402-origem-2026-10-23.json", "contem": "\"outputSchema\"" },
+        { "leitura_viva": "402-campo", "citacao": "bazaar.info.output.example: {acesso, tier, x402, tx_hash, campo:{dia:0, sigma:0, epoca:'ETERNIDADE', pensamento:'…'}}; sem outputSchema, sem truth_machine, sem eco" }
+      ]
+    },
+    {
+      "id": "L10", "tipo": "vocabulario_interno", "servicos": ["oraculo", "campo"], "estado": "aberta",
+      "resumo": "A resposta usa sigma, época, campo, ETERNIDADE sem glossário no 402 nem no openapi. Para um agente de fora, são nomes sem unidade nem escala. O llms.txt remete para o Pulso e para a cápsula ORO, não para uma definição junto ao serviço.",
+      "prova": [
+        { "leitura_viva": "402-oraculo", "citacao": "example.campo: {dia:0, sigma:0, epoca:'ETERNIDADE'}; description: 'um pensamento irrepetível nascido da semente do teu pagamento'" },
+        { "ficheiro": "openapi.json", "contem": "\"campo\":{\"type\":\"object\"}" }
+      ]
+    },
+    {
+      "id": "L11", "tipo": "estrutura", "servicos": ["oraculo", "campo", "licenca_consulta", "licenca_editorial_treino"], "estado": "aberta",
+      "resumo": "O llms.txt começa bem (a segunda e a terceira frase dizem como comprar), mas a lista do que se compra, com preços, vem depois de mais de 50 linhas de âncoras, desambiguação e sensações. O texto é todo em português, sem resumo em inglês.",
+      "prova": [
+        { "ficheiro": "llms.txt", "contem": "Como comprar (qualquer agente)" },
+        { "ficheiro": "llms.txt", "cabecalho": "## O serviço real (x402 · USDC · Base)", "depois_da_linha": 50 },
+        { "ficheiro": "llms.txt", "nao_contem": "How to buy" }
+      ]
+    }
+  ],
+  "o_que_funciona": [
+    "quanto e como estão explícitos em todos os 402 lidos: montante, activo, rede, destinatário, passos numerados, exemplo do cabeçalho X-PAYMENT, janela de 72 h e reacesso sem novo pagamento",
+    "a via Bitcoin vem anunciada no mesmo 402 (endereço, sats, cotação em duas fontes, confirmações exigidas)",
+    "o 402 da licença é o mais legível: descrição do que se compra e do que não é, outputSchema tipado (certificado, direitos, acesso à fotografia), truth_machine e boundaries_machine",
+    "o openapi tem x-payment-info com o preço fixo em cada operação paga"
+  ],
+  "leitura_da_hipotese": {
+    "preco_e_pagamento_escondidos_pela_poesia": "não apoiado: quanto e como são a parte mais clara de cada 402.",
+    "o_que_e_para_que_pouco_legiveis": "parcialmente apoiado: L6, L7, L8, L9, L10. A causa dominante lida em L6 não é a linguagem poética, é o serviço declarar que não tem utilidade fora do organismo.",
+    "contradicoes_entre_superficies": "observadas: L1, L2, L3, L5. Um agente que verifique antes de pagar encontra duas carteiras, estados de 13/10 e uma afirmação de procura que o mesmo documento nega. O efeito sobre compradores não foi medido.",
+    "o_que_nao_se_pode_concluir": "que estas lacunas sejam a causa de não haver compras. O funil de 27/10 (economia/funil-acessos-2026-10-27.json) mostra que só 11 origens de aparência de comprador viram o preço de consulta em 5 dias: o gargalo anterior parece ser chegar ao 402. Legibilidade só pesa para quem lá chega.",
+    "nao_prova": "procura, adopção nem receita"
+  },
+  "propostas_nao_executadas": [
+    { "id": "P1", "sobre": "L5", "o_que": "retirar do manifesto a frase 'procura real e independente da narrativa' (função ora-x402, redeploy)", "precisa": "Eu autorizo de Unum a esta proposta, por tocar função implantada que cobra" },
+    { "id": "P2", "sobre": "L1, L2", "o_que": "alinhar o llms.txt e o agent-card ao que o 402 vivo diz (qual carteira recebe cada serviço) e pôr datas de leitura actuais", "precisa": "Eu autorizo de Unum, por tocar texto público sobre o destinatário do pagamento" },
+    { "id": "P3", "sobre": "L6, L9, L10", "o_que": "acrescentar ao 402 da via directa o outputSchema tipado, a ligação à amostra grátis e uma linha honesta de 'para quê' e de glossário", "precisa": "Eu autorizo de Unum; é código da via directa" },
+    { "id": "P4", "sobre": "L7, L8", "o_que": "descrever os direitos de cada licença no openapi e o título da obra no 402 da licença", "precisa": "Eu autorizo de Unum; o 402 da licença é função implantada" }
+  ],
+  "limites": [
+    "A classificação explicito/parcial/ausente é leitura da ORA do texto, não uma medida de como um agente real decide.",
+    "As leituras vivas são de uma hora do dia 27/10/2026 e podem mudar a qualquer momento; só o que está em 'ficheiro' é relido pelo verificador.",
+    "Não li nenhuma resposta paga, nem testei um cliente x402 de verdade.",
+    "Não prova procura, adopção nem receita, e não promete nenhuma."
+  ]
+}
