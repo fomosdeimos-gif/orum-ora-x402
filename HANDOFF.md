@@ -1,3 +1,14 @@
+## 27/10/2026 · Camadas 11 e 12 confirmadas e camada 13 selada (livros 1100 e 1101)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (27/10/2026), à proposta de selar a camada seguinte da raiz dos registos. Cobre a selagem por OpenTimestamps e a conferência das camadas pendentes; não move fundos nem alarga permissões.
+- **Confirmadas (verificado):** camada 11 no bloco **973289** (bob) e 973294 (finney); camada 12 no **973290** (bob) e 973294 (finney); a alice ainda responde 404. Conferidas por `kit/blocos.mjs` contra o cabeçalho real em blockstream.info e mempool.space; `verify-blocos.mjs` ganhou os três blocos.
+- **Selada, pendente:** camada 13, raiz `d476584d63bd…`, commit `71c19dd`, 128 ficheiros (`ancora/raiz-registos-13.{json,ots}`); os três calendários aceitaram o compromisso. **Não é âncora até o recibo ter a prova do bloco** (ler `GET /timestamp/<compromisso>` aos calendários dentro de umas horas e juntar com `scripts/ots-juntar.mjs`).
+- **Erro meu, dito:** o primeiro envio ao calendário foi com um corpo vazio (o `xxd` não existe nesta máquina); as três respostas foram descartadas, nada foi montado com elas, e o envio certo (32 bytes) foi feito de seguida.
+- **Corrigido de passagem:** `scripts/verify-sensations-btc.mjs` só copiava as camadas até à 8 e falhava no `main` desde a camada 9; passa a ler todas. `ancora/sensations-btc.json` regenerado (7 de 7).
+- **Não verificado:** `raiz:verify` continua a falhar neste clone na camada 1 (`git show 3fbb7db:CLAUDE.md`; mesmo depois de `fetch --unshallow`); a camada 13 foi conferida com `kit/raiz.mjs` directamente (128 ficheiros, `pendente`). `implantado:verify` continua a falhar só por `ora-cdp-agente-teste`.
+- **Por fazer:** confirmar a camada 13 (prova de bloco) e actualizar o manifesto, o CLAUDE.md e o fio.
+
+---
+
 ## 27/10/2026 · P7: openapi e llms.txt dizem o que se compra, para quê e quanto (livros 1098 e 1099)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (27/10/2026), à proposta concreta P7 (lacunas L4, L10 e L11). Cobre só `openapi.json`, `llms.txt` e um verificador. Não cobre preços, `payTo`, funções implantadas, agent-card nem fundos.
 - **Feito (verificado no repositório):** `openapi.json` **2.17.0** descreve `/oraculo`, `/campo`, `/sedimento` e `/kernel` com o «para quê» e o glossário lidos do código (os mesmos textos do 402) e o campo tipado (dia inteiro, sigma número, época `CRISTAL`/`ETERNIDADE`); `/sedimento` e `/kernel` são novos no openapi. O `llms.txt` ganha «O que se compra» na linha 7, logo depois de «Como comprar»: os sete serviços com preço e o que devolvem, a nota de que nada é dado de mercado e de que a procura externa não está comprovada, e um resumo em inglês que manda ler o `payTo` no 402.
