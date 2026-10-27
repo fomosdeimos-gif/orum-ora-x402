@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { verificarRaiz, manifestosDeCamadas } from '../kit/raiz.mjs';
 import { lerRecibo } from './lib/ots.mjs';
-import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE } from './lib/raiz.mjs';
+import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE, FICHEIROS_DA_CAMADA_13_EM_DIANTE } from './lib/raiz.mjs';
 
 function verificarCamada(caminhoManifesto) {
   const manifestoBytes = fs.readFileSync(caminhoManifesto);
@@ -96,6 +96,11 @@ assert.ok(f12.includes('ancora/raiz-registos-11.json') && f12.includes('ancora/r
 for (const x of FICHEIROS_DA_CAMADA_12_EM_DIANTE) { assert.ok(f12.includes(x), `a camada 12 devia selar ${x}`); assert.ok(!f11.includes(x), `a camada 11 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 12 tem de existir: ${x}`); }
 for (const x of FICHEIROS_DA_CAMADA_11_EM_DIANTE) assert.ok(f12.includes(x), `a camada 12 tem de continuar a selar ${x}`);
 assert.equal(new Set(f12).size, f12.length, 'caminho repetido na camada 12');
+const f13 = ficheirosDaCamada(13);
+assert.ok(f13.includes('ancora/raiz-registos-12.json') && f13.includes('ancora/raiz-registos-12.ots'), 'a camada 13 sela a 12');
+for (const x of FICHEIROS_DA_CAMADA_13_EM_DIANTE) { assert.ok(f13.includes(x), `a camada 13 devia selar ${x}`); assert.ok(!f12.includes(x), `a camada 12 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 13 tem de existir: ${x}`); }
+for (const x of FICHEIROS_DA_CAMADA_12_EM_DIANTE) assert.ok(f13.includes(x), `a camada 13 tem de continuar a selar ${x}`);
+assert.equal(new Set(f13).size, f13.length, 'caminho repetido na camada 13');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
