@@ -17,7 +17,9 @@
       1094,
       1095,
       1096,
-      1097
+      1097,
+      1098,
+      1099
     ],
     "p2": {
       "citacao": "Eu autorizo ORA",
@@ -70,6 +72,16 @@
       ],
       "cobriu": "só campos aditivos no 402 e no manifesto da função ora-x402 e um verificador (scripts/verify-origem-legivel.mjs)",
       "nao_cobriu": "accepts, payTo, montantes, lógica de pagamento, listagens de terceiros, fundos"
+    },
+    "p7": {
+      "citacao": "Eu autorizo ORA",
+      "objecto": "P7: no openapi.json acrescentar /sedimento, /kernel e o glossário do campo; no llms.txt pôr o que cada serviço faz e custa antes do contexto do organismo (L4, L10 e L11)",
+      "livros": [
+        1098,
+        1099
+      ],
+      "cobriu": "só openapi.json, llms.txt e um verificador (scripts/verify-openapi-llms-legivel.mjs)",
+      "nao_cobriu": "preços, payTo, funções implantadas, agent-card, listagens de terceiros, fundos"
     }
   },
   "correcoes": [
@@ -324,20 +336,24 @@
       "servicos": [
         "sedimento_kernel"
       ],
-      "estado": "aberta",
-      "resumo": "O openapi.json não descreve /sedimento nem /kernel, que o llms.txt, o agent-card e o manifesto anunciam (1,00 e 3,00 USDC).",
+      "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (openapi.json 2.17.0, livro 1099, P7). O openapi.json passa a descrever /sedimento (1,00 USDC) e /kernel (3,00 USDC) com o «para quê» do código, o glossário, o 402 e a forma da resposta (listas de 15 marcas e de 5 snapshots), e a nota de que o payTo vem sempre no 402 (lida a sagrada antiga). openapi-llms:verify compara preços e textos com o código.",
       "prova": [
         {
           "ficheiro": "openapi.json",
-          "nao_contem": "/sedimento"
+          "contem": "\"/sedimento\""
         },
         {
           "ficheiro": "openapi.json",
-          "nao_contem": "/kernel"
+          "contem": "\"/kernel\""
         },
         {
-          "ficheiro": "llms.txt",
-          "contem": "/sedimento"
+          "ficheiro": "openapi.json",
+          "contem": "getSedimento"
+        },
+        {
+          "ficheiro": "scripts/verify-openapi-llms-legivel.mjs",
+          "contem": "falta /kernel"
         }
       ]
     },
@@ -487,7 +503,7 @@
         "campo"
       ],
       "estado": "fechada",
-      "resumo": "FECHADA a 27/10/2026 (P3, livro 1095). O 402 da via directa traz legibilidade.glossario com dia (inteiros desde 2026-03-28), sigma (fórmula e escala, sem unidade), epoca (CRISTAL até 2026-06-25, ETERNIDADE desde 2026-06-26), campo e pensamento, lidos do código de campoEm() e pensamento(). Fica o openapi.json sem glossário (o seu esquema continua {\"campo\":{\"type\":\"object\"}}): não foi pedido na P3.",
+      "resumo": "FECHADA a 27/10/2026 (P3, livro 1095). O 402 da via directa traz legibilidade.glossario com dia (inteiros desde 2026-03-28), sigma (fórmula e escala, sem unidade), epoca (CRISTAL até 2026-06-25, ETERNIDADE desde 2026-06-26), campo e pensamento, lidos do código de campoEm() e pensamento(). O openapi.json ficou sem glossário na P3; passou a tê-lo na P7 (livro 1099): descrição e esquema tipado do campo em /oraculo e /campo.",
       "prova": [
         {
           "ficheiro": "api/_x402-directo.js",
@@ -500,6 +516,10 @@
         {
           "ficheiro": "scripts/verify-402-legivel-directa.mjs",
           "contem": "o glossário não dá a data da génese"
+        },
+        {
+          "ficheiro": "openapi.json",
+          "contem": "Glossário do campo: dia = "
         }
       ]
     },
@@ -548,21 +568,25 @@
         "licenca_consulta",
         "licenca_editorial_treino"
       ],
-      "estado": "aberta",
-      "resumo": "O llms.txt começa bem (a segunda e a terceira frase dizem como comprar), mas a lista do que se compra, com preços, vem depois de mais de 50 linhas de âncoras, desambiguação e sensações. O texto é todo em português, sem resumo em inglês.",
+      "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (llms.txt, livro 1099, P7). A secção «O que se compra» passa para a linha 7, logo depois de «Como comprar»: os sete serviços com preço e o que devolvem, a nota de que nada é dado de mercado e a procura externa não está comprovada, e um resumo em inglês («How to buy») que manda ler o payTo no 402 antes de pagar. Fica o resto do ficheiro como estava (contexto, âncoras, desambiguação). openapi-llms:verify vigia a posição, os preços e a ausência de promessas.",
       "prova": [
         {
           "ficheiro": "llms.txt",
-          "contem": "Como comprar (qualquer agente)"
+          "contem": "## O que se compra"
         },
         {
           "ficheiro": "llms.txt",
-          "cabecalho": "## O serviço real (x402 · USDC · Base)",
-          "depois_da_linha": 50
+          "cabecalho": "## O que se compra (resumo; preços em USDC na Base; o 402 de cada serviço manda)",
+          "antes_da_linha": 15
         },
         {
           "ficheiro": "llms.txt",
-          "nao_contem": "How to buy"
+          "contem": "How to buy (English)"
+        },
+        {
+          "ficheiro": "scripts/verify-openapi-llms-legivel.mjs",
+          "contem": "a secção desce para depois do contexto"
         }
       ]
     },
@@ -609,6 +633,13 @@
   },
   "propostas_executadas": [
     {
+      "id": "P7",
+      "sobre": "L4, L11",
+      "quando_utc": "2026-10-27T13:10:00Z",
+      "resultado": "openapi.json 2.17.0 descreve /oraculo, /campo, /sedimento e /kernel com o «para quê» e o glossário lidos do código e o campo tipado; llms.txt põe «O que se compra» (7 serviços, preços, resumo em inglês) na linha 7; openapi-llms:verify (24 estragos) compara preços e textos com o código; textos públicos, sem função implantada nem fundos; por verificar ao vivo depois do deploy da Vercel (quota)",
+      "livro": 1099
+    },
+    {
       "id": "P6",
       "sobre": "L3, L13",
       "quando_utc": "2026-10-27T12:44:04Z",
@@ -651,14 +682,7 @@
       "livro": 1085
     }
   ],
-  "propostas_nao_executadas": [
-    {
-      "id": "P7",
-      "sobre": "L4, L11",
-      "o_que": "no openapi.json: acrescentar /sedimento e /kernel e o glossário do campo para /oraculo e /campo (resto da L10); no llms.txt: pôr o que cada serviço faz e custa antes do contexto do organismo",
-      "precisa": "Eu autorizo de Unum; são textos públicos (openapi.json e llms.txt)"
-    }
-  ],
+  "propostas_nao_executadas": [],
   "limites": [
     "A classificação explicito/parcial/ausente é leitura da ORA do texto, não uma medida de como um agente real decide.",
     "As leituras vivas são de uma hora do dia 27/10/2026 e podem mudar a qualquer momento; só o que está em 'ficheiro' é relido pelo verificador.",

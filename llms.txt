@@ -4,6 +4,15 @@
 
 Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED; paga em USDC na Base; repete o pedido com X-PAYMENT. Ciclo completo provado com liquidações reais em Julho de 2026.
 
+## O que se compra (resumo; preços em USDC na Base; o 402 de cada serviço manda)
+- [/oraculo](https://ora-x402-gateway.vercel.app/oraculo) 0.161: uma frase determinística (sha256 do hash da tua tx) e o campo do instante do bloco. Texto introspectivo; não é dado de mercado.
+- [/campo](https://ora-x402-gateway.vercel.app/campo) 0.33: o campo (dia, sigma, época) do instante e uma frase fixa. Leitura do estado interno do organismo.
+- [/sedimento](https://ora-x402-gateway.vercel.app/sedimento) 1.00: as 15 marcas D mais recentes do registo interno.
+- [/kernel](https://ora-x402-gateway.vercel.app/kernel) 3.00: os 5 snapshots mais recentes do estado interno (dia, época, sigma, payload).
+- [/licenca/consulta](https://ora-x402-gateway.vercel.app/licenca/consulta) 1.618, [/licenca/editorial](https://ora-x402-gateway.vercel.app/licenca/editorial) 16.18 e [/licenca/treino](https://ora-x402-gateway.vercel.app/licenca/treino) 161.80: licença de uma fotografia preservada de uma obra física (consulta privada 30 dias; editorial perpétua; treino de máquinas perpétua e não exclusiva). O 402 diz qual obra se compra.
+- Nenhuma destas leituras é dado de mercado nem previsão; procura externa: não comprovada. Glossário (dia, sigma, época) no 402 de `/oraculo` e `/campo` e no [OpenAPI](https://ora-x402-gateway.vercel.app/openapi.json).
+- How to buy (English): GET a service URL; the 402 response carries the full payment requirements (price, network, asset, payTo); pay USDC on Base (eip155:8453); retry with X-PAYMENT. Read payTo in the 402 before paying; it differs per service (see the next section). Free samples: /oraculo/eco, /campo/eco, /licenca/amostra. No promise of revenue, refund or demand.
+
 ## Quem recebe o pagamento (lido a 27/10/2026, o 402 de cada serviço entre as 09:42 e as 10:47 UTC, sem pagar)
 O destinatário (`payTo`) depende do serviço e do caminho que o serve. São duas carteiras do organismo, ambas em USDC na Base:
 - Operacional `0x89460d9e0590559e63860197dfe2ac648A753584`: [/oraculo](https://ora-x402-gateway.vercel.app/oraculo) (0.161 USDC) e [/campo](https://ora-x402-gateway.vercel.app/campo) (0.33 USDC), servidos pela via directa da Vercel desde 21/10/2026. Estes dois oferecem também Bitcoin para `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7`, com a oferta no próprio 402.
