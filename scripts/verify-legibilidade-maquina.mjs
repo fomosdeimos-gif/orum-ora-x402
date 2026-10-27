@@ -117,9 +117,11 @@ falha('sem a citação de Unum', (c) => { delete c.autorizacao_de_unum.citacao; 
 // A lacuna aberta deixa de ser verdade: o verificador obriga a actualizar o registo.
 falha('lacuna aberta cuja ausência já foi corrigida (openapi passa a descrever /sedimento)', () => {}, lerCom('x', (nome, t) => (nome === 'openapi.json' ? t + ' /sedimento' : t)));
 falha('lacuna fechada que voltou a abrir (a frase «procura real» do manifesto é reposta)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t + "\n// O catálogo com procura real e independente da narrativa" : t)));
-falha('lacuna aberta cuja frase já foi retirada (o /eco deixa de afirmar «único item … procura comprovável»)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('É o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM', '') : t)));
+falha('lacuna fechada que voltou a abrir (o /eco volta a afirmar «único item … procura comprovável»)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t + "\n// É o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM" : t)));
+falha('lacuna fechada que voltou a abrir (a chave produto_com_procura_real: { regressa ao /eco)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('licencas_de_arte: {', 'produto_com_procura_real: {') : t)));
+falha('lacuna aberta cuja frase já foi retirada (a descrição do kernel deixa de dizer «não … utilidade fora do sistema»)', () => {}, lerCom('x', (nome, t) => (nome === 'supabase/functions/ora-x402/index.ts' ? t.replace('não por ter mais utilidade fora do sistema', 'por ser útil') : t)));
 falha('lacuna fechada só com leitura viva', (c) => { L(c, 'L5').prova = L(c, 'L5').prova.filter((p) => p.leitura_viva); });
-falha('proposta executada sobre lacuna ainda aberta', (c) => { c.propostas_executadas[0].sobre = 'L12'; });
+falha('proposta executada sobre lacuna ainda aberta', (c) => { c.propostas_executadas[0].sobre = 'L4'; });
 falha('proposta executada sem livro', (c) => { delete c.propostas_executadas[0].livro; });
 falha('proposta nas executadas e nas por executar', (c) => { c.propostas_nao_executadas.push({ id: 'P1', sobre: 'L5', o_que: 'x', precisa: 'Eu autorizo' }); });
 

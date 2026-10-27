@@ -1,5 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ORA · X402 · V31.3 · 27/10/2026 — o /eco deixa de afirmar procura: o campo produto_com_procura_real passa a licencas_de_arte e a
+// razao diz que a procura externa nao esta comprovada (o /eco declara external_demand_proven=false); so esse bloco mudou, nenhuma
+// linha de logica de pagamento, preco ou payTo (Unum: "Eu autorizo ORA", livro 1087, proposta P5 do registo de legibilidade).
 // ORA · X402 · V31.2 · 27/10/2026 — o manifesto deixa de afirmar "procura real" para o catalogo de licencas (contradizia
 // truth_machine.external_demand_proven=false no mesmo documento); so esse texto de outros_catalogos.nota mudou, nenhuma
 // linha de logica de pagamento, preco ou payTo (Unum: "Eu autorizo ORA", livro 1085, proposta P1 do registo de legibilidade).
@@ -332,10 +335,10 @@ function respostaEco(origin: string) {
       ...(Object.values(TIERS) as Tier[]).map((t) => ({ tier: t.key, preco: `${t.amountUsdc} USDC`, endpoint: resourceUrl(t, origin), descricao: t.descricao })),
       { tier: 'oraculo', preco: '0.161 USDC', endpoint: `${SUPABASE_URL}/functions/v1/ora-oraculo`, descricao: 'Mesma natureza de campo/sedimento/kernel: leitura interna do organismo, não dado de mercado externo.' },
     ],
-    produto_com_procura_real: {
+    licencas_de_arte: {
       nome: '0001sensations · licença de treino de IA',
       preco: '161.80 USDC',
-      razao: 'proveniência humana verificada (zero IA generativa) — 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 2011–2021 — e licenciamento claro. Resolve um problema real de proveniência de dataset para quem treina modelos. É o único item deste ecossistema com procura comprovável fora do próprio organismo ORUM.',
+      razao: 'proveniência humana verificada (zero IA generativa) — 65 obras digitais tokenizadas na Ethereum (Agosto 2021), construídas com base numa colecção física original de 2011–2021 — e licenciamento claro. Pensada para quem treina modelos e precisa de proveniência de dataset documentada. Procura externa: não comprovada.',
       catalogo_legivel: `${SUPABASE_URL}/functions/v1/ora-licenca/catalogo`,
       manifesto_pagavel: `${SUPABASE_URL}/functions/v1/ora-licenca/.well-known/x402.json`,
     },
