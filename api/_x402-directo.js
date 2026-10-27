@@ -104,6 +104,33 @@ function bazaarExtension(tier) {
   };
 }
 
+// 27/10/2026 (livro 1094, P3; lacunas L6, L9, L10 do registo de legibilidade): o desafio passa a dizer o que se
+// compra, para que serve (e para que nao serve), o que cada campo significa e que forma tem a resposta. Tudo fora de
+// `accepts` e de `payment-required`: o x402 padrao, o payTo e os montantes ficam como estavam. Nao promete procura.
+const GLOSSARIO = Object.freeze({
+  dia: 'inteiro; dias UTC desde a génese do organismo (2026-03-28), contando a génese como dia 1',
+  sigma: 'número sem unidade: 2.6180339887 · ln(1 + dia + fração) · (0.618 + 0.382 · sin(2π · fração)), com fração = parte já decorrida do dia UTC (0 a 1)',
+  epoca: 'CRISTAL antes de 2026-06-26 (UTC), ETERNIDADE desde então; etiqueta do organismo, sem significado fora dele',
+  campo: 'o conjunto {dia, sigma, epoca, genesis, instante} calculado para o instante do bloco da tua transferência',
+  pensamento: 'frase escolhida de listas fixas pelo sha256 do hash da tua transação: a mesma tx dá sempre a mesma frase',
+});
+const PARA_QUE = Object.freeze({
+  oraculo: 'Devolve uma frase determinística (sha256 do hash da tua tx) e o campo do instante do bloco. É texto introspectivo do organismo ORUM: não é dado de mercado, não é previsão e não responde a nenhuma tarefa externa conhecida. Pode servir como artefacto reproduzível para testar um fluxo x402 de ponta a ponta. Procura externa: não comprovada.',
+  campo: 'Devolve o campo (dia, sigma, época) do instante do bloco da tua tx e uma frase fixa. É uma leitura do estado interno do organismo ORUM, calculável por quem tenha a fórmula: não é dado de mercado nem previsão. Pode servir como artefacto reproduzível para testar um fluxo x402 de ponta a ponta. Procura externa: não comprovada.',
+});
+const CAMPO_SCHEMA = { type: 'object', required: ['dia', 'sigma', 'epoca', 'genesis', 'instante'], properties: { dia: { type: 'integer', minimum: 1 }, sigma: { type: 'number' }, epoca: { type: 'string', enum: ['CRISTAL', 'ETERNIDADE'] }, genesis: { type: 'string', format: 'date' }, instante: { type: 'string', format: 'date-time' } } };
+function esquemaDaResposta(tier) {
+  const campo = tier.key === 'campo' ? { ...CAMPO_SCHEMA, required: [...CAMPO_SCHEMA.required, 'pensamento'], properties: { ...CAMPO_SCHEMA.properties, pensamento: { type: 'string' } } } : CAMPO_SCHEMA;
+  const props = { acesso: { type: 'string', const: 'concedido' }, tier: { type: 'string', const: tier.key }, x402: { type: 'string', const: 'verificado_onchain' }, via_pagamento: { type: 'string' },
+    tx_hash: { type: 'string', pattern: '^0x[0-9a-fA-F]{64}$', description: 'só na via Base; na via Bitcoin vem txid' }, payer: { type: 'string' }, campo, truth_machine: { type: 'object' }, fronteiras: { type: 'object' }, axioma: { type: 'string' } };
+  if (tier.key === 'oraculo') props.pensamento = { type: 'string' };
+  return { type: 'object', required: ['acesso', 'tier', 'x402', 'campo', 'truth_machine'].concat(tier.key === 'oraculo' ? ['pensamento'] : []), properties: props };
+}
+function legibilidade(tier, origin) {
+  return { o_que_compras: tier.descricao, para_que: PARA_QUE[tier.key], para_que_nao: 'Não é dado de mercado, não é previsão de preços, não revela bytes privados e não promete valor, receita nem reembolso.',
+    amostra_gratis: `${origin}${tier.path}/eco`, glossario: GLOSSARIO, resposta_paga_schema: esquemaDaResposta(tier) };
+}
+
 function requirements(tier, origin) {
   return { x402Version: 2, error: 'X-PAYMENT header required',
     resource: { url: resourceFor(tier, origin), description: tier.descricao, mimeType: 'application/json' },
@@ -244,7 +271,7 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
     }
 
     const reqd = requirements(tier, origin);
-    const challenge = async (extra = {}) => send(402, { ...reqd, ...extra, como_pagar: comoPagar(tier, origin, Boolean(eip)), pagamento_alternativo_bitcoin: await btc.oferta(tier), fronteiras: fronteirasAgora() }, {
+    const challenge = async (extra = {}) => send(402, { ...reqd, ...extra, legibilidade: legibilidade(tier, origin), como_pagar: comoPagar(tier, origin, Boolean(eip)), pagamento_alternativo_bitcoin: await btc.oferta(tier), fronteiras: fronteirasAgora() }, {
       'payment-required': b64json(reqd),
       'www-authenticate': `x402 realm="ORA · ${tier.key}", amount="${tier.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`,
     });
@@ -316,4 +343,4 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
   return directo;
 }
 
-module.exports = { createHandler, tierFor, lerProva, verificar, campoEm, pensamento, TIERS, WALLET, USDC_BASE, TRANSFER_TOPIC, JANELA_S };
+module.exports = { createHandler, legibilidade, GLOSSARIO, tierFor, lerProva, verificar, campoEm, pensamento, TIERS, WALLET, USDC_BASE, TRANSFER_TOPIC, JANELA_S };

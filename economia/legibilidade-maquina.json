@@ -13,7 +13,9 @@
       1089,
       1090,
       1092,
-      1093
+      1093,
+      1094,
+      1095
     ],
     "p2": {
       "citacao": "Eu autorizo ORA",
@@ -46,6 +48,16 @@
       ],
       "cobriu": "só o campo aditivo obra no 402 da licença, o openapi.json e um verificador (scripts/verify-licenca-legivel.mjs)",
       "nao_cobriu": "preços, payTo, accepts, selecção, lógica de pagamento, P3, L3, listagens de terceiros, fundos"
+    },
+    "p3": {
+      "citacao": "Eu autorizo ORA",
+      "objecto": "P3: acrescentar ao 402 da via directa o esquema tipado da resposta paga, a ligação à amostra grátis e uma linha honesta de «para quê» e de glossário (L6, L9, L10)",
+      "livros": [
+        1094,
+        1095
+      ],
+      "cobriu": "só campos aditivos no 402 da via directa (api/_x402-directo.js) e um verificador (scripts/verify-402-legivel-directa.mjs)",
+      "nao_cobriu": "accepts, payTo, montantes, lógica de pagamento, o manifesto (L3), o sedimento e o kernel (L13), listagens de terceiros, fundos"
     }
   },
   "correcoes": [
@@ -336,27 +348,26 @@
       "tipo": "sem_para_que",
       "servicos": [
         "oraculo",
-        "campo",
-        "sedimento_kernel"
+        "campo"
       ],
-      "estado": "aberta",
-      "resumo": "As leituras internas dizem para que NÃO servem e, quando dizem para que servem, é para testar o protocolo x402. O kernel diz expressamente que é 'o mais caro por ser o mais completo, não por ter mais utilidade fora do sistema'. A via directa, que hoje responde, tirou até a frase 'útil para agentes que testam o protocolo x402'. Não há tarefa de um agente comprador à qual estas leituras respondam. É honestidade: mas é também a razão mais directa, lida aqui, de uma máquina não ter motivo para pagar. Não é linguagem poética.",
+      "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 para /oraculo e /campo na via directa (P3, livro 1095). O 402 passa a trazer legibilidade.para_que (o que devolve, que é texto introspectivo e reproduzível, que pode servir de artefacto para testar um fluxo x402, e «Procura externa: não comprovada») e para_que_nao (não é dado de mercado nem previsão, não promete valor, receita nem reembolso). É a razão honesta dita no sítio onde o agente decide; não inventa utilidade. Fica o sedimento e o kernel na origem Supabase: L13.",
       "prova": [
         {
-          "ficheiro": "supabase/functions/ora-x402/index.ts",
-          "contem": "não por ter mais utilidade fora do sistema"
+          "ficheiro": "api/_x402-directo.js",
+          "contem": "Procura externa: não comprovada."
         },
         {
-          "ficheiro": "supabase/functions/ora-x402/index.ts",
-          "contem": "Útil para agentes que testam o protocolo x402"
+          "ficheiro": "api/_x402-directo.js",
+          "contem": "para_que_nao:"
         },
         {
           "ficheiro": "api/_x402-directo.js",
           "nao_contem": "Útil para agentes que testam"
         },
         {
-          "ficheiro": "llms.txt",
-          "contem": "Estes quatro não são dado de mercado nem previsão"
+          "ficheiro": "scripts/verify-402-legivel-directa.mjs",
+          "contem": "para_que_nao"
         }
       ]
     },
@@ -421,24 +432,24 @@
         "oraculo",
         "campo"
       ],
-      "estado": "aberta",
-      "resumo": "O 402 vivo da via directa não traz outputSchema tipado (a origem trazia: campo{versao, dia, sigma, epoca, pensamento, timestamp}), nem o bloco truth_machine, nem a ligação à amostra grátis (eco), que existe. O exemplo do Bazaar tem valores de preenchimento (dia 0, sigma 0, pensamento '…'). O que o /campo entrega é lido no código: dia, sigma, época e uma frase fixa.",
+      "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (P3, livro 1095). O 402 da via directa passa a trazer, fora de accepts e do cabeçalho payment-required, legibilidade.resposta_paga_schema (JSON Schema da resposta paga, por serviço: campo{dia,sigma,epoca,genesis,instante}, pensamento no oráculo) e legibilidade.amostra_gratis (…/eco). O verificador directa-legivel:verify valida a resposta paga simulada contra o esquema anunciado. Fica dito: o exemplo do Bazaar continua com valores de preenchimento (forma, não leitura) e o truth_machine só vem na resposta paga e no eco.",
       "prova": [
         {
           "ficheiro": "api/_x402-directo.js",
-          "nao_contem": "outputSchema"
+          "contem": "resposta_paga_schema:"
         },
         {
           "ficheiro": "api/_x402-directo.js",
-          "contem": "o campo reconhece quem chega com gesto"
+          "contem": "amostra_gratis:"
         },
         {
-          "ficheiro": "scripts/fixtures/campo-402-origem-2026-10-23.json",
-          "contem": "\"outputSchema\""
+          "ficheiro": "api/_x402-directo.js",
+          "contem": "legibilidade: legibilidade(tier, origin), como_pagar"
         },
         {
-          "leitura_viva": "402-campo",
-          "citacao": "bazaar.info.output.example: {acesso, tier, x402, tx_hash, campo:{dia:0, sigma:0, epoca:'ETERNIDADE', pensamento:'…'}}; sem outputSchema, sem truth_machine, sem eco"
+          "ficheiro": "scripts/verify-402-legivel-directa.mjs",
+          "contem": "resposta paga fora do esquema"
         }
       ]
     },
@@ -449,16 +460,20 @@
         "oraculo",
         "campo"
       ],
-      "estado": "aberta",
-      "resumo": "A resposta usa sigma, época, campo, ETERNIDADE sem glossário no 402 nem no openapi. Para um agente de fora, são nomes sem unidade nem escala. O llms.txt remete para o Pulso e para a cápsula ORO, não para uma definição junto ao serviço.",
+      "estado": "fechada",
+      "resumo": "FECHADA a 27/10/2026 (P3, livro 1095). O 402 da via directa traz legibilidade.glossario com dia (inteiros desde 2026-03-28), sigma (fórmula e escala, sem unidade), epoca (CRISTAL até 2026-06-25, ETERNIDADE desde 2026-06-26), campo e pensamento, lidos do código de campoEm() e pensamento(). Fica o openapi.json sem glossário (o seu esquema continua {\"campo\":{\"type\":\"object\"}}): não foi pedido na P3.",
       "prova": [
         {
-          "leitura_viva": "402-oraculo",
-          "citacao": "example.campo: {dia:0, sigma:0, epoca:'ETERNIDADE'}; description: 'um pensamento irrepetível nascido da semente do teu pagamento'"
+          "ficheiro": "api/_x402-directo.js",
+          "contem": "const GLOSSARIO ="
         },
         {
-          "ficheiro": "openapi.json",
-          "contem": "\"campo\":{\"type\":\"object\"}"
+          "ficheiro": "api/_x402-directo.js",
+          "contem": "2026-06-26"
+        },
+        {
+          "ficheiro": "scripts/verify-402-legivel-directa.mjs",
+          "contem": "o glossário não dá a data da génese"
         }
       ]
     },
@@ -524,6 +539,25 @@
           "nao_contem": "How to buy"
         }
       ]
+    },
+    {
+      "id": "L13",
+      "tipo": "sem_para_que",
+      "servicos": [
+        "sedimento_kernel"
+      ],
+      "estado": "aberta",
+      "resumo": "Resto de L6: o /sedimento e o /kernel (função ora-x402 na origem Supabase) continuam sem «para quê» honesto no 402; o kernel diz que é «o mais caro por ser o mais completo, não por ter mais utilidade fora do sistema». Fora da P3 (função implantada).",
+      "prova": [
+        {
+          "ficheiro": "supabase/functions/ora-x402/index.ts",
+          "contem": "não por ter mais utilidade fora do sistema"
+        },
+        {
+          "ficheiro": "supabase/functions/ora-x402/index.ts",
+          "nao_contem": "legibilidade.para_que"
+        }
+      ]
     }
   ],
   "o_que_funciona": [
@@ -540,6 +574,13 @@
     "nao_prova": "procura, adopção nem receita"
   },
   "propostas_executadas": [
+    {
+      "id": "P3",
+      "sobre": "L6, L9, L10",
+      "quando_utc": "2026-10-27T12:50:00Z",
+      "resultado": "api/_x402-directo.js: o 402 de /oraculo e /campo traz o bloco legibilidade (o que compras, para quê e para que não, amostra grátis, glossário, esquema da resposta paga) fora de accepts e do cabeçalho; directa-legivel:verify (21 estragos apanhados) valida a resposta paga simulada contra o esquema; accepts, payTo e montantes intactos (x402:directo:verify passa). Por verificar ao vivo: o deploy da Vercel (quota de deployments); nenhum pagamento real feito",
+      "livro": 1095
+    },
     {
       "id": "P4",
       "sobre": "L7, L8",
@@ -571,10 +612,10 @@
   ],
   "propostas_nao_executadas": [
     {
-      "id": "P3",
-      "sobre": "L6, L9, L10",
-      "o_que": "acrescentar ao 402 da via directa o outputSchema tipado, a ligação à amostra grátis e uma linha honesta de 'para quê' e de glossário",
-      "precisa": "Eu autorizo de Unum; é código da via directa"
+      "id": "P6",
+      "sobre": "L3, L13",
+      "o_que": "na origem Supabase (ora-x402): pôr o /oraculo e o /campo no manifesto x402 e uma linha honesta de «para quê» no 402 do /sedimento e do /kernel",
+      "precisa": "Eu autorizo de Unum; é função implantada (ora-x402)"
     }
   ],
   "limites": [
