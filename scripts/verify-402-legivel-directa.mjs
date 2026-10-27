@@ -67,6 +67,9 @@ function verificar({ tier, challenge, req, pago, fonteTxt }) {
   if (JSON.stringify(challenge.body.accepts) !== JSON.stringify(req.accepts)) x('accepts do corpo difere do cabeçalho');
   // a resposta paga cumpre o esquema anunciado
   for (const e of valida(pago.body, L.resposta_paga_schema)) x('resposta paga fora do esquema: ' + e);
+  // a fronteira não afirma uma indisponibilidade que já não se observa
+  if (/Edge Functions Supabase indisponíveis/.test(JSON.stringify(challenge.body.fronteiras || {}))) x('fronteiras ainda afirma que as Edge Functions Supabase estão indisponíveis');
+  if (!/a 27\/10\/2026 a origem Supabase voltou a responder/.test(JSON.stringify(challenge.body.fronteiras || {}))) x('fronteiras.motivo perdeu a leitura de 27/10/2026');
   // a fonte chama a legibilidade no desafio e não toca em accepts
   if (!/send\(402, \{ \.\.\.reqd, \.\.\.extra, legibilidade: legibilidade\(tier, origin\)/.test(fonteTxt)) x('o desafio deixou de incluir a legibilidade');
   if (!/accepts: \[\{ scheme: 'exact', network: CAIP2, amount: tier\.atomic\.toString\(\), asset: USDC_BASE, payTo: WALLET,\n\s+maxTimeoutSeconds: 300, extra: \{ name: 'USD Coin', version: '2' \} \}\]/.test(fonteTxt)) x('accepts da via directa foi alterado');
@@ -96,6 +99,7 @@ falha('«para quê» deixa de dizer que a procura não está comprovada', (c) =>
 falha('«para quê» passa a vender dado de mercado', (c) => { c.challenge.body.legibilidade.para_que = 'Dado de mercado em tempo real.'; });
 falha('promete reembolso', (c) => { c.challenge.body.legibilidade.para_que_nao = 'Garantido, com reembolso.'; });
 falha('«para que não» deixa de recusar promessas', (c) => { c.challenge.body.legibilidade.para_que_nao = 'Serve para tudo.'; });
+falha('fronteiras volta a afirmar a indisponibilidade', (c) => { c.challenge.body.fronteiras.motivo = 'Edge Functions Supabase indisponíveis (quota de egress)'; });
 falha('promessa escondida no glossário', (c) => { c.challenge.body.legibilidade.glossario.sigma += ' Vais ganhar com isto.'; });
 falha('amostra grátis aponta para outro serviço', (c) => { c.challenge.body.legibilidade.amostra_gratis = ORIGIN + '/campo/eco'; });
 falha('glossário sem sigma', (c) => { delete c.challenge.body.legibilidade.glossario.sigma; });
