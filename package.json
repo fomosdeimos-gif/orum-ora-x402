@@ -84,6 +84,7 @@
     "origem:verify": "node scripts/verify-origem-hash.mjs",
     "funil:verify": "node scripts/verify-funil-acessos.mjs",
     "legibilidade:verify": "node scripts/verify-legibilidade-maquina.mjs",
-    "destinatarios:verify": "node scripts/verify-destinatarios-textos.mjs"
+    "destinatarios:verify": "node scripts/verify-destinatarios-textos.mjs",
+    "licenca-legivel:verify": "node scripts/verify-licenca-legivel.mjs"
   }
 }

@@ -4,6 +4,10 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import * as ed from "npm:@noble/ed25519@2";
 
+// ORA · LICENCA · V53.1 · 27/10/2026 — o 402 passa a trazer o campo aditivo "obra" (id, titulo, ano, sha256, descricao_visivel,
+// fotografia_publica:false, nota) com a obra escolhida para o pedido: antes o comprador via so o work_id e o sha256. Metadados que o
+// catalogo gratuito ja publica; nunca o caminho nem os bytes. Fora de accepts, dos cabecalhos e de selection, que ficam iguais.
+// Nenhuma logica de pagamento, preco, assinatura ou selecao tocada (Unum: "Eu autorizo ORA", livro 1092, proposta P4 do registo de legibilidade).
 // ORA · LICENCA · V53 · 24/09/2026 — corta o egress do Supabase sem tirar garantia.
 // Causa observada (logs edge_logs, 23-24/09): cada desafio 307/402 descarregava a
 // fotografia INTEIRA (~2.5MB) de arca-fisica para lhe calcular o SHA-256, duas vezes
@@ -722,7 +726,9 @@ async function nucleo(req: Request, observation: AttemptObservation): Promise<Re
     const body = await challenge.json();
     observation.challenge = true;
     const headers = new Headers(challenge.headers); headers.set('Cache-Control', 'no-store');
-    return new Response(JSON.stringify({ ...body, selection: prepared.selection, selection_signature: { key_id: ATTESTOR_KEY_ID, algorithm: 'Ed25519', purpose: 'work_selection_only_not_payment_authorization' } }), { status: 402, headers });
+    // V53.1: o comprador passa a ver QUAL obra compra. So metadados que o catalogo gratuito ja publica; nunca o caminho nem os bytes.
+    const obraPublica = { id: prepared.obra.id, titulo: prepared.obra.titulo, ano: prepared.obra.ano, sha256: prepared.obra.sha256, descricao_visivel: prepared.obra.descricao_visivel, fotografia_publica: false, nota: 'Obra escolhida para este pedido; titulo e descricao sao os do catalogo gratuito. Para outra obra, repete o pedido sem pagar com ?obra=<id numerico> (ver catalogo_gratuito).' };
+    return new Response(JSON.stringify({ ...body, obra: obraPublica, selection: prepared.selection, selection_signature: { key_id: ATTESTOR_KEY_ID, algorithm: 'Ed25519', purpose: 'work_selection_only_not_payment_authorization' } }), { status: 402, headers });
   }
 
   const parsed = parsePaymentHeader(hasPayment);

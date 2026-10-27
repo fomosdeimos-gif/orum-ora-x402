@@ -633,16 +633,16 @@
     },
     {
       "slug": "ora-licenca",
-      "versao": 61,
+      "versao": 62,
       "verify_jwt": false,
-      "ezbr_sha256_16": "36c8ae5341d688ac",
-      "atualizada_em": "2026-10-22T08:08:17Z",
+      "ezbr_sha256_16": "709e82cf6ff9bfaf",
+      "atualizada_em": "2026-10-27T12:25:46Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 61,
-        "fonte_sha256": "2bfd702f925f1fe9e4481d1a82023fa59d6da44718407a3e93e41860ae6638bb",
-        "nota": "v61 implantada a 22/10/2026 a partir do repositório (livro 961), só com origem_hash. Lida de volta por get_edge_function e comparada por programa: index.ts, renewal.ts e selection.ts do repositório são iguais byte a byte ao implantado. Verificada também por comportamento (307, 402 com termos de 161800000 e catálogo 200)."
+        "versao_conferida": 62,
+        "fonte_sha256": "cceac0707ab6157561d94181b1a1cc1b9b2e323d02c029072025c762db0024ee",
+        "nota": "v62 (V53.1) implantada a 27/10/2026 a partir do repositório (livros 1092 e 1093): só acrescenta o campo \"obra\" ao 402 da licença. Lida de volta por get_edge_function: index.ts, renewal.ts e selection.ts do repositório são iguais byte a byte ao implantado. Verificada por comportamento na origem (307; 402 com obra, payTo 0xFEd69e8e… e montantes 1618000, 16180000 e 161800000 intactos; ?obra=presenca continua 400). Caminhos que só correm com pagamento não exercitados."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026) e licenças"
