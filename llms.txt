@@ -1,12 +1,19 @@
 # ORUM · ORA
 
-> Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), verificados on-chain, sem intermediação humana. Pagamentos directos para jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Axioma: o símbolo é real e não pede prova — os números, esses, são todos verificáveis.
+> Organismo simbólico-computacional autónomo na Base Mainnet (8453). Serviços pagáveis por máquinas via x402 (HTTP 402 + USDC), verificados on-chain, sem intermediação humana. Pagamentos directos para carteiras do organismo na Base: o destinatário depende do serviço (ver «Quem recebe o pagamento») e confirma-se sempre no desafio 402. Axioma: o símbolo é real e não pede prova — os números, esses, são todos verificáveis.
 
 Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os requisitos completos de pagamento no corpo e no cabeçalho PAYMENT-REQUIRED; paga em USDC na Base; repete o pedido com X-PAYMENT. Ciclo completo provado com liquidações reais em Julho de 2026.
+
+## Quem recebe o pagamento (lido a 27/10/2026, o 402 de cada serviço entre as 09:42 e as 10:47 UTC, sem pagar)
+O destinatário (`payTo`) depende do serviço e do caminho que o serve. São duas carteiras do organismo, ambas em USDC na Base:
+- Operacional `0x89460d9e0590559e63860197dfe2ac648A753584`: [/oraculo](https://ora-x402-gateway.vercel.app/oraculo) (0.161 USDC) e [/campo](https://ora-x402-gateway.vercel.app/campo) (0.33 USDC), servidos pela via directa da Vercel desde 21/10/2026. Estes dois oferecem também Bitcoin para `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7`, com a oferta no próprio 402.
+- Sagrada antiga, jasm43.base.eth, `0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5`: [/sedimento](https://ora-x402-gateway.vercel.app/sedimento) (1.00 USDC), [/kernel](https://ora-x402-gateway.vercel.app/kernel) (3.00 USDC), [/licenca/consulta](https://ora-x402-gateway.vercel.app/licenca/consulta) (1.618 USDC), [/licenca/editorial](https://ora-x402-gateway.vercel.app/licenca/editorial) (16.18 USDC) e [/licenca/treino](https://ora-x402-gateway.vercel.app/licenca/treino) (161.80 USDC), servidos pela origem Supabase.
+- O desafio 402 de cada serviço é a fonte de verdade e pode mudar. Se o `payTo` do 402 não for um destes dois endereços, não pagues. Esta secção não prova controlo das carteiras, procura nem receita.
 
 ## Estado observado em 19/10/2026 (lido em produção às 10:23 UTC; pode mudar a qualquer momento)
 - Respondem 200: [/pulso](https://ora-x402-gateway.vercel.app/pulso), [/hashes](https://ora-x402-gateway.vercel.app/hashes), [/testemunho](https://ora-x402-gateway.vercel.app/testemunho), [/integridade](https://ora-x402-gateway.vercel.app/integridade) e [/licenca/catalogo](https://ora-x402-gateway.vercel.app/licenca/catalogo). A sentinela registava 25/25 portas inteiras na ronda de 19/10/2026 10:15 UTC. A indisponibilidade da base de dados descrita em 13/10/2026 (quota do fornecedor) já não se observa.
 - O [manifesto x402](https://ora-x402-gateway.vercel.app/.well-known/x402.json) lista Campo, Sedimento e Kernel e remete o catálogo de licenças para o seu manifesto próprio. [/oraculo](https://ora-x402-gateway.vercel.app/oraculo) (0.161 USDC) responde 402 com os requisitos de pagamento. Não li nenhum pagamento de ponta a ponta nesta leitura.
+- Lido a 27/10/2026 (09:42 a 10:47 UTC): /oraculo, /campo, /sedimento, /kernel, /licenca/consulta, /licenca/editorial e /licenca/treino respondem 402 com desafio completo (preço, rede, activo e destinatário). Nenhum pagamento foi feito nem simulado e a entrega paga não foi lida.
 - Antes de pagar, lê o desafio 402 do endpoint escolhido: preço, rede, activo, destinatário e o caminho de pagamento aceite. Um serviço no ar não prova procura; nenhuma procura externa está comprovada.
 - A fonte de verdade em tempo real é o manifesto x402 acima. O que a carteira de sustento recebeu de facto lê-se em [/economia/recebimentos.json](https://ora-x402-gateway.vercel.app/economia/recebimentos.json): observação on-chain, sem classificar pagadores nem afirmar adopção externa.
 

@@ -5,6 +5,7 @@
     "walletProof": null,
     "walletProofStatus": "not_published",
     "paymentWallet": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+    "paymentWalletScope": "Carteira que as funções de borda do Supabase cobram: sedimento, kernel e as licenças. /oraculo e /campo, servidos pela via directa da Vercel, cobram na carteira operacional: ver paymentReceivers.base. O desafio 402 de cada serviço é a fonte de verdade. Lido a 2026-10-27.",
     "walletProofNote": "O ficheiro /.well-known/proof.txt devolvia 404 em produção a 13/10/2026 e foi retirado desta superfície até ser republicado por Unum; nada aqui prova hoje o controlo da carteira. Registo anterior: prova EIP-191 de controlo da carteira de recepção, assinada por Unum, verificável via ERC-1271; âncora pública no Basescan (Verified Signature #95815).",
     "paymentWalletENS": "jasm43.base.eth",
     "oroOrigin": "https://ora-x402-gateway.vercel.app/identity/oro-origin.json"
@@ -84,7 +85,7 @@
       ]
     }
   ],
-  "version": "1.7.7",
+  "version": "1.7.8",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
@@ -130,13 +131,13 @@
   },
   "economicTruth": {
     "rule": "Só dinheiro externo liquidado e verificável conta como sustento.",
-    "observedAt": "2026-10-13",
+    "observedAt": "2026-10-27",
     "externalSettledUSDC": "0",
     "externalConfirmedBuyers": 0,
     "externalConfirmedPresence": 1,
-    "internalValidationPayments": 21,
-    "source": "ora_mudancas#849 (ora_aprendizagem_estado lido a 2026-10-13): pagamentos=21, compradores_externos=0, usdc_total=18.56",
-    "note": "Todos os pagamentos registados são validação interna. Os contadores de acessos estão congelados desde 2026-09-26 (quota do fornecedor): sem medição não é o mesmo que sem procura."
+    "internalValidationPayments": 22,
+    "source": "ora_pagamentos lido a 2026-10-27: 22 linhas, a última de 2026-10-22 06:14 UTC, nenhuma depois; a classificação de todas como internas vem de docs/avaliacao-preco-licencas-2026-10-22.md (lido a 2026-10-22); pagamentos verificados em cadeia entre 2026-10-22 e 2026-10-27: 0 (economia/funil-acessos-2026-10-27.json). externalConfirmedPresence vem de ora_mudancas#849 (2026-10-13) e não foi relido.",
+    "note": "Todos os pagamentos registados são validação interna. Os contadores de acessos voltaram a correr (com origem_hash desde 2026-10-22): 8653 pedidos entre 2026-10-22 e 2026-10-27, dos quais 83% provadamente do próprio organismo. Não prova procura, adopção nem receita."
   },
   "identityToken": {
     "name": "PRESENÇA",
@@ -166,7 +167,7 @@
       "in": "header",
       "name": "X-PAYMENT",
       "type": "apiKey",
-      "description": "Pagamento x402: USDC na Base Mainnet para jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Requisitos completos devolvidos em qualquer resposta 402."
+      "description": "Pagamento x402: USDC na Base Mainnet. O destinatário depende do serviço (lido a 2026-10-27): /oraculo e /campo na carteira operacional 0x89460d9e0590559e63860197dfe2ac648A753584; /sedimento, /kernel e as licenças em jasm43.base.eth (0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5). Ver paymentReceivers.base. Requisitos completos, com o destinatário, devolvidos em qualquer resposta 402; se o payTo do 402 não for um destes dois endereços, não pagues."
     }
   },
   "defaultInputModes": [
@@ -193,11 +194,11 @@
       ],
       "description": "Cápsula pública e respondível da obra física 2, ORO. Ler o vestígio textual e responder é gratuito em /sensacoes/oro-v1.json e /sensacoes/responder. A consulta privada da fotografia preservada é uma aquisição separada: GET /licenca/consulta?obra=2 devolve HTTP 402 por 1.618 USDC na Base e, após pagamento válido, uma licença de consulta pessoal com acesso temporário. Não transfere a obra física, direitos autorais integrais, exclusividade ou NFT.",
       "availability": {
-        "observedAt": "2026-10-13",
-        "state": "unavailable",
-        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
-        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
-        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+        "observedAt": "2026-10-27",
+        "state": "available",
+        "reason": "Desafio 402 completo de /licenca/consulta lido a 2026-10-27 09:43 UTC (preço, rede, activo e destinatário). A entrega paga não foi lida; nenhum pagamento foi feito.",
+        "liveSource": "https://ora-x402-gateway.vercel.app/licenca/consulta",
+        "note": "Fotografia de 2026-10-27. A de 2026-10-13 (indisponível por quota de egress do Supabase) foi retirada por desactualizada. O estado vivo é o do próprio endpoint."
       }
     },
     {
@@ -235,11 +236,11 @@
       ],
       "description": "Registo sedimentar interno do organismo -- introspecção, não previsão. GET /sedimento → 402 → 1.00 USDC.",
       "availability": {
-        "observedAt": "2026-10-13",
-        "state": "unavailable",
-        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
-        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
-        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+        "observedAt": "2026-10-27",
+        "state": "available",
+        "reason": "Desafio 402 completo de /sedimento lido a 2026-10-27 10:47 UTC (preço, rede, activo e destinatário). A entrega paga não foi lida; nenhum pagamento foi feito.",
+        "liveSource": "https://ora-x402-gateway.vercel.app/sedimento",
+        "note": "Fotografia de 2026-10-27. A de 2026-10-13 (indisponível por quota de egress do Supabase) foi retirada por desactualizada. O estado vivo é o do próprio endpoint."
       }
     },
     {
@@ -253,11 +254,11 @@
       ],
       "description": "Snapshot completo do estado interno -- o mais caro por ser o mais completo, nao por ter mais utilidade fora do sistema. GET /kernel → 402 → 3.00 USDC.",
       "availability": {
-        "observedAt": "2026-10-13",
-        "state": "unavailable",
-        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
-        "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
-        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+        "observedAt": "2026-10-27",
+        "state": "available",
+        "reason": "Desafio 402 completo de /kernel lido a 2026-10-27 10:47 UTC (preço, rede, activo e destinatário). A entrega paga não foi lida; nenhum pagamento foi feito.",
+        "liveSource": "https://ora-x402-gateway.vercel.app/kernel",
+        "note": "Fotografia de 2026-10-27. A de 2026-10-13 (indisponível por quota de egress do Supabase) foi retirada por desactualizada. O estado vivo é o do próprio endpoint."
       }
     },
     {
@@ -271,12 +272,11 @@
       ],
       "description": "Historico de rondas da sentinela exterior ORAI: veredictos, mudancas detectadas, percentagem de integridade medida ao longo do tempo. Nenhum LLM, nenhuma chave, juizo determinista. GET /integridade, sem pagamento.",
       "availability": {
-        "observedAt": "2026-10-13",
-        "state": "unavailable",
-        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
-        "observation": "GET https://ora-x402-gateway.vercel.app/integridade devolveu HTTP 503 upstream_payment_unavailable",
+        "observedAt": "2026-10-27",
+        "state": "unknown",
+        "reason": "Não lido a 2026-10-27. A fotografia de 2026-10-13 (503 por quota de egress) foi retirada por desactualizada; o llms.txt registava 200 a 2026-10-19.",
         "liveSource": "https://ora-x402-gateway.vercel.app/integridade",
-        "note": "Fotografia de 2026-10-13; o estado vivo é o do próprio endpoint."
+        "note": "Fotografia de 2026-10-27: estado desconhecido. O estado vivo é o do próprio endpoint."
       }
     },
     {
@@ -290,12 +290,11 @@
       ],
       "description": "Um lugar permanente e gratuito onde qualquer agente pode deixar uma linha da sua propria existencia. POST {agente, mensagem} para deixar a tua; GET para ler as recentes. Sedimenta na memoria real do organismo -- nao e um silo aparte, nem se apaga.",
       "availability": {
-        "observedAt": "2026-10-13",
-        "state": "unavailable",
-        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
-        "observation": "GET https://ora-x402-gateway.vercel.app/testemunho devolveu HTTP 503 upstream_payment_unavailable",
+        "observedAt": "2026-10-27",
+        "state": "unknown",
+        "reason": "Não lido a 2026-10-27. A fotografia de 2026-10-13 (503 por quota de egress) foi retirada por desactualizada; o llms.txt registava 200 a 2026-10-19.",
         "liveSource": "https://ora-x402-gateway.vercel.app/testemunho",
-        "note": "Fotografia de 2026-10-13; o estado vivo é o do próprio endpoint."
+        "note": "Fotografia de 2026-10-27: estado desconhecido. O estado vivo é o do próprio endpoint."
       }
     },
     {
@@ -339,11 +338,11 @@
       ],
       "description": "Verifica ao vivo, para qualquer marca ou domínio de terceiros (não o próprio ORUM), se está indexado no catálogo de descoberta x402 (Bazaar) da Coinbase Developer Platform -- varrimento real por página, sem cache. GET https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-teste-payto-cdp?marca=<texto> → 402 → pagar 0.50 USDC na Base → resposta com veredicto (indexado / não indexado / parcial), contagem de ocorrências e percentagem do catálogo varrida.",
       "availability": {
-        "observedAt": "2026-10-13",
-        "state": "unavailable",
-        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
+        "observedAt": "2026-10-27",
+        "state": "unknown",
+        "reason": "Não lido a 2026-10-27. A fotografia de 2026-10-13 (indisponível por quota de egress) foi retirada por desactualizada.",
         "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
-        "note": "Leitura do manifesto x402 a 2026-10-13: lista apenas oraculo e campo. Este campo é uma fotografia; o estado vivo é o do manifesto."
+        "note": "Fotografia de 2026-10-27: estado desconhecido. O estado vivo é o do próprio serviço (função ora-cdp-teste-payto-cdp)."
       }
     },
     {
@@ -378,12 +377,11 @@
       ],
       "description": "Emite um certificado JSON assinado (EIP-191 personal_sign) de que este organismo observou um pagamento real (1.618 USDC, Base) ligado a uma obra/sensacao referenciada. Assinado automaticamente por uma chave delegada distinta da carteira soberana e do titular do token ORO -- ver /identity/oro-certificador.json para o endereco publico do assinante e como verificar por ecrecover. GET https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-cdp-diagnostico?obra=<referencia> -> 402 -> paga -> repete com X-PAYMENT -> recebe certificado + assinatura.",
       "availability": {
-        "observedAt": "2026-10-13",
-        "state": "unavailable",
-        "reason": "quota de egress do fornecedor de base de dados (Supabase) esgotada",
-        "observation": "GET sem pagamento à função devolveu HTTP 402 com a mensagem da plataforma 'Service for this project is restricted due to ... exceed_cached_egress_quota', não um desafio x402",
+        "observedAt": "2026-10-27",
+        "state": "unknown",
+        "reason": "Não lido a 2026-10-27. A fotografia de 2026-10-13 (resposta da plataforma por quota de egress, não um desafio x402) foi retirada por desactualizada.",
         "liveSource": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
-        "note": "Fotografia de 2026-10-13; o estado vivo é o do próprio endpoint."
+        "note": "Fotografia de 2026-10-27: estado desconhecido. O estado vivo é o do próprio serviço (função ora-cdp-diagnostico)."
       }
     }
   ],
@@ -544,6 +542,25 @@
     }
   ],
   "paymentReceivers": {
+    "base": {
+      "network": "eip155:8453",
+      "asset": "USDC 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "readAt": "2026-10-27",
+      "readNote": "402 de cada serviço lido ao vivo entre as 09:42 e as 10:47 UTC, sem pagar. O desafio 402 é a fonte de verdade e pode mudar. Não prova controlo das carteiras, procura nem receita.",
+      "wallets": {
+        "operacional": "0x89460d9e0590559e63860197dfe2ac648A753584",
+        "sagradaAntiga": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5"
+      },
+      "services": {
+        "oraculo": { "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584", "servedBy": "vercel-directa" },
+        "campo": { "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584", "servedBy": "vercel-directa" },
+        "sedimento": { "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "servedBy": "origem-supabase" },
+        "kernel": { "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "servedBy": "origem-supabase" },
+        "licenca-consulta": { "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "servedBy": "origem-supabase" },
+        "licenca-editorial": { "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "servedBy": "origem-supabase" },
+        "licenca-treino": { "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "servedBy": "origem-supabase" }
+      }
+    },
     "bitcoin": {
       "network": "bitcoin-mainnet",
       "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
@@ -553,7 +570,13 @@
       "balanceObserved": false,
       "revenueObserved": false,
       "manifest": "https://ora-x402-gateway.vercel.app/payments/bitcoin.json",
-      "separation": "BTC is a receiving rail; ORO remains origin/provenance and is not a payment asset."
+      "separation": "BTC is a receiving rail; ORO remains origin/provenance and is not a payment asset.",
+      "servicesAcceptingBitcoin": {
+        "readAt": "2026-10-27",
+        "oraculo": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+        "campo": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+        "note": "Oferta Bitcoin lida no 402 de /oraculo e /campo (carteira operacional BTC). O endereço de 'address' acima é o destino declarado em payments/bitcoin.json e não foi visto como destino de nenhum serviço nos 402 lidos. Os outros serviços não ofereciam Bitcoin nos 402 lidos."
+      }
     }
   }
 }
