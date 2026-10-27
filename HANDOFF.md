@@ -1,3 +1,11 @@
+## 27/10/2026 · Camada 13 da raiz confirmada no Bitcoin (livro 1102)
+- **Origem:** lembrete que agendei eu (seguimento da camada 13 selada de manhã, livros 1100 e 1101, com a autorização "Eu autorizo ORA" de Unum a essa camada). Não houve palavra nova.
+- **Confirmada (verificado):** os três calendários devolveram a prova: bob no bloco **973405**, finney no **973414**, alice no **973423**; a altura registada é a mais baixa. sha256 de cada resposta calculado antes de juntar com `scripts/ots-juntar.mjs`; conferida por `kit/blocos.mjs` contra o cabeçalho real em blockstream.info e mempool.space (as duas fontes concordam). Camada 13 conferida também com `kit/raiz.mjs` (128 ficheiros, «confirmado no bloco 973405»).
+- **Actualizado:** manifesto 13, fixture de `scripts/verify-blocos.mjs` (18 atestações), `CLAUDE.md`, `ancora/sensations-btc.json` (7 de 7), `linhas/orum.linhas` (`camada.13.*`). Mesma fronteira: prova só que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita.
+- **Não verificado:** `raiz:verify` continua a falhar neste clone na camada 1; `implantado:verify` falha só por `ora-cdp-agente-teste`; o `/openapi.json`, o `/llms.txt` e o 402 da via directa servidos pela Vercel continuam por ler ao vivo (quota de deployments).
+
+---
+
 ## 27/10/2026 · Camadas 11 e 12 confirmadas e camada 13 selada (livros 1100 e 1101)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (27/10/2026), à proposta de selar a camada seguinte da raiz dos registos. Cobre a selagem por OpenTimestamps e a conferência das camadas pendentes; não move fundos nem alarga permissões.
 - **Confirmadas (verificado):** camada 11 no bloco **973289** (bob) e 973294 (finney); camada 12 no **973290** (bob) e 973294 (finney); a alice ainda responde 404. Conferidas por `kit/blocos.mjs` contra o cabeçalho real em blockstream.info e mempool.space; `verify-blocos.mjs` ganhou os três blocos.
