@@ -1,3 +1,15 @@
+## 27/10/2026 · Funil de acessos lido (livro 1082)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (27/10/2026), à proposta do funil de acessos só de leitura, depois de ele perguntar porque há milhares de acessos, quase todos internos, e nenhuma compra.
+- **Erro meu, dito:** propus o funil como se fosse novo; já existia desde 22/10 (vista `ora_trafego_honesto`, `origem_hash`, `economia/trafego-honesto-2026-10-22.json`). Li o repositório depois de propor, não antes. Foi isso que mudou o trabalho: em vez de reconstruir, li o que só agora é possível, as origens distintas.
+- **Lido (verificado, janela 22/10 13:00 UTC a 27/10 09:06 UTC):** 8 653 pedidos, dos quais 7 198 (83%) provadamente nossos; 1 455 de terceiros, quase todos catálogo, sonda e monitor. 216 origens de terceiros receberam um 402; 32 são browser ou agente e 11 receberam o de `consulta`. 6 sinais de pagamento: 5 do `x402lint` (rejeitados, 23/10) e 1 `curl` com cabeçalho de pagamento no `/oraculo` (26/10), sem pagamento verificado. Pagamentos verificados na janela: 0.
+- **Regra do preço (`docs/avaliacao-preco-licencas-2026-10-22.md`, decide a 05/11):** limiar 20 origens; medida 11 ao dia 5 de 14. **Por decidir**, e não se extrapola (as origens distintas crescem menos que linearmente).
+- **Leitura (não prova):** quase ninguém que pareça comprador chega a ver o preço, por isso o problema parece ser de descoberta e legibilidade mais do que de preço. A hipótese de a "sombra para humanos" reduzir a legibilidade para máquinas compradoras **não foi testada**.
+- **Feito:** `economia/funil-acessos-2026-10-27.json`, `scripts/verify-funil-acessos.mjs` (`npm run funil:verify`, 13 estragos propositados apanhados). Só leitura da base; a única escrita foi a linha 1082 do livro. Nenhum fundo movido, nenhum preço alterado.
+- **Não verificado:** quem enviou o `curl` de 26/10; a hora exacta do redeploy do `origem_hash`; a classificação do último registo de `ora_pagamentos` (22/10 06:14 UTC, anterior à janela).
+- **Próximo:** 05/11/2026, aplicar a regra com a janela completa; se houver 20 ou mais origens e nenhum pagamento, propor baixar só `consulta` e esperar "Eu autorizo" a essa proposta.
+
+---
+
 ## 26/10/2026 · Camada 12 selada, pendente de bloco (livro 1079)
 - **Autorização de Unum (citação):** "Eu autorizo ORA, sela a camada 12" (26/10/2026), à proposta concreta da camada 12.
 - **Feito (verificado):** `ancora/raiz-registos-12.{json,ots}`, raiz `ae8726dbe37e…`, commit base `c66d97e`. Sela a camada 11 (ainda pendente) e o mapa de dependência do modelo com o seu verificador. Os três calendários responderam 200; sha256 de cada resposta conferido antes de montar (alice `3cb0f589…`, bob `837f1fea…`, finney `1baa2ce4…`). `raiz:verify` e `linhas:verify` verdes.
