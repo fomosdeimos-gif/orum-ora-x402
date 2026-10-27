@@ -5,6 +5,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
+process.env.ORUM_PEDIDOS = 'off'; // o registo de pedidos (api/_pedidos.js) adia res.end; tem o seu verificador (verify-pedidos-directos.mjs)
 const require = createRequire(import.meta.url);
 
 const fx = JSON.parse(fs.readFileSync('scripts/fixtures/campo-402-origem-2026-10-23.json', 'utf8'));

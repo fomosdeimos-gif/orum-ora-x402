@@ -3,6 +3,7 @@
 // o RPC Base e o Supabase sao simulados.
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+process.env.ORUM_PEDIDOS = 'off'; // o registo de pedidos (api/_pedidos.js) adia res.end; tem o seu verificador (verify-pedidos-directos.mjs)
 // hermetico: sem facilitador publico nem rede (o proxy cria o seu handler com o ambiente por omissao)
 process.env.ORUM_FACILITATOR_URL = 'off';
 process.env.ORUM_BTC_RAIL = 'off'; // idem para a via Bitcoin: tem o seu verificador (btc-servicos:verify)

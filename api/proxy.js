@@ -17,6 +17,7 @@ const { elevarBazaar } = require('./_bazaar-declaracao');
 const { juntarOfertaBtc, comPrazo } = require('./_oferta-btc-origem');
 const { createBtc } = require('./_pagamento-btc');
 const btcOferta = createBtc();
+const { medir } = require('./_pedidos');
 const recebimentos = require('./_recebimentos');
 const bitcoin = require('./_bitcoin');
 const saldos = require('./_saldos');
@@ -63,6 +64,8 @@ module.exports = async (req, res) => {
     // Esplora, 1 confirmacao). Pedidos com essa prova a /oraculo ou /campo vao direitos para la; as provas por
     // hash ou EIP-3009 continuam a ir para a origem.
     const alvoPago = tierFor(base, restRaw);
+    // ORA 27/10/2026 (livro 1106, Unum: "Eu autorizo"): regista cada pedido as rotas pagas, qualquer que seja a via que serve (api/_pedidos.js).
+    try { medir(req, res, alvoPago); } catch {}
     const prova = alvoPago && alvoPago.kind === 'pago' ? lerProva(req.headers['x-payment'] || req.headers['payment-signature']) : null;
     if (alvoPago && alvoPago.kind === 'pago') {
       if (prova && prova.btc && await viaDirecta()) return;

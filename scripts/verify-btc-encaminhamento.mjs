@@ -8,6 +8,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, rmSync } f
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+process.env.ORUM_PEDIDOS = 'off'; // o registo de pedidos (api/_pedidos.js) adia res.end; tem o seu verificador (verify-pedidos-directos.mjs)
 const require = createRequire(import.meta.url);
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const API = join(AQUI, '..', 'api');
