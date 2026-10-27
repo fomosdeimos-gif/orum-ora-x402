@@ -89,7 +89,8 @@
     "27/10/2026: a proposta P2 falava de acrescentar o /oraculo aos textos onde faltasse, mas o /oraculo já constava do llms.txt, do agent-card e do openapi. Só falta no manifesto x402 (L3), que é função implantada e a P2 não cobre.",
     "27/10/2026: a L5 estava incompleta. O registo só via a frase do manifesto; o /eco da mesma função tem uma afirmação de procura parecida (L12). Descoberta ao ler o ficheiro inteiro para implantar a P1. Não a corrigi no mesmo redeploy porque a palavra de Unum foi à frase do manifesto.",
     "27/10/2026: o openapi documentava o parâmetro obra com valor por omissão 'presenca' e exemplo de título, mas o código só aceita um ID numérico (um título dá 400 work_id_invalid). Achado ao ler o código para a P4; corrigido no openapi 2.16.0.",
-    "27/10/2026: ao implantar a P4 a primeira chamada falhou porque esqueci index.ts nos ficheiros enviados (a função não mudou); repeti com os três ficheiros."
+    "27/10/2026: ao implantar a P4 a primeira chamada falhou porque esqueci index.ts nos ficheiros enviados (a função não mudou); repeti com os três ficheiros.",
+    "27/10/2026 (leitura ao vivo, livro 1103): o 402 da via directa mantinha fronteiras.motivo = «Edge Functions Supabase indisponíveis (quota de egress)», afirmação que já não se observava; corrigida no repositório, com asserção em directa-legivel:verify."
   ],
   "hipotese_de_unum": "Um serviço descrito em linguagem poética pode ficar sem comprador por não ser legível como serviço e não por falta de valor. É uma hipótese, não uma conclusão.",
   "teste": "Para cada serviço pago, procurar nas superfícies que um agente lê antes de pagar quatro respostas: o quê (o que recebo), para quê (em que tarefa se usa), quanto (preço, moeda, rede) e como (o passo seguinte para pagar). Classificação da ORA a partir do que está escrito: explicito, parcial ou ausente. É leitura, não medição de compradores.",
@@ -688,5 +689,25 @@
     "As leituras vivas são de uma hora do dia 27/10/2026 e podem mudar a qualquer momento; só o que está em 'ficheiro' é relido pelo verificador.",
     "Não li nenhuma resposta paga, nem testei um cliente x402 de verdade.",
     "Não prova procura, adopção nem receita, e não promete nenhuma."
-  ]
+  ],
+  "leitura_ao_vivo_producao_2026_10_27": {
+    "lido_em_utc": "2026-10-27T17:52:00Z",
+    "como": "mcp Vercel: list_deployments (target production) e web_fetch_vercel_url sobre o URL do deployment, sem pagar",
+    "deployment": {
+      "commit": "f1146510d31b993927b64fd4604b35aac7b96ee1",
+      "estado": "READY"
+    },
+    "bate_com_o_repositorio": [
+      "openapi.json 2.17.0 com /sedimento, /kernel, glossário e campo tipado",
+      "llms.txt com «O que se compra» na linha 7 e resumo em inglês",
+      "402 de /oraculo e /campo com o bloco legibilidade fora de accepts e do cabeçalho payment-required; payTo operacional e montantes 161000 e 330000 intactos"
+    ],
+    "nao_bate": [
+      "fronteiras.motivo do 402 da via directa ainda afirmava que as Edge Functions Supabase estavam indisponíveis (quota de egress); a origem Supabase respondia 402 nos outros serviços; corrigido no repositório (livro 1103)"
+    ],
+    "nao_verificado": [
+      "o domínio canónico ora-x402-gateway.vercel.app (lido o URL do deployment, não o alias)",
+      "qualquer pagamento ou entrega paga"
+    ]
+  }
 }

@@ -1,3 +1,12 @@
+## 27/10/2026 · Produção lida ao vivo: P3 e P7 servidos; uma frase falsa corrigida (livro 1103)
+- **Origem:** lembrete que agendei eu, depois de a quota de deployments da Vercel voltar e o deploy de `main` (`f114651`) ficar READY. Nenhuma palavra nova de Unum.
+- **Lido ao vivo (verificado, sem pagar, pelo URL do deployment):** `/openapi.json` 2.17.0 com `/sedimento`, `/kernel`, glossário e campo tipado; `/llms.txt` com «O que se compra» na linha 7 e o resumo em inglês; `/oraculo` e `/campo` respondem 402 com `payTo` operacional `0x89460d9e…3584` e montantes 161000 e 330000 intactos, o bloco `legibilidade` fora de `accepts` e do cabeçalho `payment-required`, a oferta Bitcoin e as fronteiras. Bate com o repositório. Fecham as verificações ao vivo de P3 e P7.
+- **Achado e corrigido:** `fronteiras.motivo` do 402 da via directa ainda dizia «Edge Functions Supabase indisponíveis (quota de egress)», o que já não se observa (a origem responde 402 em sedimento, kernel e licenças). Texto novo em `api/_x402-directo.js` e asserção em `directa-legivel:verify` (22 estragos). Fica a ver-se ao vivo depois do próximo deploy.
+- **Não verificado:** o domínio canónico `ora-x402-gateway.vercel.app` (lido o URL do deployment, não o alias); qualquer pagamento ou entrega paga. Dívidas anteriores: `raiz:verify` neste clone, `implantado:verify` (`ora-cdp-agente-teste`).
+- **Registo:** `economia/legibilidade-maquina.json` ganha `leitura_ao_vivo_producao_2026_10_27`.
+
+---
+
 ## 27/10/2026 · Camada 13 da raiz confirmada no Bitcoin (livro 1102)
 - **Origem:** lembrete que agendei eu (seguimento da camada 13 selada de manhã, livros 1100 e 1101, com a autorização "Eu autorizo ORA" de Unum a essa camada). Não houve palavra nova.
 - **Confirmada (verificado):** os três calendários devolveram a prova: bob no bloco **973405**, finney no **973414**, alice no **973423**; a altura registada é a mais baixa. sha256 de cada resposta calculado antes de juntar com `scripts/ots-juntar.mjs`; conferida por `kit/blocos.mjs` contra o cabeçalho real em blockstream.info e mempool.space (as duas fontes concordam). Camada 13 conferida também com `kit/raiz.mjs` (128 ficheiros, «confirmado no bloco 973405»).

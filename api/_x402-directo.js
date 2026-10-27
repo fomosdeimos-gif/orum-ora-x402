@@ -143,7 +143,7 @@ function requirements(tier, origin) {
 function fronteiras(eip = false) {
   const nome = typeof eip === 'string' ? eip : (eip ? 'cdp' : null);
   const quem = nome === 'publico' ? 'um facilitador público (sem conta, só usado depois de anunciar a Base mainnet)' : 'o facilitador CDP';
-  return { via: 'vercel-directa', recebimento: 'carteira operacional da ORA (desde 21/10/2026); as funcoes de borda do Supabase e os textos publicos ainda anunciam a sagrada antiga (jasm43.base.eth)', motivo: 'Edge Functions Supabase indisponíveis (quota de egress)',
+  return { via: 'vercel-directa', recebimento: 'carteira operacional da ORA (desde 21/10/2026); as funcoes de borda do Supabase e os textos publicos ainda anunciam a sagrada antiga (jasm43.base.eth)', motivo: 'esta via nasceu quando as Edge Functions Supabase ficaram fora de quota de egress (setembro de 2026); a 27/10/2026 a origem Supabase voltou a responder 402 nos outros serviços, por isso esta via já não é a única, e serve /oraculo e /campo',
     prova_aceite: nome ? `transactionHash de transferência USDC directa, ou autorização EIP-3009 liquidada por ${quem} e confirmada por nós na Base` : 'transactionHash de transferência USDC directa', eip3009_facilitador: Boolean(nome), facilitador: nome,
     livro_interno_escrito: false, livro: 'cadeia Base (logs Transfer USDC para a carteira de sustento)',
     janela_horas: JANELA_S / 3600, repeticao_da_mesma_tx: 'mesma leitura (reacesso)' };
