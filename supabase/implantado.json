@@ -79,16 +79,16 @@
     },
     {
       "slug": "ora-x402",
-      "versao": 41,
+      "versao": 42,
       "verify_jwt": false,
-      "ezbr_sha256_16": "d7d91483010f15b2",
-      "atualizada_em": "2026-10-27T10:41:02Z",
+      "ezbr_sha256_16": "eb21cd72e39b26f2",
+      "atualizada_em": "2026-10-27T12:44:04Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 41,
-        "fonte_sha256": "85c006f1144779b469183412d77fcb547dc7bd048f368dd529a44e74c276b04c",
-        "nota": "v41 (V31.3) implantada a 27/10/2026 a partir do repositório (livro 1087, proposta P5 do registo de legibilidade): só mudou o bloco do /eco (o campo produto_com_procura_real passa a licencas_de_arte e a razão diz 'Procura externa: não comprovada') e um comentário de cabeçalho. A v40 (V31.2, livro 1085) tinha retirado a frase 'procura real' do manifesto. Antes de implantar a v41: a produção estava na v40 (ezbr 097dc3d454daf2d8…), a minha implantação de há pouco. Depois: /eco vivo na origem sem a chave antiga e com a nova, manifesto sem 'procura real', 402 de campo, sedimento e kernel com montantes 330000, 1000000 e 3000000 e payTo intactos, X-PAYMENT ilegível recusado, hash inexistente devolve 'pending'. get_edge_function relido e as secções que tocam dinheiro (verifyOnChain, CDP, claimPagamento, registos, respostas pagas, nucleo) comparadas com o repositório por leitura; não foi comparado byte a byte por programa, e os caminhos que só correm com pagamento não foram exercitados."
+        "versao_conferida": 42,
+        "fonte_sha256": "d0979db0b38fe4baea0cf96ea17089b699b4a4ce88d7e84a5e564dd0b1c21fd8",
+        "nota": "v42 (V31.4) implantada a 27/10/2026 a partir do repositório (livros 1096 e 1097, proposta P6): só acrescenta o bloco `legibilidade` (para_que e para_que_nao) ao 402 de campo, sedimento e kernel e o bloco `servicos_via_directa` ao manifesto. Antes: a produção estava na v41 (ezbr d7d91483…). Depois, lido ao vivo na origem sem pagar: 402 dos três escalões com legibilidade, payTo 0xFEd69e8e… e montantes 330000, 1000000 e 3000000 intactos; manifesto com servicos_via_directa e os três resources iguais; X-PAYMENT ilegível continua recusado com 402. get_edge_function relido e conferido por leitura contra o repositório; não foi comparado byte a byte por programa, e os caminhos que só correm com pagamento não foram exercitados."
       },
       "toca_dinheiro": {
         "evidencia": "serviço pago, devolve 402 (registos de 22/10/2026)"
