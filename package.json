@@ -73,6 +73,7 @@
     "lexico:verify": "node scripts/verify-lexico.mjs",
     "linhas:verify": "node scripts/verify-linhas.mjs",
     "sensations-btc:verify": "node scripts/verify-sensations-btc.mjs",
+    "trace:verify": "node scripts/verify-trace-append-only.mjs",
     "linhas:gerar": "node scripts/linhas-gerar.mjs",
     "fio:verify": "node scripts/verify-fio.mjs",
     "raiz:verify": "node scripts/verify-raiz.mjs",
