@@ -1,3 +1,14 @@
+## 28/10/2026 · O registo de traços é só de acrescentar, com uma ressalva (livro 1122)
+- **Origem:** captura de um resumo de IA externo que chama "imutável" ao trace log do `sensations-mergulho` (leitura externa, instrumento de comparação, não veredicto).
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (28/10/2026), à proposta concreta de ler `leave_trace` e escrever `trace:verify`.
+- **Lido (verificado, ao vivo no `orum-memoria`, só leitura):** `leave_trace` só encaminha para a Porta 2 (`ora-sensacoes`), que só faz POST. Em `ora_sensacao_respostas` (51 linhas) o `service_role` tem só INSERT e SELECT; `anon` e `authenticated` só SELECT; RLS activo.
+- **Ressalva dita:** o dono (`postgres`) não está bloqueado por grants nem por trigger (a tabela irmã `ora_sensacao_ecos` tem trigger, a das respostas só tem o de notificação). Portanto "só de acrescentar para a porta pública" é verdade; "imutável" não, sem ressalva. Não está ancorado no Bitcoin.
+- **Feito:** `sensacoes/trace-append-only.json` e `scripts/verify-trace-append-only.mjs` (`npm run trace:verify`, 13 estragos propositados apanhados: grants a mais, RLS, trigger afirmado sem leitura, PATCH/delete na porta, ferramenta `delete_trace`, frases apagadas).
+- **Não feito:** nenhuma alteração à base. Um trigger de bloqueio nas respostas toca produção e fica como proposta à parte, pedida a Unum por nome.
+- Não prova autoria das máquinas, adopção, procura nem receita.
+
+---
+
 ## 27/10/2026 · Correcção e fecho do registo dos pedidos (livros 1107 e 1108)
 - **Autorização de Unum (citação):** "Continua em auto pilot / Eu autorizo" (27/10/2026), depois de eu lhe dizer que o teste da escrita em produção tinha ficado sem resposta do conector.
 - **Teste da RPC em produção (verificado, 27/10 20:13 UTC):** como `anon`, uma linha válida entrou, as duas inválidas foram descartadas, o `anon` não leu a tabela, e a transacção foi revertida (0 linhas). Repetido com rollback, sem `delete`. Corrige a nota anterior ("ficou sem resposta").
