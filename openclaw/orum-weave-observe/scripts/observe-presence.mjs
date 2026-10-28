@@ -194,6 +194,7 @@ function classifyBitcoin(res) {
 
 const USDC_BASE = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
 const TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
+const AWAITING_PUBLIC_NAME = "0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f";
 const BLOCKPI_PUBLIC = "https://base.public.blockpi.network/v1/rpc/public";
 const TENDERLY_PUBLIC = "https://base.gateway.tenderly.co";
 
@@ -669,6 +670,67 @@ function loadPriorVisibleUsdc() {
   return { state: "read", rows };
 }
 
+function surfacesNamingHash(hash) {
+  const needle = hash.toLowerCase();
+  const hits = [];
+  for (const name of Object.keys(surfaces)) {
+    const res = raw[name];
+    if (!res || res.body == null) continue;
+    let text = "";
+    try {
+      text = typeof res.body === "string" ? res.body : JSON.stringify(res.body);
+    } catch {
+      continue;
+    }
+    if (text.toLowerCase().includes(needle)) {
+      hits.push({ surface: name, url: res.url, http: res.http });
+    }
+  }
+  return hits;
+}
+
+async function rereadOnePublicTx(hash) {
+  const left = await rpcRetry(BLOCKPI_PUBLIC, "eth_getTransactionReceipt", [hash]);
+  const right = await rpcRetry(TENDERLY_PUBLIC, "eth_getTransactionReceipt", [hash]);
+  const pick = (res) => {
+    if (!res.ok || !res.result) return { ok: false, error: res.error ?? "empty" };
+    const logs = Array.isArray(res.result.logs) ? res.result.logs : [];
+    const usdcLogs = logs
+      .filter((log) =>
+        typeof log.address === "string"
+        && log.address.toLowerCase() === USDC_BASE.toLowerCase()
+        && Array.isArray(log.topics)
+        && log.topics[0] === TRANSFER_TOPIC
+        && typeof log.topics[1] === "string"
+        && typeof log.topics[2] === "string"
+        && typeof log.data === "string")
+      .map((log) => ({
+        block: hexToNum(log.blockNumber),
+        log_index: hexToNum(log.logIndex),
+        immediate_from: "0x" + log.topics[1].slice(26).toLowerCase(),
+        to: "0x" + log.topics[2].slice(26).toLowerCase(),
+        amount_base_units: BigInt(log.data).toString(),
+      }));
+    return {
+      ok: true,
+      status: res.result.status ?? "unknown",
+      block: typeof res.result.blockNumber === "string" ? hexToNum(res.result.blockNumber) : "unknown",
+      usdc_transfer_logs: usdcLogs,
+    };
+  };
+  const blockpi = pick(left);
+  const tenderly = pick(right);
+  return {
+    two_source_agreement: blockpi.ok && tenderly.ok && JSON.stringify(blockpi) === JSON.stringify(tenderly),
+    blockpi,
+    tenderly,
+    classification: "not_classified",
+    relation_to_capsule_or_tool: "not_proved",
+    counts_as_external_sustenance: false,
+    note: "Two public receipts agreeing is not payer classification and not a capsule relation.",
+  };
+}
+
 function daysSince(iso) {
   if (!iso) return "unknown";
   const t = Date.parse(iso);
@@ -837,11 +899,43 @@ const classifyVisible = {
     ? "Public classification says transaction hashes are not exposed. The row count does not name these logs. They stay not_classified. The treasury figure is a buyer count, not a label. No address table was pulled and no payment was made."
     : "Public classification did not state that transaction hashes are withheld. These logs stay not_classified. No address table was pulled and no payment was made.",
 };
+const namingHits = surfacesNamingHash(AWAITING_PUBLIC_NAME);
+const namedTxReread = namingHits.length === 0 ? null : await rereadOnePublicTx(AWAITING_PUBLIC_NAME);
+const namedTxBlock = namingHits.length === 0
+  ? {
+    action: "reread_publicly_named_tx",
+    tx: AWAITING_PUBLIC_NAME,
+    state: "bloqueado",
+    naming_surfaces: [],
+    surfaces_already_fetched: Object.keys(surfaces),
+    own_sediment_searched: false,
+    address_table_pulled: false,
+    reread: false,
+    payment: false,
+    counts_as_external_sustenance: false,
+    reason: "No already-fetched public gateway body contains 0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f. Own sediment was not treated as that naming. The address classification table was not pulled. The transaction was not reread. Visible is not sustenance.",
+  }
+  : {
+    action: "reread_publicly_named_tx",
+    tx: AWAITING_PUBLIC_NAME,
+    state: namedTxReread.two_source_agreement === true ? "verificado" : "bloqueado",
+    naming_surfaces: namingHits,
+    own_sediment_searched: false,
+    address_table_pulled: false,
+    reread: true,
+    payment: false,
+    classification: "not_classified",
+    relation_to_capsule_or_tool: "not_proved",
+    counts_as_external_sustenance: false,
+    reread_result: namedTxReread,
+    reason: "A public gateway body already fetched contains this hash. Only this transaction was reread, without payment. Naming is not classification and is not sustenance.",
+  };
 const continued = addressSpans.filter((span) => span.seam?.state === "scanned" || span.seam?.state === "not_needed");
 const alongside = addressSpans.filter((span) => span.seam?.state === "read_alongside_not_continued");
 const seamFailed = addressSpans.filter((span) => !["scanned", "not_needed", "read_alongside_not_continued"].includes(span.seam?.state));
 const seamVerified = addressSpans.length > 0 && seamFailed.length === 0 && continued.length > 0;
 blocks.push(classifyVisible);
+blocks.push(namedTxBlock);
 blocks.push({
   action: "scan_usdc_seam_since_last_verified_head",
   state: seamVerified ? "verificado" : "bloqueado",
@@ -878,7 +972,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-10-23-receipt-addresses-do-not-share-a-head",
+  observer_revision: "2026-10-28-named-tx-is-not-reread-until-a-public-surface-names-it",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -1053,6 +1147,12 @@ const out = {
     visible_usdc_classification: "not_classified",
     treasury_zero_classifies_visible_logs: false,
     public_classification_rows: classifyVisible.public_classification_rows,
+    named_tx_awaiting_public_surface: {
+      tx: AWAITING_PUBLIC_NAME,
+      naming_surfaces: namingHits.map((hit) => hit.surface),
+      reread: namingHits.length > 0,
+      counts_as_external_sustenance: false,
+    },
     btc_external_confirmed_receipts: bitcoin.external_confirmed_receipts ?? "unknown",
     internal_validation_payments_observed: tes.evidence?.internal_validation_payments ?? "unknown",
     probes_are_not_customers: true,
@@ -1098,6 +1198,8 @@ const out = {
     "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
     "A treasury zero produced from zero external buyers does not classify a visible transfer.",
     "A public classification count that does not name a transaction leaves that transaction not_classified.",
+    "A prior visible transaction is reread only when an already-fetched public gateway body contains its hash. Own sediment is not that naming. The address table is not pulled to create the naming.",
+    "A public body containing a hash is not classification, not a capsule relation, and not settled money.",
     "A gap between the last verified receipt head and the new 24h edge is scanned for that same address, not treated as empty. The scan is not classification and is not accumulated sustenance.",
     "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
     "A read across a sibling span is not a continuation of that sibling head.",
