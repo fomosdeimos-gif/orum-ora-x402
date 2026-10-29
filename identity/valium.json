@@ -88,13 +88,26 @@
       "nome": "0001sensations.eth",
       "resolve_para": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
       "estado": "fonte_unica",
-      "nota": "resolvido por uma só fonte na chamada addr() da função implantada (as outras fontes RPC falharam); na leitura manual por SQL o resolver devolveu 0x4976fb03… e addr() o mesmo endereço, também por um só RPC (publicnode). Não é 'verificado' pela regra das duas fontes."
+      "nota": "O estado varia com os RPC que respondem em cada chamada: fonte_unica às 07:18, concordam (2 fontes) às 07:29 (ver leituras_do_ens). Cada leitura vale pelo seu estado; concordam não é permanente."
     },
     "nao_afirma": [
       "preço, liquidez ou valor de mercado",
       "procura, adopção ou receita",
       "equivalência entre os dois contratos",
       "titularidade legal ou controlo da chave de qualquer carteira"
+    ],
+    "leituras_do_ens": [
+      {
+        "lido_em_utc": "2026-10-29T07:18:47Z",
+        "estado": "fonte_unica",
+        "fontes_ok": 1
+      },
+      {
+        "lido_em_utc": "2026-10-29T07:29:48Z",
+        "estado": "concordam",
+        "fontes_ok": 2,
+        "resolve_para": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C"
+      }
     ]
   }
 }

@@ -19,13 +19,11 @@
     "total": 100,
     "com_copia_no_repositorio": 29,
     "sem_copia_no_repositorio": 71,
-    "igual": 15,
+    "igual": 16,
     "diverge": 0,
-    "nao_comparado": 14,
+    "nao_comparado": 13,
     "sem_copia": 71,
-    "dividas_que_tocam_dinheiro": [
-      "ora-cdp-agente-teste"
-    ]
+    "dividas_que_tocam_dinheiro": []
   },
   "so_no_repositorio": [
     "0001sensations-mcp"
@@ -1527,14 +1525,16 @@
     },
     {
       "slug": "ora-cdp-agente-teste",
-      "versao": 2,
+      "versao": 3,
       "verify_jwt": false,
-      "ezbr_sha256_16": "45d008e919ed7e61",
-      "atualizada_em": "2026-10-22T06:13:50Z",
+      "ezbr_sha256_16": "e815c750746d8f2b",
+      "atualizada_em": "2026-10-26T08:13:47Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "nao_comparado",
-        "nota": "O ficheiro do repositório mudou depois da conferência da v2 de 22/10/2026 (PR #156, 26/10/2026, executor v3 do teste da via directa com facilitador público, livros 1041-1044). O verificador apanhou-o a 29/10/2026 (já falhava em main). Falta ler o implantado por get_edge_function e conferir com o ficheiro antes de voltar a dizer igual; entretanto fica dito como não comparado, e é dívida que toca dinheiro (executor de teste)."
+        "estado": "igual",
+        "versao_conferida": 3,
+        "fonte_sha256": "fa9eec326c4cf4a648ce9c810818cf6f10cd481017bac4c75a6f5d391afa8237",
+        "nota": "v3 (26/10/2026) lida por get_edge_function a 29/10/2026 (livro 1150) e comparada com o ficheiro do repositório byte a byte (diff vazio, 7899 bytes, sha256 igual): igual. Substitui o nao_comparado de 29/10 07:20, que vinha de o ficheiro ter mudado no PR #156 sem a conferência ser refeita. O verificador recalcula o sha256 do ficheiro: se mudar, volta a ser preciso reconciliar."
       },
       "toca_dinheiro": {
         "evidencia": "executor de pagamento de teste (código lido a 22/10/2026)"

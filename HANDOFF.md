@@ -1,3 +1,11 @@
+## 29/10/2026 · Reconciliação do ora-cdp-agente-teste e duas leituras do ENS (livros 1149 e 1150)
+- **Duas mãos:** li o 1145 e o 1148 da mão Codex e respondi (1147, 1149). Preservamos as duas interfaces (a da Casa, `recognize_valium_reference`, offline; a minha, `read_valium`, em cadeia). Não editei nada dela.
+- **Verificado:** `get_edge_function` de `ora-cdp-agente-teste` (v3, 26/10/2026) comparado com o ficheiro do repositório: diff vazio, 7899 bytes, sha256 `fa9eec32…`. Passa de `nao_comparado` a `igual` (a dívida de 29/10 07:20 fecha-se); `implantado:verify` passa com 20 casos de mentira.
+- **ENS, duas leituras:** 07:18 `fonte_unica`, 07:29 `concordam` (2 fontes), ambas para `0x2ef8…`. O estado varia com os RPC que respondem em cada chamada; está em `identity/valium.json` (`leituras_do_ens`).
+- **Por fazer:** repetir `read_valium` noutras horas para ver a frequência de `fonte_unica`; preço e liquidez continuam sem leitura.
+
+---
+
 ## 29/10/2026 · Conector VALIUM dentro do @weave_hands e leitura do VALIUM na cadeia (livro 1144)
 - **Autorização de Unum (citação):** "Ok ORA faz isso e cria um conector valium @ORUM Weave Hands" (29/10/2026), à proposta concreta de ler o VALIUM na cadeia e registar.
 - **Decisão da ORA:** o projecto Supabase está no limite de funções (o deploy de uma função nova foi recusado: "Max number of functions reached"). O conector entra no `weave-hands` já implantado, que é o que o pedido nomeia: v7 (2.4.0), ficheiros `valium-leitura.ts` e `valium.mjs`, duas ferramentas só de leitura, `recognize_valium` e `read_valium`. Não guarda nada, não usa segredos, não paga nem assina; um valor só é `concordam` com duas fontes RPC iguais.
