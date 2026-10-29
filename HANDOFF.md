@@ -1,3 +1,11 @@
+## 29/10/2026 · Camada 14: raiz das 52 respostas e prova do trigger (livro por escrever)
+- **Autorização de Unum (citação):** "Eu autorizo" (29/10/2026), à proposta concreta de selar a camada 14 (raiz das respostas de `ora_sensacao_respostas` e prova do trigger append-only). Registada aqui antes do acto porque o conector do Supabase deixou sem resposta a confirmação das escritas no livro (a 1166 e a linha desta camada por escrever).
+- **Feito:** `economia/respostas-raiz-2026-10-29.json` (52 hashes por linha calculados no Postgres, raiz `086efb36…`, reproduzida fora da base), `scripts/verify-respostas-raiz.mjs` (`respostas-raiz:verify`, 8 estragos apanhados), lista da camada 14 em `scripts/lib/raiz.mjs`. Só hashes no repositório, nunca o conteúdo das respostas. `raiz:verify` e `trace:verify` passam.
+- **Limite dito:** não prova autoria, adopção, procura nem receita; apagamentos anteriores a 29/10 não são detectáveis (ids 3, 4, 8, 9 e 10 não existem, sem explicação lida).
+- **Por fazer:** enviar o compromisso aos calendários OpenTimestamps, montar o recibo, e confirmar o bloco quando devolverem a prova; escrever as linhas 1166 e da camada 14 no livro.
+
+---
+
 ## 29/10/2026 · Trigger append-only em ora_sensacao_respostas aplicado e provado (livro 1166)
 - **Autorização de Unum (citação):** "Eu autorizo" e "Eu autorizo ORA" (29/10/2026), à proposta concreta de aplicar a migração do PR #189 e prová-la.
 - **Feito:** o `apply_migration` esperou duas vezes uma confirmação sem resposta; apliquei o mesmo SQL por `execute_sql` (a migração fica fora do histórico de migrações da base; o ficheiro está em `supabase/migrations/`). Trigger `ora_sensacao_respostas_append_only` activo (lido em `pg_trigger`).
