@@ -2,14 +2,21 @@
   "schema": "orum-pedidos-aos-servicos/v1",
   "objecto": "O que se lê, a 27/10/2026, sobre pedidos aos serviços do ORUM (/oraculo, /campo e as portas pagas). Só leitura; não infere procura.",
   "pedido": "Unum, na sessão de trabalho, por escrito: \"Eu autorizo ORA, mede os pedidos aos serviços\" (27/10/2026), à proposta concreta de uma leitura só de leitura dos registos, separando o que é do organismo do que vem de fora. Registada antes do acto no livro ora_mudancas (1104).",
-  "lido_em_utc": "2026-10-27T20:10:00Z",
+  "lido_em_utc": "2026-10-29T08:00:00Z",
   "fontes": [
     {
       "id": "vercel-runtime-logs",
       "o_que": "Registos de execução do Vercel (get_runtime_logs), projectos ora-x402-gateway e orum-ora-x402, produção.",
       "limite": "O plano Hobby guarda 1 hora; uma janela de 7 dias é recusada (400). Os registos de execução são eventos de função, não a lista completa de pedidos HTTP.",
       "janela_lida": "55 minutos até 2026-10-27T20:05Z",
-      "lido": { "ora-x402-gateway": { "/pulso": 3, "/.well-known/x402.json": 1, "/licenca/catalogo": 1 }, "orum-ora-x402": {} },
+      "lido": {
+        "ora-x402-gateway": {
+          "/pulso": 3,
+          "/.well-known/x402.json": 1,
+          "/licenca/catalogo": 1
+        },
+        "orum-ora-x402": {}
+      },
       "pedidos_a_oraculo_ou_campo": 0
     },
     {
@@ -28,20 +35,81 @@
       "nota": "externo quer dizer interno=false na tabela; inclui rastejadores, verificadores de x402 e navegadores. Não é número de clientes."
     },
     "serie_diaria_externa": [
-      { "dia": "2026-10-17", "linhas": 310, "origens": 0 },
-      { "dia": "2026-10-18", "linhas": 911, "origens": 1 },
-      { "dia": "2026-10-19", "linhas": 485, "origens": 6 },
-      { "dia": "2026-10-20", "linhas": 442, "origens": 3 },
-      { "dia": "2026-10-21", "linhas": 445, "origens": 2 },
-      { "dia": "2026-10-22", "linhas": 420, "origens": 68 },
-      { "dia": "2026-10-23", "linhas": 505, "origens": 159 },
-      { "dia": "2026-10-24", "linhas": 293, "origens": 107 },
-      { "dia": "2026-10-25", "linhas": 302, "origens": 138 },
-      { "dia": "2026-10-26", "linhas": 229, "origens": 97 },
-      { "dia": "2026-10-27", "linhas": 452, "origens": 138, "parcial": true }
+      {
+        "dia": "2026-10-17",
+        "linhas": 310,
+        "origens": 0
+      },
+      {
+        "dia": "2026-10-18",
+        "linhas": 911,
+        "origens": 1
+      },
+      {
+        "dia": "2026-10-19",
+        "linhas": 485,
+        "origens": 6
+      },
+      {
+        "dia": "2026-10-20",
+        "linhas": 442,
+        "origens": 3
+      },
+      {
+        "dia": "2026-10-21",
+        "linhas": 445,
+        "origens": 2
+      },
+      {
+        "dia": "2026-10-22",
+        "linhas": 420,
+        "origens": 68
+      },
+      {
+        "dia": "2026-10-23",
+        "linhas": 505,
+        "origens": 159
+      },
+      {
+        "dia": "2026-10-24",
+        "linhas": 293,
+        "origens": 107
+      },
+      {
+        "dia": "2026-10-25",
+        "linhas": 302,
+        "origens": 138
+      },
+      {
+        "dia": "2026-10-26",
+        "linhas": 229,
+        "origens": 97
+      },
+      {
+        "dia": "2026-10-27",
+        "linhas": 452,
+        "origens": 138,
+        "parcial": true
+      }
     ],
-    "classes_de_maquina_externas_30d": { "human_or_browser": 1955, "machine_likely": 1308, "x402_observer": 531, "browser": 130, "mobile_browser": 95, "zerobot": 94, "curl": 45, "vercel_mcp": 26, "x402_linter": 10 },
-    "oraculo_externo_7d": { "GET_sem_pagamento": 48, "GET_com_cabecalho_de_pagamento": 2, "HEAD": 9, "eco_GET": 3, "origens_distintas_GET": 30 },
+    "classes_de_maquina_externas_30d": {
+      "human_or_browser": 1955,
+      "machine_likely": 1308,
+      "x402_observer": 531,
+      "browser": 130,
+      "mobile_browser": 95,
+      "zerobot": 94,
+      "curl": 45,
+      "vercel_mcp": 26,
+      "x402_linter": 10
+    },
+    "oraculo_externo_7d": {
+      "GET_sem_pagamento": 48,
+      "GET_com_cabecalho_de_pagamento": 2,
+      "HEAD": 9,
+      "eco_GET": 3,
+      "origens_distintas_GET": 30
+    },
     "sinais_de_pagamento_externos": {
       "payment_accepted": 1,
       "payment_present_continued": 5,
@@ -53,7 +121,13 @@
     "pagamentos_verificados_onchain": {
       "total": 22,
       "moeda": "USDC na Base",
-      "por_classificacao": [ { "classificacao": "interno", "pagamentos": 22, "pagadores": 3 } ],
+      "por_classificacao": [
+        {
+          "classificacao": "interno",
+          "pagamentos": 22,
+          "pagadores": 3
+        }
+      ],
       "primeiro_utc": "2026-07-13T12:06:04Z",
       "ultimo_utc": "2026-10-22T06:14:25Z",
       "externos_confirmados": 0
@@ -67,14 +141,48 @@
   ],
   "nao_prova": "Não prova procura, receita, adopção nem valor. Não atribui o aumento de origens a nenhuma causa (post, listagem ou outra).",
   "lacunas": [
-    "Os pedidos à via directa do Vercel (/oraculo e /campo desde 25/10) só se vêem 1 hora para trás e não ficam persistidos: é o ponto cego principal desta medida.",
+    "O registo da via directa existe desde 27/10 22:01 UTC (ver via_directa) mas só vê os pedidos às rotas pagas que passam pelo proxy; não guarda origem, por isso não conta clientes distintos nem separa o cliente periódico do resto. A escrita é aberta: já recebeu 112 linhas que não vieram do proxy; autenticá-la exigiria uma variável do Vercel, que é de Unum.",
     "O payment_accepted externo de 02/09 não está explicado (pode ser teste de Unum com origem classificada como externa).",
     "x402_orders tem 23 pedidos pagos (último a 22/10) que esta leitura não cruzou com a classificação das carteiras."
   ],
   "nao_verificado": [
     "se os pedidos à via directa chegam a alguma tabela persistente",
     "a origem dos 130 'browser' e 1955 'human_or_browser' externos: classificação por cabeçalho, não por pessoa",
-    "o que explica o salto de origens distintas a partir de 22/10"
+    "o que explica o salto de origens distintas a partir de 22/10",
+    "quem é o cliente periódico da classe 'outro' (cerca de 8 pedidos por hora)",
+    "quem escreveu as 112 linhas com estado 290 a 299"
   ],
-  "sql_reproduz": "select to_char(created_at,'YYYY-MM-DD') dia, count(*) linhas, count(distinct origem_hash) origens from public.ora_acessos_log where coalesce(interno,false)=false and created_at > now() - interval '14 days' group by 1 order by 1;"
+  "sql_reproduz": "select to_char(created_at,'YYYY-MM-DD') dia, count(*) linhas, count(distinct origem_hash) origens from public.ora_acessos_log where coalesce(interno,false)=false and created_at > now() - interval '14 days' group by 1 order by 1;",
+  "via_directa": {
+    "fonte": "public.ora_pedidos_directos (api/_pedidos.js, livro 1106; escrita aberta, relato não autenticado, sem IP nem origem)",
+    "lido_em_utc": "2026-10-29T07:30:00Z",
+    "primeira_linha_utc": "2026-10-27T22:01:40Z",
+    "ultima_linha_utc": "2026-10-29T06:30:11Z",
+    "linhas_total": 432,
+    "linhas_estado_implausivel_290_a_299": 112,
+    "linhas_plausiveis": 320,
+    "nota_implausiveis": "Estados 290 a 299 não existem no HTTP que o proxy devolve: vieram de quem chamou a RPC aberta (dois surtos, 27/10 22:19 a 22:32 e 28/10 07:16 a 07:21), não do proxy. Duas delas trazem sinal_pagamento. Tratam-se como não fiáveis; a RPC passou a recusar estados fora da lista (migração 20261029080000).",
+    "plausiveis_por_classe": {
+      "outro": 278,
+      "navegador": 17,
+      "robot": 10,
+      "x402_observador": 8,
+      "curl": 6,
+      "node_generico": 1
+    },
+    "plausiveis_por_via": {
+      "vercel-directa": 320,
+      "origem": 0,
+      "snapshot": 0
+    },
+    "periodico": "A classe 'outro' (278 linhas, 402 em /oraculo e /campo) chega cerca de 8 por hora, em pares, sem parar desde 27/10 22:15: é um cliente periódico (cerca de 4 pares por hora). Não se sabe se é um monitor do organismo ou de fora; sem origem guardada não se separa.",
+    "fora_o_periodico": 42,
+    "sinais_de_pagamento_plausiveis": 0,
+    "leitura": [
+      "Na via directa, em cerca de 32 horas, vistos 320 pedidos plausíveis, todos servidos pela via directa e com o 402 da Base.",
+      "Fora do cliente periódico ficam 42 pedidos (navegador 17, robô 10, observador x402 8, curl 6, node 1): tráfego de leitura.",
+      "Nenhum pedido plausível trouxe cabeçalho de pagamento: nenhuma tentativa de pagar vista pela via directa."
+    ],
+    "nao_prova": "Não prova procura, receita nem adopção: um 402 servido a um cliente periódico e a leitores não é compra, e a classe vem do user-agent."
+  }
 }
