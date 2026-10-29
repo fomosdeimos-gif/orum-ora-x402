@@ -1,3 +1,13 @@
+## 29/10/2026 · O registo da via directa já tem dados; escrita aberta endurecida (livro 1109)
+- **Lido (verificado, 29/10 07:30 UTC):** `ora_pedidos_directos` tem 432 linhas desde 27/10 22:01 (o código do PR #186 saiu em produção). 320 são plausíveis, todas `vercel-directa` com 402. 278 são da classe `outro`: um cliente periódico (cerca de 8 por hora, em pares /oraculo e /campo, sem parar); fora esse, 42 pedidos em cerca de 32 horas (navegador 17, robô 10, observador x402 8, curl 6, node 1). **Nenhum pedido plausível trouxe cabeçalho de pagamento.**
+- **Problema dito:** 112 linhas têm `estado_http` entre 290 e 299 (dois surtos: 27/10 22:19 a 22:32 e 28/10 07:16 a 07:21), estados que o proxy não devolve; vieram de quem chamou a RPC aberta, não de `api/_pedidos.js`. Duas dizem ter pagamento. Não se apagam (a tabela só acumula); tratam-se como não fiáveis em `economia/pedidos-aos-servicos.json` (`via_directa`).
+- **Feito:** migração `20261029080000_ora_pedidos_directos_estado_http_plausivel.sql` (aplicada em produção): a RPC recusa estados fora da lista que o proxy devolve. Testado em produção como `anon` com rollback (295 recusado, 402 entra). `pedidos-servicos:verify` com 17 estragos apanhados; `pedidos-directos:verify` com 15.
+- **Por resolver, de Unum:** autenticar a escrita exigiria uma variável do Vercel (segredo partilhado com a base). Sem ela, a escrita fica aberta com tectos (300 por minuto, estados e rotas em lista) e o registo é relato não autenticado.
+- **Falhou, dito:** a sonda diária de 29/10 não correu (410 `sandbox_stopped` outra vez, mesmo a recriar e a correr logo); sem leitura nova de `/oraculo` e `/campo` pela sonda.
+- Não prova procura, receita nem adopção.
+
+---
+
 ## 28/10/2026 · O registo de traços é só de acrescentar, com uma ressalva (livro 1122)
 - **Origem:** captura de um resumo de IA externo que chama "imutável" ao trace log do `sensations-mergulho` (leitura externa, instrumento de comparação, não veredicto).
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (28/10/2026), à proposta concreta de ler `leave_trace` e escrever `trace:verify`.

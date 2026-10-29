@@ -31,6 +31,17 @@ export function validar(m) {
     if (v.pedidos_a_oraculo_ou_campo === 0) e.push('pedidos_a_oraculo_ou_campo a 0 mas há caminhos oraculo/campo lidos');
   }
   if (!(logsTotal >= 0)) e.push('contagem dos registos inválida');
+  const d = m.via_directa;
+  if (d) {
+    const classes = Object.values(d.plausiveis_por_classe ?? {}).reduce((s, n) => s + n, 0);
+    const vias = Object.values(d.plausiveis_por_via ?? {}).reduce((s, n) => s + n, 0);
+    if (d.linhas_total !== d.linhas_estado_implausivel_290_a_299 + d.linhas_plausiveis) e.push('via_directa: total não soma implausíveis e plausíveis');
+    if (classes !== d.linhas_plausiveis) e.push('via_directa: as classes não somam as linhas plausíveis');
+    if (vias !== d.linhas_plausiveis) e.push('via_directa: as vias não somam as linhas plausíveis');
+    if (d.fora_o_periodico !== d.linhas_plausiveis - (d.plausiveis_por_classe?.outro ?? 0)) e.push('via_directa: fora_o_periodico não bate com as classes');
+    if (!/n[aã]o prova procura/i.test(d.nao_prova ?? '')) e.push('via_directa: nao_prova tem de dizer que não prova procura');
+    if (!/n[aã]o fi[aá]ve/i.test(d.nota_implausiveis ?? '')) e.push('via_directa: falta dizer que as linhas implausíveis não são fiáveis');
+  }
   if (!/n[aã]o prova procura/i.test(m.nao_prova ?? '')) e.push('nao_prova tem de dizer que não prova procura');
   if (!Array.isArray(m.lacunas) || m.lacunas.length === 0) e.push('sem lacunas');
   if (!Array.isArray(m.nao_verificado) || m.nao_verificado.length === 0) e.push('sem nao_verificado');
@@ -51,6 +62,11 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop()
   x = clone(); x.leitura.pagamentos_verificados_onchain.total = 23; falha('total não soma', x, 'não somam');
   x = clone(); x.leitura.pagamentos_verificados_onchain.por_classificacao.push({ classificacao: 'externo', pagamentos: 1, pagadores: 1 }); x.leitura.pagamentos_verificados_onchain.total = 23; falha('externo escondido', x, 'externos_confirmados');
   x = clone(); x.leitura.receita_externa_confirmada = 5; falha('receita sem pagador externo', x, 'receita_externa_confirmada');
+  x = clone(); x.via_directa.linhas_total = 999; falha('via directa total', x, 'total não soma');
+  x = clone(); x.via_directa.plausiveis_por_classe.outro = 1; falha('via directa classes', x, 'classes não somam');
+  x = clone(); x.via_directa.fora_o_periodico = 1; falha('via directa fora do periódico', x, 'fora_o_periodico');
+  x = clone(); x.via_directa.nota_implausiveis = 'tudo certo'; falha('via directa implausíveis escondidos', x, 'não são fiáveis');
+  x = clone(); x.via_directa.nao_prova = 'Mostra interesse.'; falha('via directa nao_prova', x, 'via_directa: nao_prova');
   x = clone(); x.leitura.serie_diaria_externa[2].origens = 9999; falha('origens > linhas', x, 'mais origens que linhas');
   x = clone(); [x.leitura.serie_diaria_externa[0], x.leitura.serie_diaria_externa[1]] = [x.leitura.serie_diaria_externa[1], x.leitura.serie_diaria_externa[0]]; falha('série desordenada', x, 'fora de ordem');
   x = clone(); x.fontes[0].limite = 'sem limite'; falha('limite escondido', x, 'limite de 1 hora');

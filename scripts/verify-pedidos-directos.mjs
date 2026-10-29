@@ -84,7 +84,10 @@ function conferirFicheiros(proxyTexto, sql) {
   assert.ok(/require\('\.\/_pedidos'\)/.test(proxyTexto) && /medir\(req, res, alvoPago\)/.test(proxyTexto), 'o proxy tem de ligar medir()');
   const m = (re, msg) => assert.ok(re.test(sql), msg);
   m(/security definer/i, 'a RPC é security definer'); m(/revoke all on table public\.ora_pedidos_directos from anon, authenticated/i, 'sem acesso directo à tabela');
-  m(/enable row level security/i, 'RLS ligado'); m(/interval '1 minute'\) >= 300\b/i, 'tecto de escrita por minuto');
+  m(/enable row level security/i, 'RLS ligado');
+  const endurecida = readFileSync(join(RAIZ, 'supabase/migrations/20261029080000_ora_pedidos_directos_estado_http_plausivel.sql'), 'utf8');
+  assert.ok(/not in \(200, 204[^)]*402[^)]*\)/.test(endurecida), 'a RPC tem de recusar estados fora da lista');
+  assert.ok(!/\b29\d\b/.test(endurecida.replace(/-- .*/g, '')), 'a lista de estados não pode conter 29x'); m(/interval '1 minute'\) >= 300\b/i, 'tecto de escrita por minuto');
   m(/grant execute on function public\.ora_registar_pedido_directo\(jsonb\) to anon/i, 'a RPC é chamável pela chave pública');
   assert.ok(!/\b(ip|user_agent|payer|pagador|origem_hash|endereco)\b\s+(text|inet|varchar)/i.test(sql), 'a tabela não guarda dados pessoais');
   assert.ok(!/grant\s+(select|insert|update|delete)[^;]*ora_pedidos_directos[^;]*to\s+(anon|authenticated)/i.test(sql), 'sem grant de tabela à chave pública');
