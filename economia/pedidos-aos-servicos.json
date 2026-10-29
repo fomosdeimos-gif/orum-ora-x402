@@ -150,7 +150,8 @@
     "a origem dos 130 'browser' e 1955 'human_or_browser' externos: classificação por cabeçalho, não por pessoa",
     "o que explica o salto de origens distintas a partir de 22/10",
     "quem é o cliente periódico da classe 'outro' (cerca de 8 pedidos por hora)",
-    "quem escreveu as 112 linhas com estado 290 a 299"
+    "quem escreveu as 112 linhas com estado 290 a 299",
+    "se o cliente periódico é a ora-mcp-engenharia (user-agent ORUM-Engineering-MCP/5.0), a confirmar nas linhas novas depois do deploy"
   ],
   "sql_reproduz": "select to_char(created_at,'YYYY-MM-DD') dia, count(*) linhas, count(distinct origem_hash) origens from public.ora_acessos_log where coalesce(interno,false)=false and created_at > now() - interval '14 days' group by 1 order by 1;",
   "via_directa": {
@@ -183,6 +184,7 @@
       "Fora do cliente periódico ficam 42 pedidos (navegador 17, robô 10, observador x402 8, curl 6, node 1): tráfego de leitura.",
       "Nenhum pedido plausível trouxe cabeçalho de pagamento: nenhuma tentativa de pagar vista pela via directa."
     ],
-    "nao_prova": "Não prova procura, receita nem adopção: um 402 servido a um cliente periódico e a leitores não é compra, e a classe vem do user-agent."
+    "nao_prova": "Não prova procura, receita nem adopção: um 402 servido a um cliente periódico e a leitores não é compra, e a classe vem do user-agent.",
+    "marca_das_sondas": "Desde a migração 20261029100000 e o próximo deploy, um user-agent com prefixo ORUM- é gravado como classe orum_declarado (a sonda de pagamento usa ORUM-Sonda-Pagamento/1; a função ora-mcp-engenharia já usa ORUM-Engineering-MCP/5.0). É uma declaração não autenticada. Hipótese, não verificada: o cliente periódico da classe 'outro' (402 em /oraculo, /campo, /sedimento e /kernel por verificação do organismo) pode ser a ora-mcp-engenharia; confirma-se quando as linhas novas disserem orum_declarado em vez de outro."
   }
 }

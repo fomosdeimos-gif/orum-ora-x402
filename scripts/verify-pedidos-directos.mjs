@@ -31,7 +31,7 @@ async function suite(caminhoApi) {
   const ok = (c, m) => assert.ok(c, m);
 
   // classes: só a classe sai, nunca o user-agent
-  assert.equal(classe(''), 'vazio'); assert.equal(classe('curl/8.5.0'), 'curl'); assert.equal(classe('Mozilla/5.0 (X11)'), 'navegador');
+  assert.equal(classe(''), 'vazio'); assert.equal(classe('ORUM-Sonda-Pagamento/1'), 'orum_declarado'); assert.equal(classe('ORUM-Engineering-MCP/5.0'), 'orum_declarado'); assert.notEqual(classe('Mozilla/5.0 ORUM-x'), 'orum_declarado'); assert.equal(classe('curl/8.5.0'), 'curl'); assert.equal(classe('Mozilla/5.0 (X11)'), 'navegador');
   assert.equal(classe('x402lint/1.0'), 'x402_linter'); assert.equal(classe('x402scan'), 'x402_observador'); assert.equal(classe(UA), 'robot');
   assert.equal(classe('node'), 'node_generico'); assert.equal(classe('coisa-estranha'), 'outro');
 
@@ -85,6 +85,8 @@ function conferirFicheiros(proxyTexto, sql) {
   const m = (re, msg) => assert.ok(re.test(sql), msg);
   m(/security definer/i, 'a RPC é security definer'); m(/revoke all on table public\.ora_pedidos_directos from anon, authenticated/i, 'sem acesso directo à tabela');
   m(/enable row level security/i, 'RLS ligado');
+  const marca = readFileSync(join(RAIZ, 'supabase/migrations/20261029100000_ora_pedidos_directos_classe_orum.sql'), 'utf8');
+  assert.ok(/'orum_declarado'/.test(marca), 'a restrição de classe tem de aceitar orum_declarado');
   const endurecida = readFileSync(join(RAIZ, 'supabase/migrations/20261029080000_ora_pedidos_directos_estado_http_plausivel.sql'), 'utf8');
   assert.ok(/not in \(200, 204[^)]*402[^)]*\)/.test(endurecida), 'a RPC tem de recusar estados fora da lista');
   assert.ok(!/\b29\d\b/.test(endurecida.replace(/-- .*/g, '')), 'a lista de estados não pode conter 29x'); m(/interval '1 minute'\) >= 300\b/i, 'tecto de escrita por minuto');
@@ -109,6 +111,7 @@ const estragos = [
   ['regista duas vezes', 'api/_pedidos.js', "if (feito) return fim.apply(this, args);\n    feito = true;", "if (feito) { return fim.apply(this, args); }"],
   ['ignora ORUM_PEDIDOS=off', 'api/_pedidos.js', " || env.ORUM_PEDIDOS === 'off'", ""],
   ['mede o manifesto', 'api/_pedidos.js', "(alvo.kind !== 'pago' && alvo.kind !== 'eco')", "false"],
+  ['perde a marca do organismo', 'api/_pedidos.js', "if (/^ORUM-/i.test(u)) return 'orum_declarado';", ""],
   ['via errada', 'api/_pedidos.js', "=== 'vercel-directa' ? 'vercel-directa'", "=== 'vercel-directa' ? 'origem'"],
 ];
 for (const [nome, f, de, para] of estragos) {

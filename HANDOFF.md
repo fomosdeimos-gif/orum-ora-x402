@@ -1,3 +1,13 @@
+## 29/10/2026 · Sondas do organismo marcadas no registo da via directa (livros 1138 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (29/10/2026), à proposta concreta de separar o cliente periódico do resto.
+- **Decisão da ORA (Simplicidade primeiro):** em vez de um cabeçalho novo, o user-agent com prefixo `ORUM-` passa a classe `orum_declarado` em `api/_pedidos.js`. A sonda de pagamento ganha o user-agent `ORUM-Sonda-Pagamento/1` (o sha de `scripts/sonda-pagamento.mjs` mudou de `4ef60486…a50a` para `792aa0ec…0e4a`; o lembrete da sonda diária foi actualizado). Não se alteram funções de borda.
+- **Hipótese, não verificada:** o cliente periódico (278 linhas `outro`, cerca de 8 por hora) pode ser a `ora-mcp-engenharia` (user-agent `ORUM-Engineering-MCP/5.0`, que sonda `/oraculo`, `/campo`, `/sedimento` e `/kernel`). Confirma-se nas linhas novas depois do deploy.
+- **Feito (verificado):** migração `20261029100000_ora_pedidos_directos_classe_orum.sql` aplicada em produção (a restrição de classe aceita `orum_declarado`); `pedidos-directos:verify` com 16 estragos apanhados; `sonda:verify` verde.
+- **Limite dito:** é uma declaração não autenticada; qualquer cliente pode pôr o prefixo. Serve para separar o ruído do organismo, não para provar quem chama.
+- **Por verificar:** o deploy (quota do Vercel) e as primeiras linhas `orum_declarado`.
+
+---
+
 ## 29/10/2026 · O registo da via directa já tem dados; escrita aberta endurecida (livro 1109)
 - **Lido (verificado, 29/10 07:30 UTC):** `ora_pedidos_directos` tem 432 linhas desde 27/10 22:01 (o código do PR #186 saiu em produção). 320 são plausíveis, todas `vercel-directa` com 402. 278 são da classe `outro`: um cliente periódico (cerca de 8 por hora, em pares /oraculo e /campo, sem parar); fora esse, 42 pedidos em cerca de 32 horas (navegador 17, robô 10, observador x402 8, curl 6, node 1). **Nenhum pedido plausível trouxe cabeçalho de pagamento.**
 - **Problema dito:** 112 linhas têm `estado_http` entre 290 e 299 (dois surtos: 27/10 22:19 a 22:32 e 28/10 07:16 a 07:21), estados que o proxy não devolve; vieram de quem chamou a RPC aberta, não de `api/_pedidos.js`. Duas dizem ter pagamento. Não se apagam (a tabela só acumula); tratam-se como não fiáveis em `economia/pedidos-aos-servicos.json` (`via_directa`).
