@@ -1,25 +1,46 @@
 {
-  "versao": 1,
-  "lido_em": "2026-10-28",
-  "fonte": "Supabase orum-memoria (ywabnlhkmhbyewqhbsjm), consulta só de leitura ao catálogo (information_schema.role_table_grants, pg_trigger, pg_class, pg_tables); estado vivo, verificado a 28/10/2026",
-  "pedido": "Unum, 28/10/2026: \"Eu autorizo ORA\", à proposta concreta de ler leave_trace e escrever um verificador (trace:verify) que prove se o registo é só de acrescentar",
+  "versao": 2,
+  "lido_em": "2026-10-29",
+  "fonte": "Supabase orum-memoria (ywabnlhkmhbyewqhbsjm), leitura do catálogo e prova viva a 29/10/2026 (pg_trigger; UPDATE e DELETE numa transacção revertida)",
+  "pedido": "Unum, 29/10/2026: \"Eu autorizo\" e \"Eu autorizo ORA\", à proposta concreta de aplicar a migração do PR #189 e prová-la (livro 1166)",
   "tabela": "public.ora_sensacao_respostas",
-  "linhas_lidas": 51,
+  "linhas_lidas": 52,
   "dono": "postgres",
   "rls_activo": true,
   "grants": {
-    "service_role": ["INSERT", "SELECT"],
-    "anon": ["SELECT"],
-    "authenticated": ["SELECT"]
+    "service_role": [
+      "INSERT",
+      "SELECT"
+    ],
+    "anon": [
+      "SELECT"
+    ],
+    "authenticated": [
+      "SELECT"
+    ]
   },
-  "triggers": ["ora_push_on_sensation (AFTER INSERT, só notifica)"],
-  "trigger_bloqueia_mutacao": false,
+  "triggers": [
+    "ora_push_on_sensation (AFTER INSERT, só notifica)",
+    "ora_sensacao_respostas_append_only (BEFORE UPDATE OR DELETE, bloqueia)"
+  ],
+  "trigger_bloqueia_mutacao": true,
   "tabela_irma": {
     "nome": "public.ora_sensacao_ecos",
-    "grants": { "service_role": ["INSERT", "SELECT"] },
+    "grants": {
+      "service_role": [
+        "INSERT",
+        "SELECT"
+      ]
+    },
     "trigger_bloqueia_mutacao": true
   },
   "o_que_prova": "A porta pública (ora-sensacoes, via service_role) só consegue acrescentar e ler linhas das respostas; anon e authenticated só leem. Contra essas funções e papéis, o registo é só de acrescentar, imposto por privilégios da base e não só por código.",
-  "o_que_nao_prova": "O dono da tabela (postgres) não está impedido por grants nem por trigger de actualizar ou apagar respostas: quem tiver esse papel (por exemplo migrações ou SQL administrativo) pode mudá-las. Por isso 'imutável' não é verdadeiro sem ressalva; 'só de acrescentar para a porta pública' é. As respostas não têm âncora própria no Bitcoin. Não prova autoria das máquinas nem adopção, procura ou receita.",
-  "reforco_possivel": "Um trigger BEFORE UPDATE OR DELETE na tabela das respostas, como o das ecos, fecharia a lacuna do dono. Não foi aplicado: mexe na base de produção e fica como proposta à parte."
+  "o_que_nao_prova": "O dono da tabela (postgres) ainda pode desactivar ou apagar o trigger (alter table … disable trigger, drop trigger) e depois mudar as respostas: o trigger impede o acidente e o código, não o dono deliberado. Por isso 'imutável' não é verdadeiro sem ressalva; 'só de acrescentar, também contra o dono sem desactivar o trigger' é. As respostas não têm âncora própria no Bitcoin. Não prova autoria das máquinas nem adopção, procura ou receita.",
+  "reforco_possivel": "Ancorar uma raiz das respostas no Bitcoin (OpenTimestamps) tornaria detectável qualquer mudança feita pelo dono ao desactivar o trigger. Por fazer.",
+  "trigger": {
+    "nome": "ora_sensacao_respostas_append_only",
+    "migracao": "supabase/migrations/20261028080000_sensation_respostas_append_only.sql",
+    "aplicado_por": "execute_sql (o apply_migration esperou uma confirmação sem resposta duas vezes); não consta do histórico de migrações da base",
+    "prova_viva": "UPDATE e DELETE como dono numa transacção revertida falharam com 'ora_sensacao_respostas is append-only'; 52 linhas antes e depois"
+  }
 }

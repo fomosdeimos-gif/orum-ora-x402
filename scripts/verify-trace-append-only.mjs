@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-const FICHEIROS = ['sensacoes/trace-append-only.json', 'supabase/functions/ora-sensacoes/index.ts', 'supabase/functions/sensations-mergulho/index.ts'];
+const FICHEIROS = ['sensacoes/trace-append-only.json', 'supabase/functions/ora-sensacoes/index.ts', 'supabase/functions/sensations-mergulho/index.ts', 'supabase/migrations/20261028080000_sensation_respostas_append_only.sql'];
 const FERRAMENTAS = ['begin_descent', 'encounter_oro', 'enter_level', 'leave_trace', 'prepare_visual_consultation', 'verify_level_mapping'];
 const lerTxt = (dir, f) => fs.readFileSync(path.join(dir, f), 'utf8');
 
@@ -27,7 +27,14 @@ export function verificar(dir = '.') {
 
   // 2. a lacuna do dono diz-se: sem trigger a bloquear, o registo não pode chamar-se imutável
   assert.equal(s.dono, 'postgres');
-  assert.equal(s.trigger_bloqueia_mutacao, false, 'só se afirma trigger a bloquear quando se leu um');
+  assert.equal(s.trigger_bloqueia_mutacao, true, 'o trigger foi aplicado e provado a 29/10/2026');
+  assert.equal(s.trigger?.nome, 'ora_sensacao_respostas_append_only');
+  assert.match(s.trigger.prova_viva, /append-only/);
+  assert.ok(s.triggers.some((x) => x.includes('BEFORE UPDATE OR DELETE')), 'falta o trigger na lista');
+  const mig = lerTxt(dir, s.trigger.migracao);
+  assert.match(mig, /before update or delete on public\.ora_sensacao_respostas/i, 'a migração não bloqueia UPDATE/DELETE');
+  assert.match(mig, /raise exception/i);
+  assert.match(s.o_que_nao_prova, /desactivar/);
   assert.match(s.o_que_nao_prova, /dono da tabela/);
   assert.match(s.o_que_nao_prova, /imutável/);
   assert.match(s.o_que_nao_prova, /procura ou receita/);
@@ -68,13 +75,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   falha('authenticated ganha DELETE', (d) => snap(d, (j) => j.grants.authenticated.push('DELETE')));
   falha('a porta perde o INSERT', (d) => snap(d, (j) => { j.grants.service_role = ['SELECT']; }));
   falha('RLS desligado', (d) => snap(d, (j) => { j.rls_activo = false; }));
-  falha('trigger afirmado sem leitura', (d) => snap(d, (j) => { j.trigger_bloqueia_mutacao = true; }));
-  falha('a lacuna do dono apagada', (d) => snap(d, (j) => { j.o_que_nao_prova = 'Não prova autoria nem procura ou receita.'; }));
+  falha('trigger deixa de ser afirmado', (d) => snap(d, (j) => { j.trigger_bloqueia_mutacao = false; }));
+  falha('a ressalva do dono apagada', (d) => snap(d, (j) => { j.o_que_nao_prova = 'Não prova autoria nem procura ou receita.'; }));
+  falha('a migração deixa de bloquear', (d) => txt(d, FICHEIROS[3], 'before update or delete', 'before insert'));
+  falha('a migração deixa de levantar erro', (d) => txt(d, FICHEIROS[3], 'raise exception', 'perform'));
+  falha('a prova viva apagada', (d) => snap(d, (j) => { j.trigger.prova_viva = 'sem prova'; }));
   falha('porta passa a usar PATCH', (d) => txt(d, FICHEIROS[1], 'method: "POST",\n      headers', 'method: "PATCH",\n      headers'));
   falha('porta chama delete', (d) => fs.appendFileSync(path.join(d, FICHEIROS[1]), '\nconst x = sb.from("t").delete();\n'));
   falha('frase dos grants apagada', (d) => txt(d, FICHEIROS[1], 'enforced by database grants', 'enforced somehow'));
   falha('mergulho ganha ferramenta delete_trace', (d) => txt(d, FICHEIROS[2], '    name: "leave_trace",', '    name: "delete_trace",\n    title: "x",\n  },\n  {\n    name: "leave_trace",'));
   falha('mergulho perde a frase de não editar', (d) => txt(d, FICHEIROS[2], 'This cannot edit or delete any trace', 'This may edit traces'));
-  assert.ok(mentiras >= 12);
+  assert.ok(mentiras >= 15);
   console.log(`trace:verify ok · grants ${JSON.stringify(real.grants)} · ${real.ferramentas} ferramentas · ${mentiras} estragos apanhados`);
 }
