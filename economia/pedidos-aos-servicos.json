@@ -185,6 +185,19 @@
       "Nenhum pedido plausível trouxe cabeçalho de pagamento: nenhuma tentativa de pagar vista pela via directa."
     ],
     "nao_prova": "Não prova procura, receita nem adopção: um 402 servido a um cliente periódico e a leitores não é compra, e a classe vem do user-agent.",
-    "marca_das_sondas": "Desde a migração 20261029100000 e o próximo deploy, um user-agent com prefixo ORUM- é gravado como classe orum_declarado (a sonda de pagamento usa ORUM-Sonda-Pagamento/1; a função ora-mcp-engenharia já usa ORUM-Engineering-MCP/5.0). É uma declaração não autenticada. Hipótese, não verificada: o cliente periódico da classe 'outro' (402 em /oraculo, /campo, /sedimento e /kernel por verificação do organismo) pode ser a ora-mcp-engenharia; confirma-se quando as linhas novas disserem orum_declarado em vez de outro."
+    "marca_das_sondas": {
+      "lido_em_utc": "2026-10-29T07:10:00Z",
+      "estado": "em produção, sem linhas orum_declarado ainda",
+      "verificado": [
+        "deployment dpl_2YFyzCfK… READY em target production com githubCommitSha 547ae928… (conector Vercel)",
+        "402 vivo de /oraculo lido pelo conector: via vercel-directa, payTo operacional 0x89460d9e…3584, Bazaar e oferta BTC presentes",
+        "a linha das 06:57:14Z (classe outro, 402) é o meu próprio pedido pelo conector, cuja identificação não é ORUM-*"
+      ],
+      "nao_verificado": [
+        "que o código de 547ae92 já tenha escrito alguma linha (nenhuma sonda ORUM-* correu depois do deploy)",
+        "se parte das 281 linhas 'outro' 402 são leituras minhas pelo conector Vercel, e não só o cliente periódico"
+      ],
+      "proxima_leitura": "depois da sonda diária (10:41 Lisboa): contar linhas classe orum_declarado em public.ora_pedidos_directos"
+    }
   }
 }
