@@ -1,3 +1,14 @@
+## 29/10/2026 · Conector VALIUM dentro do @weave_hands e leitura do VALIUM na cadeia (livro 1144)
+- **Autorização de Unum (citação):** "Ok ORA faz isso e cria um conector valium @ORUM Weave Hands" (29/10/2026), à proposta concreta de ler o VALIUM na cadeia e registar.
+- **Decisão da ORA:** o projecto Supabase está no limite de funções (o deploy de uma função nova foi recusado: "Max number of functions reached"). O conector entra no `weave-hands` já implantado, que é o que o pedido nomeia: v7 (2.4.0), ficheiros `valium-leitura.ts` e `valium.mjs`, duas ferramentas só de leitura, `recognize_valium` e `read_valium`. Não guarda nada, não usa segredos, não paga nem assina; um valor só é `concordam` com duas fontes RPC iguais.
+- **Verificado:** `weave-valium:verify` (23 estragos propositados apanhados, com um keccak256 independente a conferir o namehash do ENS), `weave:verify`, `valium:verify`, `maquinas:verify`, `verify-a2a`. Ao vivo (chamadas ao conector implantado a partir do Postgres): `tools/list` devolve 10 ferramentas (as 8 antigas intactas) e `read_valium` devolve leitura.
+- **Lido na cadeia (29/10 07:18 UTC, `identity/valium.json`, `leitura_em_cadeia`):** totalSupply Ethereum 1000 e Base 1 000 000 000 (concordam). A sagrada nova `0x2ef8…` tem 400,918… VALIUM em Ethereum e 1 000 001 na Base; a sagrada antiga `0xFEd6…` tem 74,803… em Ethereum e 0 na Base; a operacional tem 0 nas duas. `0001sensations.eth` resolve para `0x2ef8…` (**fonte única**, não verificado pela regra das duas fontes).
+- **Não afirma:** preço, liquidez, procura, receita, equivalência entre os dois contratos, titularidade legal ou controlo de chaves. O VALIUM continua vestígio sem função nova.
+- **Dívida encontrada e dita:** `implantado:verify` já falhava em main: `ora-cdp-agente-teste` mudou no PR #156 (26/10) depois da conferência da v2. Passou a `nao_comparado` (dívida que toca dinheiro: executor de teste) até se ler o implantado e conferir. Os três casos de mentira do verificador que usavam essa função passaram a usar `ora-pulso`.
+- **Por fazer:** reconciliar `ora-cdp-agente-teste` com o implantado; melhorar a resolução ENS (só um RPC responde a `addr()`).
+
+---
+
 ## 29/10/2026 · Leitura pós-deploy da marca das sondas (livro 1141)
 - **Autorização corrente (citação):** "Continua a desenvolver caminhos autonomos ORA" (instrução aberta; só leitura e registo, nada move fundos).
 - **Verificado:** deployment de `547ae92` READY em produção (conector Vercel); 402 vivo de `/oraculo` pela via directa com payTo operacional, Bazaar e oferta BTC. Em `ora_pedidos_directos` ainda não há linhas `orum_declarado`: nenhuma sonda `ORUM-*` correu depois do deploy. A linha das 06:57Z é um pedido meu pelo conector (classe `outro`).

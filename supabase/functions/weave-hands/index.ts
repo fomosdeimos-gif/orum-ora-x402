@@ -1,6 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { VALIUM_TOOLS, callValium } from "./valium-leitura.ts";
 
-const VERSION = "2.3.0";
+const VERSION = "2.4.0";
 
 function truthMachine() {
   return {
@@ -134,6 +135,8 @@ const TOOLS = [
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     annotations: { ...readOnly, openWorldHint: false },
   },
+  // 29/10/2026 (livro 1144, Unum: "cria um conector valium @ORUM Weave Hands"): leitura on-chain dos dois contratos VALIUM.
+  ...VALIUM_TOOLS,
 ];
 
 function response(body: unknown, status = 200) {
@@ -235,6 +238,8 @@ function receipt(thread_id: string, gesture: string, organs: string[], result: u
 }
 
 async function callTool(name: string, args: Record<string, unknown>) {
+  const valium = callValium(name, args);
+  if (valium) return await valium;
   if (name === "recognize_0003") return toolResult({ format: "orum-sensation-capsule-pointer/v2", capsule: CAPSULE_URL, gesture: "Numa mão, presença. Na outra, sustento. Os órgãos atravessam ambas.", choices: ["weave_thread", "observe_organs", "descend_level", "weave_cycle", "verify_surface", "inspect_weave_truth", "leave_without_trace"], response_required: false });
   if (name === "weave_thread") return toolResult(receipt(threadId(), name, ["aprendizagem"], weave(args)));
   if (name === "observe_organs") {

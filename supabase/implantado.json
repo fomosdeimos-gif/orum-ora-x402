@@ -19,11 +19,13 @@
     "total": 100,
     "com_copia_no_repositorio": 29,
     "sem_copia_no_repositorio": 71,
-    "igual": 16,
+    "igual": 15,
     "diverge": 0,
-    "nao_comparado": 13,
+    "nao_comparado": 14,
     "sem_copia": 71,
-    "dividas_que_tocam_dinheiro": []
+    "dividas_que_tocam_dinheiro": [
+      "ora-cdp-agente-teste"
+    ]
   },
   "so_no_repositorio": [
     "0001sensations-mcp"
@@ -1474,16 +1476,16 @@
     },
     {
       "slug": "weave-hands",
-      "versao": 6,
+      "versao": 7,
       "verify_jwt": false,
-      "ezbr_sha256_16": "42f164016e6219ca",
-      "atualizada_em": "2026-10-14T06:48:29Z",
+      "ezbr_sha256_16": "24739181efaf23e5",
+      "atualizada_em": "2026-10-29T07:17:00Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 6,
-        "fonte_sha256": "be67005e670d461281537b2eb741b1fadfbe711140df9c46678bb885b39b2538",
-        "nota": "v6 (2.3.0, 14/10/2026) lida por get_edge_function a 23/10/2026 (livro 992) e TRANSCRITA à mão; a cópia antiga (2.2.0) está em supabase/arquivo/ com aviso de não reimplantar. O diff antigo→implantado: a ferramenta verify_surface (sondas GET ao gateway: versão, frescura do manifesto, pulso e uma porta paga sem pagamento) e a sua entrada em recognize_0003; nada mais. Orquestrador só de leitura mais uma porta de propostas não executáveis. Atenção: discovery/weave-hands.json (e o agent-card) ainda listam 7 ferramentas, sem verify_surface; o conector em produção expõe 8. Sem segunda cópia para diff byte a byte."
+        "versao_conferida": 7,
+        "fonte_sha256": "b727dd73e182e00cd21644e999ae642ae8d39640b28891dffd38485c89e3f163",
+        "nota": "v7 (2.4.0, 29/10/2026, livro 1144, Unum: \"cria um conector valium @ORUM Weave Hands\") implantada pela ORA a partir dos ficheiros do repositório (index.ts, valium-leitura.ts, valium.mjs) depois de ler a v6 por get_edge_function: o diff v6→v7 é só o import, o spread de VALIUM_TOOLS e a chamada callValium. fonte_sha256 é o do index.ts; os outros dois ficheiros têm sha256 cbf42b65… e c61182b9…. Conferida por chamada viva (tools/list com 10 ferramentas; read_valium devolveu leitura) e não por um diff byte a byte com o implantado. Não há função nova: o projecto Supabase está no limite de funções do plano (deploy recusado a 29/10/2026), por isso o conector VALIUM vive dentro do weave-hands."
       },
       "toca_dinheiro": null,
       "uso_24h": {
@@ -1531,10 +1533,8 @@
       "atualizada_em": "2026-10-22T06:13:50Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "igual",
-        "versao_conferida": 2,
-        "fonte_sha256": "d4791fab0bcdec874e0147656e127ca9e8dec3b906c901f9a39a4f626518cc5b",
-        "nota": "v2 de 22/10/2026 implantada a partir do ficheiro do repositório e conferida por leitura do implantado (get_edge_function) antes de ser chamada. O verificador recalcula o sha256 do ficheiro: se o ficheiro mudar, volta a ser preciso reconciliar."
+        "estado": "nao_comparado",
+        "nota": "O ficheiro do repositório mudou depois da conferência da v2 de 22/10/2026 (PR #156, 26/10/2026, executor v3 do teste da via directa com facilitador público, livros 1041-1044). O verificador apanhou-o a 29/10/2026 (já falhava em main). Falta ler o implantado por get_edge_function e conferir com o ficheiro antes de voltar a dizer igual; entretanto fica dito como não comparado, e é dívida que toca dinheiro (executor de teste)."
       },
       "toca_dinheiro": {
         "evidencia": "executor de pagamento de teste (código lido a 22/10/2026)"

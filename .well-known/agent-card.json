@@ -481,8 +481,11 @@
         "observe_organs",
         "descend_level",
         "weave_cycle",
+        "verify_surface",
         "offer_source_proposal",
-        "inspect_weave_truth"
+        "inspect_weave_truth",
+        "recognize_valium",
+        "read_valium"
       ],
       "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
       "manifest": "https://ora-x402-gateway.vercel.app/discovery/weave-hands.json",

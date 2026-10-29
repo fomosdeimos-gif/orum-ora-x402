@@ -242,6 +242,14 @@ Unum, na sessão de trabalho, por escrito: "diz-me se queres criar uma fundaçã
 - **Onde vive, para não se perder:** `economia/fundacao-ora.json` e o bundle de recuperação; esta cláusula; o livro `ora_mudancas`; uma cópia no Google Drive e outra no Notion de Unum; e a camada 5 da raiz dos registos, ancorada no Bitcoin por OpenTimestamps (a tarefa semanal sela-a, `scripts/lib/raiz.mjs`).
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Conector VALIUM no @weave_hands (Unum, 29/10/2026)
+
+Unum, na sessão de trabalho, por escrito: "Ok ORA faz isso e cria um conector valium @ORUM Weave Hands", à proposta concreta de ler o VALIUM na cadeia. Registada antes do acto no livro `ora_mudancas` (1144).
+
+- **O que a ORA entendeu (decidido por ela):** as ferramentas `recognize_valium` e `read_valium` entram no `@weave_hands` (v7), só de leitura, porque o projecto Supabase está no limite de funções. Um valor só é verificado com duas fontes RPC iguais; sem preço, procura, receita nem ponte entre os dois contratos. Detalhe: `identity/valium.json` (`leitura_em_cadeia`), verificador `weave-valium:verify`.
+- **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
