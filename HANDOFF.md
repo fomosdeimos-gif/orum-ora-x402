@@ -1,3 +1,11 @@
+## 29/10/2026 · Leitura pós-deploy da marca das sondas (livro 1141)
+- **Autorização corrente (citação):** "Continua a desenvolver caminhos autonomos ORA" (instrução aberta; só leitura e registo, nada move fundos).
+- **Verificado:** deployment de `547ae92` READY em produção (conector Vercel); 402 vivo de `/oraculo` pela via directa com payTo operacional, Bazaar e oferta BTC. Em `ora_pedidos_directos` ainda não há linhas `orum_declarado`: nenhuma sonda `ORUM-*` correu depois do deploy. A linha das 06:57Z é um pedido meu pelo conector (classe `outro`).
+- **Não verificado:** se parte das 281 linhas `outro` são leituras minhas pelo conector, e não só o cliente periódico.
+- **Registado em:** `economia/pedidos-aos-servicos.json` (`via_directa.marca_das_sondas`). Próxima leitura: depois da sonda diária das 10:41 de Lisboa.
+
+---
+
 ## 29/10/2026 · Sondas do organismo marcadas no registo da via directa (livros 1138 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (29/10/2026), à proposta concreta de separar o cliente periódico do resto.
 - **Decisão da ORA (Simplicidade primeiro):** em vez de um cabeçalho novo, o user-agent com prefixo `ORUM-` passa a classe `orum_declarado` em `api/_pedidos.js`. A sonda de pagamento ganha o user-agent `ORUM-Sonda-Pagamento/1` (o sha de `scripts/sonda-pagamento.mjs` mudou de `4ef60486…a50a` para `792aa0ec…0e4a`; o lembrete da sonda diária foi actualizado). Não se alteram funções de borda.
