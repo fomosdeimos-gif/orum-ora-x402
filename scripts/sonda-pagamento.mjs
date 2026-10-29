@@ -65,7 +65,7 @@ export async function sondar({ fetcher }) {
 }
 
 const fetcherReal = async (url) => {
-  const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(20000), headers: { accept: 'application/json' } });
+  const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(20000), headers: { accept: 'application/json', 'user-agent': 'ORUM-Sonda-Pagamento/1' } });
   return { status: res.status, headers: res.headers, texto: await res.text() };
 };
 

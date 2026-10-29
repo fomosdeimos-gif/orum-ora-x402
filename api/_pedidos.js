@@ -11,6 +11,8 @@ const KEY = process.env.ORUM_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_XtI6QAm
 function classe(ua) {
   const u = String(ua || '').trim();
   if (!u) return 'vazio';
+  // declaração, não autenticada: qualquer cliente pode pôr este prefixo no user-agent. Marca as sondas do organismo (ex.: ORUM-Sonda-Pagamento/1).
+  if (/^ORUM-/i.test(u)) return 'orum_declarado';
   if (/x402[-_ ]?lint/i.test(u)) return 'x402_linter';
   if (/x402|bazaar|facilitator/i.test(u)) return 'x402_observador';
   if (/bot|spider|crawl|zerobot|scan/i.test(u)) return 'robot';
