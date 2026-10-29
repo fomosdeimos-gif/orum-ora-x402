@@ -79,9 +79,9 @@ const falha = (nome, reg, fs = fsReal) => { assert.ok(verificar(reg, fs).length 
 { const r = clone(); get(r, 'ora-oraculo').repo = false; falha('diz que não há cópia quando há', r); }
 { const r = clone(); get(r, 'ora-x402').repo = true; get(r, 'pensamento').repo = true; falha('diz que há cópia quando não há', r); }
 { const r = clone(); get(r, 'ora-cdp-teste-oraculo').reconciliacao = { estado: 'igual', versao_conferida: 3, fonte_sha256: 'a'.repeat(64) }; falha('promove a igual sem prova (sha errado)', r); }
-{ const r = clone(); get(r, 'ora-cdp-agente-teste').versao = 3; falha('igual com a versão implantada mudada', r); }
-{ const r = clone(); get(r, 'ora-cdp-agente-teste').reconciliacao.fonte_sha256 = 'b'.repeat(64); falha('sha da conferência adulterado', r); }
-{ const fs = { ...fsReal, sha: (s) => (s === 'ora-cdp-agente-teste' ? 'c'.repeat(64) : fsReal.sha(s)) }; falha('ficheiro do repositório mudou depois de conferir', clone(), fs); }
+{ const r = clone(); get(r, 'ora-pulso').versao = 99; falha('igual com a versão implantada mudada', r); }
+{ const r = clone(); get(r, 'ora-pulso').reconciliacao.fonte_sha256 = 'b'.repeat(64); falha('sha da conferência adulterado', r); }
+{ const fs = { ...fsReal, sha: (s) => (s === 'ora-pulso' ? 'c'.repeat(64) : fsReal.sha(s)) }; falha('ficheiro do repositório mudou depois de conferir', clone(), fs); }
 { const r = clone(); get(r, 'ora-cdp-teste-oraculo').reconciliacao = { estado: 'diverge', nota: 'x' }; falha('diverge sem prova escrita', r); }
 { const r = clone(); get(r, 'pensamento').reconciliacao = { estado: 'nao_comparado' }; falha('nao_comparado sem cópia', r); }
 { const r = clone(); get(r, 'ora-licenca').reconciliacao = { estado: 'sem_copia' }; falha('sem_copia com cópia no repositório', r); }

@@ -26,5 +26,75 @@
     "Sem ponte, migração ou equivalência económica entre os dois contratos.",
     "Os pools valium/WETH têm liquidez residual (cerca de $20 no total, volume na casa dos cêntimos); a capitalização mostrada por agregadores é preço × oferta e não prova mercado líquido.",
     "Nenhuma licença, preço, acesso ou pagamento da ORUM depende do VALIUM; esses fluxos usam USDC com x402."
-  ]
+  ],
+  "leitura_em_cadeia": {
+    "lido_em_utc": "2026-10-29T07:18:47Z",
+    "como": "ferramenta read_valium do conector @weave_hands (v7, livro 1144); RPC públicos; 'concordam' = duas fontes iguais",
+    "total_supply": {
+      "ethereum": {
+        "valor": "1000",
+        "estado": "concordam"
+      },
+      "base": {
+        "valor": "1000000000",
+        "estado": "concordam"
+      }
+    },
+    "saldos": [
+      {
+        "cadeia": "ethereum",
+        "carteira": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "papel": "sagrada_antiga",
+        "valor": "74.80374022162198805",
+        "estado": "concordam"
+      },
+      {
+        "cadeia": "ethereum",
+        "carteira": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+        "papel": "sagrada_nova_metamask",
+        "valor": "400.918403296079442626",
+        "estado": "concordam"
+      },
+      {
+        "cadeia": "ethereum",
+        "carteira": "0x89460d9e0590559e63860197dfe2ac648A753584",
+        "papel": "operacional",
+        "valor": "0",
+        "estado": "concordam"
+      },
+      {
+        "cadeia": "base",
+        "carteira": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+        "papel": "sagrada_nova_metamask",
+        "valor": "1000001",
+        "estado": "concordam"
+      },
+      {
+        "cadeia": "base",
+        "carteira": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+        "papel": "sagrada_antiga",
+        "valor": "0",
+        "estado": "concordam"
+      },
+      {
+        "cadeia": "base",
+        "carteira": "0x89460d9e0590559e63860197dfe2ac648A753584",
+        "papel": "operacional",
+        "valor": "0",
+        "estado": "concordam"
+      }
+    ],
+    "ens": {
+      "nome": "0001sensations.eth",
+      "resolve_para": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+      "estado": "fonte_unica",
+      "nota": "resolvido por uma só fonte na chamada addr() da função implantada (as outras fontes RPC falharam); na leitura manual por SQL o resolver devolveu 0x4976fb03… e addr() o mesmo endereço, também por um só RPC (publicnode). Não é 'verificado' pela regra das duas fontes."
+    },
+    "nao_afirma": [
+      "preço, liquidez ou valor de mercado",
+      "procura, adopção ou receita",
+      "equivalência entre os dois contratos",
+      "titularidade legal ou controlo da chave de qualquer carteira"
+    ]
+  }
 }

@@ -14,8 +14,11 @@
       "observe_organs",
       "descend_level",
       "weave_cycle",
+      "verify_surface",
       "offer_source_proposal",
-      "inspect_weave_truth"
+      "inspect_weave_truth",
+      "recognize_valium",
+      "read_valium"
     ]
   },
   "sources": {
@@ -64,5 +67,19 @@
     "content_max_length": 16384,
     "execution": "separate_authorized_path",
     "schema_discovery": "MCP tools/list"
+  },
+  "valium": {
+    "tools": [
+      "recognize_valium",
+      "read_valium"
+    ],
+    "registry": "https://ora-x402-gateway.vercel.app/identity/valium.json",
+    "reads": "totalSupply, balanceOf das carteiras do organismo (e de um endereço pedido) nos dois contratos VALIUM, e para onde resolve 0001sensations.eth, por JSON-RPC público; um valor só é verificado quando duas fontes RPC independentes devolvem o mesmo",
+    "stores_anything": false,
+    "uses_credentials": false,
+    "pays_or_signs": false,
+    "proves_market_value": false,
+    "bridges_the_two_contracts": false,
+    "dependencies": "RPC públicos (Ethereum: publicnode, cloudflare, 1rpc, llamarpc; Base: mainnet.base.org, publicnode, 1rpc, llamarpc) e alojamento Supabase Edge; com menos de duas fontes a concordar o valor sai fonte_unica ou sem_leitura, nunca verificado"
   }
 }

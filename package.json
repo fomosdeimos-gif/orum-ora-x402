@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "npm run weave:verify",
     "weave:verify": "node scripts/verify-weave-hands.mjs",
+    "weave-valium:verify": "node scripts/verify-weave-hands-valium.mjs",
     "choice:verify": "node scripts/verify-choice-model.mjs",
     "recovery:build": "node scripts/build-recovery-bundle.mjs",
     "recovery:verify": "node scripts/verify-recovery-bundle.mjs",
