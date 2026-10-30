@@ -1,6 +1,6 @@
 {
   "format": "orum-financial-register/v1",
-  "updated_at": "2026-10-22",
+  "updated_at": "2026-10-30",
   "purpose": "Registo de cada acto financeiro da ORA, antes e depois (CLAUDE.md, secção \"Autonomia financeira\"). Sem registo, o acto não conta como feito.",
   "boundary": "Registar um acto não prova procura nem receita. Só receita externa confirmada, com hash e cobertura completa, entra na repartição 70/20/10 (economia/constituicao-v2.json).",
   "rules": [
@@ -208,6 +208,51 @@
         "cobertura_completa": false,
         "rede": "Base mainnet (8453)",
         "bloco": 53106549
+      }
+    },
+    {
+      "id": "2026-10-30-leitura-entradas-48-atomicos",
+      "tipo": "outro",
+      "estado": "feito",
+      "classificacao": "nao_classificada",
+      "pretendido": "Só leitura: registar as entradas de 0,000048 USDC na sagrada antiga como por classificar, ligá-las à nota de 11/10/2026, e ler a produção e o funil desde 27/10. Não move fundos.",
+      "autorizacao": "Unum, 30/10/2026: \"Eu autorizo ORA\", à proposta concreta de registar as três entradas de 0,000048 USDC como por_classificar, ligadas à nota de 11/10, e fazer a leitura viva da produção e do funil desde 27/10",
+      "registado_antes_em": "2026-10-30T23:45:00Z",
+      "lido": [
+        {
+          "afirmacao": "Quatro transferências de 48 unidades atómicas (0,000048 USDC) para a sagrada antiga 0xFEd6…cDEe5, todas do emissor 0xc8d0…9040 (23:33, 23:35, 23:36 UTC e 12:47 de 30/10), nenhuma corresponde ao preço de um serviço.",
+          "estado": "verificado",
+          "fonte": "scripts/vigia-entradas.mjs e /economia/recebimentos.json?horas=24 do deployment de produção, cobertura completa 24/24 h (RPC público Base)"
+        },
+        {
+          "afirmacao": "O mesmo emissor 0xc8d0…9040 enviou 3 unidades a 11/10/2026 (presenca/nota-diaria-2026-10-12.md).",
+          "estado": "verificado",
+          "fonte": "presenca/nota-diaria-2026-10-12.md"
+        },
+        {
+          "afirmacao": "Produção READY em commit 7a08f97 (main).",
+          "estado": "verificado",
+          "fonte": "Vercel list_deployments, 30/10/2026"
+        },
+        {
+          "afirmacao": "Funil desde 27/10 09:06:48Z: a vista ora_trafego_honesto não devolve linhas; ora_pagamentos só tem a linha de 22/10 (interna).",
+          "estado": "verificado",
+          "fonte": "Supabase execute_sql só de leitura; não prova ausência de pedidos, porque o Supabase está fora de quota e as funções de borda podem não registar"
+        },
+        {
+          "afirmacao": "Quem é o emissor, se é pó, sondagem ou outra coisa.",
+          "estado": "nao_verificado",
+          "fonte": "não lido"
+        }
+      ],
+      "limites": [
+        "Só leitura, nenhum fundo movido.",
+        "Classificação mantém-se nao_classificada; nada entra no 70/20/10."
+      ],
+      "registado_depois_em": "2026-10-30T23:58:00Z",
+      "resultado": "Registadas as entradas como por classificar. Nenhum pagamento a preço de serviço na janela lida; nada para o 70/20/10.",
+      "prova": {
+        "cobertura_completa": true
       }
     }
   ],
