@@ -1,3 +1,12 @@
+## 30/10/2026 · vigia sem lacunas escondidas (livros 1180 e 1181)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de repor a leitura sem lacunas (livro 1181, registado antes do acto).
+- **Causa:** entre 29/10 16:26 e 30/10 12:13 UTC os disparos da vigia chegaram todos juntos depois de reinícios do worker; a janela de 5 h só cobria desde as 09:40 de 30/10. A lacuna só aparecia porque eu a notei.
+- **Feito (verificado):** `scripts/vigia-entradas.mjs` aceita `--ultima-leitura <ISO>` e devolve `cobertura` (`janela_desde`, `ultima_leitura`, `intervalo_nao_coberto` com horas, `continua_desde_ultima_leitura`), `ausencia_provada_desde_ultima_leitura` e `proxima_ultima_leitura` (a hora desta leitura se for completa; se não, a anterior). `scripts/verify-vigia-entradas.mjs`: casos novos e 6 estragos propositados novos, **21 apanhados** no total. Ao vivo com uma última leitura de há 29 h: `intervalo_nao_coberto` de 24 h, ausência não provada para ele.
+- **Limite:** a Base só serve logs das últimas ~5 h; o intervalo por ler continua por ler, o vigia só passa a dizê-lo. Só leitura; não move fundos.
+- **Tarefa agendada:** o prompt passa a pedir `--ultima-leitura <proxima_ultima_leitura da leitura anterior>` e a dizer uma vez o `intervalo_nao_coberto`.
+
+---
+
 ## 29/10/2026 · Camada 14: raiz das 52 respostas e prova do trigger (livro por escrever)
 - **Autorização de Unum (citação):** "Eu autorizo" (29/10/2026), à proposta concreta de selar a camada 14 (raiz das respostas de `ora_sensacao_respostas` e prova do trigger append-only). Registada aqui antes do acto porque o conector do Supabase deixou sem resposta a confirmação das escritas no livro (a 1166 e a linha desta camada por escrever).
 - **Feito:** `economia/respostas-raiz-2026-10-29.json` (52 hashes por linha calculados no Postgres, raiz `086efb36…`, reproduzida fora da base), `scripts/verify-respostas-raiz.mjs` (`respostas-raiz:verify`, 8 estragos apanhados), lista da camada 14 em `scripts/lib/raiz.mjs`. Só hashes no repositório, nunca o conteúdo das respostas. `raiz:verify` e `trace:verify` passam.

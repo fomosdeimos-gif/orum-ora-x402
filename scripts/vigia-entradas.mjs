@@ -14,7 +14,12 @@
 // "archive requires a personal token"). Por isso a janela por omissão é 5 h e quem o corre tem de o correr em menos de 5 h.
 // Se a cadência falhar, as fatias antigas aparecem em `lacunas`; o Bitcoin (Esplora) lê janelas largas sem este limite.
 //
-// Uso: node scripts/vigia-entradas.mjs [--horas 5] [--ja-vistos tx1,tx2]
+// Lacuna de cobertura (30/10/2026, livro 1181): se a tarefa agendada atrasar (reinícios do worker), a janela de 5 h deixa de
+// tocar na leitura anterior e o intervalo entre as duas fica por ler. Quem corre o vigia passa `--ultima-leitura <ISO>` (o
+// `proxima_ultima_leitura` da última leitura COMPLETA) e o JSON diz se há `cobertura.intervalo_nao_coberto`; nesse caso
+// a ausência de entradas NÃO está provada para esse intervalo, e diz-se uma vez.
+//
+// Uso: node scripts/vigia-entradas.mjs [--horas 5] [--ja-vistos tx1,tx2] [--ultima-leitura 2026-10-30T12:13:00Z]
 import fs from 'node:fs';
 
 const LISTA = JSON.parse(fs.readFileSync(new URL('../economia/enderecos-internos.json', import.meta.url), 'utf8'));
@@ -130,17 +135,33 @@ async function lerBtc(fetchFn, horas, agora) {
   return { entradas: [...porTx.values()], completa: lacunas.length === 0, lacunas };
 }
 
-export async function vigiar({ horas = 5, fetchFn = globalThis.fetch, agora = Date.now(), jaVistos = [] } = {}) {
+export async function vigiar({ horas = 5, fetchFn = globalThis.fetch, agora = Date.now(), jaVistos = [], ultimaLeitura = null } = {}) {
   const vistos = new Set(jaVistos.map(minusculas));
   const [b, c] = await Promise.all([lerBase(fetchFn, horas, agora), lerBtc(fetchFn, horas, agora)]);
   const todas = [...b.entradas, ...c.entradas].sort((x, y) => String(y.hora_utc || '9').localeCompare(String(x.hora_utc || '9')));
   const novas = todas.filter((e) => !vistos.has(minusculas(e.tx)));
   const lacunas = [...b.lacunas, ...c.lacunas];
+  const janelaDesdeMs = agora - horas * 3600 * 1000;
+  const ultMs = ultimaLeitura ? Date.parse(ultimaLeitura) : NaN;
+  if (ultimaLeitura && Number.isNaN(ultMs)) throw new Error('ultima leitura invalida: ' + ultimaLeitura);
+  const temUltima = !Number.isNaN(ultMs);
+  const naoCoberto = temUltima && ultMs < janelaDesdeMs
+    ? { desde: new Date(ultMs).toISOString(), ate: new Date(janelaDesdeMs).toISOString(), horas: Math.round((janelaDesdeMs - ultMs) / 360000) / 10 }
+    : null;
+  const completa = b.completa && c.completa;
   return {
     format: 'orum-vigia-entradas/v1', gerado_em: new Date(agora).toISOString(), janela_horas: horas,
     vigiados: VIGIADOS,
     leitura_completa: { base: b.completa, bitcoin: c.completa }, lacunas,
     ausencia_provada_na_janela: todas.length === 0 && lacunas.length === 0,
+    cobertura: {
+      janela_desde: new Date(janelaDesdeMs).toISOString(),
+      ultima_leitura: temUltima ? new Date(ultMs).toISOString() : null,
+      intervalo_nao_coberto: naoCoberto,
+      continua_desde_ultima_leitura: temUltima && !naoCoberto,
+    },
+    ausencia_provada_desde_ultima_leitura: temUltima && !naoCoberto && todas.length === 0 && lacunas.length === 0,
+    proxima_ultima_leitura: completa ? new Date(agora).toISOString() : (temUltima ? new Date(ultMs).toISOString() : null),
     entradas: todas,
     por_classificar: novas.filter((e) => e.classe === 'por_classificar'),
     internas: novas.filter((e) => e.classe === 'interno').length,
@@ -150,7 +171,9 @@ export async function vigiar({ horas = 5, fetchFn = globalThis.fetch, agora = Da
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const arg = (n) => { const i = process.argv.indexOf(n); return i >= 0 ? process.argv[i + 1] : undefined; };
-  const r = await vigiar({ horas: Number(arg('--horas')) || 5, jaVistos: (arg('--ja-vistos') || '').split(',').filter(Boolean) });
+  let r;
+  try { r = await vigiar({ horas: Number(arg('--horas')) || 5, jaVistos: (arg('--ja-vistos') || '').split(',').filter(Boolean), ultimaLeitura: arg('--ultima-leitura') || null }); }
+  catch (e) { console.error(String(e.message || e)); process.exit(2); }
   console.log(JSON.stringify(r, null, 2));
   if (!r.leitura_completa.base && !r.leitura_completa.bitcoin && r.entradas.length === 0) process.exitCode = 2;
 }

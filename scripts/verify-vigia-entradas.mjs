@@ -161,6 +161,34 @@ async function suite(vigiar) {
   r = await correr(w, { jaVistos: ['0xBBB2'] });
   assert.equal(r.entradas.length, 1, 'continua listada');
   assert.equal(r.por_classificar.length, 0, 'mas ja nao e nova');
+
+  // 10. Cobertura: a janela só prova ausência desde a última leitura se tocar nela (livro 1181).
+  const horasAntes = (h) => new Date(AGORA - h * 3600 * 1000).toISOString();
+  w = mundo({});
+  r = await correr(w, { ultimaLeitura: horasAntes(2) });
+  assert.equal(r.cobertura.intervalo_nao_coberto, null, 'leitura há 2 h: a janela de 5 h toca nela');
+  assert.equal(r.cobertura.continua_desde_ultima_leitura, true);
+  assert.equal(r.ausencia_provada_desde_ultima_leitura, true);
+  r = await correr(w, { ultimaLeitura: horasAntes(29) });
+  assert.deepEqual(r.cobertura.intervalo_nao_coberto, { desde: horasAntes(29), ate: horasAntes(5), horas: 24 }, 'leitura há 29 h: faltam 24 h por ler');
+  assert.equal(r.cobertura.continua_desde_ultima_leitura, false);
+  assert.equal(r.ausencia_provada_desde_ultima_leitura, false, 'com intervalo por ler a ausência não está provada');
+  assert.equal(r.ausencia_provada_na_janela, true, 'a janela em si continua provada');
+  r = await correr(w);
+  assert.equal(r.cobertura.ultima_leitura, null);
+  assert.equal(r.cobertura.continua_desde_ultima_leitura, false, 'sem última leitura não se afirma continuidade');
+  assert.equal(r.ausencia_provada_desde_ultima_leitura, false);
+  assert.equal(r.proxima_ultima_leitura, new Date(AGORA).toISOString(), 'leitura completa: passa a ser a referência seguinte');
+  w = mundo({ logs: [log({ tx: '0xbbb2', bloco: blocoRecente, de: DESCONHECIDO, para: OPERACIONAL, valor: 330000 })] });
+  r = await correr(w, { ultimaLeitura: horasAntes(2) });
+  assert.equal(r.ausencia_provada_desde_ultima_leitura, false, 'com entradas não há ausência');
+  w = mundo({ logsFalham: true });
+  r = await correr(w, { ultimaLeitura: horasAntes(2) });
+  assert.equal(r.ausencia_provada_desde_ultima_leitura, false, 'leitura incompleta não prova ausência');
+  assert.equal(r.proxima_ultima_leitura, horasAntes(2), 'leitura incompleta não avança a referência');
+  r = await correr(w);
+  assert.equal(r.proxima_ultima_leitura, null, 'incompleta e sem referência anterior: nada a passar');
+  await assert.rejects(() => correr(mundo({}), { ultimaLeitura: 'ontem' }), /invalida/, 'data inválida recusa-se');
 }
 
 // ---- A suite tem de passar no codigo real ----
@@ -199,6 +227,13 @@ await estraga('volta a notificar o que ja foi visto', 'const novas = todas.filte
 await estraga('a nota deixa de negar o sustento', 'não é sustento nem receita', 'é sustento');
 await estraga('o Bitcoin perde a segunda fonte', "{ nome: 'blockstream', base: 'https://blockstream.info/api' }", "{ nome: 'mempool.space', base: 'https://mempool.space/api' }");
 
+await estraga('o intervalo por ler nunca é dito', 'temUltima && ultMs < janelaDesdeMs', 'false');
+await estraga('ausência provada ignora o intervalo por ler', 'temUltima && !naoCoberto && todas.length === 0', 'temUltima && todas.length === 0');
+await estraga('ausência provada ignora as lacunas de leitura', 'todas.length === 0 && lacunas.length === 0,\n    proxima', 'todas.length === 0,\n    proxima');
+await estraga('leitura incompleta avança a referência', 'completa ? new Date(agora).toISOString()', 'true ? new Date(agora).toISOString()');
+await estraga('sem última leitura afirma continuidade', 'continua_desde_ultima_leitura: temUltima && !naoCoberto', 'continua_desde_ultima_leitura: !naoCoberto');
+await estraga('data inválida aceita-se', "if (ultimaLeitura && Number.isNaN(ultMs)) throw new Error('ultima leitura invalida: ' + ultimaLeitura);", '');
+
 console.log(JSON.stringify({ verified: true, estragos_apanhados: estragos,
-  prova: 'lista o que entra nas carteiras (Base: USDC verdadeiro, destino nosso, sem duplicados; Bitcoin: so o que entra, duas fontes), classifica o pagador como interno ou por classificar sem nunca lhe chamar sustento/receita/externo, respeita a janela, e nao transforma leitura incompleta em zero',
+  prova: 'lista o que entra nas carteiras (Base: USDC verdadeiro, destino nosso, sem duplicados; Bitcoin: so o que entra, duas fontes), classifica o pagador como interno ou por classificar sem nunca lhe chamar sustento/receita/externo, respeita a janela, e nao transforma leitura incompleta em zero; diz o intervalo por ler entre a ultima leitura e a janela, e nao o conta como ausencia provada',
   nao_prova: 'que alguem pague; que a leitura cubra mais de ~5 h na Base (os RPC publicos gratuitos so servem logs recentes); nem a classificacao de um pagador desconhecido' }));
