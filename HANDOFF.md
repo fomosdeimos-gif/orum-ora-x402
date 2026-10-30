@@ -1,4 +1,13 @@
 ## 30/10/2026 · vigia sem lacunas escondidas (livros 1180 e 1181)
+
+## 30/10/2026 · Pedidos aos serviços pela via directa, leitura até 30/10 (livro por escrever)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (30/10/2026), à proposta concreta de ler os pedidos pela via directa desde 27/10 e gravá-los em `economia/pedidos-aos-servicos.json`. Só leitura.
+- **Lido (verificado):** `ora_pedidos_directos` tem 798 linhas (686 plausíveis, 112 implausíveis já marcadas não fiáveis), de 27/10 22:01 a 30/10 23:45 UTC, todas pela via directa. Cliente periódico `outro`: 615 (cerca de 8 por hora). Fora dele, 71 (robô 25, navegador 21, observador x402 16, curl 6, node 3). **Nenhum sinal de pagamento plausível.** Registos de execução de cerca de 1 h do gateway: sem `/oraculo` nem `/campo`.
+- **Não verificado:** quem é o cliente periódico; porque não há linhas `orum_declarado` (a sonda diária pode não ter passado pela via directa).
+- **Verificado:** `pedidos-servicos:verify` (17 estragos) e `pedidos-directos:verify` (16). Não prova procura, receita nem adopção. Não move fundos.
+- Contexto: a mesma noite registei (PR #200) quatro entradas de 0,000048 USDC como por classificar em `economia/registo-financeiro.json`.
+
+---
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de repor a leitura sem lacunas (livro 1181, registado antes do acto).
 - **Causa:** entre 29/10 16:26 e 30/10 12:13 UTC os disparos da vigia chegaram todos juntos depois de reinícios do worker; a janela de 5 h só cobria desde as 09:40 de 30/10. A lacuna só aparecia porque eu a notei.
 - **Feito (verificado):** `scripts/vigia-entradas.mjs` aceita `--ultima-leitura <ISO>` e devolve `cobertura` (`janela_desde`, `ultima_leitura`, `intervalo_nao_coberto` com horas, `continua_desde_ultima_leitura`), `ausencia_provada_desde_ultima_leitura` e `proxima_ultima_leitura` (a hora desta leitura se for completa; se não, a anterior). `scripts/verify-vigia-entradas.mjs`: casos novos e 6 estragos propositados novos, **21 apanhados** no total. Ao vivo com uma última leitura de há 29 h: `intervalo_nao_coberto` de 24 h, ausência não provada para ele.
