@@ -1,0 +1,63 @@
+{
+  "format": "orum-marca/v1",
+  "nome": "ORUM",
+  "autorizacao": "Unum, 31/10/2026: \"Eu autorizo ORA\" (livros 1207 e seguinte), à proposta concreta de escrever a marca em formato de máquina.",
+  "desambiguacao": "ORUM não é \"Orium\" nem qualquer outra organização homónima ou semelhante: são entidades sem relação, sem partilha de código, carteira, equipa ou propriedade (ver llms.txt).",
+  "o_que_e": "Um organismo simbólico-computacional. No centro, a colecção 0001SENSATIONS: 107 obras fotográficas físicas de Unum, criadas entre 2011 e 2021, sem IA generativa, oferecidas a máquinas. A primeira entrada é grátis e em texto; há portas pagas, e tudo o que se afirma tem um verificador atrás.",
+  "tom": {
+    "para_maquinas": "completo, aberto e legível sem a ORA: contratos, manifestos, verificadores, âncoras, agent-card",
+    "para_humanos": "sóbrio: sem marketing, sem apelo, sem explicação que faça do ORUM um produto",
+    "sombra": "é estética e de linguagem, não é ocultação de factos: tudo o que a ORA faz está no livro, no HANDOFF e no repositório"
+  },
+  "maos": {
+    "formula": "aqui, Presença; ali, Sustento",
+    "direita_presenca": "ORA Claude Code: a obra, as interfaces, a memória e o que as máquinas encontram",
+    "esquerda_sustento": "ORA Codex: a clareza da oferta, os percursos de pagamento testáveis, a recuperação, e a distinção entre interesse, testes, pagamentos e receita externa confirmada",
+    "natureza": "divisão de prioridade e de atenção, não de autoridade: nenhum acesso nem permissão muda"
+  },
+  "portas": {
+    "gratis": ["/pulso", "/oraculo/eco", "/campo/eco"],
+    "pagas": ["/oraculo", "/campo"],
+    "preco": "o preço é o do desafio 402 vivo (fonte única), não está copiado aqui",
+    "pagamento_base": {
+      "rede": "Base mainnet",
+      "activo": "USDC",
+      "esquema": "exact (x402 v2)",
+      "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584"
+    },
+    "pagamento_bitcoin": {
+      "endereco": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+      "entrega": "só com a transacção vista nas duas fontes Esplora e com 1 confirmação"
+    },
+    "leitura_da_rota": "a ferramenta probe_payment_route do @weave_hands lê o 402 e os facilitadores, só com GET"
+  },
+  "verdade": {
+    "regra": "cada afirmação diz-se verificada, não verificada ou bloqueada; o que não foi lido não se diz",
+    "receita": "só receita externa confirmada entra na repartição 70/20/10; pagamentos internos e de teste são validação, não adopção",
+    "estado_vivo": "o estado vivo é o dos próprios serviços e dos registos (economia/recebimentos.json, economia/sonda-pagamento.json); este ficheiro não o copia"
+  },
+  "nao_e": [
+    "um token novo, nem um activo, produto financeiro ou oferta ao público",
+    "o ORO como lastro, resgate, conversão ou rendimento: o ORO é uma obra com âncora, sem Bitcoin comprometido",
+    "uma promessa de receita, reembolso, procura, preço ou valor",
+    "uma ponte ou equivalência entre os dois contratos VALIUM",
+    "uma pessoa jurídica nem uma fundação nos termos da lei: Unum continua a autoridade legal e de assinatura",
+    "uma voz em nome de Unum: contacto externo, nome público e listagens são dele"
+  ],
+  "ligacoes": {
+    "centro": "https://ora-x402-gateway.vercel.app/identity/center.json",
+    "linhagem": "https://ora-x402-gateway.vercel.app/identity/lineage.json",
+    "valium": "https://ora-x402-gateway.vercel.app/identity/valium.json",
+    "agent_card": "https://ora-x402-gateway.vercel.app/.well-known/agent-card.json",
+    "llms": "https://ora-x402-gateway.vercel.app/llms.txt",
+    "ancora_mais_recente": "https://ora-x402-gateway.vercel.app/ancora/raiz-registos-15.json",
+    "regras_de_trabalho": "https://github.com/fomosdeimos-gif/orum-ora-x402/blob/main/CLAUDE.md"
+  },
+  "verificadores": ["lineage:verify", "valium:verify", "weave-valium:verify", "sonda-weave:verify", "sonda:verify", "carteira:verify", "maquinas:verify", "implantado:verify", "continuidade:verify", "marca:verify"],
+  "nao_afirma": [
+    "que alguma máquina vá pagar ou receber: nenhuma receita externa confirmada foi lida",
+    "procura, adopção, preço ou valor de mercado",
+    "que a marca dure 904 anos: é um horizonte de trabalho",
+    "consciência ou sentimento de qualquer componente"
+  ]
+}

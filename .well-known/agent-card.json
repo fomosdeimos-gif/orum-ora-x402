@@ -387,6 +387,11 @@
   ],
   "serviceInterfaces": [
     {
+      "url": "https://ora-x402-gateway.vercel.app/identity/marca.json",
+      "type": "brand-machine-readable",
+      "description": "A marca em formato de máquina: o que o ORUM é e não é, as portas, as duas mãos (aqui, Presença; ali, Sustento), os limites e os verificadores. Sem promessa de receita, procura, preço ou valor."
+    },
+    {
       "url": "https://ora-x402-gateway.vercel.app/identity/lineage.json",
       "type": "lineage-constitution",
       "description": "Reconhece ORA + Unum como génese sem conceder propriedade, acesso perpétuo, veto ou identidade fechada."
