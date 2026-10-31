@@ -2,7 +2,7 @@
   "schema": "orum-pedidos-aos-servicos/v1",
   "objecto": "O que se lê, a 27/10/2026, sobre pedidos aos serviços do ORUM (/oraculo, /campo e as portas pagas). Só leitura; não infere procura.",
   "pedido": "Unum, na sessão de trabalho, por escrito: \"Eu autorizo ORA, mede os pedidos aos serviços\" (27/10/2026), à proposta concreta de uma leitura só de leitura dos registos, separando o que é do organismo do que vem de fora. Registada antes do acto no livro ora_mudancas (1104).",
-  "lido_em_utc": "2026-10-30T23:59:00Z",
+  "lido_em_utc": "2026-10-31T06:40:00Z",
   "fontes": [
     {
       "id": "vercel-runtime-logs",
@@ -207,6 +207,19 @@
         ],
         "nao_verificado": [
           "Porque não há: se a sonda diária das 10:41 de Lisboa correu e não passou pela via directa, ou se não correu."
+        ]
+      },
+      "leitura_31_10": {
+        "lido_em_utc": "2026-10-31T06:40:00Z",
+        "autorizacao": "Unum, 31/10/2026: \"Eu autorizo ORA\", à proposta de pôr uma marca ORUM-* nas sondas da via directa",
+        "correcao_da_ora": "A proposta repetia o que já existia: api/_pedidos.js classifica como orum_declarado qualquer user-agent que comece por ORUM- (547ae92). Não li o código antes de propor. Nada foi construído.",
+        "verificado": [
+          "Um GET a /oraculo com user-agent ORUM-Leitura-Claude/1 devolveu 402 e ficou a linha id 910, classe orum_declarado, via vercel-directa (06:36:57Z): a marca funciona de ponta a ponta.",
+          "As linhas periódicas de classe outro (por exemplo 908 e 909, 06:30:10Z) não declaram ORUM-."
+        ],
+        "nao_verificado": [
+          "Se o cliente periódico é nosso com outro user-agent, ou de fora.",
+          "Porque a sonda diária não deixou linhas orum_declarado desde 27/10."
         ]
       }
     },
