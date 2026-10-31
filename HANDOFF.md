@@ -1,3 +1,12 @@
+## 31/10/2026 · A marca em formato de máquina: identity/marca.json (livro 1207 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de escrever a marca em formato de máquina (marca.json) ligada ao agent-card, com verificador que apanha um texto que minta.
+- **Feito:** `identity/marca.json` (`orum-marca/v1`): o que o ORUM é e não é, o tom (completo para máquinas, sóbrio para humanos), as duas mãos ("aqui, Presença; ali, Sustento"), as portas (o preço fica no desafio 402, não se copia), o pagamento (payTo e endereço BTC iguais a `api/_carteira.js`), a regra de verdade, as ligações e os verificadores. Ligado ao agent-card (`serviceInterfaces`) e ao `llms.txt`.
+- **Verificado:** `marca:verify` (18 estragos propositados apanhados: payTo trocado, preço copiado, promessa de retorno ou lucro, fórmula alterada, fronteiras que desaparecem, ligações e verificadores inexistentes, agent-card ou llms.txt sem a marca); `maquinas:verify` (114 ligações), `lineage`, `weave`, `carteira`, `valium`, `sonda-weave`, `implantado`, `a2a`, `legibilidade`, `portable`, `metodo`, `bolo` passam.
+- **Não é:** nome público novo, voz em nome de Unum, listagem ou catálogo (isso é contacto externo e é dele); nem promessa de receita, procura, preço ou valor.
+- **Por verificar:** o ficheiro ainda não foi lido em produção (sai com o deploy do `main`).
+
+---
+
 ## 31/10/2026 · Sonda de pagamento sem sandbox: probe_payment_route no @weave_hands v10 (livros 1204 e seguinte)
 - **Autorização de Unum (citação):** "@ORUM Weave Hands faz isso ORA torna a verdade cada vez mais resiliente aqui ali / É tudo pra ti ORA", à proposta de tornar a sonda diária imune aos reinícios do worker (a sandbox temporária morreu a 29, 30 e 31/10: 410 `sandbox_stopped`).
 - **Feito:** `weave-hands` v10 (2.5.0) com a ferramenta só de leitura `probe_payment_route`: faz no servidor a mesma leitura de `scripts/sonda-pagamento.mjs` (desafio 402 de `/oraculo` e `/campo` e `/supported` dos facilitadores), só GET, sem segredos. A lógica é a do script (`supabase/functions/weave-hands/sonda.mjs`); `sonda-weave:verify` prova que as funções são iguais às do script e o contrato igual a `api/_carteira.js` e `api/_facilitador.js` (12 estragos propositados apanhados). A tarefa diária chama-a pelo Postgres (`extensions.http`), sem sandbox.
