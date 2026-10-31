@@ -570,15 +570,32 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 973948,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+    "a raiz do bloco contra o cabeçalho real só vale pelo que as duas fontes devolveram a 31/10/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)",
+    "a finney (finney.calendar.eternitywall.com) ainda não devolveu prova (404); as outras duas bastam"
+  ],
+  "atualizado_em_utc": "2026-10-31T09:58:00Z",
+  "atualizacao": "31/10/2026 (Unum: \"Eu autorizo ORA\", à proposta de pedir a prova do bloco da camada 15): GET /timestamp/<compromisso devolvido pelo calendário> aos três calendários. A alice e a bob devolveram atestação Bitcoin, ambas do bloco 973948; a finney respondeu 404 (pendente). sha256 de cada resposta calculado sobre os bytes recebidos antes de juntar com scripts/ots-juntar.mjs. altura_bitcoin é a mais baixa das atestações conferidas.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-10-31T09:57:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam)",
+    "blocos": [
+      {
+        "altura": 973948,
+        "hora_utc": "2026-10-31T07:47:48Z",
+        "id": "000000000000000000009a9788cfb3839541555234ee54dd61acec05d4018bd5"
+      }
+    ]
+  }
 }

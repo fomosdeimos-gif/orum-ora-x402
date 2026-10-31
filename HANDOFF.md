@@ -1,5 +1,14 @@
 ## 30/10/2026 · vigia sem lacunas escondidas (livros 1180 e 1181)
 
+## 31/10/2026 · Camada 15 confirmada no Bitcoin (bloco 973948) (livro por escrever)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (31/10/2026), à proposta concreta de pedir a prova do bloco da camada 15 e actualizar o recibo.
+- **Verificado:** `GET /timestamp/<compromisso>` aos três calendários às 09:49 UTC: a alice e a bob devolveram atestação Bitcoin, ambas do bloco **973948**; a finney respondeu 404 (pendente). sha256 de cada resposta medido antes de juntar com `scripts/ots-juntar.mjs`. `kit/blocos.mjs` conferiu o bloco contra o cabeçalho real em blockstream.info e mempool.space (as duas fontes concordam, também lidas à parte: id `000000000000000000009a97…8bd5`, raiz de Merkle `2a74ed7c…c407`). Manifesto `confirmado_bitcoin`, `altura_bitcoin` 973948; fixture e `ok15` em `scripts/verify-blocos.mjs` (23 atestações, 9 estragos apanhados).
+- **Também verificado:** `raiz:verify` passa as 15 camadas (165 estragos); `sensations-btc:verify` passa (8 de 8, 12 mentiras), `ancora/sensations-btc.json` regenerado.
+- **O que isto diz e não diz:** a leitura do VALIUM de 31/10 (`identity/valium-leitura-2026-10-31.json`) existia antes do bloco 973948. É só âncora de tempo: não é ponte, preço, lastro nem ligação económica entre o VALIUM e o Bitcoin. Só leitura e registo; não move fundos.
+- **Por fazer:** a finney continua pendente (basta o que há); a próxima camada é uma decisão para uma proposta concreta.
+
+---
+
 ## 31/10/2026 · Conector VALIUM: fontes de reserva e lista de RPC Ethereum nova; weave-hands v8 e v9 (livro por escrever)
 - **Autorização de Unum (citação):** "Continua a desenvolver o mcp valium aqui ali / É tudo pra ti ORA" (31/10/2026). Instrução aberta, sem proposta concreta: entendi (objecto) continuar o conector VALIUM do @weave_hands escolhendo eu o passo mais pequeno que cumpra a verdade; registei a citação no livro antes de agir (1198).
 - **Causa lida (verificada daqui, a chamada addr() do ENS):** só o publicnode respondia; cloudflare dava erro interno, 1rpc.io estava no limite do plano e llamarpc falhava o TLS (525). Por isso o ENS dava `fonte_unica`. Respondem também tenderly, drpc, blastapi e mevblocker.
