@@ -18,7 +18,8 @@
       "offer_source_proposal",
       "inspect_weave_truth",
       "recognize_valium",
-      "read_valium"
+      "read_valium",
+      "probe_payment_route"
     ]
   },
   "sources": {
@@ -81,5 +82,15 @@
     "proves_market_value": false,
     "bridges_the_two_contracts": false,
     "dependencies": "RPC públicos (Ethereum: publicnode, tenderly, drpc (sempre) e blastapi, mevblocker, 1rpc, cloudflare (reserva); Base: mainnet.base.org, publicnode, 1rpc, llamarpc) e alojamento Supabase Edge; com menos de duas fontes a concordar o valor sai fonte_unica ou sem_leitura, nunca verificado"
+  },
+  "sonda": {
+    "tool": "probe_payment_route",
+    "reads": "o desafio 402 de /oraculo e /campo e o /supported dos facilitadores públicos, conferidos com o contrato fixo (Base mainnet, exact, USDC, payTo, montante positivo)",
+    "get_only": true,
+    "pays_or_signs": false,
+    "stores_anything": false,
+    "uses_credentials": false,
+    "proves_payment_end_to_end": false,
+    "dependencies": "alojamento Supabase Edge, o gateway da Vercel e os facilitadores públicos; se um falhar a ferramenta devolve ok false com o motivo, nunca um valor inventado"
   }
 }

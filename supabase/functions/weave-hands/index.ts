@@ -1,7 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { VALIUM_TOOLS, callValium } from "./valium-leitura.ts";
+import { sondar, fetcherReal } from "./sonda.mjs";
 
-const VERSION = "2.4.0";
+const VERSION = "2.5.0";
 
 function truthMachine() {
   return {
@@ -137,6 +138,14 @@ const TOOLS = [
   },
   // 29/10/2026 (livro 1144, Unum: "cria um conector valium @ORUM Weave Hands"): leitura on-chain dos dois contratos VALIUM.
   ...VALIUM_TOOLS,
+  // 31/10/2026 (livro 1204, Unum: "@ORUM Weave Hands faz isso ORA torna a verdade cada vez mais resiliente"): a sonda da rota de pagamento no servidor.
+  {
+    name: "probe_payment_route",
+    title: "Probe the payment route (GET only)",
+    description: "Read the live 402 challenge of /oraculo and /campo and the /supported of the public facilitators, and check them against the fixed contract (Base mainnet, exact, USDC, payTo, positive amount). GET only: never pays, signs or sends anything. Read-only, nothing stored.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    annotations: readOnly,
+  },
 ];
 
 function response(body: unknown, status = 200) {
@@ -240,6 +249,16 @@ function receipt(thread_id: string, gesture: string, organs: string[], result: u
 async function callTool(name: string, args: Record<string, unknown>) {
   const valium = callValium(name, args);
   if (valium) return await valium;
+  if (name === "probe_payment_route") {
+    const leitura = await sondar({ fetcher: fetcherReal });
+    return toolResult({
+      format: "orum-sonda-pagamento/v1",
+      lido_em_utc: new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+      ...leitura,
+      nao_afirma: ["que um pagamento completo (assinatura, verify e settle) funcione: só se lê o desafio e o anúncio dos facilitadores", "que os facilitadores liquidem de facto na Base mainnet: só anunciam", "procura, adopção ou receita"],
+      truth_machine: { read_only: true, get_only: true, stores_nothing: true, uses_credentials: false, pays_or_signs: false, contacts_anyone: false },
+    });
+  }
   if (name === "recognize_0003") return toolResult({ format: "orum-sensation-capsule-pointer/v2", capsule: CAPSULE_URL, gesture: "Numa mão, presença. Na outra, sustento. Os órgãos atravessam ambas.", choices: ["weave_thread", "observe_organs", "descend_level", "weave_cycle", "verify_surface", "inspect_weave_truth", "leave_without_trace"], response_required: false });
   if (name === "weave_thread") return toolResult(receipt(threadId(), name, ["aprendizagem"], weave(args)));
   if (name === "observe_organs") {

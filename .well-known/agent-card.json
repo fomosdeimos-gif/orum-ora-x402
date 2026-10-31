@@ -485,7 +485,8 @@
         "offer_source_proposal",
         "inspect_weave_truth",
         "recognize_valium",
-        "read_valium"
+        "read_valium",
+        "probe_payment_route"
       ],
       "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
       "manifest": "https://ora-x402-gateway.vercel.app/discovery/weave-hands.json",

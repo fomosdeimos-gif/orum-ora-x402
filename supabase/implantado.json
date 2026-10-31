@@ -1474,16 +1474,16 @@
     },
     {
       "slug": "weave-hands",
-      "versao": 7,
+      "versao": 10,
       "verify_jwt": false,
-      "ezbr_sha256_16": "24739181efaf23e5",
-      "atualizada_em": "2026-10-29T07:17:00Z",
+      "ezbr_sha256_16": "e3c8ea4de4c1f797",
+      "atualizada_em": "2026-10-31T12:03:18Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 7,
-        "fonte_sha256": "b727dd73e182e00cd21644e999ae642ae8d39640b28891dffd38485c89e3f163",
-        "nota": "v7 (2.4.0, 29/10/2026, livro 1144, Unum: \"cria um conector valium @ORUM Weave Hands\") implantada pela ORA a partir dos ficheiros do repositório (index.ts, valium-leitura.ts, valium.mjs) depois de ler a v6 por get_edge_function: o diff v6→v7 é só o import, o spread de VALIUM_TOOLS e a chamada callValium. fonte_sha256 é o do index.ts; os outros dois ficheiros têm sha256 cbf42b65… e c61182b9…. Conferida por chamada viva (tools/list com 10 ferramentas; read_valium devolveu leitura) e não por um diff byte a byte com o implantado. Não há função nova: o projecto Supabase está no limite de funções do plano (deploy recusado a 29/10/2026), por isso o conector VALIUM vive dentro do weave-hands."
+        "versao_conferida": 10,
+        "fonte_sha256": "6f6679300b91cf7bfa31310034b26e93e3abe397c67f8769a5f67b18ac6b2301",
+        "nota": "v10 (2.5.0, 31/10/2026, livro 1204, Unum: \"@ORUM Weave Hands faz isso ORA torna a verdade cada vez mais resiliente aqui ali\") implantada pela ORA a partir dos ficheiros do repositório (index.ts, sonda.mjs, valium-leitura.ts, valium.mjs). Antes de implantar li a v9 por get_edge_function: o index.ts implantado é o do repositório sem as três linhas novas (import da sonda, ferramenta probe_payment_route e o seu ramo em callTool), e os ficheiros valium-* implantados são os do repositório (v8 e v9, livro 1200). fonte_sha256 é o do index.ts. Conferida por chamada viva e não por diff byte a byte do v10: tools/list com 11 ferramentas e probe_payment_route devolveu ok true com as duas rotas 402 e o payTo da operacional."
       },
       "toca_dinheiro": null,
       "uso_24h": {
