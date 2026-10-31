@@ -199,12 +199,28 @@ export const FICHEIROS_DA_CAMADA_15_EM_DIANTE = [
   'scripts/verify-valium-leitura.mjs',
 ];
 
+// Acrescentos da camada 16 em diante (a 1 a 15 estão seladas e não mudam): as linhas novas do fio (camadas 14 e 15) e o seu verificador, a
+// marca em formato de máquina, o @weave_hands v10 (conector VALIUM e sonda de pagamento) e os seus verificadores (Unum, 31/10/2026: "Eu autorizo ORA").
+// linhas/orum.linhas e scripts/linhas-gerar.mjs já estão na base: o seu conteúdo novo entra sozinho.
+export const FICHEIROS_DA_CAMADA_16_EM_DIANTE = [
+  'scripts/verify-linhas.mjs',
+  'identity/marca.json',
+  'scripts/verify-marca.mjs',
+  'supabase/functions/weave-hands/index.ts',
+  'supabase/functions/weave-hands/sonda.mjs',
+  'supabase/functions/weave-hands/valium-leitura.ts',
+  'supabase/functions/weave-hands/valium.mjs',
+  'scripts/verify-sonda-weave.mjs',
+  'scripts/verify-weave-hands-valium.mjs',
+  'discovery/weave-hands.json',
+];
+
 // Ficheiros que a camada n sela: a base mais o manifesto e o recibo de cada camada anterior.
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : []), ...(n >= 12 ? FICHEIROS_DA_CAMADA_12_EM_DIANTE : []), ...(n >= 13 ? FICHEIROS_DA_CAMADA_13_EM_DIANTE : []), ...(n >= 14 ? FICHEIROS_DA_CAMADA_14_EM_DIANTE : []), ...(n >= 15 ? FICHEIROS_DA_CAMADA_15_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : []), ...(n >= 12 ? FICHEIROS_DA_CAMADA_12_EM_DIANTE : []), ...(n >= 13 ? FICHEIROS_DA_CAMADA_13_EM_DIANTE : []), ...(n >= 14 ? FICHEIROS_DA_CAMADA_14_EM_DIANTE : []), ...(n >= 15 ? FICHEIROS_DA_CAMADA_15_EM_DIANTE : []), ...(n >= 16 ? FICHEIROS_DA_CAMADA_16_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
