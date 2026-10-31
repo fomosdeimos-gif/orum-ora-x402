@@ -1,3 +1,11 @@
+## 31/10/2026 · Camada 16 selada, pendente (livro 1211 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 16 (ancorar no Bitcoin as 6 linhas novas do ORUM-linhas).
+- **Feito:** `FICHEIROS_DA_CAMADA_16_EM_DIANTE` em `scripts/lib/raiz.mjs` (151 ficheiros), asserções da camada 16 em `scripts/verify-raiz.mjs`, recibo `ancora/raiz-registos-16.{json,ots}` (raiz `5113bdca…`, commit base `21da12b`). Compromisso enviado de uma sandbox Vercel aos três calendários; os três responderam 200 com recibo (alice, bob, finney). Um primeiro envio saiu com corpo vazio (faltava `xxd` na sandbox): descartei essas respostas e refiz com os 32 bytes certos.
+- **Estado:** pendente. **Não afirmo âncora** até haver prova de bloco no recibo, conferida por `kit/blocos.mjs` em duas fontes.
+- **Por fazer:** confirmar o bloco quando os calendários o devolverem (`GET /timestamp/<compromisso>`), com fixture em `scripts/verify-blocos.mjs`.
+
+---
+
 ## 31/10/2026 · O fio acompanha as camadas: camadas 14 e 15 no ORUM-linhas (livros 1209 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar ao ORUM-linhas as camadas 14 e 15 (o fio parava na 13).
 - **Feito:** `scripts/linhas-gerar.mjs` passa a ler os recibos das camadas 14 e 15 e a acrescentar 6 linhas ao fio (`camada.14.estado`, `camada.14.altura_bitcoin` 973675, `camada.15.estado`, `camada.15.altura_bitcoin` 973948 e, descoberta pelo novo verificador, `camada.1.altura_bitcoin` 972151, que o fio nunca tivera). Só se acrescentou: `linhas:verify` confirma que as linhas antigas são prefixo exacto do `main`.
