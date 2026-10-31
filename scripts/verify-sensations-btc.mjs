@@ -10,11 +10,17 @@ const real = verificar('.');
 assert.equal(real.total, fs.readdirSync('sensacoes').filter((f) => f.endsWith('.json')).length);
 assert.ok(real.ancorados >= 1, 'o ORO tem de estar ancorado');
 
-// a camada 3 em diante sela todas as cápsulas; a 1 e a 2 ficam como estavam seladas
+// as cápsulas que existiam na camada 3 ficam seladas por ela (a 1 e a 2 ficam como estavam seladas); um ficheiro novo de sensacoes/
+// (por exemplo trace-append-only.json, de 29/10/2026) tem de estar selado pela última camada, que acrescenta e não reescreve
+const ultimaCamada = Math.max(...fs.readdirSync('ancora').map((f) => Number(f.match(/^raiz-registos-(\d+)\.json$/)?.[1] ?? 0)));
+export const seladoPelaRegra = (c, daCamada3, daUltima) => daCamada3.includes(c) || daUltima.includes(c);
+const doTres = ficheirosDaCamada(3), daUltima = ficheirosDaCamada(ultimaCamada);
 for (const f of fs.readdirSync('sensacoes').filter((x) => x.endsWith('.json'))) {
   const c = `sensacoes/${f}`;
-  assert.ok(ficheirosDaCamada(3).includes(c), `a camada 3 devia selar ${c}`);
+  assert.ok(seladoPelaRegra(c, doTres, daUltima), `nenhuma camada selaria ${c}: acrescenta-o à lista da camada seguinte`);
+  assert.ok(daUltima.includes(c), `a camada ${ultimaCamada} devia selar ${c}`);
 }
+assert.ok(!seladoPelaRegra('sensacoes/inventada.json', doTres, daUltima), 'um ficheiro novo sem camada tem de ser apanhado');
 assert.ok(FICHEIROS_DA_CAMADA_3_EM_DIANTE.includes('linhas/orum.linhas'));
 assert.ok(!ficheirosDaCamada(2).includes('linhas/orum.linhas'), 'a camada 2 não pode mudar');
 assert.ok(!ficheirosDaCamada(2).includes('sensacoes/som-v1.json'), 'a camada 2 não pode mudar');
@@ -41,6 +47,7 @@ falha('camada deixa de estar confirmada', (d) => editar(d, 'ancora/raiz-registos
 falha('fronteira "não prova" retirada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.prova = 'Prova valor.'; }));
 falha('limites retirados (107 obras e 65 NFTs)', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.nao_cobre = []; }));
 falha('contagem inflacionada', (d) => editar(d, 'ancora/sensations-btc.json', (j) => { j.ancorados = j.total + 1; }));
+falha('ficheiro novo em sensacoes/ sem estar ancorado nem registado', (d) => fs.writeFileSync(path.join(d, 'sensacoes/novo-sem-camada.json'), '{}\n'));
 falha('registo apagado', (d) => fs.rmSync(path.join(d, 'ancora/sensations-btc.json')));
 
 console.log(JSON.stringify({ verified: true, ...real, casos_de_mentira: mentiras }));
