@@ -1,5 +1,15 @@
 ## 30/10/2026 · vigia sem lacunas escondidas (livros 1180 e 1181)
 
+## 31/10/2026 · Camada 14 confirmada no Bitcoin (blocos 973675, 973676 e 973699); camada 15 ainda pendente (livro por escrever)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (31/10/2026), à proposta concreta de pedir a prova do bloco das camadas 14 e 15 e actualizar os recibos.
+- **Verificado (camada 14):** `GET /timestamp/<compromisso>` aos três calendários: os três devolveram atestação Bitcoin (alice 973675, bob 973676, finney 973699). sha256 de cada resposta medido antes de juntar com `scripts/ots-juntar.mjs`; `kit/blocos.mjs` conferiu os três blocos contra o cabeçalho real em blockstream.info e mempool.space (as duas fontes concordam, também lidas à parte). Manifesto passou a `confirmado_bitcoin`, `altura_bitcoin` 973675; fixture e `ok14` em `scripts/verify-blocos.mjs` (21 atestações, 9 estragos apanhados). Prova só que estes bytes existiam antes do bloco.
+- **Camada 15:** os três calendários devolvem 404 (selada há cerca de 10 minutos). Continua pendente; não se diz âncora.
+- **`ancora/sensations-btc.json` regenerado:** 8 de 8 (antes 7 de 7), porque `sensacoes/trace-append-only.json` passou a contar como cápsula.
+- **Não verificado / dívida encontrada:** `raiz:verify` falha neste sandbox na camada 7 e `sensations-btc:verify` falha com "a camada 3 devia selar sensacoes/trace-append-only.json" (o verificador assume que tudo em `sensacoes/` entra na camada 3, o que deixou de ser verdade a 29/10). Ambas falhavam no `main` sem as minhas alterações. Por corrigir; não toquei no verificador.
+- Só leitura e registo; não move fundos.
+
+---
+
 ## 31/10/2026 · Camada 15 selada (pendente): leitura do VALIUM na cadeia (livro por escrever)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (31/10/2026), à proposta concreta de selar a leitura do VALIUM na camada 15 da raiz, ancorada no Bitcoin. Veio a seguir à pergunta "como se liga o conector valium ao btc": a resposta lida é que não há ponte; a ligação é só de tempo.
 - **Feito (verificado):** `read_valium` (conector @weave_hands) a 31/10 07:30 UTC: totalSupply 1000 (Ethereum) e 1 000 000 000 (Base); sagrada antiga 74,8037… (Ethereum) e 0 (Base); sagrada nova 400,9184… (Ethereum) e 1 000 001 (Base); operacional 0 nas duas; `0001sensations.eth` → `0x2ef8…` com `concordam`. Tudo igual a 29/10. Gravado em `identity/valium-leitura-2026-10-31.json`, com `valium-leitura:verify` (13 estragos apanhados). Camada 15: 139 ficheiros, raiz `c33e4426…`, commit `5d1f2ed`; alice, bob e finney responderam 200 e o recibo tem 3 compromissos pendentes.

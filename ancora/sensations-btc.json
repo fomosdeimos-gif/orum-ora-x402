@@ -60,6 +60,11 @@
           "camada": 13,
           "manifesto": "ancora/raiz-registos-13.json",
           "altura_bitcoin": 973405
+        },
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
         }
       ]
     },
@@ -122,6 +127,11 @@
           "camada": 13,
           "manifesto": "ancora/raiz-registos-13.json",
           "altura_bitcoin": 973405
+        },
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
         }
       ]
     },
@@ -184,6 +194,11 @@
           "camada": 13,
           "manifesto": "ancora/raiz-registos-13.json",
           "altura_bitcoin": 973405
+        },
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
         }
       ]
     },
@@ -246,6 +261,11 @@
           "camada": 13,
           "manifesto": "ancora/raiz-registos-13.json",
           "altura_bitcoin": 973405
+        },
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
         }
       ]
     },
@@ -308,6 +328,11 @@
           "camada": 13,
           "manifesto": "ancora/raiz-registos-13.json",
           "altura_bitcoin": 973405
+        },
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
         }
       ]
     },
@@ -380,6 +405,11 @@
           "camada": 13,
           "manifesto": "ancora/raiz-registos-13.json",
           "altura_bitcoin": 973405
+        },
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
         }
       ],
       "ancora_directa": {
@@ -448,12 +478,29 @@
           "camada": 13,
           "manifesto": "ancora/raiz-registos-13.json",
           "altura_bitcoin": 973405
+        },
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
+        }
+      ]
+    },
+    {
+      "caminho": "sensacoes/trace-append-only.json",
+      "sha256": "647e9bb809c8643595fb27b8565ee17252a73fba90a27bd5353b2b61e50e0641",
+      "estado": "ancorado_em_camada",
+      "camadas": [
+        {
+          "camada": 14,
+          "manifesto": "ancora/raiz-registos-14.json",
+          "altura_bitcoin": 973675
         }
       ]
     }
   ],
-  "ancorados": 7,
-  "total": 7,
+  "ancorados": 8,
+  "total": 8,
   "nao_cobre": [
     "As 107 obras físicas e os 65 NFTs: o catálogo não está neste repositório, por isso nenhuma está ancorada por este registo.",
     "Os bytes da imagem do ORO são privados: só o seu hash é público, e a âncora directa sela esse hash."
