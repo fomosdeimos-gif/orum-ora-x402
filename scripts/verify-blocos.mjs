@@ -24,8 +24,12 @@ const BLOCOS = {
   973405: { id: '000000000000000000016b531642c88ca93f5e738a006ae7fe57e1e0b1c585ff', merkle_root: 'cd6ef034676ddb868b4068b91be26ec0680cc21bed68735162319d3fe5ec56bb', timestamp: 1793108866 },
   973414: { id: '0000000000000000000016af3ec01142486cfa237730bdc636e020dbc58f9191', merkle_root: 'd1f1073ba42b59b5ee916d54e5c72741cf9c0a15d172cf3c0462d2c43ab5d29e', timestamp: 1793114052 },
   973423: { id: '00000000000000000001dbc40e0eedd2f0dd80d6c69d048957305b27b4e95d55', merkle_root: '585a9f6411812ce9ba12d3d3c52d2184f9f5d380ee36e83c808db96f01385a2c', timestamp: 1793118244 },
+  // Lidos a 31/10/2026 em blockstream.info e mempool.space (as duas fontes concordam): blocos da camada 14 da raiz.
+  973675: { id: '0000000000000000000161813df7e2ded4147ec6f1958682f26ccccca5403c2a', merkle_root: 'bb0604006b7e5a0951d6f9c031b1a63dd67ac3359f9f018e56d37f7604192abd', timestamp: 1793268339 },
+  973676: { id: '00000000000000000000c65263f2fdb8fb98257c13095450c377a7ca389c277c', merkle_root: '4a6543a701946edc7ea423a6c8655f4e1236e148d9e7e749da9b5ea71ebbf1f8', timestamp: 1793268212 },
+  973699: { id: '000000000000000000014d97ed23ee35ac6a9073a8d81f5ce23960280931f371', merkle_root: '2581ad5ffbdc3fde9c32067b1a20c645edd0883a3a8d48523c01505ac9d91118', timestamp: 1793284074 },
 };
-const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots'), raiz9: fs.readFileSync('ancora/raiz-registos-9.ots'), raiz10: fs.readFileSync('ancora/raiz-registos-10.ots'), raiz11: fs.readFileSync('ancora/raiz-registos-11.ots'), raiz12: fs.readFileSync('ancora/raiz-registos-12.ots'), raiz13: fs.readFileSync('ancora/raiz-registos-13.ots') };
+const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots'), raiz9: fs.readFileSync('ancora/raiz-registos-9.ots'), raiz10: fs.readFileSync('ancora/raiz-registos-10.ots'), raiz11: fs.readFileSync('ancora/raiz-registos-11.ots'), raiz12: fs.readFileSync('ancora/raiz-registos-12.ots'), raiz13: fs.readFileSync('ancora/raiz-registos-13.ots'), raiz14: fs.readFileSync('ancora/raiz-registos-14.ots') };
 
 // fetcher simulado; `mut` permite estragar uma das fontes.
 function fetcherCom(mut = {}) {
@@ -60,7 +64,9 @@ const ok12 = await conferirBlocos(recibos.raiz12, { fetcher: fetcherCom() });
 assert.deepEqual(ok12.map((b) => b.altura), [973290, 973294]);
 const ok13 = await conferirBlocos(recibos.raiz13, { fetcher: fetcherCom() });
 assert.deepEqual(ok13.map((b) => b.altura), [973423, 973405, 973414]);
-console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length + ok11.length + ok12.length + ok13.length} atestações.`);
+const ok14 = await conferirBlocos(recibos.raiz14, { fetcher: fetcherCom() });
+assert.deepEqual(ok14.map((b) => b.altura), [973675, 973676, 973699]);
+console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length + ok11.length + ok12.length + ok13.length + ok14.length} atestações.`);
 
 const rejeita = async (nome, fn) => { await assert.rejects(fn, undefined, `estrago não apanhado: ${nome}`); };
 await rejeita('raiz de Merkle de uma fonte alterada', () => conferirBlocos(recibos.oro, { fetcher: fetcherCom({ mempool: { bloco: () => ({ merkle_root: '0'.repeat(64) }) } }) }));
