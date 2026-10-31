@@ -80,6 +80,6 @@
     "pays_or_signs": false,
     "proves_market_value": false,
     "bridges_the_two_contracts": false,
-    "dependencies": "RPC públicos (Ethereum: publicnode, cloudflare, 1rpc, llamarpc; Base: mainnet.base.org, publicnode, 1rpc, llamarpc) e alojamento Supabase Edge; com menos de duas fontes a concordar o valor sai fonte_unica ou sem_leitura, nunca verificado"
+    "dependencies": "RPC públicos (Ethereum: publicnode, tenderly, drpc (sempre) e blastapi, mevblocker, 1rpc, cloudflare (reserva); Base: mainnet.base.org, publicnode, 1rpc, llamarpc) e alojamento Supabase Edge; com menos de duas fontes a concordar o valor sai fonte_unica ou sem_leitura, nunca verificado"
   }
 }

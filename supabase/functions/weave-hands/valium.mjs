@@ -12,7 +12,9 @@ export const CARTEIRAS = [
   { papel: 'sagrada_nova_metamask', endereco: '0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C' },
 ];
 export const RPCS = {
-  ethereum: ['https://ethereum-rpc.publicnode.com', 'https://cloudflare-eth.com', 'https://1rpc.io/eth', 'https://eth.llamarpc.com'],
+  // Lidas a 31/10/2026 com a chamada addr() do ENS: publicnode, tenderly, drpc, blastapi e mevblocker respondem; cloudflare dá erro interno,
+  // 1rpc.io está no limite do plano e llamarpc falha o TLS (525). As três primeiras são as que se perguntam sempre; as outras são reserva.
+  ethereum: ['https://ethereum-rpc.publicnode.com', 'https://gateway.tenderly.co/public/mainnet', 'https://eth.drpc.org', 'https://eth-mainnet.public.blastapi.io', 'https://rpc.mevblocker.io', 'https://1rpc.io/eth', 'https://cloudflare-eth.com'],
   base: ['https://mainnet.base.org', 'https://base-rpc.publicnode.com', 'https://1rpc.io/base', 'https://base.llamarpc.com'],
 };
 export const ENS = {
@@ -23,6 +25,7 @@ export const ENS = {
 };
 export const DECIMAIS = 18;
 export const MAX_RPC_POR_PERGUNTA = 3;
+export const MIN_FONTES = 2;
 
 export const ehEndereco = (s) => typeof s === 'string' && /^0x[0-9a-fA-F]{40}$/.test(s);
 
@@ -69,4 +72,7 @@ export function concordar(leituras) {
   const estado = ok.length >= 2 ? 'concordam' : 'fonte_unica';
   return { estado, valor: ok[0].valor, fontes_ok: ok.length, fontes_falhadas: falhas.length };
 }
+// Perguntam-se primeiro MAX_RPC_POR_PERGUNTA fontes; só se não deram duas leituras válidas é que se pergunta também às restantes.
+// Assim uma fonte em baixo (por exemplo 1rpc.io, no limite do plano) deixa de empurrar o valor para fonte_unica, sem perguntar a mais por rotina.
+export function precisaMaisFontes(leituras) { return leituras.filter((l) => l && l.ok).length < MIN_FONTES; }
 export function verificado(c) { return c.estado === 'concordam'; }

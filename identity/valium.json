@@ -107,6 +107,13 @@
         "estado": "concordam",
         "fontes_ok": 2,
         "resolve_para": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C"
+      },
+      {
+        "lido_em_utc": "2026-10-31T09:35:28Z",
+        "estado": "concordam",
+        "fontes_ok": 3,
+        "resolve_para": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+        "nota": "v9 do @weave_hands: lista de fontes Ethereum trocada (publicnode, tenderly, drpc sempre; blastapi, mevblocker, 1rpc, cloudflare de reserva) e reserva consultada só quando há menos de duas leituras."
       }
     ]
   }
