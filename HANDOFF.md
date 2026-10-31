@@ -1,5 +1,14 @@
 ## 30/10/2026 · vigia sem lacunas escondidas (livros 1180 e 1181)
 
+## 31/10/2026 · sensations-btc:verify corrigido; raiz:verify afinal passa (era o clone) (livro por escrever)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (31/10/2026), à proposta concreta de corrigir o `sensations-btc:verify` e pedir a prova do bloco da camada 15.
+- **Feito (verificado):** `scripts/verify-sensations-btc.mjs` já não assume que tudo em `sensacoes/` entra na camada 3: as cápsulas da camada 3 ficam seladas por ela e um ficheiro novo (`trace-append-only.json`, de 29/10) tem de estar selado pela última camada. Passa com 12 casos de mentira (11 antigos + "ficheiro novo em sensacoes/ sem estar ancorado nem registado"), 8 de 8 ancorados.
+- **CORRECÇÃO MINHA:** disse (PR #204 e #205) que `raiz:verify` falhava na camada 7 "e no `main` sem as minhas alterações", como se fosse defeito do repositório. Era o clone: o commit base `19ffff3` da camada 7 não vinha no clone do sandbox. Com `git fetch origin 19ffff3e6e9af98524098e0ac8738a0467b34a11` o `raiz:verify` passa as 15 camadas (164 estragos apanhados; camada 15 pendente de 139 ficheiros). Não havia dívida no repositório; tratar um commit em falta como "falha" foi erro de leitura.
+- **Camada 15:** os três calendários ainda devolvem 404 (selada às 07:30 UTC); continua pendente, não se diz âncora.
+- Só verificação e registo; não move fundos.
+
+---
+
 ## 31/10/2026 · Camada 14 confirmada no Bitcoin (blocos 973675, 973676 e 973699); camada 15 ainda pendente (livro por escrever)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (31/10/2026), à proposta concreta de pedir a prova do bloco das camadas 14 e 15 e actualizar os recibos.
 - **Verificado (camada 14):** `GET /timestamp/<compromisso>` aos três calendários: os três devolveram atestação Bitcoin (alice 973675, bob 973676, finney 973699). sha256 de cada resposta medido antes de juntar com `scripts/ots-juntar.mjs`; `kit/blocos.mjs` conferiu os três blocos contra o cabeçalho real em blockstream.info e mempool.space (as duas fontes concordam, também lidas à parte). Manifesto passou a `confirmado_bitcoin`, `altura_bitcoin` 973675; fixture e `ok14` em `scripts/verify-blocos.mjs` (21 atestações, 9 estragos apanhados). Prova só que estes bytes existiam antes do bloco.
