@@ -1,0 +1,96 @@
+{
+  "format": "orum-valium-leitura-selada/v1",
+  "lido_em_utc": "2026-10-31T07:30:46Z",
+  "autorizacao_de_unum": "Eu autorizo ORA, 31/10/2026, à proposta concreta de selar a leitura do VALIUM na camada 15 da raiz, ancorada no Bitcoin por OpenTimestamps (a uma pergunta sobre como se liga o conector VALIUM ao BTC).",
+  "como": "ferramenta read_valium do conector @weave_hands (v7), só de leitura, RPC públicos; 'concordam' = duas fontes RPC independentes iguais",
+  "contratos": {
+    "ethereum": "0xD287E77989F7191989901361754d02D8e00E1D1A",
+    "base": "0x37f70Bccdc2125346a7542fe6e7fc70e33421635"
+  },
+  "total_supply": {
+    "ethereum": {
+      "valor": "1000",
+      "estado": "concordam",
+      "fontes_ok": 2,
+      "fontes_falhadas": 1
+    },
+    "base": {
+      "valor": "1000000000",
+      "estado": "concordam",
+      "fontes_ok": 3,
+      "fontes_falhadas": 0
+    }
+  },
+  "saldos": [
+    {
+      "cadeia": "ethereum",
+      "papel": "sagrada_antiga",
+      "endereco": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "estado": "concordam",
+      "valor": "74.80374022162198805",
+      "fontes_ok": 2,
+      "fontes_falhadas": 1
+    },
+    {
+      "cadeia": "ethereum",
+      "papel": "operacional",
+      "endereco": "0x89460d9e0590559e63860197dfe2ac648A753584",
+      "estado": "concordam",
+      "valor": "0",
+      "fontes_ok": 2,
+      "fontes_falhadas": 1
+    },
+    {
+      "cadeia": "ethereum",
+      "papel": "sagrada_nova_metamask",
+      "endereco": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+      "estado": "concordam",
+      "valor": "400.918403296079442626",
+      "fontes_ok": 2,
+      "fontes_falhadas": 1
+    },
+    {
+      "cadeia": "base",
+      "papel": "sagrada_antiga",
+      "endereco": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "estado": "concordam",
+      "valor": "0",
+      "fontes_ok": 3,
+      "fontes_falhadas": 0
+    },
+    {
+      "cadeia": "base",
+      "papel": "operacional",
+      "endereco": "0x89460d9e0590559e63860197dfe2ac648A753584",
+      "estado": "concordam",
+      "valor": "0",
+      "fontes_ok": 3,
+      "fontes_falhadas": 0
+    },
+    {
+      "cadeia": "base",
+      "papel": "sagrada_nova_metamask",
+      "endereco": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+      "estado": "concordam",
+      "valor": "1000001",
+      "fontes_ok": 3,
+      "fontes_falhadas": 0
+    }
+  ],
+  "ens": {
+    "nome": "0001sensations.eth",
+    "resolve_para": "0x2ef8cfB97EcCcf7C62f551639fe6dB79022d0d8C",
+    "estado": "concordam",
+    "fontes_ok": 2
+  },
+  "comparacao_com_29_10": "Todos os valores iguais aos de identity/valium.json (leitura_em_cadeia, 29/10/2026 07:18). O ENS, que então deu fonte_unica numa leitura, deu concordam agora; cada leitura vale pelo seu estado.",
+  "ligacao_ao_bitcoin": "Só de tempo: esta leitura é selada na camada 15 e fica ancorada no Bitcoin por OpenTimestamps quando um bloco a confirmar. Prova que estes bytes existiam antes desse bloco. Não é ponte, preço, lastro nem conversão.",
+  "nao_afirma": [
+    "preço, liquidez ou valor de mercado do VALIUM",
+    "procura, adopção ou receita",
+    "que os dois contratos VALIUM sejam equivalentes (não há ponte nem migração)",
+    "titularidade legal de qualquer carteira",
+    "controlo da chave de qualquer carteira",
+    "que o VALIUM esteja ligado ao Bitcoin"
+  ]
+}

@@ -78,6 +78,7 @@
     "respostas-raiz:verify": "node scripts/verify-respostas-raiz.mjs",
     "linhas:gerar": "node scripts/linhas-gerar.mjs",
     "fio:verify": "node scripts/verify-fio.mjs",
+    "valium-leitura:verify": "node scripts/verify-valium-leitura.mjs",
     "raiz:verify": "node scripts/verify-raiz.mjs",
     "raiz-sha3:verify": "node scripts/verify-raiz-sha3.mjs",
     "pq:verify": "node scripts/verify-pq.mjs",
