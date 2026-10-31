@@ -1,5 +1,13 @@
 ## 30/10/2026 · vigia sem lacunas escondidas (livros 1180 e 1181)
 
+## 31/10/2026 · A marca ORUM-* já existia; verificada de ponta a ponta (livro por escrever)
+- **Autorização de Unum (citação):** "Eu autorizo ORA" (31/10/2026), à proposta de pôr uma marca ORUM-* nas sondas da via directa.
+- **Erro meu, dito:** a proposta repetia código que já existe (`api/_pedidos.js`, classe `orum_declarado`, 547ae92). Não li o código antes de propor. Não construí nada.
+- **Verificado:** um GET a `/oraculo` com user-agent `ORUM-Leitura-Claude/1` deixou a linha 910, `orum_declarado`, via directa. O cliente periódico (`outro`) não declara ORUM-.
+- **Não verificado:** quem é o cliente periódico; porque a sonda diária não deixou linhas `orum_declarado`. Só leitura, nenhum fundo movido.
+
+---
+
 ## 30/10/2026 · Pedidos aos serviços pela via directa, leitura até 30/10 (livro por escrever)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (30/10/2026), à proposta concreta de ler os pedidos pela via directa desde 27/10 e gravá-los em `economia/pedidos-aos-servicos.json`. Só leitura.
 - **Lido (verificado):** `ora_pedidos_directos` tem 798 linhas (686 plausíveis, 112 implausíveis já marcadas não fiáveis), de 27/10 22:01 a 30/10 23:45 UTC, todas pela via directa. Cliente periódico `outro`: 615 (cerca de 8 por hora). Fora dele, 71 (robô 25, navegador 21, observador x402 16, curl 6, node 3). **Nenhum sinal de pagamento plausível.** Registos de execução de cerca de 1 h do gateway: sem `/oraculo` nem `/campo`.
