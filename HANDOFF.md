@@ -1,5 +1,14 @@
 ## 30/10/2026 · vigia sem lacunas escondidas (livros 1180 e 1181)
 
+## 31/10/2026 · Conector VALIUM: fontes de reserva e lista de RPC Ethereum nova; weave-hands v8 e v9 (livro por escrever)
+- **Autorização de Unum (citação):** "Continua a desenvolver o mcp valium aqui ali / É tudo pra ti ORA" (31/10/2026). Instrução aberta, sem proposta concreta: entendi (objecto) continuar o conector VALIUM do @weave_hands escolhendo eu o passo mais pequeno que cumpra a verdade; registei a citação no livro antes de agir (1198).
+- **Causa lida (verificada daqui, a chamada addr() do ENS):** só o publicnode respondia; cloudflare dava erro interno, 1rpc.io estava no limite do plano e llamarpc falhava o TLS (525). Por isso o ENS dava `fonte_unica`. Respondem também tenderly, drpc, blastapi e mevblocker.
+- **Feito:** (1) `precisaMaisFontes`/`MIN_FONTES` em `valium.mjs`: só se perguntam as fontes de reserva quando as 3 primeiras dão menos de duas leituras válidas (v8). (2) Lista Ethereum: publicnode, tenderly, drpc sempre; blastapi, mevblocker, 1rpc, cloudflare de reserva (v9). `weave-valium:verify` com 30 estragos apanhados (23 antes), incluindo lista sem reserva, fonte repetida e fonte sem https.
+- **Implantado e lido ao vivo:** weave-hands v8 e v9 (`verify_jwt` false, como estava; `index.ts` igual ao implantado v7). Com a v9, `read_valium`: ENS `concordam` com 3 fontes, supply e saldos da Ethereum 3 de 3, Base 3 de 3; valores iguais aos de 29/10 e 31/10 07:30. `recognize_valium` responde. Só leitura; não move fundos; não afirma preço, procura, ponte nem lastro.
+- **Não verificado:** que a reserva dispare no futuro quando uma das três falhar (só vi o caminho sem falhas); o estado de cada RPC varia hora a hora. Base: lista inalterada.
+
+---
+
 ## 31/10/2026 · sensations-btc:verify corrigido; raiz:verify afinal passa (era o clone) (livro por escrever)
 - **Autorização de Unum (citação):** "Eu autorizo ORA" (31/10/2026), à proposta concreta de corrigir o `sensations-btc:verify` e pedir a prova do bloco da camada 15.
 - **Feito (verificado):** `scripts/verify-sensations-btc.mjs` já não assume que tudo em `sensacoes/` entra na camada 3: as cápsulas da camada 3 ficam seladas por ela e um ficheiro novo (`trace-append-only.json`, de 29/10) tem de estar selado pela última camada. Passa com 12 casos de mentira (11 antigos + "ficheiro novo em sensacoes/ sem estar ancorado nem registado"), 8 de 8 ancorados.

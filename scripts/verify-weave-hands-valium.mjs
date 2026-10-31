@@ -87,6 +87,20 @@ async function verificar({ valium, index, hands, registo, discovery, card }) {
   assert.equal(m.concordar([{ ok: true, valor: 7n }, { ok: true, valor: 8n }]).estado, 'discordam');
   assert.equal(m.concordar([{ ok: true, valor: 7n }, { ok: true, valor: 7n }, { ok: true, valor: 8n }]).valor, null, 'discordância nunca escolhe um valor');
   assert.equal(m.concordar([{ ok: false }, { ok: false }]).estado, 'sem_leitura');
+  // fontes: pelo menos quatro por cadeia (três sempre, o resto de reserva), https, sem repetidas nem do mesmo anfitrião
+  for (const [cadeia, lista] of Object.entries(m.RPCS)) {
+    assert.ok(lista.length > m.MAX_RPC_POR_PERGUNTA, `${cadeia}: sem fontes de reserva`);
+    assert.equal(new Set(lista).size, lista.length, `${cadeia}: fonte repetida`);
+    assert.equal(new Set(lista.map((u) => new URL(u).host)).size, lista.length, `${cadeia}: dois URL do mesmo anfitrião`);
+    for (const u of lista) assert.match(u, /^https:\/\//, `${cadeia}: fonte sem https`);
+  }
+  // fontes de reserva: só se perguntam quando as primeiras não deram duas leituras válidas
+  assert.equal(m.precisaMaisFontes([{ ok: true }, { ok: true }, { ok: true }]), false);
+  assert.equal(m.precisaMaisFontes([{ ok: true }, { ok: true }, { ok: false }]), false, 'duas leituras chegam');
+  assert.equal(m.precisaMaisFontes([{ ok: true }, { ok: false }, { ok: false }]), true, 'uma só leitura pede reservas');
+  assert.equal(m.precisaMaisFontes([{ ok: false }, { ok: false }, { ok: false }]), true);
+  assert.equal(m.precisaMaisFontes([]), true);
+  assert.equal(m.MIN_FONTES, 2, 'concordância exige duas fontes');
   assert.equal(m.verificado(m.concordar([{ ok: true, valor: 7n }])), false);
   assert.equal(m.verificado(m.concordar([{ ok: true, valor: 7n }, { ok: true, valor: 7n }])), true);
   // fronteiras no código implantável
@@ -101,6 +115,8 @@ async function verificar({ valium, index, hands, registo, discovery, card }) {
   assert.match(index, /stores_nothing: true/);
   assert.match(index, /"eth_call"/);
   assert.doesNotMatch(index, /method: "eth_(?!call)/, 'só eth_call é permitido');
+  assert.match(index, /if \(!precisaMaisFontes\(primeiras\)\) return primeiras;/, 'a leitura deixou de usar as fontes de reserva só quando precisa');
+  assert.match(index, /lista\.slice\(MAX_RPC_POR_PERGUNTA\)/, 'as fontes de reserva não são lidas');
   assert.match(index, /preço, liquidez ou valor de mercado/);
   assert.doesNotMatch(index, /prometemos|garant(e|imos) (receita|valor|retorno)/i);
   // ligação ao conector @weave_hands e descoberta
@@ -143,6 +159,13 @@ const estragos = [
   ['palavra curta aceite', { valium: real.valium.replace("/^0x[0-9a-fA-F]{64}$/.test(hex)) throw new Error('resposta_invalida');\n  return BigInt(hex);", "/^0x[0-9a-fA-F]+$/.test(hex)) throw new Error('resposta_invalida');\n  return BigInt(hex);") }],
   ['lerEndereco aceita bytes altos', { valium: real.valium.replace("  if (!/^0x0{24}/.test(hex)) throw new Error('resposta_invalida');\n", '') }],
   ['formatar sem decimais', { valium: real.valium.replace("return f ? `${i}.${f}` : i;", 'return i;') }],
+  ['reservas pedidas com uma leitura válida bastar', { valium: real.valium.replace('.length < MIN_FONTES', '.length < 1') }],
+  ['mínimo de fontes baixado para uma', { valium: real.valium.replace('export const MIN_FONTES = 2;', 'export const MIN_FONTES = 1;') }],
+  ['sem fontes de reserva na Ethereum', { valium: real.valium.replace(/ethereum: \[[^\]]*\],/, "ethereum: ['https://a.example', 'https://b.example', 'https://c.example'],") }],
+  ['fonte repetida na Ethereum', { valium: real.valium.replace("'https://eth.drpc.org'", "'https://ethereum-rpc.publicnode.com'") }],
+  ['fonte sem https na Ethereum', { valium: real.valium.replace("'https://eth.drpc.org'", "'http://eth.drpc.org'") }],
+  ['reservas nunca consultadas', { index: real.index.replace('if (!precisaMaisFontes(primeiras)) return primeiras;', 'return primeiras;') }],
+  ['reservas sempre consultadas', { index: real.index.replace('if (!precisaMaisFontes(primeiras)) return primeiras;', '') }],
   ['usa segredo do ambiente', { index: real.index + '\nconst k = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");' }],
   ['escreve na base', { index: real.index + '\nawait fetch(`${BASE}/rest/v1/x`, { method: "POST" });' }],
   ['envia transacção', { index: real.index.replace('"eth_call"', '"eth_sendRawTransaction"') }],

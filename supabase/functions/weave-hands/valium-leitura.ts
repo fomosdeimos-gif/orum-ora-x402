@@ -3,7 +3,7 @@
 // não contacta ninguém. Um valor só é "concordam" com duas fontes iguais. Lógica pura em ./valium.mjs.
 import {
   CONTRATOS, CARTEIRAS, RPCS, ENS, DECIMAIS, MAX_RPC_POR_PERGUNTA, ehEndereco,
-  chamadaTotalSupply, chamadaBalanceOf, chamadaResolver, chamadaAddr, lerUint, lerEndereco, formatar, concordar, verificado,
+  chamadaTotalSupply, chamadaBalanceOf, chamadaResolver, chamadaAddr, lerUint, lerEndereco, formatar, concordar, verificado, precisaMaisFontes,
 } from "./valium.mjs";
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true };
@@ -28,12 +28,14 @@ async function ethCall(rpc: string, call: { to: string; data: string }): Promise
 }
 async function perguntar(cadeia: "ethereum" | "base", call: { to: string; data: string }): Promise<Leitura[]> {
   const lista = RPCS[cadeia];
-  const out = await Promise.all(lista.slice(0, MAX_RPC_POR_PERGUNTA).map(async (rpc: string): Promise<Leitura> => {
+  const ler = (rpcs: string[]) => Promise.all(rpcs.map(async (rpc: string): Promise<Leitura> => {
     const fonte = new URL(rpc).host;
     try { const palavra = await ethCall(rpc, call); return { ok: true, palavra, valor: lerUint(palavra), fonte }; }
     catch (e) { return { ok: false, fonte, erro: e instanceof Error ? e.message : "falhou" }; }
   }));
-  return out;
+  const primeiras = await ler(lista.slice(0, MAX_RPC_POR_PERGUNTA));
+  if (!precisaMaisFontes(primeiras)) return primeiras;
+  return [...primeiras, ...(await ler(lista.slice(MAX_RPC_POR_PERGUNTA)))];
 }
 const resumo = (ls: Leitura[]) => {
   const c = concordar(ls);
