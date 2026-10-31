@@ -20,7 +20,7 @@ assert.equal(discovery.boundaries.pays_or_signs, false);
 assert.equal(discovery.boundaries.publishes, false);
 assert.deepEqual(discovery.mcp.tools, [
   "recognize_0003", "weave_thread", "observe_organs", "descend_level", "weave_cycle", "verify_surface", "offer_source_proposal", "inspect_weave_truth",
-  "recognize_valium", "read_valium",
+  "recognize_valium", "read_valium", "probe_payment_route",
 ]);
 const card = JSON.parse(fs.readFileSync(".well-known/agent-card.json", "utf8"));
 assert.deepEqual(card.serviceInterfaces.find(x => x.name === "@weave_hands").tools, discovery.mcp.tools);
