@@ -17,6 +17,31 @@ for (const ref of ['origin/main', 'main']) {
 }
 if (antigo !== null) assert.ok(soAcrescenta(antigo, texto), 'linhas antigas foram alteradas face ao main');
 
+// O fio acompanha as camadas (livro 1209): cada recibo ancora/raiz-registos*.json tem de estar dito no fio, com o mesmo estado e,
+// se está confirmado no Bitcoin, com a mesma altura. Um fio que fica para trás dos recibos é uma fenda.
+const camadasDoFio = (lidas) => {
+  const ultimo = (p) => [...lidas].reverse().find((l) => l.sujeito === 'sedimentar' && l.predicado === p)?.valor;
+  const erros = [];
+  for (const f of fs.readdirSync('ancora')) {
+    const m = /^raiz-registos(?:-(\d+))?\.json$/.exec(f);
+    if (!m) continue;
+    const n = m[1] ?? '1';
+    const r = JSON.parse(fs.readFileSync(`ancora/${f}`, 'utf8'));
+    if (ultimo(`camada.${n}.estado`) !== r.estado) erros.push(`camada ${n}: o fio diz ${ultimo(`camada.${n}.estado`)}, o recibo diz ${r.estado}`);
+    if (r.estado === 'confirmado_bitcoin' && ultimo(`camada.${n}.altura_bitcoin`) !== String(r.altura_bitcoin)) erros.push(`camada ${n}: altura no fio ${ultimo(`camada.${n}.altura_bitcoin`)}, no recibo ${r.altura_bitcoin}`);
+  }
+  return erros;
+};
+const lidasReais = ler(texto);
+assert.deepEqual(camadasDoFio(lidasReais), [], 'o fio ficou para trás dos recibos das camadas');
+let estragosCamadas = 0;
+const camadaMa = (nome, lidas) => { assert.notDeepEqual(camadasDoFio(lidas), [], `estrago não apanhado: ${nome}`); estragosCamadas++; };
+camadaMa('o fio sem as linhas da última camada', lidasReais.filter((l) => !/^camada\.15\./.test(l.predicado)));
+camadaMa('o fio sem as linhas da camada 14', lidasReais.filter((l) => !/^camada\.14\./.test(l.predicado)));
+camadaMa('altura trocada', lidasReais.map((l) => (l.predicado === 'camada.15.altura_bitcoin' ? { ...l, valor: '1' } : l)));
+camadaMa('estado trocado', lidasReais.map((l) => (l.predicado === 'camada.14.estado' ? { ...l, valor: 'pendente' } : l)));
+camadaMa('fio vazio', []);
+
 // Fixture própria: monta linhas válidas a partir de campos
 const montar = (campos) => {
   let ant = null; let t = '';
@@ -64,4 +89,4 @@ falha('algo que parece segredo', com(0, { valor: '-----BEGIN PRIVATE KEY' }));
 assert.equal(soAcrescenta('a\nb\n', 'a\nb\nc\n'), true);
 assert.equal(soAcrescenta('a\nb\n', 'a\nB\nc\n'), false); mentiras++;
 
-console.log(JSON.stringify({ verified: true, ...real, verificado_contra_main: antigo !== null, casos_de_mentira: mentiras }));
+console.log(JSON.stringify({ verified: true, ...real, verificado_contra_main: antigo !== null, casos_de_mentira: mentiras, estragos_do_fio_vs_camadas: estragosCamadas }));
