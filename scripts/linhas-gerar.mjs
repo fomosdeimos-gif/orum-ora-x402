@@ -23,6 +23,8 @@ const c10 = fs.existsSync('ancora/raiz-registos-10.json') ? J('ancora/raiz-regis
 const c11 = fs.existsSync('ancora/raiz-registos-11.json') ? J('ancora/raiz-registos-11.json') : null;
 const c12 = fs.existsSync('ancora/raiz-registos-12.json') ? J('ancora/raiz-registos-12.json') : null;
 const c13 = fs.existsSync('ancora/raiz-registos-13.json') ? J('ancora/raiz-registos-13.json') : null;
+const c14 = fs.existsSync('ancora/raiz-registos-14.json') ? J('ancora/raiz-registos-14.json') : null;
+const c15 = fs.existsSync('ancora/raiz-registos-15.json') ? J('ancora/raiz-registos-15.json') : null;
 const lb = est.linha_de_base;
 const oro = J('ancora/oro-v1.json');
 const elo = J('ancora/sensations-btc.json');
@@ -85,7 +87,12 @@ if (c12) factos.push(['sedimentar', 'camada.12.estado', c12.estado, 'lido', 'fic
 if (c12 && c12.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.12.altura_bitcoin', String(c12.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c13) factos.push(['sedimentar', 'camada.13.estado', c13.estado, 'lido', 'ficheiro:ancora/raiz-registos-13.json']);
 if (c13 && c13.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.13.altura_bitcoin', String(c13.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
+if (c14) factos.push(['sedimentar', 'camada.14.estado', c14.estado, 'lido', 'ficheiro:ancora/raiz-registos-14.json']);
+if (c14 && c14.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.14.altura_bitcoin', String(c14.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
+if (c15) factos.push(['sedimentar', 'camada.15.estado', c15.estado, 'lido', 'ficheiro:ancora/raiz-registos-15.json']);
+if (c15 && c15.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.15.altura_bitcoin', String(c15.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
+if (c1.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.1.altura_bitcoin', String(c1.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 
 let texto = fs.existsSync(FICHEIRO) ? fs.readFileSync(FICHEIRO, 'utf8') : '';
 const existentes = ler(texto);

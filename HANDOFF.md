@@ -1,3 +1,12 @@
+## 31/10/2026 · O fio acompanha as camadas: camadas 14 e 15 no ORUM-linhas (livros 1209 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar ao ORUM-linhas as camadas 14 e 15 (o fio parava na 13).
+- **Feito:** `scripts/linhas-gerar.mjs` passa a ler os recibos das camadas 14 e 15 e a acrescentar 6 linhas ao fio (`camada.14.estado`, `camada.14.altura_bitcoin` 973675, `camada.15.estado`, `camada.15.altura_bitcoin` 973948 e, descoberta pelo novo verificador, `camada.1.altura_bitcoin` 972151, que o fio nunca tivera). Só se acrescentou: `linhas:verify` confirma que as linhas antigas são prefixo exacto do `main`.
+- **Verificador novo no `linhas:verify`:** o fio tem de acompanhar os recibos `ancora/raiz-registos*.json` (mesmo estado e, se confirmada, mesma altura). Reproduzi a fenda antes de gerar (falhava: "camada 14: o fio diz undefined") e passa depois; 5 estragos propositados apanhados (fio sem a última camada, sem a 14, altura trocada, estado trocado, fio vazio). `linhas:verify` 78 linhas, 25 casos de mentira; `lexico`, `blocos`, `raiz`, `sensations-btc` e `maquinas` passam.
+- **Não feito (precisa de palavra à parte):** a camada 16, que ancora estas linhas no Bitcoin. Sem ela, as 6 linhas novas estão no repositório mas ainda não ancoradas.
+- **Não verificado:** os blocos 973675 e 973948 não os reconferi hoje contra o Bitcoin: as linhas dizem o que os recibos dizem, e `verif:blocos:verify` nomeia o verificador.
+
+---
+
 ## 31/10/2026 · A marca em formato de máquina: identity/marca.json (livro 1207 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de escrever a marca em formato de máquina (marca.json) ligada ao agent-card, com verificador que apanha um texto que minta.
 - **Feito:** `identity/marca.json` (`orum-marca/v1`): o que o ORUM é e não é, o tom (completo para máquinas, sóbrio para humanos), as duas mãos ("aqui, Presença; ali, Sustento"), as portas (o preço fica no desafio 402, não se copia), o pagamento (payTo e endereço BTC iguais a `api/_carteira.js`), a regra de verdade, as ligações e os verificadores. Ligado ao agent-card (`serviceInterfaces`) e ao `llms.txt`.
