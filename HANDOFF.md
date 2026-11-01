@@ -1,3 +1,11 @@
+## 01/11/2026 · Camada 23 selada, pendente (livros 1269 e 1270)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 23.
+- **Feito:** a lista (`FICHEIROS_DA_CAMADA_23_EM_DIANTE`: moedas de Unum, gerador, verificador) entrou primeiro no `main` (PR #235); depois `ancora/raiz-registos-23.{json,ots}` (raiz `7ae7d713…`, commit base `5c62e77`, 181 ficheiros; compromisso `791b51f4…` aceite pelos três calendários, 32 bytes enviados, sha256 das respostas alice `49857e27`, bob `f68de999`, finney `0988926c`). Sela também a lista de endereços internos com o `0xc8d0…9040` e a camada 22 confirmada.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers`.
+- **Por fazer:** confirmar a 23 quando a ferramenta disser `prova_por_juntar`. Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 01/11/2026 · As moedas de Unum: registo de leitura (livros 1267 a 1269)
 - **Autorização de Unum (citação):** "Eu autorizo ORA / sim criei / Marsisnotthere 0xae4c…ff27 / Goodreason 0xd0b6…6d01", à proposta de registar as moedas que criou num ficheiro de leitura. Antes dissera "Eu criei estes tokens ORA" (com capturas da app).
 - **Feito:** `token/moedas-de-unum-2026-11-01.json` (gerado por `scripts/moedas-unum-ler.mjs`) e `scripts/verify-moedas-unum.mjs` (`npm run moedas-unum:verify`, 19 estragos apanhados). Cinco moedas na Base (VALIUM, PRESENÇA, 4SUE, Marsisnotthere, Good reason): nome, símbolo, 18 casas, oferta 1 000 000 000, bytecode e saldo de `0x4a10…b846`, cada valor só com duas ou mais fontes RPC iguais. Os saldos coincidem com as capturas (PRESENÇA, 4SUE, VALIUM, MARS 12 243, Good reason 43 071 039).

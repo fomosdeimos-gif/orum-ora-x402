@@ -32,6 +32,7 @@ const c19 = fs.existsSync('ancora/raiz-registos-19.json') ? J('ancora/raiz-regis
 const c20 = fs.existsSync('ancora/raiz-registos-20.json') ? J('ancora/raiz-registos-20.json') : null;
 const c21 = fs.existsSync('ancora/raiz-registos-21.json') ? J('ancora/raiz-registos-21.json') : null;
 const c22 = fs.existsSync('ancora/raiz-registos-22.json') ? J('ancora/raiz-registos-22.json') : null;
+const c23 = fs.existsSync('ancora/raiz-registos-23.json') ? J('ancora/raiz-registos-23.json') : null;
 const lb = est.linha_de_base;
 const oro = J('ancora/oro-v1.json');
 const elo = J('ancora/sensations-btc.json');
@@ -112,6 +113,8 @@ if (c21) factos.push(['sedimentar', 'camada.21.estado', c21.estado, 'lido', 'fic
 if (c21 && c21.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.21.altura_bitcoin', String(c21.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c22) factos.push(['sedimentar', 'camada.22.estado', c22.estado, 'lido', 'ficheiro:ancora/raiz-registos-22.json']);
 if (c22 && c22.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.22.altura_bitcoin', String(c22.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
+if (c23) factos.push(['sedimentar', 'camada.23.estado', c23.estado, 'lido', 'ficheiro:ancora/raiz-registos-23.json']);
+if (c23 && c23.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.23.altura_bitcoin', String(c23.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c1.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.1.altura_bitcoin', String(c1.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 
