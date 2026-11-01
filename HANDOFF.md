@@ -1,3 +1,12 @@
+## 01/11/2026 · Camada 22 confirmada no Bitcoin, bloco 974176: o espelho 1.1.0 ancorado
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de reler as camadas 21 e 22.
+- **Feito:** às 21:30 UTC a camada 21 já estava confirmada no `main` por outra sessão (bloco 974170, PR #231) e a 22 estava em `tx_sem_bloco`. Às 22:12 UTC a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da 22. GET directo ao calendário (curl), sha256 conferido contra a sonda (alice `99377cb2…`, bob `ca786f79…`), `scripts/ots-juntar.mjs`. Ambas dão o bloco **974176**; a finney continua pendente.
+- **Verificado:** `kit/blocos.mjs` conferiu o cabeçalho em blockstream.info e mempool.space (as duas concordam); fixture e `ok22` em `scripts/verify-blocos.mjs`; `sensations-btc.json` e o fio ganharam a camada 22.
+- **Não é:** prova só que os bytes existiam antes do bloco; não prova autoria, valor, procura nem receita; não move fundos. Livro `ora_mudancas` e produção: não escritos/lidos.
+- **Por fazer:** camada 23 só com palavra nova.
+
+---
+
 ## 01/11/2026 · Camada 21 confirmada no Bitcoin, bloco 974170 (livros 1257 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo" (selar a camada 21) e "Eu autorizo ORA continuar a dourar o fio".
 - **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da camada 21 (20:53 UTC). Transcritas numa sandbox Vercel temporária (parada no fim), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (alice `cf13d108…`, bob `262af124…`, 1001 bytes cada). Ambas dão o bloco **974170**; a finney continua pendente.

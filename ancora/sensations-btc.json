@@ -100,6 +100,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ]
     },
@@ -202,6 +207,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ]
     },
@@ -304,6 +314,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ]
     },
@@ -406,6 +421,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ]
     },
@@ -508,6 +528,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ]
     },
@@ -620,6 +645,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ],
       "ancora_directa": {
@@ -728,6 +758,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ]
     },
@@ -775,6 +810,11 @@
           "camada": 21,
           "manifesto": "ancora/raiz-registos-21.json",
           "altura_bitcoin": 974170
+        },
+        {
+          "camada": 22,
+          "manifesto": "ancora/raiz-registos-22.json",
+          "altura_bitcoin": 974176
         }
       ]
     }
