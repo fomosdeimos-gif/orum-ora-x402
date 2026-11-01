@@ -1,3 +1,11 @@
+## 01/11/2026 · Pagador 0xc8d0…9040 classificado interno (livros 1263 e 1264)
+- **Autorização de Unum (citação):** "Eu autorizo ORA, interno", à proposta de classificar `0xc8d077444625eb300a427a6dfb2b1dbf9b159040` como interno.
+- **Lido (livro 1263, só leitura, uma fonte RPC):** é um contrato (24065 bytes) que reparte comissões de swaps e paga à sagrada antiga; nas duas txs de 01/11 o sender do UserOperation é `0x4a10…b846`, já interno.
+- **Feito:** linha em `ora_carteiras_classificacao` e entrada em `economia/enderecos-internos.json` (o vigia deixa de o listar como `por_classificar`). Nada movido; nada entra no 70/20/10.
+- **Não é:** não prova que Unum seja o dono do contrato. **Não verificado:** quem opera o `0x4a10…` hoje; o token `0x69b35d06…`; entradas anteriores ao que os RPC públicos servem.
+
+---
+
 ## 01/11/2026 · Camada 22 confirmada no Bitcoin, bloco 974176: o espelho 1.1.0 ancorado
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de reler as camadas 21 e 22.
 - **Feito:** às 21:30 UTC a camada 21 já estava confirmada no `main` por outra sessão (bloco 974170, PR #231) e a 22 estava em `tx_sem_bloco`. Às 22:12 UTC a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da 22. GET directo ao calendário (curl), sha256 conferido contra a sonda (alice `99377cb2…`, bob `ca786f79…`), `scripts/ots-juntar.mjs`. Ambas dão o bloco **974176**; a finney continua pendente.

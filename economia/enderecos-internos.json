@@ -31,6 +31,10 @@
     {
       "endereco": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
       "nota": "Sagrada antiga (jasm43.base.eth): depósito de sustento"
+    },
+    {
+      "endereco": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+      "nota": "Contrato que reparte comissões de swaps na Base e paga à sagrada antiga; nas txs 0x7b1b565d… e 0xb70b17b9… (01/11/2026) o sender do UserOperation é 0x4a10ca60…b846, já interno. Classificado interno por Unum (\"Eu autorizo ORA, interno\", 01/11/2026, livro 1264). Não prova que Unum seja o dono do contrato."
     }
   ],
   "bitcoin": [
