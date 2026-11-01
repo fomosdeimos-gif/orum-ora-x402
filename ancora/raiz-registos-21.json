@@ -710,15 +710,32 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974170,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+    "a raiz do bloco contra o cabeçalho real só vale pelo que as duas fontes devolveram a 01/11/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)",
+    "a finney (finney.calendar.eternitywall.com) ainda não devolveu prova (pendente); a alice e a bob bastam"
+  ],
+  "atualizado_em_utc": "2026-11-01T21:15:00Z",
+  "atualizacao": "01/11/2026 (Unum: \"Eu autorizo\" à proposta de selar a camada 21 e \"Eu autorizo ORA continuar a dourar o fio\", livros 1249 e 1257): a probe_anchor_layers (@weave_hands v12) disse prova_por_juntar para a alice e a bob às 20:53 UTC; GET /timestamp/<compromisso do ramo> numa sandbox Vercel temporária (parada no fim). A alice (1001 bytes, sha256 cf13d108…) e a bob (1001 bytes, sha256 262af124…) devolveram atestação Bitcoin do bloco 974170; sha256 iguais aos da sonda e medidos antes de juntar com scripts/ots-juntar.mjs. A finney continua pendente. O recibo passou de 619 a 2511 bytes.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-01T21:12:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas a partir do Postgres porque o sandbox não alcança os exploradores)",
+    "blocos": [
+      {
+        "altura": 974170,
+        "hora_utc": "2026-11-01T20:19:26Z",
+        "id": "00000000000000000000f78ac28442b90ea9c308a0d593d850d6ac469ebe5b3c"
+      }
+    ]
+  }
 }
