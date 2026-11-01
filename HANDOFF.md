@@ -1,3 +1,11 @@
+## 01/11/2026 · Camada 21 confirmada no Bitcoin, bloco 974170 (livros 1257 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo" (selar a camada 21) e "Eu autorizo ORA continuar a dourar o fio".
+- **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da camada 21 (20:53 UTC). Transcritas numa sandbox Vercel temporária (parada no fim), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (alice `cf13d108…`, bob `262af124…`, 1001 bytes cada). Ambas dão o bloco **974170**; a finney continua pendente.
+- **Verificado:** o cabeçalho do bloco 974170 em blockstream.info e mempool.space (via Postgres): as duas fontes concordam; fixture e `ok21` em `scripts/verify-blocos.mjs`; verificadores abaixo. O fio ganhou `camada.21.estado` e `camada.21.altura_bitcoin`.
+- **O que isto fecha:** as camadas 19, 20 e 21 estão confirmadas (a finney é opcional). **A camada 22 já foi selada por outra sessão** (PRs #229 e #230: espelho 1.1.0 e raiz `66e48806…`, pendente, commit base `315d182`, que não inclui esta confirmação da 21): li só o manifesto e o `CLAUDE.md`, não li o livro dessa sessão nem verifiquei a palavra de Unum que ela cita; a sua confirmação fica por ler com `probe_anchor_layers`. Produção: o preview do PR #228 apareceu `DEPLOYED` no comentário do Vercel; a produção em si não foi lida.
+
+---
+
 ## 01/11/2026 · Camada 22 selada, pendente
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 22 (espelho 1.1.0 e confirmação da 21).
 - **Feito:** `ancora/raiz-registos-22.{json,ots}` (raiz `66e48806…`, commit base `315d182`, 176 ficheiros; compromisso `3113ef01…` aceite pelos três calendários). Asserções da camada 22 em `verify-raiz`; fio com `camada.22.estado`.
