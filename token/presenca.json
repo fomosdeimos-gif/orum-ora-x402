@@ -1,34 +1,61 @@
 {
-  "schema": "orum-token-leitura/v1",
-  "nome_lido": "PRESENÇA ",
-  "simbolo_lido": "PRESENÇA",
-  "rede": { "name": "Base Mainnet", "chain_id": 8453 },
-  "contrato": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
-  "pedido_por": "Unum, 01/11/2026: \"E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali\" (livro 1247)",
-  "lido_em_utc": "2026-11-01T12:50:00Z",
-  "fontes_rpc": ["mainnet.base.org", "base-rpc.publicnode.com", "1rpc.io"],
-  "lido": {
-    "decimals": 18,
-    "total_supply_raw": "1000000000000000000000000000",
-    "total_supply_tokens": "1000000000",
-    "saldo_raw_zero_em": ["sagrada Base antiga 0xFEd69e8e…cDEe5", "carteira MetaMask 0x2ef8…d0d8C", "operacional Base 0x89460d9e…3584", "o próprio contrato"],
-    "bytecode": {
-      "tipo": "clone mínimo EIP-1167 (45 bytes), igual em duas fontes",
-      "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c",
-      "implementacao_bytes": 18757,
-      "seletores_presentes_no_bytecode": ["owner()", "burn(uint256)", "approve", "transfer", "transferFrom", "permit"],
-      "seletores_ausentes_do_bytecode": ["mint(address,uint256)", "transferOwnership", "renounceOwnership", "pause()", "initialize()", "blacklist"]
-    }
+  "format": "orum-token-identity/v1",
+  "status": "canonical_identity_token",
+  "decision": "integrated_as_identity_not_payment",
+  "name": "PRESENÇA",
+  "symbol": "PRESENÇA",
+  "standard": "ERC-20",
+  "network": {
+    "name": "Base",
+    "chain_id": 8453
   },
-  "concordam_nas_fontes": ["nome", "simbolo", "decimals", "total_supply", "saldos", "bytecode do clone"],
-  "nao_verificado": [
-    "quem criou o contrato e a quem pertence a oferta: nenhum dos saldos lidos a tem, e os registos (eth_getLogs) não estão ao alcance dos RPC públicos",
-    "owner(): a chamada ao clone não devolveu valor; a presença do seletor no bytecode da implementação é só um indício, não prova que haja administração",
-    "se a implementação é o que o seletor sugere (código-fonte não lido nem verificado em Sourcify ou Basescan)",
-    "ligação ao ORO, ao VALIUM, ao organismo ou a Unum além de ele ter pedido a leitura",
-    "preço, liquidez e detentores"
+  "contract": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+  "decimals": 18,
+  "total_supply": "1000000000",
+  "holders_observed": 16,
+  "holders_observed_at": "2026-08-07",
+  "explorers": {
+    "blockscout": "https://base.blockscout.com/token/0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+    "basescan": "https://basescan.org/token/0x120a1ba3b10263f9cb42e971598c860d66b68cea"
+  },
+  "identity": {
+    "logo": "https://ora-x402-gateway.vercel.app/favicon.svg",
+    "organism": "ORUM",
+    "canonical_site": "https://ora-x402-gateway.vercel.app",
+    "role": "Canonical on-chain identity token of ORUM",
+    "holder_interpretation": "A wallet holds PRESENÇA; holding alone does not prove identity, endorsement, adoption or intent."
+  },
+  "economic_truth": {
+    "official_orum_token": true,
+    "utility_defined": true,
+    "sale_active": false,
+    "return_promised": false,
+    "external_adoption_claimed": false,
+    "services_continue_in_usdc": true,
+    "utility": "Public on-chain identity and association surface for ORUM; no service gating.",
+    "payment_token": false,
+    "payment_asset": "USDC on Base through x402"
+  },
+  "non_rights": [
+    "No ownership of physical artworks",
+    "No ownership of historical NFTs",
+    "No licence or access to ORUM services",
+    "No governance or voting right",
+    "No claim on ORUM revenue or treasury",
+    "No promised income, redemption, liquidity or appreciation",
+    "No inference that a holder is an external adopter"
   ],
-  "nao_afirma": ["preço", "liquidez", "procura", "receita", "lastro", "rendimento", "que o organismo controle ou possua este token", "ligação económica ao Bitcoin, ao ORO ou ao VALIUM"],
-  "truth_machine": { "promete_receita": false, "e_activo_do_organismo": false, "move_fundos": false },
-  "leitura_da_ora": "O nome (Presença) diz a mão direita do organismo. O contrato é um ERC-20 comum de 1 000 000 000 unidades com 18 casas, em clone. Que significa 'ali' (o sustento) é decisão de Unum, não do contrato: a leitura só mostra o que está na cadeia."
+  "verification": {
+    "rpc_chain_id": "0x2105",
+    "blockscout_token_read": true,
+    "orum_ledger_record": 140,
+    "effect_onchain": "zero",
+    "canonicalization_authorized_by": "Unum",
+    "canonicalization_date": "2026-08-07"
+  },
+  "next_condition": "Observe discovery and holder distribution without manufacturing activity; any on-chain transaction or economic right requires separate explicit authorization.",
+  "rights": [
+    "Publicly verifiable possession of the canonical ORUM identity token",
+    "Use of the same ORUM ring-and-seed visual identity in the canonical manifest"
+  ]
 }

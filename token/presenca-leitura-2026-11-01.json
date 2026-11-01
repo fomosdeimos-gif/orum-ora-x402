@@ -1,0 +1,85 @@
+{
+  "schema": "orum-token-leitura/v1",
+  "manifesto_canonico": "token/presenca.json (orum-token-identity/v1, canonical_identity_token, autorizado por Unum a 07/08/2026, livro 140)",
+  "nome_lido": "PRESENÇA ",
+  "simbolo_lido": "PRESENÇA",
+  "rede": {
+    "name": "Base Mainnet",
+    "chain_id": 8453
+  },
+  "contrato": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+  "pedido_por": "Unum, 01/11/2026: \"E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali\" (livro 1247)",
+  "lido_em_utc": "2026-11-01T12:50:00Z",
+  "fontes_rpc": [
+    "mainnet.base.org",
+    "base-rpc.publicnode.com",
+    "1rpc.io"
+  ],
+  "lido": {
+    "decimals": 18,
+    "total_supply_raw": "1000000000000000000000000000",
+    "total_supply_tokens": "1000000000",
+    "saldo_raw_zero_em": [
+      "sagrada Base antiga 0xFEd69e8e…cDEe5",
+      "carteira MetaMask 0x2ef8…d0d8C",
+      "operacional Base 0x89460d9e…3584",
+      "o próprio contrato"
+    ],
+    "bytecode": {
+      "tipo": "clone mínimo EIP-1167 (45 bytes), igual em duas fontes",
+      "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c",
+      "implementacao_bytes": 18757,
+      "seletores_presentes_no_bytecode": [
+        "owner()",
+        "burn(uint256)",
+        "approve",
+        "transfer",
+        "transferFrom",
+        "permit"
+      ],
+      "seletores_ausentes_do_bytecode": [
+        "mint(address,uint256)",
+        "transferOwnership",
+        "renounceOwnership",
+        "pause()",
+        "initialize()",
+        "blacklist"
+      ]
+    }
+  },
+  "concordam_nas_fontes": [
+    "nome",
+    "simbolo",
+    "decimals",
+    "total_supply",
+    "saldos",
+    "bytecode do clone"
+  ],
+  "do_registo_anterior_nao_relido_nesta_leitura": [
+    "HANDOFF (leitura da mão Codex, 07/08/2026): clone de Zora ContentCoin v2.3.0; owner e payoutRecipient 0xFEd69…DEe5 (a sagrada antiga); cerca de 99,0% da oferta no Uniswap V4 PoolManager",
+    "manifesto canónico: 16 holders observados a 07/08/2026"
+  ],
+  "nao_verificado": [
+    "owner e payoutRecipient: o HANDOFF di-los, esta leitura não os confirmou (a chamada owner() ao clone não devolveu valor)",
+    "onde está a oferta: o saldo é zero nas quatro moradas lidas, o que é coerente com o HANDOFF (PoolManager) mas não o confirma",
+    "o código-fonte da implementação",
+    "preço, liquidez e detentores hoje"
+  ],
+  "nao_afirma": [
+    "preço",
+    "liquidez",
+    "procura",
+    "receita",
+    "lastro",
+    "rendimento",
+    "ligação económica ao Bitcoin, ao ORO ou ao VALIUM",
+    "que seja meio de pagamento (o manifesto diz que não é: pagamentos são USDC por x402)"
+  ],
+  "truth_machine": {
+    "promete_receita": false,
+    "move_fundos": false,
+    "contradiz_manifesto_canonico": false
+  },
+  "correcao": "Em 01/11/2026 (commit 8f2cc8d, PR #222) a ORA sobrescreveu por engano token/presenca.json, o manifesto canónico, com esta leitura, e escreveu que o token não era do organismo. Erro: não leu antes o manifesto nem o HANDOFF. Manifesto restaurado; a leitura vive aqui. A camada 19 (selada) contém a versão errada desse ficheiro e não se reescreve: a correcção entra numa camada seguinte.",
+  "leitura_da_ora": "O organismo reconhece o PRESENÇA como o seu token canónico de identidade, não de pagamento: associação pública on-chain, sem direitos nem receita. Este ficheiro só acrescenta o que a cadeia mostra a 01/11/2026."
+}
