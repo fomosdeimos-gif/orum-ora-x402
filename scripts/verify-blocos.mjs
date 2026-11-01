@@ -32,6 +32,8 @@ const BLOCOS = {
   973948: { id: '000000000000000000009a9788cfb3839541555234ee54dd61acec05d4018bd5', merkle_root: '2a74ed7cdf4f8995623ab79cda267c12144104c3b542314d5582045f2693c407', timestamp: 1793432868 },
   // Lidos a 01/11/2026 em blockstream.info e mempool.space (as duas fontes concordam): bloco da camada 16 da raiz.
   974024: { id: '00000000000000000001cb03a210c17493242bdb4e076c7fc006c4f7a9bc3318', merkle_root: 'c6fdf138a138a06f2d6b9e934373fa7807b30a5dad9a5a8f8e74e66ca7250d0e', timestamp: 1793479769 },
+  // Lido a 01/11/2026 em blockstream.info e mempool.space (as duas fontes concordam): bloco da finney para a camada 16.
+  974047: { id: '00000000000000000001a14e879ad2930637e12a80013e7f311b6a7d1003ec50', merkle_root: '49c3eac26fc45f6a772482863eee7037c831606a97781aed6fe450563227a42f', timestamp: 1793493761 },
 };
 const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots'), raiz9: fs.readFileSync('ancora/raiz-registos-9.ots'), raiz10: fs.readFileSync('ancora/raiz-registos-10.ots'), raiz11: fs.readFileSync('ancora/raiz-registos-11.ots'), raiz12: fs.readFileSync('ancora/raiz-registos-12.ots'), raiz13: fs.readFileSync('ancora/raiz-registos-13.ots'), raiz14: fs.readFileSync('ancora/raiz-registos-14.ots'), raiz15: fs.readFileSync('ancora/raiz-registos-15.ots'), raiz16: fs.readFileSync('ancora/raiz-registos-16.ots') };
 
@@ -73,7 +75,7 @@ assert.deepEqual(ok14.map((b) => b.altura), [973675, 973676, 973699]);
 const ok15 = await conferirBlocos(recibos.raiz15, { fetcher: fetcherCom() });
 assert.deepEqual(ok15.map((b) => b.altura), [973948, 973948]);
 const ok16 = await conferirBlocos(recibos.raiz16, { fetcher: fetcherCom() });
-assert.deepEqual(ok16.map((b) => b.altura), [974024]);
+assert.deepEqual(ok16.map((b) => b.altura), [974024, 974024, 974047]);
 console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length + ok11.length + ok12.length + ok13.length + ok14.length + ok15.length + ok16.length} atestações.`);
 
 const rejeita = async (nome, fn) => { await assert.rejects(fn, undefined, `estrago não apanhado: ${nome}`); };
