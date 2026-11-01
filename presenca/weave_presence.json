@@ -3,9 +3,9 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-10-28T06:15:45.145Z",
-  "revision": "2026-10-28-named-tx-is-not-reread-until-a-public-surface-names-it",
-  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation of one address, an unscanned gap on that same address, a second named receipt address that does not inherit the first head, an unclassified transfer, a buyer-count treasury zero, a public classification count that names no transaction, a prior visible transaction reread only when an already-fetched public gateway body contains its hash, a pulse event labelled pagamento that is not treasury settlement, a complete 24h window that does not scan the hole before it, and settled money.",
+  "updated_at": "2026-11-01T06:09:08.545Z",
+  "revision": "2026-11-01-complete-window-scans-only-the-hole-of-its-own-head",
+  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation of one address, an unscanned gap on that same address, a second named receipt address that does not inherit the first head, an unclassified transfer, a buyer-count treasury zero, a public classification count that names no transaction, a prior visible transaction reread only when an already-fetched public gateway body contains its hash, a pulse event labelled pagamento that is not treasury settlement, a complete 24h window that is not itself the scan of the hole before it, a hole scan that is not that window, and settled money.",
   "does_not": [
     "mint presence",
     "count traffic as 1P",
@@ -39,7 +39,9 @@
     "treat a pulse event typed pagamento as treasury settlement or as a proved capsule relation",
     "treat a changed public offer payTo as a label for an older log",
     "treat a complete 24h receipt window as a scan of the hole before that window",
-    "treat the unscanned hole before a complete window as empty"
+    "treat the unscanned hole before a complete window as empty",
+    "treat a read_alongside_not_continued span as a verified head",
+    "treat a hole scan as coverage of the 24h window it stops before"
   ],
   "surfaces": {
     "ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
@@ -75,8 +77,11 @@
     "writes": "presenca/observacao-YYYY-MM-DD.json",
     "continues_partial_usdc_window": true,
     "stitches_unscanned_gap_since_last_verified_head": true,
+    "scans_hole_before_complete_gateway_window": true,
+    "does_not_reread_complete_gateway_window": true,
+    "does_not_inherit_sibling_head": true,
     "rereads_named_tx_only_when_public_body_contains_hash": true,
-    "revision_note": "2026-10-28 rereads one previously visible transaction only if an already-fetched public gateway body contains its hash. Own sediment is not that naming. The address table is not pulled. A pulse label is not settlement. A complete gateway window does not scan, and does not zero, the hole since the last verified head."
+    "revision_note": "2026-11-01: when the gateway window is already complete, scan only the blocks before that window, and only for an address whose own verified head is seam scanned or not_needed. A read_alongside span is not that head. The complete window is not reread. A finished hole is not 24h coverage and is not sustenance."
   },
   "second_surface": {
     "kind": "github_raw_bytes",

@@ -255,7 +255,8 @@ function verifiedKeylessHeads() {
     if (receipts?.keyless_span) spans.push(receipts.keyless_span);
     if (Array.isArray(receipts?.keyless_address_spans)) spans.push(...receipts.keyless_address_spans);
     for (const span of spans) {
-      if (!span || span.state !== "window_complete" || span.covers_requested_24h !== true) continue;
+      if (span.seam?.state === "read_alongside_not_continued") continue;
+    if (!spanIsVerifiedHead(span)) continue;
       if (!Array.isArray(span.transfers_conflict) || span.transfers_conflict.length !== 0) continue;
       if (!Number.isInteger(span.head_block)) continue;
       if (typeof span.carteira !== "string" || !/^0x[0-9a-f]{40}$/.test(span.carteira.toLowerCase())) continue;
@@ -272,6 +273,183 @@ function verifiedKeylessHeads() {
     }
   }
   return { state: "read", best };
+}
+
+function spanIsVerifiedHead(span) {
+  if (!span || !Array.isArray(span.transfers_conflict) || span.transfers_conflict.length !== 0) return false;
+  if (!Number.isInteger(span.head_block)) return false;
+  if (typeof span.carteira !== "string" || !/^0x[0-9a-f]{40}$/.test(span.carteira.toLowerCase())) return false;
+  if (span.state === "hole_scanned") return true;
+  return span.state === "window_complete" && span.covers_requested_24h === true;
+}
+
+async function scanHoleBeforeCompleteWindow(usdcWindow, base) {
+  const windowFrom = usdcWindow.window?.bloco_de;
+  const addresses = namedReceiptAddresses(usdcWindow);
+  if (!Number.isInteger(windowFrom) || addresses.length === 0) {
+    return {
+      primary: {
+        ...base,
+        state: "bloqueado",
+        covers_requested_24h: false,
+        note: "The complete gateway window did not name a start block and a receipt address. The hole was not filled with zero.",
+      },
+      spans: [],
+    };
+  }
+  const heads = verifiedKeylessHeads();
+  if (heads.state !== "read") {
+    return {
+      primary: {
+        ...base,
+        state: "bloqueado",
+        covers_requested_24h: false,
+        note: "Prior observations were not readable. The hole before the complete window was not filled with zero.",
+      },
+      spans: [],
+    };
+  }
+  const holeEnd = windowFrom - 1;
+  const withoutHead = addresses.filter((carteira) => !heads.best.has(carteira));
+  const spans = [];
+  for (const carteira of addresses) {
+    const previous = heads.best.get(carteira);
+    if (!previous) continue;
+    if (previous.head_block + 1 > holeEnd) {
+      spans.push({
+        ...base,
+        state: "hole_scanned",
+        carteira,
+        from_block: previous.head_block + 1,
+        head_block: previous.head_block,
+        covers_requested_24h: false,
+        seam: {
+          state: "not_needed",
+          previous_file: previous.file,
+          previous_head_block: previous.head_block,
+          previous_carteira: previous.carteira,
+          complete_window_from_block: windowFrom,
+          note: "Verified head for this address already meets the start of the complete gateway window. No hole. The complete window was not reread.",
+        },
+        transfers_agreed: [],
+        transfers_conflict: [],
+        agreed_count: 0,
+        agreed_total_base_units: "0",
+        note: "No hole before the complete window for this address. The complete window was not reread and was not called a scan of earlier blocks.",
+      });
+      continue;
+    }
+    const fromN = previous.head_block + 1;
+    console.error(`hole ${carteira} ${fromN}..${holeEnd}`);
+    const fromBlock = await rpcRetry(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + fromN.toString(16), false]);
+    const endBlock = await rpcRetry(TENDERLY_PUBLIC, "eth_getBlockByNumber", ["0x" + holeEnd.toString(16), false]);
+    if (!fromBlock.ok || !endBlock.ok) {
+      spans.push({
+        ...base,
+        state: "bloqueado",
+        carteira,
+        from_block: fromN,
+        head_block: holeEnd,
+        covers_requested_24h: false,
+        error: fromBlock.error || endBlock.error,
+        seam: {
+          state: "bloqueado",
+          previous_file: previous.file,
+          previous_head_block: previous.head_block,
+          previous_carteira: previous.carteira,
+          seam_from_block: fromN,
+          seam_to_block: holeEnd,
+          complete_window_from_block: windowFrom,
+          note: "Start or end block lookup failed. The hole was not filled with zero and the complete window was not reread.",
+        },
+        transfers_agreed: [],
+        transfers_conflict: [],
+        note: "Block lookup failed. The hole was not filled with zero.",
+      });
+      continue;
+    }
+    const scanned = await scanAddressRange(carteira, fromN, holeEnd);
+    if (!scanned.ok) {
+      spans.push({
+        ...base,
+        state: "bloqueado",
+        carteira,
+        from_block: fromN,
+        head_block: holeEnd,
+        from_time_utc: new Date(hexToNum(fromBlock.result.timestamp) * 1000).toISOString(),
+        covers_requested_24h: false,
+        chunks: scanned.chunks,
+        error: scanned.error,
+        seam: {
+          state: "bloqueado",
+          previous_file: previous.file,
+          previous_head_block: previous.head_block,
+          previous_carteira: previous.carteira,
+          seam_from_block: fromN,
+          seam_to_block: holeEnd,
+          complete_window_from_block: windowFrom,
+          note: "A chunk of the hole failed. The missing range was not filled with zero. The complete gateway window was not reread.",
+        },
+        transfers_agreed: [],
+        transfers_conflict: [],
+        note: "A chunk failed. The hole was not filled with zero and was not called empty.",
+      });
+      continue;
+    }
+    const { confirmed, conflicts, totalUnits } = await confirmLogs(carteira, scanned.logs);
+    const ok = conflicts.length === 0;
+    spans.push({
+      ...base,
+      state: ok ? "hole_scanned" : "bloqueado",
+      carteira,
+      from_block: fromN,
+      head_block: holeEnd,
+      from_time_utc: new Date(hexToNum(fromBlock.result.timestamp) * 1000).toISOString(),
+      head_time_utc: new Date(hexToNum(endBlock.result.timestamp) * 1000).toISOString(),
+      covers_requested_24h: false,
+      seam: {
+        state: ok ? "scanned" : "bloqueado",
+        previous_file: previous.file,
+        previous_head_block: previous.head_block,
+        previous_head_time_utc: previous.head_time_utc,
+        previous_carteira: previous.carteira,
+        seam_from_block: fromN,
+        seam_to_block: holeEnd,
+        complete_window_from_block: windowFrom,
+        blocks_in_hole: holeEnd - fromN + 1,
+        note: "Only the hole before the already complete gateway window was scanned, for this address only. A sibling read was not used as this head. The complete window was not reread. Scanning is not classification and is not sustenance.",
+      },
+      chunks: scanned.chunks,
+      transfers_agreed: confirmed,
+      transfers_conflict: conflicts,
+      agreed_count: confirmed.length,
+      agreed_total_base_units: totalUnits.toString(),
+      note: ok
+        ? "Hole scanned. Agreed logs stay not_classified. This is not the 24h window and not sustenance."
+        : "Cross-check disagreed. The hole was not treated as empty and the disagreed logs are not sustenance.",
+    });
+  }
+  const primary = spans.find((span) => span.seam?.state === "scanned") ?? spans[0] ?? {
+    ...base,
+    state: "bloqueado",
+    covers_requested_24h: false,
+    note: "No named address had a verified head of its own behind the complete window. No sibling head was borrowed and no hole was filled with zero.",
+  };
+  const everyOk = spans.length > 0 && spans.every((span) => span.state === "hole_scanned" && span.transfers_conflict.length === 0);
+  return {
+    primary: {
+      ...primary,
+      carteiras: addresses,
+      addresses_without_verified_head: withoutHead,
+      sibling_head_not_inherited: true,
+      state: everyOk ? "hole_scanned" : "bloqueado",
+      covers_requested_24h: false,
+      note: everyOk
+        ? "The hole before the complete gateway window was scanned only for addresses with their own verified head. The window itself was not reread. Nothing here is sustenance."
+        : "The hole before the complete window was not fully read for every address that already had its own verified head. It was not filled with zero. A sibling span was not used as a head.",
+    },
+    spans,
+  };
 }
 
 function namedReceiptAddresses(usdcWindow) {
@@ -378,10 +556,7 @@ async function continuePartialUsdcWindow(usdcWindow) {
     ],
   };
   if (usdcWindow.state === "window_complete") {
-    return {
-      primary: { ...base, state: "not_needed", note: "Gateway window was already complete. No second read." },
-      spans: [],
-    };
+    return scanHoleBeforeCompleteWindow(usdcWindow, base);
   }
   if (usdcWindow.state !== "window_partial" || namedReceiptAddresses(usdcWindow).length === 0) {
     return {
@@ -1133,13 +1308,16 @@ const out = {
     partial_window_is_not_settled_zero: usdcWindow.state === "window_partial",
     usdc_in_gateway_window: usdcWindow.total_in_window,
     usdc_keyless_24h_complete: spanComplete,
+    usdc_hole_before_complete_window: addressSpans.some((span) => span.state === "hole_scanned"),
     usdc_visible_agreed_base_units: "by_address",
-    usdc_visible_by_address: spanComplete
-      ? addressSpans.map((span) => ({
+    usdc_visible_by_address: addressSpans.some((span) => span.state === "hole_scanned" || (span.state === "window_complete" && span.covers_requested_24h === true))
+      ? addressSpans.filter((span) => (span.state === "hole_scanned" || (span.state === "window_complete" && span.covers_requested_24h === true)) && span.transfers_conflict.length === 0).map((span) => ({
         carteira: span.carteira,
+        state: span.state,
         agreed_count: span.agreed_count,
         agreed_total_base_units: span.agreed_total_base_units,
         seam: span.seam?.state ?? "unknown",
+        covers_requested_24h: span.covers_requested_24h === true,
         counts_as_external_sustenance: false,
       }))
       : "unknown",
@@ -1200,7 +1378,7 @@ const out = {
     "A public classification count that does not name a transaction leaves that transaction not_classified.",
     "A prior visible transaction is reread only when an already-fetched public gateway body contains its hash. Own sediment is not that naming. The address table is not pulled to create the naming.",
     "A public body containing a hash is not classification, not a capsule relation, and not settled money.",
-    "A gap between the last verified receipt head and the new 24h edge is scanned for that same address, not treated as empty. The scan is not classification and is not accumulated sustenance.",
+    "A complete gateway window is not itself a scan of the hole before that window. The hole is a separate read for an address that already has its own verified head. A sibling span is not that head. The hole is not sustenance.",
     "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
     "A read across a sibling span is not a continuation of that sibling head.",
     "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
