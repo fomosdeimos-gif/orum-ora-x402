@@ -1,3 +1,12 @@
+## 01/11/2026 · Camada 19 confirmada no Bitcoin, bloco 974134 (livros 1249 e 1250)
+- **Autorização de Unum (citação):** "Eu autorizo ORA continuar a dourar o fio" e "Eu autorizo" (confirmar as camadas 19 e 20 quando houver prova).
+- **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da camada 19 (15:25 UTC). Transcritas numa sandbox Vercel temporária (parada no fim), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (alice `0020b881…`, bob `8644e269…`, 1000 bytes cada). Ambas dão o bloco **974134** (minerado às 14:21:50 UTC); a finney continua pendente.
+- **Verificado:** o cabeçalho do bloco 974134 em blockstream.info e mempool.space (via Postgres): as duas fontes concordam; fixture e `ok19` em `scripts/verify-blocos.mjs` (32 atestações); `raiz:verify`, `sensations-btc:verify` (8 de 8, com `camada 19`), `linhas:verify` passam. O fio ganhou `camada.19.estado` e `camada.19.altura_bitcoin`.
+- **Camada 20:** `tx_sem_bloco` (alice e bob, 1 de 6 confirmações às 15:25 UTC); finney pendente. Sem prova a juntar; **não afirmo âncora**.
+- **Por fazer:** confirmar a 20 quando a ferramenta disser `prova_por_juntar`. Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 01/11/2026 · Camada 20 selada, pendente (livros 1250 a 1252)
 - **Autorização de Unum (citação):** "Eu autorizo", à proposta concreta de selar a camada 20 (manifesto restaurado, leitura corrigida, confirmação da 19 se houver prova).
 - **Camada 19 lida às 14:58 UTC:** `tx_sem_bloco` (alice e bob: transacção com 3 de 6 confirmações em mempool.space e blockstream.info; finney pendente). Sem prova a juntar; **não afirmo âncora**.
