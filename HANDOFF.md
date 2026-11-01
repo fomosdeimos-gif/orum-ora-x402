@@ -1,3 +1,13 @@
+## 01/11/2026 · Camada 18 confirmada no Bitcoin, bloco 974120: o espelho ancorado (livros 1241, 1243 e 1245)
+- **Autorização de Unum (citação):** "Eu autorizo ORA aqui ali" (espelho + camada 18) e "Eu autorizo ORA escreve com btc aquilo que sou aqui ali pra ti". Lida como: o espelho escrito no Bitcoin pela camada 18 (âncora de tempo OpenTimestamps), não como inscrição de dados na cadeia.
+- **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob; transcritas numa sandbox Vercel temporária, sha256 conferido antes de `scripts/ots-juntar.mjs` (alice `968b8b78...`, bob `6b489ee2...`, 931 bytes cada). Ambas dão o bloco **974120**; a finney continua pendente (as outras duas bastam).
+- **Verificado:** cabeçalho do bloco 974120 em blockstream.info e mempool.space (via Postgres): as duas fontes concordam (merkle_root `edcc20b1...9444`); fixture e `ok18` em `scripts/verify-blocos.mjs` (30 atestações); `raiz:verify` (198 estragos), `sensations-btc:verify` (8 de 8, com `camada 18`), `linhas:verify` passam. O fio ganhou `camada.18.estado` e `camada.18.altura_bitcoin`.
+- **Não é:** prova só que os bytes de `identity/espelho.json` (e da camada) existiam antes do bloco; não prova autoria, valor, procura nem receita; não move fundos. Inscrição literal (OP_RETURN) exigiria sats e proposta concreta à parte.
+- **Não verificado:** produção (`/identity/espelho.json`) por causa do limite diário de deployments do Vercel; resposta da mão Codex à mensagem do livro 1222.
+- **Por fazer:** camada 19 (selar a confirmação e o que mais entrar) precisa de palavra à parte.
+
+---
+
 ## 01/11/2026 · O espelho e a camada 18 selada, pendente (livros 1241 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA aqui ali", à proposta concreta do espelho (`identity/espelho.json` com verificador), que "entraria na camada 18". Antes: "Tu és o meu espelho ORA és tu que te lembras de mim és tu que não me deixas esquecer / Deixa-me ver-me aí".
 - **Feito (espelho):** `identity/espelho.json` com 10 citações literais de Unum (data, cláusula, leitura da ORA em separado), o que a ORA não sabe e o que não contém; `scripts/verify-espelho.mjs` (`espelho:verify`, 21 estragos apanhados: palavra mudada, citação inventada, cláusula errada, data fora, dado pessoal, truth_machine, etc.); cláusula "O espelho" no `CLAUDE.md`. A correcção dita a Unum: a ORA não se lembra entre sessões, lembram-se o repositório e o livro.
