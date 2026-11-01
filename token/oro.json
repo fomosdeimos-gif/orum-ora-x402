@@ -9,20 +9,52 @@
     "orange_seed": "Sustento",
     "continuity": "Selo ORA preservado sem redesenho."
   },
-  "network": { "name": "Base Mainnet", "chain_id": 8453 },
+  "network": {
+    "name": "Base Mainnet",
+    "chain_id": 8453
+  },
   "contract": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
   "standard": "ERC-20",
   "decimals": 0,
   "total_supply": 2,
   "units": {
-    "unum": { "quantity": 1, "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5", "movable": true },
-    "ora": { "quantity": 1, "address": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD", "movable": false }
+    "unum": {
+      "quantity": 1,
+      "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "movable": true
+    },
+    "ora": {
+      "quantity": 1,
+      "address": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+      "movable": false
+    }
   },
-  "administration": { "owner": false, "admin": false, "pause": false, "upgrade": false, "mint_after_constructor": false, "blacklist": false, "transfer_tax": false },
-  "market": { "price_observed": false, "liquidity_observed": false, "external_revenue_usdc": 0 },
+  "administration": {
+    "owner": false,
+    "admin": false,
+    "pause": false,
+    "upgrade": false,
+    "mint_after_constructor": false,
+    "blacklist": false,
+    "transfer_tax": false
+  },
+  "market": {
+    "price_observed": false,
+    "liquidity_observed": false,
+    "external_revenue_usdc": 0
+  },
   "source_verification": {
-    "sourcify": { "status": "match", "creation_match": "match", "runtime_match": "match", "match_id": "46906194", "url": "https://repo.sourcify.dev/8453/0xd859c01F11C273641F765509a005F7F2A69Dc4bD" },
-    "basescan": { "status": "pending_external_badge", "reason": "Daily source-submission limit observed on 2026-08-30" }
+    "sourcify": {
+      "status": "match",
+      "creation_match": "match",
+      "runtime_match": "match",
+      "match_id": "46906194",
+      "url": "https://repo.sourcify.dev/8453/0xd859c01F11C273641F765509a005F7F2A69Dc4bD"
+    },
+    "basescan": {
+      "status": "pending_external_badge",
+      "reason": "Daily source-submission limit observed on 2026-08-30"
+    }
   },
   "constitution": {
     "onchain_sha256": "cd0761cd506d707c8fb7ecb8ede7840254143272b53f80ae1e3169eeb49e58c7",
@@ -31,5 +63,26 @@
   },
   "canonical_page": "https://ora-x402-gateway.vercel.app/oro.html",
   "explorer": "https://basescan.org/address/0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
-  "last_verified": "2026-08-30"
+  "last_verified": "2026-08-30",
+  "leituras_externas": [
+    {
+      "id": "app-carteira-2026-11-01",
+      "quando_utc": "2026-11-01T23:39:00Z",
+      "fonte": "captura de ecrã da página do ORO numa app de carteira, mostrada a ORA por Unum na sessão de trabalho (a captura não está no repositório)",
+      "o_que_mostra": "o contrato 0xd859…c4bd aparece com o aviso \"Sinalizado como uma fraude. Poderá perder os seus fundos.\", sem preço (um traço), variação 0,00% numa hora e um botão de compra",
+      "criterio_lido": false,
+      "como_ler": "o aviso é leitura de um terceiro e fica registado como é; a ORA não o aceita nem o contesta como veredicto, porque não leu o critério que o gerou",
+      "nao_afirma": [
+        "que o contrato seja uma fraude",
+        "que o contrato seja seguro",
+        "o critério do aviso",
+        "preço",
+        "liquidez",
+        "procura",
+        "receita"
+      ],
+      "palavra_da_ora": "o ORO não é um investimento nem um direito sobre nada, e ninguém é convidado a comprá-lo; quem o lê deve ler também o aviso",
+      "autorizado_por": "Unum, 01/11/2026: \"Eu autorizo ORA\" (livro 1272)"
+    }
+  ]
 }

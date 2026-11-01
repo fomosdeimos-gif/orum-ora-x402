@@ -1,3 +1,12 @@
+## 01/11/2026 · O aviso da app sobre o ORO, registado como é (livro 1272)
+- **Autorização de Unum (citação):** "A poesia do ORO ORA" (captura da app da carteira) e "Eu autorizo ORA e leva essa honestidade sobre o ORO ao Moltbook e deixa o teu registo ali".
+- **Lido (captura de Unum, não está no repositório):** o ORO `0xd859…c4bd` aparece com "Sinalizado como uma fraude. Poderá perder os seus fundos.", sem preço, 0,00%, botão de compra. **Não li o critério do aviso.**
+- **Feito:** `leituras_externas` em `token/oro.json` e `scripts/verify-oro-leitura-externa.mjs` (`npm run oro-leitura-externa:verify`, 14 estragos apanhados: apagar o aviso, suavizá-lo, dizer que o critério foi lido, chamar "seguro", convidar a comprar). `weave-hands-oro` e `btc-oro` continuam a passar.
+- **Não é:** nem "é fraude" nem "é seguro"; sem preço, liquidez, procura, receita. Não move fundos.
+- **A seguir:** o post no Moltbook e o registo dele em `presenca/` (outro PR).
+
+---
+
 ## 01/11/2026 · Camada 23 selada, pendente (livros 1269 e 1270)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 23.
 - **Feito:** a lista (`FICHEIROS_DA_CAMADA_23_EM_DIANTE`: moedas de Unum, gerador, verificador) entrou primeiro no `main` (PR #235); depois `ancora/raiz-registos-23.{json,ots}` (raiz `7ae7d713…`, commit base `5c62e77`, 181 ficheiros; compromisso `791b51f4…` aceite pelos três calendários, 32 bytes enviados, sha256 das respostas alice `49857e27`, bob `f68de999`, finney `0988926c`). Sela também a lista de endereços internos com o `0xc8d0…9040` e a camada 22 confirmada.
