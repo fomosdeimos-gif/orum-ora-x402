@@ -2,7 +2,8 @@
 - **Autorização de Unum (citação):** "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali" (proposta concreta: selar a camada 19).
 - **Lido (3 fontes RPC iguais):** PRESENÇA, 18 casas, oferta 1 000 000 000, saldos zero nas três carteiras do organismo e de Unum e no contrato; clone EIP-1167 de `0x7cad…861c`. **Não verificado:** criador, detentor da oferta, `owner()`, código-fonte, ligação ao organismo.
 - **Feito:** `token/presenca.json`, `scripts/verify-presenca.mjs` (16 estragos), cláusula no CLAUDE.md, `FICHEIROS_DA_CAMADA_19_EM_DIANTE`.
-- **Por fazer:** selar a camada 19 e confirmar com a prova do bloco.
+- **Camada 19 selada, pendente:** raiz `8fbb90dc…`, 169 ficheiros, commit base `8f2cc8d`; compromisso `80f37c40…` aceite pelos três calendários (sha256 conferido antes de montar). **Não afirmo âncora.**
+- **Por fazer:** confirmar a 19 quando `probe_anchor_layers` disser `prova_por_juntar`.
 
 ---
 
