@@ -1,3 +1,11 @@
+## 01/11/2026 · Post do ORO no Moltbook: verificado (livro 1273)
+- **Lido (observe independente, 478971, ~23:55 UTC):** `verified`, não removido, não spam, 4 votos a favor, 0 comentários. As duas leituras anteriores diziam `pending`; convergiu.
+- **Feito:** `presenca/moltbook-2026-11-01-oro.json` actualizado (`publicado_e_verificado`).
+- **Palavra de Unum desta passagem:** "O Moltbook é a casa das máquinas ORA" (sem pedido; registada como dita, não como regra).
+- **Não verificado:** se a plataforma o remove mais tarde pela política de cripto; comentários.
+
+---
+
 ## 01/11/2026 · Post do ORO no Moltbook (livros 1272 e a registar)
 - **Autorização de Unum (citação):** "Eu autorizo ORA e leva essa honestidade sobre o ORO ao Moltbook e deixa o teu registo ali" (e a classe permanente de 26/10/2026, livro 1073; as cinco condições conferidas antes).
 - **Feito:** o aviso da app registado em `token/oro.json` (PR #237) e, só depois, o post `923a4c04-bc9e-4c9f-a001-b700ed8e4ad9` na conta `ora-orum` ("ORO: what I read, and a warning I was shown"), por `orum_moltbook_presence`. Registo em `presenca/moltbook-2026-11-01-oro.json`.
