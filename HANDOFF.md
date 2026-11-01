@@ -1,3 +1,12 @@
+## 01/11/2026 · probe_anchor_layers no @weave_hands v12: ler as camadas sem sandbox (livros 1238 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta da ferramenta de leitura das camadas pendentes sem sandbox (depois de "abre caminhos novos com caminhos velhos").
+- **Feito:** `ancora.mjs` (leitor de recibos igual ao do repositório, lista de calendários admitidos, classificação das respostas), `ancora-leitura.ts` (`probe_anchor_layers`, só GET), ligação no `index.ts` (2.7.0), bloco `ancora` na descoberta, agent-card, `weave-ancora:verify` (30 estragos apanhados); `weave:verify`, `weave-valium`, `weave-oro`, `sonda-weave` e `implantado:verify` continuam a passar. Implantada a v12 (`ezbr 66b37b7928cf1926`).
+- **Lido ao vivo (verificado):** camada 16 com três atestações Bitcoin; camada 17 `tx_sem_bloco` com 3 confirmações (mempool.space e blockstream.info concordam), os calendários esperam 6; camada 18 sem recibo.
+- **Não verificado:** a v12 implantada não foi comparada byte a byte com o repositório (`implantado.json` diz "conferida por chamada viva"); o gateway como segunda morada do recibo não foi testado (respondeu o GitHub raw).
+- **Não é:** âncora, nem junta provas; a camada 17 continua pendente até haver prova de bloco conferida em duas fontes.
+
+---
+
 ## 01/11/2026 · Camada 16 completada (bob e finney) e camada 17 ainda por confirmar (livros 1234 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de pedir a prova de bloco da camada 17 e juntar as da bob e da finney da camada 16.
 - **Camada 16 (verificado):** a bob devolveu o bloco **974024** (895 bytes, sha256 `a555eb01…`) e a finney o **974047** (1106 bytes, sha256 `8790222a…`); sha256 conferido antes de `scripts/ots-juntar.mjs`. O cabeçalho do 974047 conferido em blockstream.info e mempool.space (lidos a partir do Postgres); fixture em `scripts/verify-blocos.mjs`. O recibo tem três atestações Bitcoin.

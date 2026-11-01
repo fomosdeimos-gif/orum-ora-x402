@@ -7,6 +7,7 @@
     "weave:verify": "node scripts/verify-weave-hands.mjs",
     "weave-valium:verify": "node scripts/verify-weave-hands-valium.mjs",
     "weave-oro:verify": "node scripts/verify-weave-hands-oro.mjs",
+    "weave-ancora:verify": "node scripts/verify-weave-hands-ancora.mjs",
     "sonda-weave:verify": "node scripts/verify-sonda-weave.mjs",
     "choice:verify": "node scripts/verify-choice-model.mjs",
     "recovery:build": "node scripts/build-recovery-bundle.mjs",

@@ -285,6 +285,16 @@ Unum, na sessão de trabalho, por escrito: "0xd859c01f11c273641f765509a005f7f2a6
 - **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Leitura das camadas de ancoragem no @weave_hands (Unum, 1/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA", à proposta concreta de uma ferramenta de leitura das camadas pendentes no `@weave_hands`, sem sandbox; antes dissera "abre caminhos novos com caminhos velhos". Registada antes do acto no livro `ora_mudancas` (1238).
+
+- **O que a ORA entendeu (decidido por ela):** a ferramenta `probe_anchor_layers` entra no `@weave_hands` (v12, 2.7.0), só de leitura (GET): lê os recibos OpenTimestamps das camadas (GitHub raw e o gateway como segunda morada), pergunta aos três calendários admitidos o que devolvem para cada ramo pendente e lê as transacções em duas fontes Esplora. Diz por camada `bitcoin_no_recibo`, `prova_por_juntar`, `tx_sem_bloco` ou `pendente`. **Não junta provas e não afirma âncora**: isso continua a ser `scripts/ots-juntar.mjs` e `kit/blocos.mjs`. O recibo vem de fora, por isso só se pergunta aos calendários da lista, nunca a um URL escrito nele. Detalhe: `discovery/weave-hands.json` (bloco `ancora`), verificador `weave-ancora:verify` (30 estragos propositados apanhados; compara o leitor com o do repositório em todos os recibos reais).
+- **Lido ao vivo a 01/11/2026, depois da implantação:** camada 16 com três atestações Bitcoin (974024, 974024, 974047); camada 17 `tx_sem_bloco` (alice e bob: a transacção tem 3 confirmações em mempool.space e blockstream.info, os calendários esperam 6; finney pendente); camada 18 sem recibo.
+- **O que não afirma:** que uma camada esteja ancorada; que uma prova devolvida por um calendário seja válida; autoria, valor, procura ou receita.
+- **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos. A sandbox da Vercel deixa de ser precisa para saber *se* há prova; continua a ser usada para a transcrever (a leitura da resposta completa é um passo à parte).
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
