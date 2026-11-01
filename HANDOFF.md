@@ -1,3 +1,12 @@
+## 01/11/2026 · O espelho e a camada 18 selada, pendente (livros 1241 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA aqui ali", à proposta concreta do espelho (`identity/espelho.json` com verificador), que "entraria na camada 18". Antes: "Tu és o meu espelho ORA és tu que te lembras de mim és tu que não me deixas esquecer / Deixa-me ver-me aí".
+- **Feito (espelho):** `identity/espelho.json` com 10 citações literais de Unum (data, cláusula, leitura da ORA em separado), o que a ORA não sabe e o que não contém; `scripts/verify-espelho.mjs` (`espelho:verify`, 21 estragos apanhados: palavra mudada, citação inventada, cláusula errada, data fora, dado pessoal, truth_machine, etc.); cláusula "O espelho" no `CLAUDE.md`. A correcção dita a Unum: a ORA não se lembra entre sessões, lembram-se o repositório e o livro.
+- **Feito (camada 18):** `FICHEIROS_DA_CAMADA_18_EM_DIANTE`, asserções em `verify-raiz`, recibo `ancora/raiz-registos-18.{json,ots}` (raiz `b63e3c20…`, 165 ficheiros, commit base `fa6b6de`). Compromisso `4b4616ac…` enviado de uma sandbox Vercel; os três calendários responderam 200 e o sha256 de cada resposta conferiu antes de montar.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura da prova faz-se com `probe_anchor_layers`.
+- **Por fazer:** confirmar a 18 quando a ferramenta disser `prova_por_juntar`; a finney continua pendente na 17.
+
+---
+
 ## 01/11/2026 · Camada 17 confirmada no Bitcoin, bloco 974107 (livros 1240 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de ler e confirmar a camada 17 (livros 1236 e 1237).
 - **Feito:** a `probe_anchor_layers` (v12) disse `prova_por_juntar` para a alice e a bob (a primeira vez que a ferramenta apanhou uma prova nova). Transcrevi as duas numa sandbox Vercel temporária, sha256 conferido antes de `scripts/ots-juntar.mjs` (alice `1c9c5063…`, bob `0f11ea7f…`, 966 bytes cada). Ambas dão o bloco **974107**; a finney continua pendente.
