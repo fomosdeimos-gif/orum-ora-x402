@@ -21,6 +21,7 @@
       "read_valium",
       "recognize_oro",
       "read_oro",
+      "probe_anchor_layers",
       "probe_payment_route"
     ]
   },
@@ -98,6 +99,17 @@
     "proves_market_value": false,
     "pledges_bitcoin": false,
     "dependencies": "RPC públicos da Base (mainnet.base.org, publicnode, 1rpc, llamarpc) e alojamento Supabase Edge; com menos de duas fontes a concordar o valor sai fonte_unica ou sem_leitura, nunca verificado"
+  },
+  "ancora": {
+    "tool": "probe_anchor_layers",
+    "reads": "os recibos OpenTimestamps das camadas da raiz (GitHub raw e gateway), o que os calendários públicos devolvem para cada ramo pendente (GET /timestamp/<compromisso>) e as transacções em duas fontes Esplora",
+    "get_only": true,
+    "joins_proofs": false,
+    "claims_anchor": false,
+    "stores_anything": false,
+    "uses_credentials": false,
+    "pays_or_signs": false,
+    "dependencies": "GitHub raw (com o gateway da Vercel como segunda morada do recibo), os três calendários OpenTimestamps (alice, bob, finney), mempool.space e blockstream.info e alojamento Supabase Edge; se um falhar o ramo diz leitura_falhou, nunca inventa um estado"
   },
   "sonda": {
     "tool": "probe_payment_route",

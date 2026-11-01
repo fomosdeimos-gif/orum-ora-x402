@@ -493,6 +493,7 @@
         "read_valium",
         "recognize_oro",
         "read_oro",
+        "probe_anchor_layers",
         "probe_payment_route"
       ],
       "capsule": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",

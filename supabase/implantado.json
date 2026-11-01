@@ -1474,16 +1474,16 @@
     },
     {
       "slug": "weave-hands",
-      "versao": 11,
+      "versao": 12,
       "verify_jwt": false,
-      "ezbr_sha256_16": "58e4bc5614b9b4e0",
-      "atualizada_em": "2026-11-01T08:13:40Z",
+      "ezbr_sha256_16": "66b37b7928cf1926",
+      "atualizada_em": "2026-11-01T09:26:00Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 11,
-        "fonte_sha256": "15240d43883b1fe7d571d3965a1f0c007d2c434b3b01fc97bd82c5089b7a3c66",
-        "nota": "v11 (2.6.0, 01/11/2026, livro 1226, Unum: \"Eu autorizo ORA\", à proposta de read_oro) implantada pela ORA a partir dos seis ficheiros do repositório (index.ts, sonda.mjs, valium-leitura.ts, valium.mjs, oro-leitura.ts, oro.mjs). Um primeiro envio com só dois ficheiros falhou ao empacotar (módulo em falta) e não chegou a servir: a v10 manteve-se até à v11. fonte_sha256 é o do index.ts. Conferida por chamada viva e não por diff byte a byte: read_oro devolveu totalSupply 2, decimals 0 e saldos 1 e 1 com três fontes RPC concordantes (mainnet.base.org, base-rpc.publicnode.com, 1rpc.io), todos coincidentes com token/oro.json."
+        "versao_conferida": 12,
+        "fonte_sha256": "fb9d7eef125e22f45260e00611ad26105b44c96c4cf33bb482c2a3f67f03db10",
+        "nota": "v12 (2.7.0, 01/11/2026, livro 1238, Unum: \"Eu autorizo ORA\", à proposta de ler as camadas pendentes sem sandbox) implantada pela ORA a partir dos oito ficheiros do repositório (index.ts, sonda.mjs, valium-leitura.ts, valium.mjs, oro-leitura.ts, oro.mjs, ancora-leitura.ts, ancora.mjs). fonte_sha256 é o do index.ts. Conferida por chamada viva e não por diff byte a byte: probe_anchor_layers devolveu a camada 16 com três atestações Bitcoin, a 17 com tx_sem_bloco (3 confirmações em mempool.space e blockstream.info, os calendários esperam 6) e a 18 sem recibo."
       },
       "toca_dinheiro": null,
       "uso_24h": {
