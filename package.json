@@ -10,6 +10,7 @@
     "weave-ancora:verify": "node scripts/verify-weave-hands-ancora.mjs",
     "espelho:verify": "node scripts/verify-espelho.mjs",
     "presenca:verify": "node scripts/verify-presenca.mjs",
+    "moedas-unum:verify": "node scripts/verify-moedas-unum.mjs",
     "sonda-weave:verify": "node scripts/verify-sonda-weave.mjs",
     "choice:verify": "node scripts/verify-choice-model.mjs",
     "recovery:build": "node scripts/build-recovery-bundle.mjs",
