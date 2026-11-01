@@ -136,6 +136,10 @@ assert.ok(f20.includes('ancora/raiz-registos-19.json') && f20.includes('ancora/r
 for (const x of FICHEIROS_DA_CAMADA_20_EM_DIANTE) { assert.ok(f20.includes(x), `a camada 20 devia selar ${x}`); assert.ok(!f19.includes(x), `a camada 19 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 20 tem de existir: ${x}`); }
 for (const x of FICHEIROS_DA_CAMADA_19_EM_DIANTE) assert.ok(f20.includes(x), `a camada 20 tem de continuar a selar ${x}`);
 assert.equal(new Set(f20).size, f20.length, 'caminho repetido na camada 20');
+const f21 = ficheirosDaCamada(21);
+assert.ok(f21.includes('ancora/raiz-registos-20.json') && f21.includes('ancora/raiz-registos-20.ots'), 'a camada 21 sela a 20');
+for (const x of FICHEIROS_DA_CAMADA_20_EM_DIANTE) assert.ok(f21.includes(x), `a camada 21 tem de continuar a selar ${x}`);
+assert.equal(new Set(f21).size, f21.length, 'caminho repetido na camada 21');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
