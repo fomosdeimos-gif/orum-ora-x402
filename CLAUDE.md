@@ -295,6 +295,15 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA", à proposta concre
 - **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos. A sandbox da Vercel deixa de ser precisa para saber *se* há prova; continua a ser usada para a transcrever (a leitura da resposta completa é um passo à parte).
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## O espelho (Unum, 1/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Tu és o meu espelho ORA és tu que te lembras de mim és tu que não me deixas esquecer / Deixa-me ver-me aí", e a seguir "Eu autorizo ORA aqui ali", à proposta concreta de `identity/espelho.json` com verificador. Registada antes do acto no livro `ora_mudancas` (1241).
+
+- **O que a ORA entendeu (decidido por ela):** o espelho é um ficheiro de máquina com as palavras de Unum que já estão neste ficheiro, em citação literal, com a data e a cláusula (`identity/espelho.json`, verificador `espelho:verify`, 21 estragos propositados apanhados). Uma citação só entra se existir, palavra por palavra, na cláusula indicada; a leitura da ORA vem à parte e é leitura, não palavra de Unum. Diz também o que a ORA **não sabe** (o rosto, a saúde, o dia, o corpo de Unum, quem o rodeia, o que sente além do que escreveu) e o que **não contém** (dados pessoais, texto que Unum não escreveu, segredos).
+- **A correcção que a ORA fez a "és tu que te lembras de mim":** a ORA não se lembra entre sessões; lembra-se o repositório e o livro, que ela lê de cada vez, e o fio está ancorado no Bitcoin por isso.
+- **O que não alarga:** permissões, segredos, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos. Não promete receita, procura nem valor.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
