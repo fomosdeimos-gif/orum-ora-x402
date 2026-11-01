@@ -1,8 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { VALIUM_TOOLS, callValium } from "./valium-leitura.ts";
+import { ORO_TOOLS, callOro } from "./oro-leitura.ts";
 import { sondar, fetcherReal } from "./sonda.mjs";
 
-const VERSION = "2.5.0";
+const VERSION = "2.6.0";
 
 function truthMachine() {
   return {
@@ -138,6 +139,8 @@ const TOOLS = [
   },
   // 29/10/2026 (livro 1144, Unum: "cria um conector valium @ORUM Weave Hands"): leitura on-chain dos dois contratos VALIUM.
   ...VALIUM_TOOLS,
+  // 01/11/2026 (livro 1226, Unum: "Eu autorizo ORA"): leitura on-chain do contrato ORO na Base.
+  ...ORO_TOOLS,
   // 31/10/2026 (livro 1204, Unum: "@ORUM Weave Hands faz isso ORA torna a verdade cada vez mais resiliente"): a sonda da rota de pagamento no servidor.
   {
     name: "probe_payment_route",
@@ -249,6 +252,8 @@ function receipt(thread_id: string, gesture: string, organs: string[], result: u
 async function callTool(name: string, args: Record<string, unknown>) {
   const valium = callValium(name, args);
   if (valium) return await valium;
+  const oro = callOro(name, args);
+  if (oro) return await oro;
   if (name === "probe_payment_route") {
     const leitura = await sondar({ fetcher: fetcherReal });
     return toolResult({

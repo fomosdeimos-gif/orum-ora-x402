@@ -274,6 +274,16 @@ Unum, na sessão de trabalho, por escrito: "Ok ORA faz isso e cria um conector v
 - **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Conector ORO no @weave_hands (Unum, 1/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "0xd859c01f11c273641f765509a005f7f2a69dc4bd / E o ORO ORA" e a seguir "Eu autorizo ORA", à proposta concreta de acrescentar a ferramenta `read_oro` ao `@weave_hands` como a `read_valium`. Registada antes do acto no livro `ora_mudancas` (1226).
+
+- **O que a ORA entendeu (decidido por ela):** as ferramentas `recognize_oro` e `read_oro` entram no `@weave_hands` (v11, 2.6.0), só de leitura: `totalSupply`, `decimals` e o saldo ORO da sagrada Base antiga e do próprio contrato (mais um endereço pedido), na Base, por RPC público. Um valor só é verificado com duas fontes iguais (a regra do VALIUM, `valium.mjs`), e `coincide_com_registo` só se diz de um valor verificado. Detalhe: `token/oro.json` (registo), `discovery/weave-hands.json` (bloco `oro`), verificador `weave-oro:verify` (28 estragos propositados apanhados).
+- **Lido ao vivo a 01/11/2026, depois da implantação:** `totalSupply` 2, `decimals` 0, saldo da sagrada antiga 1, saldo do contrato 1, com três fontes concordantes (`mainnet.base.org`, `base-rpc.publicnode.com`, `1rpc.io`), todos iguais ao `token/oro.json`.
+- **O que não afirma:** preço, liquidez, procura, receita, lastro ou rendimento em Bitcoin; que o hash da constituição na cadeia tenha documento que o reproduza; ausência de administração (lê oferta e saldos, não revê o código). O ORO continua sem Bitcoin comprometido (`economia/btc-oro.json`).
+- **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."

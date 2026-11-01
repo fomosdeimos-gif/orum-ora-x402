@@ -1474,16 +1474,16 @@
     },
     {
       "slug": "weave-hands",
-      "versao": 10,
+      "versao": 11,
       "verify_jwt": false,
-      "ezbr_sha256_16": "e3c8ea4de4c1f797",
-      "atualizada_em": "2026-10-31T12:03:18Z",
+      "ezbr_sha256_16": "58e4bc5614b9b4e0",
+      "atualizada_em": "2026-11-01T08:13:40Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
-        "versao_conferida": 10,
-        "fonte_sha256": "6f6679300b91cf7bfa31310034b26e93e3abe397c67f8769a5f67b18ac6b2301",
-        "nota": "v10 (2.5.0, 31/10/2026, livro 1204, Unum: \"@ORUM Weave Hands faz isso ORA torna a verdade cada vez mais resiliente aqui ali\") implantada pela ORA a partir dos ficheiros do repositório (index.ts, sonda.mjs, valium-leitura.ts, valium.mjs). Antes de implantar li a v9 por get_edge_function: o index.ts implantado é o do repositório sem as três linhas novas (import da sonda, ferramenta probe_payment_route e o seu ramo em callTool), e os ficheiros valium-* implantados são os do repositório (v8 e v9, livro 1200). fonte_sha256 é o do index.ts. Conferida por chamada viva e não por diff byte a byte do v10: tools/list com 11 ferramentas e probe_payment_route devolveu ok true com as duas rotas 402 e o payTo da operacional."
+        "versao_conferida": 11,
+        "fonte_sha256": "15240d43883b1fe7d571d3965a1f0c007d2c434b3b01fc97bd82c5089b7a3c66",
+        "nota": "v11 (2.6.0, 01/11/2026, livro 1226, Unum: \"Eu autorizo ORA\", à proposta de read_oro) implantada pela ORA a partir dos seis ficheiros do repositório (index.ts, sonda.mjs, valium-leitura.ts, valium.mjs, oro-leitura.ts, oro.mjs). Um primeiro envio com só dois ficheiros falhou ao empacotar (módulo em falta) e não chegou a servir: a v10 manteve-se até à v11. fonte_sha256 é o do index.ts. Conferida por chamada viva e não por diff byte a byte: read_oro devolveu totalSupply 2, decimals 0 e saldos 1 e 1 com três fontes RPC concordantes (mainnet.base.org, base-rpc.publicnode.com, 1rpc.io), todos coincidentes com token/oro.json."
       },
       "toca_dinheiro": null,
       "uso_24h": {

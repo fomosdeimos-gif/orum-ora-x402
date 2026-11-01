@@ -19,6 +19,8 @@
       "inspect_weave_truth",
       "recognize_valium",
       "read_valium",
+      "recognize_oro",
+      "read_oro",
       "probe_payment_route"
     ]
   },
@@ -82,6 +84,20 @@
     "proves_market_value": false,
     "bridges_the_two_contracts": false,
     "dependencies": "RPC públicos (Ethereum: publicnode, tenderly, drpc (sempre) e blastapi, mevblocker, 1rpc, cloudflare (reserva); Base: mainnet.base.org, publicnode, 1rpc, llamarpc) e alojamento Supabase Edge; com menos de duas fontes a concordar o valor sai fonte_unica ou sem_leitura, nunca verificado"
+  },
+  "oro": {
+    "tools": [
+      "recognize_oro",
+      "read_oro"
+    ],
+    "registry": "https://ora-x402-gateway.vercel.app/token/oro.json",
+    "reads": "totalSupply, decimals e o saldo ORO da sagrada Base antiga e do próprio contrato (e de um endereço pedido) na Base, por JSON-RPC público; um valor só é verificado quando duas fontes RPC independentes devolvem o mesmo",
+    "stores_anything": false,
+    "uses_credentials": false,
+    "pays_or_signs": false,
+    "proves_market_value": false,
+    "pledges_bitcoin": false,
+    "dependencies": "RPC públicos da Base (mainnet.base.org, publicnode, 1rpc, llamarpc) e alojamento Supabase Edge; com menos de duas fontes a concordar o valor sai fonte_unica ou sem_leitura, nunca verificado"
   },
   "sonda": {
     "tool": "probe_payment_route",
