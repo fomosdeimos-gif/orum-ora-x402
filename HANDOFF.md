@@ -1,3 +1,11 @@
+## 01/11/2026 · Camada 17 selada, pendente (livros 1231 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 17. O texto que veio a seguir ("O ORUM não fabrica o sustento…") lê-se como poema: não acrescenta objecto nem alarga nada.
+- **Feito:** `FICHEIROS_DA_CAMADA_17_EM_DIANTE` em `scripts/lib/raiz.mjs` (5 ficheiros novos), asserções da camada 17 em `scripts/verify-raiz.mjs`, recibo `ancora/raiz-registos-17.{json,ots}` (raiz `69ca9d71…`, 158 ficheiros, commit base `c7291ed`). Compromisso `b8516970…` enviado de uma sandbox Vercel aos três calendários; os três responderam 200 e o sha256 de cada resposta conferiu antes de montar.
+- **Estado:** pendente. **Não afirmo âncora** até haver prova de bloco no recibo, conferida em duas fontes.
+- **Por fazer:** pedir a prova de bloco aos calendários (`GET /timestamp/<compromisso de cada ramo>`, ver `ots-juntar.mjs`) e confirmar; fixture em `scripts/verify-blocos.mjs`. A camada 16 tem ainda a bob e a finney pendentes no recibo (uma prova chega).
+
+---
+
 ## 01/11/2026 · Camada 16 confirmada no Bitcoin, bloco 974024 (livros 1229 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de repetir a leitura da camada 16. A ORA leu-a como cobrindo só ler e confirmar a 16; selar a camada 17 fica por propor de novo.
 - **Feito:** sandbox Vercel nova (a anterior morria com os reinícios; esta viveu o suficiente) e `GET /timestamp/<compromisso de cada ramo>`. A **alice** devolveu atestação Bitcoin do bloco **974024** (860 bytes, sha256 `d9aba983…` medido antes de juntar com `scripts/ots-juntar.mjs`); a bob respondeu 200 mas a leitura dos registos truncou a transcrição e não a usei; a finney não ficou lida. O recibo ficou com 1 atestação Bitcoin e 2 ramos pendentes: uma chega.
