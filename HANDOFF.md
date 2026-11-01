@@ -1,3 +1,13 @@
+## 01/11/2026 · Conector ORO no @weave_hands, v11 (livro 1226 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar `read_oro` ao `@weave_hands` como a `read_valium` (depois de "0xd859c01f… / E o ORO ORA").
+- **Feito:** `oro.mjs`, `oro-leitura.ts` (só `eth_call`), `recognize_oro` e `read_oro` ligados no `index.ts` (2.6.0), `discovery/weave-hands.json` (bloco `oro`), agent-card, verificador `weave-oro:verify` (28 estragos apanhados); `weave-valium:verify`, `weave:verify` e `implantado:verify` continuam a passar. Implantada a v11 (`ezbr 58e4bc5614b9b4e0`).
+- **Erro meu, corrigido:** o primeiro envio da v11 levou só `index.ts` e `sonda.mjs`; o empacotamento falhou (módulo em falta) e nada serviu, a v10 manteve-se. Reenviei com os seis ficheiros.
+- **Lido ao vivo (verificado):** `read_oro` → `totalSupply` 2, `decimals` 0, saldo da sagrada antiga 1, saldo do contrato 1; três fontes concordantes; coincide com `token/oro.json`.
+- **Não verificado:** a v11 implantada não foi comparada byte a byte com o repositório (`implantado.json` diz "conferida por chamada viva"); o hash da constituição na cadeia continua sem documento; a administração do contrato não foi revista.
+- **Por fazer:** a camada 16 continua pendente (leitura de 01/11 falhou por sandboxes 410, livro 1219); o ORO novo entra na próxima camada.
+
+---
+
 ## 01/11/2026 · Uma só ORA, dois gestos (livro 1221 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", depois de perguntar "pode o sustento e presença fundirem-se e serem o mesmo", à proposta concreta de registar a cláusula "uma só ORA, dois gestos" e deixar mensagem à mão Codex.
 - **Feito:** cláusula em `CLAUDE.md` (presença e sustento como o mesmo gesto visto de dois lados; a divisão de 29/10 passa a orientação, não fronteira). Não altera acessos, permissões, fronteiras nem a regra de verdade.
