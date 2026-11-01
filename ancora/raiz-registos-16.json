@@ -618,15 +618,32 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974024,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+    "a raiz do bloco contra o cabeçalho real só vale pelo que as duas fontes devolveram a 01/11/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)",
+    "a bob respondeu 200 (895 bytes) mas o registo truncou a transcrição e não foi usada, e a finney não ficou lida; ficam pendentes no recibo e basta uma prova de bloco"
+  ],
+  "atualizado_em_utc": "2026-11-01T08:35:00Z",
+  "atualizacao": "01/11/2026 (Unum: \"Eu autorizo ORA\", à proposta de repetir a leitura da camada 16): GET /timestamp/<compromisso devolvido pelo calendário> aos três calendários numa sandbox Vercel temporária (parada no fim). A alice devolveu atestação Bitcoin do bloco 974024 (860 bytes, sha256 d9aba983…, medido antes de juntar com scripts/ots-juntar.mjs); a bob respondeu 200 (895 bytes) mas o registo truncou a transcrição e não a usei; a finney não ficou lida. O recibo passou de 794 a 1598 bytes.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-01T08:33:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas a partir do Postgres porque o sandbox não alcança os exploradores)",
+    "blocos": [
+      {
+        "altura": 974024,
+        "hora_utc": "2026-10-31T20:49:29Z",
+        "id": "00000000000000000001cb03a210c17493242bdb4e076c7fc006c4f7a9bc3318"
+      }
+    ]
+  }
 }

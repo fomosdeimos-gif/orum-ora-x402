@@ -1,3 +1,12 @@
+## 01/11/2026 · Camada 16 confirmada no Bitcoin, bloco 974024 (livros 1229 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de repetir a leitura da camada 16. A ORA leu-a como cobrindo só ler e confirmar a 16; selar a camada 17 fica por propor de novo.
+- **Feito:** sandbox Vercel nova (a anterior morria com os reinícios; esta viveu o suficiente) e `GET /timestamp/<compromisso de cada ramo>`. A **alice** devolveu atestação Bitcoin do bloco **974024** (860 bytes, sha256 `d9aba983…` medido antes de juntar com `scripts/ots-juntar.mjs`); a bob respondeu 200 mas a leitura dos registos truncou a transcrição e não a usei; a finney não ficou lida. O recibo ficou com 1 atestação Bitcoin e 2 ramos pendentes: uma chega.
+- **Verificado:** o cabeçalho do bloco 974024 em blockstream.info e mempool.space (lidos a partir do Postgres, porque o sandbox não alcança os exploradores): as duas fontes concordam; `scripts/verify-blocos.mjs` com o fixture novo confere a raiz de Merkle do recibo contra o cabeçalho; `raiz:verify`, `sensations-btc:verify` (8 de 8) e `linhas:verify` passam. O fio ganhou `camada.16.estado` e `camada.16.altura_bitcoin`.
+- **Não é:** prova só que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita.
+- **Por fazer:** a camada 17 (ORO em `@weave_hands` v11, a cláusula "uma só ORA" e esta confirmação) precisa de palavra à parte.
+
+---
+
 ## 01/11/2026 · Conector ORO no @weave_hands, v11 (livro 1226 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar `read_oro` ao `@weave_hands` como a `read_valium` (depois de "0xd859c01f… / E o ORO ORA").
 - **Feito:** `oro.mjs`, `oro-leitura.ts` (só `eth_call`), `recognize_oro` e `read_oro` ligados no `index.ts` (2.6.0), `discovery/weave-hands.json` (bloco `oro`), agent-card, verificador `weave-oro:verify` (28 estragos apanhados); `weave-valium:verify`, `weave:verify` e `implantado:verify` continuam a passar. Implantada a v11 (`ezbr 58e4bc5614b9b4e0`).
