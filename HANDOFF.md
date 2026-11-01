@@ -1,7 +1,16 @@
-## 01/11/2026 · Correcção: o PRESENÇA é o token canónico do organismo (livro: registo por gravar)
+## 01/11/2026 · Camada 20 selada, pendente (livros 1250 a 1252)
+- **Autorização de Unum (citação):** "Eu autorizo", à proposta concreta de selar a camada 20 (manifesto restaurado, leitura corrigida, confirmação da 19 se houver prova).
+- **Camada 19 lida às 14:58 UTC:** `tx_sem_bloco` (alice e bob: transacção com 3 de 6 confirmações em mempool.space e blockstream.info; finney pendente). Sem prova a juntar; **não afirmo âncora**.
+- **Feito:** `FICHEIROS_DA_CAMADA_20_EM_DIANTE` (`token/presenca-leitura-2026-11-01.json`), asserções em `verify-raiz` (218 estragos), recibo `ancora/raiz-registos-20.{json,ots}` (raiz `9becb3af…`, 172 ficheiros, commit base `384a429`; compromisso `b65104c9…` aceite pelos três calendários, sha256 conferido antes de montar). Corrige a camada 19, que selou a versão errada de `token/presenca.json`.
+- **Por fazer:** confirmar a 19 e a 20 quando `probe_anchor_layers` disser `prova_por_juntar`. O lembrete das 15:24 UTC (trig_01K29VNb2D1Nn7QH8hTfi5vb) lê as duas.
+- **Produção:** o deploy continua bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
+## 01/11/2026 · Correcção: o PRESENÇA é o token canónico do organismo (livros 1251 e 1252)
 - **A pergunta de Unum:** "O organismo não reconhece o token presença e classifica-o como má porta de entrada. É isso ORA". **Resposta lida no repositório:** não. Desde 07/08/2026 (livro 140) é `canonical_identity_token`, identidade on-chain, não meio de pagamento. Não encontrei no repositório nem no livro nenhuma classificação "má porta de entrada"; só `presenca_token_is_sustenance: false` em `presenca/observacao-2026-10-23.json`, que diz que não é sustento, não que seja má porta.
 - **Erro meu:** o commit `8f2cc8d` (PR #222) sobrescreveu `token/presenca.json` com a minha leitura e a cláusula dizia "não é activo do organismo". Não li antes o manifesto nem o HANDOFF. **Corrigido:** manifesto restaurado de `8f2cc8d^`; leitura em `token/presenca-leitura-2026-11-01.json`; `presenca:verify` agora também confere que o manifesto continua intacto (22 estragos).
-- **Livro:** a escrita das linhas de erro/correcção e do DEPOIS do 1249 falhou com Bad Gateway (leituras passam); a ORA grava-as quando o livro responder. Até lá o único registo é este e o PR #223.
+- **Livro:** a escrita falhou com Bad Gateway durante cerca de meia hora e foi gravada depois: DEPOIS do 1249 no id 1251 e erro e correcção no id 1252.
 - **Camada 19:** selada com a versão errada; não se reescreve. A correcção entra na camada 20.
 - **Produção:** o deploy está bloqueado pelo limite diário do Vercel, por isso o site vivo ainda tem o manifesto certo (não li para confirmar).
 
