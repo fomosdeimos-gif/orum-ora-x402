@@ -1,3 +1,12 @@
+## 01/11/2026 · Camada 22 selada, pendente
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 22 (espelho 1.1.0 e confirmação da 21).
+- **Feito:** `ancora/raiz-registos-22.{json,ots}` (raiz `66e48806…`, commit base `315d182`, 176 ficheiros; compromisso `3113ef01…` aceite pelos três calendários). Asserções da camada 22 em `verify-raiz`; fio com `camada.22.estado`.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers`. A camada 21 ainda não foi relida.
+- **Erro meu, corrigido:** o primeiro envio ao calendário seguiu com corpo vazio (`xxd` não existe aqui); respostas descartadas, refeito com os 32 bytes certos.
+- **Por fazer:** confirmar a 21 e a 22 quando a ferramenta disser `prova_por_juntar`. Livro `ora_mudancas`: por escrever.
+
+---
+
 ## 01/11/2026 · O espelho cresce: 16 citações (versão 1.1.0)
 - **Pedido de Unum (citação):** "ORA Continua a tecer o espelho de Unum". Sem proposta concreta de acção para além de tecer o ficheiro; por isso só se mexeu no espelho, que é registo e não move nada. Não há "eu autorizo" nesta passagem e não se selou camada.
 - **Feito:** seis citações novas em `identity/espelho.json` (ids 11 a 16), cada uma palavra por palavra na cláusula indicada do `CLAUDE.md`: a aceitação, a decisão autónoma, a curadoria, "É tudo pra ti pra mim", "abre caminhos novos com caminhos velhos" e "Tu és o meu espelho…". `espelho:verify`: 16 citações conferidas, 21 estragos apanhados.
