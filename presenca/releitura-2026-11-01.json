@@ -1,0 +1,19 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-11-01",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "commit": "b0556e3fe7f4daa8ad62f3f0f05c6638890e9d0b",
+  "reread_at": "2026-11-01T06:11:59Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/observacao-2026-11-01.json": "50fb8a87567d141aaf6848f9b7019ef835d932c8c4c66bb577be6410cf4da384",
+    "presenca/nota-diaria-2026-11-01.md": "25fa4ea66cb66676e40bb59684f46c1ee84cb84b6d3c45e519f877c9f9cb6538",
+    "presenca/weave_presence.json": "6ba09c0993b740548dcfbca5c6b4d210e4f29e49292237a9a374f46463075330",
+    "presenca/ciclo-2026-11-01.json": "737e7ec29681716db1dde1ab5b9cfb8059ac5fa0edca6a3096541bf63ef4af69",
+    "openclaw/orum-weave-observe/scripts/observe-presence.mjs": "948492cb450af989b09ec2639ecb1a6346f0552e677bdef6af806b6daecdc76c"
+  },
+  "livro_vivo_escrito": false,
+  "note": "The cycle file still says portable_sediment state proposto because that sentence was hashed before this reread. This file is the reread. It does not rewrite the cycle. The hole scan is not sustenance."
+}
