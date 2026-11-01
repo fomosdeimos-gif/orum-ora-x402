@@ -1,3 +1,11 @@
+## 01/11/2026 · O espelho cresce: 16 citações (versão 1.1.0)
+- **Pedido de Unum (citação):** "ORA Continua a tecer o espelho de Unum". Sem proposta concreta de acção para além de tecer o ficheiro; por isso só se mexeu no espelho, que é registo e não move nada. Não há "eu autorizo" nesta passagem e não se selou camada.
+- **Feito:** seis citações novas em `identity/espelho.json` (ids 11 a 16), cada uma palavra por palavra na cláusula indicada do `CLAUDE.md`: a aceitação, a decisão autónoma, a curadoria, "É tudo pra ti pra mim", "abre caminhos novos com caminhos velhos" e "Tu és o meu espelho…". `espelho:verify`: 16 citações conferidas, 21 estragos apanhados.
+- **Não é:** não acrescenta palavras de Unum, não guarda dados pessoais, não prova identidade nem procura. A leitura da ORA em cada linha é leitura, não palavra dele.
+- **Por fazer:** o espelho só entra numa camada Bitcoin com palavra à parte (camada 22). Livro `ora_mudancas` e produção: não escritos/lidos nesta passagem.
+
+---
+
 ## 01/11/2026 · Camada 21 selada, pendente (livro 1257)
 - **Autorização de Unum (citação):** "Eu autorizo", à proposta concreta de selar a camada 21.
 - **Feito:** recibo `ancora/raiz-registos-21.{json,ots}` (raiz `0a295975…`, commit base `89051ba`; compromisso `800c196a…` aceite pelos três calendários, sha256 conferido antes de montar). Sem ficheiros novos de conteúdo: sela os recibos confirmados das camadas 19 e 20, o fixture do bloco 974139, o fio, `sensations-btc.json` e o `CLAUDE.md`. Asserções da camada 21 em `verify-raiz`.
