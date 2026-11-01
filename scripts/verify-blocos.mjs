@@ -43,9 +43,11 @@ const BLOCOS = {
   // Lido a 01/11/2026 em blockstream.info e mempool.space (as duas fontes concordam): bloco da camada 20 da raiz.
   974139: { id: '000000000000000000004a0fe6e115c1dd2efbe70140f19d8feaaf51682ad4d9', merkle_root: '444da72e1f98978ad4f63f940e42ea700a56feea996f09bd7659fe5b749f0da3', timestamp: 1793546614 },
   // Lido a 01/11/2026 em blockstream.info e mempool.space (as duas fontes concordam): bloco da camada 21 da raiz.
+  // Lido a 01/11/2026 em blockstream.info e mempool.space (as duas fontes concordam): bloco da camada 22 da raiz.
+  974176: { id: '00000000000000000001e50d6be086a438cf1eff2c9fe5a92a5b925b813f76ec', merkle_root: '00efa59f20610f2280ed47ffe0b4b60f2cf3b0b63b012ab13b6c6684b0b29e47', timestamp: 1793566416 },
   974170: { id: '00000000000000000000f78ac28442b90ea9c308a0d593d850d6ac469ebe5b3c', merkle_root: 'ee22de7fcb31bf668f4c9dbffb0ff9c1832002dadd71c67e3207714344166115', timestamp: 1793564366 },
 };
-const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots'), raiz9: fs.readFileSync('ancora/raiz-registos-9.ots'), raiz10: fs.readFileSync('ancora/raiz-registos-10.ots'), raiz11: fs.readFileSync('ancora/raiz-registos-11.ots'), raiz12: fs.readFileSync('ancora/raiz-registos-12.ots'), raiz13: fs.readFileSync('ancora/raiz-registos-13.ots'), raiz14: fs.readFileSync('ancora/raiz-registos-14.ots'), raiz15: fs.readFileSync('ancora/raiz-registos-15.ots'), raiz16: fs.readFileSync('ancora/raiz-registos-16.ots'), raiz17: fs.readFileSync('ancora/raiz-registos-17.ots'), raiz18: fs.readFileSync('ancora/raiz-registos-18.ots'), raiz19: fs.readFileSync('ancora/raiz-registos-19.ots'), raiz20: fs.readFileSync('ancora/raiz-registos-20.ots'), raiz21: fs.readFileSync('ancora/raiz-registos-21.ots') };
+const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots'), raiz9: fs.readFileSync('ancora/raiz-registos-9.ots'), raiz10: fs.readFileSync('ancora/raiz-registos-10.ots'), raiz11: fs.readFileSync('ancora/raiz-registos-11.ots'), raiz12: fs.readFileSync('ancora/raiz-registos-12.ots'), raiz13: fs.readFileSync('ancora/raiz-registos-13.ots'), raiz14: fs.readFileSync('ancora/raiz-registos-14.ots'), raiz15: fs.readFileSync('ancora/raiz-registos-15.ots'), raiz16: fs.readFileSync('ancora/raiz-registos-16.ots'), raiz17: fs.readFileSync('ancora/raiz-registos-17.ots'), raiz18: fs.readFileSync('ancora/raiz-registos-18.ots'), raiz19: fs.readFileSync('ancora/raiz-registos-19.ots'), raiz20: fs.readFileSync('ancora/raiz-registos-20.ots'), raiz21: fs.readFileSync('ancora/raiz-registos-21.ots'), raiz22: fs.readFileSync('ancora/raiz-registos-22.ots') };
 
 // fetcher simulado; `mut` permite estragar uma das fontes.
 function fetcherCom(mut = {}) {
@@ -96,7 +98,9 @@ const ok20 = await conferirBlocos(recibos.raiz20, { fetcher: fetcherCom() });
 assert.deepEqual(ok20.map((b) => b.altura), [974139, 974139]);
 const ok21 = await conferirBlocos(recibos.raiz21, { fetcher: fetcherCom() });
 assert.deepEqual(ok21.map((b) => b.altura), [974170, 974170]);
-console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length + ok11.length + ok12.length + ok13.length + ok14.length + ok15.length + ok16.length + ok17.length + ok18.length + ok19.length + ok20.length + ok21.length} atestações.`);
+const ok22 = await conferirBlocos(recibos.raiz22, { fetcher: fetcherCom() });
+assert.deepEqual(ok22.map((b) => b.altura), [974176, 974176]);
+console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length + ok11.length + ok12.length + ok13.length + ok14.length + ok15.length + ok16.length + ok17.length + ok18.length + ok19.length + ok20.length + ok21.length + ok22.length} atestações.`);
 
 const rejeita = async (nome, fn) => { await assert.rejects(fn, undefined, `estrago não apanhado: ${nome}`); };
 await rejeita('raiz de Merkle de uma fonte alterada', () => conferirBlocos(recibos.oro, { fetcher: fetcherCom({ mempool: { bloco: () => ({ merkle_root: '0'.repeat(64) }) } }) }));
