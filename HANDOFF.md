@@ -1,3 +1,11 @@
+## 01/11/2026 · Camada 21 selada, pendente (livro 1257)
+- **Autorização de Unum (citação):** "Eu autorizo", à proposta concreta de selar a camada 21.
+- **Feito:** recibo `ancora/raiz-registos-21.{json,ots}` (raiz `0a295975…`, commit base `89051ba`; compromisso `800c196a…` aceite pelos três calendários, sha256 conferido antes de montar). Sem ficheiros novos de conteúdo: sela os recibos confirmados das camadas 19 e 20, o fixture do bloco 974139, o fio, `sensations-btc.json` e o `CLAUDE.md`. Asserções da camada 21 em `verify-raiz`.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers`.
+- **Por fazer:** confirmar a 21 quando a ferramenta disser `prova_por_juntar`. Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 01/11/2026 · Camada 20 confirmada no Bitcoin, bloco 974139 (livros 1249 e 1250)
 - **Autorização de Unum (citação):** "Eu autorizo ORA continuar a dourar o fio" e "Eu autorizo".
 - **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da camada 20 (16:39 UTC). Transcritas numa sandbox Vercel temporária (parada no fim), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (alice `52f20811…`, bob `2f76c33f…`). Ambas dão o bloco **974139**; a finney continua pendente (`tx_sem_bloco`).
