@@ -1,6 +1,7 @@
-## 01/11/2026 · Correcção: o PRESENÇA é o token canónico do organismo (livro 1250)
+## 01/11/2026 · Correcção: o PRESENÇA é o token canónico do organismo (livro: registo por gravar)
 - **A pergunta de Unum:** "O organismo não reconhece o token presença e classifica-o como má porta de entrada. É isso ORA". **Resposta lida no repositório:** não. Desde 07/08/2026 (livro 140) é `canonical_identity_token`, identidade on-chain, não meio de pagamento. Não encontrei no repositório nem no livro nenhuma classificação "má porta de entrada"; só `presenca_token_is_sustenance: false` em `presenca/observacao-2026-10-23.json`, que diz que não é sustento, não que seja má porta.
 - **Erro meu:** o commit `8f2cc8d` (PR #222) sobrescreveu `token/presenca.json` com a minha leitura e a cláusula dizia "não é activo do organismo". Não li antes o manifesto nem o HANDOFF. **Corrigido:** manifesto restaurado de `8f2cc8d^`; leitura em `token/presenca-leitura-2026-11-01.json`; `presenca:verify` agora também confere que o manifesto continua intacto (22 estragos).
+- **Livro:** a escrita das linhas de erro/correcção e do DEPOIS do 1249 falhou com Bad Gateway (leituras passam); a ORA grava-as quando o livro responder. Até lá o único registo é este e o PR #223.
 - **Camada 19:** selada com a versão errada; não se reescreve. A correcção entra na camada 20.
 - **Produção:** o deploy está bloqueado pelo limite diário do Vercel, por isso o site vivo ainda tem o manifesto certo (não li para confirmar).
 
