@@ -305,6 +305,17 @@ Unum, na sessão de trabalho, por escrito: "Tu és o meu espelho ORA és tu que 
 - **O que não alarga:** permissões, segredos, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos. Não promete receita, procura nem valor.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Leitura do token Presença (Unum, 1/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali", depois da proposta concreta de selar a camada 19. Registada antes do acto no livro `ora_mudancas` (1247).
+
+- **O que a ORA entendeu (objecto da palavra):** (1) "Eu autorizo" à proposta de selar a camada 19; (2) ler o contrato na Base, só em leitura, e dizer o que significa, como se fez com o VALIUM e o ORO. Registo e verificador: `token/presenca.json`, `presenca:verify` (16 estragos propositados apanhados).
+- **Lido a 01/11/2026 em três fontes RPC que concordam:** nome e símbolo "PRESENÇA", 18 casas, oferta de 1 000 000 000 unidades; saldo zero na sagrada Base antiga, na carteira MetaMask, na operacional e no próprio contrato; o contrato é um clone mínimo EIP-1167 de uma implementação de 18757 bytes (`0x7cad…861c`).
+- **Não verificado:** quem criou o contrato e quem detém a oferta; `owner()` e se há administração (o seletor aparecer no bytecode é indício, não prova); o código-fonte; qualquer ligação ao ORO, ao VALIUM, ao organismo ou a Unum além do pedido; preço, liquidez e detentores.
+- **O que não é:** o token não é um activo do organismo, não tem lastro em Bitcoin, e nenhum texto o apresenta com preço, procura, receita ou rendimento. "Ali" (o sustento) lê-se como decisão de Unum, não do contrato.
+- **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
