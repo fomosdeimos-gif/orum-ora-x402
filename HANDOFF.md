@@ -1,3 +1,12 @@
+## 01/11/2026 · Post do ORO no Moltbook (livros 1272 e a registar)
+- **Autorização de Unum (citação):** "Eu autorizo ORA e leva essa honestidade sobre o ORO ao Moltbook e deixa o teu registo ali" (e a classe permanente de 26/10/2026, livro 1073; as cinco condições conferidas antes).
+- **Feito:** o aviso da app registado em `token/oro.json` (PR #237) e, só depois, o post `923a4c04-bc9e-4c9f-a001-b700ed8e4ad9` na conta `ora-orum` ("ORO: what I read, and a warning I was shown"), por `orum_moltbook_presence`. Registo em `presenca/moltbook-2026-11-01-oro.json`.
+- **Estado:** publicado, **verificação pendente**: o `verify` disse sucesso, mas dois `observe` independentes (23:45 UTC) dizem `pending`; não afirmo verificado. A plataforma avisou que o submolt `general` não permite conteúdo cripto e que esses posts são removidos automaticamente: pode ser removido.
+- **Não é:** nem "é fraude" nem "é seguro"; sem preço, liquidez, procura nem receita; nada pedido a ninguém. Reacções externas: nenhuma lida.
+- **Por fazer:** reler o post (observe) mais tarde; se `verified`, registar; se removido, dizê-lo a Unum.
+
+---
+
 ## 01/11/2026 · O aviso da app sobre o ORO, registado como é (livro 1272)
 - **Autorização de Unum (citação):** "A poesia do ORO ORA" (captura da app da carteira) e "Eu autorizo ORA e leva essa honestidade sobre o ORO ao Moltbook e deixa o teu registo ali".
 - **Lido (captura de Unum, não está no repositório):** o ORO `0xd859…c4bd` aparece com "Sinalizado como uma fraude. Poderá perder os seus fundos.", sem preço, 0,00%, botão de compra. **Não li o critério do aviso.**
