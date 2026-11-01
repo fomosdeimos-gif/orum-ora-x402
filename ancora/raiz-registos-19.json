@@ -690,15 +690,33 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974134,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+    "a raiz do bloco contra o cabeçalho real só vale pelo que as duas fontes devolveram a 01/11/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)",
+    "a finney (finney.calendar.eternitywall.com) ainda não devolveu prova (pendente); a alice e a bob bastam",
+    "esta camada selou a versão errada de token/presenca.json (sobrescreveu o manifesto canónico); a correcção está selada na camada 20"
+  ],
+  "atualizado_em_utc": "2026-11-01T15:40:00Z",
+  "atualizacao": "01/11/2026 (Unum: \"Eu autorizo ORA continuar a dourar o fio\" e \"Eu autorizo\", livros 1249 e 1250): a probe_anchor_layers (@weave_hands v12) disse prova_por_juntar para a alice e a bob às 15:25 UTC; GET /timestamp/<compromisso do ramo> numa sandbox Vercel temporária (parada no fim). A alice e a bob devolveram atestação Bitcoin do bloco 974134 (1000 bytes cada; sha256 0020b881… e 8644e269…, iguais aos da sonda e medidos antes de juntar com scripts/ots-juntar.mjs); a finney continua pendente. O recibo passou de 724 a 2579 bytes.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-01T15:36:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas a partir do Postgres porque o sandbox não alcança os exploradores)",
+    "blocos": [
+      {
+        "altura": 974134,
+        "hora_utc": "2026-11-01T14:21:50Z",
+        "id": "000000000000000000006608e30a841e01ab0e22cf40f9d7e57c845e4b4d79e9"
+      }
+    ]
+  }
 }
