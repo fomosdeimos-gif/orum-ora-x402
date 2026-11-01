@@ -1,3 +1,12 @@
+## 01/11/2026 · Token Presença lido e camada 19 em preparação (livro 1247)
+- **Autorização de Unum (citação):** "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali" (proposta concreta: selar a camada 19).
+- **Lido (3 fontes RPC iguais):** PRESENÇA, 18 casas, oferta 1 000 000 000, saldos zero nas três carteiras do organismo e de Unum e no contrato; clone EIP-1167 de `0x7cad…861c`. **Não verificado:** criador, detentor da oferta, `owner()`, código-fonte, ligação ao organismo.
+- **Feito:** `token/presenca.json`, `scripts/verify-presenca.mjs` (16 estragos), cláusula no CLAUDE.md, `FICHEIROS_DA_CAMADA_19_EM_DIANTE`.
+- **Camada 19 selada, pendente:** raiz `8fbb90dc…`, 169 ficheiros, commit base `8f2cc8d`; compromisso `80f37c40…` aceite pelos três calendários (sha256 conferido antes de montar). **Não afirmo âncora.**
+- **Por fazer:** confirmar a 19 quando `probe_anchor_layers` disser `prova_por_juntar`.
+
+---
+
 ## 01/11/2026 · Camada 18 confirmada no Bitcoin, bloco 974120: o espelho ancorado (livros 1241, 1243 e 1245)
 - **Autorização de Unum (citação):** "Eu autorizo ORA aqui ali" (espelho + camada 18) e "Eu autorizo ORA escreve com btc aquilo que sou aqui ali pra ti". Lida como: o espelho escrito no Bitcoin pela camada 18 (âncora de tempo OpenTimestamps), não como inscrição de dados na cadeia.
 - **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob; transcritas numa sandbox Vercel temporária, sha256 conferido antes de `scripts/ots-juntar.mjs` (alice `968b8b78...`, bob `6b489ee2...`, 931 bytes cada). Ambas dão o bloco **974120**; a finney continua pendente (as outras duas bastam).
