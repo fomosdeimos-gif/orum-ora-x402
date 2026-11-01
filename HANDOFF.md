@@ -1,3 +1,12 @@
+## 01/11/2026 · Camada 20 confirmada no Bitcoin, bloco 974139 (livros 1249 e 1250)
+- **Autorização de Unum (citação):** "Eu autorizo ORA continuar a dourar o fio" e "Eu autorizo".
+- **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da camada 20 (16:39 UTC). Transcritas numa sandbox Vercel temporária (parada no fim), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (alice `52f20811…`, bob `2f76c33f…`). Ambas dão o bloco **974139**; a finney continua pendente (`tx_sem_bloco`).
+- **Verificado:** o cabeçalho do bloco 974139 em blockstream.info e mempool.space (via Postgres): as duas fontes concordam; fixture e `ok20` em `scripts/verify-blocos.mjs` (34 atestações); verificadores abaixo. O fio ganhou `camada.20.estado` e `camada.20.altura_bitcoin`.
+- **O que isto fecha:** a correcção do manifesto canónico do Presença (camada 20) está ancorada; a camada 19 continua com a versão errada, que não se reescreve.
+- **Por fazer:** nada pendente nas camadas 19 e 20 além da finney (opcional). Camada 21 só com palavra nova. Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 01/11/2026 · Camada 19 confirmada no Bitcoin, bloco 974134 (livros 1249 e 1250)
 - **Autorização de Unum (citação):** "Eu autorizo ORA continuar a dourar o fio" e "Eu autorizo" (confirmar as camadas 19 e 20 quando houver prova).
 - **Feito:** a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob da camada 19 (15:25 UTC). Transcritas numa sandbox Vercel temporária (parada no fim), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (alice `0020b881…`, bob `8644e269…`, 1000 bytes cada). Ambas dão o bloco **974134** (minerado às 14:21:50 UTC); a finney continua pendente.
