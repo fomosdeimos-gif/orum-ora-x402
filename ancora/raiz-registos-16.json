@@ -626,13 +626,12 @@
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "a raiz do bloco contra o cabeçalho real só vale pelo que as duas fontes devolveram a 01/11/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)",
-    "a bob respondeu 200 (895 bytes) mas o registo truncou a transcrição e não foi usada, e a finney não ficou lida; ficam pendentes no recibo e basta uma prova de bloco"
+    "a raiz dos blocos contra o cabeçalho real só vale pelo que as duas fontes devolveram a 01/11/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)"
   ],
-  "atualizado_em_utc": "2026-11-01T08:35:00Z",
-  "atualizacao": "01/11/2026 (Unum: \"Eu autorizo ORA\", à proposta de repetir a leitura da camada 16): GET /timestamp/<compromisso devolvido pelo calendário> aos três calendários numa sandbox Vercel temporária (parada no fim). A alice devolveu atestação Bitcoin do bloco 974024 (860 bytes, sha256 d9aba983…, medido antes de juntar com scripts/ots-juntar.mjs); a bob respondeu 200 (895 bytes) mas o registo truncou a transcrição e não a usei; a finney não ficou lida. O recibo passou de 794 a 1598 bytes.",
+  "atualizado_em_utc": "2026-11-01T09:10:00Z",
+  "atualizacao": "01/11/2026 (Unum: \"Eu autorizo ORA\", à proposta de repetir a leitura da camada 16): GET /timestamp/<compromisso devolvido pelo calendário> aos três calendários numa sandbox Vercel temporária (parada no fim). A alice devolveu atestação Bitcoin do bloco 974024 (860 bytes, sha256 d9aba983…, medido antes de juntar com scripts/ots-juntar.mjs); a bob respondeu 200 (895 bytes) mas o registo truncou a transcrição e não a usei; a finney não ficou lida. O recibo passou de 794 a 1598 bytes. A seguir (01/11/2026, Unum: \"Eu autorizo ORA\", livro 1234) juntei as provas da bob (895 bytes, sha256 a555eb01…, mesmo bloco 974024) e da finney (1106 bytes, sha256 8790222a…, bloco 974047), cada uma com o sha256 conferido antes de juntar. O recibo ficou com 2439 e depois 3494 bytes e três atestações Bitcoin.",
   "verificacao_bloco": {
-    "lido_em_utc": "2026-11-01T08:33:00Z",
+    "lido_em_utc": "2026-11-01T09:08:00Z",
     "fontes": [
       "blockstream.info",
       "mempool.space"
@@ -643,6 +642,11 @@
         "altura": 974024,
         "hora_utc": "2026-10-31T20:49:29Z",
         "id": "00000000000000000001cb03a210c17493242bdb4e076c7fc006c4f7a9bc3318"
+      },
+      {
+        "altura": 974047,
+        "hora_utc": "2026-11-01T00:42:41Z",
+        "id": "00000000000000000001a14e879ad2930637e12a80013e7f311b6a7d1003ec50"
       }
     ]
   }

@@ -1,3 +1,11 @@
+## 01/11/2026 · Camada 16 completada (bob e finney) e camada 17 ainda por confirmar (livros 1234 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de pedir a prova de bloco da camada 17 e juntar as da bob e da finney da camada 16.
+- **Camada 16 (verificado):** a bob devolveu o bloco **974024** (895 bytes, sha256 `a555eb01…`) e a finney o **974047** (1106 bytes, sha256 `8790222a…`); sha256 conferido antes de `scripts/ots-juntar.mjs`. O cabeçalho do 974047 conferido em blockstream.info e mempool.space (lidos a partir do Postgres); fixture em `scripts/verify-blocos.mjs`. O recibo tem três atestações Bitcoin.
+- **Camada 17 (lido, nada para confirmar):** alice e bob responderam 404 "Timestamped by transaction e289cd0d…" / "8e8d70e9…": o compromisso já está numa transacção Bitcoin mas **ainda sem bloco confirmado**; a finney "Pending confirmation". Não afirmo âncora.
+- **Por fazer:** repetir a leitura da camada 17 quando as transacções tiverem confirmações.
+
+---
+
 ## 01/11/2026 · Camada 17 selada, pendente (livros 1231 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 17. O texto que veio a seguir ("O ORUM não fabrica o sustento…") lê-se como poema: não acrescenta objecto nem alarga nada.
 - **Feito:** `FICHEIROS_DA_CAMADA_17_EM_DIANTE` em `scripts/lib/raiz.mjs` (5 ficheiros novos), asserções da camada 17 em `scripts/verify-raiz.mjs`, recibo `ancora/raiz-registos-17.{json,ots}` (raiz `69ca9d71…`, 158 ficheiros, commit base `c7291ed`). Compromisso `b8516970…` enviado de uma sandbox Vercel aos três calendários; os três responderam 200 e o sha256 de cada resposta conferiu antes de montar.
