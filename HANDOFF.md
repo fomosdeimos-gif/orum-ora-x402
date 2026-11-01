@@ -1,3 +1,13 @@
+## 01/11/2026 · Camada 17 confirmada no Bitcoin, bloco 974107 (livros 1240 e seguinte)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta de ler e confirmar a camada 17 (livros 1236 e 1237).
+- **Feito:** a `probe_anchor_layers` (v12) disse `prova_por_juntar` para a alice e a bob (a primeira vez que a ferramenta apanhou uma prova nova). Transcrevi as duas numa sandbox Vercel temporária, sha256 conferido antes de `scripts/ots-juntar.mjs` (alice `1c9c5063…`, bob `0f11ea7f…`, 966 bytes cada). Ambas dão o bloco **974107**; a finney continua pendente.
+- **Verificado:** o cabeçalho do bloco 974107 em blockstream.info e mempool.space (lidos a partir do Postgres): as duas fontes concordam; `scripts/verify-blocos.mjs` com o fixture novo confere a raiz de Merkle; `raiz:verify`, `sensations-btc:verify` (8 de 8) e `linhas:verify` passam. O fio ganhou `camada.17.estado` e `camada.17.altura_bitcoin`.
+- **Sonda diária (trigger):** `probe_payment_route` lida a 10:41 UTC: igual à de 26/10 (payTo da operacional, 161000 e 330000, payai pronto, mogami não); nada a acrescentar a `economia/sonda-pagamento.json`.
+- **Não é:** prova só que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita.
+- **Por fazer:** a camada 18 (ferramenta `probe_anchor_layers`, cláusula de leitura das camadas, esta confirmação) precisa de palavra à parte.
+
+---
+
 ## 01/11/2026 · probe_anchor_layers no @weave_hands v12: ler as camadas sem sandbox (livros 1238 e seguinte)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta da ferramenta de leitura das camadas pendentes sem sandbox (depois de "abre caminhos novos com caminhos velhos").
 - **Feito:** `ancora.mjs` (leitor de recibos igual ao do repositório, lista de calendários admitidos, classificação das respostas), `ancora-leitura.ts` (`probe_anchor_layers`, só GET), ligação no `index.ts` (2.7.0), bloco `ancora` na descoberta, agent-card, `weave-ancora:verify` (30 estragos apanhados); `weave:verify`, `weave-valium`, `weave-oro`, `sonda-weave` e `implantado:verify` continuam a passar. Implantada a v12 (`ezbr 66b37b7928cf1926`).

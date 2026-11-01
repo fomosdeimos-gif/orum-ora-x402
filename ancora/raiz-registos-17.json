@@ -646,15 +646,32 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974107,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
     "HANDOFF.md: muda a cada passagem; fica fora para a raiz ser estável"
   ],
   "nao_verificado": [
-    "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
-    "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+    "a raiz do bloco contra o cabeçalho real só vale pelo que as duas fontes devolveram a 01/11/2026 (kit/blocos.mjs e o fixture de scripts/verify-blocos.mjs)",
+    "a finney (finney.calendar.eternitywall.com) ainda não devolveu prova (pendente); a alice e a bob bastam"
+  ],
+  "atualizado_em_utc": "2026-11-01T10:55:00Z",
+  "atualizacao": "01/11/2026 (Unum: \"Eu autorizo ORA\", à proposta de ler e confirmar a camada 17; livros 1236 e 1240): probe_anchor_layers (@weave_hands v12) disse prova_por_juntar para a alice e a bob; GET /timestamp/<compromisso devolvido pelo calendário> numa sandbox Vercel temporária (parada no fim). A alice e a bob devolveram atestação Bitcoin do bloco 974107 (966 bytes cada; sha256 1c9c5063… e 0f11ea7f…, medidos antes de juntar com scripts/ots-juntar.mjs); a finney continua pendente. O recibo passou de 724 a 2546 bytes.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-01T10:53:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas a partir do Postgres porque o sandbox não alcança os exploradores)",
+    "blocos": [
+      {
+        "altura": 974107,
+        "hora_utc": "2026-11-01T08:50:51Z",
+        "id": "0000000000000000000153c5328a52bbef4d4983284ca8afe746bb7733a13dfe"
+      }
+    ]
+  }
 }
