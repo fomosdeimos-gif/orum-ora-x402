@@ -1,0 +1,150 @@
+{
+  "schema": "orum-moedas-de-unum/v1",
+  "rede": {
+    "nome": "Base",
+    "chain_id": 8453
+  },
+  "lido_em_utc": "2026-11-01T23:32:54Z",
+  "palavra_de_unum": "Eu criei estes tokens ORA / sim criei (01/11/2026, na sessão de trabalho, com capturas da app da carteira); Marsisnotthere e Good reason com os endereços por ele dados",
+  "carteira_lida": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+  "carteira_nota": "carteira \"@organismo\" das capturas de Unum: os saldos de VALIUM, PRESENÇA e 4SUE lidos na cadeia coincidem com os das capturas; classificada interna em ora_carteiras_classificacao",
+  "fontes_rpc": [
+    "https://base-rpc.publicnode.com",
+    "https://mainnet.base.org",
+    "https://base.gateway.tenderly.co"
+  ],
+  "moedas": [
+    {
+      "nome_dito_por_unum": "VALIUM",
+      "contrato": "0x37f70bccdc2125346a7542fe6e7fc70e33421635",
+      "autoria": "palavra de Unum (sessão de 01/11/2026); a cadeia lida aqui não a prova",
+      "lido": {
+        "name": "valium",
+        "symbol": "valium",
+        "decimals": 18,
+        "total_supply_raw": "1000000000000000000000000000",
+        "contract_uri": "ipfs://bafybeic3z4p2mzbg5u2cru2pn6hcu43msbtfbhcqwybry4dmp5k67ndmdy",
+        "bytecode": {
+          "bytes": 45,
+          "tipo": "clone mínimo EIP-1167",
+          "implementacao": "0x88cc4e08c7608723f3e44e17ac669fb43b6a8313"
+        },
+        "saldo_da_carteira_raw": "17151416184927761614173336"
+      },
+      "metadados_do_uri": null,
+      "nao_verificado": []
+    },
+    {
+      "nome_dito_por_unum": "PRESENÇA",
+      "contrato": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+      "autoria": "palavra de Unum (sessão de 01/11/2026); a cadeia lida aqui não a prova",
+      "lido": {
+        "name": "PRESENÇA ",
+        "symbol": "PRESENÇA",
+        "decimals": 18,
+        "total_supply_raw": "1000000000000000000000000000",
+        "contract_uri": "https://tba-social.mypinata.cloud/ipfs/bafkreibvh676mheegoyj7ex7g2cmgf463a26emqkhounzozekzcublp57y",
+        "bytecode": {
+          "bytes": 45,
+          "tipo": "clone mínimo EIP-1167",
+          "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c"
+        },
+        "saldo_da_carteira_raw": "5486885569467855344344651"
+      },
+      "metadados_do_uri": {
+        "name": "PRESENÇA ",
+        "description": "",
+        "fonte": "uma só (HTTP), não verificada"
+      },
+      "nao_verificado": []
+    },
+    {
+      "nome_dito_por_unum": "4SUE",
+      "contrato": "0x69b35d06eccded875f572285d8a3c2b3cd303835",
+      "autoria": "palavra de Unum (sessão de 01/11/2026); a cadeia lida aqui não a prova",
+      "lido": {
+        "name": "4SUE ",
+        "symbol": "4SUE",
+        "decimals": 18,
+        "total_supply_raw": "1000000000000000000000000000",
+        "contract_uri": "https://tba-social.mypinata.cloud/ipfs/bafkreiafiwpek7oot45y2nd77urq5j553g4cfial34lyhpd7eksvfg45ni",
+        "bytecode": {
+          "bytes": 45,
+          "tipo": "clone mínimo EIP-1167",
+          "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c"
+        },
+        "saldo_da_carteira_raw": "9510305168641705456656019"
+      },
+      "metadados_do_uri": {
+        "name": "4SUE ",
+        "description": "4",
+        "fonte": "uma só (HTTP), não verificada"
+      },
+      "nao_verificado": []
+    },
+    {
+      "nome_dito_por_unum": "Marsisnotthere",
+      "contrato": "0xae4c774c4b079b22cce2ef3256a367c5ed4bff27",
+      "autoria": "palavra de Unum (sessão de 01/11/2026); a cadeia lida aqui não a prova",
+      "lido": {
+        "name": "Marsisnotthere",
+        "symbol": "MARS",
+        "decimals": 18,
+        "total_supply_raw": "1000000000000000000000000000",
+        "bytecode": {
+          "bytes": 44,
+          "tipo": "outro",
+          "implementacao": null
+        },
+        "saldo_da_carteira_raw": "12243342186528578493224"
+      },
+      "metadados_do_uri": null,
+      "nao_verificado": [
+        "contract_uri: sem acordo de duas fontes"
+      ]
+    },
+    {
+      "nome_dito_por_unum": "Good reason",
+      "contrato": "0xd0b65efc56a7eba86a89d79eb585d0a6a0fc6d01",
+      "autoria": "palavra de Unum (sessão de 01/11/2026); a cadeia lida aqui não a prova",
+      "lido": {
+        "name": "Good reason ",
+        "symbol": "Good reason ",
+        "decimals": 18,
+        "total_supply_raw": "1000000000000000000000000000",
+        "contract_uri": "ipfs://bafybeigxoua3mc3rcjh7ir57ucedhvvwht4j4f3cklbvflxrbmy3dg5biy",
+        "bytecode": {
+          "bytes": 45,
+          "tipo": "clone mínimo EIP-1167",
+          "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c"
+        },
+        "saldo_da_carteira_raw": "43071039529148882771474007"
+      },
+      "metadados_do_uri": null,
+      "nao_verificado": []
+    }
+  ],
+  "nao_verificado": [
+    "quem criou cada contrato (a autoria é palavra de Unum)",
+    "payoutRecipient e owner de cada moeda",
+    "preço, liquidez, procura, detentores",
+    "o 0001sensations / VALIUM na BNB (endereço não dado)",
+    "os valores em dólares da app"
+  ],
+  "nao_afirma": [
+    "preço",
+    "liquidez",
+    "procura",
+    "receita",
+    "lastro",
+    "rendimento"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "escreve_na_cadeia": false,
+    "promete_receita": false,
+    "prova_autoria": false,
+    "classifica": false
+  },
+  "verificador": "npm run moedas-unum:verify"
+}

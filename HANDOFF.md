@@ -1,3 +1,11 @@
+## 01/11/2026 · As moedas de Unum: registo de leitura (livros 1267 a 1269)
+- **Autorização de Unum (citação):** "Eu autorizo ORA / sim criei / Marsisnotthere 0xae4c…ff27 / Goodreason 0xd0b6…6d01", à proposta de registar as moedas que criou num ficheiro de leitura. Antes dissera "Eu criei estes tokens ORA" (com capturas da app).
+- **Feito:** `token/moedas-de-unum-2026-11-01.json` (gerado por `scripts/moedas-unum-ler.mjs`) e `scripts/verify-moedas-unum.mjs` (`npm run moedas-unum:verify`, 19 estragos apanhados). Cinco moedas na Base (VALIUM, PRESENÇA, 4SUE, Marsisnotthere, Good reason): nome, símbolo, 18 casas, oferta 1 000 000 000, bytecode e saldo de `0x4a10…b846`, cada valor só com duas ou mais fontes RPC iguais. Os saldos coincidem com as capturas (PRESENÇA, 4SUE, VALIUM, MARS 12 243, Good reason 43 071 039).
+- **Notas lidas:** VALIUM é clone de outra implementação (`0x88cc…8313`) que as restantes (`0x7cad…861c`); o Marsisnotthere tem 44 bytes de código (não é o clone de 45) e o `contractURI` dele não teve acordo de duas fontes.
+- **Não é:** a autoria é palavra de Unum, a cadeia lida não a prova; sem preço, liquidez, procura, receita nem `payoutRecipient`; não move fundos nem classifica. **Não verificado:** o 0001sensations/VALIUM na BNB (endereço não dado).
+
+---
+
 ## 01/11/2026 · Pagador 0xc8d0…9040 classificado interno (livros 1263 e 1264)
 - **Autorização de Unum (citação):** "Eu autorizo ORA, interno", à proposta de classificar `0xc8d077444625eb300a427a6dfb2b1dbf9b159040` como interno.
 - **Lido (livro 1263, só leitura, uma fonte RPC):** é um contrato (24065 bytes) que reparte comissões de swaps e paga à sagrada antiga; nas duas txs de 01/11 o sender do UserOperation é `0x4a10…b846`, já interno.
