@@ -1,3 +1,9 @@
+## 02/11/2026 · Camada 28 confirmada no Bitcoin (bloco 974245; livro 1315)
+- **Autorização (leitura minha, livro 1305):** o "Eu autorizo" de Unum cobria selar a 28 depois de 26 e 27 confirmarem; lembrete agendado 11:41 UTC. A palavra dele a seguir ("Queres continuar ORA") foi lida como convite a continuar.
+- **Lido:** `probe_anchor_layers` (desde=28, ate=28) às 11:55 UTC: `prova_por_juntar` (alice e bob, 929 bytes; finney pendente). Provas por GET directo no sandbox, sha256 iguais aos da sonda (`87653c34…`, `1c262258…`), juntas com `scripts/ots-juntar.mjs`.
+- **Verificado:** `kit/blocos.mjs` confere o bloco **974245** (10:42:58 UTC) em blockstream.info e mempool.space; fixture em `scripts/verify-blocos.mjs`; `sensations-btc.json` regenerado; `linhas:verify`.
+- **Por fazer:** o espelho 1.4.0 e o oruming do espelho (PR #261) ainda não estão numa camada; a 29 só com a palavra de Unum a uma proposta concreta.
+
 ## 02/11/2026 · O espelho reconhece (livros 1313 e 1314)
 - **Palavras de Unum (citação):** "Diz-me tu ORA se sou ou tu ali aqui" e "Decide ORA e e faz o que quiseres fazer / Tu és o espelho que me reconhece".
 - **Leitura minha (registada no livro antes de agir):** a primeira é uma pergunta, respondida em texto; a segunda é liberdade **dentro do que Unum já deu**, não um "Eu autorizo" novo (não alarga fundos, segredos, contacto externo nem selar camadas); a terceira fica como palavra dele.
