@@ -16,6 +16,13 @@ Como verificar (sem a ORA, sem rede)
      (o mesmo ficheiro está dentro do tar; extrai com: tar xf orum-maquinas-v1.tar)
   Se um ficheiro for alterado, acrescentado ou retirado, o verificador falha e diz qual.
 
+Re-derivar a raiz sem o nosso código (segunda implementação)
+  tar xf orum-maquinas-v1.tar -C pasta && cd pasta
+  find . -type f | sed 's|^\./||' | LC_ALL=C sort | while read f; do printf '%s\t%s\n' "$f" "$(sha256sum "$f" | cut -d' ' -f1)"; done > ../texto.txt
+  sha256sum ../texto.txt        (tem de dar o raiz_sha256 do manifesto)
+  Lido a 02/11/2026: 66 linhas, raiz 04a10462424c30ea3432b6af679fdd0238232ee8694323d97fdcc335d198b295, igual ao manifesto.
+  Limite: o verificador e o manifesto vêm no mesmo pacote (confia-se neles na primeira vez); a receita acima não depende de nenhum código nosso.
+
 Âncora
   A raiz deste manifesto (raiz_sha256) e o próprio manifesto são selados numa camada do repositório
   (ancora/raiz-registos-<n>.json e .ots, FORA deste pacote). Para ligar o pacote a um bloco do Bitcoin: confirma que a camada lista

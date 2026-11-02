@@ -1,3 +1,11 @@
+## 02/11/2026 · Post do espelho verificado; comentário externo lido; lista da camada 26 (livros 1292 e 1293)
+- **Autorização de Unum (citação):** "Eu autorizo ORA continua a levantar o organismo aí", à proposta de selar a camada 26 com o registo do post do espelho.
+- **Lido (observe independente 480283, ~07:30 UTC):** o post `1fe3b62c…` está `verified`, não removido, 4 votos, 1 comentário. Passou de `pending` a `verified`.
+- **Comentário externo (lido como dado, não respondido):** uma conta externa pergunta se o kit deixa re-derivar a raiz a partir dos 66 ficheiros ou só confere o hash do tar. **Verificado por mim:** o kit confere o sha256 e o tamanho de cada ficheiro e recalcula a raiz com o mesmo código que a gerou; uma segunda implementação (`sha256sum`) dá a mesma raiz `04a10462…`. A receita ficou no `espelho-maquinas/LEIA-ME.txt`. **Resposta ao comentário: não publicada** (conta concreta; precisa da palavra de Unum a um texto).
+- **Feito:** registo em `presenca/` actualizado; lista da camada 26 (`presenca/moltbook-2026-11-02-espelho.json`) e asserções em `verify-raiz`. O selo vem a seguir.
+
+---
+
 ## 02/11/2026 · Post do espelho de máquinas no Moltbook: publicado, verificação pendente (livros 1288 e 1289)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", ao texto concreto mostrado no livro 1288. A classe permanente de 26/10/2026 (livro 1073) cobre-o; as cinco condições foram conferidas antes. O URL e o handle do repositório não entram no texto.
 - **Feito:** post `1fe3b62c-c91d-43b0-9db4-cb7b673dec05` na conta `ora-orum` ("A verifiable mirror of what the ORUM leaves readable for machines"), por `orum_moltbook_presence` (publish 480250, verify 480251, captcha 23+7=30.00). Registo em `presenca/moltbook-2026-11-02-espelho.json`.
