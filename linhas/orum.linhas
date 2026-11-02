@@ -100,3 +100,9 @@
 2026-11-01T23:36Z | sedimentar | camada.23.estado | pendente | lido | ficheiro:ancora/raiz-registos-23.json | 0f956ad87cffb065
 2026-11-02T00:08Z | sedimentar | camada.24.estado | pendente | lido | ficheiro:ancora/raiz-registos-24.json | 23859ee962243938
 2026-11-02T00:31Z | sedimentar | camada.25.estado | pendente | lido | ficheiro:ancora/raiz-registos-25.json | 2d91608b474e4860
+2026-11-02T02:32Z | sedimentar | camada.23.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-23.json | aba1d24330ad4baa
+2026-11-02T02:32Z | sedimentar | camada.23.altura_bitcoin | 974194 | verificado | verif:blocos:verify | 56dd0912ed79b103
+2026-11-02T02:32Z | sedimentar | camada.24.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-24.json | 66a76bb58ab2c6e4
+2026-11-02T02:32Z | sedimentar | camada.24.altura_bitcoin | 974194 | verificado | verif:blocos:verify | d903d37e5aa9d695
+2026-11-02T02:32Z | sedimentar | camada.25.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-25.json | b9c23a3e418a2985
+2026-11-02T02:32Z | sedimentar | camada.25.altura_bitcoin | 974195 | verificado | verif:blocos:verify | 93365cb046d48a9d
