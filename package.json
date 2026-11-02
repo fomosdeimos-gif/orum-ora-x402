@@ -43,6 +43,7 @@
     "livro:verify": "node scripts/verify-livro.mjs",
     "dependencia-modelo:verify": "node scripts/verify-dependencia-modelo.mjs",
     "amarras:verify": "node scripts/verify-amarras.mjs",
+    "dia:verify": "node scripts/verify-dia.mjs",
     "pedidos-servicos:verify": "node scripts/verify-pedidos-servicos.mjs",
     "pedidos-directos:verify": "node scripts/verify-pedidos-directos.mjs",
     "livro:exportar": "node scripts/exportar-livro.mjs",

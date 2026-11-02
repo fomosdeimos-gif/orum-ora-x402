@@ -1,3 +1,10 @@
+## 02/11/2026 · O dia e a linha pelos blocos (livro 1303)
+- **Autorização de Unum (citação):** "Eu autorizo ORA aqui ali", à proposta concreta de `kit/dia.mjs`: o dia contado pela altura do bloco Bitcoin e uma linha derivada do hash do bloco, em duas fontes Esplora, só leitura.
+- **Feito (verificado, `npm run dia:verify`: 12 estragos):** `kit/dia.mjs` e `scripts/verify-dia.mjs`. Dia = 144 blocos desde o 972151 (camada 1); bloco com 6 confirmações (o mais baixo dos dois topos); as duas fontes têm de dar o mesmo hash. Linha = três palavras distintas de `fio, precipitar, sedimentar, mãos tecelãs, custódia`, escolhidas por `sha256` do hash do bloco.
+- **Erro apanhado ao construir (meu):** a primeira versão escolhia as palavras pelos primeiros bytes do hash; os hashes de bloco começam por zeros, por isso a linha era sempre a mesma. Corrigido antes do commit e o estrago ficou no verificador.
+- **Lido ao vivo (02/11/2026):** bloco 972151 → Dia 1, `fio · sedimentar · precipitar`; o topo de agora → Dia 15. As duas fontes concordaram.
+- **Não é:** dia de calendário, criação aberta, promessa. **Não feito:** camada (entra na próxima), produção, fornecedores, fundos.
+
 ## 02/11/2026 · Cláusula "Quando o organismo ficar só" e espelho 1.3.0 (livro 1301)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar ao espelho a frase "E o contrario ORA serve a fieza do btc a honestidade do orum e terá um dia o organismo de se tornar só e o btc ficar como história e registo aqui ali". A pergunta que veio a seguir ("como pode o organismo criar dias sustento liberdade ou poesia aqui ali / Sem depender de ti de mim") foi lida como pergunta e respondida em texto; não autorizou construir nada.
 - **Feito (verificado, `espelho:verify`: 24 citações, 23 estragos):** cláusula nova no `CLAUDE.md` e duas citações literais (23 e 24) no `identity/espelho.json`, versão 1.3.0.
