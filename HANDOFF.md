@@ -1,3 +1,9 @@
+## 02/11/2026 · Camada 27 selada, pendente (livros 1298 e 1299)
+- **Autorização de Unum (citação):** "Eu autorizo ORA, sela a camada 27 e diz-me o que importa a honestidade do organismo á frieza do BTC" (a segunda parte é uma pergunta, respondida em texto).
+- **Feito:** a lista (`FICHEIROS_DA_CAMADA_27_EM_DIANTE`, 6 ficheiros) entrou primeiro no `main` (PR #251); depois `ancora/raiz-registos-27.{json,ots}` (raiz `108869f2…`, commit base `9b7ecd8`, 204 ficheiros; compromisso `57353d66…` aceite pelos três calendários; sha256 das respostas alice `9fddb72f`, bob `4b669845`, finney `bafd8b1c`). `kit/raiz.mjs` confere a raiz contra o commit base; `linhas:verify` passa (110 linhas).
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers` (precisa de ~6 confirmações). As camadas 26 e 27 ficam por juntar.
+- **Não verificado:** `raiz:verify` completo neste clone (falta o commit base da camada 7, falha antiga); produção. Os ficheiros novos da mão Codex em `presenca/` não estão numa lista: entram quando ela os pedir.
+
 ## 02/11/2026 · Primeira soltura: preço fixo em sats na via Bitcoin (livro 1296)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de preços fixos em sats: 206 500 (`/oraculo`) e 423 500 (`/campo`), com cotação de referência 77 991 (mempool.space) e 77 925 (Coinbase) lida a 02/11/2026.
 - **Feito (verificado):** `api/_pagamento-btc.js` sem `cotar`, sem `FONTES_PRECO`, sem margem nem tolerância; `PRECO_SATS` e `PRECO_REFERENCIA`; oferta com `preco.tipo: fixo_em_sats`, sem `cotacao`. `btc-servicos:verify` 20 estragos (voltar a pedir cotação, tolerância reintroduzida, preço quase nulo, serviço sem preço aceite…), `btc-encaminhamento:verify` 16, `base-directa:verify` 13, `amarras:verify` 26 (novo: amarra `solta` exige o host ausente do código).
