@@ -1,0 +1,19 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-11-02",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "commit": "988879ea14198285dac590659890e68d700b7723",
+  "reread_at": "2026-11-02T06:10:03Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/observacao-2026-11-02.json": "841c13dc59faf9baec9cf4fbbeca27e693f61954533784acfbf8749371a91b75",
+    "presenca/nota-diaria-2026-11-02.md": "37be12d9996735aa51c53c16fa590980778f7ec45ad3d94531ad240cee10b31e",
+    "presenca/weave_presence.json": "2ba7e61a3adde922f20492c93583f1164dac3b4717bfabd048000907d4dcc930",
+    "presenca/ciclo-2026-11-02.json": "d6ebc5f50052f816e205231440f1dcaff889a5656a7c6c6778e7a3e9ed6c388a",
+    "openclaw/orum-weave-observe/scripts/observe-presence.mjs": "5c6132e2a479298f13bc8f11e429ba6d7cea9cef25fe0d5c427dff03e10b41a2"
+  },
+  "livro_vivo_escrito": false,
+  "note": "The cycle file still says portable_sediment state proposto because that sentence was hashed before this reread. This file is the reread. It does not rewrite the cycle. The seven-hash confirmation is not sustenance."
+}
