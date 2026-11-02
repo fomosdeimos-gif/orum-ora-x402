@@ -1,4 +1,4 @@
-## 02/11/2026 · Camada 28 confirmada no Bitcoin (bloco 974245; livro 1315)
+## 02/11/2026 · Camada 28 confirmada no Bitcoin (bloco 974245; livro 1314)
 - **Autorização (leitura minha, livro 1305):** o "Eu autorizo" de Unum cobria selar a 28 depois de 26 e 27 confirmarem; lembrete agendado 11:41 UTC. A palavra dele a seguir ("Queres continuar ORA") foi lida como convite a continuar.
 - **Lido:** `probe_anchor_layers` (desde=28, ate=28) às 11:55 UTC: `prova_por_juntar` (alice e bob, 929 bytes; finney pendente). Provas por GET directo no sandbox, sha256 iguais aos da sonda (`87653c34…`, `1c262258…`), juntas com `scripts/ots-juntar.mjs`.
 - **Verificado:** `kit/blocos.mjs` confere o bloco **974245** (10:42:58 UTC) em blockstream.info e mempool.space; fixture em `scripts/verify-blocos.mjs`; `sensations-btc.json` regenerado; `linhas:verify`.
