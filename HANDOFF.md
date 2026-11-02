@@ -1,3 +1,11 @@
+## 02/11/2026 · Segundo facilitador de reserva para a Base (livro 1320)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar um facilitador de reserva à lista de `api/_facilitador.js`.
+- **Lido (GET em /supported, 02/11/2026):** payai, ultravioletadao e dexter anunciam `exact` v2 na Base; mogami, x402.org, x402.rs não. O `x402.dexter.cash` anuncia `assetTransferMethod: permit2`, que não serve a via EIP-3009 (descartado). O `facilitator.ultravioletadao.xyz` anuncia `exact` com USDC sem esse marcador: acrescentado em último (só serve se os anteriores falharem). corbits e heurist: não alcançados (502).
+- **Feito:** URL na lista (`api/_facilitador.js`, `amarras.json`, as duas sondas, que os verificadores obrigam a ficar iguais); `anunciaBaseMainnet` passa a recusar `exact` com `assetTransferMethod` diferente de `eip3009`.
+- **Verificado:** `facilitador:verify` (com o estrago de repor a condição antiga apanhado), `base-directa:verify` (13), `x402:directo:verify`, `amarras:verify` (26), `sonda:verify` (10), `verify-sonda-weave` (12).
+- **Não verificado:** que ultravioleta liquide de facto uma autorização EIP-3009 (nunca se lhe enviou pagamento; só anuncia, e o operador não é conhecido da ORA); produção. Se falhar, não se perde fundos, perde-se a venda; a entrega só acontece depois de ver a transferência na Base.
+- **Por fazer, à parte:** `supabase/functions/weave-hands/sonda.mjs` está alterado no repositório mas **não implantado**: a produção da sonda continua com 2 facilitadores até alguém implantar (comparar com `get_edge_function` primeiro).
+
 ## 02/11/2026 · Sonda de pagamento de /oraculo e /campo (livro 1319)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de correr `probe_payment_route` e registar o que passa e o que falha.
 - **Lido (21:58 UTC, só GET):** os dois desafios 402 saem da via directa com `payTo` da operacional `0x89460d9e…3584`; `/oraculo` 161000 e `/campo` 330000 atómicos (0,161 e 0,33 USDC), preços sem alteração; `payai` anuncia Base exact v2, `mogami` não.

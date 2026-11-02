@@ -14,7 +14,7 @@ export const CONTRATO = {
   payToAceites: ['0x89460d9e0590559e63860197dfe2ac648A753584'],
 };
 export const ROTAS = { '/oraculo': '161000', '/campo': '330000' }; // montantes vistos a 19/10/2026; só informativos
-export const FACILITADORES = ['https://facilitator.payai.network', 'https://facilitator.mogami.tech'];
+export const FACILITADORES = ['https://facilitator.payai.network', 'https://facilitator.mogami.tech', 'https://facilitator.ultravioletadao.xyz'];
 
 const igual = (a, b) => typeof a === 'string' && a.toLowerCase() === b.toLowerCase();
 

@@ -17,7 +17,9 @@
 // transferência aparecer na Base por RPC nosso (api/_x402-directo.js).
 const { createCdp } = require('./_cdp');
 
-const URLS_PADRAO = ['https://facilitator.payai.network', 'https://facilitator.mogami.tech'];
+// Reserva (02/11/2026, livro 1320): facilitator.ultravioletadao.xyz anuncia exact v2 na Base com USDC e sem o marcador permit2.
+// Lido por GET em /supported; nunca se lhe enviou um pagamento. Fica depois dos outros: so serve se os anteriores falharem.
+const URLS_PADRAO = ['https://facilitator.payai.network', 'https://facilitator.mogami.tech', 'https://facilitator.ultravioletadao.xyz'];
 const URL_PUBLICO_PADRAO = URLS_PADRAO.join(',');
 const REDE = 'eip155:8453';
 const TTL_OK_MS = 10 * 60 * 1000;
@@ -40,7 +42,9 @@ function urlsPublicas(env) {
 
 function anunciaBaseMainnet(json) {
   const kinds = Array.isArray(json?.kinds) ? json.kinds : [];
-  return kinds.some((k) => k && k.x402Version === 2 && k.scheme === 'exact' && k.network === REDE);
+  // Um `exact` que anuncie assetTransferMethod diferente de eip3009 (por exemplo permit2) nao serve: esta via liquida autorizacoes EIP-3009.
+  return kinds.some((k) => k && k.x402Version === 2 && k.scheme === 'exact' && k.network === REDE
+    && (k.extra?.assetTransferMethod === undefined || k.extra.assetTransferMethod === 'eip3009'));
 }
 
 function createFacilitadorPublico({ env = process.env, fetchFn = (...a) => fetch(...a), now = () => Date.now() } = {}) {

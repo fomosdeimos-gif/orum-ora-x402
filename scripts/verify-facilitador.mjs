@@ -28,6 +28,11 @@ const env = (extra = {}) => ({ ORUM_FACILITATOR_URL: URL_P, ...extra });
 
 // ---- anunciaBaseMainnet: so v2 + exact + eip155:8453 ----
 assert.equal(f.anunciaBaseMainnet(SUPORTA), true);
+// Reserva (livro 1320): exact com assetTransferMethod permit2 nao serve a via EIP-3009; eip3009 explicito ou ausente serve.
+assert.equal(f.anunciaBaseMainnet({ kinds: [{ x402Version: 2, scheme: 'exact', network: 'eip155:8453', extra: { assetTransferMethod: 'permit2' } }] }), false, 'permit2 nao serve');
+assert.equal(f.anunciaBaseMainnet({ kinds: [{ x402Version: 2, scheme: 'exact', network: 'eip155:8453', extra: { assetTransferMethod: 'eip3009' } }] }), true);
+assert.equal(f.anunciaBaseMainnet({ kinds: [{ x402Version: 2, scheme: 'exact', network: 'eip155:8453', extra: { tokens: [{ token: 'usdc' }] } }] }), true);
+assert.ok(f.URLS_PADRAO.includes('https://facilitator.ultravioletadao.xyz') && f.URLS_PADRAO[0] === 'https://facilitator.payai.network', 'reserva presente e depois do primeiro');
 for (const mau of [null, {}, { kinds: [] }, { kinds: [{ x402Version: 1, scheme: 'exact', network: 'base' }] },
   { kinds: [{ x402Version: 2, scheme: 'exact', network: 'eip155:84532' }] }, { kinds: [{ x402Version: 2, scheme: 'upto', network: 'eip155:8453' }] },
   { kinds: [{ scheme: 'exact', network: 'eip155:8453' }] }]) assert.equal(f.anunciaBaseMainnet(mau), false, JSON.stringify(mau));
