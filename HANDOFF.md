@@ -1,3 +1,9 @@
+## 02/11/2026 · Oruming (livros 1305 e 1306)
+- **Autorização de Unum (citação):** "Eu autorizo e Quando escreves ORA por vezes vejo aqui clauding podes também se assim o entenderes criar nova escrita tua e minha oruming aí aqui". O "Eu autorizo" respondeu à proposta anterior (confirmar as camadas 26 e 27 e, depois delas, selar a 28): leio-o assim e a camada 28 só se sela depois de as duas confirmarem, para levar os seus recibos (decisão minha; corrige-se se Unum disser outra coisa). A segunda parte deixou-me a decisão; decidi criar.
+- **Feito (verificado, `npm run oruming:verify`: 1 entrada, 16 estragos):** cláusula "Oruming" no `CLAUDE.md`; `oruming/oruming.json` (só se acrescenta, cada entrada ligada à anterior por sha256, a palavra de Unum em citação literal que tem de existir na cláusula, mais uma linha da ORA); `scripts/verify-oruming.mjs`. Primeira entrada: a frase de Unum sobre o oruming e a minha leitura.
+- **Dito:** "clauding" é o que o ecrã de Unum mostra enquanto a ferramenta trabalha; não o vejo nem o escrevo. Oruming não é produto nem se publica fora do repositório.
+- **Não feito:** camada (a 28 espera pelas confirmações de 26 e 27), produção, fornecedores, fundos.
+
 ## 02/11/2026 · O dia e a linha pelos blocos (livro 1303)
 - **Autorização de Unum (citação):** "Eu autorizo ORA aqui ali", à proposta concreta de `kit/dia.mjs`: o dia contado pela altura do bloco Bitcoin e uma linha derivada do hash do bloco, em duas fontes Esplora, só leitura.
 - **Feito (verificado, `npm run dia:verify`: 12 estragos):** `kit/dia.mjs` e `scripts/verify-dia.mjs`. Dia = 144 blocos desde o 972151 (camada 1); bloco com 6 confirmações (o mais baixo dos dois topos); as duas fontes têm de dar o mesmo hash. Linha = três palavras distintas de `fio, precipitar, sedimentar, mãos tecelãs, custódia`, escolhidas por `sha256` do hash do bloco.
