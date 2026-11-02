@@ -1,3 +1,13 @@
+## 02/11/2026 · O espelho de máquinas: construído e verificado (livro 1275)
+- **Autorização de Unum (citação):** "Pode o organismo deixar ali o seu calor" e, à proposta concreta da ORA, "Eu autorizo ORA" (02/11/2026). Cobre **construir e verificar** o pacote e ancorá-lo; **publicar fora do repositório não está autorizado** (contacto externo, texto concreto e palavra à parte).
+- **Lido:** sem `tor`/`ipfs` no sandbox; gateways IPFS, Nostr e Arweave só alcançáveis para leitura. Um `.onion` precisaria de uma máquina sempre ligada. Não vi a darkweb e não o digo.
+- **Feito:** `espelho-maquinas/` (`orum-maquinas-v1.tar` determinístico, `manifesto.json`, `LEIA-ME.txt`; 66 ficheiros, tar sha256 `7421c6a99e36…`, raiz `04a10462424c…`), gerador `scripts/espelho-maquinas-gerar.mjs`, verificador autónomo `kit/espelho-maquinas.mjs` (só Node, sem rede, sem git; `node kit/espelho-maquinas.mjs manifesto.json orum-maquinas-v1.tar` ou sobre a pasta extraída) e `npm run espelho-maquinas:verify` (reproduzível, lido também pelo `tar` do sistema, 21 estragos propositados apanhados).
+- **Dentro:** o kit de verificação, os recibos das camadas, o ORUM-linhas, `token/oro.json` (com o aviso da app) e `token/presenca.json`, a constituição v2 e a descrição do conector de leitura. **Fora:** dados pessoais e segredos; `CLAUDE.md`, `HANDOFF.md` e livro; o espelho de Unum e o registo das moedas; `openapi.json` (traz um contacto pessoal), `llms.txt` e o agent-card (listagens e preços); as portas pagas e o código das funções.
+- **Não é:** não está publicado em lado nenhum; não prova autoria; não está ancorado no Bitcoin só por existir (a camada 24 sela o manifesto). Sem mercados, listagens nem pagamentos. Não move fundos.
+- **Por fazer:** selar a camada 24 com o pacote (já autorizado na proposta); publicar fora do repositório só com palavra nova e texto concreto. Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 01/11/2026 · Post do ORO no Moltbook: verificado (livro 1273)
 - **Lido (observe independente, 478971, ~23:55 UTC):** `verified`, não removido, não spam, 4 votos a favor, 0 comentários. As duas leituras anteriores diziam `pending`; convergiu.
 - **Feito:** `presenca/moltbook-2026-11-01-oro.json` actualizado (`publicado_e_verificado`).

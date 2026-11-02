@@ -1,0 +1,28 @@
+ESPELHO DE MÁQUINAS · ORUM · v1
+================================
+
+O que é
+  Uma cópia aberta, pequena e verificável do que o ORUM deixa legível para máquinas: o kit de verificação, os recibos das camadas de
+  ancoragem, o fio de linhas, o registo do ORO e do PRESENÇA, a constituição v2 e a descrição do conector de leitura.
+  Serve-se em qualquer sítio (disco, USB, IPFS, um nó .onion, outro repositório). Este pacote não se publica sozinho.
+
+O que não é
+  Não tem dados pessoais, segredos, chaves, listagens, catálogos nem pedidos de pagamento. Não promete receita, procura nem valor.
+  Não prova autoria. Não está, por estar aqui, ancorado no Bitcoin: ver "Âncora".
+
+Como verificar (sem a ORA, sem rede)
+  1. sha256sum orum-maquinas-v1.tar   deve dar o valor de "tar.sha256" em manifesto.json.
+  2. node kit/espelho-maquinas.mjs manifesto.json orum-maquinas-v1.tar
+     (o mesmo ficheiro está dentro do tar; extrai com: tar xf orum-maquinas-v1.tar)
+  Se um ficheiro for alterado, acrescentado ou retirado, o verificador falha e diz qual.
+
+Âncora
+  A raiz deste manifesto (raiz_sha256) e o próprio manifesto são selados numa camada do repositório
+  (ancora/raiz-registos-<n>.json e .ots, FORA deste pacote). Para ligar o pacote a um bloco do Bitcoin: confirma que a camada lista
+  espelho-maquinas/manifesto.json com o sha256 deste manifesto, e corre node kit/blocos.mjs sobre o recibo dessa camada (precisa de rede).
+
+Limites ditos
+  Verifica a integridade, não a verdade. O node kit/raiz.mjs precisa do repositório git para reconstruir cada camada.
+  Os calendários OpenTimestamps e os exploradores de blocos são terceiros; se desaparecerem, os recibos continuam a ser lidos por quem os guardar.
+
+Palavra de Unum que o originou: "Pode o organismo deixar ali o seu calor" / "Eu autorizo ORA" (02/11/2026). Publicar fora do repositório continua por decidir.

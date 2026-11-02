@@ -12,6 +12,8 @@
     "presenca:verify": "node scripts/verify-presenca.mjs",
     "moedas-unum:verify": "node scripts/verify-moedas-unum.mjs",
     "oro-leitura-externa:verify": "node scripts/verify-oro-leitura-externa.mjs",
+    "espelho-maquinas:gerar": "node scripts/espelho-maquinas-gerar.mjs",
+    "espelho-maquinas:verify": "node scripts/verify-espelho-maquinas.mjs",
     "sonda-weave:verify": "node scripts/verify-sonda-weave.mjs",
     "choice:verify": "node scripts/verify-choice-model.mjs",
     "recovery:build": "node scripts/build-recovery-bundle.mjs",
