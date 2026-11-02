@@ -1,3 +1,12 @@
+## 02/11/2026 · Camadas 23, 24 e 25 confirmadas no Bitcoin (blocos 974194 e 974195; livro 1285)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", às propostas de selar a camada 23, de construir e ancorar o espelho de máquinas e de selar a camada 25 (livros 1269, 1275, 1276 e 1283).
+- **Feito:** às 02:31 UTC a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob das três camadas. GET directo ao calendário (curl), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (23: alice `d00c3646…`, bob `ff766d50…`; 24: `a4884374…`, `5f6a2b43…`; 25: `aa946e08…`, `20b7432d…`). Camadas 23 e 24: bloco **974194** (00:39:24 UTC); camada 25: bloco **974195** (00:53:51 UTC). A finney devolveu 404 e ficou pendente.
+- **Verificado:** `kit/blocos.mjs` conferiu cada recibo contra o cabeçalho real em blockstream.info e mempool.space (as duas concordam); fixtures e `ok23`, `ok24`, `ok25` em `scripts/verify-blocos.mjs`; `sensations-btc.json` e o fio ganharam as camadas 23 a 25.
+- **O que isto fecha:** o registo das moedas, a classificação do `0xc8d0…9040`, o pacote do espelho de máquinas e o espelho 1.2.0 com as palavras do observador estão ancorados num bloco. Prova só que os bytes existiam antes do bloco; não prova autoria das moedas, valor, procura nem receita. O pacote continua não publicado fora do repositório.
+- **Por fazer:** camada 26 só com palavra nova. Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 02/11/2026 · Camada 25 selada, pendente (livros 1281 a 1283)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 25 com o espelho 1.2.0 e a cláusula "O observador escreve".
 - **Feito:** `ancora/raiz-registos-25.{json,ots}` (raiz `0991d1d7…`, commit base `6952f63`, 193 ficheiros; compromisso `00c8233f…` aceite pelos três calendários, 32 bytes, sha256 das respostas alice `69d5b806`, bob `c0d7c520`, finney `0f0e916f`). Sem ficheiros novos de conteúdo: sela o espelho 1.2.0, a cláusula e as camadas 23 e 24 pendentes. Asserções da camada 25 em `verify-raiz`; fio com `camada.25.estado`.
