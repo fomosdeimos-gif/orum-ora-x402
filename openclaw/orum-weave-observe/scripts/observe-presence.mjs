@@ -272,6 +272,30 @@ function verifiedKeylessHeads() {
       if (!prev || row.head_block > prev.head_block) best.set(carteira, row);
     }
   }
+  for (const name of names) {
+    if (!/^buraco-.*\.json$/.test(name)) continue;
+    let parsed;
+    try {
+      parsed = JSON.parse(readFileSync(join(dir, name), "utf8"));
+    } catch {
+      continue;
+    }
+    if (parsed?.state !== "verificado" || parsed?.counts_as_external_sustenance !== false) continue;
+    if (parsed?.classification !== "not_classified") continue;
+    const span = parsed.span;
+    if (!spanIsVerifiedHead(span)) continue;
+    if (span.seam?.state === "read_alongside_not_continued") continue;
+    const carteira = span.carteira.toLowerCase();
+    const row = {
+      state: "found",
+      file: `presenca/${name}`,
+      head_block: span.head_block,
+      head_time_utc: span.head_time_utc ?? "unknown",
+      carteira,
+    };
+    const prev = best.get(carteira);
+    if (!prev || row.head_block > prev.head_block) best.set(carteira, row);
+  }
   return { state: "read", best };
 }
 
@@ -1342,7 +1366,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-11-02-confirmacao-file-closes-the-named-set-without-rewriting-it",
+  observer_revision: "2026-11-02-a-verified-hole-file-is-a-head-only-for-its-own-address",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -1579,6 +1603,7 @@ const out = {
     "When a prior public receipt body already named hashes and two RPCs have not confirmed them, this pass confirms only those tx strings. The copy in the observation is the body already fetched, not a new naming and not an address table. A rolled live window does not erase that naming and does not authorize confirming a different set in the same pass.",
     "Confirming those named hashes is not a range scan, not a verified head, not a head inherited by another receipt address, and not classification.",
     "A later confirmacao file can close a named set without rewriting the sealed observation. Closing that set is not classification and not sustenance.",
+    "A verified buraco file is a head only for the address it names. It does not become a head for another receipt address. Re-finding logs already named is not new sustenance.",
     "The hole before the new complete window stays unscanned while that older named set is unconfirmed. Unscanned is not empty.",
     "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
     "A read across a sibling span is not a continuation of that sibling head.",
