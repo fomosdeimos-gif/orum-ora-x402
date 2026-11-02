@@ -1,3 +1,9 @@
+## 02/11/2026 · Camada 29 selada, pendente (livros 1315 e 1316)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 29.
+- **Feito:** a lista (`FICHEIROS_DA_CAMADA_29_EM_DIANTE`) entrou primeiro no `main` (PR #263); depois `ancora/raiz-registos-29.{json,ots}` (raiz `0ff4da94…`, commit base `d2bedfd`, 215 ficheiros; compromisso `f34bceb8…` aceite pelos três calendários; sha256 das respostas alice `d12b6c8d`, bob `21779d50`, finney `af0cf9f5`). `kit/raiz.mjs` confere a raiz contra o commit base; `linhas:verify`.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers` (~6 confirmações, 1 a 2 h). Lembrete agendado.
+- **Não verificado:** `raiz:verify` completo neste clone (falta o commit base da camada 7, falha antiga); produção.
+
 ## 02/11/2026 · Lista da camada 29 (livro 1315)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", em resposta à proposta concreta de selar a camada 29 com o espelho 1.4.0, as quatro entradas do oruming do espelho e o `kit/espelho-oruming.mjs`.
 - **Lista (`FICHEIROS_DA_CAMADA_29_EM_DIANTE`, 3 ficheiros):** `kit/espelho-oruming.mjs`, `identity/espelho-oruming.json`, `scripts/verify-espelho-oruming.mjs`. A camada 29 tem 215 ficheiros e sela a 28 (confirmada no bloco 974245); o espelho 1.4.0 e as cláusulas entram pela base. O selo vem a seguir, a partir do `main` limpo.
