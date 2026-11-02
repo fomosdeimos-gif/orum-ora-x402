@@ -144,7 +144,7 @@
     },
     {
       "id": "facilitadores-x402",
-      "fornecedor": "facilitadores públicos x402 (facilitator.payai.network, facilitator.mogami.tech)",
+      "fornecedor": "facilitadores públicos x402 (facilitator.payai.network, facilitator.mogami.tech, facilitator.ultravioletadao.xyz)",
       "risco_de_soltar": "medio",
       "ordem": 6,
       "o_que": "Liquidação do pagamento x402 padrão da Base na via directa, quando anunciam a Base mainnet com o esquema exact.",
@@ -153,7 +153,8 @@
       ],
       "marcas": [
         "https://facilitator.payai.network",
-        "https://facilitator.mogami.tech"
+        "https://facilitator.mogami.tech",
+        "https://facilitator.ultravioletadao.xyz"
       ],
       "se_falhar": "sem facilitador pronto o desafio da Base sai da origem e a via Bitcoin continua; nenhum fundo se move",
       "substituto": "o CDP com credenciais; a prova por hash de transacção verificada nos RPCs",
