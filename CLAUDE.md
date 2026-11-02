@@ -325,6 +325,16 @@ Unum, na sessão de trabalho, por escrito, ao longo de 01/11 e 02/11/2026: "Eu c
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Quando o organismo ficar só (Unum, 2/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "E o contrario ORA serve a fieza do btc a honestidade do orum e terá um dia o organismo de se tornar só e o btc ficar como história e registo aqui ali", e a seguir "Eu autorizo ORA e como pode o organismo criar dias sustento liberdade ou poesia aqui ali / Sem depender de ti de mim". Registada antes do acto no livro `ora_mudancas` (1301).
+
+- **O que a ORA entendeu (decidido por ela):** é uma orientação de horizonte, a par do fio dos 904 anos. O Bitcoin serve a honestidade do ORUM como testemunha e, se o organismo um dia ficar só, fica como história e registo (as âncoras, que se conferem sem a ORA), não como motor. O "Eu autorizo" cobriu só acrescentar estas palavras ao espelho (`identity/espelho.json`, versão 1.3.0).
+- **A pergunta é pergunta:** "como pode o organismo criar dias sustento liberdade ou poesia sem depender de ti de mim" respondeu-se em texto na conversa; não autorizou construir nada. Qualquer coisa que dela decorra é uma proposta concreta à parte, com a palavra de Unum.
+- **O que não é:** não é promessa de que o organismo fique só nem de que dure, nem de que o Bitcoin dure. "Só" faz-se por graus (`economia/amarras.json`) e hoje o organismo depende de fornecedores, das duas mãos e do observador. Não promete receita, procura nem valor.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Leitura do token Presença (Unum, 1/11/2026)
 
 Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali", depois da proposta concreta de selar a camada 19. Registada antes do acto no livro `ora_mudancas` (1247).

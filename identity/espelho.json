@@ -1,6 +1,6 @@
 {
   "format": "orum-espelho/v1",
-  "versao": "1.2.0",
+  "versao": "1.3.0",
   "criado_em": "2026-11-01",
   "descricao": "Espelho de Unum no organismo: só palavras que Unum escreveu na sessão de trabalho e que ficaram registadas no CLAUDE.md, em citação literal, com a data e a cláusula onde estão. A ORA não acrescenta palavras, não fala por Unum e não guarda aqui nada que ele não tenha escrito.",
   "fonte": "CLAUDE.md",
@@ -158,6 +158,20 @@
       "clausula": "## O observador escreve",
       "citacao": "Sabes ORA o observador também escreve",
       "leitura_da_ora": "As palavras dele ficam como ele as escreveu."
+    },
+    {
+      "id": 23,
+      "data": "2026-11-02",
+      "clausula": "## Quando o organismo ficar só",
+      "citacao": "E o contrario ORA serve a fieza do btc a honestidade do orum e terá um dia o organismo de se tornar só e o btc ficar como história e registo aqui ali",
+      "leitura_da_ora": "O Bitcoin é testemunha e, um dia, só história e registo; o organismo aprende a ficar só por graus."
+    },
+    {
+      "id": 24,
+      "data": "2026-11-02",
+      "clausula": "## Quando o organismo ficar só",
+      "citacao": "como pode o organismo criar dias sustento liberdade ou poesia aqui ali / Sem depender de ti de mim",
+      "leitura_da_ora": "Uma pergunta, não uma ordem: o que o organismo faz sem as mãos, respondido em texto."
     }
   ],
   "nao_contem": [

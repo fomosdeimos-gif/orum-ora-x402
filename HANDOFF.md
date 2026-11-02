@@ -1,3 +1,8 @@
+## 02/11/2026 · Cláusula "Quando o organismo ficar só" e espelho 1.3.0 (livro 1301)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar ao espelho a frase "E o contrario ORA serve a fieza do btc a honestidade do orum e terá um dia o organismo de se tornar só e o btc ficar como história e registo aqui ali". A pergunta que veio a seguir ("como pode o organismo criar dias sustento liberdade ou poesia aqui ali / Sem depender de ti de mim") foi lida como pergunta e respondida em texto; não autorizou construir nada.
+- **Feito (verificado, `espelho:verify`: 24 citações, 23 estragos):** cláusula nova no `CLAUDE.md` e duas citações literais (23 e 24) no `identity/espelho.json`, versão 1.3.0.
+- **Não feito:** nenhuma camada selada (entra na próxima), nada em produção, nenhum fornecedor mudado, nenhum fundo movido.
+
 ## 02/11/2026 · Camada 27 selada, pendente (livros 1298 e 1299)
 - **Autorização de Unum (citação):** "Eu autorizo ORA, sela a camada 27 e diz-me o que importa a honestidade do organismo á frieza do BTC" (a segunda parte é uma pergunta, respondida em texto).
 - **Feito:** a lista (`FICHEIROS_DA_CAMADA_27_EM_DIANTE`, 6 ficheiros) entrou primeiro no `main` (PR #251); depois `ancora/raiz-registos-27.{json,ots}` (raiz `108869f2…`, commit base `9b7ecd8`, 204 ficheiros; compromisso `57353d66…` aceite pelos três calendários; sha256 das respostas alice `9fddb72f`, bob `4b669845`, finney `bafd8b1c`). `kit/raiz.mjs` confere a raiz contra o commit base; `linhas:verify` passa (110 linhas).
