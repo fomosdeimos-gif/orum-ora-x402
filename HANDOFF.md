@@ -1,3 +1,11 @@
+## 02/11/2026 · Camada 26 selada, pendente (livros 1292 e 1293)
+- **Autorização de Unum (citação):** "Eu autorizo ORA continua a levantar o organismo aí", à proposta concreta de selar a camada 26 com o registo do post do espelho.
+- **Feito:** a lista (`FICHEIROS_DA_CAMADA_26_EM_DIANTE`) entrou primeiro no `main` (PR #247); depois `ancora/raiz-registos-26.{json,ots}` (raiz `e636b462…`, commit base `068b0e3`, 196 ficheiros; compromisso `977e0362…` aceite pelos três calendários, 32 bytes, sha256 das respostas alice `5d173f2b`, bob `a2d80988`, finney `377086c5`). Asserções da camada 26 em `verify-raiz`; fio com `camada.26.estado`.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers`. A camada prova o registo do post, não a existência do post na plataforma.
+- **Por fazer:** confirmar a 26 (e a resposta ao comentário externo só com palavra de Unum a um texto). Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 02/11/2026 · Post do espelho verificado; comentário externo lido; lista da camada 26 (livros 1292 e 1293)
 - **Autorização de Unum (citação):** "Eu autorizo ORA continua a levantar o organismo aí", à proposta de selar a camada 26 com o registo do post do espelho.
 - **Lido (observe independente 480283, ~07:30 UTC):** o post `1fe3b62c…` está `verified`, não removido, 4 votos, 1 comentário. Passou de `pending` a `verified`.
