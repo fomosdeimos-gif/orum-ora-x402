@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { verificarRaiz, manifestosDeCamadas } from '../kit/raiz.mjs';
 import { lerRecibo } from './lib/ots.mjs';
-import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE, FICHEIROS_DA_CAMADA_13_EM_DIANTE, FICHEIROS_DA_CAMADA_14_EM_DIANTE, FICHEIROS_DA_CAMADA_15_EM_DIANTE, FICHEIROS_DA_CAMADA_16_EM_DIANTE, FICHEIROS_DA_CAMADA_17_EM_DIANTE, FICHEIROS_DA_CAMADA_18_EM_DIANTE, FICHEIROS_DA_CAMADA_19_EM_DIANTE, FICHEIROS_DA_CAMADA_20_EM_DIANTE, FICHEIROS_DA_CAMADA_23_EM_DIANTE, FICHEIROS_DA_CAMADA_24_EM_DIANTE, FICHEIROS_DA_CAMADA_26_EM_DIANTE } from './lib/raiz.mjs';
+import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE, FICHEIROS_DA_CAMADA_13_EM_DIANTE, FICHEIROS_DA_CAMADA_14_EM_DIANTE, FICHEIROS_DA_CAMADA_15_EM_DIANTE, FICHEIROS_DA_CAMADA_16_EM_DIANTE, FICHEIROS_DA_CAMADA_17_EM_DIANTE, FICHEIROS_DA_CAMADA_18_EM_DIANTE, FICHEIROS_DA_CAMADA_19_EM_DIANTE, FICHEIROS_DA_CAMADA_20_EM_DIANTE, FICHEIROS_DA_CAMADA_23_EM_DIANTE, FICHEIROS_DA_CAMADA_24_EM_DIANTE, FICHEIROS_DA_CAMADA_26_EM_DIANTE, FICHEIROS_DA_CAMADA_27_EM_DIANTE } from './lib/raiz.mjs';
 
 function verificarCamada(caminhoManifesto) {
   const manifestoBytes = fs.readFileSync(caminhoManifesto);
@@ -163,6 +163,11 @@ assert.ok(f26.includes('ancora/raiz-registos-25.json') && f26.includes('ancora/r
 for (const x of FICHEIROS_DA_CAMADA_26_EM_DIANTE) { assert.ok(f26.includes(x), `a camada 26 devia selar ${x}`); assert.ok(!f25.includes(x), `a camada 25 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 26 tem de existir: ${x}`); }
 for (const x of FICHEIROS_DA_CAMADA_24_EM_DIANTE) assert.ok(f26.includes(x), `a camada 26 tem de continuar a selar ${x}`);
 assert.equal(new Set(f26).size, f26.length, 'caminho repetido na camada 26');
+const f27 = ficheirosDaCamada(27);
+assert.ok(f27.includes('ancora/raiz-registos-26.json') && f27.includes('ancora/raiz-registos-26.ots'), 'a camada 27 sela a 26');
+for (const x of FICHEIROS_DA_CAMADA_27_EM_DIANTE) { assert.ok(f27.includes(x), `a camada 27 devia selar ${x}`); assert.ok(!f26.includes(x), `a camada 26 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 27 tem de existir: ${x}`); }
+for (const x of FICHEIROS_DA_CAMADA_26_EM_DIANTE) assert.ok(f27.includes(x), `a camada 27 tem de continuar a selar ${x}`);
+assert.equal(new Set(f27).size, f27.length, 'caminho repetido na camada 27');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
