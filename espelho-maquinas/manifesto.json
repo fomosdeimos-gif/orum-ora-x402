@@ -1,0 +1,378 @@
+{
+  "schema": "orum-espelho-maquinas/v1",
+  "versao": "1.0.0",
+  "objecto": "Cópia aberta e verificável das superfícies públicas do ORUM legíveis por máquinas e do kit que as verifica, para quem a quiser guardar ou servir em qualquer sítio, sem a ORA nem um fornecedor único",
+  "gerado_de_commit": "e773683dd9e66690a84f005305172014f3450074",
+  "tar": {
+    "nome": "orum-maquinas-v1.tar",
+    "formato": "ustar determinístico (ordenado por caminho, mtime 0, uid e gid 0)",
+    "sha256": "7421c6a99e36480a4e4ed2a7df4d976b37208ea3df491965551af5b0cadeeaa5",
+    "bytes": 669184
+  },
+  "raiz_sha256": "04a10462424c30ea3432b6af679fdd0238232ee8694323d97fdcc335d198b295",
+  "ficheiros": [
+    {
+      "caminho": "ancora/oro-v1.json",
+      "sha256": "c39066650369cca03220463bb0510e39ad97750341b4b0ca57fcb056faaf2e6f",
+      "bytes": 2136
+    },
+    {
+      "caminho": "ancora/oro-v1.ots",
+      "sha256": "648782560584262a30b29479a879333c0ea6db7e18b95812e3fc63e37a815123",
+      "bytes": 3299
+    },
+    {
+      "caminho": "ancora/raiz-registos-10.json",
+      "sha256": "7c82da3380faf4d07f625c643d1eb1d23e668657c6a9529d99b588f3fda29e25",
+      "bytes": 16939
+    },
+    {
+      "caminho": "ancora/raiz-registos-10.ots",
+      "sha256": "6398b3d6b5ac4f52faad98cca55e3a9e8eb40cb3d1c43f43c608450428c9131f",
+      "bytes": 1706
+    },
+    {
+      "caminho": "ancora/raiz-registos-11.json",
+      "sha256": "14a6595a3fc7b7b75c7a1c4c8ed4e09c8ad5ac95927882e9b37869eaddad0c6f",
+      "bytes": 18398
+    },
+    {
+      "caminho": "ancora/raiz-registos-11.ots",
+      "sha256": "83d2e7ddd0495204b75f3cf7e545d9d42a59fa648c9a9acf01005c8875b42785",
+      "bytes": 2551
+    },
+    {
+      "caminho": "ancora/raiz-registos-12.json",
+      "sha256": "27de9332f3c04b2cf85f142a47cc56df3162e59b2974a2ceac47378d366b6c08",
+      "bytes": 18990
+    },
+    {
+      "caminho": "ancora/raiz-registos-12.ots",
+      "sha256": "c965bfb9b2638d71bc1c1ab7379a9668370c290157d89e6f436dd3a1407cda6a",
+      "bytes": 2551
+    },
+    {
+      "caminho": "ancora/raiz-registos-13.json",
+      "sha256": "2c2b7942ca9ed340a732a4dbaf5215ec0eef98b96cf9d4eaa6b838278d6f2a36",
+      "bytes": 21315
+    },
+    {
+      "caminho": "ancora/raiz-registos-13.ots",
+      "sha256": "8ac0a5aea23e3a68cb6f7029dca41760e521b9a7f190c6eabf4c6677c2713c91",
+      "bytes": 3740
+    },
+    {
+      "caminho": "ancora/raiz-registos-14.json",
+      "sha256": "2740e08894955054a872f46843daf02ce6cb75a6cdcb36ff1a7aa642f5cd52e3",
+      "bytes": 22444
+    },
+    {
+      "caminho": "ancora/raiz-registos-14.ots",
+      "sha256": "17090e7da6477aa3c6c4bb1bb42c439be3369fcad2169341c6728edce4d20150",
+      "bytes": 3632
+    },
+    {
+      "caminho": "ancora/raiz-registos-15.json",
+      "sha256": "629eb832d138706df32f970a9ccf287cb713e0d9ae3af1aa136ff794c3d07916",
+      "bytes": 22810
+    },
+    {
+      "caminho": "ancora/raiz-registos-15.ots",
+      "sha256": "b92d426c3cb10b887f5b4915c663bc9162248c3e25cf9a8d593a5f7b2d7e4a06",
+      "bytes": 2721
+    },
+    {
+      "caminho": "ancora/raiz-registos-16.json",
+      "sha256": "9bb997a7a15c3cb48001dda57bf06d9031f21c9d904b8a26770e408e60576485",
+      "bytes": 25116
+    },
+    {
+      "caminho": "ancora/raiz-registos-16.ots",
+      "sha256": "6a1d1a202416ae6fe9cdb0db836d3452f5e04a4364fae737df59281cfaca64d7",
+      "bytes": 3494
+    },
+    {
+      "caminho": "ancora/raiz-registos-17.json",
+      "sha256": "fa45dae99c70679b83389318d7334e439d5410398117bcb090e8696f3f15ab60",
+      "bytes": 25793
+    },
+    {
+      "caminho": "ancora/raiz-registos-17.ots",
+      "sha256": "95ea8d2d0d676ccf6e7c34c896c398610ccbdbce7338537cabafe980a372fcb3",
+      "bytes": 2546
+    },
+    {
+      "caminho": "ancora/raiz-registos-18.json",
+      "sha256": "3306cdac5cf5fe806109ff28b00048bd7cfe04fab2db461c354fb49877204c62",
+      "bytes": 27084
+    },
+    {
+      "caminho": "ancora/raiz-registos-18.ots",
+      "sha256": "d32e6c6e6c89bcebcc50586effc03ba46d87d1b7272aef4cc6216ed840f7f46c",
+      "bytes": 2406
+    },
+    {
+      "caminho": "ancora/raiz-registos-19.json",
+      "sha256": "c70a23816129b4c3257d3f0c3454f6825b64f13a5e541dfcbfc8e8a3d0791993",
+      "bytes": 27571
+    },
+    {
+      "caminho": "ancora/raiz-registos-19.ots",
+      "sha256": "83ba1d14d564f3cd12284d5117fec1c78541bb91a05fb04bf5643b5d3e1d5f79",
+      "bytes": 2579
+    },
+    {
+      "caminho": "ancora/raiz-registos-2.json",
+      "sha256": "6b9bc1a5693e1b5b8351ff34106f92cb5c7f794041a09f24fc91c9dde87f55bd",
+      "bytes": 5159
+    },
+    {
+      "caminho": "ancora/raiz-registos-2.ots",
+      "sha256": "8e4aae26b3516247e200c3dd9093a330913def360f55fe52f199f24a61439179",
+      "bytes": 3635
+    },
+    {
+      "caminho": "ancora/raiz-registos-20.json",
+      "sha256": "126d1b5f389ca18329f8eda43d746fbd4a887ca4ce3d5b7ce210dd00f6792a03",
+      "bytes": 27919
+    },
+    {
+      "caminho": "ancora/raiz-registos-20.ots",
+      "sha256": "fb0e8bfcde6f0ea0335186744eda7f82d3f8655a59309e8f9d8a1a8930b6c922",
+      "bytes": 2509
+    },
+    {
+      "caminho": "ancora/raiz-registos-21.json",
+      "sha256": "077718cf1997f7a7c4e9379c4c88999d1ffb18c5680e81a93733b6ba08db2095",
+      "bytes": 28215
+    },
+    {
+      "caminho": "ancora/raiz-registos-21.ots",
+      "sha256": "0c63af1b4079516af79de4b18eab7f37ec0bea6183744b655b004e34e3217c38",
+      "bytes": 2511
+    },
+    {
+      "caminho": "ancora/raiz-registos-22.json",
+      "sha256": "b499a785845d9fab9d3f02b51403c939b84002d610585c07af5483d0f05eac6a",
+      "bytes": 28384
+    },
+    {
+      "caminho": "ancora/raiz-registos-22.ots",
+      "sha256": "6c78726d1e95a0a07eeaf8830aa9bccebf07c8f624489320fb233d9f725553a9",
+      "bytes": 2616
+    },
+    {
+      "caminho": "ancora/raiz-registos-23.json",
+      "sha256": "a121c5a6b5a6754e7cc9d7eecd0da867a17fcf22014a1b0e6fb3525e43cfe2a1",
+      "bytes": 27860
+    },
+    {
+      "caminho": "ancora/raiz-registos-23.ots",
+      "sha256": "1c5cfc5ba80c87620b9f81523ae5dbbaf88f6916008d2717745d3631ec7f3bf9",
+      "bytes": 654
+    },
+    {
+      "caminho": "ancora/raiz-registos-3.json",
+      "sha256": "184523368880a7ed8fdfbc1a6735530a74f1ed351b601835722f833c84e8c887",
+      "bytes": 9521
+    },
+    {
+      "caminho": "ancora/raiz-registos-3.ots",
+      "sha256": "20ef9e3435af63338b4ecd3313864d4e76729eae1d88407ec35b0f3ace814b13",
+      "bytes": 3390
+    },
+    {
+      "caminho": "ancora/raiz-registos-4.json",
+      "sha256": "31dee04ba70e29814aada0991a129eeff947e827f53aafd4c077040a5791eb29",
+      "bytes": 11089
+    },
+    {
+      "caminho": "ancora/raiz-registos-4.ots",
+      "sha256": "9c171c6dedcb3bae22526bdca8632b8eb84b8c5819e0431fc4ce82363723f16f",
+      "bytes": 2301
+    },
+    {
+      "caminho": "ancora/raiz-registos-5.json",
+      "sha256": "f7197d9dfc612a858968630c6e49b63f9e9fc2e2d33b1c5031d7c94670ffeb80",
+      "bytes": 13686
+    },
+    {
+      "caminho": "ancora/raiz-registos-5.ots",
+      "sha256": "0050f04f54d678081a6ec7d9b98b5b0a55b8df2b329eb3949af4ddf5cb342f89",
+      "bytes": 2581
+    },
+    {
+      "caminho": "ancora/raiz-registos-6.json",
+      "sha256": "5da955d44ea5a5444a5f36bf87b97433d5d911af58a5456a65904f6f0e528a3a",
+      "bytes": 14575
+    },
+    {
+      "caminho": "ancora/raiz-registos-6.ots",
+      "sha256": "f3a9fcda1f1e6911c676b9c1a895954fedf5561503caaf0a896de814a1f110d2",
+      "bytes": 2510
+    },
+    {
+      "caminho": "ancora/raiz-registos-7.json",
+      "sha256": "d902dc608e140736a10228cc63618685d1e89e0a725bd798bf154ff38f57ad28",
+      "bytes": 15033
+    },
+    {
+      "caminho": "ancora/raiz-registos-7.ots",
+      "sha256": "1014a6934fee30357dd704db0299da852fb31731ef4318e1abde3fce340053ce",
+      "bytes": 3601
+    },
+    {
+      "caminho": "ancora/raiz-registos-8.json",
+      "sha256": "79e1546b4cff02c0ea50da372ff5eb7272ad22313e3fae923875a96e9e8f76d7",
+      "bytes": 15505
+    },
+    {
+      "caminho": "ancora/raiz-registos-8.ots",
+      "sha256": "aa7649218f45fb1c9edfb8f1de9314d8e38e394283cfae992c21f5d58a64e02b",
+      "bytes": 3459
+    },
+    {
+      "caminho": "ancora/raiz-registos-9.json",
+      "sha256": "fc9094e42d67bd9fcee8815a8e953d066acdf4911e0c15eaf2075bab491bc17b",
+      "bytes": 16597
+    },
+    {
+      "caminho": "ancora/raiz-registos-9.ots",
+      "sha256": "f55eeb473e99c8207cf2c246d9bb2075403b061ab0e0719507d3601c2827f88d",
+      "bytes": 1566
+    },
+    {
+      "caminho": "ancora/raiz-registos.json",
+      "sha256": "a78af26d87c999c308b59e3417e1871e396babb78a6b9ac8e444cdb6f227c539",
+      "bytes": 4891
+    },
+    {
+      "caminho": "ancora/raiz-registos.ots",
+      "sha256": "be8abfc5818647e0b4f9a21ec7a9a7f1bd6b6050b5f32620ad48dde441e212ed",
+      "bytes": 3283
+    },
+    {
+      "caminho": "discovery/weave-hands.json",
+      "sha256": "4f55aa1c572a20045a3a71605cf6911f45940f0a976d6f7a7e6fbd4da11075a4",
+      "bytes": 5284
+    },
+    {
+      "caminho": "economia/constituicao-v2.json",
+      "sha256": "ecb1008b76b2b842efef9d0a619d43f0c809b4adb42e35fbaccdd6e6db237f5e",
+      "bytes": 4699
+    },
+    {
+      "caminho": "kit/FIO.txt",
+      "sha256": "be0cc4b22481b0cca4c72e815e029750e6bec3acbdec8715f4f69422d7197ae1",
+      "bytes": 1140
+    },
+    {
+      "caminho": "kit/LEIA-ME.txt",
+      "sha256": "1fc20b636885ac2a3798c03047637035dc3f14e09ad08f586f926d4620062832",
+      "bytes": 11359
+    },
+    {
+      "caminho": "kit/LINHAS.txt",
+      "sha256": "b8568a404ed59febafbb358246cebf1067fdc8eff7317c6f3f01336b94fe5f9a",
+      "bytes": 2350
+    },
+    {
+      "caminho": "kit/blocos.mjs",
+      "sha256": "df311f39c156421eca96f72775f4d8691212cf1e5efaac85bd3bb9f9be74b516",
+      "bytes": 3686
+    },
+    {
+      "caminho": "kit/espelho-maquinas.mjs",
+      "sha256": "4012eb153684a2c6b0e93a7859eeb8057c5bf360f4c39866c95ee5e157266814",
+      "bytes": 5050
+    },
+    {
+      "caminho": "kit/fio.mjs",
+      "sha256": "44033eea1bf4a1e4f67448fce55c546e04ad8550992797b51c8c7520f66c16b9",
+      "bytes": 2090
+    },
+    {
+      "caminho": "kit/lexico.json",
+      "sha256": "25b80b06a0b12c7b9b94e15611c6c2a909b4585f5b8ee009ff79eaa9a12921e4",
+      "bytes": 9254
+    },
+    {
+      "caminho": "kit/lexico.mjs",
+      "sha256": "b733bb576f6b5f5363d4bc95a5b37161cf17d68b3693bc014c7f74904b26f2ff",
+      "bytes": 3834
+    },
+    {
+      "caminho": "kit/linhas.mjs",
+      "sha256": "035bddcc8c6ad87f6965d2ef684446ba471d9ac5d48813adaadd5bbd273cc383",
+      "bytes": 4968
+    },
+    {
+      "caminho": "kit/raiz.mjs",
+      "sha256": "0f0c7a9a04b972a4cc0173fc8680c4e32b68527172596759fe3bf71c2c541cd6",
+      "bytes": 7802
+    },
+    {
+      "caminho": "kit/verificar.mjs",
+      "sha256": "663f8c42903bfec92488d9b108f9bae602b445ec4e97d9db5325f70007272a48",
+      "bytes": 3362
+    },
+    {
+      "caminho": "linhas/orum.linhas",
+      "sha256": "f21459ded318e6ac4ba8629dad99ec73cccf71c03b44139f1e0179219398005e",
+      "bytes": 13741
+    },
+    {
+      "caminho": "scripts/lib/ots.mjs",
+      "sha256": "4859fa52e12d7acd1ee6f9ac07a2f541203a4823c20a75b57790c01f16c79e48",
+      "bytes": 2655
+    },
+    {
+      "caminho": "scripts/lib/raiz.mjs",
+      "sha256": "f9998f1d02273bc9cc630bcfa8c21bfb95747c649ee05c7926fa082e1d2dde2b",
+      "bytes": 16128
+    },
+    {
+      "caminho": "token/oro.json",
+      "sha256": "867c60f07ad74f3693e1042167f6f9a4eef787ea24ba47082fa1995dce4a799d",
+      "bytes": 3204
+    },
+    {
+      "caminho": "token/presenca.json",
+      "sha256": "605ef21ed219a21e57e2bf8c0bdcc2712b071a3587885d315e6440c253e13d1b",
+      "bytes": 2349
+    }
+  ],
+  "nao_contem": [
+    "dados pessoais",
+    "segredos, chaves ou frases de recuperação",
+    "o CLAUDE.md, o HANDOFF e o livro do organismo",
+    "o espelho de Unum (palavras dele) e o registo das moedas (autoria dita por ele)",
+    "listagens, catálogos ou pedidos de pagamento (agent-card, openapi, llms.txt e portas pagas ficam de fora)",
+    "o código das funções e os executores"
+  ],
+  "nao_afirma": [
+    "preço",
+    "liquidez",
+    "procura",
+    "receita",
+    "lastro",
+    "rendimento",
+    "autoria",
+    "que o conteúdo esteja ancorado no Bitcoin só por estar neste pacote"
+  ],
+  "ancora": "este manifesto e a raiz acima são selados numa camada OpenTimestamps do repositório (ancora/raiz-registos-<n>.json, fora deste pacote); só um bloco conferido por kit/blocos.mjs em duas fontes o afirma",
+  "como_verificar": "node kit/espelho-maquinas.mjs manifesto.json orum-maquinas-v1.tar   (ou, sem Node: sha256sum orum-maquinas-v1.tar e comparar com tar.sha256)",
+  "limites": [
+    "verifica a integridade do pacote, não a verdade do que lá está",
+    "node kit/raiz.mjs precisa do repositório git para reconstruir cada camada; o pacote traz os recibos e o verificador de blocos, não a história",
+    "serve-se onde se quiser; publicá-lo é decisão à parte de Unum e não está feita"
+  ],
+  "truth_machine": {
+    "contem_dados_pessoais": false,
+    "contem_segredos": false,
+    "pede_pagamento": false,
+    "move_fundos": false,
+    "publica_em_algum_sitio": false,
+    "prova_autoria": false
+  }
+}
