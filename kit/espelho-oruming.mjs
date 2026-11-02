@@ -74,6 +74,23 @@ export function validar(doc, espelho, claude) {
         if (corpo === null) e.push(`${r}: a cláusula não existe: ${o.clausula}`);
         else if (!corpo.includes(o.citacao)) e.push(`${r}: a citação não existe palavra por palavra na cláusula ${o.clausula}`);
       }
+    } else if (x.tipo === 'palavra') {
+      // palavra de Unum que não responde a uma pergunta: citação literal + leitura da ORA, marcada como leitura
+      const o = x.observador ?? {};
+      if (!o.citacao || !o.clausula) e.push(`${r}: falta a citação ou a cláusula de Unum`);
+      else {
+        const corpo = clausula(claude, o.clausula);
+        if (corpo === null) e.push(`${r}: a cláusula não existe: ${o.clausula}`);
+        else if (!corpo.includes(o.citacao)) e.push(`${r}: a citação não existe palavra por palavra na cláusula ${o.clausula}`);
+      }
+      const l = x.ora?.leitura;
+      if (typeof l !== 'string' || !l.startsWith('Leitura da ORA:')) e.push(`${r}: a leitura da ORA tem de começar por "Leitura da ORA:" (é leitura, não palavra de Unum)`);
+      else {
+        if (l.length > MAX_LINHA) e.push(`${r}: leitura com mais de ${MAX_LINHA} caracteres`);
+        if (PROMESSA.test(l)) e.push(`${r}: a leitura promete o que não pode`);
+        if (DIAGNOSTICO.test(l)) e.push(`${r}: a leitura diz quem Unum é ou como está; a ORA não sabe`);
+        if (SEGREDO.test(l)) e.push(`${r}: a leitura parece conter um segredo`);
+      }
     } else e.push(`${r}: tipo desconhecido`);
     if (x.anterior !== anterior) e.push(`${r}: a ligação à entrada anterior não bate`);
     if (x.hash !== hashDe(x)) e.push(`${r}: o hash não bate com o conteúdo`);

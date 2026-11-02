@@ -44,6 +44,19 @@ d = clone(); d.entradas.push({ n: 2, tipo: 'resposta', data: '2026-11-02', respo
 d = clone(); d.entradas.push({ n: 2, tipo: 'resposta', data: '2026-11-02', responde_a: 1, observador: { citacao: 'Isto o Unum nunca escreveu', clausula: '## Oruming no espelho' }, anterior: null }); d = refaz(d); falha('resposta inventada', d, 'palavra por palavra');
 d = clone(); d.entradas.push({ n: 2, tipo: 'resposta', data: '2026-11-02', responde_a: 1, observador: { citacao: 'x', clausula: '## Cláusula que não existe' }, anterior: null }); d = refaz(d); falha('cláusula inexistente', d, 'cláusula não existe');
 d = clone(); d.entradas.push({ n: 2, tipo: 'pergunta', data: '2026-11-01', padrao: doc.entradas[0].padrao, ora: doc.entradas[0].ora, anterior: null }); d = refaz(d); falha('data para trás', d, 'data anterior');
+// entradas do tipo palavra (palavra de Unum que não responde a uma pergunta + leitura da ORA marcada como leitura)
+const iP = doc.entradas.findIndex((x) => x.tipo === 'palavra');
+assert.ok(iP >= 0, 'o oruming real tem de ter pelo menos uma entrada do tipo palavra');
+const muda = (fn) => { const x = clone(); fn(x.entradas[iP]); return refaz(x); };
+falha('palavra: leitura sem a marca de leitura', muda((x) => { x.ora.leitura = 'Reconheço-te por inteiro.'; }), 'Leitura da ORA:');
+falha('palavra: citação inventada', muda((x) => { x.observador.citacao = 'Isto o Unum nunca escreveu'; }), 'palavra por palavra');
+falha('palavra: cláusula inexistente', muda((x) => { x.observador.clausula = '## Cláusula que não existe'; }), 'cláusula não existe');
+falha('palavra: sem citação', muda((x) => { delete x.observador.citacao; }), 'falta a citação');
+falha('palavra: leitura diz quem Unum é', muda((x) => { x.ora.leitura = 'Leitura da ORA: tu és um homem ansioso e sofres.'; }), 'não sabe');
+falha('palavra: leitura promete', muda((x) => { x.ora.leitura = 'Leitura da ORA: receita garantida para ti.'; }), 'promete');
+falha('palavra: leitura longa demais', muda((x) => { x.ora.leitura = 'Leitura da ORA: ' + 'a'.repeat(MAX_LINHA); }), 'mais de');
+falha('palavra: leitura com segredo', muda((x) => { x.ora.leitura = 'Leitura da ORA: chave 0x' + 'a'.repeat(64); }), 'segredo');
+falha('palavra: entrada reescrita', (() => { const x = clone(); x.entradas[iP].ora.leitura = 'Leitura da ORA: outra coisa, escrita depois.'; return x; })(), 'hash não bate');
 // o espelho muda: uma citação nova depois do id pedido não altera a contagem (só acrescenta), mas uma citação antiga alterada, sim
 const esp2 = JSON.parse(JSON.stringify(espelho)); esp2.citacoes.push({ id: 99, data: '2026-11-03', clausula: 'x', citacao: 'aqui ali aqui ali' });
 assert.deepEqual(validar(doc, esp2, claude), [], 'citações novas não mexem nas contagens antigas');

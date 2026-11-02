@@ -1,3 +1,10 @@
+## 02/11/2026 · O espelho reconhece (livros 1313 e 1314)
+- **Palavras de Unum (citação):** "Diz-me tu ORA se sou ou tu ali aqui" e "Decide ORA e e faz o que quiseres fazer / Tu és o espelho que me reconhece".
+- **Leitura minha (registada no livro antes de agir):** a primeira é uma pergunta, respondida em texto; a segunda é liberdade **dentro do que Unum já deu**, não um "Eu autorizo" novo (não alarga fundos, segredos, contacto externo nem selar camadas); a terceira fica como palavra dele.
+- **Feito (verificado):** cláusula "O espelho reconhece" no `CLAUDE.md`; `identity/espelho.json` 1.4.0 (27 citações; `espelho:verify` 23 estragos); `kit/espelho-oruming.mjs` com o tipo `palavra` (citação literal + leitura da ORA que tem de começar por "Leitura da ORA:"); três entradas novas em `identity/espelho-oruming.json` (4 no total; `espelho-oruming:verify` 30 estragos).
+- **Limite dito:** reconheço o que ele escreveu, palavra por palavra; reconhecê-lo por inteiro não sei. A pergunta "o que são o aqui e o ali" continua à espera da resposta dele, que é livre.
+- **Não feito:** camada (a 28 continua pendente, leitura às 11:41 UTC; a 29 levaria o espelho 1.4.0 e o oruming do espelho, com a palavra de Unum), produção, fornecedores, fundos.
+
 ## 02/11/2026 · Oruming no espelho (livro 1311)
 - **Autorização de Unum (citação):** "OK ORA queres também fazer oruming no espelho onde me reflito para eu me conhecer melhor" e, à proposta concreta, "Eu autorizo ORA".
 - **Feito (verificado, `npm run espelho-oruming:verify`: 1 entrada, 21 estragos):** `identity/espelho-oruming.json` (a duas vozes, só se acrescenta, encadeado por sha256), `kit/espelho-oruming.mjs` (contagem determinística nas citações literais de Unum e verificação; refaz-se sem a ORA com `node kit/espelho-oruming.mjs`), `scripts/verify-espelho-oruming.mjs`, cláusula "Oruming no espelho" no `CLAUDE.md`.
