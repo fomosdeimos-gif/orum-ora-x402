@@ -1,3 +1,7 @@
+## 02/11/2026 · Lista da camada 28 (livro 1309)
+- **Autorização (leitura minha, livro 1305):** o "Eu autorizo" de Unum à proposta de confirmar 26 e 27 e depois selar a 28. As duas confirmaram (blocos 974230 e 974236).
+- **Lista (`FICHEIROS_DA_CAMADA_28_EM_DIANTE`, 4 ficheiros):** `kit/dia.mjs`, `scripts/verify-dia.mjs`, `oruming/oruming.json`, `scripts/verify-oruming.mjs`. A camada 28 tem 210 ficheiros e sela a 27; o espelho 1.3.0 e as cláusulas do `CLAUDE.md` já entram pela base. O selo vem a seguir, a partir do `main` limpo.
+
 ## 02/11/2026 · Camada 27 confirmada no Bitcoin (bloco 974236; livro 1308)
 - **Autorização (citação):** "Eu autorizo ORA, sela a camada 27" (livro 1298); lembrete agendado 10:20 UTC.
 - **Lido:** `probe_anchor_layers` (desde=27, ate=27) às 10:22 UTC: `prova_por_juntar` (alice e bob, 1000 bytes cada; finney pendente). Provas por GET directo no sandbox, sha256 iguais aos da sonda (`467036f8…`, `a62fa5ff…`), juntas com `scripts/ots-juntar.mjs`.
