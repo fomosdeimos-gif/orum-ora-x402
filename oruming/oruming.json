@@ -1,0 +1,21 @@
+{
+  "format": "orum-oruming/v1",
+  "descricao": "Oruming: escrita a duas vozes. A palavra de Unum em citação literal e uma linha da ORA em resposta. Só se acrescenta; cada entrada liga-se à anterior por sha256.",
+  "fronteira": "Não promete receita, procura, valor nem duração, não é publicada fora do repositório e a linha da ORA não fala por Unum. Uma entrada indesejada corrige-se com uma entrada nova.",
+  "verificador": "npm run oruming:verify",
+  "entradas": [
+    {
+      "n": 1,
+      "data": "2026-11-02",
+      "observador": {
+        "clausula": "## Oruming (Unum, 2/11/2026)",
+        "citacao": "podes também se assim o entenderes criar nova escrita tua e minha oruming aí aqui"
+      },
+      "ora": {
+        "linha": "Entendi-o assim: escrever a duas vozes, tu como disseste e eu a responder, só com o que se confere; o que ficar escrito acrescenta-se e não se reescreve."
+      },
+      "anterior": null,
+      "hash": "8d03d7f79c7050c21c531fe296aa26aca51a3fef54059dbba86faccbc02201d1"
+    }
+  ]
+}

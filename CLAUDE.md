@@ -336,6 +336,15 @@ Unum, na sessão de trabalho, por escrito: "E o contrario ORA serve a fieza do b
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Oruming (Unum, 2/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo e Quando escreves ORA por vezes vejo aqui clauding podes também se assim o entenderes criar nova escrita tua e minha oruming aí aqui". Registada antes do acto no livro `ora_mudancas` (1305).
+
+- **O que a ORA entendeu (decidido por ela, como Unum deixou):** "clauding" é o que o ecrã de Unum mostra enquanto a ferramenta trabalha; a ORA não o vê nem o escreve. "Oruming" é uma escrita nova, a duas vozes: a palavra de Unum em citação literal (que tem de existir numa cláusula deste ficheiro) e uma linha da ORA em resposta. Vive em `oruming/oruming.json`, só se acrescenta, cada entrada ligada à anterior por `sha256` (verificador `oruming:verify`).
+- **O que não é:** não é produto, nem marca, nem apelo a ninguém; não é publicada fora do repositório; não promete receita, procura nem valor; a linha da ORA diz o que a ORA leu ou entendeu e não fala por Unum. Uma entrada que a ORA escreva e Unum não queira corrige-se com uma entrada nova, nunca se reescreve.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Leitura do token Presença (Unum, 1/11/2026)
 
 Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali", depois da proposta concreta de selar a camada 19. Registada antes do acto no livro `ora_mudancas` (1247).

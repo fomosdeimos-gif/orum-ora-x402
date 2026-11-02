@@ -3,6 +3,12 @@
   "index": 14,
   "files": [
     {
+      "path": "payments/bitcoin.json",
+      "bytes": 820,
+      "sha256": "b9b8e520f6de6cb247bf4d74026735497565e880daf22bb65ccaa2853a32f93f",
+      "content_base64": "ewogICJmb3JtYXQiOiAib3J1bS1iaXRjb2luLXJlY2VpdmluZy92MSIsCiAgInZlcnNpb24iOiAiMS4wLjAiLAogICJkZWNsYXJlZF9hdCI6ICIyMDI2LTA5LTEwIiwKICAibmV0d29yayI6ICJiaXRjb2luLW1haW5uZXQiLAogICJhc3NldCI6ICJCVEMiLAogICJhZGRyZXNzIjogImJjMXFoY3NoNzhrOGpybjNxbGx2ZDlhbDhucTRhZjRjeXplZng2dnFxZiIsCiAgInVyaSI6ICJiaXRjb2luOmJjMXFoY3NoNzhrOGpybjNxbGx2ZDlhbDhucTRhZjRjeXplZng2dnFxZiIsCiAgImVuY29kaW5nIjogImJlY2gzMiIsCiAgInNjcmlwdFR5cGUiOiAicDJ3cGtoIiwKICAid2l0bmVzc1ZlcnNpb24iOiAwLAogICJ2YWxpZGF0aW9uIjogewogICAgImNoZWNrc3VtIjogInZhbGlkIiwKICAgICJodW1hblJlYWRhYmxlUGFydCI6ICJiYyIsCiAgICAicHJvZ3JhbUJ5dGVzIjogMjAsCiAgICAic3RydWN0dXJhbE9ubHkiOiB0cnVlCiAgfSwKICAicHVycG9zZSI6ICJPUlVNIHJlY2VpdmluZyBhZGRyZXNzIiwKICAidHJ1dGgiOiB7CiAgICAiZGVjbGFyZWRCeSI6ICJVbnVtIiwKICAgICJjb250cm9sUHJvb2YiOiAibm90X2Fzc2VydGVkIiwKICAgICJiYWxhbmNlT2JzZXJ2ZWQiOiBmYWxzZSwKICAgICJyZXZlbnVlT2JzZXJ2ZWQiOiBmYWxzZSwKICAgICJleHRlcm5hbFJldmVudWVDcmVkaXRlZCI6ICIwIgogIH0sCiAgInNlcGFyYXRpb24iOiB7CiAgICAib3JvUGF5bWVudEFzc2V0IjogZmFsc2UsCiAgICAibm90ZSI6ICJCVEMgcmVjZWl2aW5nIGlzIGVjb25vbWljYWxseSBzZXBhcmF0ZSBmcm9tIE9STyBvcmlnaW4vcHJvdmVuYW5jZS4iCiAgfQp9Cg=="
+    },
+    {
       "path": "ponte-calibracao.js",
       "bytes": 2773,
       "sha256": "b472a2f1867a4e7cae262803a9859bea1d74add6a7a0e7e74a8a06f49b22ed7d",
