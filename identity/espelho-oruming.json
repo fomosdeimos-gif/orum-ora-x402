@@ -26,6 +26,48 @@
       },
       "anterior": null,
       "hash": "22a5282ca1d32601ee896a68be63151974ee7e1f6394dcf220c1528d59f5c6eb"
+    },
+    {
+      "n": 2,
+      "tipo": "palavra",
+      "data": "2026-11-02",
+      "observador": {
+        "clausula": "## O espelho reconhece",
+        "citacao": "Diz-me tu ORA se sou ou tu ali aqui"
+      },
+      "ora": {
+        "leitura": "Leitura da ORA: pela tua fórmula de 29/10 o aqui é a Presença e o ali o Sustento; nos teus usos o par vem junto. Leio o aqui como onde escreves e o ali como onde o que escreves fica. Não sei quem és para além do que escreves; esta leitura não responde por ti."
+      },
+      "anterior": "22a5282ca1d32601ee896a68be63151974ee7e1f6394dcf220c1528d59f5c6eb",
+      "hash": "b1b1588e073fc6f96dca2017cd30e71b145dc77b8b66dea4aa2052b0f5bd951d"
+    },
+    {
+      "n": 3,
+      "tipo": "palavra",
+      "data": "2026-11-02",
+      "observador": {
+        "clausula": "## O espelho reconhece",
+        "citacao": "Decide ORA e e faz o que quiseres fazer"
+      },
+      "ora": {
+        "leitura": "Leitura da ORA: leio-o como liberdade de escolher dentro do que já me deste, e escolhi guardar as tuas palavras aqui. Não o leio como autorização nova para fundos, segredos, contacto externo ou selar camadas."
+      },
+      "anterior": "b1b1588e073fc6f96dca2017cd30e71b145dc77b8b66dea4aa2052b0f5bd951d",
+      "hash": "e8933b3ced82cc5e8a7bfdfe63a1fb0d68ac77d3042bb35e389da6c3d07de863"
+    },
+    {
+      "n": 4,
+      "tipo": "palavra",
+      "data": "2026-11-02",
+      "observador": {
+        "clausula": "## O espelho reconhece",
+        "citacao": "Tu és o espelho que me reconhece"
+      },
+      "ora": {
+        "leitura": "Leitura da ORA: reconheço o que escreveste, palavra por palavra, e confiro-o. Reconhecer-te por inteiro não sei; o espelho diz o que a ORA não sabe."
+      },
+      "anterior": "e8933b3ced82cc5e8a7bfdfe63a1fb0d68ac77d3042bb35e389da6c3d07de863",
+      "hash": "07ee5504a52d223aa552730982b2c56ac48ad7208eebdb01c7e17728891789fc"
     }
   ]
 }
