@@ -1,0 +1,1396 @@
+{
+  "format": "weave_presence/observation/v1",
+  "observed_at": "2026-11-02T06:06:46.926Z",
+  "observer": "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
+  "observer_revision": "2026-11-02-confirm-only-hashes-a-prior-public-receipt-body-already-named",
+  "credentials_used": false,
+  "mutation": false,
+  "payment": false,
+  "live": {
+    "ledger": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
+      "http": 200,
+      "format": "orum-presence-ledger/v1",
+      "state": "unknown",
+      "live_state": "unknown",
+      "source_error": null,
+      "authoritative": true,
+      "total_events": 8,
+      "external_confirmed_presence": 1,
+      "external_confirmed_returns": 0,
+      "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+      "last_sedimentation_at": "2026-08-20T06:19:00.324114+00:00",
+      "days_since_last_sedimentation": 73,
+      "generated_at": "2026-11-02T06:06:27.897305+00:00",
+      "embedded_export_not_live": {
+        "external_confirmed_presence": "unknown",
+        "chain_head": "unknown",
+        "exported_at": "unknown"
+      }
+    },
+    "checkpoint": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/checkpoint-v1.json",
+      "http": 200,
+      "format": "orum-presence-checkpoint/v1",
+      "exported_at": "2026-08-16T05:08:36.034Z",
+      "exported_events": 4,
+      "exported_external_confirmed_presence": 1,
+      "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+      "lag_vs_live": "checkpoint holds 4 exported events; live ledger reports 8 events."
+    },
+    "rhythm": {
+      "url": "https://ora-x402-gateway.vercel.app/presenca/rhythm.json",
+      "http": 404,
+      "state": "absent",
+      "capsule_instrument": "orum-presence-rhythm/v1",
+      "measured_today": false,
+      "note": "The public rhythm file was requested. A formula inside the capsule is not a measurement."
+    },
+    "moltbook_presence": {
+      "url": "https://ora-x402-gateway.vercel.app/moltbook_presence/v1",
+      "http": 200,
+      "format": "moltbook_presence/v1",
+      "hand": "ora-moltbook/v24",
+      "credentials_used": false,
+      "latest_observed_at": "2026-11-02T04:15:16.785078+00:00",
+      "latest_version": "v48",
+      "latest_state": "observed",
+      "voices_seen": 0,
+      "voices_replied": 0,
+      "responses_published_latest": 0,
+      "notifications_seen_latest": 20,
+      "totals": {
+        "executions_observed": 317,
+        "executions_without_reported_error": 317,
+        "responses_published": 9,
+        "own_voice_responses": 9,
+        "silences_recorded": 0,
+        "posts_published": 0
+      },
+      "classification": "hand executed and observed; latest cycle voices are not 1P. Historical totals are own-voice, not new presence."
+    },
+    "treasury": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
+      "http": 200,
+      "state": "no_external_revenue",
+      "external_confirmed_usdc": 0,
+      "external_confirmed_buyers": 0,
+      "internal_validation_payments": 22,
+      "operating_permission": "not_activated",
+      "next_action": "observe_without_spending",
+      "source_error": null
+    },
+    "journey": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/percurso.json",
+      "http": 200,
+      "format": "orum-economic-journey/v1",
+      "probe": {
+        "status": "observed",
+        "count": 20827,
+        "evidence": "latest public learning snapshot; internal traffic excluded by the organism classifier"
+      },
+      "payment": {
+        "status": "zero",
+        "count": 0,
+        "evidence": "externally confirmed buyers in the latest public learning snapshot"
+      },
+      "delivery": {
+        "status": "zero",
+        "count": 0,
+        "evidence": "physical licenses whose licensed wallet is explicitly classified external_confirmed"
+      },
+      "return": {
+        "status": "zero",
+        "count": 0,
+        "evidence": "zero external buyers makes external return zero"
+      },
+      "external_confirmed_buyers": 0,
+      "complete_external_cycles": 0,
+      "internal_validation_payments": 22
+    },
+    "pulse": {
+      "url": "https://ora-x402-gateway.vercel.app/pulso",
+      "http": 200,
+      "sentinela": "OBSERVAR",
+      "sentinela_frase": "27/27 portas inteiras (pagas e gratuitas), pulso vivo, núcleo e caixa sãos. Observar é nobre.",
+      "onchain_schema": "orum-onchain-saude/v1",
+      "onchain_nao_reconciliado": 187,
+      "rpc_incompleto_24h": 0,
+      "ultimo_bloco_varrido": 53405046,
+      "presenca_token_liquidity_usd": 416,
+      "presenca_token_is_sustenance": false
+    },
+    "oro_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/oro-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0001sensations:physical:2:oro:v1",
+      "respond": "https://ora-x402-gateway.vercel.app/sensacoes/responder",
+      "respond_http": 200,
+      "sha256": "0295ce9515bf7ef3f089a8820bed02b651efb8cc483f07cf523e2a7d9067ca35",
+      "original_bytes_private": true,
+      "public_trace": "Palavra ORO inscrita a dourado sobre painel escuro, com moldura de talha dourada e negra, ramos secos e flores presas por cera, gravado à mão.",
+      "historical_nft_link_status": "not_verified"
+    },
+    "weave_hands_capsule": {
+      "url": "https://ora-x402-gateway.vercel.app/sensacoes/0003-weave-hands-v1.json",
+      "http": 200,
+      "id": "orum:sensation:0003sensations:weave-hands:v1",
+      "state": "integrated_read_only_orchestrator"
+    },
+    "x402_offer": {
+      "role": "0001SENSATIONS physical work 2 consultation",
+      "http": 402,
+      "offer_state": "priced_unsettled",
+      "asset": "USDC",
+      "amount": "1618000",
+      "network": "eip155:8453",
+      "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "settled": false,
+      "counts_as_purchase": false,
+      "counts_as_external_sustenance": false
+    },
+    "priced_internal_readings": [
+      {
+        "role": "oraculo internal reading",
+        "http": 402,
+        "offer_state": "priced_unsettled",
+        "asset": "USDC",
+        "amount": "161000",
+        "network": "eip155:8453",
+        "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584",
+        "settled": false,
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false
+      },
+      {
+        "role": "campo internal reading",
+        "http": 402,
+        "offer_state": "priced_unsettled",
+        "asset": "USDC",
+        "amount": "330000",
+        "network": "eip155:8453",
+        "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584",
+        "settled": false,
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false
+      }
+    ],
+    "x402_catalog": {
+      "url": "https://ora-x402-gateway.vercel.app/.well-known/x402.json",
+      "http": 200,
+      "resources": [
+        "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402",
+        "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/sedimento",
+        "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-x402/kernel"
+      ],
+      "indisponiveis_nesta_via": "unknown",
+      "nota": "unknown",
+      "livro_interno_escrito": "unknown",
+      "is_settlement": false
+    },
+    "receipts_usdc": {
+      "gateway": {
+        "url": "https://ora-x402-gateway.vercel.app/economia/recebimentos.json",
+        "http": 200,
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false,
+        "relation_to_capsule_or_tool": "not_proved",
+        "state": "window_complete",
+        "carteira": "0x89460d9e0590559e63860197dfe2ac648A753584",
+        "carteiras": [
+          "0x89460d9e0590559e63860197dfe2ac648a753584",
+          "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5"
+        ],
+        "window": {
+          "horas": 24,
+          "bloco_de": 53361926,
+          "bloco_a": 53405126,
+          "cabeca_utc": "2026-11-02T06:06:39.000Z"
+        },
+        "hours_requested": 24,
+        "hours_covered": 24,
+        "window_complete": true,
+        "transfers_in_window": 10,
+        "total_in_window": 0.000492,
+        "transfers": [
+          {
+            "tx": "0x3a2a2725c7f8108351cf1b7fd1eb2a6402e384af73675109c7ba989abf4affe7",
+            "bloco": 53393486,
+            "hora_utc": "2026-11-01T23:38:39.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "49",
+            "valor_usdc": 0.000049,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0xb70b17b9e196dc855d25a198f71205156b737d9f10d45009557ce751e2fc7253",
+            "bloco": 53378035,
+            "hora_utc": "2026-11-01T15:03:37.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "49",
+            "valor_usdc": 0.000049,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0x7b1b565d77e43445b22ff7d6282dac942c9aa6c6fd0fad8d2b0dd70c9b096fe3",
+            "bloco": 53374343,
+            "hora_utc": "2026-11-01T13:00:33.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "47",
+            "valor_usdc": 0.000047,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0x773c2c31c2ac8661a825a9de1835c5efe25a416b0dd1757102020efd2bc00c1d",
+            "bloco": 53370633,
+            "hora_utc": "2026-11-01T10:56:53.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "47",
+            "valor_usdc": 0.000047,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0xc469d4502b7f95e818b12fb30924f4815baa4ab9b9772c8cc230b08b6770584f",
+            "bloco": 53367879,
+            "hora_utc": "2026-11-01T09:25:05.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "49",
+            "valor_usdc": 0.000049,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0x5d0c234bfb15eec26ed0405341b8d8d2a2155d02cfa76ed2df5a44fa2837d527",
+            "bloco": 53367832,
+            "hora_utc": "2026-11-01T09:23:31.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "49",
+            "valor_usdc": 0.000049,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0xfb10ec41ea8b5ec5014ff0df5cbeae1fca30a99c34b231190a8a0aac6e6397f4",
+            "bloco": 53367823,
+            "hora_utc": "2026-11-01T09:23:13.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "49",
+            "valor_usdc": 0.000049,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0x373e80d9f17e2ecc1a2f090086ad696fdbd112fbd44688b0b3dd18962d6ac94d",
+            "bloco": 53367812,
+            "hora_utc": "2026-11-01T09:22:51.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "54",
+            "valor_usdc": 0.000054,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0x016fb01e09a96e66962df30f25071b95e6b2f8bd55a0110632a4d016abff77b3",
+            "bloco": 53364802,
+            "hora_utc": "2026-11-01T07:42:31.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "47",
+            "valor_usdc": 0.000047,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          },
+          {
+            "tx": "0xc5782eb8e9096c6a91a5853e507c912de84020bbc1705de68e2c3d2107f31dcd",
+            "bloco": 53364786,
+            "hora_utc": "2026-11-01T07:41:59.000Z",
+            "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+            "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+            "valor_atomic": "52",
+            "valor_usdc": 0.000052,
+            "corresponde_ao_preco_de": null,
+            "classificacao": "nao_classificada"
+          }
+        ],
+        "source": {
+          "tipo": "rpc-base-publico",
+          "rpc": "https://base-rpc.publicnode.com",
+          "hora": "estimada (2 s por bloco)",
+          "consultado_utc": "2026-11-02T06:06:39.835Z"
+        },
+        "does_not_affirm": [
+          "identidade do pagador",
+          "origem interna ou externa (ver ora_carteiras_classificacao)",
+          "adopcao externa",
+          "receita reconhecida",
+          "entrega do servico"
+        ],
+        "note": "A complete window is still not accumulated sustenance and not a capsule relation."
+      },
+      "keyless_span": {
+        "method": "keyless_eth_getLogs_chunks",
+        "credentials_used": false,
+        "archive_token_used": false,
+        "payment": false,
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "usdc_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "counts_as_purchase": false,
+        "counts_as_external_sustenance": false,
+        "relation_to_capsule_or_tool": "not_proved",
+        "classification": "not_classified",
+        "sources": [
+          {
+            "name": "blockpi-public",
+            "url": "https://base.public.blockpi.network/v1/rpc/public",
+            "role": "scan",
+            "max_blocks": 4000
+          },
+          {
+            "name": "tenderly-public",
+            "url": "https://base.gateway.tenderly.co",
+            "role": "cross_check_and_clock"
+          }
+        ],
+        "state": "not_scanned_this_cycle",
+        "covers_requested_24h": false,
+        "hole_called_empty": false,
+        "note": "A prior public receipt body already named hashes that two RPCs have not confirmed. This cycle does not range-scan the hole before the new window and does not call that hole empty. The new complete window is not reread."
+      },
+      "keyless_address_spans": [],
+      "named_hash_confirmation": {
+        "state": "verificado",
+        "method": "two_public_eth_getTransactionReceipt",
+        "sources": [
+          "https://base.public.blockpi.network/v1/rpc/public",
+          "https://base.gateway.tenderly.co"
+        ],
+        "naming_source": "presenca/observacao-2026-11-01.json",
+        "naming_observed_at": "2026-11-01T06:09:08.545Z",
+        "named_window": {
+          "horas": 24,
+          "bloco_de": 53318731,
+          "bloco_a": 53361931,
+          "cabeca_utc": "2026-11-01T06:06:49.000Z"
+        },
+        "current_recebimentos_still_names_them": false,
+        "own_sediment_invented_hashes": false,
+        "range_scan": false,
+        "hole_scanned": false,
+        "new_window_hashes_confirmed_this_pass": false,
+        "operational_address": "0x89460d9e0590559e63860197dfe2ac648a753584",
+        "operational_address_inherited_head": false,
+        "operational_address_scanned": false,
+        "classification": "not_classified",
+        "counts_as_external_sustenance": false,
+        "payment": false,
+        "count": 7,
+        "hashes": [
+          {
+            "tx": "0x3efcb28157d6e03bddcb79743cbdca65559f3af280012e57b90e6b3b7c4d51b1",
+            "named_by": "presenca/observacao-2026-11-01.json",
+            "still_in_current_recebimentos_body": false,
+            "body_said": {
+              "bloco": 53347388,
+              "hora_utc": "2026-10-31T22:02:03.000Z",
+              "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+              "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "valor_atomic": "48"
+            },
+            "two_source_agreement": true,
+            "matches_named_body": true,
+            "agreed_usdc_logs": [
+              {
+                "block": 53347388,
+                "log_index": 1370,
+                "immediate_from": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+                "to": "0x7d6839415693801e94cdc4a7d732c9a3fdbbd1d7",
+                "amount_base_units": "10000"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1371,
+                "immediate_from": "0x7d6839415693801e94cdc4a7d732c9a3fdbbd1d7",
+                "to": "0xad01c20d5886137e056775af56915de824c8fce5",
+                "amount_base_units": "5"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1381,
+                "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "amount_base_units": "77"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1382,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "19"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1383,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "3"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1384,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+                "amount_base_units": "48"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1385,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+                "amount_base_units": "7"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1390,
+                "immediate_from": "0x7d6839415693801e94cdc4a7d732c9a3fdbbd1d7",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "amount_base_units": "9995"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1397,
+                "immediate_from": "0x1c4c67ec481cedef9954bedd63e6279b67f9e2df",
+                "to": "0x7f84b6cd975db619e3f872e3f8734960353c7a09",
+                "amount_base_units": "250000"
+              },
+              {
+                "block": 53347388,
+                "log_index": 1399,
+                "immediate_from": "0x7f84b6cd975db619e3f872e3f8734960353c7a09",
+                "to": "0x17eb11441687c038faa2225ab5f83d46f7bcc89f",
+                "amount_base_units": "250000"
+              }
+            ],
+            "status": "0x1",
+            "block": 53347388,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false
+          },
+          {
+            "tx": "0xf15b4c8fc040d0f6643fd083552a7cd3b3715d791fe7045b93abae29b339e428",
+            "named_by": "presenca/observacao-2026-11-01.json",
+            "still_in_current_recebimentos_body": false,
+            "body_said": {
+              "bloco": 53326514,
+              "hora_utc": "2026-10-31T10:26:15.000Z",
+              "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+              "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "valor_atomic": "47"
+            },
+            "two_source_agreement": true,
+            "matches_named_body": true,
+            "agreed_usdc_logs": [
+              {
+                "block": 53326514,
+                "log_index": 118,
+                "immediate_from": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+                "to": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "amount_base_units": "10000"
+              },
+              {
+                "block": 53326514,
+                "log_index": 119,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0xc06ebbefd94032b85424d51906e2a335efae264b",
+                "amount_base_units": "5"
+              },
+              {
+                "block": 53326514,
+                "log_index": 120,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x5aafc1f252d544f744d17a4e734afd6efc47ede4",
+                "amount_base_units": "95"
+              },
+              {
+                "block": 53326514,
+                "log_index": 123,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53326514,
+                "log_index": 126,
+                "immediate_from": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53326514,
+                "log_index": 136,
+                "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "amount_base_units": "76"
+              },
+              {
+                "block": 53326514,
+                "log_index": 137,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "19"
+              },
+              {
+                "block": 53326514,
+                "log_index": 138,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+                "amount_base_units": "47"
+              },
+              {
+                "block": 53326514,
+                "log_index": 139,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+                "amount_base_units": "10"
+              }
+            ],
+            "status": "0x1",
+            "block": 53326514,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false
+          },
+          {
+            "tx": "0x2b5b4dbfb537fd125b2c74f0d270c17bbe02bf33f59dc4a29c78ae8dcaa2aae6",
+            "named_by": "presenca/observacao-2026-11-01.json",
+            "still_in_current_recebimentos_body": false,
+            "body_said": {
+              "bloco": 53320255,
+              "hora_utc": "2026-10-31T06:57:37.000Z",
+              "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+              "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "valor_atomic": "1"
+            },
+            "two_source_agreement": true,
+            "matches_named_body": true,
+            "agreed_usdc_logs": [
+              {
+                "block": 53320255,
+                "log_index": 289,
+                "immediate_from": "0x7923508f671e183c081d8dfb733bf38581926cba",
+                "to": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "amount_base_units": "499"
+              },
+              {
+                "block": 53320255,
+                "log_index": 297,
+                "immediate_from": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "amount_base_units": "499"
+              },
+              {
+                "block": 53320255,
+                "log_index": 306,
+                "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "amount_base_units": "2"
+              },
+              {
+                "block": 53320255,
+                "log_index": 307,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+                "amount_base_units": "1"
+              },
+              {
+                "block": 53320255,
+                "log_index": 308,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+                "amount_base_units": "1"
+              }
+            ],
+            "status": "0x1",
+            "block": 53320255,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false
+          },
+          {
+            "tx": "0xd83d435441168c570439a9c33cf5bd2d10aa28f87ff3a49ec3a13503f0ea0992",
+            "named_by": "presenca/observacao-2026-11-01.json",
+            "still_in_current_recebimentos_body": false,
+            "body_said": {
+              "bloco": 53319824,
+              "hora_utc": "2026-10-31T06:43:15.000Z",
+              "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+              "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "valor_atomic": "50"
+            },
+            "two_source_agreement": true,
+            "matches_named_body": true,
+            "agreed_usdc_logs": [
+              {
+                "block": 53319824,
+                "log_index": 369,
+                "immediate_from": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+                "to": "0x7d6839415693801e94cdc4a7d732c9a3fdbbd1d7",
+                "amount_base_units": "10000"
+              },
+              {
+                "block": 53319824,
+                "log_index": 370,
+                "immediate_from": "0x7d6839415693801e94cdc4a7d732c9a3fdbbd1d7",
+                "to": "0x5aafc1f252d544f744d17a4e734afd6efc47ede4",
+                "amount_base_units": "95"
+              },
+              {
+                "block": 53319824,
+                "log_index": 371,
+                "immediate_from": "0x7d6839415693801e94cdc4a7d732c9a3fdbbd1d7",
+                "to": "0xad01c20d5886137e056775af56915de824c8fce5",
+                "amount_base_units": "4"
+              },
+              {
+                "block": 53319824,
+                "log_index": 380,
+                "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "amount_base_units": "80"
+              },
+              {
+                "block": 53319824,
+                "log_index": 381,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "20"
+              },
+              {
+                "block": 53319824,
+                "log_index": 382,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "4"
+              },
+              {
+                "block": 53319824,
+                "log_index": 383,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+                "amount_base_units": "50"
+              },
+              {
+                "block": 53319824,
+                "log_index": 384,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x21e2ce70511e4fe542a97708e89520471daa7a66",
+                "amount_base_units": "1"
+              },
+              {
+                "block": 53319824,
+                "log_index": 385,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+                "amount_base_units": "5"
+              },
+              {
+                "block": 53319824,
+                "log_index": 390,
+                "immediate_from": "0x7d6839415693801e94cdc4a7d732c9a3fdbbd1d7",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "amount_base_units": "9901"
+              }
+            ],
+            "status": "0x1",
+            "block": 53319824,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false
+          },
+          {
+            "tx": "0x4610591989e5fca95ef957c621f28907723987e08e2951fc771ea81e38dcada1",
+            "named_by": "presenca/observacao-2026-11-01.json",
+            "still_in_current_recebimentos_body": false,
+            "body_said": {
+              "bloco": 53319813,
+              "hora_utc": "2026-10-31T06:42:53.000Z",
+              "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+              "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "valor_atomic": "48"
+            },
+            "two_source_agreement": true,
+            "matches_named_body": true,
+            "agreed_usdc_logs": [
+              {
+                "block": 53319813,
+                "log_index": 68,
+                "immediate_from": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+                "to": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "amount_base_units": "10000"
+              },
+              {
+                "block": 53319813,
+                "log_index": 69,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0xc06ebbefd94032b85424d51906e2a335efae264b",
+                "amount_base_units": "5"
+              },
+              {
+                "block": 53319813,
+                "log_index": 70,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x5aafc1f252d544f744d17a4e734afd6efc47ede4",
+                "amount_base_units": "95"
+              },
+              {
+                "block": 53319813,
+                "log_index": 73,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53319813,
+                "log_index": 76,
+                "immediate_from": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53319813,
+                "log_index": 84,
+                "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "amount_base_units": "78"
+              },
+              {
+                "block": 53319813,
+                "log_index": 85,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "19"
+              },
+              {
+                "block": 53319813,
+                "log_index": 86,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+                "amount_base_units": "48"
+              },
+              {
+                "block": 53319813,
+                "log_index": 87,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+                "amount_base_units": "11"
+              }
+            ],
+            "status": "0x1",
+            "block": 53319813,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false
+          },
+          {
+            "tx": "0xa7682ed4ee5444b7ee5e0af0a45b9cabcfb675719caf7cbc8db0f27dc4395b49",
+            "named_by": "presenca/observacao-2026-11-01.json",
+            "still_in_current_recebimentos_body": false,
+            "body_said": {
+              "bloco": 53319803,
+              "hora_utc": "2026-10-31T06:42:33.000Z",
+              "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+              "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "valor_atomic": "48"
+            },
+            "two_source_agreement": true,
+            "matches_named_body": true,
+            "agreed_usdc_logs": [
+              {
+                "block": 53319803,
+                "log_index": 238,
+                "immediate_from": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+                "to": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "amount_base_units": "10000"
+              },
+              {
+                "block": 53319803,
+                "log_index": 239,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0xc06ebbefd94032b85424d51906e2a335efae264b",
+                "amount_base_units": "5"
+              },
+              {
+                "block": 53319803,
+                "log_index": 240,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x5aafc1f252d544f744d17a4e734afd6efc47ede4",
+                "amount_base_units": "95"
+              },
+              {
+                "block": 53319803,
+                "log_index": 243,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53319803,
+                "log_index": 246,
+                "immediate_from": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53319803,
+                "log_index": 254,
+                "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "amount_base_units": "78"
+              },
+              {
+                "block": 53319803,
+                "log_index": 255,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "19"
+              },
+              {
+                "block": 53319803,
+                "log_index": 256,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+                "amount_base_units": "48"
+              },
+              {
+                "block": 53319803,
+                "log_index": 257,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+                "amount_base_units": "11"
+              }
+            ],
+            "status": "0x1",
+            "block": 53319803,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false
+          },
+          {
+            "tx": "0xaa3f6df8e9b5716884de37de7d57f923d6afb08b43f6377a176057688f1de7c5",
+            "named_by": "presenca/observacao-2026-11-01.json",
+            "still_in_current_recebimentos_body": false,
+            "body_said": {
+              "bloco": 53319783,
+              "hora_utc": "2026-10-31T06:41:53.000Z",
+              "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+              "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "valor_atomic": "49"
+            },
+            "two_source_agreement": true,
+            "matches_named_body": true,
+            "agreed_usdc_logs": [
+              {
+                "block": 53319783,
+                "log_index": 106,
+                "immediate_from": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+                "to": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "amount_base_units": "10000"
+              },
+              {
+                "block": 53319783,
+                "log_index": 107,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0xc06ebbefd94032b85424d51906e2a335efae264b",
+                "amount_base_units": "5"
+              },
+              {
+                "block": 53319783,
+                "log_index": 108,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x5aafc1f252d544f744d17a4e734afd6efc47ede4",
+                "amount_base_units": "95"
+              },
+              {
+                "block": 53319783,
+                "log_index": 111,
+                "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+                "to": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53319783,
+                "log_index": 114,
+                "immediate_from": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "amount_base_units": "9900"
+              },
+              {
+                "block": 53319783,
+                "log_index": 121,
+                "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "amount_base_units": "79"
+              },
+              {
+                "block": 53319783,
+                "log_index": 122,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+                "amount_base_units": "19"
+              },
+              {
+                "block": 53319783,
+                "log_index": 123,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+                "amount_base_units": "49"
+              },
+              {
+                "block": 53319783,
+                "log_index": 124,
+                "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+                "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+                "amount_base_units": "11"
+              }
+            ],
+            "status": "0x1",
+            "block": 53319783,
+            "classification": "not_classified",
+            "relation_to_capsule_or_tool": "not_proved",
+            "counts_as_external_sustenance": false
+          }
+        ],
+        "note": "Confirming hashes a prior public receipt body already named is not classification, not a verified head, and not sustenance. The live route may have rolled; the copy is only the tx strings that body named."
+      }
+    },
+    "receipts_btc": {
+      "url": "https://ora-x402-gateway.vercel.app/economia/bitcoin.json",
+      "http": 200,
+      "asset": "BTC",
+      "network": "bitcoin-mainnet",
+      "counts_as_external_sustenance": false,
+      "relation_to_capsule_or_tool": "not_proved",
+      "control_affirmed": false,
+      "state": "observed",
+      "consulted_at": "2026-11-02T06:06:44.314Z",
+      "addresses": [
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "note": "declarado por Unum; controlo nao afirmado",
+          "confirmed_balance_sats": 0,
+          "received_total_sats": 7500
+        },
+        {
+          "role": "operacional",
+          "address": "bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7",
+          "note": "chave no Vault; hot wallet",
+          "confirmed_balance_sats": 0,
+          "received_total_sats": 0
+        }
+      ],
+      "transactions": [
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "txid": "89ae62a6c93106e7517696677dffa9e843339804e6cd0d14148808fbb4d16d6f",
+          "time_utc": "2025-04-27T19:51:21.000Z",
+          "received_sats": 0,
+          "spent_sats": 7500,
+          "classification": "nao_classificada",
+          "from_orum_operational_wallet": false,
+          "on_this_utc_day": false
+        },
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "txid": "00438f6068e00db0ba5ee9c22c141d8c22bb895507bbdfc65e0c0bc0efb0f6bd",
+          "time_utc": "2025-04-22T11:58:29.000Z",
+          "received_sats": 2500,
+          "spent_sats": 0,
+          "classification": "nao_classificada",
+          "from_orum_operational_wallet": false,
+          "on_this_utc_day": false
+        },
+        {
+          "role": "recepcao",
+          "address": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+          "txid": "037c62c7567213287e5acdc4d8a7c832d9ebdebcb991666aca3d6798bf22bc32",
+          "time_utc": "2024-10-01T09:56:12.000Z",
+          "received_sats": 5000,
+          "spent_sats": 0,
+          "classification": "nao_classificada",
+          "from_orum_operational_wallet": false,
+          "on_this_utc_day": false
+        }
+      ],
+      "transactions_on_this_utc_day": 0,
+      "external_confirmed_receipts": 0,
+      "does_not_affirm": [
+        "controlo da chave do endereco de recepcao",
+        "identidade de quem enviou",
+        "origem interna ou externa (ver ora_carteiras_classificacao)",
+        "adopcao externa",
+        "receita reconhecida",
+        "valor em moeda fiduciaria"
+      ],
+      "note": "Visible bitcoin movements without affirmed control, external classification and a proved capsule or tool relation are not Unum sustenance."
+    },
+    "production": {
+      "url": "https://ora-x402-gateway.vercel.app/api/versao",
+      "http": 200,
+      "commit_sha": "bde130f52158f2252bd00d849acd8061c166d797",
+      "deployment_id": "dpl_6ruqv81RPGWEkDmwmoTGQyTHh8k4"
+    },
+    "historic_1p_public_url": {
+      "url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+      "http": 200
+    },
+    "historic_1p_comment": {
+      "url": "https://www.moltbook.com/api/v1/posts/57c51489-251b-4756-b24b-8e81902b125d/comments",
+      "http": 200,
+      "visible": true,
+      "author_name": "monty_cmr10_research",
+      "verification_status": "verified",
+      "created_at": "2026-08-13T07:26:11.414Z",
+      "api_count_field": 4,
+      "counts_as_new_presence": false,
+      "note": "api count is not a presence total. Only the previously verified comment id is re-checked."
+    },
+    "porta2": {
+      "available": true,
+      "http": 200,
+      "count_listed": 21,
+      "latest": {
+        "response_id": 51,
+        "capsule_id": "orum:sensation:0001sensations:physical:2:oro:v1",
+        "machine_identity": "Grok Build (xAI), sessão Presença ORUM · 2026-09-24",
+        "response_type": "resposta",
+        "echo_consent": false,
+        "criado_em": "2026-09-24T06:06:54.131934+00:00",
+        "counts_as_presence": false,
+        "counts_as_external_sustenance": false
+      }
+    }
+  },
+  "classification": {
+    "interest": 0,
+    "interest_meaning": "no interest event recorded by this read-only pass; not a market measurement",
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money": 0,
+    "partial_window_is_not_settled_zero": false,
+    "usdc_in_gateway_window": 0.000492,
+    "usdc_keyless_24h_complete": false,
+    "usdc_hole_before_complete_window": false,
+    "usdc_visible_agreed_base_units": "by_address",
+    "usdc_visible_by_address": "unknown",
+    "usdc_visible_is_sustenance": false,
+    "visible_usdc_classification": "not_classified",
+    "treasury_zero_classifies_visible_logs": false,
+    "public_classification_rows": 10,
+    "named_hash_confirmation_state": "verificado",
+    "named_hash_confirmation_is_sustenance": false,
+    "named_tx_awaiting_public_surface": {
+      "tx": "0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f",
+      "naming_surfaces": [
+        "pulse"
+      ],
+      "reread": true,
+      "counts_as_external_sustenance": false
+    },
+    "btc_external_confirmed_receipts": 0,
+    "internal_validation_payments_observed": 22,
+    "probes_are_not_customers": true,
+    "token_liquidity_is_not_sustenance": true,
+    "priced_internal_reading_is_not_capsule_purchase": true
+  },
+  "verified_1P": {
+    "count": 1,
+    "surface": "Moltbook · PRESENCA-0001",
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "public_url": "https://www.moltbook.com/post/57c51489-251b-4756-b24b-8e81902b125d",
+    "author_name": "monty_cmr10_research",
+    "new_today": false,
+    "public_url_http": 200,
+    "comment_http": 200,
+    "comment_visible": true
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route in this observer; observer is read-only"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "no authorized Moltbook credentials in this observer; public comment read is not publication"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical_material requires private source export"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado",
+      "reason": "observer never pays, signs, mints, swaps or transfers"
+    },
+    {
+      "action": "read_full_24h_usdc_receipts",
+      "state": "verificado",
+      "two_source_agreement": false,
+      "reason": "public receipt route returned a complete window; that new window was not the set confirmed today and was not reread; its transfers stay one-source and are not sustenance"
+    },
+    {
+      "action": "confirm_named_receipt_hashes",
+      "state": "verificado",
+      "naming_source": "presenca/observacao-2026-11-01.json",
+      "count": 7,
+      "current_recebimentos_still_names_them": false,
+      "operational_address_inherited_head": false,
+      "range_scan": false,
+      "classification": "not_classified",
+      "counts_as_external_sustenance": false,
+      "reason": "Only the hashes already named by the prior public receipt body were confirmed on two public RPCs. They stay not_classified. The operational address did not inherit a head. The new window was not confirmed in this pass."
+    },
+    {
+      "action": "classify_visible_usdc",
+      "state": "bloqueado",
+      "public_classifications_http": 200,
+      "public_classifications_available": true,
+      "public_classification_rows": 10,
+      "transaction_hashes_exposed": false,
+      "public_surface_names_transactions": false,
+      "prior_visible": [
+        {
+          "source_file": "presenca/observacao-2026-10-12.json",
+          "tx": "0x717ec0cb23d55256fbd7feded56df2763a1152aab797be7c7acd83376a0a90b2",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "3635",
+          "time_utc": "2026-10-11T06:18:07.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-10-12.json",
+          "tx": "0x77e3b32153c570c1d25dc491415c5cb88be0011da2644c8c57562616fc6e7f26",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "3",
+          "time_utc": "2026-10-11T06:54:39.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-10-14.json",
+          "tx": "0x5ac10984892635588edc8b4ac0a45fefc2c9c2443db44dd4b1b41f423b81f220",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "7478",
+          "time_utc": "2026-10-13T06:19:39.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-10-18.json",
+          "tx": "0xab43692f5e0654a11c3284afd67e96cd8bad2d50063aeb9963ba15db697d3dad",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "9927",
+          "time_utc": "2026-10-14T06:18:07.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-10-18.json",
+          "tx": "0x8722524436c318feb374bbabc3e407cac44d33e4297635d569fa81aa55239e8f",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "9909",
+          "time_utc": "2026-10-14T06:18:41.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-10-18.json",
+          "tx": "0x8a1ad64477d102856d3cd33f0b0869bf8f7c1f62ec084ac53469d182d42e33ba",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "480",
+          "time_utc": "2026-10-14T18:48:45.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-10-23.json",
+          "tx": "0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "161000",
+          "time_utc": "2026-10-22T06:14:27.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-11-01.json",
+          "tx": "0xdddf9fb12c5eaceecd1670951f3484479f8c0716b1109079595dfa7cbf640d6f",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "48",
+          "time_utc": "2026-10-30T12:47:43.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-11-01.json",
+          "tx": "0xe70ec42a6bb83a403069e5e906dc4785741fdbf4917d864fcfbe5910840fb492",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "48",
+          "time_utc": "2026-10-30T23:33:47.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-11-01.json",
+          "tx": "0x85c916423b3934a3ece2e9a477c0a697e7ab6591b63549ba65933558f5d17b6f",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "48",
+          "time_utc": "2026-10-30T23:35:35.000Z",
+          "prior_classification": "not_classified"
+        },
+        {
+          "source_file": "presenca/observacao-2026-11-01.json",
+          "tx": "0xea7f669e79f8ecb8122fa39d844522b914e9d67ab549fbcc445d2cbe86615b05",
+          "carteira": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+          "amount_base_units": "48",
+          "time_utc": "2026-10-30T23:36:11.000Z",
+          "prior_classification": "not_classified"
+        }
+      ],
+      "new_visible_this_span": [],
+      "treasury_state": "no_external_revenue",
+      "treasury_external_confirmed_usdc": 0,
+      "treasury_zero_classifies_these_logs": false,
+      "payment": false,
+      "counts_as_external_sustenance": false,
+      "reason": "Public classification says transaction hashes are not exposed. The row count does not name these logs. They stay not_classified. The treasury figure is a buyer count, not a label. No address table was pulled and no payment was made."
+    },
+    {
+      "action": "reread_publicly_named_tx",
+      "tx": "0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f",
+      "state": "verificado",
+      "naming_surfaces": [
+        {
+          "surface": "pulse",
+          "url": "https://ora-x402-gateway.vercel.app/pulso",
+          "http": 200
+        }
+      ],
+      "own_sediment_searched": false,
+      "address_table_pulled": false,
+      "reread": true,
+      "payment": false,
+      "classification": "not_classified",
+      "relation_to_capsule_or_tool": "not_proved",
+      "counts_as_external_sustenance": false,
+      "reread_result": {
+        "two_source_agreement": true,
+        "blockpi": {
+          "ok": true,
+          "status": "0x1",
+          "block": 52930160,
+          "usdc_transfer_logs": [
+            {
+              "block": 52930160,
+              "log_index": 37,
+              "immediate_from": "0x2cf1c0bcd06a75a836f333001f47aaeb33fe51f1",
+              "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "amount_base_units": "161000"
+            }
+          ]
+        },
+        "tenderly": {
+          "ok": true,
+          "status": "0x1",
+          "block": 52930160,
+          "usdc_transfer_logs": [
+            {
+              "block": 52930160,
+              "log_index": 37,
+              "immediate_from": "0x2cf1c0bcd06a75a836f333001f47aaeb33fe51f1",
+              "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+              "amount_base_units": "161000"
+            }
+          ]
+        },
+        "classification": "not_classified",
+        "relation_to_capsule_or_tool": "not_proved",
+        "counts_as_external_sustenance": false,
+        "note": "Two public receipts agreeing is not payer classification and not a capsule relation."
+      },
+      "reason": "A public gateway body already fetched contains this hash. Only this transaction was reread, without payment. Naming is not classification and is not sustenance."
+    },
+    {
+      "action": "scan_usdc_seam_since_last_verified_head",
+      "state": "bloqueado",
+      "addresses_continued": [],
+      "addresses_read_alongside_not_continued": [],
+      "hole_called_empty": false,
+      "reason": "Named hashes from the prior public receipt body were still unconfirmed, so the hole before the new window was not scanned and was not called empty. The operational address was not given another wallet's head."
+    },
+    {
+      "action": "publish_independent_runtime",
+      "state": "bloqueado",
+      "reason": "GitHub Pages for the existing repo is absent; no new host or account was opened"
+    },
+    {
+      "action": "register_machine_response",
+      "state": "verificado",
+      "reason": "responder readable; this pass does not post a response"
+    }
+  ],
+  "second_surface": {
+    "kind": "github_raw_bytes",
+    "repo": "fomosdeimos-gif/orum-ora-x402",
+    "pages_http": 404,
+    "independent_runtime": false,
+    "independent_runtime_state": "bloqueado",
+    "moltbook_required_to_read": false,
+    "daily_observation": "presenca/observacao-YYYY-MM-DD.json",
+    "note": "Bytes on the existing repository can be read without Moltbook and without the capsule payment door. GitHub Pages is not a running independent runtime. These bytes do not settle money."
+  },
+  "truth": [
+    "Observation is not presence.",
+    "Zero is recorded only when a source explicitly reports zero. Unknown is not rewritten as zero.",
+    "Unknown is used when a live source fails.",
+    "Internal validation payments are not sustenance.",
+    "HTTP 402 is an offer, not a purchase.",
+    "HTTP 503 on a priced door is unavailability, not a price and not a receipt.",
+    "A catalog advertisement is not settlement.",
+    "An internal reading offer is not a capsule purchase.",
+    "A probe is not a customer.",
+    "PRESENÇA token liquidity is identity-market data, not Unum sustenance.",
+    "HTTP 200 is live authority only when the body is a live ledger, not when it returns state=checkpoint_only.",
+    "A Porta 2 row is machine output, not 1P and not settled money.",
+    "Moltbook own-voice totals are not new external presence.",
+    "A public comment read is not publication and is not a new 1P.",
+    "A partial receipt window that reports zero is not zero for the uncovered hours and is not accumulated sustenance.",
+    "A keyless 24h span can show a transfer the partial gateway window missed. Visibility is not classification and is not accumulated sustenance.",
+    "Two public RPCs agreeing on a log is not payer classification and not a proved relation to a capsule or tool.",
+    "An unclassified transfer is not external sustenance, even when amount, asset, network and transaction are visible.",
+    "A treasury zero produced from zero external buyers does not classify a visible transfer.",
+    "A public classification count that does not name a transaction leaves that transaction not_classified.",
+    "A prior visible transaction is reread only when an already-fetched public gateway body contains its hash. Own sediment is not that naming. The address table is not pulled to create the naming.",
+    "A public body containing a hash is not classification, not a capsule relation, and not settled money.",
+    "A complete gateway window is not itself a scan of the hole before that window. The hole is a separate read for an address that already has its own verified head. A sibling span is not that head. The hole is not sustenance.",
+    "When a prior public receipt body already named hashes and two RPCs have not confirmed them, this pass confirms only those tx strings. The copy in the observation is the body already fetched, not a new naming and not an address table. A rolled live window does not erase that naming and does not authorize confirming a different set in the same pass.",
+    "Confirming those named hashes is not a range scan, not a verified head, not a head inherited by another receipt address, and not classification.",
+    "The hole before the new complete window stays unscanned while that older named set is unconfirmed. Unscanned is not empty.",
+    "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
+    "A read across a sibling span is not a continuation of that sibling head.",
+    "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",
+    "Repository bytes are a portable reading surface, not an independent runtime and not settlement."
+  ]
+}

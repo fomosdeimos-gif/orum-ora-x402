@@ -556,6 +556,22 @@ async function continuePartialUsdcWindow(usdcWindow) {
     ],
   };
   if (usdcWindow.state === "window_complete") {
+    const pending = priorUnconfirmedNamedReceipts();
+    if (pending.state === "pending" || pending.state === "bloqueado" || pending.state === "unreadable") {
+      return {
+        primary: {
+          ...base,
+          state: "not_scanned_this_cycle",
+          covers_requested_24h: false,
+          hole_called_empty: false,
+          note: pending.state === "pending"
+            ? "A prior public receipt body already named hashes that two RPCs have not confirmed. This cycle does not range-scan the hole before the new window and does not call that hole empty. The new complete window is not reread."
+            : "Prior named hashes could not be read cleanly. The hole was not scanned and was not called empty.",
+        },
+        spans: [],
+        named_pending: pending,
+      };
+    }
     return scanHoleBeforeCompleteWindow(usdcWindow, base);
   }
   if (usdcWindow.state !== "window_partial" || namedReceiptAddresses(usdcWindow).length === 0) {
@@ -906,6 +922,126 @@ async function rereadOnePublicTx(hash) {
   };
 }
 
+
+function priorUnconfirmedNamedReceipts() {
+  const dir = join(process.cwd(), "presenca");
+  let names = [];
+  try {
+    names = readdirSync(dir).filter((name) => /^observacao-\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort();
+  } catch {
+    return { state: "unreadable" };
+  }
+  const confirmed = new Set();
+  const parsed = [];
+  for (const name of names) {
+    let body;
+    try {
+      body = JSON.parse(readFileSync(join(dir, name), "utf8"));
+    } catch {
+      continue;
+    }
+    parsed.push({ name, body });
+    const done = body?.live?.receipts_usdc?.named_hash_confirmation;
+    if (done && done.state === "verificado" && Array.isArray(done.hashes)) {
+      for (const row of done.hashes) {
+        if (typeof row.tx === "string" && row.two_source_agreement === true && row.matches_named_body === true) {
+          confirmed.add(row.tx.toLowerCase());
+        }
+      }
+    }
+  }
+  for (let i = parsed.length - 1; i >= 0; i -= 1) {
+    const { name, body } = parsed[i];
+    const gateway = body?.live?.receipts_usdc?.gateway;
+    const transfers = Array.isArray(gateway?.transfers) ? gateway.transfers : [];
+    if (gateway?.window_complete !== true || transfers.length === 0) continue;
+    if (!transfers.every((row) => typeof row?.tx === "string" && /^0x[0-9a-fA-F]{64}$/.test(row.tx))) continue;
+    const pending = transfers.filter((row) => !confirmed.has(row.tx.toLowerCase()));
+    if (pending.length === 0) continue;
+    if (pending.length !== transfers.length) {
+      return {
+        state: "bloqueado",
+        file: `presenca/${name}`,
+        reason: "The prior public body mixes confirmed and unconfirmed hashes. This pass did not confirm a subset.",
+      };
+    }
+    return {
+      state: "pending",
+      file: `presenca/${name}`,
+      observed_at: body.observed_at ?? "unknown",
+      window: gateway.window ?? null,
+      transfers: pending.map((row) => ({
+        tx: row.tx,
+        bloco: row.bloco ?? null,
+        hora_utc: row.hora_utc ?? null,
+        de: row.de ?? null,
+        para: row.para ?? null,
+        valor_atomic: row.valor_atomic ?? null,
+        classificacao_no_corpo: row.classificacao ?? null,
+      })),
+    };
+  }
+  return { state: "none" };
+}
+
+async function confirmNamedReceiptHashes(pending, currentBodyText) {
+  const hashes = [];
+  for (const named of pending.transfers) {
+    const read = await rereadOnePublicTx(named.tx);
+    const agreedLogs = read.two_source_agreement === true ? (read.blockpi.usdc_transfer_logs || []) : [];
+    const from = String(named.de || "").toLowerCase();
+    const to = String(named.para || "").toLowerCase();
+    const match = agreedLogs.find((log) =>
+      String(log.amount_base_units) === String(named.valor_atomic)
+      && log.block === named.bloco
+      && log.immediate_from === from
+      && log.to === to);
+    hashes.push({
+      tx: named.tx,
+      named_by: pending.file,
+      still_in_current_recebimentos_body: currentBodyText.toLowerCase().includes(named.tx.toLowerCase()),
+      body_said: {
+        bloco: named.bloco,
+        hora_utc: named.hora_utc,
+        de: named.de,
+        para: named.para,
+        valor_atomic: String(named.valor_atomic),
+      },
+      two_source_agreement: read.two_source_agreement === true,
+      matches_named_body: Boolean(match),
+      agreed_usdc_logs: read.two_source_agreement === true ? read.blockpi.usdc_transfer_logs : "not_agreed",
+      status: read.two_source_agreement === true ? read.blockpi.status : "not_agreed",
+      block: read.two_source_agreement === true ? read.blockpi.block : "not_agreed",
+      classification: "not_classified",
+      relation_to_capsule_or_tool: "not_proved",
+      counts_as_external_sustenance: false,
+    });
+  }
+  const allAgreed = hashes.length > 0 && hashes.every((row) => row.two_source_agreement === true && row.matches_named_body === true);
+  return {
+    state: allAgreed ? "verificado" : "bloqueado",
+    method: "two_public_eth_getTransactionReceipt",
+    sources: [BLOCKPI_PUBLIC, TENDERLY_PUBLIC],
+    naming_source: pending.file,
+    naming_observed_at: pending.observed_at,
+    named_window: pending.window,
+    current_recebimentos_still_names_them: hashes.length > 0 && hashes.every((row) => row.still_in_current_recebimentos_body === true),
+    own_sediment_invented_hashes: false,
+    range_scan: false,
+    hole_scanned: false,
+    new_window_hashes_confirmed_this_pass: false,
+    operational_address: "0x89460d9e0590559e63860197dfe2ac648a753584",
+    operational_address_inherited_head: false,
+    operational_address_scanned: false,
+    classification: "not_classified",
+    counts_as_external_sustenance: false,
+    payment: false,
+    count: hashes.length,
+    hashes,
+    note: "Confirming hashes a prior public receipt body already named is not classification, not a verified head, and not sustenance. The live route may have rolled; the copy is only the tx strings that body named.",
+  };
+}
+
 function daysSince(iso) {
   if (!iso) return "unknown";
   const t = Date.parse(iso);
@@ -1015,6 +1151,22 @@ const usdcWindow = classifyUsdcWindow(raw.recebimentos);
 const usdcRead = await continuePartialUsdcWindow(usdcWindow);
 const usdcSpan = usdcRead.primary;
 const addressSpans = usdcRead.spans;
+let namedHashConfirmation = null;
+if (usdcRead.named_pending?.state === "pending") {
+  const currentText = JSON.stringify(raw.recebimentos.body ?? "");
+  namedHashConfirmation = await confirmNamedReceiptHashes(usdcRead.named_pending, currentText);
+} else if (usdcRead.named_pending && usdcRead.named_pending.state !== "none") {
+  namedHashConfirmation = {
+    state: "bloqueado",
+    reason: usdcRead.named_pending.reason || usdcRead.named_pending.state,
+    payment: false,
+    range_scan: false,
+    hole_scanned: false,
+    operational_address_inherited_head: false,
+    classification: "not_classified",
+    counts_as_external_sustenance: false,
+  };
+}
 const bitcoin = classifyBitcoin(raw.bitcoin);
 const spanComplete = addressSpans.length > 0
   && addressSpans.every((span) => span.state === "window_complete"
@@ -1025,8 +1177,11 @@ if (usdcWindow.state === "window_complete" || spanComplete) {
   blocks.push({
     action: "read_full_24h_usdc_receipts",
     state: "verificado",
+    two_source_agreement: false,
     reason: usdcWindow.state === "window_complete"
-      ? "public receipt route returned a complete window; transfers without a proved capsule relation are not sustenance"
+      ? (usdcRead.named_pending?.state === "pending"
+        ? "public receipt route returned a complete window; that new window was not the set confirmed today and was not reread; its transfers stay one-source and are not sustenance"
+        : "public receipt route returned a complete window; transfers without a proved capsule relation are not sustenance")
       : "gateway window stayed partial; keyless public RPCs covered 24h without an archive token. Agreed transfers stay unclassified and are not sustenance",
   });
 } else {
@@ -1109,6 +1264,22 @@ const continued = addressSpans.filter((span) => span.seam?.state === "scanned" |
 const alongside = addressSpans.filter((span) => span.seam?.state === "read_alongside_not_continued");
 const seamFailed = addressSpans.filter((span) => !["scanned", "not_needed", "read_alongside_not_continued"].includes(span.seam?.state));
 const seamVerified = addressSpans.length > 0 && seamFailed.length === 0 && continued.length > 0;
+if (namedHashConfirmation) {
+  blocks.push({
+    action: "confirm_named_receipt_hashes",
+    state: namedHashConfirmation.state,
+    naming_source: namedHashConfirmation.naming_source ?? usdcRead.named_pending?.file ?? null,
+    count: Array.isArray(namedHashConfirmation.hashes) ? namedHashConfirmation.hashes.length : 0,
+    current_recebimentos_still_names_them: namedHashConfirmation.current_recebimentos_still_names_them === true,
+    operational_address_inherited_head: false,
+    range_scan: false,
+    classification: "not_classified",
+    counts_as_external_sustenance: false,
+    reason: namedHashConfirmation.state === "verificado"
+      ? "Only the hashes already named by the prior public receipt body were confirmed on two public RPCs. They stay not_classified. The operational address did not inherit a head. The new window was not confirmed in this pass."
+      : "The named-hash confirmation did not agree on two public RPCs or did not match the named body. Nothing was classified and the hole was not filled with zero.",
+  });
+}
 blocks.push(classifyVisible);
 blocks.push(namedTxBlock);
 blocks.push({
@@ -1116,7 +1287,10 @@ blocks.push({
   state: seamVerified ? "verificado" : "bloqueado",
   addresses_continued: continued.map((span) => span.carteira),
   addresses_read_alongside_not_continued: alongside.map((span) => span.carteira),
-  reason: seamVerified
+  hole_called_empty: false,
+  reason: usdcRead.named_pending?.state === "pending"
+    ? "Named hashes from the prior public receipt body were still unconfirmed, so the hole before the new window was not scanned and was not called empty. The operational address was not given another wallet's head."
+    : seamVerified
     ? "Each verified head was continued only for its own address. A sibling read is not that continuation. Visible logs stay unclassified and are not sustenance."
     : "The seam was not scanned for every address that already had a verified head. The missing range was not filled with zero and no archive credential was opened.",
 });
@@ -1147,7 +1321,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-10-28-named-tx-is-not-reread-until-a-public-surface-names-it",
+  observer_revision: "2026-11-02-confirm-only-hashes-a-prior-public-receipt-body-already-named",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -1274,7 +1448,7 @@ const out = {
       livro_interno_escrito: catalog.fronteiras?.livro_interno_escrito ?? "unknown",
       is_settlement: false,
     },
-    receipts_usdc: { gateway: usdcWindow, keyless_span: usdcSpan, keyless_address_spans: addressSpans },
+    receipts_usdc: { gateway: usdcWindow, keyless_span: usdcSpan, keyless_address_spans: addressSpans, named_hash_confirmation: namedHashConfirmation },
     receipts_btc: bitcoin,
     production: {
       url: surfaces.versao,
@@ -1325,6 +1499,8 @@ const out = {
     visible_usdc_classification: "not_classified",
     treasury_zero_classifies_visible_logs: false,
     public_classification_rows: classifyVisible.public_classification_rows,
+    named_hash_confirmation_state: namedHashConfirmation?.state ?? "not_this_cycle",
+    named_hash_confirmation_is_sustenance: false,
     named_tx_awaiting_public_surface: {
       tx: AWAITING_PUBLIC_NAME,
       naming_surfaces: namingHits.map((hit) => hit.surface),
@@ -1379,6 +1555,9 @@ const out = {
     "A prior visible transaction is reread only when an already-fetched public gateway body contains its hash. Own sediment is not that naming. The address table is not pulled to create the naming.",
     "A public body containing a hash is not classification, not a capsule relation, and not settled money.",
     "A complete gateway window is not itself a scan of the hole before that window. The hole is a separate read for an address that already has its own verified head. A sibling span is not that head. The hole is not sustenance.",
+    "When a prior public receipt body already named hashes and two RPCs have not confirmed them, this pass confirms only those tx strings. The copy in the observation is the body already fetched, not a new naming and not an address table. A rolled live window does not erase that naming and does not authorize confirming a different set in the same pass.",
+    "Confirming those named hashes is not a range scan, not a verified head, not a head inherited by another receipt address, and not classification.",
+    "The hole before the new complete window stays unscanned while that older named set is unconfirmed. Unscanned is not empty.",
     "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
     "A read across a sibling span is not a continuation of that sibling head.",
     "Historical bitcoin without affirmed control and without a capsule relation is not Unum sustenance.",

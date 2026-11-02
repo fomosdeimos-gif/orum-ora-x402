@@ -3,9 +3,9 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-11-01T06:09:08.545Z",
-  "revision": "2026-11-01-complete-window-scans-only-the-hole-of-its-own-head",
-  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation of one address, an unscanned gap on that same address, a second named receipt address that does not inherit the first head, an unclassified transfer, a buyer-count treasury zero, a public classification count that names no transaction, a prior visible transaction reread only when an already-fetched public gateway body contains its hash, a pulse event labelled pagamento that is not treasury settlement, a complete 24h window that is not itself the scan of the hole before it, a hole scan that is not that window, and settled money.",
+  "updated_at": "2026-11-02T06:06:46.926Z",
+  "revision": "2026-11-02-confirm-only-hashes-a-prior-public-receipt-body-already-named",
+  "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation of one address, an unscanned gap on that same address, a second named receipt address that does not inherit the first head, an unclassified transfer, a buyer-count treasury zero, a public classification count that names no transaction, a prior visible transaction reread only when an already-fetched public gateway body contains its hash, a pulse event labelled pagamento that is not treasury settlement, a complete 24h window that is not itself the scan of the hole before it, a hole scan that is not that window, a two-RPC confirmation of only the hashes a prior public receipt body already named, and settled money.",
   "does_not": [
     "mint presence",
     "count traffic as 1P",
@@ -41,7 +41,12 @@
     "treat a complete 24h receipt window as a scan of the hole before that window",
     "treat the unscanned hole before a complete window as empty",
     "treat a read_alongside_not_continued span as a verified head",
-    "treat a hole scan as coverage of the 24h window it stops before"
+    "treat a hole scan as coverage of the 24h window it stops before",
+    "treat the copy of an already-fetched public receipt body as permission to invent a hash that body did not name",
+    "confirm a newer receipt window in the same pass as an older named set that is still unconfirmed",
+    "treat two-RPC confirmation of those named hashes as classification, as a verified head, or as a head inherited by another receipt address",
+    "range-scan a window whose hashes are already named in order to confirm them",
+    "treat the unscanned hole before the new window as empty while an older named set is still unconfirmed"
   ],
   "surfaces": {
     "ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
@@ -81,7 +86,10 @@
     "does_not_reread_complete_gateway_window": true,
     "does_not_inherit_sibling_head": true,
     "rereads_named_tx_only_when_public_body_contains_hash": true,
-    "revision_note": "2026-11-01: when the gateway window is already complete, scan only the blocks before that window, and only for an address whose own verified head is seam scanned or not_needed. A read_alongside span is not that head. The complete window is not reread. A finished hole is not 24h coverage and is not sustenance."
+    "revision_note": "2026-11-02: when a prior public receipt body already named transaction hashes and two public RPCs have not confirmed them, confirm only those tx strings. The observation copy is that already-fetched body, not a new naming and not an address table. A rolled live window does not authorize confirming a different set in the same pass. Confirmation is not a range scan, not a verified head, not a head for the operational address, and not classification. The hole before the new window stays unscanned and is not called empty.",
+    "confirms_only_previously_named_receipt_hashes": true,
+    "does_not_confirm_a_newer_window_in_the_same_pass": true,
+    "does_not_range_scan_named_hashes": true
   },
   "second_surface": {
     "kind": "github_raw_bytes",

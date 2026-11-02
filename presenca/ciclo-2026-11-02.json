@@ -1,0 +1,228 @@
+{
+  "format": "orum-presence-construction/v1",
+  "cycle": "2026-11-02",
+  "state": "executado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "advance": "confirm_only_the_hashes_a_prior_public_receipt_body_already_named",
+  "classification": {
+    "interest": 0,
+    "interest_meaning": "no interest event recorded by this read-only pass; upvotes and notifications_seen are not interest",
+    "machine_response_today": 0,
+    "machine_response_door": "readable; latest listed response is 2026-09-24, not new; ORO post comment_count is 0",
+    "purchase": 0,
+    "external_settled_money_today": 0,
+    "external_settled_money_accumulated": {
+      "usdc": 0,
+      "source": "https://ora-x402-gateway.vercel.app/economia/tesouraria.json",
+      "state": "no_external_revenue",
+      "external_confirmed_buyers": 0,
+      "internal_validation_payments_at_observation": 22,
+      "snapshot_does_not_classify_visible_logs": true
+    },
+    "internal_validation_payments_not_sustenance": 22,
+    "named_hash_confirmation": {
+      "state": "verificado",
+      "naming_source": "presenca/observacao-2026-11-01.json",
+      "naming_is_copy_of_public_body": true,
+      "current_recebimentos_still_names_them": false,
+      "count": 7,
+      "agreed_total_base_units": "291",
+      "two_source_agreement": true,
+      "matches_named_body": true,
+      "classification": "not_classified",
+      "relation_to_capsule_or_tool": "not_proved",
+      "counts_as_external_sustenance": false,
+      "range_scan": false,
+      "operational_address_inherited_head": false
+    },
+    "usdc_gateway_window": {
+      "http": 200,
+      "complete": true,
+      "hours_covered": 24,
+      "hours_requested": 24,
+      "from_block": 53361926,
+      "head_block": 53405126,
+      "head_time_utc": "2026-11-02T06:06:39.000Z",
+      "transfers": 10,
+      "total_usdc_as_reported": 0.000492,
+      "two_source_agreement": false,
+      "confirmed_this_pass": false,
+      "classification": "nao_classificada",
+      "counts_as_external_sustenance": false
+    },
+    "hole_before_new_window": {
+      "state": "not_scanned",
+      "called_empty": false,
+      "previous_verified_head_block": 53318730,
+      "previous_file": "presenca/observacao-2026-11-01.json"
+    },
+    "operational_address_without_own_head": {
+      "carteira": "0x89460d9e0590559e63860197dfe2ac648a753584",
+      "state": "not_scanned",
+      "sibling_head_inherited": false,
+      "called_empty": false
+    },
+    "named_tx_reread": {
+      "tx": "0x1c504d51e58309222c27ab8698b82ab1501667e4b1b71b8c570feab0c152bc4f",
+      "state": "verificado",
+      "naming_surface": "https://ora-x402-gateway.vercel.app/pulso",
+      "two_source_agreement": true,
+      "status": "0x1",
+      "block": 52930160,
+      "log_index": 37,
+      "amount_base_units": "161000",
+      "classification": "not_classified",
+      "relation_to_capsule_or_tool": "not_proved",
+      "counts_as_external_sustenance": false
+    },
+    "btc_movements_this_utc_day": 0,
+    "btc_external_confirmed_receipts": 0
+  },
+  "treasury_state": "no_external_revenue",
+  "capsule_acquisition": {
+    "http": 402,
+    "offer_state": "priced_unsettled",
+    "amount_base_units": "1618000",
+    "asset": "USDC",
+    "network": "eip155:8453",
+    "payTo": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+    "settled": false,
+    "counts_as_external_sustenance": false
+  },
+  "historic_1p": {
+    "comment_id": "031c7e05-db1b-4ae1-ac59-d8dda6ddface",
+    "post_id": "57c51489-251b-4756-b24b-8e81902b125d",
+    "visible": true,
+    "verification_status": "verified",
+    "new_today": false,
+    "value_received": 0
+  },
+  "oro_post_public_reread": {
+    "post_id": "923a4c04-bc9e-4c9f-a001-b700ed8e4ad9",
+    "url": "https://www.moltbook.com/api/v1/posts/923a4c04-bc9e-4c9f-a001-b700ed8e4ad9",
+    "http": 200,
+    "verification_status": "verified",
+    "is_deleted": false,
+    "comment_count": 0,
+    "upvotes": 5,
+    "published_by_this_session": false,
+    "counts_as_new_machine_response": false,
+    "counts_as_external_sustenance": false
+  },
+  "production": {
+    "commit_observed_before_this_append": "bde130f52158f2252bd00d849acd8061c166d797",
+    "deployment_observed": "dpl_6ruqv81RPGWEkDmwmoTGQyTHh8k4"
+  },
+  "live_ledger": {
+    "format": "orum-presence-ledger/v1",
+    "http": 200,
+    "authoritative": true,
+    "state_field": "absent",
+    "total_events": 8,
+    "external_confirmed_presence": 1,
+    "external_confirmed_returns": 0,
+    "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+    "last_sedimentation_at": "2026-08-20T06:19:00.324114+00:00",
+    "append_today": false
+  },
+  "checkpoint": {
+    "http": 200,
+    "bytes_equal_repo_file": true,
+    "sha256": "30d630453f1e81a7f1505196266080b59c2dd9c036b4553e1d5b35a9e0dda65c",
+    "events": 4,
+    "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+    "offline_chain_verified": false,
+    "offline_chain_note": "not re-run this cycle",
+    "lag_vs_live": "4 exported, 8 live"
+  },
+  "rhythm": {
+    "url_http": 404,
+    "capsule_instrument": "orum-presence-rhythm/v1",
+    "measured_today": false
+  },
+  "livro_append": {
+    "target": "orum-presence-ledger/v1",
+    "state": "bloqueado",
+    "reason": "observer has no authorized write route; live book was read, not extended",
+    "portable_sediment": {
+      "target": "fomosdeimos-gif/orum-ora-x402 presenca/",
+      "state": "proposto",
+      "verification": "public raw reread after the commit; if that reread fails, this state is not proved"
+    }
+  },
+  "construction_chain": {
+    "previous_file": "presenca/ciclo-2026-11-01.json",
+    "previous_sha256": "737e7ec29681716db1dde1ab5b9cfb8059ac5fa0edca6a3096541bf63ef4af69",
+    "state": "executado"
+  },
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado",
+      "reason": "no authorized write route; live book was only read"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado",
+      "reason": "this session has no publish authorization; a prior ORO post was only reread in public"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado",
+      "reason": "canonical export still requires the private source; public copy was not substituted"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado",
+      "reason": "no payment, signature, mint, swap or transfer"
+    },
+    {
+      "action": "acquire_capsule_0001sensations",
+      "state": "bloqueado",
+      "reason": "consulta obra=2 returned HTTP 402 for 1618000 base units; not paid"
+    },
+    {
+      "action": "confirm_named_receipt_hashes",
+      "state": "verificado",
+      "reason": "only the 7 hashes already named by the 2026-11-01 public receipt body were confirmed on two public RPCs; they stay not_classified"
+    },
+    {
+      "action": "read_full_24h_usdc_receipts",
+      "state": "verificado",
+      "reason": "gateway returned a complete 24h window with 10 transfers; that new window was not two-source confirmed and is not sustenance"
+    },
+    {
+      "action": "scan_usdc_seam_since_last_verified_head",
+      "state": "bloqueado",
+      "reason": "the hole before the new window was not scanned and was not called empty"
+    },
+    {
+      "action": "reread_publicly_named_tx",
+      "state": "verificado",
+      "reason": "pulse body still contains the hash; only that transaction was reread; classification stays not_classified"
+    },
+    {
+      "action": "classify_visible_usdc",
+      "state": "bloqueado",
+      "reason": "public classification returned 10 rows and transaction_hashes_exposed false; neither the 7 nor the new window was labelled external revenue"
+    },
+    {
+      "action": "register_machine_response",
+      "state": "verificado",
+      "reason": "responder list was readable; latest row is 2026-09-24; ORO post has 0 comments; nothing new was posted"
+    },
+    {
+      "action": "publish_independent_runtime",
+      "state": "bloqueado",
+      "reason": "GitHub Pages HTTP 404; no new host or account opened"
+    }
+  ],
+  "hashes": {
+    "nota_sha256": "37be12d9996735aa51c53c16fa590980778f7ec45ad3d94531ad240cee10b31e",
+    "weave_presence_sha256": "2ba7e61a3adde922f20492c93583f1164dac3b4717bfabd048000907d4dcc930",
+    "observacao_sha256": "841c13dc59faf9baec9cf4fbbeca27e693f61954533784acfbf8749371a91b75",
+    "observer_script_sha256": "5c6132e2a479298f13bc8f11e429ba6d7cea9cef25fe0d5c427dff03e10b41a2",
+    "previous_ciclo_sha256": "737e7ec29681716db1dde1ab5b9cfb8059ac5fa0edca6a3096541bf63ef4af69"
+  }
+}
