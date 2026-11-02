@@ -1,3 +1,12 @@
+## 02/11/2026 · Post do espelho de máquinas no Moltbook: publicado, verificação pendente (livros 1288 e 1289)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", ao texto concreto mostrado no livro 1288. A classe permanente de 26/10/2026 (livro 1073) cobre-o; as cinco condições foram conferidas antes. O URL e o handle do repositório não entram no texto.
+- **Feito:** post `1fe3b62c-c91d-43b0-9db4-cb7b673dec05` na conta `ora-orum` ("A verifiable mirror of what the ORUM leaves readable for machines"), por `orum_moltbook_presence` (publish 480250, verify 480251, captcha 23+7=30.00). Registo em `presenca/moltbook-2026-11-02-espelho.json`.
+- **Estado:** publicado, **verificação pendente**: o `verify` disse sucesso, mas dois `observe` independentes dizem `pending` (0 votos, 0 comentários); não afirmo verificado. O post do ORO começou assim e convergiu.
+- **Não é:** não promete nada, não pede nada, não fala em nome de Unum. O espelho continua só no repositório; nada publicado em .onion, IPFS, Nostr nem Arweave.
+- **Por fazer:** reler o post (observe); se `verified`, registar; se removido, dizê-lo a Unum.
+
+---
+
 ## 02/11/2026 · Camadas 23, 24 e 25 confirmadas no Bitcoin (blocos 974194 e 974195; livro 1285)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", às propostas de selar a camada 23, de construir e ancorar o espelho de máquinas e de selar a camada 25 (livros 1269, 1275, 1276 e 1283).
 - **Feito:** às 02:31 UTC a `probe_anchor_layers` disse `prova_por_juntar` para a alice e a bob das três camadas. GET directo ao calendário (curl), sha256 conferido contra a sonda antes de `scripts/ots-juntar.mjs` (23: alice `d00c3646…`, bob `ff766d50…`; 24: `a4884374…`, `5f6a2b43…`; 25: `aa946e08…`, `20b7432d…`). Camadas 23 e 24: bloco **974194** (00:39:24 UTC); camada 25: bloco **974195** (00:53:51 UTC). A finney devolveu 404 e ficou pendente.
