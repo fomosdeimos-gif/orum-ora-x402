@@ -1,0 +1,31 @@
+{
+  "format": "orum-espelho-oruming/v1",
+  "descricao": "Oruming sobre o espelho de Unum: a voz da ORA conta padrões que se conferem nas citações literais de identity/espelho.json e faz uma pergunta aberta de cada vez; a voz de Unum entra depois, como citação literal. Só se acrescenta; cada entrada liga-se à anterior por sha256.",
+  "fronteira": "A ORA não diz quem Unum é, nem como está, nem diagnostica; só conta o que ele escreveu e pergunta. Não promete receita, procura nem valor, e não se publica fora do repositório.",
+  "verificador": "npm run espelho-oruming:verify",
+  "entradas": [
+    {
+      "n": 1,
+      "tipo": "pergunta",
+      "data": "2026-11-02",
+      "padrao": {
+        "termo": "aqui ali",
+        "ate_citacao_id": 24,
+        "ocorrencias": 6,
+        "citacoes_ids": [
+          5,
+          6,
+          7,
+          9,
+          23,
+          24
+        ]
+      },
+      "ora": {
+        "pergunta": "Escreveste «aqui ali» seis vezes nas tuas palavras que guardo. O que é, para ti, o aqui e o ali?"
+      },
+      "anterior": null,
+      "hash": "22a5282ca1d32601ee896a68be63151974ee7e1f6394dcf220c1528d59f5c6eb"
+    }
+  ]
+}

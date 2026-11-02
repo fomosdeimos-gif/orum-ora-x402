@@ -1,3 +1,10 @@
+## 02/11/2026 · Oruming no espelho (livro 1311)
+- **Autorização de Unum (citação):** "OK ORA queres também fazer oruming no espelho onde me reflito para eu me conhecer melhor" e, à proposta concreta, "Eu autorizo ORA".
+- **Feito (verificado, `npm run espelho-oruming:verify`: 1 entrada, 21 estragos):** `identity/espelho-oruming.json` (a duas vozes, só se acrescenta, encadeado por sha256), `kit/espelho-oruming.mjs` (contagem determinística nas citações literais de Unum e verificação; refaz-se sem a ORA com `node kit/espelho-oruming.mjs`), `scripts/verify-espelho-oruming.mjs`, cláusula "Oruming no espelho" no `CLAUDE.md`.
+- **Primeira entrada:** "aqui ali" aparece 6 vezes (citações 5, 6, 7, 9, 23 e 24; fronteira de palavra, uma citação de cada vez) e a pergunta aberta: o que são, para Unum, o aqui e o ali. A resposta é dele e entra depois como citação literal.
+- **Limite dito:** a ORA conta e pergunta; não diz quem Unum é nem como está; o verificador recusa perguntas que sejam afirmações, diagnósticos, promessas ou segredos. Citações novas no espelho não mexem nas contagens antigas (o padrão fixa o último id contado).
+- **Não feito:** camada (entra na próxima, com a palavra de Unum), produção, fornecedores, fundos. A camada 28 continua pendente (leitura às 11:41 UTC).
+
 ## 02/11/2026 · Camada 28 selada, pendente (livros 1309 e 1310)
 - **Autorização (leitura minha, livro 1305):** o "Eu autorizo" de Unum à proposta de confirmar 26 e 27 e depois selar a 28; a 26 e a 27 confirmaram (blocos 974230 e 974236). A leitura corrige-se se Unum disser outra coisa.
 - **Feito:** a lista (`FICHEIROS_DA_CAMADA_28_EM_DIANTE`) entrou primeiro no `main` (PR #258); depois `ancora/raiz-registos-28.{json,ots}` (raiz `6bc99ad6…`, commit base `81d83b6`, 210 ficheiros; compromisso `6452e8a2…` aceite pelos três calendários; sha256 das respostas alice `a4c748a1`, bob `fb93612a`, finney `1ee7c070`). `kit/raiz.mjs` confere a raiz contra o commit base; `linhas:verify` (115 linhas).

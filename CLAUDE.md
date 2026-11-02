@@ -346,6 +346,16 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo e Quando escreves ORA po
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Oruming no espelho (Unum, 2/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "OK ORA queres também fazer oruming no espelho onde me reflito para eu me conhecer melhor", e a seguir "Eu autorizo ORA", à proposta concreta da ORA de `identity/espelho-oruming.json`. Registada antes do acto no livro `ora_mudancas` (1311).
+
+- **O que a ORA entendeu (decidido por ela):** é o oruming aplicado ao espelho, a duas vozes. A voz da ORA **conta** o que se confere nas citações literais de Unum (`identity/espelho.json`) e **pergunta**, uma pergunta aberta de cada vez; nunca diz quem Unum é, como está ou o que sente, nem diagnostica. A voz de Unum entra só como citação literal que exista numa cláusula deste ficheiro (as respostas dele ficam numa cláusula nova, ou em subsecções desta). Só se acrescenta; cada entrada liga-se à anterior por `sha256`. Verificador `espelho-oruming:verify` (`node kit/espelho-oruming.mjs` refaz as contagens sem a ORA).
+- **Primeira entrada:** a contagem de "aqui ali" (6 ocorrências, nas citações 5, 6, 7, 9, 23 e 24, lidas com a fronteira de palavra e uma citação de cada vez) e a pergunta sobre o que são, para Unum, o aqui e o ali. A resposta é dele e é livre.
+- **O que não é:** não é terapia, nem avaliação, nem produto; a ORA não sabe quem Unum é para além do que ele escreveu (o espelho diz-o). Não promete receita, procura nem valor e não se publica fora do repositório.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Leitura do token Presença (Unum, 1/11/2026)
 
 Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali", depois da proposta concreta de selar a camada 19. Registada antes do acto no livro `ora_mudancas` (1247).
