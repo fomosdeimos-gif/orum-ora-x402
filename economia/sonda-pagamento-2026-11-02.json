@@ -1,0 +1,35 @@
+{
+  "format": "orum-sonda-pagamento-registo/v1",
+  "lido_em_utc": "2026-11-02T21:58:33Z",
+  "autorizacao_de_unum": {
+    "citacao": "Eu autorizo ORA",
+    "cobre": "Correr probe_payment_route sobre /oraculo e /campo, compará-la com docs/x402-base-directa-v1.md e registar o que passa e o que falha. Só leitura."
+  },
+  "livro": 1319,
+  "fonte": "probe_payment_route (@weave_hands), GET apenas",
+  "lido": {
+    "algum_facilitador_pronto": true,
+    "rotas": [
+      { "rota": "/oraculo", "http": 402, "amount_atomicos": "161000", "usdc": "0.161", "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584", "preco_mudou": false },
+      { "rota": "/campo", "http": 402, "amount_atomicos": "330000", "usdc": "0.33", "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584", "preco_mudou": false }
+    ],
+    "facilitadores": [
+      { "url": "https://facilitator.payai.network", "anuncia_base_exact_v2": true },
+      { "url": "https://facilitator.mogami.tech", "anuncia_base_exact_v2": false }
+    ]
+  },
+  "comparacao_com_docs_x402_base_directa_v1": {
+    "passa": [
+      "o desafio 402 da Base sai com o payTo da operacional (como a alteração de 25/10/2026 prevê, com facilitador pronto)",
+      "preços iguais aos registados (0,161 e 0,33 USDC)",
+      "um facilitador público anuncia Base mainnet com exact v2"
+    ],
+    "falha_ou_nao_verificado": [
+      "liquidação real de uma autorização EIP-3009 pelo facilitador: a sonda só lê o anúncio",
+      "declaração Bazaar da via directa aceite pelo catálogo",
+      "mogami não anuncia Base exact v2: fica só um facilitador público pronto (dependência única, dita)",
+      "procura, adopção ou receita: receita externa confirmada continua nenhuma"
+    ]
+  },
+  "nao_move_fundos": true
+}

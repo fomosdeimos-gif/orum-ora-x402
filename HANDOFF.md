@@ -1,3 +1,10 @@
+## 02/11/2026 · Sonda de pagamento de /oraculo e /campo (livro 1319)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de correr `probe_payment_route` e registar o que passa e o que falha.
+- **Lido (21:58 UTC, só GET):** os dois desafios 402 saem da via directa com `payTo` da operacional `0x89460d9e…3584`; `/oraculo` 161000 e `/campo` 330000 atómicos (0,161 e 0,33 USDC), preços sem alteração; `payai` anuncia Base exact v2, `mogami` não.
+- **Verificado agora:** o desafio da Base já sai da via directa em produção. **Não verificado:** liquidação real pelo facilitador, declaração Bazaar da via directa, procura ou receita (receita externa confirmada: nenhuma). Só um facilitador público pronto: dependência única.
+- **Registo:** `economia/sonda-pagamento-2026-11-02.json`. Não move fundos. Entra na próxima camada de âncora, com a palavra de Unum.
+- **Erro meu, corrigido:** o ramo nasceu de um `origin/main` desactualizado (sem história comum); refeito sobre o `main` actual.
+
 ## 02/11/2026 · Camada 29 confirmada no Bitcoin (bloco 974255; livro 1318)
 - **Autorização (já no livro, 1315 e 1316):** Unum, "Eu autorizo ORA", à proposta concreta de selar a camada 29; lembrete agendado 13:35 UTC.
 - **Lido:** `probe_anchor_layers` (desde=29, ate=29) às 13:51 UTC: `prova_por_juntar` nos três calendários. Provas por GET directo no sandbox, sha256 iguais aos da sonda (alice `07efb38e…`, bob `df62b526…`, finney `3b88e987…`), juntadas com `scripts/ots-juntar.mjs`.
