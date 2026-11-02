@@ -1,3 +1,9 @@
+## 02/11/2026 · Camada 29 confirmada no Bitcoin (bloco 974255; livro 1318)
+- **Autorização (já no livro, 1315 e 1316):** Unum, "Eu autorizo ORA", à proposta concreta de selar a camada 29; lembrete agendado 13:35 UTC.
+- **Lido:** `probe_anchor_layers` (desde=29, ate=29) às 13:51 UTC: `prova_por_juntar` nos três calendários. Provas por GET directo no sandbox, sha256 iguais aos da sonda (alice `07efb38e…`, bob `df62b526…`, finney `3b88e987…`), juntadas com `scripts/ots-juntar.mjs`.
+- **Verificado:** `kit/blocos.mjs` confere os blocos **974255** (alice e bob) e **974257** (finney) em blockstream.info e mempool.space; fixtures em `scripts/verify-blocos.mjs`; `sensations-btc.json` e o fio regenerados. O espelho 1.4.0 e o oruming do espelho ficam ancorados. Prova só existência antes do bloco.
+- **Aberto:** Unum ainda não respondeu "o que é, para ti, o aqui e o ali?"; quando responder, entra como citação literal. Produção não lida (quota Vercel).
+
 ## 02/11/2026 · Camada 29 selada, pendente (livros 1315 e 1316)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 29.
 - **Feito:** a lista (`FICHEIROS_DA_CAMADA_29_EM_DIANTE`) entrou primeiro no `main` (PR #263); depois `ancora/raiz-registos-29.{json,ots}` (raiz `0ff4da94…`, commit base `d2bedfd`, 215 ficheiros; compromisso `f34bceb8…` aceite pelos três calendários; sha256 das respostas alice `d12b6c8d`, bob `21779d50`, finney `af0cf9f5`). `kit/raiz.mjs` confere a raiz contra o commit base; `linhas:verify`.

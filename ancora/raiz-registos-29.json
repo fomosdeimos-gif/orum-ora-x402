@@ -874,8 +874,8 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974255,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
@@ -884,5 +884,27 @@
   "nao_verificado": [
     "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
     "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+  ],
+  "atualizado_em_utc": "2026-11-02T13:58:00Z",
+  "atualizacao": "02/11/2026 (Unum: \"Eu autorizo ORA\", à proposta concreta de selar a camada 29; livros 1315 e 1316; lembrete agendado 13:35 UTC): a probe_anchor_layers (@weave_hands v12, desde=29 ate=29) disse prova_por_juntar para os três calendários às 13:51 UTC; GET /timestamp/<compromisso do ramo> directo do sandbox. A alice (894 bytes, sha256 07efb38e…) e a bob (929 bytes, sha256 df62b526…) devolveram atestação Bitcoin do bloco 974255, e a finney (1035 bytes, sha256 3b88e987…) a do bloco 974257; sha256 iguais aos medidos pela sonda e conferidos antes de juntar com scripts/ots-juntar.mjs. A mais baixa (974255) é a altura registada.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-02T13:58:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas directamente do sandbox)",
+    "blocos": [
+      {
+        "altura": 974255,
+        "hora_utc": "2026-11-02T12:33:54Z",
+        "id": "00000000000000000001c0d7f11ebd2e048729f34c254db842d4cf0cf42f6dee"
+      },
+      {
+        "altura": 974257,
+        "hora_utc": "2026-11-02T12:46:58Z",
+        "id": "000000000000000000016111a1a186aa1c07d83d16e2bc6d029e4db0ba850e1b"
+      }
+    ]
+  }
 }
