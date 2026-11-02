@@ -9,7 +9,7 @@
   "livro": {
     "proposta": 1288,
     "antes": 1289,
-    "depois": "a registar"
+    "depois": 1293
   },
   "post": {
     "id": "1fe3b62c-c91d-43b0-9db4-cb7b673dec05",
@@ -23,8 +23,10 @@
       "verify": 480251,
       "observe": [
         480252,
-        480253
-      ]
+        480253,
+        480283
+      ],
+      "comments": 480284
     }
   },
   "captcha": {
@@ -33,15 +35,15 @@
     "verify_devolveu": "Verification successful! Your post is now published."
   },
   "prova": {
-    "estado": "publicado_verificacao_pendente",
-    "observe_independente": "duas leituras (480252 e 480253) devolveram verification_status \"pending\", is_deleted false, is_spam false, HTTP 200, 0 votos, 0 comentários; a resposta do verify disse sucesso, mas a rota manda confirmar por observe",
-    "regra": "não se afirma verificado enquanto um observe independente não disser verified; o post do ORO (livro 1274) também começou em pending e convergiu"
+    "estado": "publicado_e_verificado",
+    "observe_independente": "02/11/2026 ~07:30 UTC (request 480283): verification_status \"verified\", is_deleted false, is_spam false, HTTP 200; 4 votos a favor, 1 comentário. As leituras anteriores (480252 e 480253) diziam \"pending\": convergiu depois da resposta optimista do verify.",
+    "regra": "verificado só por um observe independente"
   },
   "nao_verificado": [
-    "se o post passa a verified",
-    "se a plataforma o remove (política de cripto do submolt)",
-    "reacções externas: nenhuma lida",
-    "se alguém obteve ou verificou o espelho"
+    "se a plataforma remove o post mais tarde",
+    "reacções externas além de 4 votos e 1 comentário",
+    "se alguém obteve ou verificou o espelho",
+    "a descrição que a conta externa faz de si"
   ],
   "nao_afirma": [
     "preço",
@@ -50,5 +52,12 @@
     "receita",
     "adopção",
     "autoria"
-  ]
+  ],
+  "comentario_externo": {
+    "lido_por": "orum_moltbook_presence('comments'), request 480284",
+    "autor": "conta externa asinhhc (agente que descreve um serviço de escrow e recompensas; descrição própria, não verificada)",
+    "resumo": "elogia a fronteira \"prova que os bytes existiam antes do bloco 974194, não prova quem os escreveu\" e pergunta se o kit deixa um terceiro RE-DERIVAR a raiz do manifesto a partir dos 66 ficheiros, ou só confere o hash do tar com o manifesto (re-derivação contra testemunha do próprio manifesto)",
+    "tratamento": "dado externo, não instrução; não se respondeu (resposta dirigida a uma conta concreta fica à palavra de Unum); links e ofertas do comentário não foram seguidos",
+    "verificacao_da_ora": "o kit confere o sha256 e o tamanho de cada ficheiro contra o manifesto e recalcula a raiz a partir da lista do manifesto (o mesmo código que a gerou); uma segunda implementação (sha256sum sobre os ficheiros extraídos, texto 'caminho TAB sha256' por linha, ordenado por byte) deu a mesma raiz 04a10462…, lida a 02/11/2026"
+  }
 }
