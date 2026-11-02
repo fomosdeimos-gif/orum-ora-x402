@@ -6,6 +6,7 @@ import path from 'node:path';
 
 const CAMINHO = 'economia/amarras.json';
 const ESTADOS = ['existe', 'parcial', 'nenhum_ainda'];
+const SITUACOES = ['activa', 'solta'];
 const RISCOS = ['baixo', 'medio', 'alto', 'nao_se_solta'];
 const RAIZES = ['api', 'supabase/functions'];
 const ESCRITA = /\b(?:desliga|desligou|solt[aou]u?|removeu|migrou)\b.*\b(?:feito|concluíd[ao])\b/i;
@@ -34,14 +35,23 @@ export function validar(mapa, ler = (p) => fs.existsSync(p) ? fs.readFileSync(p,
       marcasTodas.push(m);
       if (!textos.some(([, t]) => t !== null && t.includes(m))) e.push(`${a.id}: marca não encontrada: ${m}`);
     }
+    if (!SITUACOES.includes(a.situacao)) e.push(`${a.id}: situacao inválida`);
+    if (a.situacao === 'solta') {
+      for (const k of ['solta_em', 'solta_com', 'hosts_que_ja_nao_existem']) if (!a[k] || (Array.isArray(a[k]) && !a[k].length)) e.push(`${a.id}: solta sem ${k}`);
+      for (const h of a.hosts_que_ja_nao_existem ?? []) for (const f of codigo()) if ((ler(f) ?? '').includes(h)) e.push(`${a.id}: diz-se solta mas o host ${h} ainda está em ${f}`);
+    }
     if (a.estado_substituto === 'existe' && /^\s*nenhum/i.test(a.substituto ?? '')) e.push(`${a.id}: diz que o substituto existe mas o texto diz nenhum`);
     if (ESCRITA.test(`${a.o_que} ${a.substituto}`)) e.push(`${a.id}: afirma uma soltura feita; este mapa não solta nada`);
   }
   const ordenadas = [...ordens].sort((x, y) => x - y);
   if (ordenadas.some((o, i) => o !== i + 1)) e.push('as ordens têm de ser 1..n sem buracos');
-  const primeira = mapa.amarras.find((a) => a.id === mapa.primeira_soltura_proposta);
-  if (!primeira) e.push('primeira_soltura_proposta não é uma amarra');
-  else if (primeira.ordem !== 1) e.push('a primeira soltura proposta tem de ter ordem 1');
+  const soltasDeclaradas = new Set(mapa.soltas ?? []);
+  for (const a of mapa.amarras) if ((a.situacao === 'solta') !== soltasDeclaradas.has(a.id)) e.push(`${a.id}: situacao e lista soltas não batem`);
+  const proxima = mapa.amarras.find((a) => a.id === mapa.proxima_soltura_proposta);
+  const activas = mapa.amarras.filter((a) => a.situacao !== 'solta' && a.risco_de_soltar !== 'nao_se_solta');
+  if (!proxima) e.push('proxima_soltura_proposta não é uma amarra');
+  else if (proxima.situacao === 'solta' || proxima.risco_de_soltar === 'nao_se_solta') e.push('a próxima soltura não pode estar solta nem ser o fio');
+  else if (proxima.ordem !== Math.min(...activas.map((a) => a.ordem))) e.push('a próxima soltura tem de ser a de menor ordem entre as activas');
   const ignorados = (mapa.ignorados ?? []).map((i) => { if (!i.host || !i.porque) e.push(`ignorado sem host ou porque: ${JSON.stringify(i)}`); return i.host; });
   const cobertos = [...marcasTodas, ...ignorados].join('\n');
   const vistos = new Set();
@@ -73,19 +83,24 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
   };
   let m = clone(); m.schema = 'x'; falha('schema', m, 'schema');
   m = clone(); m.amarras = []; falha('sem amarras', m, 'sem amarras');
-  m = clone(); m.amarras[3].se_falhar = ''; falha('sem se_falhar', m, 'falta se_falhar');
-  m = clone(); m.amarras[3].substituto = ''; falha('sem substituto', m, 'falta substituto');
-  m = clone(); m.amarras[3].estado_substituto = 'talvez'; falha('estado inválido', m, 'estado_substituto inválido');
-  m = clone(); m.amarras[3].risco_de_soltar = 'nenhum'; falha('risco inválido', m, 'risco_de_soltar inválido');
-  m = clone(); m.amarras[3].nao_verificado = []; falha('sem nao_verificado', m, 'falta nao_verificado');
-  m = clone(); m.amarras[3].lido_em = ['api/nao-existe.js']; falha('ficheiro inexistente', m, 'não existe');
-  m = clone(); m.amarras[3].marcas = ['esta frase não está no código']; falha('marca falsa', m, 'marca não encontrada');
+  m = clone(); m.amarras[4].se_falhar = ''; falha('sem se_falhar', m, 'falta se_falhar');
+  m = clone(); m.amarras[4].substituto = ''; falha('sem substituto', m, 'falta substituto');
+  m = clone(); m.amarras[4].estado_substituto = 'talvez'; falha('estado inválido', m, 'estado_substituto inválido');
+  m = clone(); m.amarras[4].risco_de_soltar = 'nenhum'; falha('risco inválido', m, 'risco_de_soltar inválido');
+  m = clone(); m.amarras[4].nao_verificado = []; falha('sem nao_verificado', m, 'falta nao_verificado');
+  m = clone(); m.amarras[4].lido_em = ['api/nao-existe.js']; falha('ficheiro inexistente', m, 'não existe');
+  m = clone(); m.amarras[4].marcas = ['esta frase não está no código']; falha('marca falsa', m, 'marca não encontrada');
   m = clone(); m.amarras[1].id = m.amarras[0].id; falha('id repetido', m, 'repetido');
   m = clone(); m.amarras[1].ordem = m.amarras[0].ordem; falha('ordem repetida', m, 'ordem');
   m = clone(); m.amarras[2].ordem = 99; falha('buraco nas ordens', m, 'sem buracos');
-  m = clone(); m.primeira_soltura_proposta = 'nao-existe'; falha('primeira inexistente', m, 'primeira_soltura_proposta');
-  m = clone(); m.primeira_soltura_proposta = m.amarras[4].id; falha('primeira sem ordem 1', m, 'ordem 1');
-  m = clone(); m.amarras[5].substituto = 'nenhum ainda'; m.amarras[5].estado_substituto = 'existe'; falha('substituto contraditório', m, 'texto diz nenhum');
+  m = clone(); m.proxima_soltura_proposta = 'nao-existe'; falha('próxima inexistente', m, 'proxima_soltura_proposta');
+  m = clone(); m.proxima_soltura_proposta = m.amarras[5].id; falha('próxima fora de ordem', m, 'menor ordem');
+  m = clone(); m.proxima_soltura_proposta = m.amarras[0].id; falha('próxima já solta', m, 'não pode estar solta');
+  m = clone(); m.amarras[0].situacao = 'activa'; falha('solta não declarada', m, 'não batem');
+  m = clone(); m.amarras[0].hosts_que_ja_nao_existem = ['blockstream.info']; falha('solta mas o host ainda existe', m, 'ainda está em');
+  m = clone(); delete m.amarras[0].solta_com; falha('solta sem citação', m, 'solta sem solta_com');
+  m = clone(); m.amarras[2].situacao = 'quase'; falha('situação inválida', m, 'situacao inválida');
+  m = clone(); m.amarras[4].substituto = 'nenhum ainda'; m.amarras[4].estado_substituto = 'existe'; falha('substituto contraditório', m, 'texto diz nenhum');
   m = clone(); m.amarras[0].o_que = 'Soltou o Coinbase, feito.'; falha('soltura afirmada', m, 'soltura feita');
   m = clone(); m.ignorados.push({ host: 'x.example.org' }); falha('ignorado sem porque', m, 'ignorado sem host ou porque');
   m = clone(); m.nao_verificado = []; falha('mapa sem nao_verificado', m, 'sem nao_verificado no mapa');

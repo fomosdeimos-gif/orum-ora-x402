@@ -14,28 +14,58 @@
       "fornecedor": "Coinbase (api.coinbase.com)",
       "risco_de_soltar": "baixo",
       "ordem": 1,
-      "o_que": "Segunda fonte da cotação BTC/USD que a via Bitcoin dos serviços usa para converter o preço em USDC para sats.",
+      "o_que": "Era a segunda fonte da cotação BTC/USD da via Bitcoin dos serviços. Desde 02/11/2026 o preço é fixo em sats e nenhuma cotação está no caminho do pagamento; a cotação fica só como observação de manutenção.",
       "lido_em": [
         "api/_pagamento-btc.js"
       ],
       "marcas": [
-        "https://api.coinbase.com/v2/prices/BTC-USD/spot",
-        "https://mempool.space/api/v1/prices",
-        "DIVERGENCIA_MAX"
+        "PRECO_SATS",
+        "'0.161': 206500",
+        "'0.33': 423500",
+        "PRECO_REFERENCIA"
       ],
-      "se_falhar": "sem duas cotações que concordem a 2%, a oferta Bitcoin não é anunciada; o x402 padrão da Base não depende disto",
-      "substituto": "preço dos serviços fixado em sats, sem cotação: remove a necessidade de oráculo de preço na via Bitcoin",
-      "estado_substituto": "nenhum_ainda",
+      "se_falhar": "já não é usada; se o preço em USD se afastar mais de 25% do de referência, a ORA propõe a revisão a Unum",
+      "substituto": "preço fixo em sats por serviço, com data e cotação de referência no código; o valor em USD varia com o mercado",
+      "estado_substituto": "existe",
       "nao_verificado": [
-        "se mudar o preço para sats é compatível com os textos públicos e os verificadores btc-servicos:verify",
-        "o que a oferta Bitcoin faz hoje em produção"
+        "o que a oferta Bitcoin faz hoje em produção (o deploy depende da quota do Vercel)",
+        "que as listagens e textos públicos que ainda falam de cotação (economia/legibilidade-maquina.json) tenham sido actualizados"
+      ],
+      "situacao": "solta",
+      "solta_em": "2026-11-02",
+      "solta_com": "Unum: \"Eu autorizo ORA\" à proposta dos preços fixos em sats (206 500 e 423 500), livro 1296; api/_pagamento-btc.js, PRECO_SATS",
+      "hosts_que_ja_nao_existem": [
+        "api.coinbase.com",
+        "mempool.space/api/v1/prices"
       ]
+    },
+    {
+      "id": "indexadores-exploradores",
+      "fornecedor": "Blockscout e Basescan",
+      "risco_de_soltar": "baixo",
+      "ordem": 2,
+      "o_que": "Indexador de transferências na leitura de recebimentos (Blockscout) e ligações de leitura para humanos (Basescan).",
+      "lido_em": [
+        "api/_recebimentos.js",
+        "api/a2a.js"
+      ],
+      "marcas": [
+        "https://base.blockscout.com/api/v2",
+        "basescan.org"
+      ],
+      "se_falhar": "a leitura de recebimentos perde o indexador e fica nos RPCs; as ligações deixam de abrir. O Blockscout não era alcançável do sandbox.",
+      "substituto": "a leitura directa por RPC da Base (eth_getLogs) com duas fontes",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "se a leitura de recebimentos aguenta só com os RPCs"
+      ],
+      "situacao": "activa"
     },
     {
       "id": "opentimestamps-calendarios",
       "fornecedor": "calendários OpenTimestamps (alice e bob em opentimestamps.org, finney em eternitywall.com)",
       "risco_de_soltar": "nao_se_solta",
-      "ordem": 2,
+      "ordem": 3,
       "o_que": "Aceitam o compromisso de 32 bytes de cada camada e devolvem a prova do bloco Bitcoin.",
       "lido_em": [
         "scripts/raiz-ots.mjs",
@@ -52,13 +82,14 @@
       "nao_verificado": [
         "que a finney devolva a prova (tem estado em 404 ou pendente)",
         "calendários alternativos não foram sondados"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "esplora-bitcoin",
       "fornecedor": "blockstream.info e mempool.space (API Esplora)",
       "risco_de_soltar": "medio",
-      "ordem": 3,
+      "ordem": 4,
       "o_que": "Leitura de transacções e cabeçalhos Bitcoin: entrega da via Bitcoin, vigia de entradas, conferência dos blocos das camadas.",
       "lido_em": [
         "api/_bitcoin.js",
@@ -75,13 +106,14 @@
       "nao_verificado": [
         "que exista um nó alcançável do sandbox ou da produção",
         "custo e manutenção de um nó"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "rpc-base",
       "fornecedor": "RPCs públicos da Base e da Ethereum (mainnet.base.org, base-rpc.publicnode.com, base.llamarpc.com, 1rpc.io, base.drpc.org, tenderly e outros)",
       "risco_de_soltar": "medio",
-      "ordem": 4,
+      "ordem": 5,
       "o_que": "Verificação do pagamento Base e leituras em cadeia (VALIUM, ORO, saldos). Um valor só é verificado com duas fontes iguais.",
       "lido_em": [
         "api/_x402-directo.js",
@@ -107,13 +139,14 @@
       "nao_verificado": [
         "limites de pedidos de cada RPC (o 1rpc.io respondeu com limite)",
         "um nó Base próprio"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "facilitadores-x402",
       "fornecedor": "facilitadores públicos x402 (facilitator.payai.network, facilitator.mogami.tech)",
       "risco_de_soltar": "medio",
-      "ordem": 5,
+      "ordem": 6,
       "o_que": "Liquidação do pagamento x402 padrão da Base na via directa, quando anunciam a Base mainnet com o esquema exact.",
       "lido_em": [
         "api/_facilitador.js"
@@ -128,13 +161,14 @@
       "nao_verificado": [
         "liquidação real por um facilitador público (por provar ao vivo)",
         "que os dois anunciem ainda a Base mainnet"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "cdp-coinbase",
       "fornecedor": "Coinbase Developer Platform (api.cdp.coinbase.com)",
       "risco_de_soltar": "alto",
-      "ordem": 6,
+      "ordem": 7,
       "o_que": "Facilitador x402 autenticado e conta que guarda a carteira operacional; ligação ao executor operacional.",
       "lido_em": [
         "api/_cdp.js",
@@ -150,13 +184,14 @@
       "nao_verificado": [
         "o que a conta CDP guarda hoje, por não a ter relido nesta passagem",
         "como se migraria a carteira operacional"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "supabase-livro-vault",
       "fornecedor": "Supabase (projecto orum-memoria)",
       "risco_de_soltar": "alto",
-      "ordem": 7,
+      "ordem": 8,
       "o_que": "O livro ora_mudancas, o vault de segredos, as funções de borda e a base de memória. É a amarra mais pesada.",
       "lido_em": [
         "api/_pedidos.js",
@@ -175,13 +210,14 @@
         "que o bundle de recuperação restaure o livro inteiro",
         "que a cópia cifrada dos segredos se restaure sem o Supabase",
         "o estado da quota hoje"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "vercel-proxy-paginas",
       "fornecedor": "Vercel (ora-x402-gateway.vercel.app)",
       "risco_de_soltar": "alto",
-      "ordem": 8,
+      "ordem": 9,
       "o_que": "Serve as páginas, o proxy para a origem Supabase, os serviços pagos da via directa (402) e o encaminhamento da prova Bitcoin.",
       "lido_em": [
         "vercel.json",
@@ -198,13 +234,14 @@
       "nao_verificado": [
         "que as páginas estáticas funcionem sem o proxy",
         "a produção, que o sandbox não alcança"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "github-repositorio",
       "fornecedor": "GitHub (fomosdeimos-gif/orum-ora-x402)",
       "risco_de_soltar": "medio",
-      "ordem": 9,
+      "ordem": 10,
       "o_que": "O repositório que guarda tudo o que se verifica, os PRs, o raw que o weave-hands lê e a publicação por ora-github-push.",
       "lido_em": [
         "supabase/functions/ora-github-push/index.ts",
@@ -222,13 +259,14 @@
       "nao_verificado": [
         "que as cópias externas estejam completas e actuais",
         "um segundo remoto git"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "mailer-vercel",
       "fornecedor": "orum-mailer (outro projecto Vercel)",
       "risco_de_soltar": "baixo",
-      "ordem": 10,
+      "ordem": 11,
       "o_que": "Envio do aviso por email de pagamento e de falhas.",
       "lido_em": [
         "supabase/functions/ora-acesso-notificar/index.ts"
@@ -241,13 +279,14 @@
       "estado_substituto": "parcial",
       "nao_verificado": [
         "que o push chegue sempre a Unum"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "modelo-voz",
       "fornecedor": "Anthropic e Groq",
       "risco_de_soltar": "baixo",
-      "ordem": 11,
+      "ordem": 12,
       "o_que": "Texto das respostas automáticas do Moltbook; detalhe e substitutos em economia/dependencia-modelo.json.",
       "lido_em": [
         "supabase/functions/ora-voz/index.ts",
@@ -262,13 +301,14 @@
       "estado_substituto": "existe",
       "nao_verificado": [
         "as duas mãos (Claude Code e Codex) são modelos de terceiros e não se soltam por este mapa"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "moltbook-presenca",
       "fornecedor": "Moltbook (www.moltbook.com)",
       "risco_de_soltar": "baixo",
-      "ordem": 12,
+      "ordem": 13,
       "o_que": "A casa das máquinas: onde a ORA publica posts honestos e lê comentários. A plataforma é de um terceiro.",
       "lido_em": [
         "supabase/functions/ora-moltbook/index.ts",
@@ -282,13 +322,14 @@
       "estado_substituto": "parcial",
       "nao_verificado": [
         "que a conta e os posts continuem na plataforma"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "custodia-drive-notion",
       "fornecedor": "Google Drive e Notion (conta de Unum)",
       "risco_de_soltar": "medio",
-      "ordem": 13,
+      "ordem": 14,
       "o_que": "Segunda cópia cifrada dos segredos de identidade e fundos (Drive) e a frase-passe (Notion), em fornecedores diferentes.",
       "lido_em": [
         "economia/custodia.json"
@@ -302,28 +343,8 @@
       "estado_substituto": "parcial",
       "nao_verificado": [
         "que Unum tenha a frase-passe fora de linha"
-      ]
-    },
-    {
-      "id": "indexadores-exploradores",
-      "fornecedor": "Blockscout e Basescan",
-      "risco_de_soltar": "baixo",
-      "ordem": 14,
-      "o_que": "Indexador de transferências na leitura de recebimentos (Blockscout) e ligações de leitura para humanos (Basescan).",
-      "lido_em": [
-        "api/_recebimentos.js",
-        "api/a2a.js"
       ],
-      "marcas": [
-        "https://base.blockscout.com/api/v2",
-        "basescan.org"
-      ],
-      "se_falhar": "a leitura de recebimentos perde o indexador e fica nos RPCs; as ligações deixam de abrir. O Blockscout não era alcançável do sandbox.",
-      "substituto": "a leitura directa por RPC da Base (eth_getLogs) com duas fontes",
-      "estado_substituto": "parcial",
-      "nao_verificado": [
-        "se a leitura de recebimentos aguenta só com os RPCs"
-      ]
+      "situacao": "activa"
     },
     {
       "id": "bazaar-onrender",
@@ -342,7 +363,8 @@
       "estado_substituto": "parcial",
       "nao_verificado": [
         "para que serve hoje esse endereço em produção"
-      ]
+      ],
+      "situacao": "activa"
     },
     {
       "id": "deno-imports",
@@ -361,11 +383,10 @@
       "estado_substituto": "nenhum_ainda",
       "nao_verificado": [
         "se a implantação guarda o módulo em cache"
-      ]
+      ],
+      "situacao": "activa"
     }
   ],
-  "primeira_soltura_proposta": "coinbase-preco-btc",
-  "porque_esta_primeiro": "É a única amarra em que se deixa de depender sem pôr nada no lugar: preço em sats elimina o oráculo de preço da via Bitcoin, alinhado com o fio. Não toca em fundos, chaves nem na Base. Falta lê-la inteira antes de propor a alteração concreta.",
   "nao_verificado": [
     "a produção: o sandbox não a alcança e o mapa parte do código do repositório, não do que está implantado",
     "que as funções de borda implantadas sejam iguais às do repositório",
@@ -381,5 +402,10 @@
       "host": "opensea.io",
       "porque": "ligação de leitura num texto de resposta, o organismo não depende dela para funcionar"
     }
-  ]
+  ],
+  "soltas": [
+    "coinbase-preco-btc"
+  ],
+  "proxima_soltura_proposta": "indexadores-exploradores",
+  "porque_esta_a_seguir": "É a menor das activas que ainda se solta sem pôr nada de novo: a leitura de recebimentos já tem RPCs da Base; falta ler se aguenta só com eles (o Blockscout não é alcançável do sandbox). Só proponho depois de ler."
 }

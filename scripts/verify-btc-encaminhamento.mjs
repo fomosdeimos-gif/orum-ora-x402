@@ -27,7 +27,7 @@ const corpoOrigem = () => JSON.stringify(fx.corpo);
 const prova = (o) => Buffer.from(JSON.stringify(o)).toString('base64');
 const comLimite = (p, ms, nome) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('sem resposta a tempo: ' + nome)), ms))]);
 
-function txBtc(txid, { vout = [{ a: ENDERECO, v: 400 }], confirmada = true, idadeS = 600 } = {}) {
+function txBtc(txid, { vout = [{ a: ENDERECO, v: 500000 }], confirmada = true, idadeS = 600 } = {}) {
   return { txid, vin: [{ prevout: { scriptpubkey_address: 'bc1qpagador' } }], vout: vout.map((o) => ({ scriptpubkey_address: o.a, value: o.v })),
     status: confirmada ? { confirmed: true, block_height: ALTURA, block_time: Math.floor((Date.now() - idadeS * 1000) / 1000) } : { confirmed: false } };
 }
@@ -168,19 +168,20 @@ async function suite(dir) {
     assert.equal(w.origem, 1);
     assert.equal(r.h['x-ora-via'], undefined);
 
-    // 7. Cotacao indisponivel: o 402 da origem sai sem oferta, sem partir.
+    // 7. Sem cotacao no caminho (preco fixo em sats desde 02/11/2026): mesmo com as paginas de preco em baixo, a oferta sai igual.
     w = mundo({ origem: origem402, preco: { mempool: new Error('x'), coinbase: new Error('y') } });
     r = await chama(w);
     assert.equal(r.status, 402);
-    assert.equal(r.body.pagamento_alternativo_bitcoin, undefined);
-    assert.equal(r.h['x-ora-btc'], undefined);
+    assert.equal(r.body.pagamento_alternativo_bitcoin.disponivel, true);
+    assert.equal(r.body.pagamento_alternativo_bitcoin.sats_anunciados, 423500, '0,33 USD: preco fixo em sats');
+    assert.ok(!('cotacao' in r.body.pagamento_alternativo_bitcoin), 'sem cotacao na oferta');
     assert.deepEqual(r.body.accepts, fx.corpo.accepts);
 
-    // 8. Cotacao pendurada: o prazo corta e o 402 sai sem oferta.
+    // 8. Paginas de preco penduradas: nada se pede, a oferta sai na mesma e sem atraso.
     w = mundo({ origem: origem402, pendurar: true });
     r = await chama(w);
     assert.equal(r.status, 402);
-    assert.equal(r.body.pagamento_alternativo_bitcoin, undefined);
+    assert.equal(r.body.pagamento_alternativo_bitcoin.disponivel, true);
 
     // 9. Via Bitcoin desligada: sem oferta; a prova Bitcoin recebe a recusa da via directa, origem nao tocada.
     process.env.ORUM_BTC_RAIL = 'off';
@@ -248,7 +249,6 @@ assert.ok(FICH.every((f) => readFileSync(join(API, f), 'utf8').length > 0));
 await estraga('proxy deixa de encaminhar a prova Bitcoin', 'proxy.js', 'if (prova && prova.btc && await viaDirecta()) return;', '');
 await estraga('proxy encaminha todas as provas', 'proxy.js', 'if (prova && prova.btc && await viaDirecta()) return;', 'if (prova && await viaDirecta()) return;');
 await estraga('proxy nao acrescenta a oferta', 'proxy.js', 'if (junta.alterado) {', 'if (false) {');
-await estraga('proxy sem prazo na oferta', 'proxy.js', 'await comPrazo(btcOferta.oferta(alvoPago.tier), Number(process.env.ORUM_BTC_OFERTA_PRAZO_MS) || 2500)', 'await btcOferta.oferta(alvoPago.tier)');
 await estraga('proxy aponta a prova para outro sitio', 'proxy.js', '`https://${hostExterno}${alvoPago.tier.path}`', "'https://supabase.example/x'");
 await estraga('modulo acrescenta oferta indisponivel', '_oferta-btc-origem.js', "if (!oferta || oferta.disponivel !== true) return intacto('oferta_indisponivel');", '');
 await estraga('modulo sobrepoe oferta existente', '_oferta-btc-origem.js', "if (c.pagamento_alternativo_bitcoin !== undefined) return intacto('ja_tem_oferta');", '');

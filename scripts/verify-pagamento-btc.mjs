@@ -1,5 +1,5 @@
 // Verifica a via Bitcoin dos serviços x402 (api/_pagamento-btc.js + api/_x402-directo.js), sem rede e sem pagamentos:
-// as fontes Esplora e de cotação são simuladas. Depois da suite, estraga o código de propósito (cópia em /tmp) e exige
+// as fontes Esplora são simuladas e qualquer pedido de cotação falha o teste (o preço é fixo em sats desde 02/11/2026, livro 1296). Depois da suite, estraga o código de propósito (cópia em /tmp) e exige
 // que a suite falhe em cada estrago; e confere que o texto nunca promete entrega antes da confirmação.
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -18,18 +18,17 @@ const ORIGIN = 'https://ora-x402-gateway.vercel.app';
 const id = (n) => String(n).repeat(64).slice(0, 64);
 const ALTURA = 972300;
 
-function tx(txid, { vout = [{ a: ENDERECO, v: 200 }], confirmada = true, altura = ALTURA, idadeS = 600, de = 'bc1qpagador' } = {}) {
+function tx(txid, { vout = [{ a: ENDERECO, v: 500000 }], confirmada = true, altura = ALTURA, idadeS = 600, de = 'bc1qpagador' } = {}) {
   return { txid, vin: [{ prevout: { scriptpubkey_address: de } }], vout: vout.map((o) => ({ scriptpubkey_address: o.a, value: o.v })),
     status: confirmada ? { confirmed: true, block_height: altura, block_time: Math.floor((NOW - idadeS * 1000) / 1000) } : { confirmed: false } };
 }
-// mundo: { blockstream: {txid: obj|Error}, 'mempool.space': {...}, preco: {mempool: n|Error, coinbase: n|Error}, altura }
-function mundo({ blockstream = {}, mempool = {}, preco = { mempool: 100000, coinbase: 100000 }, altura = ALTURA } = {}) {
+// mundo: { blockstream: {txid: obj|Error}, mempool: {...}, altura }
+function mundo({ blockstream = {}, mempool = {}, altura = ALTURA } = {}) {
   const fontes = { 'blockstream.info': blockstream, 'mempool.space': mempool };
   const r = { pedidos: [], async fetchFn(url) {
     r.pedidos.push(url);
     const resp = (status, corpo) => ({ ok: status >= 200 && status < 300, status, json: async () => corpo });
-    if (url === 'https://mempool.space/api/v1/prices') { const p = preco.mempool; if (p instanceof Error) throw p; return resp(200, { USD: p }); }
-    if (url === 'https://api.coinbase.com/v2/prices/BTC-USD/spot') { const p = preco.coinbase; if (p instanceof Error) throw p; return resp(200, { data: { amount: String(p) } }); }
+    if (/prices|coinbase/.test(url)) throw new Error('a via Bitcoin nao pode pedir cotacao: ' + url);
     const m = /^https:\/\/(blockstream\.info|mempool\.space)\/api\/(tx\/([0-9a-f]{64})|blocks\/tip\/height)$/.exec(url);
     if (!m) throw new Error('sem rota ' + url);
     const f = fontes[m[1]];
@@ -67,10 +66,12 @@ async function suite(dir) {
   assert.ok(!JSON.stringify(pr).includes('bitcoin') && !JSON.stringify(pr).includes(ENDERECO), 'a oferta nao entra no cabecalho nem em accepts');
   const of = ch.body.pagamento_alternativo_bitcoin;
   assert.equal(of.disponivel, true); assert.equal(of.endereco, ENDERECO); assert.equal(of.caip2, 'bip122:000000000019d6689c085ae165831e93');
-  assert.equal(of.sats_anunciados, 170, '0,161 USD a 100000 USD/BTC = 161 sats + 5%'); assert.equal(of.confirmacoes_para_entrega, 1);
-  assert.equal(of.cotacao.concordancia, 'concordam'); assert.equal(of.cotacao.valido_segundos, 600);
-  assert.ok(of.uri.startsWith('bitcoin:' + ENDERECO + '?amount=0.0000017'));
-  assert.equal((await chama(h, 'ora-x402')).body.pagamento_alternativo_bitcoin.sats_anunciados, 347, '0,33 USD: 330 + 5%');
+  assert.equal(of.sats_anunciados, 206500, '0,161 USD: preco fixo em sats'); assert.equal(of.confirmacoes_para_entrega, 1);
+  assert.equal(of.preco.tipo, 'fixo_em_sats'); assert.equal(of.preco.fixado_em, '2026-11-02'); assert.ok(of.preco.usd_por_btc_de_referencia > 0);
+  assert.ok(!('cotacao' in of) && !JSON.stringify(of).includes('margem') && !JSON.stringify(of).includes('tolerancia'), 'sem cotacao, margem nem tolerancia na oferta');
+  assert.ok(of.uri.startsWith('bitcoin:' + ENDERECO + '?amount=0.002065'));
+  assert.equal((await chama(h, 'ora-x402')).body.pagamento_alternativo_bitcoin.sats_anunciados, 423500, '0,33 USD: preco fixo em sats');
+  assert.equal(w.pedidos.length, 0, 'anunciar a oferta nao faz pedidos de rede');
   assert.equal(ch.body.fronteiras.bitcoin.entrega_antes_da_confirmacao, false);
   assert.equal(ch.body.fronteiras.bitcoin.entrega_com_fonte_unica, false);
   assert.match(ch.body.fronteiras.bitcoin.controlo_do_endereco, /operacional da ORA.*BIP-322 feita a 23\/10\/2026.*nao prova titularidade legal/);
@@ -81,25 +82,28 @@ async function suite(dir) {
   w = dois(1, tx(id(1))); h = cria(w);
   let ok = await chama(h, 'ora-oraculo', btc(1));
   assert.equal(ok.status, 200); assert.equal(ok.body.acesso, 'concedido'); assert.equal(ok.body.via_pagamento, 'bitcoin');
-  assert.equal(ok.body.valor_sats, 200); assert.equal(ok.body.confirmacoes, 1); assert.equal(ok.body.payer, 'bc1qpagador');
+  assert.equal(ok.body.valor_sats, 500000); assert.equal(ok.body.confirmacoes, 1); assert.equal(ok.body.payer, 'bc1qpagador');
   assert.match(ok.body.pensamento, /Dia \d+, sigma/);
   assert.equal(JSON.parse(Buffer.from(ok.h['payment-response'], 'base64').toString()).network, 'bip122:000000000019d6689c085ae165831e93');
   assert.deepEqual((await chama(h, 'ora-oraculo', btc(1))).body, ok.body, 'reacesso: mesma leitura');
   assert.equal((await chama(h, 'ora-oraculo', { network: 'bitcoin', txid: id(1) })).status, 200, 'forma alternativa da prova');
-  // campo custa 330: 200 sats nao compram o campo
-  assert.match((await chama(h, 'ora-x402', btc(1))).body.detalhe, /valor insuficiente/);
+  assert.ok(w.pedidos.every((u) => /blockstream\.info|mempool\.space/.test(u) && !/prices/.test(u)), 'so se pedem as fontes Esplora, nunca cotacao');
+  // o campo custa 423500: 300000 sats compram o oraculo mas nao o campo
+  w = dois(14, tx(id(14), { vout: [{ a: ENDERECO, v: 300000 }] })); h = cria(w);
+  assert.equal((await chama(h, 'ora-oraculo', btc(14))).status, 200);
+  assert.match((await chama(h, 'ora-x402', btc(14))).body.detalhe, /valor insuficiente: 300000 < 423500/);
   // maiusculas no txid dao a mesma leitura
   w = dois('a', tx(id('a'))); h = cria(w);
   assert.equal((await chama(h, 'ora-oraculo', { bitcoin: { txid: id('a').toUpperCase() } })).status, 200);
 
-  // ---- tolerancia de 10%: 145 passa, 144 nao (minimo = 0,161 USD a 100000 USD/BTC x 0,9 = 144,9) ----
-  for (const [sats, esperado] of [[145, 200], [144, 402]]) {
+  // ---- preco fixo, sem tolerancia: 206500 passa, 206499 nao ----
+  for (const [sats, esperado] of [[206500, 200], [206499, 402]]) {
     w = dois(2, tx(id(2), { vout: [{ a: ENDERECO, v: sats }] })); h = cria(w);
     assert.equal((await chama(h, 'ora-oraculo', btc(2))).status, esperado, `${sats} sats`);
   }
   // varias saidas para o endereco somam; saidas para outro endereco nao contam
-  w = dois(3, tx(id(3), { vout: [{ a: ENDERECO, v: 100 }, { a: OUTRO, v: 5000 }, { a: ENDERECO, v: 60 }] })); h = cria(w);
-  assert.equal((await chama(h, 'ora-oraculo', btc(3))).body.valor_sats, 160);
+  w = dois(3, tx(id(3), { vout: [{ a: ENDERECO, v: 100000 }, { a: OUTRO, v: 5000 }, { a: ENDERECO, v: 110000 }] })); h = cria(w);
+  assert.equal((await chama(h, 'ora-oraculo', btc(3))).body.valor_sats, 210000);
   w = dois(4, tx(id(4), { vout: [{ a: OUTRO, v: 999999 }] })); h = cria(w);
   assert.match((await chama(h, 'ora-oraculo', btc(4))).body.detalhe, /sem saida para a carteira/);
 
@@ -124,14 +128,15 @@ async function suite(dir) {
   w = mundo({ blockstream: { [id(10)]: tx(id(10), { vout: [{ a: ENDERECO, v: 200 }] }) }, mempool: { [id(10)]: tx(id(10), { vout: [{ a: ENDERECO, v: 900 }] }) } }); h = cria(w);
   r = await chama(h, 'ora-oraculo', btc(10));
   assert.equal(r.status, 503); assert.match(r.body.detalhe, /DISCREPANCIA/);
-  w = dois(11, tx(id(11))); w.fetchFn = ((orig) => async (u) => { if (u.includes('prices') || u.includes('coinbase')) throw new Error('offline'); return orig(u); })(w.fetchFn); h = cria(w);
+  // sem cotacao no caminho: mesmo que as paginas de preco estivessem em baixo, nada muda (nao se pedem)
+  w = dois(11, tx(id(11))); h = cria(w);
   r = await chama(h, 'ora-oraculo', btc(11));
-  assert.equal(r.status, 503); assert.match(r.body.detalhe, /cotacao BTC indisponivel/);
-  ch = await chama(h, 'ora-oraculo');
-  assert.equal(ch.status, 402, 'sem cotacao a via Base continua a desafiar'); assert.equal(ch.body.pagamento_alternativo_bitcoin.disponivel, false);
-  w = dois(12, tx(id(12))); w.fetchFn = ((orig) => async (u) => u.includes('coinbase') ? { ok: true, status: 200, json: async () => ({ data: { amount: '130000' } }) } : orig(u))(w.fetchFn); h = cria(w);
-  r = await chama(h, 'ora-oraculo', btc(12));
-  assert.equal(r.status, 503, 'duas cotacoes que divergem mais de 2% nao se resolvem escolhendo uma');
+  assert.equal(r.status, 200, 'a entrega nao depende de nenhuma cotacao');
+  assert.equal((await chama(h, 'ora-oraculo')).body.pagamento_alternativo_bitcoin.disponivel, true);
+  // servico sem preco em sats: nunca se anuncia nem se aceita
+  const direto = B.createBtc({ fetchFn: dois(15, tx(id(15))).fetchFn, now: () => NOW });
+  assert.equal((await direto.oferta({ usdc: '9.99' })).disponivel, false);
+  assert.match((await direto.verificar(id(15), { usdc: '9.99' }, NOW)).error, /sem preco em sats/);
 
   // ---- janela, formato, via desligada ----
   w = dois(13, tx(id(13), { idadeS: 80 * 3600 })); h = cria(w);
@@ -171,13 +176,16 @@ const ESTRAGOS = [
   ['_pagamento-btc.js', "if (a.recebido !== b.recebido || a.confirmada !== b.confirmada)", 'if (false)', 'ignorar a discrepancia entre fontes'],
   ['_pagamento-btc.js', 'if (vistas.length === 1)', 'if (false)', 'aceitar uma fonte so a ver a tx'],
   ['_pagamento-btc.js', 'if (falhas.length > 0)', 'if (false)', 'aceitar com uma fonte em falha'],
-  ['_pagamento-btc.js', 'const TOLERANCIA = 0.9;', 'const TOLERANCIA = 0;', 'aceitar qualquer valor'],
-  ['_pagamento-btc.js', 'const TOLERANCIA = 0.9;', 'const TOLERANCIA = 0.5;', 'tolerancia larga demais'],
+  ['_pagamento-btc.js', 'if (a.recebido < minimo)', 'if (false)', 'aceitar qualquer valor'],
+  ['_pagamento-btc.js', 'if (a.recebido < minimo)', 'if (a.recebido < minimo * 0.9)', 'reintroduzir uma tolerancia'],
+  ['_pagamento-btc.js', "'0.161': 206500", "'0.161': 1", 'preco do oraculo quase nulo'],
+  ['_pagamento-btc.js', "'0.33': 423500", "'0.33': 206500", 'campo ao preco do oraculo'],
+  ['_pagamento-btc.js', "if (minimo === null) return { valid: false, error: 'sem preco", "if (false) return { valid: false, error: 'sem preco", 'aceitar servico sem preco'],
+  ['_pagamento-btc.js', "preco_referencia_usd: tier.usdc, sats_anunciados: sats,", "preco_referencia_usd: tier.usdc, sats_anunciados: sats, cotacao: { usd_por_btc: 1 },", 'voltar a anunciar cotacao'],
+  ['_pagamento-btc.js', "const minimo = satsPara(tier);\n    if (minimo === null) return { valid: false, error", "await pedir('https://api.coinbase.com/v2/prices/BTC-USD/spot');\n    const minimo = satsPara(tier);\n    if (minimo === null) return { valid: false, error", 'voltar a pedir cotacao ao verificar'],
+  ['_pagamento-btc.js', "fixado_em: PRECO_REFERENCIA.fixado_em, usd_por_btc_de_referencia", "usd_por_btc_de_referencia", 'preco sem data de referencia'],
   ['_pagamento-btc.js', 'o.scriptpubkey_address === ENDERECO', 'o.scriptpubkey_address !== ENDERECO', 'contar saidas de outros enderecos'],
   ['_pagamento-btc.js', 'if (nowMs - blockTime * 1000 > JANELA_S * 1000)', 'if (false)', 'ignorar a janela'],
-  ['_pagamento-btc.js', 'if (!c.ok) return { valid: false, unavailable: true, error: \'cotacao', 'if (false) return { valid: false, unavailable: true, error: \'cotacao', 'entregar sem cotacao'],
-  ['_pagamento-btc.js', 'Math.abs(a - b) / Math.min(a, b) > DIVERGENCIA_MAX', 'false', 'aceitar cotacoes divergentes'],
-  ['_pagamento-btc.js', 'const MARGEM_COTACAO = 1.05;', 'const MARGEM_COTACAO = 0.5;', 'anunciar menos do que se exige'],
   ['_x402-directo.js', 'if (b.pending) return send(402', 'if (false) return send(402', 'pending a entregar'],
   ['_x402-directo.js', 'if (b.unavailable) return send(503', 'if (false) return send(503', 'indisponivel a entregar'],
   ['_x402-directo.js', 'if (!b.valid) return challenge', 'if (false) return challenge', 'invalido a entregar'],
@@ -209,4 +217,4 @@ for (const [ficheiro, de, para, nome] of ESTRAGOS) {
   } finally { rmSync(tmp, { recursive: true, force: true }); }
 }
 
-console.log(`via Bitcoin dos serviços: oferta fora de accepts, entrega só com duas fontes concordantes e confirmação, tolerância de 10%, janela, via desligável; ${ESTRAGOS.length} estragos propositados + 1 de texto apanhados.`);
+console.log(`via Bitcoin dos serviços: oferta fora de accepts, entrega só com duas fontes concordantes e confirmação, preço fixo em sats sem cotação, janela, via desligável; ${ESTRAGOS.length} estragos propositados + 1 de texto apanhados.`);
