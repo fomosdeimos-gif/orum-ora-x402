@@ -798,8 +798,8 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974230,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
@@ -808,5 +808,22 @@
   "nao_verificado": [
     "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
     "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+  ],
+  "atualizado_em_utc": "2026-11-02T09:40:00Z",
+  "atualizacao": "02/11/2026 (Unum: \"Eu autorizo ORA continua a levantar o organismo aí\" e \"Eu autorizo e Quando escreves ORA ...\", livros 1291 a 1293 e 1305): a probe_anchor_layers (@weave_hands v12, desde=26 ate=27) disse prova_por_juntar para a alice e a bob às 09:33 UTC; GET /timestamp/<compromisso do ramo> directo do sandbox. A alice (930 bytes, sha256 5540f9d4…) e a bob (930 bytes, sha256 ba326c1d…) devolveram atestação Bitcoin do bloco 974230; sha256 iguais aos medidos pela sonda e conferidos antes de juntar com scripts/ots-juntar.mjs. A finney continua pendente (as outras duas bastam).",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-02T09:40:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação, em ordem interna, igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas directamente do sandbox)",
+    "blocos": [
+      {
+        "altura": 974230,
+        "hora_utc": "2026-11-02T07:50:42Z",
+        "id": "000000000000000000003a5f85981806a7f5352c6a7f35f16e3d90a1a3008bca"
+      }
+    ]
+  }
 }
