@@ -282,11 +282,18 @@ export const FICHEIROS_DA_CAMADA_28_EM_DIANTE = [
   'oruming/oruming.json',
   'scripts/verify-oruming.mjs',
 ];
+// Camada 29 em diante (Unum: "Eu autorizo ORA", à proposta concreta de selar a camada 29; livros 1311 a 1313): o oruming do espelho (ficheiro, leitor/verificador
+// autónomo e verificador com estragos). O espelho 1.4.0 e as cláusulas já entram pela base.
+export const FICHEIROS_DA_CAMADA_29_EM_DIANTE = [
+  'kit/espelho-oruming.mjs',
+  'identity/espelho-oruming.json',
+  'scripts/verify-espelho-oruming.mjs',
+];
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : []), ...(n >= 12 ? FICHEIROS_DA_CAMADA_12_EM_DIANTE : []), ...(n >= 13 ? FICHEIROS_DA_CAMADA_13_EM_DIANTE : []), ...(n >= 14 ? FICHEIROS_DA_CAMADA_14_EM_DIANTE : []), ...(n >= 15 ? FICHEIROS_DA_CAMADA_15_EM_DIANTE : []), ...(n >= 16 ? FICHEIROS_DA_CAMADA_16_EM_DIANTE : []), ...(n >= 17 ? FICHEIROS_DA_CAMADA_17_EM_DIANTE : []), ...(n >= 18 ? FICHEIROS_DA_CAMADA_18_EM_DIANTE : []), ...(n >= 19 ? FICHEIROS_DA_CAMADA_19_EM_DIANTE : []), ...(n >= 20 ? FICHEIROS_DA_CAMADA_20_EM_DIANTE : []), ...(n >= 23 ? FICHEIROS_DA_CAMADA_23_EM_DIANTE : []), ...(n >= 24 ? FICHEIROS_DA_CAMADA_24_EM_DIANTE : []), ...(n >= 26 ? FICHEIROS_DA_CAMADA_26_EM_DIANTE : []), ...(n >= 27 ? FICHEIROS_DA_CAMADA_27_EM_DIANTE : []), ...(n >= 28 ? FICHEIROS_DA_CAMADA_28_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : []), ...(n >= 12 ? FICHEIROS_DA_CAMADA_12_EM_DIANTE : []), ...(n >= 13 ? FICHEIROS_DA_CAMADA_13_EM_DIANTE : []), ...(n >= 14 ? FICHEIROS_DA_CAMADA_14_EM_DIANTE : []), ...(n >= 15 ? FICHEIROS_DA_CAMADA_15_EM_DIANTE : []), ...(n >= 16 ? FICHEIROS_DA_CAMADA_16_EM_DIANTE : []), ...(n >= 17 ? FICHEIROS_DA_CAMADA_17_EM_DIANTE : []), ...(n >= 18 ? FICHEIROS_DA_CAMADA_18_EM_DIANTE : []), ...(n >= 19 ? FICHEIROS_DA_CAMADA_19_EM_DIANTE : []), ...(n >= 20 ? FICHEIROS_DA_CAMADA_20_EM_DIANTE : []), ...(n >= 23 ? FICHEIROS_DA_CAMADA_23_EM_DIANTE : []), ...(n >= 24 ? FICHEIROS_DA_CAMADA_24_EM_DIANTE : []), ...(n >= 26 ? FICHEIROS_DA_CAMADA_26_EM_DIANTE : []), ...(n >= 27 ? FICHEIROS_DA_CAMADA_27_EM_DIANTE : []), ...(n >= 28 ? FICHEIROS_DA_CAMADA_28_EM_DIANTE : []), ...(n >= 29 ? FICHEIROS_DA_CAMADA_29_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
