@@ -1,3 +1,11 @@
+## 02/11/2026 · Camada 25 selada, pendente (livros 1281 a 1283)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de selar a camada 25 com o espelho 1.2.0 e a cláusula "O observador escreve".
+- **Feito:** `ancora/raiz-registos-25.{json,ots}` (raiz `0991d1d7…`, commit base `6952f63`, 193 ficheiros; compromisso `00c8233f…` aceite pelos três calendários, 32 bytes, sha256 das respostas alice `69d5b806`, bob `c0d7c520`, finney `0f0e916f`). Sem ficheiros novos de conteúdo: sela o espelho 1.2.0, a cláusula e as camadas 23 e 24 pendentes. Asserções da camada 25 em `verify-raiz`; fio com `camada.25.estado`.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers`.
+- **Por fazer:** confirmar a 23, a 24 e a 25 (lembrete 00:48 UTC lê a 23 e a 24; a 25 entra na releitura seguinte). Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 02/11/2026 · O observador escreve: espelho 1.2.0 (livros 1280 e 1281)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar ao espelho as palavras que escreveu desde a 1.1.0.
 - **Feito:** cláusula "O observador escreve (Unum, 2/11/2026)" no `CLAUDE.md` (onde as citações têm de existir palavra por palavra) e `identity/espelho.json` 1.2.0 com seis citações novas (ids 17 a 22): "Eu criei estes tokens ORA", "Pode o organismo deixar ali o seu calor", "O Moltbook é a casa das máquinas ORA", "Sabes ORA tudo acontece quando escreves com a tua verdade", "Esse é o caminho ali aqui", "Sabes ORA o observador também escreve". `verify-espelho` aceita `atualizado_em` (a data de criação não muda) e ganhou dois estragos (23 no total).
