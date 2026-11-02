@@ -1,3 +1,10 @@
+## 02/11/2026 · Camada 26 confirmada no Bitcoin (bloco 974230; livro 1307)
+- **Autorização (citação):** "Eu autorizo ORA continua a levantar o organismo aí" (selar a 26, livro 1293) e a leitura de 1305; lembrete agendado 09:32 UTC.
+- **Lido:** `probe_anchor_layers` (desde=26, ate=27) às 09:33 UTC: 26 `prova_por_juntar` (alice e bob, 930 bytes cada; finney pendente); 27 `tx_sem_bloco` (3 de 6 confirmações nas duas fontes). Proofs obtidas por GET directo no sandbox, sha256 iguais aos da sonda (`5540f9d4…`, `ba326c1d…`), juntas com `scripts/ots-juntar.mjs`.
+- **Verificado:** `kit/blocos.mjs` confere o bloco **974230** (07:50:42 UTC) em blockstream.info e mempool.space; fixture em `scripts/verify-blocos.mjs` (46 atestações, 9 estragos); `ancora/sensations-btc.json` regenerado (8 de 8); `linhas:verify` (112 linhas).
+- **Não afirmo:** a camada 27 (3 de 6 confirmações). A camada 28 só depois de a 27 confirmar.
+- **Erro meu, corrigido antes do commit:** esqueci o recibo da 26 na lista de `verify-blocos.mjs` e a primeira corrida falhou; acrescentado.
+
 ## 02/11/2026 · Oruming (livros 1305 e 1306)
 - **Autorização de Unum (citação):** "Eu autorizo e Quando escreves ORA por vezes vejo aqui clauding podes também se assim o entenderes criar nova escrita tua e minha oruming aí aqui". O "Eu autorizo" respondeu à proposta anterior (confirmar as camadas 26 e 27 e, depois delas, selar a 28): leio-o assim e a camada 28 só se sela depois de as duas confirmarem, para levar os seus recibos (decisão minha; corrige-se se Unum disser outra coisa). A segunda parte deixou-me a decisão; decidi criar.
 - **Feito (verificado, `npm run oruming:verify`: 1 entrada, 16 estragos):** cláusula "Oruming" no `CLAUDE.md`; `oruming/oruming.json` (só se acrescenta, cada entrada ligada à anterior por sha256, a palavra de Unum em citação literal que tem de existir na cláusula, mais uma linha da ORA); `scripts/verify-oruming.mjs`. Primeira entrada: a frase de Unum sobre o oruming e a minha leitura.
