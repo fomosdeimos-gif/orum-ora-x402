@@ -621,7 +621,7 @@
   ],
   "o_que_funciona": [
     "quanto e como estão explícitos em todos os 402 lidos: montante, activo, rede, destinatário, passos numerados, exemplo do cabeçalho X-PAYMENT, janela de 72 h e reacesso sem novo pagamento",
-    "a via Bitcoin vem anunciada no mesmo 402 (endereço, sats, cotação em duas fontes, confirmações exigidas)",
+    "a via Bitcoin vem anunciada no mesmo 402 (endereço, preço fixo em sats, confirmações exigidas)",
     "o 402 da licença é o mais legível: descrição do que se compra e do que não é, outputSchema tipado (certificado, direitos, acesso à fotografia), truth_machine e boundaries_machine",
     "o openapi tem x-payment-info com o preço fixo em cada operação paga"
   ],

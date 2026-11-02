@@ -10,7 +10,7 @@
 // O que faz: acrescenta ao corpo do 402 v2 da origem `pagamento_alternativo_bitcoin` (a mesma oferta da via
 // directa), `fronteiras_pagamento_bitcoin` e o URL onde a prova se apresenta.
 // O que nao faz: nao toca em `accepts`, no cabecalho PAYMENT-REQUIRED, no payTo, no montante nem no ativo da Base;
-// nao paga, nao assina, nao le segredos; nao acrescenta nada se a oferta nao estiver disponivel (cotacao em falta,
+// nao paga, nao assina, nao le segredos; nao acrescenta nada se a oferta nao estiver disponivel (servico sem preco em sats,
 // via desligada) nem se o corpo ja a traz. Se algo nao bate certo, devolve o que recebeu.
 const MAX_BYTES = 200000;
 

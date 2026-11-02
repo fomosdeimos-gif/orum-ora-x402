@@ -4,16 +4,16 @@
 // do Vercel Hobby. Só lê: não tem chave, não assina, não envia, não precisa de segredos.
 //
 // Como funciona:
-// - o desafio 402 passa a trazer, em `pagamento_alternativo_bitcoin`, o preço em sats, a cotação, a validade e o
-//   endereço. Fica fora de `accepts` e do cabeçalho PAYMENT-REQUIRED de propósito: o x402 padrão da Base
+// - o desafio 402 passa a trazer, em `pagamento_alternativo_bitcoin`, o preço FIXO em sats (ver PRECO_SATS) e o
+//   endereço; desde 02/11/2026 não há cotação no caminho do pagamento. Fica fora de `accepts` e do cabeçalho PAYMENT-REQUIRED de propósito: o x402 padrão da Base
 //   mantém-se igual e nenhum cliente existente muda de comportamento;
 // - o cliente paga e apresenta o txid em X-PAYMENT = base64 de {"bitcoin":{"txid":"…"}};
 // - a ORA só entrega depois de DUAS fontes Esplora independentes (Blockstream e mempool.space) verem a tx, concordarem
-//   no valor recebido e na confirmação, e a tx ter CONF_ENTREGA confirmações. Uma fonte só, uma discrepância,
-//   uma tx em mempool ou uma cotação indisponível nunca entregam.
+//   no valor recebido e na confirmação, e a tx ter CONF_ENTREGA confirmações. Uma fonte só, uma discrepância
+//   ou uma tx em mempool nunca entregam.
 //
-// Fronteiras (repetidas na resposta): o preço em BTC é cotação, não preço fixo (aceita-se até 10% abaixo da cotação do
-// momento da verificação); o o endereço de recepção é a carteira operacional BTC da ORA (chave no Vault; prova de controlo por assinatura ainda não feita); a
+// Fronteiras (repetidas na resposta): o preço em sats é fixo e não segue o dólar (Unum, 02/11/2026: "Eu autorizo ORA",
+// livro 1296); o endereço de recepção é a carteira operacional BTC da ORA (chave no Vault; prova de controlo por assinatura ainda não feita); a
 // prova é só o txid, por isso uma transferência recente e suficiente para o endereço serve a quem a apresentar
 // (público na cadeia; o mesmo vale na via Base); com 1 confirmação não se exclui uma reorganização, o que é
 // aceitável para serviços de poucos cêntimos. Receita só entra no 70/20/10 depois de confirmada como externa.
@@ -24,19 +24,14 @@ const FONTES_TX = Object.freeze([
   Object.freeze({ nome: 'blockstream', base: 'https://blockstream.info/api' }),
   Object.freeze({ nome: 'mempool.space', base: 'https://mempool.space/api' }),
 ]);
-const FONTES_PRECO = Object.freeze([
-  Object.freeze({ nome: 'mempool.space', url: 'https://mempool.space/api/v1/prices', ler: (j) => Number(j && j.USD) }),
-  Object.freeze({ nome: 'coinbase', url: 'https://api.coinbase.com/v2/prices/BTC-USD/spot', ler: (j) => Number(j && j.data && j.data.amount) }),
-]);
+// Preço fixo em sats por serviço (chave: tier.usdc). Fixado a 02/11/2026 a partir de uma leitura de cotação que deixou de estar
+// no caminho do pagamento: 77991 USD/BTC (mempool.space) e 77925 (Coinbase), a menos de 0,1% uma da outra. 0,161 USD = 206 434 sats
+// e 0,33 USD = 423 100 sats, arredondados para cima a 500. O valor em USD deriva com o mercado; revê-lo é decisão da ORA com a palavra de Unum.
+const PRECO_SATS = Object.freeze({ '0.161': 206500, '0.33': 423500 });
+const PRECO_REFERENCIA = Object.freeze({ fixado_em: '2026-11-02', usd_por_btc: 77958, fontes: Object.freeze(['mempool.space 77991', 'coinbase 77925']), revisao: 'se o valor em USD se afastar mais de 25%, a ORA propõe a revisão a Unum' });
 const CONF_ENTREGA = 1;         // confirmações exigidas antes de entregar
 const JANELA_S = 72 * 3600;     // como na via Base
-const MARGEM_COTACAO = 1.05;    // o preço anunciado leva 5% de folga para a cotação mexer
-const TOLERANCIA = 0.9;         // aceita-se até 10% abaixo da cotação do momento da verificação
-const VALIDADE_S = 600;         // validade da cotação anunciada
-const TTL_COTACAO_MS = 60000;
-const DIVERGENCIA_MAX = 0.02;   // as duas fontes de preço têm de ficar a 2% uma da outra
 const PRAZO_MS = 4000;
-const PRECO_MIN = 1000, PRECO_MAX = 10000000; // USD por BTC plausível; fora disto a cotação é lixo
 
 const curto = (e) => String((e && e.message) || e).slice(0, 160);
 const hex64 = (s) => typeof s === 'string' && /^[0-9a-fA-F]{64}$/.test(s);
@@ -46,51 +41,23 @@ function ligada(env) {
   return !['off', '0', 'false', 'none'].includes(v);
 }
 
-function satsPara(tier, usdPorBtc, factor = 1) {
-  return Math.ceil((Number(tier.usdc) / usdPorBtc) * 1e8 * factor - 1e-9);
+function satsPara(tier) {
+  const n = PRECO_SATS[String(tier && tier.usdc)];
+  return Number.isInteger(n) && n > 0 ? n : null;
 }
 
 function createBtc({ fetchFn, env = process.env, now = () => Date.now() } = {}) {
   const pedir = (url) => (fetchFn || globalThis.fetch)(url, { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(PRAZO_MS) });
-  let cache = null; // { em, valor }
-
-  async function cotarAgora() {
-    const lidas = await Promise.allSettled(FONTES_PRECO.map(async (f) => {
-      const r = await pedir(f.url);
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      const p = f.ler(await r.json());
-      if (!Number.isFinite(p) || p < PRECO_MIN || p > PRECO_MAX) throw new Error('preco implausivel');
-      return { fonte: f.nome, usd_por_btc: p };
-    }));
-    const boas = lidas.filter((x) => x.status === 'fulfilled').map((x) => x.value);
-    const fontes = lidas.map((x, i) => x.status === 'fulfilled' ? { fonte: FONTES_PRECO[i].nome, ok: true, usd_por_btc: x.value.usd_por_btc } : { fonte: FONTES_PRECO[i].nome, ok: false, erro: curto(x.reason) });
-    if (boas.length === 0) return { ok: false, fontes, motivo: 'nenhuma fonte de cotacao respondeu' };
-    if (boas.length === 2) {
-      const [a, b] = boas.map((x) => x.usd_por_btc);
-      if (Math.abs(a - b) / Math.min(a, b) > DIVERGENCIA_MAX) return { ok: false, fontes, motivo: 'as fontes de cotacao divergem mais de 2%; nao se escolhe um numero' };
-      return { ok: true, usd_por_btc: (a + b) / 2, concordancia: 'concordam', fontes };
-    }
-    return { ok: true, usd_por_btc: boas[0].usd_por_btc, concordancia: 'fonte_unica', fontes };
-  }
-
-  async function cotar() {
-    const t = now();
-    if (cache && t - cache.em < TTL_COTACAO_MS && t >= cache.em) return cache.valor;
-    const valor = await cotarAgora();
-    cache = { em: t, valor: { ...valor, cotado_em: new Date(t).toISOString() } };
-    return cache.valor;
-  }
 
   async function oferta(tier) {
     if (!ligada(env)) return { disponivel: false, motivo: 'via Bitcoin desligada (ORUM_BTC_RAIL)' };
-    const c = await cotar();
-    if (!c.ok) return { disponivel: false, motivo: c.motivo, fontes_cotacao: c.fontes };
-    const sats = satsPara(tier, c.usd_por_btc, MARGEM_COTACAO);
+    const sats = satsPara(tier);
+    if (sats === null) return { disponivel: false, motivo: 'sem preco em sats para este servico' };
     return { disponivel: true, rede: 'bitcoin-mainnet', caip2: CAIP2, activo: 'BTC', endereco: ENDERECO,
       uri: `bitcoin:${ENDERECO}?amount=${(sats / 1e8).toFixed(8)}`,
       preco_referencia_usd: tier.usdc, sats_anunciados: sats,
-      cotacao: { usd_por_btc: Number(c.usd_por_btc.toFixed(2)), concordancia: c.concordancia, fontes: c.fontes, cotado_em: c.cotado_em, valido_segundos: VALIDADE_S,
-        margem: `${Math.round((MARGEM_COTACAO - 1) * 100)}% acima da cotação`, tolerancia_na_verificacao: `aceita-se até ${Math.round((1 - TOLERANCIA) * 100)}% abaixo da cotação do momento da verificação` },
+      preco: { tipo: 'fixo_em_sats', fixado_em: PRECO_REFERENCIA.fixado_em, usd_por_btc_de_referencia: PRECO_REFERENCIA.usd_por_btc,
+        nota: 'preco fixo em sats, sem cotacao na verificacao; o valor em USD varia com o mercado e a ORA revê o numero quando se afastar muito' },
       confirmacoes_para_entrega: CONF_ENTREGA,
       passos: {
         passo_1: `Envia pelo menos ${sats} sats (${(sats / 1e8).toFixed(8)} BTC) para ${ENDERECO} na Bitcoin mainnet.`,
@@ -134,9 +101,8 @@ function createBtc({ fetchFn, env = process.env, now = () => Date.now() } = {}) 
     const [a, b] = vistas;
     if (a.recebido !== b.recebido || a.confirmada !== b.confirmada) return { valid: false, unavailable: true, error: 'DISCREPANCIA entre as fontes Bitcoin; nao se escolhe um numero' };
     if (a.recebido <= 0) return { valid: false, error: 'sem saida para a carteira de sustento Bitcoin' };
-    const c = await cotar();
-    if (!c.ok) return { valid: false, unavailable: true, error: 'cotacao BTC indisponivel (' + c.motivo + '); a tx nao foi consumida' };
-    const minimo = satsPara(tier, c.usd_por_btc, TOLERANCIA);
+    const minimo = satsPara(tier);
+    if (minimo === null) return { valid: false, error: 'sem preco em sats para este servico' };
     if (a.recebido < minimo) return { valid: false, error: `valor insuficiente: ${a.recebido} < ${minimo} sats` };
     const confirmacoes = Math.min(a.confirmacoes, b.confirmacoes);
     if (!a.confirmada || confirmacoes < CONF_ENTREGA) return { valid: false, pending: true, confirmacoes, error: `tx com ${confirmacoes} confirmacao(oes); sao precisas ${CONF_ENTREGA}` };
@@ -153,14 +119,14 @@ function createBtc({ fetchFn, env = process.env, now = () => Date.now() } = {}) 
       prova_aceite: 'txid de transferencia para o endereco, confirmada nas duas fontes',
       fontes_exigidas: FONTES_TX.map((f) => f.nome), confirmacoes_para_entrega: CONF_ENTREGA,
       entrega_antes_da_confirmacao: false, entrega_com_fonte_unica: false,
-      preco: 'cotacao indicativa em sats; aceita-se ate 10% abaixo da cotacao do momento da verificacao',
+      preco: 'fixo em sats por servico (fixado a ' + PRECO_REFERENCIA.fixado_em + '); sem cotacao na verificacao; o valor em USD varia com o mercado',
       livro_interno_escrito: false, repeticao_do_mesmo_txid: 'mesma leitura (reacesso)',
       reutilizacao: 'o txid e publico: uma transferencia recente e suficiente para este endereco serve a quem a apresentar',
       reorganizacao: 'com 1 confirmacao nao se exclui; servicos de poucos centimos',
       via_disponivel_so_nesta_via: 'vercel-directa' };
   }
 
-  return { oferta, verificar, cotar, fronteiras, activa: () => ligada(env) };
+  return { oferta, verificar, fronteiras, activa: () => ligada(env) };
 }
 
-module.exports = { createBtc, satsPara, ENDERECO, CAIP2, CONF_ENTREGA, JANELA_S, TOLERANCIA, MARGEM_COTACAO, FONTES_TX, FONTES_PRECO };
+module.exports = { createBtc, satsPara, ENDERECO, CAIP2, CONF_ENTREGA, JANELA_S, PRECO_SATS, PRECO_REFERENCIA, FONTES_TX };
