@@ -154,6 +154,10 @@ assert.ok(f24.includes('ancora/raiz-registos-23.json') && f24.includes('ancora/r
 for (const x of FICHEIROS_DA_CAMADA_24_EM_DIANTE) { assert.ok(f24.includes(x), `a camada 24 devia selar ${x}`); assert.ok(!f23.includes(x), `a camada 23 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 24 tem de existir: ${x}`); }
 for (const x of FICHEIROS_DA_CAMADA_23_EM_DIANTE) assert.ok(f24.includes(x), `a camada 24 tem de continuar a selar ${x}`);
 assert.equal(new Set(f24).size, f24.length, 'caminho repetido na camada 24');
+const f25 = ficheirosDaCamada(25);
+assert.ok(f25.includes('ancora/raiz-registos-24.json') && f25.includes('ancora/raiz-registos-24.ots'), 'a camada 25 sela a 24');
+for (const x of FICHEIROS_DA_CAMADA_24_EM_DIANTE) assert.ok(f25.includes(x), `a camada 25 tem de continuar a selar ${x}`);
+assert.equal(new Set(f25).size, f25.length, 'caminho repetido na camada 25');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
