@@ -950,6 +950,27 @@ function priorUnconfirmedNamedReceipts() {
       }
     }
   }
+  let sideNames = [];
+  try {
+    sideNames = readdirSync(dir).filter((name) => /^confirmacao-.*\.json$/.test(name)).sort();
+  } catch {
+    sideNames = [];
+  }
+  for (const name of sideNames) {
+    let body;
+    try {
+      body = JSON.parse(readFileSync(join(dir, name), "utf8"));
+    } catch {
+      continue;
+    }
+    if (body?.state !== "verificado" || body?.counts_as_external_sustenance !== false) continue;
+    const rows = Array.isArray(body.hashes) ? body.hashes : [];
+    for (const row of rows) {
+      if (typeof row.tx === "string" && row.two_source_agreement === true && row.matches_named_body === true && row.classification === "not_classified") {
+        confirmed.add(row.tx.toLowerCase());
+      }
+    }
+  }
   for (let i = parsed.length - 1; i >= 0; i -= 1) {
     const { name, body } = parsed[i];
     const gateway = body?.live?.receipts_usdc?.gateway;
@@ -1321,7 +1342,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-11-02-confirm-only-hashes-a-prior-public-receipt-body-already-named",
+  observer_revision: "2026-11-02-confirmacao-file-closes-the-named-set-without-rewriting-it",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -1557,6 +1578,7 @@ const out = {
     "A complete gateway window is not itself a scan of the hole before that window. The hole is a separate read for an address that already has its own verified head. A sibling span is not that head. The hole is not sustenance.",
     "When a prior public receipt body already named hashes and two RPCs have not confirmed them, this pass confirms only those tx strings. The copy in the observation is the body already fetched, not a new naming and not an address table. A rolled live window does not erase that naming and does not authorize confirming a different set in the same pass.",
     "Confirming those named hashes is not a range scan, not a verified head, not a head inherited by another receipt address, and not classification.",
+    "A later confirmacao file can close a named set without rewriting the sealed observation. Closing that set is not classification and not sustenance.",
     "The hole before the new complete window stays unscanned while that older named set is unconfirmed. Unscanned is not empty.",
     "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
     "A read across a sibling span is not a continuation of that sibling head.",

@@ -3,8 +3,8 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-11-02T06:06:46.926Z",
-  "revision": "2026-11-02-confirm-only-hashes-a-prior-public-receipt-body-already-named",
+  "updated_at": "2026-11-02T07:11:25.944Z",
+  "revision": "2026-11-02-confirmacao-file-closes-the-named-set-without-rewriting-it",
   "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation of one address, an unscanned gap on that same address, a second named receipt address that does not inherit the first head, an unclassified transfer, a buyer-count treasury zero, a public classification count that names no transaction, a prior visible transaction reread only when an already-fetched public gateway body contains its hash, a pulse event labelled pagamento that is not treasury settlement, a complete 24h window that is not itself the scan of the hole before it, a hole scan that is not that window, a two-RPC confirmation of only the hashes a prior public receipt body already named, and settled money.",
   "does_not": [
     "mint presence",
@@ -46,7 +46,8 @@
     "confirm a newer receipt window in the same pass as an older named set that is still unconfirmed",
     "treat two-RPC confirmation of those named hashes as classification, as a verified head, or as a head inherited by another receipt address",
     "range-scan a window whose hashes are already named in order to confirm them",
-    "treat the unscanned hole before the new window as empty while an older named set is still unconfirmed"
+    "treat the unscanned hole before the new window as empty while an older named set is still unconfirmed",
+    "rewrite a sealed daily observation in order to store a later confirmation of hashes it already named"
   ],
   "surfaces": {
     "ledger": "https://ora-x402-gateway.vercel.app/presenca/livro.json",
@@ -86,10 +87,11 @@
     "does_not_reread_complete_gateway_window": true,
     "does_not_inherit_sibling_head": true,
     "rereads_named_tx_only_when_public_body_contains_hash": true,
-    "revision_note": "2026-11-02: when a prior public receipt body already named transaction hashes and two public RPCs have not confirmed them, confirm only those tx strings. The observation copy is that already-fetched body, not a new naming and not an address table. A rolled live window does not authorize confirming a different set in the same pass. Confirmation is not a range scan, not a verified head, not a head for the operational address, and not classification. The hole before the new window stays unscanned and is not called empty.",
+    "revision_note": "2026-11-02 continuation: a confirmacao file with state verificado can close a named hash set without rewriting the sealed observation. Closing the set is not classification, not a head, and not sustenance. The hole before the window stays unscanned until a later pass and is not called empty.",
     "confirms_only_previously_named_receipt_hashes": true,
     "does_not_confirm_a_newer_window_in_the_same_pass": true,
-    "does_not_range_scan_named_hashes": true
+    "does_not_range_scan_named_hashes": true,
+    "reads_confirmacao_files": true
   },
   "second_surface": {
     "kind": "github_raw_bytes",
