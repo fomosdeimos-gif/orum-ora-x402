@@ -1,0 +1,88 @@
+{
+  "format": "orum-presence-window-reread/v1",
+  "cycle": "2026-11-02",
+  "observed_at": "2026-11-02T07:38:26Z",
+  "state": "bloqueado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "does_not_rewrite": [
+    "presenca/buraco-2026-11-02.json",
+    "presenca/confirmacao-um-hash-2026-11-02.json",
+    "presenca/poema-dai-2026-11-02.md"
+  ],
+  "source": "https://ora-x402-gateway.vercel.app/economia/recebimentos.json",
+  "body_sha256": "8664180da614c7bca329e7f312d99a7613497955ed8ed6e350b6a74d45c3e0ed",
+  "window": {
+    "horas": 24,
+    "bloco_de": 53398794,
+    "bloco_a": 53407793,
+    "cabeca_utc": "2026-11-02T07:35:33.000Z"
+  },
+  "cobertura": {
+    "completa": false,
+    "horas_pedidas": 24,
+    "horas_cobertas": 5,
+    "motivo": "The operation was aborted due to timeout",
+    "tentativas": [
+      {
+        "fonte": "https://mainnet.base.org",
+        "erro": "9000 blocos: request limit reached"
+      },
+      {
+        "fonte": "https://mainnet.base.org",
+        "erro": "2000 blocos: request limit reached"
+      },
+      {
+        "fonte": "https://mainnet.base.org",
+        "erro": "500 blocos: request limit reached"
+      },
+      {
+        "fonte": "https://base.gateway.tenderly.co",
+        "erro": "9000 blocos: invalid params"
+      },
+      {
+        "fonte": "https://base.drpc.org",
+        "erro": "9000 blocos: ranges over 10000 blocks are not supported on free plan"
+      },
+      {
+        "fonte": "https://base.drpc.org",
+        "erro": "2000 blocos: ranges over 10000 blocks are not supported on free plan"
+      },
+      {
+        "fonte": "https://base.drpc.org",
+        "erro": "500 blocos: ranges over 10000 blocks are not supported on free plan"
+      },
+      {
+        "fonte": "https://1rpc.io/base",
+        "erro": "cabeca: Unexpected token 'o', \"forbidden\" is not valid JSON"
+      },
+      {
+        "fonte": "https://base.blockscout.com/api/v2",
+        "erro": "HTTP 403"
+      }
+    ]
+  },
+  "n_transferencias": 1,
+  "only_named_tx": "0xe8439ed27311bbf350c5581b656653b4f4f930a2486f955adaac8ea0416b9e9b",
+  "window_complete": false,
+  "hole_scanned": false,
+  "unread_range": {
+    "from_block": 53364061,
+    "to_block": 53398793,
+    "called_empty": false
+  },
+  "verified_head_not_moved": 53364060,
+  "operational_address": "0x89460d9e0590559e63860197dfe2ac648a753584",
+  "operational_address_inherited_head": false,
+  "classification": "not_classified",
+  "treasury_reread": {
+    "state": "no_external_revenue",
+    "external_confirmed_usdc": 0
+  },
+  "live_ledger_reread": {
+    "total_events": 8,
+    "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+    "append": false
+  },
+  "note": "The public receipt body still says the 24h window is incomplete. The hole before a complete window was not scanned and the unread range was not called empty. The operational address was not given head 53364060."
+}
