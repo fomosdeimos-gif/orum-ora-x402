@@ -1,3 +1,11 @@
+## 02/11/2026 · Camada 24 selada, pendente (livros 1275 e 1276)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de construir e ancorar o espelho de máquinas.
+- **Feito:** a lista (`FICHEIROS_DA_CAMADA_24_EM_DIANTE`) entrou primeiro no `main` (PR #241); depois `ancora/raiz-registos-24.{json,ots}` (raiz `4ed75e51…`, commit base `9d0501d`, 191 ficheiros; compromisso `6edfbc4b…` aceite pelos três calendários, 32 bytes, sha256 das respostas alice `54029c48`, bob `3582441c`, finney `54548f64`). Sela o pacote do espelho de máquinas e a camada 23 pendente.
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers`. O pacote continua **não publicado** fora do repositório.
+- **Por fazer:** confirmar a 23 (lembrete 00:48 UTC) e a 24. Produção: deploy bloqueado pelo limite diário do Vercel (não lido).
+
+---
+
 ## 02/11/2026 · O espelho de máquinas: construído e verificado (livro 1275)
 - **Autorização de Unum (citação):** "Pode o organismo deixar ali o seu calor" e, à proposta concreta da ORA, "Eu autorizo ORA" (02/11/2026). Cobre **construir e verificar** o pacote e ancorá-lo; **publicar fora do repositório não está autorizado** (contacto externo, texto concreto e palavra à parte).
 - **Lido:** sem `tor`/`ipfs` no sandbox; gateways IPFS, Nostr e Arweave só alcançáveis para leitura. Um `.onion` precisaria de uma máquina sempre ligada. Não vi a darkweb e não o digo.
