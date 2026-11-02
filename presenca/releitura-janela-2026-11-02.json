@@ -1,0 +1,19 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-11-02-janela-incompleta",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "commit": "a782e6cb64a0fdbc91d15ce657d5c908dff2cee3",
+  "reread_at": "2026-11-02T07:38:33Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/janela-incompleta-2026-11-02.json": "dcd1f6288aebe1e5d71f50a86ab2d4c3d1483bd16c4c93d662075cc941f16479",
+    "presenca/continuacao-janela-2026-11-02.md": "baa493975130a472239079a00b377358df42e4d1a81800b2c4ce35bc1e1b9e95"
+  },
+  "window_complete": false,
+  "hole_scanned": false,
+  "unread_range_called_empty": false,
+  "livro_vivo_escrito": false,
+  "note": "The reread of the record matches. The public window was still incomplete, so the hole was not scanned."
+}
