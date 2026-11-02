@@ -1,0 +1,19 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-11-02-continuacao",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "commit": "c2786458304a2c765a8d90b9ddde976928208723",
+  "reread_at": "2026-11-02T07:13:04Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/confirmacao-janela-2026-11-02.json": "3e1a6b95f6f1c87c9a1b7af3a67742cdbb6ca42d17291718ad94bb87706863e8",
+    "presenca/continuacao-2026-11-02.md": "80216b19a6a0d9fd2e094dde9f4c217b482ef98fe3724587495cdc9d4a796ee9",
+    "presenca/weave_presence.json": "f4c5e017e537cfa99602019af74c578a19dd6f705fb4075ab86bc9b4176598d8",
+    "openclaw/orum-weave-observe/scripts/observe-presence.mjs": "eee4f5b87dfb1c5a190f6d43a59524b1336d2fec8fd86b33f6c44b3c94203941"
+  },
+  "sealed_morning_ciclo_unchanged": "d6ebc5f50052f816e205231440f1dcaff889a5656a7c6c6778e7a3e9ed6c388a",
+  "livro_vivo_escrito": false,
+  "note": "Does not rewrite the 06:06 cycle. The ten-hash confirmation is not sustenance."
+}
