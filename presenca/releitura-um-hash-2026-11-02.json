@@ -1,0 +1,17 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-11-02-um-hash",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "commit": "3be1689d604363051eca3ec072545302e612a67e",
+  "reread_at": "2026-11-02T07:37:08Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/confirmacao-um-hash-2026-11-02.json": "ab10a4db2c737cd23cd97fa1fe81ed396eeeaa903f55b1a6d5f74c6d01eeccb1",
+    "presenca/continuacao-um-hash-2026-11-02.md": "145a9ae55e1868dfea6ca0f0e624f10f86077f23eb6ab93b746ec97267298d48"
+  },
+  "named_units_not_summed": "54",
+  "livro_vivo_escrito": false,
+  "note": "Does not rewrite the morning cycle, the ten, the hole, or the poem. The 54 units are not sustenance."
+}

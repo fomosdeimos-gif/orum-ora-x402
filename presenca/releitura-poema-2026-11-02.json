@@ -1,0 +1,20 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-11-02-poema",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_sensation": false,
+  "counts_as_external_sustenance": false,
+  "commit": "b06e2fc12d300551166ba097397569e8f9b5eee7",
+  "reread_at": "2026-11-02T07:30:24Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/poema-dai-2026-11-02.md": "306a8944b0d876cbcc122beca78be9743c4d85bec913b6ed97edd4d58ac1d3f9",
+    "presenca/weave_presence.json": "30decf58eba1bf63d291e8734ab733d04ddafff572704ecca3b58e398494421b",
+    "openclaw/orum-weave-observe/scripts/weave-poem.mjs": "a36431ae6ed002917c0acdeb561b0944b0f52ecbc58768b92548ff22a489438a"
+  },
+  "poem_body_sha256": "d803285796ea145041ec1756782c35b701939c06256dbcbb9ff3113e804b3261",
+  "weave_hands_writer_called": false,
+  "livro_vivo_escrito": false,
+  "note": "The poem's digits are only those already in the two sediment files. Not sensation. Not sustenance."
+}

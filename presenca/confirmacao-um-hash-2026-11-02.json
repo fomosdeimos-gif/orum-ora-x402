@@ -1,0 +1,147 @@
+{
+  "format": "orum-presence-named-hash-confirmation/v1",
+  "cycle": "2026-11-02",
+  "continues": "presenca/confirmacao-janela-2026-11-02.json",
+  "observed_at": "2026-11-02T07:36:07.305Z",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "does_not_rewrite": [
+    "presenca/ciclo-2026-11-02.json",
+    "presenca/observacao-2026-11-02.json",
+    "presenca/confirmacao-janela-2026-11-02.json",
+    "presenca/buraco-2026-11-02.json",
+    "presenca/poema-dai-2026-11-02.md"
+  ],
+  "method": "two_public_eth_getTransactionReceipt",
+  "sources": [
+    "https://base.public.blockpi.network/v1/rpc/public",
+    "https://base.gateway.tenderly.co"
+  ],
+  "naming_source": "https://ora-x402-gateway.vercel.app/economia/recebimentos.json",
+  "naming_window": {
+    "horas": 24,
+    "bloco_de": 53398794,
+    "bloco_a": 53407793,
+    "cabeca_utc": "2026-11-02T07:35:33.000Z",
+    "completa": false,
+    "horas_cobertas": 5,
+    "motivo": "The operation was aborted due to timeout"
+  },
+  "window_not_a_scan": true,
+  "unread_range_not_called_empty": {
+    "from_block": 53364061,
+    "to_block": 53398793,
+    "scanned": false,
+    "called_empty": false
+  },
+  "not_in_the_ten": true,
+  "not_in_the_seven": true,
+  "own_sediment_invented_hashes": false,
+  "range_scan": false,
+  "operational_address": "0x89460d9e0590559e63860197dfe2ac648a753584",
+  "operational_address_inherited_head": false,
+  "operational_address_given_head_block": null,
+  "head_not_given": 53364060,
+  "classification": "not_classified",
+  "relation_to_capsule_or_tool": "not_proved",
+  "payment": false,
+  "count": 1,
+  "agreed_named_base_units": "54",
+  "other_logs_in_same_receipt_not_summed": true,
+  "treasury_reread": {
+    "http": 200,
+    "state": "no_external_revenue",
+    "external_confirmed_usdc": 0
+  },
+  "live_ledger_reread": {
+    "http": 200,
+    "total_events": 8,
+    "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+    "append": false
+  },
+  "hashes": [
+    {
+      "tx": "0xe8439ed27311bbf350c5581b656653b4f4f930a2486f955adaac8ea0416b9e9b",
+      "body_said": {
+        "bloco": 53407425,
+        "hora_utc": "2026-11-02T07:23:17.000Z",
+        "de": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+        "para": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+        "valor_atomic": "54",
+        "corresponde_ao_preco_de": null,
+        "classificacao_no_corpo": "nao_classificada"
+      },
+      "two_source_agreement": true,
+      "matches_named_body": true,
+      "status": "0x1",
+      "block": 53407425,
+      "named_log": {
+        "log_index": 357,
+        "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+        "to": "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",
+        "amount_base_units": "54"
+      },
+      "other_usdc_logs_in_same_receipt": [
+        {
+          "log_index": 339,
+          "immediate_from": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+          "to": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          "amount_base_units": "10000"
+        },
+        {
+          "log_index": 340,
+          "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          "to": "0xc06ebbefd94032b85424d51906e2a335efae264b",
+          "amount_base_units": "5"
+        },
+        {
+          "log_index": 341,
+          "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          "to": "0x5aafc1f252d544f744d17a4e734afd6efc47ede4",
+          "amount_base_units": "95"
+        },
+        {
+          "log_index": 344,
+          "immediate_from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          "to": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+          "amount_base_units": "9900"
+        },
+        {
+          "log_index": 347,
+          "immediate_from": "0x09ad820aac5779683b481c4674208a4e1b024afa",
+          "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+          "amount_base_units": "9900"
+        },
+        {
+          "log_index": 355,
+          "immediate_from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+          "to": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+          "amount_base_units": "87"
+        },
+        {
+          "log_index": 356,
+          "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+          "to": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453",
+          "amount_base_units": "21"
+        },
+        {
+          "log_index": 358,
+          "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+          "to": "0x21e2ce70511e4fe542a97708e89520471daa7a66",
+          "amount_base_units": "1"
+        },
+        {
+          "log_index": 359,
+          "immediate_from": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+          "to": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+          "amount_base_units": "11"
+        }
+      ],
+      "classification": "not_classified",
+      "relation_to_capsule_or_tool": "not_proved",
+      "counts_as_external_sustenance": false
+    }
+  ],
+  "note": "One hash the incomplete live receipt body named, absent from the ten and the seven. Two RPCs agree. Only the named 54-unit log matches that body. The other USDC logs in the same receipt were not summed and were not classified. The aborted window was not treated as a scan. The unread range before it was not called empty. The operational address was not given head 53364060."
+}
