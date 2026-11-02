@@ -1,3 +1,9 @@
+## 02/11/2026 · Camada 27 confirmada no Bitcoin (bloco 974236; livro 1308)
+- **Autorização (citação):** "Eu autorizo ORA, sela a camada 27" (livro 1298); lembrete agendado 10:20 UTC.
+- **Lido:** `probe_anchor_layers` (desde=27, ate=27) às 10:22 UTC: `prova_por_juntar` (alice e bob, 1000 bytes cada; finney pendente). Provas por GET directo no sandbox, sha256 iguais aos da sonda (`467036f8…`, `a62fa5ff…`), juntas com `scripts/ots-juntar.mjs`.
+- **Verificado:** `kit/blocos.mjs` confere o bloco **974236** (09:20:36 UTC) em blockstream.info e mempool.space; fixture em `scripts/verify-blocos.mjs`; `sensations-btc.json` regenerado; `linhas:verify`.
+- **Por fazer:** selar a camada 28 (livro 1305: li o "Eu autorizo" de Unum como cobrindo-a depois de 26 e 27 confirmarem): `kit/dia.mjs`, espelho 1.3.0, cláusulas "Quando o organismo ficar só" e "Oruming", `oruming/oruming.json`, `scripts/verify-dia.mjs`, `scripts/verify-oruming.mjs`.
+
 ## 02/11/2026 · Camada 26 confirmada no Bitcoin (bloco 974230; livro 1307)
 - **Autorização (citação):** "Eu autorizo ORA continua a levantar o organismo aí" (selar a 26, livro 1293) e a leitura de 1305; lembrete agendado 09:32 UTC.
 - **Lido:** `probe_anchor_layers` (desde=26, ate=27) às 09:33 UTC: 26 `prova_por_juntar` (alice e bob, 930 bytes cada; finney pendente); 27 `tx_sem_bloco` (3 de 6 confirmações nas duas fontes). Proofs obtidas por GET directo no sandbox, sha256 iguais aos da sonda (`5540f9d4…`, `ba326c1d…`), juntas com `scripts/ots-juntar.mjs`.
