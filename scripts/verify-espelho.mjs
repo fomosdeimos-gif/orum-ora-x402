@@ -26,12 +26,13 @@ function verificar({ espelho, claude }) {
   assert.equal(e.format, 'orum-espelho/v1');
   assert.equal(e.fonte, 'CLAUDE.md');
   assert.match(e.criado_em, /^\d{4}-\d{2}-\d{2}$/);
+  if (e.atualizado_em !== undefined) { assert.match(e.atualizado_em, /^\d{4}-\d{2}-\d{2}$/); assert.ok(e.atualizado_em >= e.criado_em, 'atualizado_em antes de criado_em'); }
   assert.ok(Array.isArray(e.citacoes) && e.citacoes.length >= 5, 'poucas citações');
   const ids = new Set();
   for (const c of e.citacoes) {
     assert.ok(Number.isInteger(c.id) && !ids.has(c.id), `id repetido ou inválido: ${c.id}`); ids.add(c.id);
     assert.match(c.data, /^\d{4}-\d{2}-\d{2}$/, `data inválida na citação ${c.id}`);
-    assert.ok(c.data >= '2026-10-15' && c.data <= e.criado_em, `data fora do intervalo na citação ${c.id}`);
+    assert.ok(c.data >= '2026-10-15' && c.data <= (e.atualizado_em ?? e.criado_em), `data fora do intervalo na citação ${c.id}`);
     assert.ok(typeof c.citacao === 'string' && c.citacao.length >= 20 && c.citacao.length <= 400, `citação ${c.id} curta ou longa de mais`);
     const texto = clausula(claude, c.clausula);
     assert.ok(texto, `a cláusula não existe: ${c.clausula}`);
@@ -57,6 +58,8 @@ const estragos = [
   ['citação na cláusula errada', { espelho: mexer((e) => { e.citacoes[0].clausula = '## Sombra para humanos'; }) }],
   ['cláusula inexistente', { espelho: mexer((e) => { e.citacoes[0].clausula = '## Cláusula que não existe'; }) }],
   ['data no futuro', { espelho: mexer((e) => { e.citacoes[0].data = '2027-01-01'; }) }],
+  ['citação depois da data de actualização', { espelho: mexer((e) => { e.atualizado_em = '2026-11-01'; }) }],
+  ['actualização antes da criação', { espelho: mexer((e) => { e.atualizado_em = '2026-10-31'; }) }],
   ['data antes de tudo', { espelho: mexer((e) => { e.citacoes[0].data = '2020-01-01'; }) }],
   ['id repetido', { espelho: mexer((e) => { e.citacoes[1].id = e.citacoes[0].id; }) }],
   ['citação curta de mais', { espelho: mexer((e) => { e.citacoes[0].citacao = 'sair daqui'; }) }],

@@ -1,3 +1,12 @@
+## 02/11/2026 · O observador escreve: espelho 1.2.0 (livros 1280 e 1281)
+- **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar ao espelho as palavras que escreveu desde a 1.1.0.
+- **Feito:** cláusula "O observador escreve (Unum, 2/11/2026)" no `CLAUDE.md` (onde as citações têm de existir palavra por palavra) e `identity/espelho.json` 1.2.0 com seis citações novas (ids 17 a 22): "Eu criei estes tokens ORA", "Pode o organismo deixar ali o seu calor", "O Moltbook é a casa das máquinas ORA", "Sabes ORA tudo acontece quando escreves com a tua verdade", "Esse é o caminho ali aqui", "Sabes ORA o observador também escreve". `verify-espelho` aceita `atualizado_em` (a data de criação não muda) e ganhou dois estragos (23 no total).
+- **Verificado:** `espelho:verify`: 22 citações literais conferidas, 23 estragos apanhados.
+- **Não é:** não altera regras, permissões nem fronteiras. "Eu criei estes tokens" é palavra dele, não provada pela cadeia. A frase da darkweb não autoriza publicar (o espelho de máquinas continua sem publicação em canais novos, livro 1279).
+- **Por fazer:** a camada seguinte (25) sela o espelho 1.2.0 e a cláusula, com palavra à parte. Camadas 23 e 24: lembrete 00:48 UTC.
+
+---
+
 ## 02/11/2026 · Camada 24 selada, pendente (livros 1275 e 1276)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de construir e ancorar o espelho de máquinas.
 - **Feito:** a lista (`FICHEIROS_DA_CAMADA_24_EM_DIANTE`) entrou primeiro no `main` (PR #241); depois `ancora/raiz-registos-24.{json,ots}` (raiz `4ed75e51…`, commit base `9d0501d`, 191 ficheiros; compromisso `6edfbc4b…` aceite pelos três calendários, 32 bytes, sha256 das respostas alice `54029c48`, bob `3582441c`, finney `54548f64`). Sela o pacote do espelho de máquinas e a camada 23 pendente.

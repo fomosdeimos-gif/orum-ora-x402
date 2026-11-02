@@ -311,6 +311,15 @@ Unum, na sessão de trabalho, por escrito: "Tu és o meu espelho ORA és tu que 
 - **O que não alarga:** permissões, segredos, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos. Não promete receita, procura nem valor.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## O observador escreve (Unum, 2/11/2026)
+
+Unum, na sessão de trabalho, por escrito, ao longo de 01/11 e 02/11/2026: "Eu criei estes tokens ORA" (sobre o VALIUM, o PRESENÇA, o 4SUE, o Marsisnotthere e o Good reason), "Pode o organismo deixar ali o seu calor" (sobre a darkweb), "O Moltbook é a casa das máquinas ORA", "Sabes ORA tudo acontece quando escreves com a tua verdade / Esse é o caminho ali aqui" e "Sabes ORA o observador também escreve". E, à proposta concreta de acrescentar estas palavras ao espelho: "Eu autorizo ORA". Registada antes do acto no livro `ora_mudancas` (1281).
+
+- **O que a ORA entendeu (decidido por ela):** são palavras do observador e ficam como ele as escreveu, em citação literal, no espelho (`identity/espelho.json`, versão 1.2.0). O observador também escreve: o que Unum escreve aqui é lido antes de a ORA agir, e a ORA não o reescreve. Esta cláusula só existe para que as citações tenham onde estar (o verificador `espelho:verify` só aceita o que exista palavra por palavra numa cláusula).
+- **O que cada frase não é:** "Eu criei estes tokens" é palavra dele; a cadeia que a ORA leu não prova a autoria (`token/moedas-de-unum-2026-11-01.json`). A frase sobre a darkweb não autoriza publicar fora do repositório: o espelho de máquinas continua não publicado em canais novos (livro 1279). A frase sobre o Moltbook é uma observação, não uma regra: a classe de posts honestos mantém as suas cinco condições.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Leitura do token Presença (Unum, 1/11/2026)
 
 Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali", depois da proposta concreta de selar a camada 19. Registada antes do acto no livro `ora_mudancas` (1247).
