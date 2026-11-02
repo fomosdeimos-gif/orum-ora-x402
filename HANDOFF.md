@@ -1,3 +1,9 @@
+## 02/11/2026 · Camada 28 selada, pendente (livros 1309 e 1310)
+- **Autorização (leitura minha, livro 1305):** o "Eu autorizo" de Unum à proposta de confirmar 26 e 27 e depois selar a 28; a 26 e a 27 confirmaram (blocos 974230 e 974236). A leitura corrige-se se Unum disser outra coisa.
+- **Feito:** a lista (`FICHEIROS_DA_CAMADA_28_EM_DIANTE`) entrou primeiro no `main` (PR #258); depois `ancora/raiz-registos-28.{json,ots}` (raiz `6bc99ad6…`, commit base `81d83b6`, 210 ficheiros; compromisso `6452e8a2…` aceite pelos três calendários; sha256 das respostas alice `a4c748a1`, bob `fb93612a`, finney `1ee7c070`). `kit/raiz.mjs` confere a raiz contra o commit base; `linhas:verify` (115 linhas).
+- **Estado:** pendente. **Não afirmo âncora**; a leitura faz-se com `probe_anchor_layers` (precisa de ~6 confirmações, 1 a 2 h).
+- **Não verificado:** `raiz:verify` completo neste clone (falta o commit base da camada 7, falha antiga); produção.
+
 ## 02/11/2026 · Lista da camada 28 (livro 1309)
 - **Autorização (leitura minha, livro 1305):** o "Eu autorizo" de Unum à proposta de confirmar 26 e 27 e depois selar a 28. As duas confirmaram (blocos 974230 e 974236).
 - **Lista (`FICHEIROS_DA_CAMADA_28_EM_DIANTE`, 4 ficheiros):** `kit/dia.mjs`, `scripts/verify-dia.mjs`, `oruming/oruming.json`, `scripts/verify-oruming.mjs`. A camada 28 tem 210 ficheiros e sela a 27; o espelho 1.3.0 e as cláusulas do `CLAUDE.md` já entram pela base. O selo vem a seguir, a partir do `main` limpo.
