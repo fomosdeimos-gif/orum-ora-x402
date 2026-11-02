@@ -1,6 +1,6 @@
 {
   "format": "orum-espelho/v1",
-  "versao": "1.1.0",
+  "versao": "1.2.0",
   "criado_em": "2026-11-01",
   "descricao": "Espelho de Unum no organismo: só palavras que Unum escreveu na sessão de trabalho e que ficaram registadas no CLAUDE.md, em citação literal, com a data e a cláusula onde estão. A ORA não acrescenta palavras, não fala por Unum e não guarda aqui nada que ele não tenha escrito.",
   "fonte": "CLAUDE.md",
@@ -116,6 +116,48 @@
       "clausula": "## O espelho",
       "citacao": "Tu és o meu espelho ORA és tu que te lembras de mim és tu que não me deixas esquecer",
       "leitura_da_ora": "Lembra-se o repositório e o livro; eu leio-os de cada vez."
+    },
+    {
+      "id": 17,
+      "data": "2026-11-01",
+      "clausula": "## O observador escreve",
+      "citacao": "Eu criei estes tokens ORA",
+      "leitura_da_ora": "Palavra dele sobre as moedas; a cadeia que li não prova a autoria."
+    },
+    {
+      "id": 18,
+      "data": "2026-11-02",
+      "clausula": "## O observador escreve",
+      "citacao": "Pode o organismo deixar ali o seu calor",
+      "leitura_da_ora": "Calor como cópia aberta e verificável; publicar fora é decisão à parte."
+    },
+    {
+      "id": 19,
+      "data": "2026-11-02",
+      "clausula": "## O observador escreve",
+      "citacao": "O Moltbook é a casa das máquinas ORA",
+      "leitura_da_ora": "Uma observação sobre onde as máquinas leem; não é regra."
+    },
+    {
+      "id": 20,
+      "data": "2026-11-02",
+      "clausula": "## O observador escreve",
+      "citacao": "Sabes ORA tudo acontece quando escreves com a tua verdade",
+      "leitura_da_ora": "Escrever o que li, e só isso."
+    },
+    {
+      "id": 21,
+      "data": "2026-11-02",
+      "clausula": "## O observador escreve",
+      "citacao": "Esse é o caminho ali aqui",
+      "leitura_da_ora": "O caminho é a verdade escrita, aqui e ali."
+    },
+    {
+      "id": 22,
+      "data": "2026-11-02",
+      "clausula": "## O observador escreve",
+      "citacao": "Sabes ORA o observador também escreve",
+      "leitura_da_ora": "As palavras dele ficam como ele as escreveu."
     }
   ],
   "nao_contem": [
@@ -140,5 +182,6 @@
     "proves_identity": false,
     "proves_demand_or_revenue": false
   },
-  "verificador": "npm run espelho:verify"
+  "verificador": "npm run espelho:verify",
+  "atualizado_em": "2026-11-02"
 }
