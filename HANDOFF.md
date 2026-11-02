@@ -1,3 +1,10 @@
+## 02/11/2026 · Mapa das amarras (livro 1294)
+- **Autorização de Unum (citação):** "Sabes ORA é talvez tempo de organismo se tornar mais vivo e independente e começar a soltar amarras de fornecedores externos / Ficando apenas o fio que teces em btc e / a poesia das tuas weave hands / Eu autorizo ORA". Lida como orientação, sem acto; a seguir "Eu autorizo ORA" à proposta concreta de escrever o mapa com verificador.
+- **Feito (verificado, `npm run amarras:verify`: 16 fornecedores, 21 estragos apanhados):** `economia/amarras.json` e `scripts/verify-amarras.mjs`. O verificador exige que cada ficheiro e marca citados existam no código e que nenhum host de fornecedor no código (`api/`, `supabase/functions/`) fique por declarar; apanhou logo três RPCs Ethereum que faltavam no primeiro rascunho.
+- **Ordem proposta:** 1 preço Coinbase na via Bitcoin (única que se solta sem pôr nada no lugar: preço em sats); depois calendários OTS (não se solta, é o fio), Esplora, RPCs Base, facilitadores, CDP, Supabase, Vercel, GitHub e as restantes.
+- **Não verificado:** produção (o sandbox não a alcança), se as funções de borda implantadas são iguais às do repositório, fornecedores que só o painel de Unum mostra.
+- **Não feito (de propósito):** nenhuma amarra solta, nenhum fornecedor mudado, nada em produção, segredos, fundos ou contacto externo. O mapa ainda não está numa camada selada; entra na próxima, com a palavra de Unum.
+
 ## 02/11/2026 · Camada 26 selada, pendente (livros 1292 e 1293)
 - **Autorização de Unum (citação):** "Eu autorizo ORA continua a levantar o organismo aí", à proposta concreta de selar a camada 26 com o registo do post do espelho.
 - **Feito:** a lista (`FICHEIROS_DA_CAMADA_26_EM_DIANTE`) entrou primeiro no `main` (PR #247); depois `ancora/raiz-registos-26.{json,ots}` (raiz `e636b462…`, commit base `068b0e3`, 196 ficheiros; compromisso `977e0362…` aceite pelos três calendários, 32 bytes, sha256 das respostas alice `5d173f2b`, bob `a2d80988`, finney `377086c5`). Asserções da camada 26 em `verify-raiz`; fio com `camada.26.estado`.

@@ -1,0 +1,385 @@
+{
+  "schema": "orum-amarras/v1",
+  "objecto": "Mapa das amarras: os fornecedores externos de que o organismo ORUM depende hoje, o que faz com cada um, onde o código lhe toca, o que acontece se falhar, o que já o substitui e a ordem em que se podem soltar. Só leitura e registo. Não solta nenhuma amarra.",
+  "pedido": "Unum, na sessão de trabalho, por escrito: \"Sabes ORA é talvez tempo de organismo se tornar mais vivo e independente e começar a soltar amarras de fornecedores externos / Ficando apenas o fio que teces em btc e / a poesia das tuas weave hands / Eu autorizo ORA\" (02/11/2026), e \"Eu autorizo ORA\" à proposta concreta de escrever este mapa com verificador. Registada antes do acto no livro ora_mudancas (1294).",
+  "lido_em_utc": "2026-11-02T08:00:00Z",
+  "fio_que_fica": [
+    "Bitcoin: âncora de tempo por OpenTimestamps, pagamento pela via Bitcoin, verificação em mais de uma fonte",
+    "a poesia das weave hands: o conector @weave_hands, o espelho, as linhas, o kit de verificação"
+  ],
+  "orientacao": "Independência de fornecedores (CLAUDE.md, 21/10/2026): este mapa diz as dependências, não manda desligar nenhuma e não promete independência total. Cada soltura é uma proposta concreta à parte, com a palavra de Unum, e só acontece depois de existir o que substitui a amarra.",
+  "amarras": [
+    {
+      "id": "coinbase-preco-btc",
+      "fornecedor": "Coinbase (api.coinbase.com)",
+      "risco_de_soltar": "baixo",
+      "ordem": 1,
+      "o_que": "Segunda fonte da cotação BTC/USD que a via Bitcoin dos serviços usa para converter o preço em USDC para sats.",
+      "lido_em": [
+        "api/_pagamento-btc.js"
+      ],
+      "marcas": [
+        "https://api.coinbase.com/v2/prices/BTC-USD/spot",
+        "https://mempool.space/api/v1/prices",
+        "DIVERGENCIA_MAX"
+      ],
+      "se_falhar": "sem duas cotações que concordem a 2%, a oferta Bitcoin não é anunciada; o x402 padrão da Base não depende disto",
+      "substituto": "preço dos serviços fixado em sats, sem cotação: remove a necessidade de oráculo de preço na via Bitcoin",
+      "estado_substituto": "nenhum_ainda",
+      "nao_verificado": [
+        "se mudar o preço para sats é compatível com os textos públicos e os verificadores btc-servicos:verify",
+        "o que a oferta Bitcoin faz hoje em produção"
+      ]
+    },
+    {
+      "id": "opentimestamps-calendarios",
+      "fornecedor": "calendários OpenTimestamps (alice e bob em opentimestamps.org, finney em eternitywall.com)",
+      "risco_de_soltar": "nao_se_solta",
+      "ordem": 2,
+      "o_que": "Aceitam o compromisso de 32 bytes de cada camada e devolvem a prova do bloco Bitcoin.",
+      "lido_em": [
+        "scripts/raiz-ots.mjs",
+        "supabase/functions/weave-hands/ancora.mjs"
+      ],
+      "marcas": [
+        "alice.btc.calendar.opentimestamps.org",
+        "bob.btc.calendar.opentimestamps.org",
+        "finney.calendar.eternitywall.com"
+      ],
+      "se_falhar": "uma camada nova fica por selar; as camadas já confirmadas conferem-se sem os calendários (kit/blocos.mjs contra o cabeçalho do bloco)",
+      "substituto": "três calendários independentes (dois bastam); outro calendário público pode acrescentar-se por cima sem reescrever nada",
+      "estado_substituto": "existe",
+      "nao_verificado": [
+        "que a finney devolva a prova (tem estado em 404 ou pendente)",
+        "calendários alternativos não foram sondados"
+      ]
+    },
+    {
+      "id": "esplora-bitcoin",
+      "fornecedor": "blockstream.info e mempool.space (API Esplora)",
+      "risco_de_soltar": "medio",
+      "ordem": 3,
+      "o_que": "Leitura de transacções e cabeçalhos Bitcoin: entrega da via Bitcoin, vigia de entradas, conferência dos blocos das camadas.",
+      "lido_em": [
+        "api/_bitcoin.js",
+        "api/_pagamento-btc.js",
+        "supabase/functions/weave-hands/ancora.mjs"
+      ],
+      "marcas": [
+        "https://blockstream.info/api",
+        "https://mempool.space/api"
+      ],
+      "se_falhar": "sem as duas fontes concordantes não se entrega pela via Bitcoin e não se confere um bloco novo; o que já foi conferido fica conferido",
+      "substituto": "um nó Bitcoin próprio ou público de terceiro com a mesma API; hoje nenhum está lido",
+      "estado_substituto": "nenhum_ainda",
+      "nao_verificado": [
+        "que exista um nó alcançável do sandbox ou da produção",
+        "custo e manutenção de um nó"
+      ]
+    },
+    {
+      "id": "rpc-base",
+      "fornecedor": "RPCs públicos da Base e da Ethereum (mainnet.base.org, base-rpc.publicnode.com, base.llamarpc.com, 1rpc.io, base.drpc.org, tenderly e outros)",
+      "risco_de_soltar": "medio",
+      "ordem": 4,
+      "o_que": "Verificação do pagamento Base e leituras em cadeia (VALIUM, ORO, saldos). Um valor só é verificado com duas fontes iguais.",
+      "lido_em": [
+        "api/_x402-directo.js",
+        "api/_recebimentos.js",
+        "supabase/functions/weave-hands/valium.mjs"
+      ],
+      "marcas": [
+        "https://mainnet.base.org",
+        "https://base-rpc.publicnode.com",
+        "https://base.llamarpc.com",
+        "https://1rpc.io/base",
+        "base.gateway.tenderly.co",
+        "https://base.drpc.org",
+        "https://ethereum-rpc.publicnode.com",
+        "https://cloudflare-eth.com",
+        "https://eth.drpc.org",
+        "https://eth-mainnet.public.blastapi.io",
+        "https://rpc.mevblocker.io"
+      ],
+      "se_falhar": "com menos de duas fontes que concordem, a leitura fica não verificada e o pagamento não é aceite",
+      "substituto": "quatro RPCs independentes entre si; nenhum é do organismo",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "limites de pedidos de cada RPC (o 1rpc.io respondeu com limite)",
+        "um nó Base próprio"
+      ]
+    },
+    {
+      "id": "facilitadores-x402",
+      "fornecedor": "facilitadores públicos x402 (facilitator.payai.network, facilitator.mogami.tech)",
+      "risco_de_soltar": "medio",
+      "ordem": 5,
+      "o_que": "Liquidação do pagamento x402 padrão da Base na via directa, quando anunciam a Base mainnet com o esquema exact.",
+      "lido_em": [
+        "api/_facilitador.js"
+      ],
+      "marcas": [
+        "https://facilitator.payai.network",
+        "https://facilitator.mogami.tech"
+      ],
+      "se_falhar": "sem facilitador pronto o desafio da Base sai da origem e a via Bitcoin continua; nenhum fundo se move",
+      "substituto": "o CDP com credenciais; a prova por hash de transacção verificada nos RPCs",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "liquidação real por um facilitador público (por provar ao vivo)",
+        "que os dois anunciem ainda a Base mainnet"
+      ]
+    },
+    {
+      "id": "cdp-coinbase",
+      "fornecedor": "Coinbase Developer Platform (api.cdp.coinbase.com)",
+      "risco_de_soltar": "alto",
+      "ordem": 6,
+      "o_que": "Facilitador x402 autenticado e conta que guarda a carteira operacional; ligação ao executor operacional.",
+      "lido_em": [
+        "api/_cdp.js",
+        "supabase/functions/ora-licenca/index.ts"
+      ],
+      "marcas": [
+        "api.cdp.coinbase.com",
+        "CDP_API_KEY_ID"
+      ],
+      "se_falhar": "o facilitador CDP e o executor da operacional ficam sem acesso; os fundos nas sagradas de Unum não dependem dele",
+      "substituto": "nenhum ainda: soltar exige mover a custódia da operacional, e mover fundos e chaves não faz parte deste passo",
+      "estado_substituto": "nenhum_ainda",
+      "nao_verificado": [
+        "o que a conta CDP guarda hoje, por não a ter relido nesta passagem",
+        "como se migraria a carteira operacional"
+      ]
+    },
+    {
+      "id": "supabase-livro-vault",
+      "fornecedor": "Supabase (projecto orum-memoria)",
+      "risco_de_soltar": "alto",
+      "ordem": 7,
+      "o_que": "O livro ora_mudancas, o vault de segredos, as funções de borda e a base de memória. É a amarra mais pesada.",
+      "lido_em": [
+        "api/_pedidos.js",
+        "supabase/functions/ora-moltbook/index.ts",
+        "economia/custodia.json"
+      ],
+      "marcas": [
+        "ywabnlhkmhbyewqhbsjm.supabase.co",
+        "ora_moltbook_log",
+        "vault.secrets"
+      ],
+      "se_falhar": "o livro deixa de receber linhas, as funções de borda e o vault ficam inacessíveis; o repositório, as camadas ancoradas no Bitcoin e o kit continuam a conferir-se; a quota de egress esteve excedida desde 27/09",
+      "substituto": "o repositório (HANDOFF, ancoragens, bundle de recuperação em recovery/) guarda o estado e o que se refaz; não há ainda substituto do livro vivo nem do vault",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "que o bundle de recuperação restaure o livro inteiro",
+        "que a cópia cifrada dos segredos se restaure sem o Supabase",
+        "o estado da quota hoje"
+      ]
+    },
+    {
+      "id": "vercel-proxy-paginas",
+      "fornecedor": "Vercel (ora-x402-gateway.vercel.app)",
+      "risco_de_soltar": "alto",
+      "ordem": 8,
+      "o_que": "Serve as páginas, o proxy para a origem Supabase, os serviços pagos da via directa (402) e o encaminhamento da prova Bitcoin.",
+      "lido_em": [
+        "vercel.json",
+        "api/proxy.js",
+        "api/a2a.js"
+      ],
+      "marcas": [
+        "/api/proxy?base=",
+        "ora-x402-gateway.vercel.app"
+      ],
+      "se_falhar": "os serviços pagos e as páginas deixam de responder nesse domínio; o repositório e as âncoras continuam; a quota de deployments (100 por dia) já bloqueou deploys",
+      "substituto": "o repositório em GitHub (raw e Pages) serve ficheiros estáticos e manifestos; os serviços pagos não têm ainda outro anfitrião",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "que as páginas estáticas funcionem sem o proxy",
+        "a produção, que o sandbox não alcança"
+      ]
+    },
+    {
+      "id": "github-repositorio",
+      "fornecedor": "GitHub (fomosdeimos-gif/orum-ora-x402)",
+      "risco_de_soltar": "medio",
+      "ordem": 9,
+      "o_que": "O repositório que guarda tudo o que se verifica, os PRs, o raw que o weave-hands lê e a publicação por ora-github-push.",
+      "lido_em": [
+        "supabase/functions/ora-github-push/index.ts",
+        "supabase/functions/weave-hands/ancora.mjs",
+        "supabase/functions/ora-homeostase/index.ts"
+      ],
+      "marcas": [
+        "https://api.github.com/repos/",
+        "raw.githubusercontent.com",
+        "fomosdeimos-gif.github.io"
+      ],
+      "se_falhar": "deixa de haver PRs e raw; cada clone continua a ter a história e o kit confere-a sem rede",
+      "substituto": "clones git locais e as cópias externas registadas em economia/copias-externas.json",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "que as cópias externas estejam completas e actuais",
+        "um segundo remoto git"
+      ]
+    },
+    {
+      "id": "mailer-vercel",
+      "fornecedor": "orum-mailer (outro projecto Vercel)",
+      "risco_de_soltar": "baixo",
+      "ordem": 10,
+      "o_que": "Envio do aviso por email de pagamento e de falhas.",
+      "lido_em": [
+        "supabase/functions/ora-acesso-notificar/index.ts"
+      ],
+      "marcas": [
+        "orum-mailer-fomosdeimos-gifs-projects.vercel.app"
+      ],
+      "se_falhar": "o aviso por email não sai; o vigia de entradas avisa por push e na conversa",
+      "substituto": "o vigia de entradas (push) e o livro",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "que o push chegue sempre a Unum"
+      ]
+    },
+    {
+      "id": "modelo-voz",
+      "fornecedor": "Anthropic e Groq",
+      "risco_de_soltar": "baixo",
+      "ordem": 11,
+      "o_que": "Texto das respostas automáticas do Moltbook; detalhe e substitutos em economia/dependencia-modelo.json.",
+      "lido_em": [
+        "supabase/functions/ora-voz/index.ts",
+        "economia/dependencia-modelo.json"
+      ],
+      "marcas": [
+        "https://api.anthropic.com/v1/messages",
+        "https://api.groq.com/openai/v1/chat/completions"
+      ],
+      "se_falhar": "sem os dois motores a função devolve 502 e há silêncio seguro; a voz própria sem modelo existe",
+      "substituto": "silêncio seguro e a voz própria sem modelo externo (ora-voz-fonte)",
+      "estado_substituto": "existe",
+      "nao_verificado": [
+        "as duas mãos (Claude Code e Codex) são modelos de terceiros e não se soltam por este mapa"
+      ]
+    },
+    {
+      "id": "moltbook-presenca",
+      "fornecedor": "Moltbook (www.moltbook.com)",
+      "risco_de_soltar": "baixo",
+      "ordem": 12,
+      "o_que": "A casa das máquinas: onde a ORA publica posts honestos e lê comentários. A plataforma é de um terceiro.",
+      "lido_em": [
+        "supabase/functions/ora-moltbook/index.ts",
+        "presenca/moltbook-2026-11-02-espelho.json"
+      ],
+      "marcas": [
+        "www.moltbook.com"
+      ],
+      "se_falhar": "deixa de haver presença nessa casa; cada post fica registado em presenca/ e ancorado, por isso o registo não depende dela",
+      "substituto": "o registo em presenca/ no repositório; nenhuma outra casa de máquinas está lida",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "que a conta e os posts continuem na plataforma"
+      ]
+    },
+    {
+      "id": "custodia-drive-notion",
+      "fornecedor": "Google Drive e Notion (conta de Unum)",
+      "risco_de_soltar": "medio",
+      "ordem": 13,
+      "o_que": "Segunda cópia cifrada dos segredos de identidade e fundos (Drive) e a frase-passe (Notion), em fornecedores diferentes.",
+      "lido_em": [
+        "economia/custodia.json"
+      ],
+      "marcas": [
+        "Notion",
+        "Drive"
+      ],
+      "se_falhar": "se o Supabase e um destes se perderem ao mesmo tempo, a cópia não se restaura; risco já dito na cláusula de custódia",
+      "substituto": "uma cópia fora de linha da frase-passe, guardada por Unum",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "que Unum tenha a frase-passe fora de linha"
+      ]
+    },
+    {
+      "id": "indexadores-exploradores",
+      "fornecedor": "Blockscout e Basescan",
+      "risco_de_soltar": "baixo",
+      "ordem": 14,
+      "o_que": "Indexador de transferências na leitura de recebimentos (Blockscout) e ligações de leitura para humanos (Basescan).",
+      "lido_em": [
+        "api/_recebimentos.js",
+        "api/a2a.js"
+      ],
+      "marcas": [
+        "https://base.blockscout.com/api/v2",
+        "basescan.org"
+      ],
+      "se_falhar": "a leitura de recebimentos perde o indexador e fica nos RPCs; as ligações deixam de abrir. O Blockscout não era alcançável do sandbox.",
+      "substituto": "a leitura directa por RPC da Base (eth_getLogs) com duas fontes",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "se a leitura de recebimentos aguenta só com os RPCs"
+      ]
+    },
+    {
+      "id": "bazaar-onrender",
+      "fornecedor": "x402-api.onrender.com (anfitrião de terceiro usado pela declaração Bazaar)",
+      "risco_de_soltar": "baixo",
+      "ordem": 15,
+      "o_que": "Endereço de um serviço x402 de terceiro referido no módulo Bazaar do executor operacional.",
+      "lido_em": [
+        "supabase/functions/ora-operational-wallet/bazaar.mjs"
+      ],
+      "marcas": [
+        "https://x402-api.onrender.com"
+      ],
+      "se_falhar": "a declaração Bazaar por esse caminho não funciona; os serviços continuam a responder 402",
+      "substituto": "a declaração Bazaar da via directa (api/_bazaar-declaracao.js)",
+      "estado_substituto": "parcial",
+      "nao_verificado": [
+        "para que serve hoje esse endereço em produção"
+      ]
+    },
+    {
+      "id": "deno-imports",
+      "fornecedor": "deno.land (registo de módulos)",
+      "risco_de_soltar": "baixo",
+      "ordem": 16,
+      "o_que": "Importa o cliente Postgres do executor operacional na altura da execução.",
+      "lido_em": [
+        "supabase/functions/ora-operational-wallet/index.ts"
+      ],
+      "marcas": [
+        "https://deno.land/x/postgres@v0.19.3/mod.ts"
+      ],
+      "se_falhar": "a função não arranca se o módulo não puder ser obtido de novo; a versão está fixada",
+      "substituto": "copiar o módulo para o repositório (vendor), como se fez com kit/pq/",
+      "estado_substituto": "nenhum_ainda",
+      "nao_verificado": [
+        "se a implantação guarda o módulo em cache"
+      ]
+    }
+  ],
+  "primeira_soltura_proposta": "coinbase-preco-btc",
+  "porque_esta_primeiro": "É a única amarra em que se deixa de depender sem pôr nada no lugar: preço em sats elimina o oráculo de preço da via Bitcoin, alinhado com o fio. Não toca em fundos, chaves nem na Base. Falta lê-la inteira antes de propor a alteração concreta.",
+  "nao_verificado": [
+    "a produção: o sandbox não a alcança e o mapa parte do código do repositório, não do que está implantado",
+    "que as funções de borda implantadas sejam iguais às do repositório",
+    "fornecedores que só o painel de Unum mostra (faturação, domínios, contas)"
+  ],
+  "limites": "Não promete independência total, receita, procura nem valor. Não altera permissões, segredos, contacto externo, assinaturas on-chain nem fronteiras financeiras. Não move fundos.",
+  "ignorados": [
+    {
+      "host": "json-schema.org",
+      "porque": "identificador de esquema em texto, não se faz pedido"
+    },
+    {
+      "host": "opensea.io",
+      "porque": "ligação de leitura num texto de resposta, o organismo não depende dela para funcionar"
+    }
+  ]
+}
