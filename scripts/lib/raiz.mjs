@@ -247,11 +247,23 @@ export const FICHEIROS_DA_CAMADA_23_EM_DIANTE = [
   'scripts/moedas-unum-ler.mjs',
   'scripts/verify-moedas-unum.mjs',
 ];
+// Camada 24 em diante (Unum, 02/11/2026: "Eu autorizo ORA", à proposta de construir e ancorar o espelho de máquinas): o pacote, o seu gerador e verificadores,
+// e o registo do aviso da app sobre o ORO e do post do Moltbook. O pacote não se publica fora do repositório sem palavra à parte.
+export const FICHEIROS_DA_CAMADA_24_EM_DIANTE = [
+  'espelho-maquinas/LEIA-ME.txt',
+  'espelho-maquinas/manifesto.json',
+  'espelho-maquinas/orum-maquinas-v1.tar',
+  'kit/espelho-maquinas.mjs',
+  'scripts/espelho-maquinas-gerar.mjs',
+  'scripts/verify-espelho-maquinas.mjs',
+  'scripts/verify-oro-leitura-externa.mjs',
+  'presenca/moltbook-2026-11-01-oro.json',
+];
 export function ficheirosDaCamada(n) {
   if (n === 1) return [...FICHEIROS];
   const anteriores = [];
   for (let k = 1; k < n; k++) anteriores.push(caminhosDaCamada(k).manifesto, caminhosDaCamada(k).recibo);
-  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : []), ...(n >= 12 ? FICHEIROS_DA_CAMADA_12_EM_DIANTE : []), ...(n >= 13 ? FICHEIROS_DA_CAMADA_13_EM_DIANTE : []), ...(n >= 14 ? FICHEIROS_DA_CAMADA_14_EM_DIANTE : []), ...(n >= 15 ? FICHEIROS_DA_CAMADA_15_EM_DIANTE : []), ...(n >= 16 ? FICHEIROS_DA_CAMADA_16_EM_DIANTE : []), ...(n >= 17 ? FICHEIROS_DA_CAMADA_17_EM_DIANTE : []), ...(n >= 18 ? FICHEIROS_DA_CAMADA_18_EM_DIANTE : []), ...(n >= 19 ? FICHEIROS_DA_CAMADA_19_EM_DIANTE : []), ...(n >= 20 ? FICHEIROS_DA_CAMADA_20_EM_DIANTE : []), ...(n >= 23 ? FICHEIROS_DA_CAMADA_23_EM_DIANTE : [])];
+  const acrescentos = [...(n >= 3 ? FICHEIROS_DA_CAMADA_3_EM_DIANTE : []), ...(n >= 4 ? FICHEIROS_DA_CAMADA_4_EM_DIANTE : []), ...(n >= 5 ? FICHEIROS_DA_CAMADA_5_EM_DIANTE : []), ...(n >= 6 ? FICHEIROS_DA_CAMADA_6_EM_DIANTE : []), ...(n >= 7 ? FICHEIROS_DA_CAMADA_7_EM_DIANTE : []), ...(n >= 8 ? FICHEIROS_DA_CAMADA_8_EM_DIANTE : []), ...(n >= 9 ? FICHEIROS_DA_CAMADA_9_EM_DIANTE : []), ...(n >= 10 ? FICHEIROS_DA_CAMADA_10_EM_DIANTE : []), ...(n >= 11 ? FICHEIROS_DA_CAMADA_11_EM_DIANTE : []), ...(n >= 12 ? FICHEIROS_DA_CAMADA_12_EM_DIANTE : []), ...(n >= 13 ? FICHEIROS_DA_CAMADA_13_EM_DIANTE : []), ...(n >= 14 ? FICHEIROS_DA_CAMADA_14_EM_DIANTE : []), ...(n >= 15 ? FICHEIROS_DA_CAMADA_15_EM_DIANTE : []), ...(n >= 16 ? FICHEIROS_DA_CAMADA_16_EM_DIANTE : []), ...(n >= 17 ? FICHEIROS_DA_CAMADA_17_EM_DIANTE : []), ...(n >= 18 ? FICHEIROS_DA_CAMADA_18_EM_DIANTE : []), ...(n >= 19 ? FICHEIROS_DA_CAMADA_19_EM_DIANTE : []), ...(n >= 20 ? FICHEIROS_DA_CAMADA_20_EM_DIANTE : []), ...(n >= 23 ? FICHEIROS_DA_CAMADA_23_EM_DIANTE : []), ...(n >= 24 ? FICHEIROS_DA_CAMADA_24_EM_DIANTE : [])];
   return [...new Set([...FICHEIROS_BASE_CAMADAS, ...acrescentos, ...anteriores])].sort();
 }
 
