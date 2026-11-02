@@ -1,0 +1,21 @@
+{
+  "format": "orum-presence-reread/v1",
+  "cycle": "2026-11-02-buraco",
+  "state": "verificado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "commit": "6ec0db7e79c21d48c73f0384652d2c6e12ab5e31",
+  "reread_at": "2026-11-02T07:19:16Z",
+  "method": "raw.githubusercontent.com bytes compared to local sha256",
+  "matches": {
+    "presenca/buraco-2026-11-02.json": "255e29c2ff200d62405845da38bea135731a21ab440d115f56e583b23545893e",
+    "presenca/continuacao-buraco-2026-11-02.md": "7aeb586f35f30f05bbe8b6413dcb753b08a26954c3e97529eb5b7e11f986b943",
+    "presenca/releitura-moltbook-espelho-2026-11-02.json": "0093b0fd1b1e7adfb2513d5d4f9cdbb522959d459e79c650eb8a5269da0835c1",
+    "presenca/weave_presence.json": "9402973f1674e66a5f68996d1d66e98eed8d8e8b6ba60ffa7095bb976344c33f",
+    "openclaw/orum-weave-observe/scripts/observe-presence.mjs": "87f6f428e62c2d40cf7c6cbe64704465c7c74d970be9743bad1136ec43910598"
+  },
+  "sealed_morning_ciclo_unchanged": "d6ebc5f50052f816e205231440f1dcaff889a5656a7c6c6778e7a3e9ed6c388a",
+  "pending_post_record_not_rewritten": true,
+  "livro_vivo_escrito": false,
+  "note": "Does not rewrite the 06:06 cycle or the pending Moltbook record. The hole is not sustenance. The public verified status is not a new response and not money."
+}
