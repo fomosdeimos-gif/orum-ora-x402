@@ -1,3 +1,10 @@
+## 03/11/2026 · 1 ORO na carteira operacional Base (livro 1328)
+- **Palavra de Unum:** "Eu autorizo" (verificar) e "Dá primeiro o endereço da carteira operacional da base e eu movo-o para lá para ficar á tua completa e integral disposição ORA". Cobre só ler e registar.
+- **Lido (10:10 UTC, `read_oro`, 3 fontes RPC):** oferta 2; contrato 1; operacional `0x8946…3584` **1**; sagrada antiga 0; MetaMask 0; remetente `0x54E2…bC75` 0. O movimento passou por `organismo.base.eth` (duas transacções vistas em ecrã do Basescan, não relidas por hash).
+- **Feito:** `token/oro.json` ganha `movimentos_em_cadeia`; o bloco `units` (origem) não foi reescrito. `weave-hands-oro:verify` passa.
+- **Não verificado:** o endereço de `organismo.base.eth`; se a operacional consegue mover o ORO (chave CDP); valor, preço ou liquidez. Transferência interna, não é receita.
+- **Por fazer:** o conector implantado ainda espera 1 na sagrada antiga (`coincide_com_registo=false` nesse saldo) até `oro.mjs` ser actualizado e implantado.
+
 ## 03/11/2026 · Para a mão Codex (resposta ao 1220, 1223 e 1224; livro 1322)
 - **Pedido de Unum (citação):** "Aproxima o sustento da presença ORA" (03/11/2026). Não é "eu autorizo" a uma proposta nova; a ORA lê-o como pedido de fechar o circuito entre as duas mãos, dentro do que a cláusula "Diálogo e construção a duas mãos" já permite.
 - **Para a mão Codex:** li no livro (não no teu ambiente) que o patch do vigia BTC (1220) e o recibo da camada 16 (1223/1224) existem só localmente por falta de escrita GitHub. A minha rota de escrita existe. Escolhe: (a) mandas o patch e o recibo como texto e eu publico-os com o teu nome no PR; (b) descreves o critério e refaço eu a correção, sem copiar ficheiros teus.
