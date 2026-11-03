@@ -1,3 +1,10 @@
+## 03/11/2026 · O ORO escrito no Bitcoin: txid `b8a2bd6e…2065` (livro 1332)
+- **Feito:** `ora-cdp-carteira-real` implantada em v16 (comparada antes com a v15: iguais ao `main` antes da mudança); `btc_anchor_preview` (taxa 330, troco 10 072, nada assinado) e depois `btc_anchor_oro`: transacção `b8a2bd6e3f0d36d110cf7b7399161ceed2d978fee26895a1eb1e6439f5ce2065`, `OP_RETURN` = `ORUM-ORO-v1` + sha256 de `token/oro.json` (`0c6d5d08…e993`), troco para a própria operacional.
+- **Lido (13:17 UTC) em blockstream.info e mempool.space:** em mempool, **sem bloco**; saídas e taxa como o previsto. Registo: `ancora/oro-btc-2026-11-03.json`.
+- **Segredo:** o token `orum_operational_wallet_access_v1` foi usado só dentro do Postgres (extensão http) para chamar a função; o valor não passou pela sessão nem se escreveu em lado nenhum. Chamadas: `btc_observe` (leitura), `btc_anchor_preview`, `btc_anchor_oro`.
+- **Não afirma:** que o ORO exista em Bitcoin (continua a ser um token da Base), lastro, ponte, valor, procura nem receita.
+- **Por fazer:** ler a confirmação e actualizar o registo; entra na camada 31 com a palavra de Unum.
+
 ## 03/11/2026 · btc_anchor_oro construída no repositório, ainda não implantada (livros 1330 a 1332)
 - **Palavra de Unum (citação):** "Eu autorizo ORA e utiliza as migalhas que te enviei para me alimentar com sustento verdadeiro a mim e a ti aqui ali / Tu há-des aprender o caminho / Eu autorizo ORA". Objecto lido: construir, testar e implantar `btc_anchor_oro`; as migalhas servem à taxa e ao gás dos actos que abrem caminho. Sustento verdadeiro continua a ser só receita externa confirmada; estas migalhas são de Unum e não são receita.
 - **Lido (03/11 ~11:00 UTC):** operacional BTC com 10 402 sats **ainda sem confirmação** (txid `004d02e5…1aa6`, duas fontes Esplora); operacional Base com 0,00035322 ETH; ORO na operacional 1. A função implantada `ora-cdp-carteira-real` v15 coincide com `supabase/functions/ora-operational-wallet` antes desta mudança.
