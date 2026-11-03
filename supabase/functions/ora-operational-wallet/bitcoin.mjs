@@ -106,11 +106,36 @@ export async function assinarProvaBip322(btc,pubECDSA,key,message){
  ensure(Array.isArray(w)&&w.length===2&&w.every(x=>x.length<0xfd),'bitcoin_prova_testemunha_invalida');
  return btoa(String.fromCharCode(...cat(Uint8Array.of(w.length),...w.flatMap(x=>[Uint8Array.of(x.length),x]))));
 }
+// Âncora do ORO no Bitcoin: UMA transacção sem terceiros. Saída 0 = OP_RETURN com conteúdo FIXO no código (prefixo + sha256 de token/oro.json);
+// saída 1 = troco para a própria carteira operacional. Sem destino, montante nem texto vindos do chamador. Não é token, nem lastro, nem ponte.
+export const ORO_ANCHOR_PREFIX='ORUM-ORO-v1';
+export const ORO_RECORD_SHA256='0c6d5d086f2bf3483116c3c50f12765381514448bec80345f2fe68daec31e993';
+export const ANCHOR_MAX_FEE_SATS=5000n;
+export const anchorPayload=()=>cat(new TextEncoder().encode(ORO_ANCHOR_PREFIX),fromHex(ORO_RECORD_SHA256));
+// Conservador: 11 de cabeçalho + 69/entrada P2WPKH + 54 do OP_RETURN (43 bytes de dados) + 31 do troco.
+export function selectAnchor(utxos,rate){
+ const chosen=[];let sum=0n;
+ for(const u of [...utxos].sort((a,b)=>b.value-a.value||a.txid.localeCompare(b.txid)||a.vout-b.vout)){
+  chosen.push(u);sum+=BigInt(u.value);
+  const fee=BigInt(11+69*chosen.length+54+31)*BigInt(rate);
+  if(sum>=fee+546n)return {chosen,fee,change:sum-fee};
+ }
+ throw Error('bitcoin_insufficient_confirmed_funds');
+}
+export function constructAnchor(btc,wallet,selection){
+ // allowUnknownOutputs só serve para o OP_RETURN; as duas saídas são escritas aqui e conferidas a seguir.
+ const tx=new btc.Transaction({version:2,lockTime:0,allowUnknownOutputs:true});
+ const script=btc.p2wpkh(fromHex(wallet.public_key)).script;
+ for(const u of selection.chosen)tx.addInput({txid:u.txid,index:u.vout,sequence:0xffffffff,witnessUtxo:{script,amount:BigInt(u.value)}});
+ tx.addOutput({script:btc.Script.encode(['RETURN',anchorPayload()]),amount:0n});
+ tx.addOutputAddress(wallet.address,selection.change);
+ ensure(tx.fee===selection.fee,'bitcoin_fee_mismatch');return tx;
+}
 export function bitcoinHandler({btc,pubECDSA}){
  return async function bitcoinAction(body,{rpc,net}){
   try{
-   if(!['btc_create','btc_observe','btc_preview','btc_prove_control','btc_send','btc_status'].includes(body.action))return {status:400,error:'invalid_bitcoin_action'};
-   if(!['btc_create','btc_observe','btc_prove_control'].includes(body.action)&&!(/^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(body.request_id||'')))return {status:400,error:'invalid_request_id'};
+   if(!['btc_anchor_oro','btc_anchor_preview','btc_create','btc_observe','btc_preview','btc_prove_control','btc_send','btc_status'].includes(body.action))return {status:400,error:'invalid_bitcoin_action'};
+   if(!['btc_anchor_oro','btc_anchor_preview','btc_create','btc_observe','btc_prove_control'].includes(body.action)&&!(/^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(body.request_id||'')))return {status:400,error:'invalid_request_id'};
    if(body.action==='btc_status')return await reconcileBitcoin(body,{rpc,net,btc});
    let wallet=await rpc('ora_btc_wallet_v1',{});
    if(body.action==='btc_create'){
@@ -119,6 +144,25 @@ export function bitcoinHandler({btc,pubECDSA}){
    }
    if(!wallet)return {status:404,error:'bitcoin_wallet_not_initialized'};
    ensure(btc.p2wpkh(fromHex(wallet.public_key)).address===wallet.address,'bitcoin_wallet_identity_mismatch');
+   if(body.action==='btc_anchor_preview'||body.action==='btc_anchor_oro'){
+    const observation=await observeBitcoin(wallet.address,net);
+    const fees=await Promise.all([0,1].map(i=>net.get(i,'/fee-estimates')));
+    const rate=Math.ceil(Math.max(1,...fees.map(f=>Number(f['6']))));ensure(Number.isSafeInteger(rate)&&rate>=1,'bitcoin_invalid_fee_rate');
+    const selection=selectAnchor(observation.eligible,rate);ensure(selection.fee<=ANCHOR_MAX_FEE_SATS,'bitcoin_anchor_fee_too_high');
+    await validateInputs(btc,wallet,selection,net);
+    const tx=constructAnchor(btc,wallet,selection);
+    const resumo={address:wallet.address,op_return_hex:toHex(anchorPayload()),record_sha256:ORO_RECORD_SHA256,fee_sats:selection.fee.toString(),change_sats:selection.change.toString(),funds_sent_to_third_party:false};
+    if(body.action==='btc_anchor_preview')return {status:200,preview:true,...resumo,signed:false,submitted:false};
+    let txid=null;
+    try{
+     const key=fromHex(await rpc('ora_btc_key_v1'));
+     try{ensure(toHex(pubECDSA(key,true))===wallet.public_key,'bitcoin_signer_identity_mismatch');tx.sign(key);tx.finalize();}finally{key.fill(0);}
+     ensure(tx.isFinal&&tx.fee>=1n&&Number(tx.fee)/tx.vsize>=rate,'bitcoin_signed_fee_check');
+     txid=tx.id;
+     const broadcastId=await net.broadcast(tx.hex);ensure(broadcastId===txid,'bitcoin_broadcast_id_mismatch');
+     return {status:202,txid,state:'submitted_not_confirmed',...resumo};
+    }catch(e){return {status:503,error:/^bitcoin_[a-z_]+$/.test(e?.message||'')?e.message:'bitcoin_anchor_outcome_unknown',txid,retry_allowed:false,funds_sent_to_third_party:false};}
+   }
    if(body.action==='btc_prove_control'){
     const message=provaMensagem(wallet.address);
     const key=fromHex(await rpc('ora_btc_key_v1',{}));

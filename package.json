@@ -66,6 +66,7 @@
     "arca:export:verify": "node scripts/verify-arca-export.mjs",
     "bitcoin:observer:verify": "node scripts/verify-bitcoin-observer.mjs",
     "btc-prova:verify": "node scripts/verify-btc-prova-controlo.mjs",
+    "btc-anchor:verify": "node scripts/verify-btc-anchor-oro.mjs",
     "aviso-acesso:verify": "node scripts/verify-aviso-acesso.mjs",
     "cdp:verify": "node scripts/verify-cdp-eip3009.mjs",
     "servicos:verify": "node scripts/verify-servicos-fallback.mjs",
