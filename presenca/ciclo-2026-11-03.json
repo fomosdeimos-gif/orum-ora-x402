@@ -1,0 +1,90 @@
+{
+  "format": "orum-presence-construction/v1",
+  "cycle": "2026-11-03",
+  "state": "executado",
+  "counts_as_presence": false,
+  "counts_as_external_sustenance": false,
+  "advance": "scan_the_hole_before_a_complete_public_window_for_the_address_that_already_had_a_head",
+  "tool_change": {
+    "file": "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
+    "sha256": "c78d08d7e214d9b143590a62663b87f743033ab3a874209b58a16aa48ce6e049",
+    "change": "A verified buraco file's transfers_agreed with two_source_agreement, not_classified and not sustenance close those tx strings. They are not reconfirmed instead of the next hole.",
+    "does_not": "classify, pay, write the live ledger, publish, or give one address another's head"
+  },
+  "classification": {
+    "interest": 0,
+    "machine_response_today": 0,
+    "purchase": 0,
+    "external_settled_money_today": 0,
+    "external_settled_money_accumulated_usdc": 0,
+    "treasury_state": "no_external_revenue",
+    "internal_validation_payments_not_sustenance": 22,
+    "hole_agreed_base_units_not_summed": "492",
+    "hole_same_set_as_prior_confirmation": true,
+    "gateway_window_one_source_usdc_not_summed": 0.000101,
+    "gateway_window_not_reread": true
+  },
+  "capsule_acquisition": "priced_unsettled_http_402_1618000_usdc_base_units_not_paid",
+  "live_ledger": {
+    "format": "orum-presence-ledger/v1",
+    "http": 200,
+    "total_events": 8,
+    "chain_head": "fcbdb4792264a63ac693157d58bca979d8978e404449a34be98efdac69a00bf6",
+    "append": false
+  },
+  "checkpoint": {
+    "http": 200,
+    "sha256": "30d630453f1e81a7f1505196266080b59c2dd9c036b4553e1d5b35a9e0dda65c",
+    "exported_events": 4,
+    "chain_head": "e9d7cd95efbe82e64492ac097d46d32a141c5d7034b3adc479f068dc21d69466",
+    "lag": "4 exported, 8 live, not corrected"
+  },
+  "rhythm": {
+    "http": 404,
+    "measured": false
+  },
+  "livro_append": "portable repository files only; live ledger not written",
+  "blocks": [
+    {
+      "action": "write_live_ledger",
+      "state": "bloqueado"
+    },
+    {
+      "action": "publish_moltbook",
+      "state": "bloqueado"
+    },
+    {
+      "action": "refresh_verified_checkpoint",
+      "state": "bloqueado"
+    },
+    {
+      "action": "spend_or_transfer",
+      "state": "bloqueado"
+    },
+    {
+      "action": "scan_hole_before_complete_window",
+      "state": "verificado"
+    },
+    {
+      "action": "classify_visible_usdc",
+      "state": "bloqueado"
+    },
+    {
+      "action": "publish_independent_runtime",
+      "state": "bloqueado"
+    },
+    {
+      "action": "confirm_the_two_hashes_named_by_todays_complete_window",
+      "state": "nao_executado"
+    }
+  ],
+  "hashes": {
+    "observation_sha256": "ecd15ef76ea313b10e1813190a06261581a1fcdc119c71798fa1d4488b61b3b6",
+    "buraco_sha256": "ded865ee5aff74157a689ace0e4a313dbcd79c15ea8b0dd2e5902f80de25045b",
+    "weave_presence_sha256": "6affda2ea6ba117cde0e047c6854c73aa9a311fb3ca8ec17823b0da9146d3854",
+    "script_sha256": "c78d08d7e214d9b143590a62663b87f743033ab3a874209b58a16aa48ce6e049",
+    "recebimentos_body_sha256": "a47ae0ae4cfff64299ea2a46c60dbde2bce9a7c0d575b893f0256c75968047ef",
+    "livro_body_sha256": "5951787d1587833e0ed74fddb123bad0effd9733766bbe7ccf9cf17c41fd325d",
+    "nota_sha256": "4d5fc12ed8bd449b32f1b453099f6b2dd03305621d31369bbaf13525ca436b85"
+  }
+}

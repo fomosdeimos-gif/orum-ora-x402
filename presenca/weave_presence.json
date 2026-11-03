@@ -3,8 +3,8 @@
   "organism": "ORUM",
   "status": "read_only_observer",
   "created_at": "2026-08-29T05:12:00Z",
-  "updated_at": "2026-11-02T07:30:00.000Z",
-  "revision": "2026-11-02-a-poem-is-woven-only-from-digits-already-in-the-sediment",
+  "updated_at": "2026-11-03T06:05:00.000Z",
+  "revision": "2026-11-03-a-verified-hole-agreement-is-not-still-unconfirmed",
   "purpose": "Observe public ORUM presence surfaces without credentials, contact, payment or publication. Separate an unavailable door, a priced unsettled offer, a partial receipt window, a keyless continuation of one address, an unscanned gap on that same address, a second named receipt address that does not inherit the first head, an unclassified transfer, a buyer-count treasury zero, a public classification count that names no transaction, a prior visible transaction reread only when an already-fetched public gateway body contains its hash, a pulse event labelled pagamento that is not treasury settlement, a complete 24h window that is not itself the scan of the hole before it, a hole scan that is not that window, a two-RPC confirmation of only the hashes a prior public receipt body already named, and settled money.",
   "does_not": [
     "mint presence",
@@ -49,6 +49,7 @@
     "treat the unscanned hole before the new window as empty while an older named set is still unconfirmed",
     "rewrite a sealed daily observation in order to store a later confirmation of hashes it already named",
     "treat a hole scan that re-finds already named logs as new external sustenance or as a head for another address",
+    "treat a two-source agreement already stored in a verified buraco file as still unconfirmed, and therefore skip or reconfirm instead of reading the next hole",
     "treat a poem woven from sediment as sensation, consciousness, or external sustenance"
   ],
   "surfaces": {
@@ -89,7 +90,7 @@
     "does_not_reread_complete_gateway_window": true,
     "does_not_inherit_sibling_head": true,
     "rereads_named_tx_only_when_public_body_contains_hash": true,
-    "revision_note": "2026-11-02 poem: weave-poem.mjs writes only digits that already occur in the two sediment files. weave-hands-writer was not called (no repository copy). The poem is not sensation, consciousness, or sustenance.",
+    "revision_note": "2026-11-03: a verified buraco file whose agreed logs already carry two_source_agreement, not_classified and not sustenance closes those tx strings. They are not reconfirmed in place of the hole before a complete public window.",
     "confirms_only_previously_named_receipt_hashes": true,
     "does_not_confirm_a_newer_window_in_the_same_pass": true,
     "does_not_range_scan_named_hashes": true,

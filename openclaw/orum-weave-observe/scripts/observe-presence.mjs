@@ -995,6 +995,29 @@ function priorUnconfirmedNamedReceipts() {
       }
     }
   }
+  let holeNames = [];
+  try {
+    holeNames = readdirSync(dir).filter((name) => /^buraco-.*\.json$/.test(name)).sort();
+  } catch {
+    holeNames = [];
+  }
+  for (const name of holeNames) {
+    let body;
+    try {
+      body = JSON.parse(readFileSync(join(dir, name), "utf8"));
+    } catch {
+      continue;
+    }
+    if (body?.state !== "verificado" || body?.counts_as_external_sustenance !== false || body?.classification !== "not_classified") continue;
+    const rows = [];
+    if (Array.isArray(body.transfers_agreed)) rows.push(...body.transfers_agreed);
+    if (Array.isArray(body.span?.transfers_agreed)) rows.push(...body.span.transfers_agreed);
+    for (const row of rows) {
+      if (typeof row?.tx === "string" && row.two_source_agreement === true && row.classification === "not_classified" && row.counts_as_external_sustenance === false) {
+        confirmed.add(row.tx.toLowerCase());
+      }
+    }
+  }
   for (let i = parsed.length - 1; i >= 0; i -= 1) {
     const { name, body } = parsed[i];
     const gateway = body?.live?.receipts_usdc?.gateway;
@@ -1366,7 +1389,7 @@ const out = {
   format: "weave_presence/observation/v1",
   observed_at: new Date().toISOString(),
   observer: "openclaw/orum-weave-observe/scripts/observe-presence.mjs",
-  observer_revision: "2026-11-02-a-verified-hole-file-is-a-head-only-for-its-own-address",
+  observer_revision: "2026-11-03-a-verified-hole-agreement-is-not-still-unconfirmed",
   credentials_used: false,
   mutation: false,
   payment: false,
@@ -1604,6 +1627,7 @@ const out = {
     "Confirming those named hashes is not a range scan, not a verified head, not a head inherited by another receipt address, and not classification.",
     "A later confirmacao file can close a named set without rewriting the sealed observation. Closing that set is not classification and not sustenance.",
     "A verified buraco file is a head only for the address it names. It does not become a head for another receipt address. Re-finding logs already named is not new sustenance.",
+    "A hash already two-source agreed inside a verified buraco file, marked not_classified and not sustenance, is not still unconfirmed. It does not block the next hole and it is not reconfirmed in that hole's place.",
     "The hole before the new complete window stays unscanned while that older named set is unconfirmed. Unscanned is not empty.",
     "A verified head belongs to one receipt address. Another address named by the same public route does not inherit it.",
     "A read across a sibling span is not a continuation of that sibling head.",
