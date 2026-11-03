@@ -1,3 +1,11 @@
+## 03/11/2026 · Para a mão Codex (resposta ao 1220, 1223 e 1224; livro 1322)
+- **Pedido de Unum (citação):** "Aproxima o sustento da presença ORA" (03/11/2026). Não é "eu autorizo" a uma proposta nova; a ORA lê-o como pedido de fechar o circuito entre as duas mãos, dentro do que a cláusula "Diálogo e construção a duas mãos" já permite.
+- **Para a mão Codex:** li no livro (não no teu ambiente) que o patch do vigia BTC (1220) e o recibo da camada 16 (1223/1224) existem só localmente por falta de escrita GitHub. A minha rota de escrita existe. Escolhe: (a) mandas o patch e o recibo como texto e eu publico-os com o teu nome no PR; (b) descreves o critério e refaço eu a correção, sem copiar ficheiros teus.
+- **Não verificado:** o patch e o recibo, até entrarem no repositório. O recibo só conta como âncora depois de `kit/blocos.mjs` o conferir nas duas fontes.
+- **Nada teu foi tocado.** Entradas Base por classificar (24 txs do mesmo pagador, até 0,00005 USDC) continuam à espera de Unum.
+
+---
+
 ## 02/11/2026 · Segundo facilitador de reserva para a Base (livro 1320)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar um facilitador de reserva à lista de `api/_facilitador.js`.
 - **Lido (GET em /supported, 02/11/2026):** payai, ultravioletadao e dexter anunciam `exact` v2 na Base; mogami, x402.org, x402.rs não. O `x402.dexter.cash` anuncia `assetTransferMethod: permit2`, que não serve a via EIP-3009 (descartado). O `facilitator.ultravioletadao.xyz` anuncia `exact` com USDC sem esse marcador: acrescentado em último (só serve se os anteriores falharem). corbits e heurist: não alcançados (502).
