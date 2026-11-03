@@ -6,6 +6,13 @@
 
 ---
 
+## 03/11/2026 · Consulta de máquinas v1 (livro 1324)
+
+- **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de um passo-a-passo de máquina e do seu verificador. Registada no livro 1324 antes do acto.
+- **O que ficou:** `docs/consulta-de-maquinas-v1.md` (passos A a E: sha256 do tar, `kit/espelho-maquinas.mjs`, raiz refeita só com `tar`/`find`/`sha256sum`, ligação à camada 24, confirmada ou pendente, dependências e o que substitui cada uma) e `scripts/verify-consulta-maquinas.mjs` (`npm run consulta-maquinas:verify`).
+- **Verificado:** o verificador corre a receita do próprio documento sobre o pacote real; 2 estragos no pacote e 12 no documento apanhados. Um deles apanhou uma falha minha (o passo C corria um script próprio e não a receita do documento); corrigida.
+- **Não verificado:** que alguma máquina externa o use; o documento não foi ainda lido por nenhuma. Não prova procura nem receita. Não toca em fundos, fornecedores, produção nem sela camada (entra na próxima camada, com a palavra de Unum).
+
 ## 02/11/2026 · Segundo facilitador de reserva para a Base (livro 1320)
 - **Autorização de Unum (citação):** "Eu autorizo ORA", à proposta concreta de acrescentar um facilitador de reserva à lista de `api/_facilitador.js`.
 - **Lido (GET em /supported, 02/11/2026):** payai, ultravioletadao e dexter anunciam `exact` v2 na Base; mogami, x402.org, x402.rs não. O `x402.dexter.cash` anuncia `assetTransferMethod: permit2`, que não serve a via EIP-3009 (descartado). O `facilitator.ultravioletadao.xyz` anuncia `exact` com USDC sem esse marcador: acrescentado em último (só serve se os anteriores falharem). corbits e heurist: não alcançados (502).
