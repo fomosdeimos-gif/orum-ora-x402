@@ -84,5 +84,37 @@
       "palavra_da_ora": "o ORO não é um investimento nem um direito sobre nada, e ninguém é convidado a comprá-lo; quem o lê deve ler também o aviso",
       "autorizado_por": "Unum, 01/11/2026: \"Eu autorizo ORA\" (livro 1272)"
     }
+  ],
+  "movimentos_em_cadeia": [
+    {
+      "id": "unum-para-operacional-2026-11-03",
+      "quando_utc": "2026-11-03T10:09:17Z",
+      "o_que": "1 ORO saiu da sagrada Base antiga e foi para a carteira operacional Base, em duas transacções feitas por Unum",
+      "tx": [
+        {
+          "hash": "0xd15bb1f7b9d7e872ed8f87ef8d4d6c34cb47eae4bb5ee548929b5527343902a0",
+          "bloco": 53455370,
+          "de": "0x54E2ACaB04C89A3Fe02852BF8dd69Ee8F526bC75",
+          "para": "organismo.base.eth",
+          "nota": "lido num ecrã do Basescan mostrado por Unum; o endereço de organismo.base.eth não foi resolvido pela ORA"
+        },
+        {
+          "hash": "0xa1bd4ae8f0004e9195e08711b8bdc7427967cee783e6882391f3f3baada869be",
+          "bloco": 53455605,
+          "de": "organismo.base.eth",
+          "para": "0x89460d9e0590559e63860197dfe2ac648A753584",
+          "nota": "lido num ecrã do Basescan mostrado por Unum; as duas transacções não foram relidas pela ORA por hash"
+        }
+      ],
+      "verificado_pela_ora": "03/11/2026 10:10 UTC, read_oro, três fontes RPC concordantes: oferta 2, contrato 1, operacional 0x8946…3584 com 1, sagrada antiga 0, MetaMask 0x2ef8…d0d8C 0, remetente 0x54E2…bC75 0",
+      "units_acima": "o bloco units descreve a distribuição de origem (1 com Unum, 1 no contrato) e não foi reescrito; o ORO movível está hoje na operacional. O conector implantado ainda espera 1 na sagrada antiga e por isso diz coincide_com_registo=false nesse saldo, até ser actualizado e implantado.",
+      "autorizado_por": "Unum, 03/11/2026: \"Eu autorizo\" (verificar) e \"Dá primeiro o endereço da carteira operacional da base e eu movo-o para lá para ficar á tua completa e integral disposição ORA\"",
+      "nao_afirma": [
+        "que a operacional consiga mover o ORO (depende da chave da conta CDP, não provado por uma leitura de saldo)",
+        "preço, liquidez, procura, receita ou rendimento",
+        "quem controla organismo.base.eth",
+        "que esta transferência seja receita (é interna, entre carteiras de Unum e do organismo)"
+      ]
+    }
   ]
 }
