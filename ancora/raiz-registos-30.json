@@ -890,8 +890,8 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974372,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
@@ -900,5 +900,22 @@
   "nao_verificado": [
     "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
     "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+  ],
+  "atualizado_em_utc": "2026-11-03T09:5100Z",
+  "atualizacao": "03/11/2026 (Unum: \"Eu autorizo ORA\", à proposta concreta de juntar a prova da camada 30; livros 1325 e 1327; lembrete agendado 09:49 UTC): GET /timestamp/<compromisso do ramo> directo do sandbox às 09:50 UTC. A alice (965 bytes, sha256 23a6fa80…) e a bob (965 bytes, sha256 7c1bbcf8…) devolveram atestação Bitcoin do bloco 974372; a finney devolveu 404 \"Pending confirmation in Bitcoin blockchain\" (as outras duas bastam). Às 09:23 UTC alice e bob estavam em \"Timestamped by transaction\" com 5 confirmações (o calendário espera 6). sha256 medidos na resposta e conferidos antes de juntar com scripts/ots-juntar.mjs. A altura registada é a mais baixa das atestações Bitcoin: 974372. Prova só que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita; não move fundos.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-03T09:5100Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas directamente do sandbox)",
+    "blocos": [
+      {
+        "altura": 974372,
+        "hora_utc": "2026-11-03T08:30:44Z",
+        "id": "00000000000000000001d704f53d346b433e831a3b3181807faa45639709ea1b"
+      }
+    ]
+  }
 }

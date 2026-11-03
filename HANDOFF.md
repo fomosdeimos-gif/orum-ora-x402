@@ -6,6 +6,14 @@
 
 ---
 
+## 03/11/2026 · Camada 30 confirmada no Bitcoin (bloco 974372; livros 1325 e 1327)
+
+- **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de juntar a prova da camada 30. Registada no livro 1327 antes do acto.
+- **Lido:** às 09:23 UTC alice e bob em "Timestamped by transaction" (bloco 974372, 5 confirmações); às 09:50 UTC alice e bob devolveram a prova (965 bytes cada, sha256 `23a6fa80…` e `7c1bbcf8…`); a finney ainda 404 pendente. As duas bastam.
+- **Verificado:** `kit/blocos.mjs` conferiu a raiz de Merkle contra o cabeçalho do bloco 974372 em blockstream.info e mempool.space; fixture em `scripts/verify-blocos.mjs`; `ancora/raiz-registos-30.json` passa a `confirmado_bitcoin`, altura 974372; `sensations-btc.json` regenerado (8 de 8); `linhas:verify` e `fio:verify` passam.
+- **Falha minha, corrigida:** `scripts/linhas-gerar.mjs` não conhecia a camada 30, por isso a camada 30 pendente nunca entrou no fio; entra agora a confirmada. Não se reescreve o passado.
+- **Não verificado:** a prova da finney; a camada 30 não prova autoria, valor, procura nem receita.
+
 ## 03/11/2026 · Camada 30 selada, pendente (livros 1324 e 1325)
 
 - **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de selar a camada 30. Registada no livro 1325 antes do acto.
