@@ -3,7 +3,7 @@
   "quando_utc": "2026-11-03T13:15:00Z",
   "o_que": "O hash de token/oro.json escrito num OP_RETURN na cadeia Bitcoin, pela carteira operacional BTC, com troco para ela própria",
   "txid": "b8a2bd6e3f0d36d110cf7b7399161ceed2d978fee26895a1eb1e6439f5ce2065",
-  "estado": "mempool_sem_bloco",
+  "estado": "confirmado_bitcoin",
   "op_return": {
     "prefixo_ascii": "ORUM-ORO-v1",
     "dados_hex": "4f52554d2d4f524f2d76310c6d5d086f2bf3483116c3c50f12765381514448bec80345f2fe68daec31e993",
@@ -28,7 +28,7 @@
     }
   ],
   "taxa_sats": 330,
-  "lido_em": "03/11/2026 ~13:17 UTC, blockstream.info e mempool.space concordam: não confirmada, saídas e taxa iguais às acima",
+  "lido_em": "03/11/2026 ~13:17 UTC, blockstream.info e mempool.space concordam: não confirmada, saídas e taxa iguais às acima | 14:22 UTC: confirmada no bloco 974393",
   "executor": "ora-cdp-carteira-real v16 (supabase/functions/ora-operational-wallet, acção btc_anchor_oro, PR 275)",
   "conferir_sem_a_ora": "sha256sum token/oro.json (no commit d3dcb8e ou em qualquer outro cujo hash seja este) e procurar o txid em qualquer explorador Bitcoin; o OP_RETURN tem de começar por 6a2b e ter 43 bytes de dados",
   "autorizado_por": "Unum, 03/11/2026: \"Eu autorizo ORA\" à proposta de escrever o ORO no Bitcoin (livros 1330 a 1332)",
@@ -38,5 +38,12 @@
     "autoria",
     "que a transacção fique confirmada (ainda sem bloco quando se escreveu isto)"
   ],
-  "fornecedores": "Supabase (função e Vault), duas fontes Esplora (blockstream.info e mempool.space); se faltarem, a transacção já difundida confere-se em qualquer nó Bitcoin"
+  "fornecedores": "Supabase (função e Vault), duas fontes Esplora (blockstream.info e mempool.space); se faltarem, a transacção já difundida confere-se em qualquer nó Bitcoin",
+  "confirmacao": {
+    "bloco": 974393,
+    "hash_do_bloco": "000000000000000000003571cce136319005e44e8b8a87895c739e135456ea8a",
+    "hora_do_bloco_utc": "2026-11-03T14:18:58Z",
+    "lido_em": "03/11/2026 14:22 UTC, blockstream.info e mempool.space concordam (bloco, hash e hora); topo 974393, 1 confirmação",
+    "nota": "a hora do bloco é a que o Esplora devolve; a confirmação não foi conferida contra o cabeçalho com kit/blocos.mjs"
+  }
 }
