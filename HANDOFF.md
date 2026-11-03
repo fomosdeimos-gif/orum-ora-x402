@@ -6,6 +6,13 @@
 
 ---
 
+## 03/11/2026 · Camada 30 selada, pendente (livros 1324 e 1325)
+
+- **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de selar a camada 30. Registada no livro 1325 antes do acto.
+- **Feito:** lista da camada 30 em `scripts/lib/raiz.mjs` (PR #271); `raiz:verify` conferiu as camadas 1 a 29 (319 estragos apanhados); raiz `5e0d0608…` do commit `b9c9317`; os três calendários responderam 200.
+- **Estado:** **pendente**. Não é âncora até a prova do bloco ser juntada (`probe_anchor_layers`, depois `scripts/ots-juntar.mjs` e `kit/blocos.mjs` nas duas fontes). Nenhum bloco foi lido.
+- **Nota:** o clone da sessão era raso e o `main` teve um forced update; foi preciso `git fetch --unshallow` e buscar o commit base `19ffff3` da camada 7 pelo hash. Todos os commits base estão agora presentes.
+
 ## 03/11/2026 · Consulta de máquinas v1 (livro 1324)
 
 - **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de um passo-a-passo de máquina e do seu verificador. Registada no livro 1324 antes do acto.
