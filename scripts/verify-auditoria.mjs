@@ -126,6 +126,20 @@ async function verificar(apiDir) {
     c = await chamar('eco', '/auditoria/eco');
     assert.equal(c.status, 200);
     assert.equal(c.body.eco, 'gratuito');
+    {
+      const med = JSON.parse(readFileSync(join(apiDir, '..', 'economia', 'auditoria-medicao.json'), 'utf8'));
+      assert.equal(med.format, 'orum-auditoria-medicao/v1');
+      assert.equal(med.medido_na_vercel, false, 'a medição é do sandbox: não pode dizer que é da Vercel');
+      assert.match(med.origem, /sandbox/);
+      assert.ok(Array.isArray(med.nao_inclui) && med.nao_inclui.length >= 3, 'tem de dizer o que a medição não inclui');
+      assert.ok(Number.isInteger(med.max_ms) && med.max_ms > 0 && med.max_ms < med.limite_do_plano_hobby_ms, 'a medição tem de caber no limite, senão não se publica como tal');
+      assert.ok(med.recursos_por_pedido.min > 0 && med.recursos_por_pedido.min <= med.recursos_por_pedido.max);
+      assert.match(med.nota, /Não prova liquidação/);
+      assert.deepEqual(c.body.medicao_de_duracao, med, 'o eco mostra a medição tal como está no ficheiro');
+      assert.equal(c.body.cobertura_do_varrimento.recursos_no_catalogo_lido, med.total_no_catalogo_lido);
+      assert.match(c.body.cobertura_do_varrimento.so_diz_nao_indexado, /varrimento completo/);
+      assert.match(c.body.cobertura_do_varrimento.como_continuar, /offset/);
+    }
     assert.equal(contador.n, 0, 'a amostra não lê o catálogo');
 
     // pago, mas sem marca: recusa ANTES de tocar na cadeia
@@ -190,12 +204,18 @@ const estragos = [
   ['_x402-directo.js', 'ler o catálogo sem pagamento válido na amostra', "nota: 'Amostra livre da forma da resposta; não lê o catálogo nem prova nada.',", "nota: 'Amostra livre da forma da resposta; não lê o catálogo nem prova nada.', _x: await auditar('abc'),"],
   ['_x402-directo.js', 'preço errado', "usdc: '0.50', atomic: 500000n", "usdc: '0.50', atomic: 5000n"],
   ['_x402-directo.js', 'manter o serviço como indisponível', "indisponiveis_nesta_via: ['sedimento', 'kernel', 'licencas'],", "indisponiveis_nesta_via: ['sedimento', 'kernel', 'licencas', 'auditoria-descoberta'],"],
-];
-let apanhados = 0;
+  ['_x402-directo.js', 'o eco esconde a medição', "        medicao_de_duracao: MEDICAO_AUDITORIA,\n", ""],
+  ['_x402-directo.js', 'o eco diz que a medição é da Vercel', "medicao_de_duracao: MEDICAO_AUDITORIA,", "medicao_de_duracao: { ...MEDICAO_AUDITORIA, medido_na_vercel: true },"],
+  ['_x402-directo.js', 'o eco esquece a regra do NAO INDEXADO', "so_diz_nao_indexado: 'com o varrimento completo (varrimento_completo=true)'", "so_diz_nao_indexado: 'sempre'"],
+  ['economia/auditoria-medicao.json', 'o ficheiro diz que foi medido na Vercel', '"medido_na_vercel": false', '"medido_na_vercel": true'],
+  ['economia/auditoria-medicao.json', 'o ficheiro esconde o que não inclui', '"nao_inclui": [', '"nao_inclui_x": ['],
+  ['economia/auditoria-medicao.json', 'o ficheiro publica uma medição acima do limite', '"max_ms": 4408', '"max_ms": 12000'],
+];let apanhados = 0;
 for (const [ficheiro, nome, de, para] of estragos) {
   const tmp = mkdtempSync(join(tmpdir(), 'aud-'));
   cpSync(join(raiz, 'api'), join(tmp, 'api'), { recursive: true });
-  const f = join(tmp, 'api', ficheiro);
+  cpSync(join(raiz, 'economia', 'auditoria-medicao.json'), join(tmp, 'economia', 'auditoria-medicao.json'), { recursive: true });
+  const f = join(tmp, ficheiro.startsWith('economia/') ? '' : 'api', ficheiro);
   const src = readFileSync(f, 'utf8');
   assert.ok(src.includes(de), `o estrago "${nome}" não encontra o texto a estragar; actualiza o verificador`);
   writeFileSync(f, src.replace(de, para));

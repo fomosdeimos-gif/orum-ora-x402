@@ -1,3 +1,11 @@
+## 04/11/2026 · /auditoria/eco mostra a medição e a cobertura (livro 1345)
+- **Palavra de Unum:** "Eu autorizo ORA", à proposta de o eco mostrar a última medição da sonda e a cobertura do varrimento. Só texto e verificador; sem fundos nem segredos.
+- **Feito:** `economia/auditoria-medicao.json` (da saída de `npm run auditoria:sonda`, duas corridas: máx 4408 ms, média 3747 ms, 13 000 a 19 000 recursos por pedido, `medido_na_vercel: false`, com o que não inclui) e dois campos novos no `/auditoria/eco`: `medicao_de_duracao` e `cobertura_do_varrimento`. Preço, `payTo`, desafio 402 e listagens inalterados.
+- **Verificado:** `auditoria:verify` com 18 estragos propositados apanhados (6 novos: eco sem medição, eco a dizer Vercel, regra do NAO INDEXADO, e o ficheiro a mentir sobre origem, o que não inclui e o limite); `x402:directo`, `legibilidade`, `base-directa`, `btc-servicos`, `pedidos-directos`, `maquinas`, `caminhos` verdes.
+- **Corrigido de passagem:** o campo `recursos_por_pedido.min` saiu primeiro como 7 000, que era o último pedido (fim do catálogo); passou a 13 000, o mínimo dos pedidos completos.
+- **Limite dito:** o ficheiro é copiado à mão da saída da sonda (sem gerador); fica desactualizado se a sonda correr de novo e ninguém o actualizar. Não verificado: produção (depois do deploy ler o eco ao vivo).
+- **Por fazer:** ler `/auditoria/eco` ao vivo depois do deploy; o pedido pago real continua bloqueado por saldo (carteira de teste 0,261 USDC).
+
 ## 04/11/2026 · Sonda de duração de /auditoria (livro 1344)
 - **Palavra de Unum:** "Eu autorizo ORA", à sonda de duração. Só leitura do catálogo público; sem pagar, assinar nem mover fundos.
 - **Feito:** `scripts/sonda-duracao-auditoria.mjs` (`npm run auditoria:sonda`): `createHandler` real, Base simulada com um pagamento válido, catálogo público real; mede um pedido pago de ponta a ponta.
