@@ -111,6 +111,7 @@
     "directa-legivel:verify": "node scripts/verify-402-legivel-directa.mjs",
     "origem-legivel:verify": "node scripts/verify-origem-legivel.mjs",
     "openapi-llms:verify": "node scripts/verify-openapi-llms-legivel.mjs",
-    "auditoria:verify": "node scripts/verify-auditoria.mjs"
+    "auditoria:verify": "node scripts/verify-auditoria.mjs",
+    "auditoria:sonda": "node scripts/sonda-duracao-auditoria.mjs"
   }
 }

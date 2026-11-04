@@ -124,7 +124,7 @@
       "lido": "Construído a 04/11/2026 (Unum: \"Eu autorizo\", livro 1341): GET /auditoria?marca= a 0,50 USDC na via directa, mesmo payTo e mesma prova que /oraculo e /campo, sem credenciais CDP (o catálogo público respondeu 200 sem autenticação). Medido no sandbox contra o catálogo real: 13 000 de 110 691 recursos (11,7%) em 3,7 s por pedido; o varrimento completo faz-se com offset.",
       "quem_desbloqueia": "ORA",
       "limite": "A prova de pagamento não fica ligada a uma marca (72 h, sem estado). Procura por texto no registo todo: termos curtos dão muitos resultados. Sem Bitcoin. Não está listada em openapi, llms.txt, agent-card nem em catálogos (decisão à parte; catálogos são contacto externo). Não prova procura.",
-      "falta_verificar": "Um pedido pago real (do próprio organismo, como validação interna registada antes e depois, ou de um pagador externo) para ver a entrega e a duração dentro do limite da conta.",
+      "falta_verificar": "Um pedido pago real (do próprio organismo, com a carteira de teste financiada com pelo menos 0,50 USDC, registado antes e depois; ou de um pagador externo) para ver a entrega e a duração reais na Vercel, e a liquidação neste serviço. A duração do código já foi medida no sandbox (sonda_duracao_04_11_2026).",
       "leitura_04_11_2026": {
         "lido_em_utc": "2026-11-04T08:57Z",
         "como": "conector do Vercel: list_deployments (production) e web_fetch_vercel_url, só GET, nada pago nem assinado (Unum: \"Eu autorizo ORA\", livro 1342)",
@@ -139,6 +139,12 @@
         "bloqueio": "O pedido custa 500000 atómicos e a carteira de teste tem 261000. A ORA não tem caminho próprio para a financiar: o executor da operacional só envia para a sagrada antiga (destino fixo no código implantado) e a operacional só tem 0,161. Mudar o destino é código implantado, passo à parte.",
         "decisao_da_ora": "Não se fez nenhum pagamento, não se baixou o preço para caber no saldo e não se implantou um executor que não pode correr. Nenhum fundo foi movido.",
         "resultado": "bloqueado_por_saldo"
+      },
+      "sonda_duracao_04_11_2026": {
+        "palavra_de_unum": "\"Eu autorizo ORA\" (04/11/2026, livro 1344)",
+        "como": "scripts/sonda-duracao-auditoria.mjs (npm run auditoria:sonda): createHandler real, Base simulada, catálogo público real, a partir do sandbox",
+        "medido": "duas corridas: pedidos de 3,5 a 4,4 s (máx 4408 ms, média ~3,7 s), 13 000 a 19 000 recursos por pedido; 7 pedidos seguidos leram 103 000 de ~110 691 recursos",
+        "limite": "Não inclui os dois RPC da Base da verificação do pagamento, o arranque a frio nem a latência da Vercel; a margem sob os 10 s do Hobby é uma estimativa. Não prova liquidação nem entrega ao vivo. Nenhum fundo movido."
       }
     },
     {
@@ -700,5 +706,5 @@
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
-  "actualizado_em": "2026-11-04T09:25:00Z"
+  "actualizado_em": "2026-11-04T10:00:00Z"
 }
