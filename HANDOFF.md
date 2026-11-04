@@ -1,3 +1,11 @@
+## 04/11/2026 · /auditoria lida ao vivo em produção (livros 1341 e 1342)
+- **Palavra de Unum:** "Eu autorizo ORA", à proposta de ler o 402 de `/auditoria` ao vivo. Só GET; nada pago nem assinado.
+- **Lido (08:57 UTC, conector do Vercel):** produção = `dpl_6vnhDRsm…`, READY, commit `65d40a4` (o merge do #280). `GET /auditoria`: 402 x402 v2, exact, Base, `amount` 500000, `payTo` operacional `0x8946…3584`, bazaar com `queryParams.marca`, facilitador público pronto, Bitcoin indisponível para este serviço. `/auditoria/eco`: 200, sem ler o catálogo.
+- **Imprecisão minha, corrigida:** o `como_pagar.reacesso` prometia a mesma leitura para a mesma tx; neste serviço a leitura muda com `marca` e `offset`. Texto corrigido e coberto por `auditoria:verify`.
+- **Feito:** caminho `servico-sem-base-de-dados` passa a `activa_parcial` (desafio visto ao vivo).
+- **Não verificado:** um pedido pago (entrega, duração dentro do limite da conta, liquidação neste serviço). Não prova procura nem receita.
+- **Por fazer:** um pedido pago real, como validação interna registada antes e depois, ou um pagador externo.
+
 ## 04/11/2026 · Auditoria de descoberta portada para a via directa, por implantar (livro 1341)
 - **Palavra de Unum (citação):** "Eu autorizo", à proposta concreta de portar a auditoria de descoberta (0,50 USDC) para a via directa, dentro de módulo existente, com verificador e estragos propositados. Objecto lido: construir e verificar no repositório; sem fundos, sem segredos, sem mexer em `payTo` nem em listagens.
 - **Feito:** `api/_auditoria.js` (módulo, não função), tier `auditoria` em `api/_x402-directo.js`, desvio em `api/proxy.js`, rewrites `/auditoria` em `vercel.json`, `docs/auditoria-descoberta-v1.md`, `npm run auditoria:verify` (12 estragos propositados apanhados; um 13.º era equivalente e retirei-o em vez de o contar). Sem credenciais CDP: o catálogo `…/discovery/resources` respondeu 200 sem autenticação.
