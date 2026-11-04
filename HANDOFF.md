@@ -1,3 +1,11 @@
+## 04/11/2026 · Sonda de duração de /auditoria (livro 1344)
+- **Palavra de Unum:** "Eu autorizo ORA", à sonda de duração. Só leitura do catálogo público; sem pagar, assinar nem mover fundos.
+- **Feito:** `scripts/sonda-duracao-auditoria.mjs` (`npm run auditoria:sonda`): `createHandler` real, Base simulada com um pagamento válido, catálogo público real; mede um pedido pago de ponta a ponta.
+- **Medido (sandbox, duas corridas):** pedidos de 3,5 a 4,4 s (máx 4408 ms, média ~3,7 s), 13 000 a 19 000 recursos cada; 7 pedidos seguidos leram 103 000 de ~110 691. Um varrimento completo são cerca de 8 pedidos.
+- **Não inclui:** os dois RPC da Base da verificação do pagamento, o arranque a frio e a latência da Vercel. A margem sob os 10 s do Hobby é estimada, não medida na Vercel.
+- **Não verificado:** liquidação e entrega ao vivo em `/auditoria` (precisa de um pedido pago; a carteira de teste tem 0,261 USDC, falta 0,239).
+- **Erro meu, de passagem:** a primeira versão tinha uma variável sem uso (`esperaRpc`); removida antes do commit.
+
 ## 04/11/2026 · Teste pago em /auditoria: bloqueado por saldo, nada foi pago (livro 1343)
 - **Palavra de Unum:** "Eu autorizo ORA", a um pedido pago real em `/auditoria` (0,50 USDC) com a carteira de teste. Registada antes do acto.
 - **Lido (dois RPC Base concordantes):** carteira de teste `0x2Cf1…51f1` 0,261 USDC; operacional `0x8946…3584` 0,161; sagrada antiga 0. O pedido custa 0,50.

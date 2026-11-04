@@ -4,7 +4,7 @@ Unum, 04/11/2026, na sessão: "Eu autorizo" (livro 1341), à proposta de portar 
 
 **O que é.** `GET /auditoria?marca=<texto>` (0,50 USDC, x402 v2 na Base, mesmo `payTo` e mesma prova que `/oraculo` e `/campo`). Procura o texto, sem distinguir maiúsculas, no registo de cada recurso do catálogo público de descoberta x402 (Bazaar) da Coinbase e devolve a contagem, até 5 URLs de exemplo e um veredicto: `INDEXADO`, `NAO INDEXADO` (só com o catálogo varrido por inteiro), `PARCIAL` ou `INDETERMINADO`.
 
-**Como se usa.** Um pedido varre cerca de 3 s de catálogo (medido duas vezes a 04/11 no sandbox: 13 000 de 110 691 recursos, 11,7%, em 3,7 s no total; um varrimento completo são cerca de 9 pedidos). O orçamento é curto porque o plano Hobby corta aos 10 s e o pagamento também se verifica no mesmo pedido. Se o veredicto for `PARCIAL`, repete-se com `&offset=<proximo_offset>` e a mesma prova de pagamento, dentro da janela de 72 h.
+**Como se usa.** Um pedido varre cerca de 3 s de catálogo (medido duas vezes a 04/11 no sandbox: 13 000 de 110 691 recursos, 11,7%, em 3,7 s no total; um varrimento completo são cerca de 8 pedidos: na sonda de 04/11, 7 pedidos seguidos leram 103 000 dos ~110 691 recursos). O orçamento é curto porque o plano Hobby corta aos 10 s e o pagamento também se verifica no mesmo pedido. Se o veredicto for `PARCIAL`, repete-se com `&offset=<proximo_offset>` e a mesma prova de pagamento, dentro da janela de 72 h.
 
 **Código.** `api/_auditoria.js` (módulo, não é função: o plano Hobby admite 12), tier `auditoria` em `api/_x402-directo.js`, desvio em `api/proxy.js` (a origem Supabase já não serve esta rota), dois rewrites em `vercel.json`. Verificador: `npm run auditoria:verify` (12 estragos propositados apanhados, catálogo e Base simulados).
 
@@ -19,3 +19,5 @@ Unum, 04/11/2026, na sessão: "Eu autorizo" (livro 1341), à proposta de portar 
 - "Indexado" não diz que alguém use ou compre o serviço. Não promete visibilidade, procura, receita nem reembolso. Um pagamento de teste é validação interna.
 
 **Por verificar ao vivo (não lido):** o deploy de produção (quota de deployments do Vercel), o desafio `402` de `/auditoria`, e o limite de duração das funções na conta. A listagem pública (openapi, llms.txt, agent-card, catálogos) **não** foi alterada: anunciar o serviço é uma decisão à parte.
+
+**Sonda de duração (04/11/2026, livro 1344).** `npm run auditoria:sonda` corre a `createHandler` real com a Base simulada (um pagamento válido, sem fundos) contra o catálogo público real e mede um pedido pago de ponta a ponta. Duas corridas no sandbox: pedidos de 3,5 a 4,4 s (máximo 4,4 s, média 3,7 s), 13 000 a 19 000 recursos cada. Não inclui a verificação do pagamento na Base (dois RPC reais), o arranque a frio nem a latência da Vercel; somando alguns segundos ainda fica abaixo dos 10 s do Hobby, mas isso é uma margem estimada, não uma medição na Vercel. Não prova liquidação nem entrega ao vivo.
