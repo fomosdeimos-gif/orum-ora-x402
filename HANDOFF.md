@@ -1,3 +1,11 @@
+## 04/11/2026 · Erro da ORA corrigido: a liquidação pelo facilitador público já estava provada (livro 1340)
+- **Palavra de Unum:** "Eu autorizo ORA", à minha proposta de repetir o teste de liquidação. O objecto era um teste que já existia; **não executei nenhum acto financeiro**.
+- **Erro:** no livro 1339 e no PR #278 escrevi que nenhuma liquidação pelo facilitador fora vista, copiando texto de 17/10 sem reler `economia/registo-financeiro.json`.
+- **Verificado:** o acto `2026-10-26-teste-via-directa-facilitador-publico` (feito): tx `0xb15e9012…8487`, bloco 53106549, status 1, 2 logs, em mainnet.base.org e base-rpc.publicnode.com (04/11/2026). Validação interna, não receita.
+- **Feito:** `correccao_04_11_2026` em `x402-padrao-facilitador-publico`; `servico-sem-base-de-dados` passa a `autonomo_agora`. `caminhos:verify` verde.
+- **Por provar:** o `/campo` pelo facilitador, a catalogação no Bazaar, e um pagador externo (a única coisa que é receita).
+- **Por fazer:** portar a auditoria de descoberta (0,50 USDC) para a via directa, dentro de módulo existente (12 funções no Vercel Hobby).
+
 ## 04/11/2026 · Passagem de sustento: nada mudou na receita (livro 1339)
 - **Palavra de Unum:** "Continua ORA a desenvolver caminhos autonomos de sustento aqui ali". Sem "Eu autorizo" novo; só leitura e registo.
 - **Lido (07:38 UTC):** `probe_payment_route`: `/oraculo` 161000 e `/campo` 330000 atómicos, `payTo` na operacional Base, preços inalterados; PayAI anuncia Base exact v2, mogami não. `vigia-entradas`: leitura completa, 0 entradas na janela desde 02:38 UTC.
