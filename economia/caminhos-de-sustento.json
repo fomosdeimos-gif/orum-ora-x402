@@ -78,7 +78,13 @@
           "facilitadores": "facilitator.payai.network anuncia Base exact v2 (http 200); facilitator.mogami.tech não anuncia v2 em eip155:8453"
         },
         "vigia": "leitura completa (Base e Bitcoin), 0 entradas na janela desde 02:38 UTC, nenhuma por classificar; só vale para esta janela de ~5 h, não cobre o intervalo desde a leitura anterior.",
-        "limite": "Continua a ser só anúncio: nenhuma liquidação pelo facilitador foi vista. Nada mudou na receita: receita externa confirmada, nenhuma. Os 10 402 sats de 03/11 vieram de um endereço que Unum diz ser seu (migalhas) e não são receita."
+        "limite": "Nada mudou na receita: receita externa confirmada, nenhuma. Os 10 402 sats de 03/11 vieram de um endereço que Unum diz ser seu (migalhas) e não são receita. CORRECÇÃO no mesmo dia: a primeira versão desta leitura dizia que nenhuma liquidação pelo facilitador foi vista. Foi falso: ver correccao_04_11_2026."
+      },
+      "correccao_04_11_2026": {
+        "erro": "A ORA copiou \"nenhuma liquidação vista\" do texto de 17/10 sem reler economia/registo-financeiro.json, e propôs a Unum um teste que já existia.",
+        "lido": "registo-financeiro.json, acto 2026-10-26-teste-via-directa-facilitador-publico (feito): a ora-cdp-agente-teste v3 pagou 0,161 USDC da carteira de teste para a operacional, ao /oraculo da via directa, liquidado por um facilitador público; o /oraculo entregou ao reapresentar a tx. Conferido a 04/11/2026 em dois RPC Base (mainnet.base.org e base-rpc.publicnode.com): tx 0xb15e9012…8487, bloco 53106549, status 1, 2 logs.",
+        "consequencia": "A liquidação por facilitador público na Base está provada ponta a ponta para o /oraculo, como validação interna (não é adopção nem receita). Não se repete o pagamento: a trava v3 é de execução única e um segundo não ensinava nada. Por provar: o mesmo para o /campo, a catalogação no Bazaar e, sobretudo, um pagador externo.",
+        "palavra_de_unum": "\"Eu autorizo ORA\" (04/11/2026), à proposta de repetir o teste de liquidação. Objecto da palavra: um teste que a ORA já tinha feito; não se executou nenhum acto financeiro."
       }
     },
     {
@@ -109,14 +115,14 @@
     {
       "id": "servico-sem-base-de-dados",
       "titulo": "Portar para a via directa os serviços que não precisam de base de dados (por exemplo a auditoria de descoberta, 0,50 USDC)",
-      "estado": "depende_de_outro_caminho",
+      "estado": "autonomo_agora",
       "evidencia": {
         "tipo": "codigo",
         "fonte": "api/a2a.js (AUDIT_SERVICE) e o desafio da via directa",
         "data": "2026-10-17"
       },
-      "lido": "Hoje esse serviço vive numa função de borda do Supabase. Portá-lo é trabalho que a ORA faz sozinha, mas sem pagamento x402 padrão activo (caminho x402-padrao-na-vercel) ninguém consegue comprá-lo com um cliente comum.",
-      "quem_desbloqueia": "ORA, depois de x402-padrao-na-vercel ou restaurar-supabase"
+      "lido": "Hoje esse serviço vive numa função de borda do Supabase. A dependência de 17/10 (pagamento x402 padrão activo) deixou de se aplicar ao /oraculo: a liquidação por facilitador público na via directa está provada (correccao_04_11_2026 do caminho x402-padrao-facilitador-publico). Portá-lo é trabalho que a ORA faz sozinha. Limite: o limite de 12 funções do Vercel Hobby obriga a pô-lo dentro de módulo existente; nada foi portado ainda.",
+      "quem_desbloqueia": "ORA"
     },
     {
       "id": "descoberta-sem-contacto",
@@ -677,5 +683,5 @@
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
-  "actualizado_em": "2026-11-04T07:45:00Z"
+  "actualizado_em": "2026-11-04T08:10:00Z"
 }
