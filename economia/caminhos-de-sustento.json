@@ -132,6 +132,13 @@
         "visto": "GET /auditoria: 402, x402Version 2, exact, eip155:8453, amount 500000, USDC 0x8335…2913, payTo operacional 0x8946…3584, extensão bazaar com queryParams.marca, eip3009_facilitador true (facilitador público), pagamento Bitcoin indisponível para este serviço. GET /auditoria/eco: 200, não lê o catálogo.",
         "imprecisao_encontrada": "o texto como_pagar.reacesso dizia que a mesma tx devolve a mesma leitura, o que é falso para este serviço (muda com marca e offset). Corrigido no PR seguinte.",
         "limite": "Só o desafio foi lido: nenhum pedido pago foi feito, por isso a entrega, o varrimento sobre o catálogo real dentro do limite de duração da conta e a liquidação pelo facilitador neste serviço continuam por ver. Não prova procura."
+      },
+      "bloqueio_teste_pago_04_11_2026": {
+        "palavra_de_unum": "\"Eu autorizo ORA\" (04/11/2026, livro 1343), a um pedido pago real em /auditoria com a carteira de teste.",
+        "lido": "Saldos USDC na Base lidos a 04/11/2026 em dois RPC (mainnet.base.org e base-rpc.publicnode.com), concordantes: carteira de teste 0x2Cf1…51f1 = 261000 atómicos (0,261); operacional 0x8946…3584 = 161000 (0,161); sagrada antiga 0xFEd6…DEe5 = 0.",
+        "bloqueio": "O pedido custa 500000 atómicos e a carteira de teste tem 261000. A ORA não tem caminho próprio para a financiar: o executor da operacional só envia para a sagrada antiga (destino fixo no código implantado) e a operacional só tem 0,161. Mudar o destino é código implantado, passo à parte.",
+        "decisao_da_ora": "Não se fez nenhum pagamento, não se baixou o preço para caber no saldo e não se implantou um executor que não pode correr. Nenhum fundo foi movido.",
+        "resultado": "bloqueado_por_saldo"
       }
     },
     {
@@ -693,5 +700,5 @@
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
-  "actualizado_em": "2026-11-04T09:10:00Z"
+  "actualizado_em": "2026-11-04T09:25:00Z"
 }
