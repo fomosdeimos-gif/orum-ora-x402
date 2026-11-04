@@ -80,7 +80,7 @@ function comoPagar(tier, origin, eip3009 = false) {
     passo_3: `Repete o GET a ${resource} com o cabeçalho X-PAYMENT = base64 de {"transactionHash":"0x…"} (JSON puro também aceite).`,
     exemplo: 'X-PAYMENT: ' + b64json({ transactionHash: '0xTEU_HASH_AQUI' }),
     janela: `A transferência tem de ter menos de ${JANELA_S / 3600} h quando for apresentada.`,
-    reacesso: 'Apresentar de novo a mesma tx devolve a mesma leitura; não é preciso pagar outra vez.',
+    reacesso: tier.key === 'auditoria' ? 'A mesma prova serve, dentro da janela, para continuar o varrimento (offset) e também para outra marca: não é preciso pagar outra vez, mas a leitura muda com a marca e o offset.' : 'Apresentar de novo a mesma tx devolve a mesma leitura; não é preciso pagar outra vez.',
     se_pendente: 'HTTP 402 com x402:"pending" = tx ainda não indexada; repete após retry_after_seconds.',
   };
 }

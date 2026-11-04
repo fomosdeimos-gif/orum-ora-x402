@@ -120,6 +120,7 @@ async function verificar(apiDir) {
     assert.equal(c.body.accepts[0].payTo.toLowerCase(), d.WALLET.toLowerCase());
     assert.deepEqual(Object.keys(c.body.extensions.bazaar.info.input.queryParams), ['marca']);
     assert.equal(contador.n, 0, 'o desafio não lê o catálogo');
+    assert.match(c.body.como_pagar.reacesso, /outra marca/, 'o texto do reacesso não pode prometer a mesma leitura');
 
     // amostra grátis
     c = await chamar('eco', '/auditoria/eco');

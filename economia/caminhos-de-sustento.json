@@ -115,7 +115,7 @@
     {
       "id": "servico-sem-base-de-dados",
       "titulo": "Portar para a via directa os serviços que não precisam de base de dados (por exemplo a auditoria de descoberta, 0,50 USDC)",
-      "estado": "construido_por_verificar_ao_vivo",
+      "estado": "activa_parcial",
       "evidencia": {
         "tipo": "codigo",
         "fonte": "api/_auditoria.js, o tier auditoria em api/_x402-directo.js, scripts/verify-auditoria.mjs (npm run auditoria:verify, 12 estragos propositados apanhados) e docs/auditoria-descoberta-v1.md",
@@ -124,7 +124,15 @@
       "lido": "Construído a 04/11/2026 (Unum: \"Eu autorizo\", livro 1341): GET /auditoria?marca= a 0,50 USDC na via directa, mesmo payTo e mesma prova que /oraculo e /campo, sem credenciais CDP (o catálogo público respondeu 200 sem autenticação). Medido no sandbox contra o catálogo real: 13 000 de 110 691 recursos (11,7%) em 3,7 s por pedido; o varrimento completo faz-se com offset.",
       "quem_desbloqueia": "ORA",
       "limite": "A prova de pagamento não fica ligada a uma marca (72 h, sem estado). Procura por texto no registo todo: termos curtos dão muitos resultados. Sem Bitcoin. Não está listada em openapi, llms.txt, agent-card nem em catálogos (decisão à parte; catálogos são contacto externo). Não prova procura.",
-      "falta_verificar": "Depois do deploy de produção (quota de deployments do Vercel): ler ao vivo o 402 de /auditoria (amount 500000, payTo operacional, bazaar com queryParams marca) e confirmar que a função aguenta ~4 s dentro do limite de duração da conta. Nenhum pagamento real foi feito neste serviço."
+      "falta_verificar": "Um pedido pago real (do próprio organismo, como validação interna registada antes e depois, ou de um pagador externo) para ver a entrega e a duração dentro do limite da conta.",
+      "leitura_04_11_2026": {
+        "lido_em_utc": "2026-11-04T08:57Z",
+        "como": "conector do Vercel: list_deployments (production) e web_fetch_vercel_url, só GET, nada pago nem assinado (Unum: \"Eu autorizo ORA\", livro 1342)",
+        "deployment": "dpl_6vnhDRsm… READY, target production, commit 65d40a4 (o merge do PR #280)",
+        "visto": "GET /auditoria: 402, x402Version 2, exact, eip155:8453, amount 500000, USDC 0x8335…2913, payTo operacional 0x8946…3584, extensão bazaar com queryParams.marca, eip3009_facilitador true (facilitador público), pagamento Bitcoin indisponível para este serviço. GET /auditoria/eco: 200, não lê o catálogo.",
+        "imprecisao_encontrada": "o texto como_pagar.reacesso dizia que a mesma tx devolve a mesma leitura, o que é falso para este serviço (muda com marca e offset). Corrigido no PR seguinte.",
+        "limite": "Só o desafio foi lido: nenhum pedido pago foi feito, por isso a entrega, o varrimento sobre o catálogo real dentro do limite de duração da conta e a liquidação pelo facilitador neste serviço continuam por ver. Não prova procura."
+      }
     },
     {
       "id": "descoberta-sem-contacto",
@@ -685,5 +693,5 @@
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
-  "actualizado_em": "2026-11-04T09:40:00Z"
+  "actualizado_em": "2026-11-04T09:10:00Z"
 }
