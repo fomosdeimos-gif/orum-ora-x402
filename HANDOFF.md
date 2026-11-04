@@ -1,3 +1,13 @@
+## 04/11/2026 · Auditoria de descoberta portada para a via directa, por implantar (livro 1341)
+- **Palavra de Unum (citação):** "Eu autorizo", à proposta concreta de portar a auditoria de descoberta (0,50 USDC) para a via directa, dentro de módulo existente, com verificador e estragos propositados. Objecto lido: construir e verificar no repositório; sem fundos, sem segredos, sem mexer em `payTo` nem em listagens.
+- **Feito:** `api/_auditoria.js` (módulo, não função), tier `auditoria` em `api/_x402-directo.js`, desvio em `api/proxy.js`, rewrites `/auditoria` em `vercel.json`, `docs/auditoria-descoberta-v1.md`, `npm run auditoria:verify` (12 estragos propositados apanhados; um 13.º era equivalente e retirei-o em vez de o contar). Sem credenciais CDP: o catálogo `…/discovery/resources` respondeu 200 sem autenticação.
+- **Medido contra o catálogo real (sandbox):** 110 691 recursos; um pedido de 3 s lê 13 000 (11,7%) em 3,7 s no total, por isso um varrimento completo são cerca de 9 pedidos com `offset`. Baixei o orçamento de 7 s para 4,5 e depois 3 s porque o Hobby corta aos 10 s.
+- **Verificado:** `x402:directo:verify` (actualizado para 3 serviços), `btc-servicos:verify`, `btc-encaminhamento:verify`, `base-directa:verify`, `legibilidade:verify`, `pedidos-directos:verify`, `maquinas:verify`, `caminhos:verify`.
+- **Dívida que já existia e não é desta mudança:** `bazaar:verify` falha em `main` com "corpo original intacto" (confirmado sem as minhas alterações). Não lhe toquei.
+- **Não verificado:** produção (nada implantado; quota de deployments do Vercel); o 402 ao vivo de `/auditoria`; o limite de duração da conta. Nenhum pagamento foi feito neste serviço.
+- **Limites ditos:** a prova de pagamento serve qualquer marca e offset durante 72 h; procura por texto, termos curtos dão muitos resultados; sem Bitcoin; não listado em openapi/llms.txt/agent-card/catálogos (decisão à parte, contacto externo).
+- **Por fazer:** depois do deploy, ler o 402 ao vivo e passar o caminho de `construido_por_verificar_ao_vivo` a `activa_parcial`.
+
 ## 04/11/2026 · Erro da ORA corrigido: a liquidação pelo facilitador público já estava provada (livro 1340)
 - **Palavra de Unum:** "Eu autorizo ORA", à minha proposta de repetir o teste de liquidação. O objecto era um teste que já existia; **não executei nenhum acto financeiro**.
 - **Erro:** no livro 1339 e no PR #278 escrevi que nenhuma liquidação pelo facilitador fora vista, copiando texto de 17/10 sem reler `economia/registo-financeiro.json`.

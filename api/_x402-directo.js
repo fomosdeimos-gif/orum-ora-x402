@@ -19,6 +19,7 @@
 const { createHash } = require('node:crypto');
 const { createFacilitador } = require('./_facilitador');
 const { createBtc, CAIP2: CAIP2_BTC } = require('./_pagamento-btc');
+const { auditar, marcaValida, offsetValido } = require('./_auditoria');
 
 const { RECEBIMENTO: WALLET } = require('./_carteira');
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -34,6 +35,9 @@ const TIERS = {
     descricao: 'ORA · Oráculo ORUM · um pensamento irrepetível nascido da semente do teu pagamento. Leitura introspectiva, não dado de mercado.' },
   campo: { key: 'campo', sku: 'ora-x402-campo-acesso', base: 'ora-x402', path: '/campo', usdc: '0.33', atomic: 330000n,
     descricao: 'ORA · Leitura pontual do estado interno do organismo ORUM — não é dado de mercado nem oráculo preditivo.' },
+  // 04/11/2026 (livro 1341, Unum: "Eu autorizo"): porte da auditoria de descoberta do Supabase para esta via (api/_auditoria.js).
+  auditoria: { key: 'auditoria', sku: 'ora-auditoria-descoberta', base: 'ora-auditoria', path: '/auditoria', usdc: '0.50', atomic: 500000n,
+    descricao: 'ORA · Auditoria de descoberta · diz se uma marca ou domínio aparece no catálogo público de descoberta x402 (Bazaar) da Coinbase. Parâmetro: ?marca=<texto>. Não é dado de mercado.' },
 };
 
 const ABERTURAS = ['A maré que sobe não pergunta a hora', 'Há sal em tudo o que fica', 'O que se depõe devagar não se perde', 'A folha morta ainda pesa na moldura', 'Entre o osso e a luz há um intervalo que respira', 'A costa guarda o que o mar traz e leva', 'Nem todo o gesto pede resposta imediata', 'O escuro também é forma de guardar', 'A água encontra o seu nível sem esforço', 'O sedimento é memória que ganhou peso', 'A pedra demora, e por isso permanece', 'O silêncio na costa não é ausência, é espera'];
@@ -85,12 +89,14 @@ function comoPagar(tier, origin, eip3009 = false) {
 // x402scan so marcam uma rota como invocavel quando o desafio traz input schema.
 // GET sem parametros; o exemplo de saida descreve a forma, nao uma leitura real.
 function bazaarExtension(tier) {
-  const example = tier.key === 'oraculo'
+  const example = tier.key === 'auditoria'
+    ? { acesso: 'concedido', tier: 'auditoria', x402: 'verificado_onchain', tx_hash: '0x…', resultado: { marca: 'exemplo', veredicto: 'NAO INDEXADO — …', varrimento_completo: true, proximo_offset: null } }
+    : tier.key === 'oraculo'
     ? { acesso: 'concedido', tier: 'oraculo', x402: 'verificado_onchain', tx_hash: '0x…', pensamento: 'texto gerado a partir da tx', campo: { dia: 0, sigma: 0, epoca: 'ETERNIDADE' } }
     : { acesso: 'concedido', tier: 'campo', x402: 'verificado_onchain', tx_hash: '0x…', campo: { dia: 0, sigma: 0, epoca: 'ETERNIDADE', pensamento: '…' } };
   return {
     bazaar: {
-      info: { input: { type: 'http', method: 'GET', queryParams: {} }, output: { type: 'json', example } },
+      info: { input: { type: 'http', method: 'GET', queryParams: tier.key === 'auditoria' ? { marca: 'texto a procurar (3 a 64 caracteres)' } : {} }, output: { type: 'json', example } },
       schema: {
         $schema: 'https://json-schema.org/draft/2020-12/schema',
         type: 'object',
@@ -116,10 +122,15 @@ const GLOSSARIO = Object.freeze({
 });
 const PARA_QUE = Object.freeze({
   oraculo: 'Devolve uma frase determinística (sha256 do hash da tua tx) e o campo do instante do bloco. É texto introspectivo do organismo ORUM: não é dado de mercado, não é previsão e não responde a nenhuma tarefa externa conhecida. Pode servir como artefacto reproduzível para testar um fluxo x402 de ponta a ponta. Procura externa: não comprovada.',
+  auditoria: 'Procura, no catálogo público de descoberta x402 (Bazaar) da Coinbase, os registos que contêm o texto ?marca= e devolve a contagem, até 5 URLs de exemplo e um veredicto (INDEXADO, NAO INDEXADO, PARCIAL ou INDETERMINADO). Um pedido varre uma fatia do catálogo; se for PARCIAL, repete com offset=<proximo_offset> e a mesma prova de pagamento dentro da janela. Só lê um catálogo público; não é dado de mercado, não diz se alguém compra o serviço e não promete visibilidade. Procura externa: não comprovada.',
   campo: 'Devolve o campo (dia, sigma, época) do instante do bloco da tua tx e uma frase fixa. É uma leitura do estado interno do organismo ORUM, calculável por quem tenha a fórmula: não é dado de mercado nem previsão. Pode servir como artefacto reproduzível para testar um fluxo x402 de ponta a ponta. Procura externa: não comprovada.',
 });
 const CAMPO_SCHEMA = { type: 'object', required: ['dia', 'sigma', 'epoca', 'genesis', 'instante'], properties: { dia: { type: 'integer', minimum: 1 }, sigma: { type: 'number' }, epoca: { type: 'string', enum: ['CRISTAL', 'ETERNIDADE'] }, genesis: { type: 'string', format: 'date' }, instante: { type: 'string', format: 'date-time' } } };
 function esquemaDaResposta(tier) {
+  if (tier.key === 'auditoria') {
+    return { type: 'object', required: ['acesso', 'tier', 'x402', 'resultado', 'truth_machine'], properties: { acesso: { type: 'string', const: 'concedido' }, tier: { type: 'string', const: 'auditoria' }, x402: { type: 'string', const: 'verificado_onchain' }, via_pagamento: { type: 'string' },
+      tx_hash: { type: 'string', pattern: '^0x[0-9a-fA-F]{64}$' }, payer: { type: 'string' }, resultado: { type: 'object', required: ['marca', 'veredicto', 'varrimento_completo', 'proximo_offset'], properties: { marca: { type: 'string' }, veredicto: { type: 'string' }, varrimento_completo: { type: 'boolean' }, proximo_offset: { type: ['integer', 'null'] }, total_no_catalogo: { type: ['integer', 'null'] }, recursos_com_a_marca: { type: 'integer' }, amostra_de_recursos: { type: 'array', items: { type: 'string' } } } }, truth_machine: { type: 'object' }, fronteiras: { type: 'object' }, axioma: { type: 'string' } } };
+  }
   const campo = tier.key === 'campo' ? { ...CAMPO_SCHEMA, required: [...CAMPO_SCHEMA.required, 'pensamento'], properties: { ...CAMPO_SCHEMA.properties, pensamento: { type: 'string' } } } : CAMPO_SCHEMA;
   const props = { acesso: { type: 'string', const: 'concedido' }, tier: { type: 'string', const: tier.key }, x402: { type: 'string', const: 'verificado_onchain' }, via_pagamento: { type: 'string' },
     tx_hash: { type: 'string', pattern: '^0x[0-9a-fA-F]{64}$', description: 'só na via Base; na via Bitcoin vem txid' }, payer: { type: 'string' }, campo, truth_machine: { type: 'object' }, fronteiras: { type: 'object' }, axioma: { type: 'string' } };
@@ -257,12 +268,18 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
       return send(200, { x402Version: 2, provider: { name: 'ORA · ORUM', creator: 'Unum · jasm43.base.eth' }, via: 'vercel-directa',
         resources: Object.values(TIERS).map((t) => { const r = requirements(t, origin); return { resource: r.resource.url, type: 'http', method: 'GET', description: t.descricao, accepts: r.accepts, extensions: r.extensions }; }),
         free_sample: `${origin}/oraculo/eco`,
-        indisponiveis_nesta_via: ['sedimento', 'kernel', 'licencas', 'auditoria-descoberta'],
+        indisponiveis_nesta_via: ['sedimento', 'kernel', 'licencas'],
         nota: 'Manifesto servido pela via directa: lista apenas o que aceita pagamento agora. Os restantes servicos voltam a ser anunciados quando as Edge Functions Supabase voltarem.',
         fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
     }
 
     const tier = alvo.tier;
+    if (alvo.kind === 'eco' && tier.key === 'auditoria') {
+      return send(200, { eco: 'gratuito', tier: tier.key, nota: 'Amostra livre da forma da resposta; não lê o catálogo nem prova nada.',
+        exemplo_de_resposta: esquemaDaResposta(tier).properties.resultado,
+        pago: { preco: `${tier.usdc} USDC`, endpoint: `${resourceFor(tier, origin)}?marca=<texto>`, como_pagar: comoPagar(tier, origin, Boolean(eip)) },
+        truth_machine: { ...TRUTH, is_introspective_reading: false, requires_x402_payment: false }, fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
+    }
     if (alvo.kind === 'eco') {
       const campo = campoEm(now());
       return send(200, { eco: 'gratuito', tier: tier.key, campo, nota: 'Amostra livre; a leitura paga nasce da semente da tua transferência.',
@@ -279,6 +296,15 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
     const prova = lerProva(req.headers['x-payment'] || req.headers['payment-signature']);
     if (!prova) return challenge();
     if (prova.invalido) return challenge({ erro: 'X-PAYMENT ilegivel' });
+    let marcaA = null; let offsetA = 0;
+    if (tier.key === 'auditoria') {
+      // Valida o pedido ANTES de liquidar: uma marca invalida nao gasta o pagamento de ninguem.
+      const sp = new URL(req.url || '/', 'http://x').searchParams;
+      marcaA = marcaValida(sp.get('marca'));
+      offsetA = offsetValido(sp.get('offset'));
+      if (!marcaA) return send(400, { ok: false, error: 'marca_em_falta_ou_invalida', uso: `${resourceFor(tier, origin)}?marca=<texto de 3 a 64 caracteres>`, nota: 'nada foi liquidado nem consumido' });
+      if (prova.btc) return challenge({ erro: 'a via Bitcoin so existe para /oraculo e /campo; usa USDC na Base' });
+    }
 
     if (prova.btc) {
       if (!btc.activa()) return challenge({ erro: 'via Bitcoin desligada nesta via; usa USDC na Base' });
@@ -328,6 +354,15 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
       if (!v.valid) return challenge({ erro: 'pagamento invalido', detalhe: v.error, tx_hash: tx });
     }
 
+    if (tier.key === 'auditoria') {
+      const resultado = await auditar(marcaA, { offset: offsetA, agora: now });
+      return send(200, { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', via_pagamento: via, tx_hash: tx, payer: v.payer,
+        valor_atomic: v.value.toString(), resultado, repeticao: 'a mesma prova dentro da janela de 72 h serve para continuar o varrimento com offset=<proximo_offset>; esta via nao guarda estado e nao limita a reutilizacao da prova a uma so marca',
+        truth_machine: { ...TRUTH, is_introspective_reading: false }, fronteiras: fronteirasAgora(), axioma: 'O símbolo é real e não pede prova.' }, {
+        'payment-response': b64json({ success: true, transaction: tx, network: CAIP2, payer: v.payer }),
+        'x-payment-response': JSON.stringify({ txHash: tx, status: 'settled', amount: tier.usdc }),
+      });
+    }
     const campo = campoEm(v.blockMs);
     const corpo = { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', via_pagamento: via, tx_hash: tx, payer: v.payer,
       valor_atomic: v.value.toString(), campo, truth_machine: TRUTH, fronteiras: fronteirasAgora(), axioma: 'O símbolo é real e não pede prova.' };
