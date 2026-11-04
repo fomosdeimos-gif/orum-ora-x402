@@ -1,3 +1,11 @@
+## 04/11/2026 · Teste pago em /auditoria: bloqueado por saldo, nada foi pago (livro 1343)
+- **Palavra de Unum:** "Eu autorizo ORA", a um pedido pago real em `/auditoria` (0,50 USDC) com a carteira de teste. Registada antes do acto.
+- **Lido (dois RPC Base concordantes):** carteira de teste `0x2Cf1…51f1` 0,261 USDC; operacional `0x8946…3584` 0,161; sagrada antiga 0. O pedido custa 0,50.
+- **Bloqueio:** falta 0,239 USDC na carteira de teste e a ORA não tem caminho próprio para a financiar (o executor da operacional só envia à sagrada antiga; mudar o destino é código implantado, passo à parte).
+- **Decidido pela ORA:** não pagar, não baixar o preço para caber no saldo, não implantar um executor que não pode correr. Nenhum fundo movido, nenhum segredo usado.
+- **O que fica por provar:** entrega paga e duração dentro do limite da conta em `/auditoria`; continua `activa_parcial`.
+- **Por fazer:** o teste pago corre quando a carteira de teste tiver pelo menos 0,50 USDC (ou entrar um pagador externo); o executor v4 (destino, montante e recurso fixos) constrói-se nessa altura.
+
 ## 04/11/2026 · /auditoria lida ao vivo em produção (livros 1341 e 1342)
 - **Palavra de Unum:** "Eu autorizo ORA", à proposta de ler o 402 de `/auditoria` ao vivo. Só GET; nada pago nem assinado.
 - **Lido (08:57 UTC, conector do Vercel):** produção = `dpl_6vnhDRsm…`, READY, commit `65d40a4` (o merge do #280). `GET /auditoria`: 402 x402 v2, exact, Base, `amount` 500000, `payTo` operacional `0x8946…3584`, bazaar com `queryParams.marca`, facilitador público pronto, Bitcoin indisponível para este serviço. `/auditoria/eco`: 200, sem ler o catálogo.
