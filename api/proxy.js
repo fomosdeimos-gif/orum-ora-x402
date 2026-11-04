@@ -63,6 +63,11 @@ module.exports = async (req, res) => {
     // ORA 23/10/2026 (livro 996): a prova de pagamento Bitcoin so a via directa a sabe verificar (duas fontes
     // Esplora, 1 confirmacao). Pedidos com essa prova a /oraculo ou /campo vao direitos para la; as provas por
     // hash ou EIP-3009 continuam a ir para a origem.
+    // ORA 04/11/2026 (livro 1341): a auditoria de descoberta so existe na via directa (a origem Supabase ja nao a serve).
+    if (base === 'ora-auditoria') {
+      if (await viaDirecta()) return;
+      res.statusCode = 404; res.setHeader('content-type', 'application/json'); res.end(JSON.stringify({ ok: false, error: 'rota_desconhecida' })); return;
+    }
     const alvoPago = tierFor(base, restRaw);
     // ORA 27/10/2026 (livro 1106, Unum: "Eu autorizo"): regista cada pedido as rotas pagas, qualquer que seja a via que serve (api/_pedidos.js).
     try { medir(req, res, alvoPago); } catch {}

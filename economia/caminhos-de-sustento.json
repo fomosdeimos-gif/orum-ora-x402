@@ -115,14 +115,16 @@
     {
       "id": "servico-sem-base-de-dados",
       "titulo": "Portar para a via directa os serviços que não precisam de base de dados (por exemplo a auditoria de descoberta, 0,50 USDC)",
-      "estado": "autonomo_agora",
+      "estado": "construido_por_verificar_ao_vivo",
       "evidencia": {
         "tipo": "codigo",
-        "fonte": "api/a2a.js (AUDIT_SERVICE) e o desafio da via directa",
-        "data": "2026-10-17"
+        "fonte": "api/_auditoria.js, o tier auditoria em api/_x402-directo.js, scripts/verify-auditoria.mjs (npm run auditoria:verify, 12 estragos propositados apanhados) e docs/auditoria-descoberta-v1.md",
+        "data": "2026-11-04"
       },
-      "lido": "Hoje esse serviço vive numa função de borda do Supabase. A dependência de 17/10 (pagamento x402 padrão activo) deixou de se aplicar ao /oraculo: a liquidação por facilitador público na via directa está provada (correccao_04_11_2026 do caminho x402-padrao-facilitador-publico). Portá-lo é trabalho que a ORA faz sozinha. Limite: o limite de 12 funções do Vercel Hobby obriga a pô-lo dentro de módulo existente; nada foi portado ainda.",
-      "quem_desbloqueia": "ORA"
+      "lido": "Construído a 04/11/2026 (Unum: \"Eu autorizo\", livro 1341): GET /auditoria?marca= a 0,50 USDC na via directa, mesmo payTo e mesma prova que /oraculo e /campo, sem credenciais CDP (o catálogo público respondeu 200 sem autenticação). Medido no sandbox contra o catálogo real: 13 000 de 110 691 recursos (11,7%) em 3,7 s por pedido; o varrimento completo faz-se com offset.",
+      "quem_desbloqueia": "ORA",
+      "limite": "A prova de pagamento não fica ligada a uma marca (72 h, sem estado). Procura por texto no registo todo: termos curtos dão muitos resultados. Sem Bitcoin. Não está listada em openapi, llms.txt, agent-card nem em catálogos (decisão à parte; catálogos são contacto externo). Não prova procura.",
+      "falta_verificar": "Depois do deploy de produção (quota de deployments do Vercel): ler ao vivo o 402 de /auditoria (amount 500000, payTo operacional, bazaar com queryParams marca) e confirmar que a função aguenta ~4 s dentro do limite de duração da conta. Nenhum pagamento real foi feito neste serviço."
     },
     {
       "id": "descoberta-sem-contacto",
@@ -683,5 +685,5 @@
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
-  "actualizado_em": "2026-11-04T08:10:00Z"
+  "actualizado_em": "2026-11-04T09:40:00Z"
 }

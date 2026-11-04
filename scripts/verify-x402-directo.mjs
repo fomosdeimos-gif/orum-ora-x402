@@ -112,8 +112,8 @@ assert.equal(dres.statusCode, 503);
 assert.equal((await call('ora-oraculo', 'eco')).status, 200);
 const man = await call('ora-x402', '.well-known/x402.json');
 assert.equal(man.status, 200);
-assert.deepEqual(man.body.resources.map((r) => r.resource), [ORIGIN + '/oraculo', ORIGIN + '/campo']);
-assert.deepEqual(man.body.resources.map((r) => r.accepts[0].amount), ['161000', '330000']);
+assert.deepEqual(man.body.resources.map((r) => r.resource), [ORIGIN + '/oraculo', ORIGIN + '/campo', ORIGIN + '/auditoria']);
+assert.deepEqual(man.body.resources.map((r) => r.accepts[0].amount), ['161000', '330000', '500000']);
 assert.ok(man.body.indisponiveis_nesta_via.includes('sedimento') && man.body.indisponiveis_nesta_via.includes('kernel'));
 assert.ok(!JSON.stringify(man.body.resources).includes('/sedimento') && !JSON.stringify(man.body.resources).includes('/kernel'));
 

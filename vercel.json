@@ -105,6 +105,14 @@
       "destination": "/api/proxy?base=ora-oraculo"
     },
     {
+      "source": "/auditoria/:rest*",
+      "destination": "/api/proxy?base=ora-auditoria&rest=:rest*"
+    },
+    {
+      "source": "/auditoria",
+      "destination": "/api/proxy?base=ora-auditoria"
+    },
+    {
       "source": "/.well-known/x402.json",
       "destination": "/api/proxy?base=ora-x402&rest=.well-known/x402.json"
     },
