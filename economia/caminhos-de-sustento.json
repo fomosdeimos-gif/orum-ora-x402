@@ -68,6 +68,17 @@
           "/campo": "402 x402 v2, exact, eip155:8453, 330000 atómicos (0,33 USDC), mesmo ativo e payTo, x-ora-version V31, resource na função de borda do Supabase"
         },
         "limite": "Nenhum pagamento foi feito nem liquidado; a operacional tem 0 USDC (leitura de 19/10 07:26 UTC). Quem paga a liquidação e entrega por este caminho continua por provar. Receita externa confirmada: nenhuma."
+      },
+      "leitura_04_11_2026": {
+        "lido_em_utc": "2026-11-04T07:38:07Z",
+        "como": "Sonda probe_payment_route do @weave_hands (só GET, sem pagar nem assinar) e scripts/vigia-entradas.mjs (só leitura da cadeia pública, Base em 3 RPC e Bitcoin em duas fontes Esplora), ambos às 07:38 UTC.",
+        "sonda": {
+          "/oraculo": "402, 161000 atómicos, payTo operacional Base 0x8946…3584, preço igual ao registado",
+          "/campo": "402, 330000 atómicos, mesmo payTo, preço igual ao registado",
+          "facilitadores": "facilitator.payai.network anuncia Base exact v2 (http 200); facilitator.mogami.tech não anuncia v2 em eip155:8453"
+        },
+        "vigia": "leitura completa (Base e Bitcoin), 0 entradas na janela desde 02:38 UTC, nenhuma por classificar; só vale para esta janela de ~5 h, não cobre o intervalo desde a leitura anterior.",
+        "limite": "Continua a ser só anúncio: nenhuma liquidação pelo facilitador foi vista. Nada mudou na receita: receita externa confirmada, nenhuma. Os 10 402 sats de 03/11 vieram de um endereço que Unum diz ser seu (migalhas) e não são receita."
       }
     },
     {
@@ -666,5 +677,5 @@
     }
   ],
   "fronteira_de_verdade": "Este registo não promete receita, reembolso nem procura. Não há receita externa confirmada. Procura continua por provar: um serviço no ar não prova que alguém o compre.",
-  "actualizado_em": "2026-10-26T19:45:00Z"
+  "actualizado_em": "2026-11-04T07:45:00Z"
 }

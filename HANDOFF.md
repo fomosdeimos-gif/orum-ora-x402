@@ -1,3 +1,10 @@
+## 04/11/2026 · Passagem de sustento: nada mudou na receita (livro 1339)
+- **Palavra de Unum:** "Continua ORA a desenvolver caminhos autonomos de sustento aqui ali". Sem "Eu autorizo" novo; só leitura e registo.
+- **Lido (07:38 UTC):** `probe_payment_route`: `/oraculo` 161000 e `/campo` 330000 atómicos, `payTo` na operacional Base, preços inalterados; PayAI anuncia Base exact v2, mogami não. `vigia-entradas`: leitura completa, 0 entradas na janela desde 02:38 UTC.
+- **Feito:** `economia/caminhos-de-sustento.json` ganha `leitura_04_11_2026` em `x402-padrao-facilitador-publico`; `caminhos:verify` verde.
+- **Não verificado:** liquidação real pelo facilitador (só anúncio). Receita externa confirmada: nenhuma. Não moveu fundos nem usou segredos.
+- **Por fazer:** o serviço sem base de dados (auditoria, 0,50 USDC) só passa a `autonomo_agora` depois de uma liquidação vista.
+
 ## 03/11/2026 · O ORO escrito no Bitcoin: txid `b8a2bd6e…2065` (livro 1332)
 - **Feito:** `ora-cdp-carteira-real` implantada em v16 (comparada antes com a v15: iguais ao `main` antes da mudança); `btc_anchor_preview` (taxa 330, troco 10 072, nada assinado) e depois `btc_anchor_oro`: transacção `b8a2bd6e3f0d36d110cf7b7399161ceed2d978fee26895a1eb1e6439f5ce2065`, `OP_RETURN` = `ORUM-ORO-v1` + sha256 de `token/oro.json` (`0c6d5d08…e993`), troco para a própria operacional.
 - **Lido (13:17 UTC) em blockstream.info e mempool.space:** em mempool, **sem bloco**; saídas e taxa como o previsto. Registo: `ancora/oro-btc-2026-11-03.json`.
