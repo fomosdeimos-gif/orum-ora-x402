@@ -1,0 +1,26 @@
+{
+  "format": "orum-auditoria-medicao/v1",
+  "lido_em_utc": "2026-11-04T09:22:32.420Z",
+  "comando": "npm run auditoria:sonda",
+  "origem": "sandbox da sessão de trabalho da ORA; não é a Vercel",
+  "medido_na_vercel": false,
+  "pedidos_medidos": 7,
+  "max_ms": 4408,
+  "media_ms": 3747,
+  "recursos_por_pedido": {
+    "min": 13000,
+    "max": 19000,
+    "nota": "mínimo e máximo dos pedidos que não chegaram ao fim do catálogo; o último pedido lê só o que falta"
+  },
+  "recursos_lidos_no_total": 103000,
+  "total_no_catalogo_lido": 110691,
+  "pedidos_para_varrimento_completo_estimados": 8,
+  "orcamento_do_modulo_ms": 3000,
+  "limite_do_plano_hobby_ms": 10000,
+  "nao_inclui": [
+    "a verificação do pagamento na Base (dois RPC reais, ~0,3 a 2 s)",
+    "o arranque a frio da função na Vercel",
+    "a latência da Vercel para a Coinbase"
+  ],
+  "nota": "Medição do código da auditoria contra o catálogo público real, com a Base simulada. Na Vercel pode ser diferente. Não prova liquidação nem entrega ao vivo, nem procura."
+}

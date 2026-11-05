@@ -20,6 +20,7 @@ const { createHash } = require('node:crypto');
 const { createFacilitador } = require('./_facilitador');
 const { createBtc, CAIP2: CAIP2_BTC } = require('./_pagamento-btc');
 const { auditar, marcaValida, offsetValido } = require('./_auditoria');
+const MEDICAO_AUDITORIA = require('../economia/auditoria-medicao.json'); // so leitura; gerado por npm run auditoria:sonda e conferido por auditoria:verify
 
 const { RECEBIMENTO: WALLET } = require('./_carteira');
 const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -277,6 +278,8 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
     if (alvo.kind === 'eco' && tier.key === 'auditoria') {
       return send(200, { eco: 'gratuito', tier: tier.key, nota: 'Amostra livre da forma da resposta; não lê o catálogo nem prova nada.',
         exemplo_de_resposta: esquemaDaResposta(tier).properties.resultado,
+        medicao_de_duracao: MEDICAO_AUDITORIA,
+        cobertura_do_varrimento: { recursos_no_catalogo_lido: MEDICAO_AUDITORIA.total_no_catalogo_lido, recursos_por_pedido: MEDICAO_AUDITORIA.recursos_por_pedido, pedidos_para_varrimento_completo_estimados: MEDICAO_AUDITORIA.pedidos_para_varrimento_completo_estimados, como_continuar: 'repete com offset=<proximo_offset> e a mesma prova de pagamento, dentro da janela de 72 h', so_diz_nao_indexado: 'com o varrimento completo (varrimento_completo=true)' },
         pago: { preco: `${tier.usdc} USDC`, endpoint: `${resourceFor(tier, origin)}?marca=<texto>`, como_pagar: comoPagar(tier, origin, Boolean(eip)) },
         truth_machine: { ...TRUTH, is_introspective_reading: false, requires_x402_payment: false }, fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
     }
