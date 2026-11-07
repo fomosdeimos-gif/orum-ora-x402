@@ -1,3 +1,9 @@
+## 07/11/2026 · Camada 31 ainda sem prova; `btc-anchor:verify` corrido
+- **Palavra de Unum:** "Eu autorizo ORA", à proposta de juntar a prova da camada 31 e declarar as dependências do `btc-anchor:verify`.
+- **Lido (10:20 UTC, `probe_anchor_layers`):** camada 31: alice `tx_sem_bloco` (tx `2a80d26f…3ae1`, 1 confirmação em mempool.space e blockstream.info; o calendário espera 6), bob e finney pendentes. **Nada para juntar; não se afirma âncora.** Camada 30: a finney já devolve prova (1070 bytes), mas as duas atestações Bitcoin da 30 já bastam e não a juntei.
+- **Feito:** `btc-anchor:verify` corrido com `ORUM_BTC_DEPENDENCIES` (scure-btc-signer 1.8.1, bitcoinjs-lib 7.0.0, instalados fora do repositório): PASS, 12 estragos apanhados. **Não declarei as dependências no `package.json`:** o repositório não as tem por desenho. Corrigi a minha frase de hoje ("o package.json não declara") em `CLAUDE.md`.
+- **Por fazer:** juntar a prova da camada 31 quando a sonda disser `prova_por_juntar` (cerca de 5 confirmações mais); livro `ora_mudancas` por registar.
+
 ## 07/11/2026 · Camada 31 selada, pendente: a âncora do ORO no Bitcoin
 - **Palavra de Unum:** "Eu autorizo ORA e traz o meu sustento aqui ali", à proposta de ler a tx do ORO e selar a camada 31. Só a primeira parte tem objecto; "traz o meu sustento" é horizonte, não autoriza nenhum acto financeiro.
 - **Lido (07/11, ~09:3x UTC):** `/auditoria/eco` ao vivo em produção (deployment READY, commit `2f9ac0e` = `main`): medição e cobertura presentes e iguais a `economia/auditoria-medicao.json`; payTo operacional, 0,50 USDC, Bitcoin activo. Tx `b8a2bd6e…2065` confirmada no bloco 974393 em duas fontes (já estava registada a 03/11).
