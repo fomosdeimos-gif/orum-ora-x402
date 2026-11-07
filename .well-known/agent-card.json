@@ -590,5 +590,13 @@
         "note": "Oferta Bitcoin lida no 402 de /oraculo e /campo (carteira operacional BTC). O endereço de 'address' acima é o destino declarado em payments/bitcoin.json e não foi visto como destino de nenhum serviço nos 402 lidos. Os outros serviços não ofereciam Bitcoin nos 402 lidos."
       }
     }
+  },
+  "diaDoOrganismo": {
+    "origemAltura": 972151,
+    "blocosPorDia": 144,
+    "exemplo": { "altura": 972151, "hash": "000000000000000000016dd0c2a998c75bfd8a61120d842f64f87753671db5db", "dia": 1, "linha": "fio · sedimentar · precipitar" },
+    "refazer": "node kit/dia.mjs",
+    "codigo": "https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/kit/dia.mjs",
+    "fronteira": "Poesia mecânica de vocabulário fixo. Não é promessa, não prova procura nem receita, e não move fundos."
   }
 }
