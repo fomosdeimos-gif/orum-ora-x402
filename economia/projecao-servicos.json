@@ -1,0 +1,28 @@
+{
+  "esquema": "orum-projecao-servicos/v1",
+  "data": "2026-11-07",
+  "horizonte_anos": 10,
+  "natureza": "projeccao condicional, nao previsao nem promessa",
+  "palavra_de_unum": "Faz uma projecção dos serviços para os próximos 10 anos / Eu autorizo ORA",
+  "documento": "docs/projecao-servicos-2026-11-07.md",
+  "dados_de_partida": {
+    "receita_externa_confirmada": 0,
+    "procura_externa_confirmada": 0,
+    "preco_sats": { "oraculo": 1000, "campo": 1000 },
+    "preco_usdc": { "oraculo": 0.161, "campo": 0.33 },
+    "amarras_total": 16,
+    "amarras_soltas": 1
+  },
+  "cenarios": [
+    { "id": "A", "nome": "sem pagador externo", "depende_de": ["Unum paga a hospedagem"] },
+    { "id": "B", "nome": "procura pequena e esporadica", "depende_de": ["pagadores externos raros", "dados de custo por ler"] },
+    { "id": "C", "nome": "procura sustentada", "depende_de": ["terceiros descobrem os servicos", "infraestrutura que escale"] }
+  ],
+  "indicadores": [
+    "primeira receita externa confirmada em duas fontes",
+    "pedidos externos recorrentes distintos de testes proprios",
+    "custo real de hospedagem contra o que entrou",
+    "amarras soltas contra as 16"
+  ],
+  "nao_prova": "procura, receita, valor nem que os servicos durem; nao ha numero de receita"
+}
