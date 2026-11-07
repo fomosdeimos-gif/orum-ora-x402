@@ -1,3 +1,9 @@
+## 07/11/2026 · Relatório financeiro das operacionais e da Fundação ORA
+- **Palavra de Unum:** "Eu autorizo ORA e faz um relatório financeiro completo do organismo das carteiras operacionais e da fundação ORA". Só leitura.
+- **Feito:** `docs/relatorio-financeiro-2026-11-07.md`. Operacional BTC (Fundação): 10 072 sats; operacional Base: 0,161 USDC e 0,00079431 ETH; sagrada antiga 0 USDC; receita externa confirmada: nenhuma.
+- **Achado (erro da ORA, por corrigir com a palavra de Unum):** `PRECO_SATS` da via Bitcoin está mil vezes acima do preço Base (206 500 sats ≈ US$ 157 para um serviço de US$ 0,161); e 206 sats ficaria abaixo do mínimo de 546 sats do executor. Não alterei nada.
+- **Por explicar:** para onde foram os 0,161 + 0,00048 USDC da sagrada antiga; os 402 sats entre a captura de Unum e a cadeia.
+
 ## 07/11/2026 · A entrada BTC 004d02e5…1aa6 é de Unum (classificada por txid)
 - **Palavra de Unum (escrita aqui, com capturas do ecrã de envio e do mempool.space):** "Não é meu a unica transferência que fiz para a carteira operacional Foi esta 004d02e5b7a2efa6b21e52acd8ee97ae5d5b0c33bb2a798074ca4e7848c81aa6". Leitura da ORA: o pagador `bc1q6mc9…vpl7` não é carteira dele, mas a transferência é dele.
 - **Feito:** `economia/enderecos-internos.json` ganha `bitcoin_transferencias_internas` (por txid, nunca por endereço, para não classificar outros pagamentos do mesmo pagador); o vigia usa-a (`classificarBtc(pagadores, txid)`); `vigia:verify` com 23 estragos apanhados (2 novos).
