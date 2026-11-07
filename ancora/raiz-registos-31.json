@@ -906,8 +906,8 @@
     "bob.btc.calendar.opentimestamps.org",
     "finney.calendar.eternitywall.com"
   ],
-  "estado": "pendente",
-  "altura_bitcoin": null,
+  "estado": "confirmado_bitcoin",
+  "altura_bitcoin": 974918,
   "prova": "Prova que estes ficheiros, com estes hashes, existiam antes de um bloco do Bitcoin. Não prova autoria, valor, procura nem receita, e não faz do ORO um activo.",
   "nao_incluido": [
     "o livro do organismo (ora_mudancas): vive na base de dados e não se confere só com o repositório",
@@ -916,5 +916,27 @@
   "nao_verificado": [
     "se o compromisso já entrou num bloco (estado pendente até o recibo ser actualizado)",
     "a raiz do bloco contra o cabeçalho real (o verificador não fala com a rede)"
-  ]
+  ],
+  "atualizado_em_utc": "2026-11-07T11:58:00Z",
+  "atualizacao": "07/11/2026 (Unum: \"Eu autorizo\", à proposta de reler a camada 31 e juntar a prova; lembrete agendado 11:53 UTC): probe_anchor_layers às 11:54 UTC disse prova_por_juntar (alice e bob; finney pendente); às 10:20 UTC estava tx_sem_bloco (1 confirmação). GET /timestamp/<compromisso do ramo> directo do sandbox. A alice (1000 bytes, sha256 a8ec4cb4…) devolveu atestação Bitcoin do bloco 974918 e a bob (1000 bytes, sha256 5da05f95…) a do 974919; a finney continua pendente (as outras duas bastam). sha256 medidos na resposta, iguais aos da sonda, e conferidos antes de juntar com scripts/ots-juntar.mjs. A altura registada é a mais baixa das atestações Bitcoin: 974918. Prova só que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita; não move fundos.",
+  "verificacao_bloco": {
+    "lido_em_utc": "2026-11-07T11:58:00Z",
+    "fontes": [
+      "blockstream.info",
+      "mempool.space"
+    ],
+    "como": "kit/blocos.mjs com o fixture de scripts/verify-blocos.mjs (raiz de Merkle da atestação igual ao merkle_root do cabeçalho invertido; as duas fontes concordam; lidas directamente do sandbox)",
+    "blocos": [
+      {
+        "altura": 974918,
+        "hora_utc": "2026-11-07T10:16:44Z",
+        "id": "00000000000000000000bd7457dcd1988dd9f56e2668bc47493d114d81c485fb"
+      },
+      {
+        "altura": 974919,
+        "hora_utc": "2026-11-07T10:20:51Z",
+        "id": "0000000000000000000037ab3f037871b708ad9fb6e4f260c98003ea02ef7332"
+      }
+    ]
+  }
 }

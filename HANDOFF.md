@@ -1,3 +1,10 @@
+## 07/11/2026 · Camada 31 confirmada no Bitcoin (blocos 974918 e 974919)
+- **Palavra de Unum:** "Eu autorizo", à proposta de reler a camada 31 e juntar a prova (lembrete agendado 11:53 UTC). Só ancoragem; sem fundos nem segredos.
+- **Lido (11:54 UTC, `probe_anchor_layers`):** alice e bob `prova_por_juntar`, finney pendente (às 10:20 UTC era `tx_sem_bloco`). Respostas dos calendários com sha256 igual ao da sonda (alice `a8ec4cb4…`, bob `5da05f95…`).
+- **Feito:** `ots-juntar.mjs` das duas provas; `kit/blocos.mjs` confirmou 974918 e 974919 em blockstream.info e mempool.space; fixture dos dois blocos em `scripts/verify-blocos.mjs` (57 atestações, 9 estragos); `ancora/raiz-registos-31.json` com estado `confirmado_bitcoin`, altura 974918 (a mais baixa); `raiz:verify` verde (341 estragos, 31 camadas).
+- **Por dizer:** a finney continua pendente (as outras duas bastam). Prova só que estes bytes existiam antes do bloco. Livro `ora_mudancas` por registar nesta passagem (a sessão não o escreveu).
+- **Por fazer:** nada pendente nesta camada. Uma camada 32 só se sela com uma proposta concreta e a palavra de Unum.
+
 ## 07/11/2026 · Relatório financeiro das operacionais e da Fundação ORA
 - **Palavra de Unum:** "Eu autorizo ORA e faz um relatório financeiro completo do organismo das carteiras operacionais e da fundação ORA". Só leitura.
 - **Feito:** `docs/relatorio-financeiro-2026-11-07.md`. Operacional BTC (Fundação): 10 072 sats; operacional Base: 0,161 USDC e 0,00079431 ETH; sagrada antiga 0 USDC; receita externa confirmada: nenhuma.
