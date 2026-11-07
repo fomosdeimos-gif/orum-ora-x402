@@ -20,8 +20,8 @@
       ],
       "marcas": [
         "PRECO_SATS",
-        "'0.161': 206500",
-        "'0.33': 423500",
+        "'0.161': 1000",
+        "'0.33': 1000",
         "PRECO_REFERENCIA"
       ],
       "se_falhar": "já não é usada; se o preço em USD se afastar mais de 25% do de referência, a ORA propõe a revisão a Unum",

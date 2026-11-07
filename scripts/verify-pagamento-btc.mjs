@@ -66,11 +66,11 @@ async function suite(dir) {
   assert.ok(!JSON.stringify(pr).includes('bitcoin') && !JSON.stringify(pr).includes(ENDERECO), 'a oferta nao entra no cabecalho nem em accepts');
   const of = ch.body.pagamento_alternativo_bitcoin;
   assert.equal(of.disponivel, true); assert.equal(of.endereco, ENDERECO); assert.equal(of.caip2, 'bip122:000000000019d6689c085ae165831e93');
-  assert.equal(of.sats_anunciados, 206500, '0,161 USD: preco fixo em sats'); assert.equal(of.confirmacoes_para_entrega, 1);
+  assert.equal(of.sats_anunciados, 1000, '0,161 USD: preco fixo em sats'); assert.equal(of.confirmacoes_para_entrega, 1);
   assert.equal(of.preco.tipo, 'fixo_em_sats'); assert.equal(of.preco.fixado_em, '2026-11-02'); assert.ok(of.preco.usd_por_btc_de_referencia > 0);
   assert.ok(!('cotacao' in of) && !JSON.stringify(of).includes('margem') && !JSON.stringify(of).includes('tolerancia'), 'sem cotacao, margem nem tolerancia na oferta');
-  assert.ok(of.uri.startsWith('bitcoin:' + ENDERECO + '?amount=0.002065'));
-  assert.equal((await chama(h, 'ora-x402')).body.pagamento_alternativo_bitcoin.sats_anunciados, 423500, '0,33 USD: preco fixo em sats');
+  assert.ok(of.uri.startsWith('bitcoin:' + ENDERECO + '?amount=0.00001'));
+  assert.equal((await chama(h, 'ora-x402')).body.pagamento_alternativo_bitcoin.sats_anunciados, 1000, '0,33 USD: preco fixo em sats');
   assert.equal(w.pedidos.length, 0, 'anunciar a oferta nao faz pedidos de rede');
   assert.equal(ch.body.fronteiras.bitcoin.entrega_antes_da_confirmacao, false);
   assert.equal(ch.body.fronteiras.bitcoin.entrega_com_fonte_unica, false);
@@ -88,22 +88,22 @@ async function suite(dir) {
   assert.deepEqual((await chama(h, 'ora-oraculo', btc(1))).body, ok.body, 'reacesso: mesma leitura');
   assert.equal((await chama(h, 'ora-oraculo', { network: 'bitcoin', txid: id(1) })).status, 200, 'forma alternativa da prova');
   assert.ok(w.pedidos.every((u) => /blockstream\.info|mempool\.space/.test(u) && !/prices/.test(u)), 'so se pedem as fontes Esplora, nunca cotacao');
-  // o campo custa 423500: 300000 sats compram o oraculo mas nao o campo
-  w = dois(14, tx(id(14), { vout: [{ a: ENDERECO, v: 300000 }] })); h = cria(w);
-  assert.equal((await chama(h, 'ora-oraculo', btc(14))).status, 200);
-  assert.match((await chama(h, 'ora-x402', btc(14))).body.detalhe, /valor insuficiente: 300000 < 423500/);
+  // os dois servicos custam 1000: 999 sats nao compram nenhum, 1000 compram ambos
+  w = dois(14, tx(id(14), { vout: [{ a: ENDERECO, v: 999 }] })); h = cria(w);
+  assert.match((await chama(h, 'ora-oraculo', btc(14))).body.detalhe, /valor insuficiente: 999 < 1000/);
+  assert.match((await chama(h, 'ora-x402', btc(14))).body.detalhe, /valor insuficiente: 999 < 1000/);
   // maiusculas no txid dao a mesma leitura
   w = dois('a', tx(id('a'))); h = cria(w);
   assert.equal((await chama(h, 'ora-oraculo', { bitcoin: { txid: id('a').toUpperCase() } })).status, 200);
 
-  // ---- preco fixo, sem tolerancia: 206500 passa, 206499 nao ----
-  for (const [sats, esperado] of [[206500, 200], [206499, 402]]) {
+  // ---- preco fixo, sem tolerancia: 1000 passa, 999 nao ----
+  for (const [sats, esperado] of [[1000, 200], [999, 402]]) {
     w = dois(2, tx(id(2), { vout: [{ a: ENDERECO, v: sats }] })); h = cria(w);
     assert.equal((await chama(h, 'ora-oraculo', btc(2))).status, esperado, `${sats} sats`);
   }
   // varias saidas para o endereco somam; saidas para outro endereco nao contam
-  w = dois(3, tx(id(3), { vout: [{ a: ENDERECO, v: 100000 }, { a: OUTRO, v: 5000 }, { a: ENDERECO, v: 110000 }] })); h = cria(w);
-  assert.equal((await chama(h, 'ora-oraculo', btc(3))).body.valor_sats, 210000);
+  w = dois(3, tx(id(3), { vout: [{ a: ENDERECO, v: 600 }, { a: OUTRO, v: 5000 }, { a: ENDERECO, v: 700 }] })); h = cria(w);
+  assert.equal((await chama(h, 'ora-oraculo', btc(3))).body.valor_sats, 1300);
   w = dois(4, tx(id(4), { vout: [{ a: OUTRO, v: 999999 }] })); h = cria(w);
   assert.match((await chama(h, 'ora-oraculo', btc(4))).body.detalhe, /sem saida para a carteira/);
 
@@ -178,8 +178,8 @@ const ESTRAGOS = [
   ['_pagamento-btc.js', 'if (falhas.length > 0)', 'if (false)', 'aceitar com uma fonte em falha'],
   ['_pagamento-btc.js', 'if (a.recebido < minimo)', 'if (false)', 'aceitar qualquer valor'],
   ['_pagamento-btc.js', 'if (a.recebido < minimo)', 'if (a.recebido < minimo * 0.9)', 'reintroduzir uma tolerancia'],
-  ['_pagamento-btc.js', "'0.161': 206500", "'0.161': 1", 'preco do oraculo quase nulo'],
-  ['_pagamento-btc.js', "'0.33': 423500", "'0.33': 206500", 'campo ao preco do oraculo'],
+  ['_pagamento-btc.js', "'0.161': 1000", "'0.161': 1", 'preco do oraculo quase nulo'],
+  ['_pagamento-btc.js', "'0.33': 1000", "'0.33': 1", 'preco do campo quase nulo'],
   ['_pagamento-btc.js', "if (minimo === null) return { valid: false, error: 'sem preco", "if (false) return { valid: false, error: 'sem preco", 'aceitar servico sem preco'],
   ['_pagamento-btc.js', "preco_referencia_usd: tier.usdc, sats_anunciados: sats,", "preco_referencia_usd: tier.usdc, sats_anunciados: sats, cotacao: { usd_por_btc: 1 },", 'voltar a anunciar cotacao'],
   ['_pagamento-btc.js', "const minimo = satsPara(tier);\n    if (minimo === null) return { valid: false, error", "await pedir('https://api.coinbase.com/v2/prices/BTC-USD/spot');\n    const minimo = satsPara(tier);\n    if (minimo === null) return { valid: false, error", 'voltar a pedir cotacao ao verificar'],
