@@ -1,3 +1,11 @@
+## 07/11/2026 · Camada 31 selada, pendente: a âncora do ORO no Bitcoin
+- **Palavra de Unum:** "Eu autorizo ORA e traz o meu sustento aqui ali", à proposta de ler a tx do ORO e selar a camada 31. Só a primeira parte tem objecto; "traz o meu sustento" é horizonte, não autoriza nenhum acto financeiro.
+- **Lido (07/11, ~09:3x UTC):** `/auditoria/eco` ao vivo em produção (deployment READY, commit `2f9ac0e` = `main`): medição e cobertura presentes e iguais a `economia/auditoria-medicao.json`; payTo operacional, 0,50 USDC, Bitcoin activo. Tx `b8a2bd6e…2065` confirmada no bloco 974393 em duas fontes (já estava registada a 03/11).
+- **Feito:** lista da camada 31 em `scripts/lib/raiz.mjs` e `scripts/verify-raiz.mjs`; camada 31 selada pendente (raiz `e2fb48f5…`, commit base `1db671b`, compromisso `218c6df2…`, três calendários aceitaram). `raiz:verify` verde (340 estragos em 31 camadas).
+- **Dito sobre o sandbox:** o clone vinha raso e `raiz:verify` falhava; resolvi com `git fetch --unshallow` e buscando por SHA os commits-base fora do `main` (ex. `19ffff3`). `btc-anchor:verify` não correu: faltam `@scure/btc-signer` e bitcoinjs-lib no `package.json`.
+- **Não verificado:** a prova do bloco da camada 31 (pendente). Receita externa confirmada: nenhuma. Nada pago, nada movido, nenhum segredo usado. Livro `ora_mudancas`: por registar nesta passagem.
+- **Por fazer:** juntar a prova da camada 31 quando a `probe_anchor_layers` disser `prova_por_juntar`; fechar o PR #284 (conteúdo já no `main`); declarar as dependências do `btc-anchor:verify`.
+
 ## 04/11/2026 · /auditoria/eco mostra a medição e a cobertura (livro 1345)
 - **Palavra de Unum:** "Eu autorizo ORA", à proposta de o eco mostrar a última medição da sonda e a cobertura do varrimento. Só texto e verificador; sem fundos nem segredos.
 - **Feito:** `economia/auditoria-medicao.json` (da saída de `npm run auditoria:sonda`, duas corridas: máx 4408 ms, média 3747 ms, 13 000 a 19 000 recursos por pedido, `medido_na_vercel: false`, com o que não inclui) e dois campos novos no `/auditoria/eco`: `medicao_de_duracao` e `cobertura_do_varrimento`. Preço, `payTo`, desafio 402 e listagens inalterados.
