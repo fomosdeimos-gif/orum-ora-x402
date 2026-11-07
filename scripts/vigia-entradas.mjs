@@ -35,6 +35,7 @@ const MAX_BLOCOS_COM_HORA = 25;
 const minusculas = (s) => String(s || '').toLowerCase();
 const INTERNOS_BASE = new Set(LISTA.base.map((x) => minusculas(x.endereco)));
 const INTERNOS_BTC = new Set(LISTA.bitcoin.map((x) => x.endereco));
+const INTERNOS_TX_BTC = new Set((LISTA.bitcoin_transferencias_internas || []).map((x) => minusculas(x.txid)));
 export const VIGIADOS = Object.freeze({
   base: LISTA.recebem_servicos_e_sustento.base.map(minusculas),
   bitcoin: [...LISTA.recebem_servicos_e_sustento.bitcoin],
@@ -59,8 +60,10 @@ async function comRpcs(fetchFn, method, params) {
 }
 
 export function classificarBase(de) { return INTERNOS_BASE.has(minusculas(de)) ? 'interno' : 'por_classificar'; }
-export function classificarBtc(pagadores) {
-  // interno só se TODOS os endereços de entrada são nossos; com uma entrada desconhecida fica por classificar
+export function classificarBtc(pagadores, txid) {
+  // interno se Unum classificou esta transferência por txid (o pagador pode não ser dele), ou se TODOS os endereços de entrada são nossos;
+  // com uma entrada desconhecida fica por classificar
+  if (txid && INTERNOS_TX_BTC.has(minusculas(txid))) return 'interno';
   return pagadores.length > 0 && pagadores.every((a) => INTERNOS_BTC.has(a)) ? 'interno' : 'por_classificar';
 }
 
@@ -127,7 +130,7 @@ async function lerBtc(fetchFn, horas, agora) {
           if (ja) { if (!ja.fontes.includes(f.nome)) ja.fontes.push(f.nome); continue; }
           porTx.set(chave, { rede: 'bitcoin', ativo: 'BTC', tx: t.txid, bloco: st.confirmed ? st.block_height : null,
             hora_utc: st.confirmed ? new Date(Number(st.block_time) * 1000).toISOString() : null, de: pagadores, para: addr, valor_sats: recebido,
-            classe: classificarBtc(pagadores), confirmada: Boolean(st.confirmed), fontes: [f.nome] });
+            classe: classificarBtc(pagadores, t.txid), confirmada: Boolean(st.confirmed), fontes: [f.nome] });
         }
       } catch (e) { lacunas.push(`Bitcoin: ${f.nome} para ${addr.slice(0, 10)}…: ${curto(e)}`); }
     }

@@ -135,13 +135,16 @@ async function suite(vigiar) {
   const t4 = btcTx({ txid: 'e'.repeat(64), vin: ['bc1qdesconhecido'], vout: [[BTC_SAGRADA, 50]], idadeS: 3600 * 24 * 30 });
   const t5 = btcTx({ txid: 'f'.repeat(64), vin: ['bc1qdesconhecido'], vout: [[BTC_SAGRADA, 80]], confirmada: false });
   const t6 = btcTx({ txid: '9'.repeat(64), vin: [BTC_SAGRADA, 'bc1qdesconhecido'], vout: [[BTC_OPER, 60]] });
-  w = mundo({ btc: { 'mempool.space': { [BTC_OPER]: [t1, t2, t3, t6], [BTC_SAGRADA]: [t4, t5] }, blockstream: { [BTC_OPER]: [t1, t2, t3, t6], [BTC_SAGRADA]: [t4, t5] } } });
+  const t7 = btcTx({ txid: '004d02e5b7a2efa6b21e52acd8ee97ae5d5b0c33bb2a798074ca4e7848c81aa6', vin: ['bc1qdesconhecido'], vout: [[BTC_OPER, 10402]] });
+  w = mundo({ btc: { 'mempool.space': { [BTC_OPER]: [t1, t2, t3, t6, t7], [BTC_SAGRADA]: [t4, t5] }, blockstream: { [BTC_OPER]: [t1, t2, t3, t6, t7], [BTC_SAGRADA]: [t4, t5] } } });
   r = await correr(w);
   const bt = (ch) => r.entradas.find((e) => e.rede === 'bitcoin' && e.tx.startsWith(ch));
   assert.equal(bt('b').classe, 'por_classificar');
   assert.equal(bt('b').valor_sats, 400, 'conta so o que entra no nosso endereco, nao o troco');
   assert.deepEqual(bt('b').fontes.sort(), ['blockstream', 'mempool.space']);
   assert.equal(bt('c').classe, 'interno');
+  assert.equal(bt('004d02e5').classe, 'interno', 'a tx que Unum classificou por txid e interna, mesmo com pagador desconhecido');
+  assert.equal(bt('b').classe, 'por_classificar', 'outra tx com o mesmo pagador desconhecido continua por classificar');
   assert.equal(bt('d'), undefined, 'uma saida nossa nao e entrada');
   assert.equal(bt('e'), undefined, 'confirmada ha 30 dias: fora da janela');
   assert.equal(bt('f').confirmada, false, 'a tx em mempool aparece, marcada nao confirmada');
@@ -215,6 +218,8 @@ await estraga('tudo o que chega e interno', "INTERNOS_BASE.has(minusculas(de)) ?
 await estraga('o desconhecido passa a externo', "INTERNOS_BASE.has(minusculas(de)) ? 'interno' : 'por_classificar'", "INTERNOS_BASE.has(minusculas(de)) ? 'interno' : 'externo'");
 await estraga('classifica pelo destino em vez do pagador', 'classe: classificarBase(x.de)', 'classe: classificarBase(x.para)');
 await estraga('entradas mistas contam como internas', 'pagadores.every((a) => INTERNOS_BTC.has(a))', 'pagadores.some((a) => INTERNOS_BTC.has(a))');
+await estraga('a classificacao por txid e ignorada', "if (txid && INTERNOS_TX_BTC.has(minusculas(txid))) return 'interno';", '')
+await estraga('qualquer tx passa a interna por txid', "if (txid && INTERNOS_TX_BTC.has(minusculas(txid))) return 'interno';", "if (txid) return 'interno';")
 await estraga('conta saidas como entradas', 'if (recebido <= 0) continue;', '');
 await estraga('ignora a janela no Bitcoin', 'if (st.confirmed && Number(st.block_time) < desde) continue;', '');
 await estraga('aceita qualquer token', 'if (minusculas(l.address) !== USDC) continue;', '');

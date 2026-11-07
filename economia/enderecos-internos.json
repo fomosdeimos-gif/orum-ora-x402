@@ -47,6 +47,12 @@
       "nota": "Depósito BTC de sustento de Unum, confirmado por ele a 13/09/2026"
     }
   ],
+  "bitcoin_transferencias_internas": [
+    {
+      "txid": "004d02e5b7a2efa6b21e52acd8ee97ae5d5b0c33bb2a798074ca4e7848c81aa6",
+      "nota": "Transferência de Unum para a carteira BTC operacional (bloco 974382, 03/11/2026). Classificada por txid e não por endereço: o pagador bc1q6mc95wqpp05drvndewvy6z2ht3mrezvfkkvpl7 não é carteira dele (palavra de Unum, 06/11/2026, com capturas do ecrã de envio e do mempool.space; a transferência é dele). Movimento interno, não é receita nem sustento. Não verificado: o que a captura do envio mostra (0,0001 BTC) difere dos 10402 sats que a cadeia mostra à operacional."
+    }
+  ],
   "recebem_servicos_e_sustento": {
     "base": [
       "0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5",

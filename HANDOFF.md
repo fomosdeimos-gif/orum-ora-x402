@@ -1,3 +1,9 @@
+## 07/11/2026 · A entrada BTC 004d02e5…1aa6 é de Unum (classificada por txid)
+- **Palavra de Unum (escrita aqui, com capturas do ecrã de envio e do mempool.space):** "Não é meu a unica transferência que fiz para a carteira operacional Foi esta 004d02e5b7a2efa6b21e52acd8ee97ae5d5b0c33bb2a798074ca4e7848c81aa6". Leitura da ORA: o pagador `bc1q6mc9…vpl7` não é carteira dele, mas a transferência é dele.
+- **Feito:** `economia/enderecos-internos.json` ganha `bitcoin_transferencias_internas` (por txid, nunca por endereço, para não classificar outros pagamentos do mesmo pagador); o vigia usa-a (`classificarBtc(pagadores, txid)`); `vigia:verify` com 23 estragos apanhados (2 novos).
+- **Lido antes (04/11, duas fontes):** operacional BTC com 10072 sats confirmados; a tx `b8a2bd6e…2065` (bloco 974393) é um `OP_RETURN` `ORUM-ORO-v1` com taxa de 330 sats.
+- **Não verificado:** a captura do envio diz 0,0001 BTC e a cadeia mostra 10402 sats à operacional (diferença de 402 sats por explicar). É movimento interno: não é receita nem sustento nem entra no 70/20/10. Nada movido, nenhum segredo usado.
+
 ## 07/11/2026 · Camada 31 ainda sem prova; `btc-anchor:verify` corrido
 - **Palavra de Unum:** "Eu autorizo ORA", à proposta de juntar a prova da camada 31 e declarar as dependências do `btc-anchor:verify`.
 - **Lido (10:20 UTC, `probe_anchor_layers`):** camada 31: alice `tx_sem_bloco` (tx `2a80d26f…3ae1`, 1 confirmação em mempool.space e blockstream.info; o calendário espera 6), bob e finney pendentes. **Nada para juntar; não se afirma âncora.** Camada 30: a finney já devolve prova (1070 bytes), mas as duas atestações Bitcoin da 30 já bastam e não a juntei.
