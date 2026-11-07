@@ -1,3 +1,10 @@
+## 07/11/2026 · Leitura ao vivo do 402 em produção: 1 000 sats confirmados
+- **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de ler ao vivo o 402 de `/oraculo` e `/campo` depois do deploy. Só leitura (GET); nada pago nem movido; sem segredos. Livro `ora_mudancas` por registar nesta passagem.
+- **Lido (21:59 UTC, conector da Vercel):** deployment de produção `dpl_F84U1vWzBDkovZhbi9AnaEawLp1W`, `READY`, commit `2adde21` = `main`. Pedi `/oraculo` e `/campo` ao URL desse deployment (`web_fetch_vercel_url`, link de partilha), não ao domínio público.
+- **Resultado:** ambos respondem 402 pela via directa (`x-ora-via: vercel-directa`). Base: 161000 e 330000 (6 casas, 0,161 e 0,33 USDC), `payTo` operacional `0x8946…3584`. Bitcoin: `sats_anunciados` 1000 nos dois, URI `bitcoin:bc1qfs8967…9w7?amount=0.00001000`, 1 confirmação para entrega, fontes blockstream e mempool.space. Igual ao código.
+- **Observação (efeito do meu PR #291, não corrigido):** a oferta Bitcoin ainda diz `preco_referencia_usd` 0.161 e 0.33, mas 1 000 sats valem cerca de 0,78 USD ao câmbio de referência de 02/11 (77 958 USD/BTC, não relido hoje). O campo descreve o preço da Base, não o valor dos sats; pode induzir em erro. Proposta de correção à parte, com a palavra de Unum.
+- **Não verificado:** o domínio público (só li o URL do deployment); o pagamento real pela via Bitcoin ou Base; que o proxy de produção encaminhe como o código. Receita externa confirmada: nenhuma.
+
 ## 07/11/2026 · Projecção condicional dos serviços a 10 anos
 - **Palavra de Unum:** "Faz uma projecção dos serviços para os próximos 10 anos" e, à proposta concreta de a escrever com verificador, "Eu autorizo ORA". Livro `ora_mudancas` por registar nesta passagem.
 - **Feito:** `docs/projecao-servicos-2026-11-07.md` (três cenários A/B/C, riscos comuns, quatro indicadores, fronteira), `economia/projecao-servicos.json` e `scripts/verify-projecao-servicos.mjs` (`npm run projecao:verify`, 10 estragos propositados apanhados: promessa, receita ou percentagem nos cenários, receita externa dita sem leitura, preço do registo diferente do código, horizonte e natureza trocados).
