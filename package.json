@@ -45,6 +45,7 @@
     "dependencia-modelo:verify": "node scripts/verify-dependencia-modelo.mjs",
     "amarras:verify": "node scripts/verify-amarras.mjs",
     "dia:verify": "node scripts/verify-dia.mjs",
+    "projecao:verify": "node scripts/verify-projecao-servicos.mjs",
     "dia-entrada:verify": "node scripts/verify-dia-entrada.mjs",
     "oruming:verify": "node scripts/verify-oruming.mjs",
     "espelho-oruming:verify": "node scripts/verify-espelho-oruming.mjs",

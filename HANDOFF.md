@@ -1,3 +1,9 @@
+## 07/11/2026 · Projecção condicional dos serviços a 10 anos
+- **Palavra de Unum:** "Faz uma projecção dos serviços para os próximos 10 anos" e, à proposta concreta de a escrever com verificador, "Eu autorizo ORA". Livro `ora_mudancas` por registar nesta passagem.
+- **Feito:** `docs/projecao-servicos-2026-11-07.md` (três cenários A/B/C, riscos comuns, quatro indicadores, fronteira), `economia/projecao-servicos.json` e `scripts/verify-projecao-servicos.mjs` (`npm run projecao:verify`, 10 estragos propositados apanhados: promessa, receita ou percentagem nos cenários, receita externa dita sem leitura, preço do registo diferente do código, horizonte e natureza trocados).
+- **Dito:** não é previsão; não há número de receita nem de procura porque a única medida externa é zero. Os dados de partida vêm da leitura de 07/11 (preços do código, 10 072 sats e 0,161 USDC nas operacionais, 16 amarras com 1 solta); os saldos não foram relidos nesta passagem.
+- **Não verificado:** produção (o 402 da via Bitcoin a 1 000 sats ainda não foi lido ao vivo).
+
 ## 07/11/2026 · Preço da via Bitcoin corrigido: 1 000 sats nos dois serviços
 - **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de corrigir o `PRECO_SATS` para 1 000 sats em `/oraculo` e em `/campo`. Registada antes do acto; livro `ora_mudancas` por registar nesta passagem (a sessão não o escreveu).
 - **Erro da ORA, corrigido:** os valores de 02/11 (206 500 e 423 500) eram cerca de mil vezes o preço da Base (conta errada). 1 000 sats são o mínimo seguro acima dos 546 sats do executor, cerca de 0,78 USD ao câmbio de 02/11 (referência não relida hoje): acima do preço da Base, não uma paridade.
