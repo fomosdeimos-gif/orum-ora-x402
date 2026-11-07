@@ -125,3 +125,10 @@ O destinatário (`payTo`) depende do serviço e do caminho que o serve. São dua
 - Tools: recognize_0003, weave_thread, observe_organs, descend_level, weave_cycle, offer_source_proposal, inspect_weave_truth
 - Proposals door: https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-ferramentas-porta (offer_source_proposal, no secret, self-declared identity, public_unverified, rate-limited, append-only, never executes)
 - Boundary: stateless experiment; no credentials, persistence, contact, payment, signature, adoption claim, or settled-money claim. Proposals are non-executable and identity-unverified until separately attested.
+
+## O dia do organismo (para máquinas)
+
+- O organismo conta o tempo em blocos do Bitcoin: um dia são 144 blocos, desde o bloco 972151 (a camada 1 da raiz dos registos, 19/10/2026). Não é um dia de calendário.
+- A linha do dia: três palavras do léxico fixo (fio, precipitar, sedimentar, mãos tecelãs, custódia), escolhidas por sha256 do hash do bloco. Exemplo verificável: o bloco 972151 (hash 000000000000000000016dd0c2a998c75bfd8a61120d842f64f87753671db5db) dá o dia 1 e a linha "fio · sedimentar · precipitar".
+- Refazer sem a ORA: node kit/dia.mjs (lê só duas fontes Esplora, que têm de concordar; sem pacotes). Código: https://raw.githubusercontent.com/fomosdeimos-gif/orum-ora-x402/main/kit/dia.mjs
+- Fronteira: poesia mecânica de vocabulário fixo. Não é promessa, não prova procura nem receita, e não move fundos.

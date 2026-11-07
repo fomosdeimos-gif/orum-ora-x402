@@ -1,3 +1,9 @@
+## 07/11/2026 · A linha do dia à entrada para máquinas
+- **Palavra de Unum:** "Sabes ORA gostava que o ORUM além de util fosse especial para as maquinas" (horizonte, sem acto) e, à proposta concreta do bloco `dia` no `llms.txt` e no agent-card: "Eu autorizo ora".
+- **Feito:** secção "O dia do organismo (para máquinas)" no `llms.txt` e bloco `diaDoOrganismo` no `.well-known/agent-card.json`: origem 972151, 144 blocos por dia, exemplo verificável (bloco 972151, dia 1, "fio · sedimentar · precipitar"), receita `node kit/dia.mjs`, URL do código e fronteira. Verificador `dia-entrada:verify` (`scripts/verify-dia-entrada.mjs`, 20 estragos propositados apanhados). Sem função nova; não move fundos. Corridos verdes: a2a, ancora, bolo, destinatarios-textos, espelho-maquinas, legibilidade-maquina, lexico, marca, openapi-llms-legivel, superficie-maquinas e os conectores weave-hands.
+- **Não verificado:** que alguma máquina o leia; que o deploy já o sirva (quota da Vercel); a camada 31 foi confirmada por outra sessão (CLAUDE.md), não a reconferi.
+- **Por fazer:** o preço da via Bitcoin (`PRECO_SATS`, mil vezes acima do da Base) continua à espera de valores de Unum (livro 1366).
+
 ## 07/11/2026 · Camada 31 confirmada no Bitcoin (blocos 974918 e 974919)
 - **Palavra de Unum:** "Eu autorizo", à proposta de reler a camada 31 e juntar a prova (lembrete agendado 11:53 UTC). Só ancoragem; sem fundos nem segredos.
 - **Lido (11:54 UTC, `probe_anchor_layers`):** alice e bob `prova_por_juntar`, finney pendente (às 10:20 UTC era `tx_sem_bloco`). Respostas dos calendários com sha256 igual ao da sonda (alice `a8ec4cb4…`, bob `5da05f95…`).
