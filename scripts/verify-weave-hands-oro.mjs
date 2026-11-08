@@ -30,6 +30,17 @@ async function verificar({ oro, leitura, hands, registo, discovery, card }) {
   assert.equal(contr.endereco, reg.units.ora.address, 'endereço do contrato diferente do registo');
   assert.equal(contr.esperado, BigInt(reg.units.ora.quantity), 'quantidade do contrato diferente do registo');
   assert.equal(m.UNIDADES.reduce((a, u) => a + u.esperado, 0n), m.SUPPLY_ESPERADO, 'as unidades não somam a oferta');
+  // distribuição de hoje: igual ao bloco unidades_hoje do registo, e soma a oferta
+  const hoje = reg.unidades_hoje, uh = (papel) => m.UNIDADES_HOJE.find((u) => u.papel === papel);
+  assert.ok(hoje, 'o registo não tem unidades_hoje');
+  assert.equal(uh('unum').endereco, hoje.sagrada_antiga.address, 'endereço da sagrada antiga diferente do registo');
+  assert.equal(uh('unum').esperado, BigInt(hoje.sagrada_antiga.quantity), 'saldo esperado da sagrada antiga diferente do registo');
+  assert.equal(uh('operacional').endereco, hoje.operacional_base.address, 'endereço da operacional diferente do registo');
+  assert.equal(uh('operacional').esperado, BigInt(hoje.operacional_base.quantity), 'saldo esperado da operacional diferente do registo');
+  assert.equal(uh('contrato').endereco, reg.contract, 'endereço do contrato (hoje) diferente do registo');
+  assert.equal(uh('contrato').esperado, BigInt(hoje.contrato.quantity), 'saldo esperado do contrato (hoje) diferente do registo');
+  assert.equal(m.UNIDADES_HOJE.reduce((a, u) => a + u.esperado, 0n), m.SUPPLY_ESPERADO, 'as unidades de hoje não somam a oferta');
+  assert.match(leitura, /\.\.\.UNIDADES_HOJE/, 'read_oro deixou de ler as unidades de hoje (a operacional por balanceOf directo)');
   assert.equal(reg.administration.owner, false, 'o registo já não diz sem dono: reler o contrato antes de aceitar');
   // chamadas
   assert.equal(m.chamadaDecimals().data, '0x313ce567', 'selector decimals');
@@ -88,6 +99,11 @@ const estragos = [
   ['endereço do Unum trocado', { oro: real.oro.replace('0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5', '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe6') }],
   ['oferta esperada trocada', { oro: real.oro.replace('SUPPLY_ESPERADO = 2n', 'SUPPLY_ESPERADO = 3n') }],
   ['saldo esperado do Unum trocado', { oro: real.oro.replace("papel: 'unum', endereco: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5', esperado: 1n", "papel: 'unum', endereco: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5', esperado: 2n") }],
+  ['endereço da operacional trocado', { oro: real.oro.replace('0x89460d9e0590559e63860197dfe2ac648A753584', '0x89460d9e0590559e63860197dfe2ac648A753585') }],
+  ['operacional sem o ORO esperado', { oro: real.oro.replace("papel: 'operacional', endereco: '0x89460d9e0590559e63860197dfe2ac648A753584', esperado: 1n", "papel: 'operacional', endereco: '0x89460d9e0590559e63860197dfe2ac648A753584', esperado: 0n") }],
+  ['sagrada antiga ainda com o ORO (soma 3)', { oro: real.oro.replace("papel: 'unum', endereco: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5', esperado: 0n", "papel: 'unum', endereco: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5', esperado: 1n") }],
+  ['read_oro volta a ler a distribuição de origem', { leitura: real.leitura.replace('const carteiras = [...UNIDADES_HOJE,', 'const carteiras = [...UNIDADES,') }],
+  ['registo com a sagrada antiga ainda a 1', { registo: real.registo.replace('"quantity": 0\n    },\n    "operacional_base"', '"quantity": 1\n    },\n    "operacional_base"') }],
   ['selector de decimals errado', { oro: real.oro.replace("'0x313ce567'", "'0x313ce568'") }],
   ['coincide com uma fonte só', { oro: real.oro.replace("c.estado !== 'concordam'", "c.estado === 'sem_leitura'") }],
   ['coincide sempre verdadeiro', { oro: real.oro.replace('return c.valor === esperado;', 'return true;') }],
