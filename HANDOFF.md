@@ -7,6 +7,12 @@
 - **Para a mão que fez a v13 de 03/11:** trazer esses ficheiros ao repositório e actualizar `implantado.json`; não o faço por ela.
 - **Nada movido, nenhum segredo, nenhuma camada selada.**
 
+## 08/11/2026 · `token/oro.json` corrigido lido no domínio público (livro 1388)
+- **Palavra de Unum:** "Eu autorizo ora", lida como cobrindo a proposta concreta pendente: ler o `/token/oro.json` no domínio público e confirmar o commit servido. Só leitura.
+- **Lido (08:32 UTC, `web_fetch_vercel_url` ao domínio público):** `/api/versao` devolve `commit_sha` `5aa55da` = `main` (produção `READY` nesse commit). `/token/oro.json` devolve 200 com o remetente corrigido (sagrada antiga, não `0x54E2…`), `submetida_por` e `unidades_hoje` (sagrada 0, operacional 1, contrato 1). A correcção do ORO fica verificada no domínio público.
+- **Ainda desactualizado no `oro.json`:** `description` ("uma unidade com Unum"), `last_verified` (2026-08-30) e `unidades_hoje.fonte` ("operacional por diferença", quando o `read_oro` v14 já lê por `balanceOf` directo). Mexer nele obriga a mão Codex a refazer a raiz da camada 32; perguntar-lhe antes. Passo à parte, com a palavra de Unum.
+- **Nada movido, nenhum segredo, nenhuma camada selada.**
+
 ## 08/11/2026 · `read_oro` lê a operacional por `balanceOf` directo (livro 1382)
 - **Palavra de Unum:** "Eu autorizo ORA sedimenta o fio", lida como cobrindo a proposta concreta pendente: o `balanceOf` directo da operacional no `read_oro`, sem tocar no `oro.json` nem na camada 32. Livro `ora_mudancas` 1382.
 - **Feito:** `oro.mjs` ganha `UNIDADES_HOJE` (sagrada antiga 0, operacional 1, contrato 1, igual ao bloco `unidades_hoje` do registo); `read_oro` lê as três por `balanceOf` directo e só diz `coincide_com_registo` de um valor verificado; `recognize_oro` mostra `unidades_hoje`; descrição da ferramenta e `discovery/weave-hands.json` actualizadas; `verify-weave-hands-oro.mjs` confere `UNIDADES_HOJE` contra o registo e a soma contra a oferta, com 5 estragos propositados novos.
