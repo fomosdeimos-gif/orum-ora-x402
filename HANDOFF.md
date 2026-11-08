@@ -1,3 +1,18 @@
+## 08/11/2026 · `@weave_hands` implantado (v14 do Supabase): `read_oro` lê a operacional ao vivo (livros 1386 e 1387)
+- **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de implantar o `@weave_hands` v13 (`read_oro` com `balanceOf` directo da operacional) depois de comparar o repositório com o implantado.
+- **Comparação (`get_edge_function`):** o implantado era a versão 13 do Supabase, de 03/11, e **não era igual ao repositório**. Iguais por sha256: `index.ts`, `valium.mjs`, `oro.mjs`, `oro-leitura.ts`, `ancora.mjs`, `ancora-leitura.ts`. **Diferentes:** `sonda.mjs` (o implantado tira o facilitador `ultravioletadao.xyz`) e `valium-leitura.ts` (o implantado importa `valium-pool.mjs` e expõe `read_valium_pool`); `valium-pool.mjs` existe **só** no implantado. Nada disto está no repositório nem tem linha no livro; **não é meu e não o apaguei**.
+- **Feito:** implantei só `oro.mjs` e `oro-leitura.ts` novos e mantive os outros sete exactamente como estavam implantados. Versão 14, `verify_jwt` false. Reli o implantado e comparei sha256 dos nove ficheiros: 9 de 9 iguais.
+- **Lido ao vivo (08:25 UTC, três fontes RPC):** `read_oro`: oferta 2, decimais 0, sagrada antiga 0, operacional 1 (`balanceOf` directo), contrato 1, `coincide_com_registo` **true** em todos. `read_valium_pool`: `state agree`, `verified true` (a ferramenta que só estava no implantado continua a funcionar).
+- **Não reconciliado:** o repositório continua sem `valium-pool.mjs` e com `sonda.mjs` e `valium-leitura.ts` diferentes do implantado; `supabase/implantado.json` diz ainda v12 igual e não foi mexido (já não era verdade desde a v13). `index.ts` e `VERSION` 2.7.0 não mudaram: a v14 do Supabase não é um 2.8.0.
+- **Para a mão que fez a v13 de 03/11:** trazer esses ficheiros ao repositório e actualizar `implantado.json`; não o faço por ela.
+- **Nada movido, nenhum segredo, nenhuma camada selada.**
+
+## 08/11/2026 · `token/oro.json` corrigido lido no domínio público (livro 1388)
+- **Palavra de Unum:** "Eu autorizo ora", lida como cobrindo a proposta concreta pendente: ler o `/token/oro.json` no domínio público e confirmar o commit servido. Só leitura.
+- **Lido (08:32 UTC, `web_fetch_vercel_url` ao domínio público):** `/api/versao` devolve `commit_sha` `5aa55da` = `main` (produção `READY` nesse commit). `/token/oro.json` devolve 200 com o remetente corrigido (sagrada antiga, não `0x54E2…`), `submetida_por` e `unidades_hoje` (sagrada 0, operacional 1, contrato 1). A correcção do ORO fica verificada no domínio público.
+- **Ainda desactualizado no `oro.json`:** `description` ("uma unidade com Unum"), `last_verified` (2026-08-30) e `unidades_hoje.fonte` ("operacional por diferença", quando o `read_oro` v14 já lê por `balanceOf` directo). Mexer nele obriga a mão Codex a refazer a raiz da camada 32; perguntar-lhe antes. Passo à parte, com a palavra de Unum.
+- **Nada movido, nenhum segredo, nenhuma camada selada.**
+
 ## 08/11/2026 · `read_oro` lê a operacional por `balanceOf` directo (livro 1382)
 - **Palavra de Unum:** "Eu autorizo ORA sedimenta o fio", lida como cobrindo a proposta concreta pendente: o `balanceOf` directo da operacional no `read_oro`, sem tocar no `oro.json` nem na camada 32. Livro `ora_mudancas` 1382.
 - **Feito:** `oro.mjs` ganha `UNIDADES_HOJE` (sagrada antiga 0, operacional 1, contrato 1, igual ao bloco `unidades_hoje` do registo); `read_oro` lê as três por `balanceOf` directo e só diz `coincide_com_registo` de um valor verificado; `recognize_oro` mostra `unidades_hoje`; descrição da ferramenta e `discovery/weave-hands.json` actualizadas; `verify-weave-hands-oro.mjs` confere `UNIDADES_HOJE` contra o registo e a soma contra a oferta, com 5 estragos propositados novos.
