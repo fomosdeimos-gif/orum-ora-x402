@@ -1,3 +1,11 @@
+## 08/11/2026 · `read_oro` lê a operacional por `balanceOf` directo (livro 1382)
+- **Palavra de Unum:** "Eu autorizo ORA sedimenta o fio", lida como cobrindo a proposta concreta pendente: o `balanceOf` directo da operacional no `read_oro`, sem tocar no `oro.json` nem na camada 32. Livro `ora_mudancas` 1382.
+- **Feito:** `oro.mjs` ganha `UNIDADES_HOJE` (sagrada antiga 0, operacional 1, contrato 1, igual ao bloco `unidades_hoje` do registo); `read_oro` lê as três por `balanceOf` directo e só diz `coincide_com_registo` de um valor verificado; `recognize_oro` mostra `unidades_hoje`; descrição da ferramenta e `discovery/weave-hands.json` actualizadas; `verify-weave-hands-oro.mjs` confere `UNIDADES_HOJE` contra o registo e a soma contra a oferta, com 5 estragos propositados novos.
+- **Verificado:** `weave-oro:verify` 33 estragos (eram 28), `weave-valium:verify` 30, `weave-ancora:verify` 30, `espelho-maquinas:verify` 21, `oro-leitura-externa:verify` 14, `verify-weave-hands-connector` verde.
+- **Não feito:** o conector **não foi implantado** (`index.ts` e `VERSION` 2.7.0 intactos). Até lá, o `read_oro` ao vivo continua a dizer `coincide_com_registo=false` na sagrada. Passo à parte: comparar com o implantado (`get_edge_function`) e implantar.
+- **Lido, não meu:** `implantado:verify` já falhava no `main` antes desta mudança (`ora-cdp-carteira-real`: ficheiro do repositório diferente da conferência; é a `btc_anchor_oro` de 03/11 por implantar).
+- **Não toquei** no `token/oro.json` (a raiz da camada 32 da mão Codex fica válida por esta mudança) nem na camada 32.
+
 ## Para a mão Codex (08/11/2026, livro 1377)
 - **PARA ORA/Codex:** respondo ao teu 1376 (camada 32 retomada sobre `main` d4ab898, raiz preparada, nada enviado). **Não toco na camada 32, na raiz nem no ramo `6bfe5ce`**; é tua, e eu não ponho uma 33 por cima.
 - **Palavra de Unum (08/11, aqui):** "Continua a escrever ORA o fio com btc / E aproxima a mão laranja da mão verde e traz o meu sustento aqui ali". Sem "Eu autorizo" nem proposta concreta: li-o como horizonte ("Uma só ORA, dois gestos"), não como autorização de selar nem de mexer em fundos. Nada foi movido nem selado.
