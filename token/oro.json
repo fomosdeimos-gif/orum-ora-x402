@@ -94,16 +94,17 @@
         {
           "hash": "0xd15bb1f7b9d7e872ed8f87ef8d4d6c34cb47eae4bb5ee548929b5527343902a0",
           "bloco": 53455370,
-          "de": "0x54E2ACaB04C89A3Fe02852BF8dd69Ee8F526bC75",
-          "para": "organismo.base.eth",
-          "nota": "lido num ecrã do Basescan mostrado por Unum; o endereço de organismo.base.eth não foi resolvido pela ORA"
+          "de": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+          "para": "0x4a10ca6085703425a92bf7df390dd7869858b846",
+          "nota": "relido pela ORA por hash a 08/11/2026 em duas fontes RPC (base-rpc.publicnode.com e mainnet.base.org): estado 1, evento Transfer do ORO de 1 unidade da sagrada antiga para 0x4a10…b858b846, emitido dentro de uma UserOperation do EntryPoint ERC-4337 (0x5ff1…2789); o 'de' 0x54E2…bC75 que o ecrã do Basescan mostrava é quem submeteu a transacção (a primeira versão deste registo tomou-o por remetente do ORO, o que estava errado)",
+          "submetida_por": "0x54E2ACaB04C89A3Fe02852BF8dd69Ee8F526bC75"
         },
         {
           "hash": "0xa1bd4ae8f0004e9195e08711b8bdc7427967cee783e6882391f3f3baada869be",
           "bloco": 53455605,
-          "de": "organismo.base.eth",
+          "de": "0x4a10ca6085703425a92bf7df390dd7869858b846",
           "para": "0x89460d9e0590559e63860197dfe2ac648A753584",
-          "nota": "lido num ecrã do Basescan mostrado por Unum; as duas transacções não foram relidas pela ORA por hash"
+          "nota": "relido pela ORA por hash a 08/11/2026 em duas fontes RPC: estado 1, Transfer do ORO de 1 unidade de 0x4a10…b858b846 para a operacional Base 0x8946…3584 (tx.from é o próprio 0x4a10…). 0x4a10…b858b846 é o endereço que as capturas de Unum chamam organismo.base.eth; a resolução do nome por ENS continua por ler"
         }
       ],
       "verificado_pela_ora": "03/11/2026 10:10 UTC, read_oro, três fontes RPC concordantes: oferta 2, contrato 1, operacional 0x8946…3584 com 1, sagrada antiga 0, MetaMask 0x2ef8…d0d8C 0, remetente 0x54E2…bC75 0",
@@ -114,7 +115,27 @@
         "preço, liquidez, procura, receita ou rendimento",
         "quem controla organismo.base.eth",
         "que esta transferência seja receita (é interna, entre carteiras de Unum e do organismo)"
-      ]
+      ],
+      "relido_pela_ora_08_11_2026": "eth_getLogs (blocos 53 370 633 a 54 666 402) e eth_getTransactionReceipt dos dois hashes, duas fontes para os recibos; nenhuma outra transferência de ORO nesse intervalo"
     }
-  ]
+  ],
+  "unidades_hoje": {
+    "lido_em": "2026-11-08T07:38:31Z",
+    "fonte": "read_oro do @weave_hands, três fontes RPC concordantes (oferta, contrato e sagrada antiga); operacional por diferença da oferta (2 = 0 + 1 + 1) e pelo Transfer de 03/11, não por balanceOf directo",
+    "sagrada_antiga": {
+      "address": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+      "quantity": 0
+    },
+    "operacional_base": {
+      "address": "0x89460d9e0590559e63860197dfe2ac648A753584",
+      "quantity": 1,
+      "movable": "não provado: depende da chave da conta CDP"
+    },
+    "contrato": {
+      "address": "0xd859c01F11C273641F765509a005F7F2A69Dc4bD",
+      "quantity": 1,
+      "movable": false
+    },
+    "nota": "o bloco units descreve a distribuição de origem e não foi reescrito, porque o conector implantado e o verificador weave-oro:verify o comparam com ele; coincide_com_registo=false no saldo da sagrada continua até o conector ser actualizado e implantado, passo à parte"
+  }
 }

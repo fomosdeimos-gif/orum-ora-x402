@@ -7,6 +7,14 @@
   - **Receita externa confirmada: nenhuma.** Nada movido, nenhum segredo usado.
 - **Não verificado:** quem é `0x1231…4eae`; a data de chegada dos 0,161 USDC; antes de 01/11 não li.
 
+## 08/11/2026 · `token/oro.json` corrigido: onde está o ORO e quem enviou
+- **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de corrigir o `token/oro.json` para dizer que a sagrada antiga tem 0 ORO e a operacional 1, com os dois hashes. Registada antes do acto. Livro `ora_mudancas` por registar nesta passagem. Só registo; nada movido, nenhum segredo.
+- **Lido (duas fontes RPC, `eth_getTransactionReceipt` dos dois hashes):** tx `0xd15bb1f7…02a0` (bloco 53 455 370, estado 1): Transfer de 1 ORO da **sagrada antiga** `0xFEd69e8e…cDEe5` para `0x4a10…b858b846`, dentro de uma UserOperation do EntryPoint ERC-4337 (`0x5ff1…2789`); `0x54E2…bC75` submeteu a transacção. Tx `0xa1bd4ae8…69be` (bloco 53 455 605, estado 1): 1 ORO de `0x4a10…` para a operacional `0x8946…3584`.
+- **Erro corrigido (de outra mão, por leitura de ecrã):** o registo dizia que o remetente do primeiro Transfer era `0x54E2…bC75` ("lido num ecrã do Basescan"). Não era: era quem submeteu. O remetente do ORO é a sagrada antiga. Tinha eu repetido essa leitura sem a reler por hash.
+- **Feito:** `token/oro.json` com `de`/`para`/`nota` dos dois Transfer corrigidos, `submetida_por`, `relido_pela_ora_08_11_2026` e o bloco `unidades_hoje` (sagrada 0, operacional 1, contrato 1). O bloco `units` (distribuição de origem) **não foi tocado**: o conector implantado e `weave-oro:verify` comparam-no com o registo, por isso `coincide_com_registo=false` no saldo da sagrada mantém-se até o conector ser actualizado e implantado, passo à parte.
+- **Verificado:** `weave-oro:verify` (28 estragos), `oro-leitura-externa:verify` (14), `espelho-maquinas:verify` (21), `btc-oro` corrido. `btc-anchor:verify` não correu (precisa de `ORUM_BTC_DEPENDENCIES`, como já registado).
+- **Não verificado:** a operacional tem 1 ORO por diferença da oferta (2 = 0 + 1 + 1) e pelo Transfer, não por `balanceOf` directo; se a operacional o consegue mover (chave CDP); quem é `0x4a10…` além de ser o endereço que as tuas capturas chamam organismo.base.eth.
+
 ## 07/11/2026 · Leitura ao vivo do 402 em produção: 1 000 sats confirmados
 - **Palavra de Unum:** "Eu autorizo ORA", à proposta concreta de ler ao vivo o 402 de `/oraculo` e `/campo` depois do deploy. Só leitura (GET); nada pago nem movido; sem segredos. Livro `ora_mudancas` por registar nesta passagem.
 - **Lido (21:59 UTC, conector da Vercel):** deployment de produção `dpl_F84U1vWzBDkovZhbi9AnaEawLp1W`, `READY`, commit `2adde21` = `main`. Pedi `/oraculo` e `/campo` ao URL desse deployment (`web_fetch_vercel_url`, link de partilha), não ao domínio público.
