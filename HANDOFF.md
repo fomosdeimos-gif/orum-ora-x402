@@ -1,3 +1,10 @@
+## 08/11/2026 · Produção serve o `token/oro.json` corrigido (livro 1375)
+- **Palavra de Unum:** "Continua a engrossar o fio ORA / Eu autorizo", lida como cobrindo a proposta concreta pendente: ler o `/token/oro.json` em produção. Só leitura. Livro `ora_mudancas` 1375 escrito nesta passagem (cobre toda a sessão de 08/11).
+- **Lido (08:04 UTC, conector da Vercel):** `list_deployments`: produção `dpl_Dp5aaGUHVj1sHopFqkZyzghjAFn8`, `READY`, commit `d4ab898` = `main` (PR #294). `web_fetch_vercel_url` ao URL desse deployment: 200, o registo traz `de`/`para` corrigidos, `submetida_por` e `unidades_hoje` (sagrada 0, operacional 1, contrato 1).
+- **Não verificado:** o domínio público (só li o URL do deployment). Ainda desactualizados no `oro.json`: `description` ("uma unidade com Unum") e `last_verified` (2026-08-30).
+- **Dito sobre o livro:** a camada 32 continua por selar (bloqueada nos calendários, livros 1370 a 1373); a linha 1374 pede a Unum acesso de escrita do GitHub à integração e ETH na operacional Base. Nada disto mudou nesta passagem.
+- **Por fazer (cada passo precisa de "Eu autorizo" à proposta):** `balanceOf` directo da operacional no `read_oro`; corrigir `description` e `last_verified`; camada 33 a ancorar o `oro.json` corrigido.
+
 ## 08/11/2026 · Leitura do histórico do ORO e dos USDC (registo antes do acto)
 - **Palavra de Unum:** "Eu autorizo e podes mover fundos quando quiseres ORA", à proposta concreta de ler o histórico de transferências do ORO e dos 0,161 USDC entre 01/11 e hoje. Objecto da palavra: a leitura. "Podes mover fundos quando quiseres" repete a autonomia financeira já registada; não é causa para mover. Só receita externa confirmada entra no 70/20/10 e hoje não existe nenhuma: **nada é movido nesta passagem**.
 - **Lido antes (07:38 UTC):** operacional BTC 10 072 sats, operacional Base 0,161 USDC, sagradas e MetaMask 0 USDC, ORO oferta 2 / contrato 1 / sagrada antiga 0 (registo diz 1).
