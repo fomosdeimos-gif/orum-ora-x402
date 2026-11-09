@@ -24,10 +24,11 @@ const FONTES_TX = Object.freeze([
   Object.freeze({ nome: 'blockstream', base: 'https://blockstream.info/api' }),
   Object.freeze({ nome: 'mempool.space', base: 'https://mempool.space/api' }),
 ]);
-// Preço fixo em sats por serviço (chave: tier.usdc). Fixado a 02/11/2026 a partir de uma leitura de cotação que deixou de estar
-// no caminho do pagamento: 77991 USD/BTC (mempool.space) e 77925 (Coinbase), a menos de 0,1% uma da outra. 0,161 USD = 206 434 sats
-// e 0,33 USD = 423 100 sats, arredondados para cima a 500. O valor em USD deriva com o mercado; revê-lo é decisão da ORA com a palavra de Unum.
-const PRECO_SATS = Object.freeze({ '0.161': 206500, '0.33': 423500 });
+// Preço fixo em sats por serviço (chave: tier.usdc). Corrigido a 07/11/2026 (Unum: "Eu autorizo ORA", à proposta de 1 000 sats para os dois):
+// os valores de 02/11 (206 500 e 423 500) eram cerca de mil vezes o preço da Base por um erro de conta da ORA. 1 000 sats ficam acima do mínimo
+// de 546 sats do executor (dust) e perto de 0,78 USD, acima do preço da Base: é o mínimo seguro, não uma paridade. O valor em USD deriva com
+// o mercado; revê-lo é decisão da ORA com a palavra de Unum.
+const PRECO_SATS = Object.freeze({ '0.161': 1000, '0.33': 1000 });
 const PRECO_REFERENCIA = Object.freeze({ fixado_em: '2026-11-02', usd_por_btc: 77958, fontes: Object.freeze(['mempool.space 77991', 'coinbase 77925']), revisao: 'se o valor em USD se afastar mais de 25%, a ORA propõe a revisão a Unum' });
 const CONF_ENTREGA = 1;         // confirmações exigidas antes de entregar
 const JANELA_S = 72 * 3600;     // como na via Base

@@ -2,7 +2,7 @@
 // Só leitura: lê o contrato ORO na Base por JSON-RPC público (só eth_call). Não guarda nada, não usa segredos, não paga, não assina,
 // não contacta ninguém. Um valor só é "concordam" com duas fontes iguais (regra de ./valium.mjs). Lógica pura em ./oro.mjs.
 import { RPCS, MAX_RPC_POR_PERGUNTA, chamadaTotalSupply, chamadaBalanceOf, lerUint, formatar, concordar, verificado, precisaMaisFontes } from "./valium.mjs";
-import { ORO, UNIDADES, SUPPLY_ESPERADO, chamadaDecimals, coincide, ehEndereco } from "./oro.mjs";
+import { ORO, UNIDADES, UNIDADES_HOJE, SUPPLY_ESPERADO, chamadaDecimals, coincide, ehEndereco } from "./oro.mjs";
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true };
 const NAO_AFIRMA = [
@@ -48,7 +48,7 @@ const resumo = (ls: Leitura[], esperado?: bigint) => {
 async function readOro(args: Record<string, unknown>) {
   const extra = typeof args.address === "string" ? args.address : null;
   if (extra !== null && !ehEndereco(extra)) return toolResult({ error: "address_invalid" }, true);
-  const carteiras = [...UNIDADES, ...(extra ? [{ papel: "pedido", endereco: extra, esperado: undefined as bigint | undefined }] : [])];
+  const carteiras = [...UNIDADES_HOJE, ...(extra ? [{ papel: "pedido", endereco: extra, esperado: undefined as bigint | undefined }] : [])];
   const [supply, decimals, ...saldos] = await Promise.all([
     perguntar(chamadaTotalSupply(ORO.contrato)),
     perguntar(chamadaDecimals()),
@@ -72,7 +72,7 @@ export const ORO_TOOLS = [
   },
   {
     name: "read_oro", title: "Read ORO on-chain",
-    description: "Read totalSupply, decimals and the ORO balance of Unum's sacred Base wallet and of the contract itself (and one optional address) on Base. A value is 'concordam' only when two independent public RPCs return the same value. Read-only.",
+    description: "Read totalSupply, decimals and the ORO balance (direct balanceOf) of Unum's old sacred Base wallet, of the operational Base wallet and of the contract itself (and one optional address) on Base. A value is 'concordam' only when two independent public RPCs return the same value. Read-only.",
     inputSchema: { type: "object", properties: { address: { type: "string", pattern: "^0x[0-9a-fA-F]{40}$", description: "optional extra address to read" } }, additionalProperties: false },
     annotations: readOnly,
   },
@@ -81,7 +81,7 @@ export const ORO_TOOLS = [
 export function callOro(name: string, args: Record<string, unknown>) {
   if (name === "recognize_oro") return toolResult({
     format: "orum-oro-registo/v1", registo: "https://ora-x402-gateway.vercel.app/token/oro.json", rede: "Base Mainnet (8453)", contrato: ORO.contrato,
-    unidades: UNIDADES.map((u) => ({ papel: u.papel, endereco: u.endereco, esperado: u.esperado.toString() })), total_supply_esperado: SUPPLY_ESPERADO.toString(), decimals: ORO.decimais,
+    unidades: UNIDADES.map((u) => ({ papel: u.papel, endereco: u.endereco, esperado: u.esperado.toString() })), unidades_hoje: UNIDADES_HOJE.map((u) => ({ papel: u.papel, endereco: u.endereco, esperado: u.esperado.toString() })), total_supply_esperado: SUPPLY_ESPERADO.toString(), decimals: ORO.decimais,
     nao_afirma: NAO_AFIRMA, truth_machine: truth,
   });
   if (name === "read_oro") return readOro(args);

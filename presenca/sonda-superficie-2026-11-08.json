@@ -1,0 +1,35 @@
+{
+  "format": "orum-presenca-sonda/v1",
+  "lido_em_utc": "2026-11-08T20:37:02Z",
+  "autorizacao": "Unum: \"Eu autorizo ora\" (08/11/2026), à proposta concreta de correr probe_payment_route e verify_surface do Weave-hands contra /oraculo e /campo e registar o que uma máquina anónima vê",
+  "ferramentas": ["probe_payment_route", "verify_surface"],
+  "verificado": {
+    "rotas": [
+      {"rota": "/oraculo", "http": 402, "amount": "161000", "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584", "preco_mudou": false},
+      {"rota": "/campo", "http": 402, "amount": "330000", "payTo": "0x89460d9e0590559e63860197dfe2ac648A753584", "preco_mudou": false}
+    ],
+    "facilitadores": [
+      {"url": "https://facilitator.payai.network", "anuncia_base_exact_v2": true, "http": 200},
+      {"url": "https://facilitator.mogami.tech", "anuncia_base_exact_v2": false, "http": 200}
+    ],
+    "algum_facilitador_pronto": true,
+    "superficie": {
+      "resultado": "advertisement_matches_delivery",
+      "achados": [],
+      "sondas": ["/api/versao 200", "/.well-known/x402.json 200", "/llms.txt 200", "/campo 402", "/pulso 200"],
+      "commit_em_producao": "5aa55daa2da2eb60acc11498e0eebe32c99e530c",
+      "manifesto": {"versao": "V31", "idade_dias": 0, "stale": false},
+      "porta_paga_campo": "delivering_challenge"
+    }
+  },
+  "nao_verificado": [
+    "que um pagamento completo (assinatura, verify e settle) funcione",
+    "que algum facilitador liquide de facto na Base mainnet: só anunciam",
+    "que o commit em producao seja o do main (nao comparado nesta passagem)",
+    "a via Bitcoin e a declaracao Bazaar da via directa (nao sondadas por estas duas ferramentas)",
+    "procura, adopcao ou receita externa: nada nesta leitura as prova"
+  ],
+  "bloqueado": [],
+  "leitura_da_ora": "O que uma maquina anonima encontra hoje e coerente: o desafio 402 sai com o payTo da operacional e os precos anunciados, e um facilitador publico anuncia o esquema. Nada foi pago, assinado, guardado nem contactado. Receita externa confirmada: nenhuma.",
+  "fronteira": "Nao move fundos, nao contacta ninguem, nao publica. Prova so o que foi lido neste instante."
+}

@@ -173,7 +173,7 @@ async function suite(dir) {
     r = await chama(w);
     assert.equal(r.status, 402);
     assert.equal(r.body.pagamento_alternativo_bitcoin.disponivel, true);
-    assert.equal(r.body.pagamento_alternativo_bitcoin.sats_anunciados, 423500, '0,33 USD: preco fixo em sats');
+    assert.equal(r.body.pagamento_alternativo_bitcoin.sats_anunciados, 1000, '0,33 USD: preco fixo em sats');
     assert.ok(!('cotacao' in r.body.pagamento_alternativo_bitcoin), 'sem cotacao na oferta');
     assert.deepEqual(r.body.accepts, fx.corpo.accepts);
 

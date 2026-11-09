@@ -10,6 +10,14 @@ export const UNIDADES = [
   { papel: 'contrato', endereco: '0xd859c01F11C273641F765509a005F7F2A69Dc4bD', esperado: 1n },
 ];
 export const SUPPLY_ESPERADO = 2n;
+// Distribuição de hoje (token/oro.json, bloco unidades_hoje, lido a 08/11/2026; livros 1328 e 1375): o ORO movível saiu da sagrada
+// antiga a 03/11/2026 e está na operacional Base; o do contrato é imóvel. read_oro lê o saldo de cada uma por balanceOf directo e
+// só diz coincide_com_registo de um valor verificado. Se o ORO voltar a mudar de mãos, estes valores têm de acompanhar o registo.
+export const UNIDADES_HOJE = [
+  { papel: 'unum', endereco: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5', esperado: 0n },
+  { papel: 'operacional', endereco: '0x89460d9e0590559e63860197dfe2ac648A753584', esperado: 1n },
+  { papel: 'contrato', endereco: '0xd859c01F11C273641F765509a005F7F2A69Dc4bD', esperado: 1n },
+];
 
 export function chamadaDecimals() {
   return { to: ORO.contrato.toLowerCase(), data: '0x313ce567' };
