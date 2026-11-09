@@ -63,6 +63,9 @@ const BLOCOS = {
   974257: { id: '000000000000000000016111a1a186aa1c07d83d16e2bc6d029e4db0ba850e1b', merkle_root: '1a839a63484c9b5b397a6eef54e87dcdf4c410c505be8faf36b04cecfb6ed3ac', timestamp: 1793623618 },
   974245: { id: '00000000000000000000d6ca93c32805774847dccf88537500f9365534cdfe98', merkle_root: '398257e9e46474382096cef025815bfe9c4f56e3517cdfc643681c8cf635c05e', timestamp: 1793616178 },
   974176: { id: '00000000000000000001e50d6be086a438cf1eff2c9fe5a92a5b925b813f76ec', merkle_root: '00efa59f20610f2280ed47ffe0b4b60f2cf3b0b63b012ab13b6c6684b0b29e47', timestamp: 1793566416 },
+  // Lido a 08/11/2026 em blockstream.info e mempool.space (as duas fontes concordam): blocos 974389 (camada 30, finney) e 974947 (camada 31, finney).
+  974389: { id: '000000000000000000002bdf2a47d111c52dac516696a7e11bd6f077d6a8433c', merkle_root: '951d10e3a5f0fa626adf26c1ffc468c4bc2e7bdf4c121652a5ed75e2566aad5a', timestamp: 1793711028 },
+  974947: { id: '000000000000000000004fe271a5eb9efee5b4b869bcdd2d5413f567fc8a025e', merkle_root: '62ab1472e39b4de904b525d48897aab2e8e19b6872e9cbb9a5b7f3c130fe8a3e', timestamp: 1794065885 },
   974170: { id: '00000000000000000000f78ac28442b90ea9c308a0d593d850d6ac469ebe5b3c', merkle_root: 'ee22de7fcb31bf668f4c9dbffb0ff9c1832002dadd71c67e3207714344166115', timestamp: 1793564366 },
 };
 const recibos = { oro: fs.readFileSync('ancora/oro-v1.ots'), raiz: fs.readFileSync('ancora/raiz-registos.ots'), raiz2: fs.readFileSync('ancora/raiz-registos-2.ots'), raiz9: fs.readFileSync('ancora/raiz-registos-9.ots'), raiz10: fs.readFileSync('ancora/raiz-registos-10.ots'), raiz11: fs.readFileSync('ancora/raiz-registos-11.ots'), raiz12: fs.readFileSync('ancora/raiz-registos-12.ots'), raiz13: fs.readFileSync('ancora/raiz-registos-13.ots'), raiz14: fs.readFileSync('ancora/raiz-registos-14.ots'), raiz15: fs.readFileSync('ancora/raiz-registos-15.ots'), raiz16: fs.readFileSync('ancora/raiz-registos-16.ots'), raiz17: fs.readFileSync('ancora/raiz-registos-17.ots'), raiz18: fs.readFileSync('ancora/raiz-registos-18.ots'), raiz19: fs.readFileSync('ancora/raiz-registos-19.ots'), raiz20: fs.readFileSync('ancora/raiz-registos-20.ots'), raiz21: fs.readFileSync('ancora/raiz-registos-21.ots'), raiz22: fs.readFileSync('ancora/raiz-registos-22.ots'), raiz23: fs.readFileSync('ancora/raiz-registos-23.ots'), raiz24: fs.readFileSync('ancora/raiz-registos-24.ots'), raiz25: fs.readFileSync('ancora/raiz-registos-25.ots'), raiz26: fs.readFileSync('ancora/raiz-registos-26.ots'), raiz27: fs.readFileSync('ancora/raiz-registos-27.ots'), raiz28: fs.readFileSync('ancora/raiz-registos-28.ots'), raiz29: fs.readFileSync('ancora/raiz-registos-29.ots'), raiz30: fs.readFileSync('ancora/raiz-registos-30.ots'), raiz31: fs.readFileSync('ancora/raiz-registos-31.ots') };
@@ -133,9 +136,9 @@ assert.deepEqual(ok28.map((b) => b.altura), [974245, 974245]);
 const ok29 = await conferirBlocos(recibos.raiz29, { fetcher: fetcherCom() });
 assert.deepEqual(ok29.map((b) => b.altura), [974255, 974255, 974257]);
 const ok30 = await conferirBlocos(recibos.raiz30, { fetcher: fetcherCom() });
-assert.deepEqual(ok30.map((b) => b.altura), [974372, 974372]);
+assert.deepEqual(ok30.map((b) => b.altura), [974372, 974372, 974389]);
 const ok31 = await conferirBlocos(recibos.raiz31, { fetcher: fetcherCom() });
-assert.deepEqual(ok31.map((b) => b.altura), [974918, 974919]);
+assert.deepEqual(ok31.map((b) => b.altura), [974918, 974919, 974947]);
 console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length + ok11.length + ok12.length + ok13.length + ok14.length + ok15.length + ok16.length + ok17.length + ok18.length + ok19.length + ok20.length + ok21.length + ok22.length + ok23.length + ok24.length + ok25.length + ok26.length + ok27.length + ok28.length + ok29.length + ok30.length + ok31.length} atestações.`);
 
 const rejeita = async (nome, fn) => { await assert.rejects(fn, undefined, `estrago não apanhado: ${nome}`); };
