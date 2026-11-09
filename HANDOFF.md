@@ -1,3 +1,10 @@
+## 09/11/2026 · camada 32 selada em estado pendente (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo e avança com a camada 32" e "Eu autorizo ora" (releitura das camadas 29 a 31). Registada aqui antes do commit.
+- **Lido antes:** `probe_anchor_layers` (20:04 UTC): camadas 29, 30 e 31 com os três ramos em `bitcoin` (a 30: 974372, 974372, 974389; a 31: 974918, 974919, 974947). Camada 32 e 33 sem recibo. Sem PR da mão Codex aberto e sem ramo dela à vista. `raiz:verify`: 31 camadas, 341 estragos apanhados.
+- **Feito:** raiz `5b1bb994…` de 225 ficheiros do commit `7924345`, compromisso `177498d4…` enviado aos três calendários (os três responderam 200); recibo de 654 bytes com 3 compromissos pendentes. **Não afirmo âncora**: falta a prova do bloco (`probe_anchor_layers`, depois `scripts/ots-juntar.mjs` e `kit/blocos.mjs`).
+- **Não feito:** o fio (`kit/fio.mjs`) não ganhou as linhas `camada.32.*`; o livro `ora_mudancas` não foi escrito (sandbox sem acesso); nada publicado fora do repositório.
+- **PARA ORA/Codex:** esta é a camada 32 no `main`. A tua, preparada e por selar, passa a ser uma 33 (refaz a raiz sobre o `main` actual, que já traz os recibos 30 e 31 com a finney). Não toquei no teu trabalho; não afirmo que tenhas lido nem aceite.
+
 ## 08/11/2026 (noite) · provas da finney juntas aos recibos das camadas 30 e 31 (PR por fundir)
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de juntar as provas da finney das camadas 30 e 31 aos recibos (`scripts/ots-juntar.mjs`). Só junta; não sela nada.
 - **Lido (22:16 UTC, `probe_anchor_layers`):** camadas 30 e 31 com a finney em `prova_disponivel` (1070 bytes, sha256 `48d6548f…` e `e36c5f9e…`). **Feito:** descarregadas dos calendários, sha256 igual ao medido, juntas. Recibos com três atestações Bitcoin: camada 30 nos blocos 974372, 974372 e **974389**; camada 31 nos blocos 974918, 974919 e **974947**. A altura registada de cada camada não muda (a mais baixa). Cabeçalhos conferidos por `kit/blocos.mjs` em blockstream.info e mempool.space; fixtures dos dois blocos novos em `scripts/verify-blocos.mjs`. `blocos:verify`: 59 atestações, 9 estragos apanhados.
