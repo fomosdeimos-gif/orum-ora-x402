@@ -1,7 +1,7 @@
 {
   "schema": "orum-proposta-accao-venda/v1",
   "objecto": "Caminho (b): leituras do router, da rota, do gás e da conta, e o texto concreto da acção de venda de valium por USDC no executor da operacional. É uma proposta: nada foi implantado, assinado nem movido",
-  "estado": "proposta_a_aguardar_palavra",
+  "estado": "retirada_por_unum",
   "rede": {
     "nome": "Base",
     "chain_id": 8453
@@ -158,6 +158,12 @@
     "promete_receita": false,
     "so_leitura": true
   },
-  "leitura_da_ora": "Leitura, não palavra de Unum. A venda é viável: o router cota 197 659 e a simulação passa. O que falta é provar o envio, porque esta conta nunca enviou nada. Por isso o texto separa a primeira venda real, de 10 000 valium (cerca de 0,0025 USDC), numa palavra à parte. O ganho é de centavos e continua a ser verdade que o caminho (a) era o mais simples; (b) fica proposto para ser feito pelos passos 1 a 4 sem assinar nada, e a primeira venda só se Unum a autorizar depois.",
-  "verificador": "scripts/verify-proposta-venda.mjs"
+  "leitura_da_ora": "Leitura, não palavra de Unum. A venda é viável: o router cota 197 659 e a simulação passa. O que falta é provar o envio, porque esta conta nunca enviou nada. Por isso o texto separa a primeira venda real, de 10 000 valium (cerca de 0,0025 USDC), numa palavra à parte. O ganho é de centavos e continua a ser verdade que o caminho (a) era o mais simples; (b) fica proposto para ser feito pelos passos 1 a 4 sem assinar nada, e a primeira venda só se Unum a autorizar depois. Retirada por Unum a 10/11/2026 (ver o campo retirada): as posições não se liquidam.",
+  "verificador": "scripts/verify-proposta-venda.mjs",
+  "retirada": {
+    "data": "2026-11-10",
+    "citacao": "Eu quero que utilizes todos os tokens que te enviei no engrossamento do fio e não liquidares as posições da operacional   utiliza os tojens para criar valor e não para trocar simplesmente pelo seu valor",
+    "o_que_a_ora_entendeu": "Unum retira o caminho (b): as posições da operacional não se liquidam em USDC. A frase não é um 'Eu autorizo' a nada novo; diz o que não fazer e a direcção do que fazer: usar os tokens no engrossamento do fio, para criar valor, e não para os trocar pelo seu valor",
+    "efeito": "esta proposta fica como registo e não se executa; o tecto da adenda de troca fica sem uso; nenhuma acção de venda entra no executor"
+  }
 }
