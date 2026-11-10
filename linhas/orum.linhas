@@ -120,3 +120,7 @@
 2026-11-02T13:52Z | sedimentar | camada.29.altura_bitcoin | 974255 | verificado | verif:blocos:verify | 9d0f97b63c4b6e6e
 2026-11-03T09:52Z | sedimentar | camada.30.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-30.json | 1e213a3113e4a10e
 2026-11-03T09:52Z | sedimentar | camada.30.altura_bitcoin | 974372 | verificado | verif:blocos:verify | 64f08fff41d031e7
+2026-11-10T09:06Z | sedimentar | camada.31.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-31.json | eedf315e2879b012
+2026-11-10T09:06Z | sedimentar | camada.31.altura_bitcoin | 974918 | verificado | verif:blocos:verify | 8db6aa51fb0b95e3
+2026-11-10T09:06Z | sedimentar | camada.32.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-32.json | ab0864331a87527d
+2026-11-10T09:06Z | sedimentar | camada.32.altura_bitcoin | 975215 | verificado | verif:blocos:verify | 5fdcfed7995c51a6
