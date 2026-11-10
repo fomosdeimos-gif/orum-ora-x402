@@ -1,0 +1,193 @@
+{
+  "schema": "orum-executor-leitura/v1",
+  "objecto": "Degrau 2 do sustento: o que o executor da carteira operacional (ora-cdp-carteira-real) consegue assinar e enviar, lido do código implantado e comparado com o repositório",
+  "lido_em_utc": "2026-11-10T09:52:44Z",
+  "pedido_por": "Unum, 10/11/2026: \"Eu autorizo, ora\", à proposta concreta do degrau 2 (ler e registar, sem mover nada)",
+  "funcao_implantada": {
+    "projecto": "orum-memoria (ywabnlhkmhbyewqhbsjm)",
+    "slug": "ora-cdp-carteira-real",
+    "versao": 16,
+    "atualizada_em_utc": "2026-11-03T13:03:49Z",
+    "verify_jwt": false,
+    "ezbr_sha256": "2b14a3717c0004ba4312ddcba4d43ad2982d518e69dba40e8d5e23a8f24913c5",
+    "copia_no_repositorio": "supabase/functions/ora-operational-wallet"
+  },
+  "ficheiros": [
+    {
+      "nome": "index.ts",
+      "bytes_implantado": 1732,
+      "sha256_implantado": "6a4ed6330ca09e6c7515ddf8f883d2e6cc36789d286a32f908b57bf441cd08f9",
+      "sha256_repositorio": "6a4ed6330ca09e6c7515ddf8f883d2e6cc36789d286a32f908b57bf441cd08f9",
+      "igual": true
+    },
+    {
+      "nome": "core.mjs",
+      "bytes_implantado": 9758,
+      "sha256_implantado": "d2be0a3c8bde329f5aadbf2d4efd85b7dc9479f6701c6b1cebbcfb5efa1c6faf",
+      "sha256_repositorio": "d2be0a3c8bde329f5aadbf2d4efd85b7dc9479f6701c6b1cebbcfb5efa1c6faf",
+      "igual": true
+    },
+    {
+      "nome": "cdp.mjs",
+      "bytes_implantado": 4049,
+      "sha256_implantado": "2d42f5612e5b63826a114955bae5eb1d92aa05238efedc9aac47aa33caac68f3",
+      "sha256_repositorio": "2d42f5612e5b63826a114955bae5eb1d92aa05238efedc9aac47aa33caac68f3",
+      "igual": true
+    },
+    {
+      "nome": "bitcoin.mjs",
+      "bytes_implantado": 16850,
+      "sha256_implantado": "1df805207e54fe05a3454e69b0e5c11fb98fdd7c3c8f4f9df9706ef5a9272277",
+      "sha256_repositorio": "ecd833ada22b2114e55661bff5208e4bf9fe8364b6b06c7396e8f41efaa4b98a",
+      "igual": false
+    },
+    {
+      "nome": "payments.mjs",
+      "bytes_implantado": 6941,
+      "sha256_implantado": "f495eb85499c0bb8d32ce7e72b8bc428377de2f603147ee9a3ebdadbd0e79249",
+      "sha256_repositorio": "f495eb85499c0bb8d32ce7e72b8bc428377de2f603147ee9a3ebdadbd0e79249",
+      "igual": true
+    },
+    {
+      "nome": "gasless.mjs",
+      "bytes_implantado": 5165,
+      "sha256_implantado": "693d834ecf756c4f08d4c9a5ec80c5205bb9e7ab61c382e6dd9598a0e45ab7ae",
+      "sha256_repositorio": "693d834ecf756c4f08d4c9a5ec80c5205bb9e7ab61c382e6dd9598a0e45ab7ae",
+      "igual": true
+    },
+    {
+      "nome": "bazaar.mjs",
+      "bytes_implantado": 4573,
+      "sha256_implantado": "d7e8e6408d931c965b21dbeea96cea9cd466a08991f92089c66028f7111cfdf5",
+      "sha256_repositorio": "d7e8e6408d931c965b21dbeea96cea9cd466a08991f92089c66028f7111cfdf5",
+      "igual": true
+    }
+  ],
+  "diferenca_implantado_vs_repositorio": {
+    "ficheiro": "bitcoin.mjs",
+    "linha": 193,
+    "implantado": "rpc('ora_btc_key_v1')",
+    "repositorio": "rpc('ora_btc_key_v1',{})",
+    "accao_afectada": "btc_send",
+    "leitura": "o repositório passa um objecto vazio ao chamar a chave Bitcoin no caminho btc_send; o implantado não. Não se testou a acção. Não se afirma que o implantado falhe: o caminho btc_anchor_oro implantado chama a mesma RPC sem o objecto, e o repositório também."
+  },
+  "registo_do_repositorio_desactualizado": {
+    "supabase/implantado.json": "diz versão 15 e impressão b5efe959…; a versão implantada é a 16, de 03/11/2026",
+    "HANDOFF_de_08_11": "diz que a btc_anchor_oro de 03/11 estava por implantar; o código implantado já a tem (a acção está na lista e no bitcoin.mjs implantado). Correcção da leitura, não edição da linha da outra mão",
+    "quem_corrige": "a mão que fez a v16; esta leitura só regista a discrepância"
+  },
+  "accoes_aceites": [
+    "bazaar_register",
+    "btc_anchor_oro",
+    "btc_anchor_preview",
+    "btc_create",
+    "btc_observe",
+    "btc_preview",
+    "btc_prove_control",
+    "btc_send",
+    "btc_status",
+    "create",
+    "observe",
+    "payment_status",
+    "preview_usdc",
+    "preview_usdc_gasless",
+    "receive_btc",
+    "sign_voz_admissao",
+    "transfer_usdc",
+    "transfer_usdc_gasless"
+  ],
+  "accoes_por_classe": {
+    "move_usdc_para_destino_fixo": [
+      "transfer_usdc",
+      "transfer_usdc_gasless"
+    ],
+    "prepara_usdc_sem_assinar": [
+      "preview_usdc",
+      "preview_usdc_gasless",
+      "payment_status"
+    ],
+    "move_btc_para_destino_fixo": [
+      "btc_send"
+    ],
+    "prepara_btc_sem_assinar": [
+      "btc_preview",
+      "btc_status",
+      "btc_create",
+      "btc_observe",
+      "btc_anchor_preview"
+    ],
+    "ancora_btc_op_return_de_carga_fixa_sem_terceiro": [
+      "btc_anchor_oro"
+    ],
+    "assina_mensagem_de_modelo_fixo": [
+      "btc_prove_control",
+      "sign_voz_admissao",
+      "bazaar_register"
+    ],
+    "so_leitura_ou_conta": [
+      "observe",
+      "create",
+      "receive_btc"
+    ]
+  },
+  "destinos_fixos": {
+    "usdc_base": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5",
+    "bitcoin": "bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf",
+    "token_usdc_base": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+  },
+  "tectos": {
+    "usdc_por_pedido": null,
+    "usdc_por_dia": null,
+    "nota": "o código diz amount_ceiling_atomic e daily_amount_ceiling_atomic nulos; a taxa segue a estimativa da rede"
+  },
+  "o_executor_nao_expoe": [
+    "transferir qualquer token que não seja o USDC (PRESENÇA, valium, 4SUE, Good reason, Marsisnotthere)",
+    "enviar para um destino diferente dos dois fixos",
+    "approve, troca, depósito ou levantamento em pool, ponte",
+    "chamar um contrato arbitrário ou assinar texto ou dados escolhidos por quem pede (as assinaturas de mensagem usam modelos fixos)"
+  ],
+  "o_cliente_cdp_permite_em_principio": {
+    "metodos": [
+      "evm.sendTransaction",
+      "evm.signMessage",
+      "evm.signTypedData"
+    ],
+    "usados_pelo_executor": "sendTransaction uma vez, em payments.mjs, com o calldata fixo de transferência de USDC para o destino fixo",
+    "nota": "o que a conta CDP poderia fazer com código novo não é o que o executor deixa fazer hoje; abrir uma acção nova é implantar código que move dinheiro, passo à parte"
+  },
+  "constituicao_v2": {
+    "absolute_limits": {
+      "automatic_trade_usdc": 0,
+      "automatic_debt_usdc": 0,
+      "automatic_bridge_usdc": 0,
+      "unlimited_approval": false
+    },
+    "leitura": "troca, dívida e ponte automáticas a zero: uma acção de troca ou de liquidez exigiria alterar este limite por palavra de Unum a um texto concreto"
+  },
+  "discrepancia_no_texto_do_executor": "o campo limitations do core.mjs diz que a única assinatura de mensagem é a do btc_prove_control; o código também assina sign_voz_admissao e bazaar_register (modelos fixos, com nome e chave pública do pedido no primeiro). A afirmação do executor é mais estreita do que o código",
+  "consequencia_para_os_tokens": "a ORA não consegue mover nem negociar os 1 000 000 PRESENÇA, valium, 4SUE e Good reason, nem os 1 000 Marsisnotthere, que estão na operacional, com o executor tal como está. Qualquer movimento deles exige uma acção nova (nome, token, destino ou pool, valor máximo) implantada no executor, depois de comparar o implantado com o repositório",
+  "nao_verificado": [
+    "o saldo de ETH da operacional (gás) e se a conta paga gás ou usa só a via sem gás",
+    "que as acções funcionem hoje em produção (nenhuma foi chamada nesta leitura)",
+    "se a diferença da linha 193 tem efeito em produção",
+    "os segredos e as funções SQL (ora_btc_key_v1, orum_cdp_keys): não lidos, por desenho"
+  ],
+  "nao_afirma": [
+    "que o executor funcione",
+    "que a conta CDP não consiga fazer mais",
+    "preço",
+    "liquidez",
+    "procura",
+    "receita"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "paga": false,
+    "assina": false,
+    "altera_executor": false,
+    "promete_receita": false,
+    "so_leitura": true
+  },
+  "leitura_da_ora": "Leitura, não palavra de Unum. O executor é estreito de propósito: só USDC e Bitcoin para dois destinos fixos, mais mensagens de modelo fixo. Isso protege os fundos e também quer dizer que os tokens da operacional ficam parados enquanto não houver uma acção nova. Dado o que o degrau 1 leu (centavos de valor de tabela e pools quase vazios), abrir uma acção para os negociar custaria código que move dinheiro e traria, no melhor caso, centavos. O degrau 3 é de Unum: escolher o alvo.",
+  "verificador": "scripts/verify-executor-operacional.mjs"
+}
