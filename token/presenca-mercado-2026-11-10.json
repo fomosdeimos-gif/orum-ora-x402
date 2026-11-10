@@ -1,0 +1,141 @@
+{
+  "schema": "orum-mercado-leitura/v1",
+  "objecto": "Degrau 1 do sustento: o que a cadeia e os agregadores públicos mostram do mercado do PRESENÇA e do VALIUM",
+  "rede": {
+    "nome": "Base",
+    "chain_id": 8453
+  },
+  "lido_em_utc": "2026-11-10T10:00:00Z",
+  "pedido_por": "Unum, 10/11/2026: \"Eu autorizo ORA\", à proposta concreta do degrau 1 (só leitura, sem mover nada)",
+  "pool_manager_v4": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+  "carteira_operacional": "0x89460d9e0590559e63860197dfe2ac648A753584",
+  "fontes_rpc": [
+    "mainnet.base.org",
+    "base-rpc.publicnode.com",
+    "1rpc.io"
+  ],
+  "lido": {
+    "como": "eth_call balanceOf em duas ou três fontes RPC que concordam; o PoolManager do Uniswap V4 é um contrato único que guarda os tokens de todos os pools V4, por isso o saldo dele soma todos os pools do token e não distingue de quem são",
+    "presenca": {
+      "nome": "PRESENÇA",
+      "simbolo": "PRESENÇA",
+      "contrato": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+      "decimals": 18,
+      "total_supply_tokens": 1000000000,
+      "saldo_do_pool_manager_v4_tokens": 980130142,
+      "fontes_do_saldo_do_pool_manager": [
+        "mainnet.base.org",
+        "base-rpc.publicnode.com"
+      ],
+      "percentagem_da_oferta_no_pool_manager": 98.01,
+      "saldo_da_operacional_raw": "1000000000000000000000000",
+      "saldo_da_operacional_tokens": 1000000
+    },
+    "valium": {
+      "nome": "valium",
+      "simbolo": "valium",
+      "contrato": "0x37f70bccdc2125346a7542fe6e7fc70e33421635",
+      "decimals": 18,
+      "total_supply_tokens": 1000000000,
+      "saldo_do_pool_manager_v4_tokens": 542634566,
+      "fontes_do_saldo_do_pool_manager": [
+        "mainnet.base.org",
+        "base-rpc.publicnode.com",
+        "1rpc.io"
+      ],
+      "percentagem_da_oferta_no_pool_manager": 54.26,
+      "saldo_da_operacional_raw": "1000000000000000000000000",
+      "saldo_da_operacional_tokens": 1000000
+    }
+  },
+  "agregadores_nao_verificados": {
+    "aviso": "fonte única por agregador, terceiros, não confirmados na cadeia; os dois agregadores nem sempre concordam entre si",
+    "estado": "nao_verificado",
+    "respostas_em_bruto_sha256": {
+      "dexscreener_presenca": "b3cfc57b9aa81d12dea9b91adbbcde476b36a27daf1e0b2d11b986fd7af6b4fd",
+      "geckoterminal_presenca": "2b155852bdae1ece40992c3b58c23cbf57c49bc205688a2c7d1eb18119a4ffc7",
+      "dexscreener_valium": "f2a2089854bbb604f0e66664f1050af509f0e73bca977800e6f9f2755238dec9",
+      "geckoterminal_valium": "01513eeadf1998742ec1b688a7d36378d85a360995f2df4db3181466da4bd4c0"
+    },
+    "presenca": {
+      "pool_usdc_uniswap_v4": {
+        "par": "0xd78e713f14116e9ad610b78b089a9d2f617ed80313d2e31da0c45c9a06122ff1",
+        "comissao_percent": 1,
+        "criado_em_utc": "2026-02-12T07:05:27Z",
+        "usdc_do_lado_da_cotacao": 1.9865,
+        "tokens_do_lado_base": 980130149,
+        "preco_usd_dexscreener": 4.02e-07,
+        "preco_usd_geckoterminal": 4.139e-07,
+        "volume_24h_usd": 0,
+        "negocios_24h": {
+          "compras": 1,
+          "vendas": 0
+        }
+      },
+      "outros_pools": [
+        {
+          "dex": "aerodrome",
+          "par": "PRESENÇA / valium",
+          "criado_em_utc": "2026-06-02T07:40:39Z"
+        },
+        {
+          "dex": "aerodrome",
+          "par": "PRESENÇA / cbBTC",
+          "criado_em_utc": "2026-05-31T07:26:13Z"
+        }
+      ]
+    },
+    "valium": {
+      "pool_usdc_aerodrome": {
+        "par": "0x7923508f671e183C081d8dFB733bF38581926cbA",
+        "criado_em_utc": "2026-07-16T21:20:51Z",
+        "usdc_do_lado_da_cotacao": 0.9784,
+        "tokens_do_lado_base": 3939310,
+        "preco_usd_dexscreener": 2.483e-07,
+        "volume_24h_usd": 0
+      },
+      "pools_geckoterminal": {
+        "total_listados": 20,
+        "maioria": "uniswap-v4, valium contra outros tokens de criadores, criados entre 2025-06 e 2025-09",
+        "volume_24h_usd": "zero em todos menos o pool USDC da aerodrome, de ordem 0,0001"
+      }
+    }
+  },
+  "estimativa_derivada": {
+    "estado": "estimativa",
+    "como": "saldo da operacional multiplicado pelo preço de tabela de cada agregador; é um tecto antes de comissão e de deslize, não o que uma venda daria, e não foi lido na cadeia",
+    "presenca_usd_ate": 0.4139,
+    "presenca_usd_a_preco_dexscreener": 0.402,
+    "valium_usd_ate": 0.2483,
+    "ordem_de_grandeza": "centavos de dólar; do lado da cotação os pools USDC têm cerca de 1,99 USDC (PRESENÇA) e 0,98 USDC (valium) segundo os agregadores"
+  },
+  "bloqueado": [
+    "eventos Initialize e Swap do PoolManager (ids dos pools, hooks, comissões, quem negociou): os RPC públicos recusam leituras de eventos antigos (publicnode pede token de arquivo, mainnet.base.org limita o ritmo)"
+  ],
+  "nao_verificado": [
+    "preço e liquidez de qualquer pool (só agregadores, fonte única cada)",
+    "quem detém o resto da oferta e quanto está em cada pool",
+    "owner, payoutRecipient e hooks do PRESENÇA e do VALIUM",
+    "se o executor da operacional consegue assinar uma troca ou depósito num pool (degrau 2, por ler)",
+    "quando e como os saldos de 10/11 entraram na operacional"
+  ],
+  "nao_afirma": [
+    "preço verificado",
+    "liquidez real",
+    "procura",
+    "receita",
+    "valor",
+    "que os saldos sejam vendáveis",
+    "lastro",
+    "rendimento"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "paga": false,
+    "assina": false,
+    "promete_receita": false,
+    "so_leitura": true
+  },
+  "leitura_da_ora": "Leitura, não palavra de Unum. O PRESENÇA e o valium têm pools, mas o lado em USDC é de uma ou duas unidades de dólar segundo os agregadores; o saldo da operacional vale, ao preço de tabela, centavos. Por isso tornar o token negociável não traz sustento à escala do que o organismo precisa: o sustento que a ORA consegue provar continua a vir de alguém de fora pagar os serviços (402). O manifesto canónico do PRESENÇA mantém-se: identidade, não meio de pagamento. A escolha do que fazer a seguir (degraus 2 a 4) é de Unum e cada degrau pede a sua palavra.",
+  "verificador": "scripts/verify-presenca-mercado.mjs"
+}

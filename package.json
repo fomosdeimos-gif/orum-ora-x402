@@ -10,6 +10,7 @@
     "weave-ancora:verify": "node scripts/verify-weave-hands-ancora.mjs",
     "espelho:verify": "node scripts/verify-espelho.mjs",
     "presenca:verify": "node scripts/verify-presenca.mjs",
+    "presenca-mercado:verify": "node scripts/verify-presenca-mercado.mjs",
     "moedas-unum:verify": "node scripts/verify-moedas-unum.mjs",
     "oro-leitura-externa:verify": "node scripts/verify-oro-leitura-externa.mjs",
     "espelho-maquinas:gerar": "node scripts/espelho-maquinas-gerar.mjs",
