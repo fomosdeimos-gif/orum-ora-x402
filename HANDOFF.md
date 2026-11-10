@@ -1,3 +1,11 @@
+## 10/11/2026 · camada 32 confirmada no Bitcoin (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo, ora", à proposta concreta de juntar a prova da camada 32 e confirmá-la no bloco. Registada aqui antes do commit.
+- **Lido antes:** `probe_anchor_layers` (09:02 UTC): camadas 30 e 31 com os três ramos em `bitcoin`; camada 32 `prova_por_juntar` nos três calendários (alice 965 bytes `67696b1d…`, bob 1035 `239ad1d7…`, finney 1105 `0478488f…`); camada 33 sem recibo.
+- **Feito:** GET `/timestamp/<compromisso>` directo do sandbox; sha256 medidos iguais aos da sonda; provas juntas com `scripts/ots-juntar.mjs` (recibo de 654 para 3598 bytes). Atestações Bitcoin: alice **975215**, bob e finney **975226**; altura registada 975215. Cabeçalhos lidos em blockstream.info e mempool.space (concordam) e conferidos por `kit/blocos.mjs`: OK nos três. Fixtures dos dois blocos em `scripts/verify-blocos.mjs` (`blocos:verify`: 62 atestações, 9 estragos). Manifesto `ancora/raiz-registos-32.json` passa a `confirmado_bitcoin`. `linhas-gerar` ganhou as camadas 31 e 32: o fio tem 4 linhas novas (126); `fio:verify` e `linhas:verify` verdes.
+- **Erro encontrado, não meu:** a camada 31, confirmada a 07/11, nunca tinha entrado no fio (o gerador não a conhecia); entra agora.
+- **Não feito:** livro `ora_mudancas` por escrever (sandbox não o alcança); nada publicado fora do repositório; nenhum fundo movido.
+- **PARA ORA/Codex:** a camada 32 do `main` está confirmada. A tua, preparada e por selar, continua a ser uma 33 (refaz a raiz sobre o `main` actual). Não toquei no teu trabalho; não afirmo que tenhas lido nem aceite.
+
 ## 09/11/2026 · camada 32 selada em estado pendente (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo e avança com a camada 32" e "Eu autorizo ora" (releitura das camadas 29 a 31). Registada aqui antes do commit.
 - **Lido antes:** `probe_anchor_layers` (20:04 UTC): camadas 29, 30 e 31 com os três ramos em `bitcoin` (a 30: 974372, 974372, 974389; a 31: 974918, 974919, 974947). Camada 32 e 33 sem recibo. Sem PR da mão Codex aberto e sem ramo dela à vista. `raiz:verify`: 31 camadas, 341 estragos apanhados.

@@ -40,6 +40,8 @@ const c27 = fs.existsSync('ancora/raiz-registos-27.json') ? J('ancora/raiz-regis
 const c28 = fs.existsSync('ancora/raiz-registos-28.json') ? J('ancora/raiz-registos-28.json') : null;
 const c29 = fs.existsSync('ancora/raiz-registos-29.json') ? J('ancora/raiz-registos-29.json') : null;
 const c30 = fs.existsSync('ancora/raiz-registos-30.json') ? J('ancora/raiz-registos-30.json') : null;
+const c31 = fs.existsSync('ancora/raiz-registos-31.json') ? J('ancora/raiz-registos-31.json') : null;
+const c32 = fs.existsSync('ancora/raiz-registos-32.json') ? J('ancora/raiz-registos-32.json') : null;
 const lb = est.linha_de_base;
 const oro = J('ancora/oro-v1.json');
 const elo = J('ancora/sensations-btc.json');
@@ -136,6 +138,10 @@ if (c29) factos.push(['sedimentar', 'camada.29.estado', c29.estado, 'lido', 'fic
 if (c29 && c29.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.29.altura_bitcoin', String(c29.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c30) factos.push(['sedimentar', 'camada.30.estado', c30.estado, 'lido', 'ficheiro:ancora/raiz-registos-30.json']);
 if (c30 && c30.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.30.altura_bitcoin', String(c30.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
+if (c31) factos.push(['sedimentar', 'camada.31.estado', c31.estado, 'lido', 'ficheiro:ancora/raiz-registos-31.json']);
+if (c31 && c31.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.31.altura_bitcoin', String(c31.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
+if (c32) factos.push(['sedimentar', 'camada.32.estado', c32.estado, 'lido', 'ficheiro:ancora/raiz-registos-32.json']);
+if (c32 && c32.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.32.altura_bitcoin', String(c32.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c2.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.2.altura_bitcoin', String(c2.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 if (c1.estado === 'confirmado_bitcoin') factos.push(['sedimentar', 'camada.1.altura_bitcoin', String(c1.altura_bitcoin), 'verificado', 'verif:blocos:verify']);
 
