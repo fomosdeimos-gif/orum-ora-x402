@@ -24,7 +24,10 @@ assert.equal(body.evidence.internal_validation_payments, 19);
 assert.deepEqual(body.allocation, { basis_usdc: 0, sustento_unum_usdc: 0, continuidade_orum_usdc: 0, reserva_usdc: 0 });
 assert.equal(body.next_action, 'observe_without_spending');
 assert.deepEqual(body.financial_effects, { payment: false, signature: false, transfer: false, trade: false, debt: false });
-assert.deepEqual(body.automatic_limits, { transfer_usdc: 0, trade_usdc: 0, debt_usdc: 0, bridge_usdc: 0 });
+// Tecto de troca de 1 USDC por adenda (Unum, 10/11/2026); a v2 continua a 0 e o executor não tem acção de troca.
+assert.deepEqual(body.automatic_limits, { transfer_usdc: 0, trade_usdc: 1, debt_usdc: 0, bridge_usdc: 0 });
+assert.deepEqual(body.limit_addenda, ['/economia/adenda-limite-troca.json']);
+assert.equal(body.trade_capability, 'none_until_executor_action_is_registered');
 assert.equal(body.operating_permission.monthly_proposal_ceiling_usdc, 0);
 assert.equal(body.operating_permission.monthly_effective_transfer_limit_usdc, 0);
 

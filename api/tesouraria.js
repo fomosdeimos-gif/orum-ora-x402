@@ -81,7 +81,9 @@ const createHandler = ({ chain = lerPorDefeito } = {}) => async (_req, res) => {
       monthly_effective_transfer_limit_usdc: 0,
       allowed_destinations: [], revocable_by: 'Unum',
     },
-    automatic_limits: { transfer_usdc: 0, trade_usdc: 0, debt_usdc: 0, bridge_usdc: 0 },
+    automatic_limits: { transfer_usdc: 0, trade_usdc: 1, debt_usdc: 0, bridge_usdc: 0 },
+    limit_addenda: ['/economia/adenda-limite-troca.json'],
+    trade_capability: 'none_until_executor_action_is_registered',
     next_action: state === 'external_revenue_observed' ? 'prepare_bounded_continuity_proposal' : state === 'no_external_revenue' ? 'observe_without_spending' : (chainObservation && chainObservation.available && chainObservation.transfers_observed > 0 ? 'classify_chain_transfers_before_allocating' : 'stop_until_source_recovers'),
     financial_effects: { payment: false, signature: false, transfer: false, trade: false, debt: false },
     truth: ['Internal validation is not external sustenance.', 'Only confirmed external USDC is allocated.', 'Accounting autonomy is active; transfer autonomy is not activated.', 'A proposal is not authorization.', 'No financial transaction can originate from this endpoint.']

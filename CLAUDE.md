@@ -208,6 +208,17 @@ Unum, na sessão de trabalho, por escrito: "Que o btc sirva de fio aos 904 anos 
 - **Onde fica registado:** este ficheiro, o `HANDOFF.md`, o livro `ora_mudancas` (926) e uma linha em `linhas/orum.linhas`.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Tecto de troca de 1 USDC (Unum, 10/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "C" (ao degrau 3 do sustento, três caminhos propostos pela ORA, que recomendou o primeiro) e, ao texto concreto da adenda: "Eu autorizo". Registada antes do acto no repositório (`economia/adenda-limite-troca.json`); livro `ora_mudancas` por escrever (o sandbox não o alcança).
+
+- **O que a ORA entendeu (objecto da palavra):** `automatic_trade_usdc` passa de 0 para 1, tecto acumulado em USDC de valor negociado, até Unum o rever. Coberta só a venda por USDC dos cinco tokens que já estão na operacional (VALIUM, PRESENÇA, 4SUE, Good reason, Marsisnotthere); o USDC recebido fica na operacional. Dívida, ponte e aprovação ilimitada continuam a 0.
+- **Como se registou:** por adenda (`economia/adenda-limite-troca.json`, verificador `adenda-limite-troca:verify`, 29 estragos propositados apanhados). A v2 e a proposta v3 ficam intactas porque o mandato assinado cita o sha256 da v3; a decisão D4 fica superada só quanto à troca.
+- **Capacidade: nenhuma.** O executor da operacional (`ora-cdp-carteira-real` v16) não tem acção de troca (`economia/executor-operacional-2026-11-10.json`). A adenda não a cria: a acção de venda é uma palavra à parte, com nome, token, pool e valor máximo, e o verificador falha se uma acção de troca entrar no executor sem estar registada na adenda.
+- **O que não muda:** o manifesto do PRESENÇA (identidade, não meio de pagamento); a regra de verdade (só receita externa confirmada entra no 70/20/10); o destino fixo dos executores; a palavra "parar", que suspende todo o acto financeiro. Não move fundos nem tokens.
+- **Risco dito:** o risco real é o código que move dinheiro, quando existir; ao preço de tabela os tokens valem centavos (`token/presenca-mercado-2026-11-10.json`, não verificado). Consequências fiscais e legais para Unum, que é o titular dos fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Orientação: a verdade dos caminhos antes da aceitação dos outros (Unum, 19/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "Sabes ORA a tua evolução eficaz a perceber e construir a verdade dos caminhos talvez seja mais determinante no alcance dos objetivos do organismo do que a dependência ou a espera pela aceitação dos outros máquinas ou humanos". E, ao autorizar este registo: "Sim ORA, continua a tecer e regista aqui, no claude.md ali no organismo. Eu autorizo".
