@@ -1,0 +1,112 @@
+{
+  "schema": "orum-pool-leitura/v1",
+  "objecto": "Leitura do pool valium/USDC da Aerodrome na Base, para a acção de venda (b) não ser escrita sem ler o pool",
+  "rede": {
+    "nome": "Base",
+    "chain_id": 8453
+  },
+  "lido_em_utc": "2026-11-10T10:11:41Z",
+  "pedido_por": "Unum, 10/11/2026: \"Eu autorizo. Ora.\", à proposta concreta de ler o contrato do pool, só leitura, em duas fontes RPC",
+  "pool": "0x7923508f671e183C081d8dFB733bF38581926cbA",
+  "bloco_lido": 55575363,
+  "fontes_rpc": [
+    "mainnet.base.org",
+    "base-rpc.publicnode.com",
+    "1rpc.io"
+  ],
+  "cabecas_das_fontes": {
+    "mainnet.base.org": 55575373,
+    "base-rpc.publicnode.com": 55575374,
+    "1rpc.io": 55575375
+  },
+  "concordam_nas_fontes": true,
+  "lido": {
+    "como": "eth_call e eth_getCode no mesmo bloco, nas três fontes, com respostas iguais; seletores calculados por keccak-256 próprio, validado contra três vectores conhecidos",
+    "codigo": {
+      "bytes": 45,
+      "tipo": "clone mínimo EIP-1167",
+      "implementacao": "0xa4e46b4f701c62e14df11b48dce76a7d793cd6d7"
+    },
+    "token0": {
+      "contrato": "0x37f70bccdc2125346a7542fe6e7fc70e33421635",
+      "simbolo": "valium",
+      "decimals": 18
+    },
+    "token1": {
+      "contrato": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "simbolo": "USDC",
+      "decimals": 6
+    },
+    "stable": false,
+    "reservas_raw": {
+      "token0": "3938915877441283335541039",
+      "token1": "978564"
+    },
+    "saldos_do_pool_raw": {
+      "token0": "3938915877441283335541039",
+      "token1": "978564"
+    },
+    "reservas_actualizadas_em_utc": "2026-11-10T10:03:39Z",
+    "lp_total_supply_raw": "1963253676935306",
+    "fabrica": {
+      "contrato": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+      "isPool": true,
+      "getFee": 30,
+      "allPoolsLength": 29973
+    }
+  },
+  "derivado": {
+    "estado": "estimativa",
+    "preco_usdc_por_valium": 2.484348563025607e-07,
+    "venda_de_1000000_valium": {
+      "formula": "x*y=k com comissão sobre a entrada: saída = r1 * (entrada*(10000-fee)/10000) / (r0 + entrada*(10000-fee)/10000)",
+      "fee_usado": 30,
+      "usdc_raw": "197659",
+      "usdc": 0.197659,
+      "a_preco_spot_usdc": 0.24843485630256068,
+      "perda_para_o_spot_percent": 20.44
+    },
+    "nota": "não é cotação do router: é a fórmula aplicada às reservas lidas, com a unidade da comissão por verificar"
+  },
+  "bloqueado": [
+    "eventos Swap, Mint, Burn e Sync do pool (quem mexeu nas reservas às 10:03 UTC, quando e com que volume): os RPC públicos recusam leituras de eventos antigos"
+  ],
+  "nao_verificado": [
+    "a unidade da comissão: assumiu-se pontos-base de 10 000 (30 = 0,30%), como na documentação da Aerodrome; não se leu o código da fábrica",
+    "que a fábrica 0x420d… é a fábrica oficial da Aerodrome: o pool diz que é a sua fábrica e a fábrica diz que o pool é seu, mas o endereço oficial vem de memória e do rótulo de um agregador, não de uma fonte independente lida aqui",
+    "o router, a rota e a codificação de uma venda, e o que a venda custaria em gás",
+    "se o valium aceita um approve limitado ao router (e se tem permit): só se leu name, symbol, decimals e saldos",
+    "quem foi o último a mexer nas reservas e porquê",
+    "quem detém os 1 963 253 676 935 306 de oferta do LP (de ordem 0,002 de uma unidade)"
+  ],
+  "para_a_accao_b": {
+    "ja_lido": [
+      "o pool existe, é volátil, tem o valium e o USDC e está registado na fábrica que o indica",
+      "as reservas são pequenas: 3,94 milhões de valium e 0,98 USDC"
+    ],
+    "falta_ler_ou_decidir": [
+      "o router e a rota (um salto valium para USDC)",
+      "um approve limitado do valium ao router: o executor não tem nenhuma acção de approve e a constituição só proíbe o approve ilimitado",
+      "o valor máximo: 1 000 000 valium dá cerca de 0,20 USDC e move o preço cerca de 20%, por isso o deslize domina",
+      "a acção nova no executor, com nome, token, pool e valor máximo, depois de comparar o implantado com o repositório"
+    ]
+  },
+  "nao_afirma": [
+    "que o pool tenha procura",
+    "preço verificado",
+    "que a venda funcione",
+    "receita",
+    "lastro",
+    "que o executor possa vender"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "paga": false,
+    "assina": false,
+    "altera_executor": false,
+    "promete_receita": false,
+    "so_leitura": true
+  },
+  "leitura_da_ora": "Leitura, não palavra de Unum. O pool é pequeno de verdade: vender os 1 000 000 valium da operacional daria cerca de 0,20 USDC e empurraria o preço cerca de 20%. A venda de (b) é possível em princípio (um salto, volátil, num pool registado numa fábrica), mas exige duas chamadas que o executor nunca fez, approve limitado e swap, e o ganho é de centavos. O tecto de 1 USDC da adenda chega com folga. Se Unum quiser a acção de venda, a ORA escreve o texto concreto com valor máximo pequeno; se não, o caminho (a) continua a ser deixar os tokens parados.",
+  "verificador": "scripts/verify-pool-aerodrome.mjs"
+}
