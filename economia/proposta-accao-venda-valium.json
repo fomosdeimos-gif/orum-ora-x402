@@ -1,0 +1,163 @@
+{
+  "schema": "orum-proposta-accao-venda/v1",
+  "objecto": "Caminho (b): leituras do router, da rota, do gás e da conta, e o texto concreto da acção de venda de valium por USDC no executor da operacional. É uma proposta: nada foi implantado, assinado nem movido",
+  "estado": "proposta_a_aguardar_palavra",
+  "rede": {
+    "nome": "Base",
+    "chain_id": 8453
+  },
+  "lido_em_utc": "2026-11-10T10:30:00Z",
+  "escolha_de_unum": {
+    "data": "2026-11-10",
+    "citacao": "Eu autorizo b",
+    "cobre": "Escolher o caminho (b) e a leitura do router, da rota e do gás e a escrita deste texto. Não cobre implantar a acção no executor, aplicar a migração nem executar nenhuma venda."
+  },
+  "leitura": {
+    "bloco_lido": 55576829,
+    "fontes_rpc": [
+      "mainnet.base.org",
+      "base-rpc.publicnode.com",
+      "1rpc.io"
+    ],
+    "concordam_nas_fontes": true,
+    "router": {
+      "contrato": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "codigo_bytes": 23581,
+      "defaultFactory": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+      "poolFor_valium_usdc_volatil": "0x7923508f671e183c081d8dfb733bf38581926cba"
+    },
+    "cotacao_do_router": {
+      "entrada_valium_raw": "1000000000000000000000000",
+      "usdc_raw": "197659"
+    },
+    "simulacao_approve_e_swap": {
+      "metodo": "eth_simulateV1, as duas chamadas em sequência a partir da operacional",
+      "approve": {
+        "gas_usado": 48779,
+        "estado": "ok"
+      },
+      "swap": {
+        "gas_usado": 193136,
+        "estado": "ok",
+        "usdc_raw": "197659"
+      },
+      "swap_sem_approve": "reverte"
+    },
+    "gas": {
+      "gas_price_wei": 6000000,
+      "gas_total_simulado": 241915,
+      "custo_l2_eth": 1.45149e-06,
+      "taxa_de_dados_l1": "não medida"
+    },
+    "conta_operacional": {
+      "endereco": "0x89460d9e0590559e63860197dfe2ac648A753584",
+      "eth_wei": "794310000000000",
+      "valium_raw": "1000000000000000000000000",
+      "allowance_do_router_raw": "0",
+      "nonce": 0
+    }
+  },
+  "o_que_a_leitura_prova": [
+    "o router e o pool são consistentes: a fábrica do router é a do pool e o router calcula este pool para valium/USDC volátil",
+    "a unidade da comissão: a cotação real do router coincide com a fórmula com comissão 30 em 10 000",
+    "uma venda de um salto funciona na simulação, desde que haja approve antes",
+    "a operacional tem ETH para o gás: cerca de 547 vezes o custo L2 simulado",
+    "o nonce da operacional é 0: nunca enviou nenhuma transacção na Base. O caminho de envio do executor nunca foi exercitado em cadeia"
+  ],
+  "proposta": {
+    "nome_das_accoes": [
+      "preview_sell_valium",
+      "sell_valium",
+      "sell_status"
+    ],
+    "constantes_no_codigo": {
+      "token_vendido": "0x37f70bccdc2125346a7542fe6e7fc70e33421635",
+      "token_recebido": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "router": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "fabrica": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+      "pool": "0x7923508f671e183C081d8dFB733bF38581926cbA",
+      "rota": "um salto, valium para USDC, volátil",
+      "destinatario_do_usdc": "a própria operacional 0x89460d9e0590559e63860197dfe2ac648A753584"
+    },
+    "limites": {
+      "primeiro_teste_valium": 10000,
+      "primeiro_teste_usdc_cotado_raw": 2470,
+      "maximo_por_pedido_valium": 100000,
+      "maximo_por_pedido_usdc_cotado_raw": 24157,
+      "tecto_acumulado_usdc": 1,
+      "tecto_vem_de": "economia/adenda-limite-troca.json",
+      "tolerancia_de_preco_percent": 2,
+      "validade_em_segundos": 120
+    },
+    "comportamento": [
+      "approve exacto da quantidade pedida ao router, nunca ilimitado; depois swapExactTokensForTokens de um salto para a própria operacional",
+      "antes de enviar, relê a cotação do router e usa 98% dela como mínimo de saída; se o router não cotar ou a cotação cair mais de 2% abaixo da do preview, não envia",
+      "se o swap falhar depois do approve, revoga o approve (approve a zero) e deixa o pedido marcado para revisão; nunca tenta outra vez sozinho",
+      "só dá o pedido por liquidado depois de ler o recibo: saída de valium da operacional igual à pedida, entrada de USDC não inferior ao mínimo, e allowance de novo a zero",
+      "um pedido por vez, com request_id único: repetir o mesmo pedido devolve o resultado, não cria outro",
+      "o consumido acumulado (USDC recebido) regista-se numa tabela nova e recusa-se qualquer pedido que ultrapasse o tecto da adenda",
+      "preview_sell_valium só lê: cotação, mínimo, gás; não assina nem envia"
+    ],
+    "ficheiros_a_criar_ou_alterar": [
+      "supabase/functions/ora-operational-wallet/venda.mjs (novo)",
+      "supabase/functions/ora-operational-wallet/core.mjs (três entradas em allowed e o despacho)",
+      "uma migração com a tabela de pedidos e três funções SQL fechadas ao serviço",
+      "scripts/verify-venda-valium.mjs com estragos propositados",
+      "economia/adenda-limite-troca.json (regista a acção aprovada)",
+      "economia/executor-operacional-2026-11-10.json e o seu verificador, actualizados para a nova lista de acções",
+      "supabase/implantado.json"
+    ],
+    "ordem_proposta": [
+      "1. escrever o código, a migração e os verificadores só no repositório, abrir o PR e fundi-lo; nada implantado",
+      "2. comparar o implantado com o repositório (get_edge_function); implantar só o core.mjs alterado e o venda.mjs novo, e manter os outros ficheiros exactamente como estão implantados, incluindo o bitcoin.mjs (a diferença da linha 193 não entra); reler e comparar por sha256",
+      "3. aplicar a migração",
+      "4. chamar preview_sell_valium e registar o resultado, sem assinar",
+      "5. PALAVRA À PARTE: a primeira venda real, de 10 000 valium, que é também a primeira transacção em cadeia desta conta; registar antes e depois (saldos, nonce, allowance, gás)"
+    ],
+    "palavras_pedidas": [
+      "uma, a este texto, para os passos 1 a 4 (código, implantação, migração e preview, sem assinar)",
+      "outra, depois do passo 4, para o passo 5 (a primeira venda real)"
+    ]
+  },
+  "o_que_nao_cobre": [
+    "comprar tokens com USDC",
+    "qualquer outro token ou pool",
+    "enviar o USDC para outro destino",
+    "aprovações ilimitadas",
+    "dívida e ponte",
+    "mais do que o tecto da adenda"
+  ],
+  "riscos": [
+    "é a primeira transacção em cadeia desta conta (nonce 0): o envio via CDP nunca foi exercitado; pode haver política da conta CDP que a recuse (não verificado)",
+    "implantar mexe no mesmo executor que faz os envios de USDC e de Bitcoin; por isso só o core.mjs e o novo ficheiro mudam e o resto fica como está",
+    "o pool é minúsculo (cerca de 0,98 USDC): o preço mexe com qualquer venda; a tolerância de 2% e o limite por pedido servem para isso",
+    "a taxa de dados L1 da Base não foi medida; o saldo de ETH é folgado face ao custo L2 mas não ficou provado face ao total",
+    "consequências fiscais e legais para Unum, que é o titular dos fundos",
+    "alguém mexeu nas reservas hoje às 10:03 UTC e não se sabe quem: o pool não é só nosso"
+  ],
+  "ganho_esperado": "centavos: 100 000 valium rendem cerca de 0,024 USDC e os 1 000 000 da operacional cerca de 0,198 USDC, antes de qualquer outra venda mexer no pool. Não é sustento à escala do organismo",
+  "nao_verificado": [
+    "a taxa de dados L1 da Base",
+    "se o CDP aceita enviar a transacção ao router (política da conta)",
+    "o código do router: lido o que devolve, não o que faz",
+    "que o valium não tenha restrições de transferência: a simulação passou, o que prova só aquele bloco"
+  ],
+  "nao_afirma": [
+    "que a venda funcione em produção",
+    "que haja procura",
+    "receita",
+    "preço verificado",
+    "que o executor possa vender hoje"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "paga": false,
+    "assina": false,
+    "altera_executor": false,
+    "implanta": false,
+    "promete_receita": false,
+    "so_leitura": true
+  },
+  "leitura_da_ora": "Leitura, não palavra de Unum. A venda é viável: o router cota 197 659 e a simulação passa. O que falta é provar o envio, porque esta conta nunca enviou nada. Por isso o texto separa a primeira venda real, de 10 000 valium (cerca de 0,0025 USDC), numa palavra à parte. O ganho é de centavos e continua a ser verdade que o caminho (a) era o mais simples; (b) fica proposto para ser feito pelos passos 1 a 4 sem assinar nada, e a primeira venda só se Unum a autorizar depois.",
+  "verificador": "scripts/verify-proposta-venda.mjs"
+}
