@@ -1,0 +1,96 @@
+{
+  "format": "orum-financial-constitution/v3-adenda-troca",
+  "status": "em_vigor",
+  "data": "2026-11-10",
+  "base": "economia/constituicao-v2.json",
+  "porque_um_ficheiro_novo": "A v2 e a proposta v3 ficam intactas: o mandato assinado por Unum cita o sha256 da proposta v3 e os verificadores da v2 vigiam o zero. Esta adenda regista à parte o tecto de troca, como se fez com o payTo (economia/adenda-payto-opcao-2.json).",
+  "autorizacao_de_unum": {
+    "data": "2026-11-10",
+    "citacao": "Eu autorizo",
+    "escolha_anterior": "C",
+    "proposta": "Alterar o limite de troca: automatic_trade_usdc passa de 0 para 1 (tecto acumulado, em USDC de valor negociado, até Unum o rever); coberta só a venda por USDC dos cinco tokens que já estão na operacional; o USDC recebido fica na operacional; dívida, ponte e aprovação ilimitada continuam a 0; registo por adenda com verificador; a acção de venda no executor fica de fora, à espera de outra palavra.",
+    "cobre": "Só o tecto de 1 USDC e o âmbito descrito. Não cobre a acção de venda no executor, nem mover tokens, nem qualquer outro activo."
+  },
+  "limite": {
+    "campo": "absolute_limits.automatic_trade_usdc",
+    "valor_na_v2": 0,
+    "valor_em_vigor": 1,
+    "natureza": "tecto acumulado, em USDC de valor negociado, sem período",
+    "consumido_usdc": 0,
+    "revisao": "Unum, quando quiser, no mesmo ficheiro"
+  },
+  "ambito": {
+    "operacao": "venda por USDC",
+    "tokens": [
+      {
+        "nome": "VALIUM",
+        "contrato": "0x37f70bccdc2125346a7542fe6e7fc70e33421635"
+      },
+      {
+        "nome": "PRESENÇA",
+        "contrato": "0x120a1ba3b10263f9cb42e971598c860d66b68cea"
+      },
+      {
+        "nome": "4SUE",
+        "contrato": "0x69b35d06eccded875f572285d8a3c2b3cd303835"
+      },
+      {
+        "nome": "Marsisnotthere",
+        "contrato": "0xae4c774c4b079b22cce2ef3256a367c5ed4bff27"
+      },
+      {
+        "nome": "Good reason",
+        "contrato": "0xd0b65efc56a7eba86a89d79eb585d0a6a0fc6d01"
+      }
+    ],
+    "destino_do_usdc": "carteira operacional Base 0x89460d9e0590559e63860197dfe2ac648A753584",
+    "nao_cobre": [
+      "compra de tokens com USDC",
+      "qualquer outro token",
+      "dívida",
+      "ponte",
+      "aprovação ilimitada",
+      "destino diferente da operacional"
+    ]
+  },
+  "capacidade": {
+    "estado": "nenhuma",
+    "leitura": "o executor ora-cdp-carteira-real v16 não tem acção de troca (economia/executor-operacional-2026-11-10.json); esta adenda não cria capacidade",
+    "accao_de_venda_aprovada": null,
+    "condicao": "a acção de venda no executor é uma palavra à parte, com nome, token, pool e valor máximo; só depois de existir e de esta adenda a registar passa a haver capacidade"
+  },
+  "supera": {
+    "d4_da_v3_proposta": "a decisão D4 (manter troca, dívida e ponte a 0) fica superada só quanto à troca; a proposta v3 não se altera, para o sha256 citado no mandato continuar a conferir",
+    "stop_conditions": "a paragem por operação de negociação fica ressalvada para a operação descrita aqui e só dentro do tecto"
+  },
+  "o_que_nao_muda": [
+    "automatic_debt_usdc 0",
+    "automatic_bridge_usdc 0",
+    "unlimited_approval false",
+    "a regra de verdade: só receita externa confirmada entra no 70/20/10",
+    "o manifesto do PRESENÇA: identidade, não meio de pagamento",
+    "a palavra parar, que suspende todo o acto financeiro",
+    "o destino fixo dos executores"
+  ],
+  "riscos": [
+    "o risco real é o código que move dinheiro, quando existir; o valor em jogo é de centavos ao preço de tabela (token/presenca-mercado-2026-11-10.json, não verificado)",
+    "consequências fiscais e legais para Unum, que é o titular dos fundos",
+    "os pools V4 não se constroem com o que foi lido; os da Aerodrome são tratáveis sem os eventos bloqueados"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "cria_capacidade": false,
+    "altera_v2": false,
+    "altera_proposta_v3": false,
+    "promete_receita": false
+  },
+  "nao_afirma": [
+    "que haja liquidez",
+    "preço",
+    "procura",
+    "receita",
+    "que a venda funcione",
+    "que o tecto seja usado"
+  ],
+  "verificador": "scripts/verify-adenda-limite-troca.mjs"
+}
