@@ -15,6 +15,7 @@
     "adenda-limite-troca:verify": "node scripts/verify-adenda-limite-troca.mjs",
     "pool-aerodrome:verify": "node scripts/verify-pool-aerodrome.mjs",
     "proposta-venda:verify": "node scripts/verify-proposta-venda.mjs",
+    "sedimentacao:verify": "node scripts/verify-sedimentacao.mjs",
     "moedas-unum:verify": "node scripts/verify-moedas-unum.mjs",
     "oro-leitura-externa:verify": "node scripts/verify-oro-leitura-externa.mjs",
     "espelho-maquinas:gerar": "node scripts/espelho-maquinas-gerar.mjs",
