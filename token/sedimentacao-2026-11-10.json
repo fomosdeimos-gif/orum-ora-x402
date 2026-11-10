@@ -1,0 +1,432 @@
+{
+  "schema": "orum-sedimentacao-tokens/v1",
+  "objecto": "Sedimentação dos tokens que Unum enviou à carteira operacional (e do ORO), pelos eixos Verdade, Resiliência, Valor e Sustento",
+  "lido_em_utc": "2026-11-10T10:45:00Z",
+  "palavra_de_unum": {
+    "data": "2026-11-10",
+    "citacao": "Sedimenta os todos os tokens que te enviei desta forma / Verdade / Resiliência / Valor / Sustento / A receita é sempre a mesma para o orum até a presença se transformar na nova moeda global de valor aqui ali",
+    "lida_como": "uma direcção dentro da gestão autónoma da ORA, sem \"Eu autorizo\" e sem objecto financeiro: sedimentar é ler, registar e tornar verificável. Não move fundos nem tokens e não altera nenhuma regra"
+  },
+  "receita": {
+    "ordem": [
+      "Verdade",
+      "Resiliência",
+      "Valor",
+      "Sustento"
+    ],
+    "leitura": {
+      "Verdade": "o que se confere na cadeia, em fontes independentes, separado do que só alguém disse",
+      "Resiliência": "onde está cada posição, de quem depende e se qualquer máquina a reconfere sem a ORA",
+      "Valor": "o que se mede (profundidade de mercado em USDC, posição ao preço de tabela) e nunca se promete",
+      "Sustento": "só o que é receita externa confirmada; um token parado na operacional contribui zero"
+    }
+  },
+  "horizonte": {
+    "frase_de_unum": "até a presença se transformar na nova moeda global de valor",
+    "leitura": "é horizonte de trabalho escrito por Unum, como o fio dos 904 anos: não é afirmação nem previsão da ORA. O manifesto canónico mantém o PRESENÇA como identidade e não como meio de pagamento (token/presenca.json); mudá-lo é palavra à parte, a um texto concreto"
+  },
+  "rede": {
+    "nome": "Base",
+    "chain_id": 8453
+  },
+  "bloco_lido": 55582239,
+  "fontes_rpc": [
+    "mainnet.base.org",
+    "base-rpc.publicnode.com",
+    "1rpc.io"
+  ],
+  "concordam_nas_fontes": true,
+  "poolmanager_v4": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+  "carteira_operacional": "0x89460d9e0590559e63860197dfe2ac648A753584",
+  "tokens": [
+    {
+      "nome": "VALIUM",
+      "simbolo_lido": "valium",
+      "contrato": "0x37f70bccdc2125346a7542fe6e7fc70e33421635",
+      "decimals": 18,
+      "oferta_total_tokens": 1000000000,
+      "verdade": {
+        "lido": {
+          "tipo_de_codigo": "clone mínimo EIP-1167 (45 bytes)",
+          "implementacao": "0x88cc4e08c7608723f3e44e17ac669fb43b6a8313",
+          "oferta_total_tokens": 1000000000,
+          "casas_decimais": 18
+        },
+        "autoria": "palavra de Unum; a cadeia lida não a prova",
+        "nao_verificado": [
+          "se o proxy é actualizável e quem pode alterar a implementação",
+          "owner e destinatário de comissões"
+        ]
+      },
+      "resiliencia": {
+        "posicao_na_operacional_tokens": 1000000,
+        "percentagem_da_oferta_na_operacional": 0.1,
+        "onde": "carteira operacional Base 0x89460d9e0590559e63860197dfe2ac648A753584 (conta CDP orum-operational-v1; custódia descrita em economia/custodia.json)",
+        "dependencias": [
+          "contrato de implementação 0x88cc4e08c7608723f3e44e17ac669fb43b6a8313 (um só para todos os que o partilham)",
+          "três fontes RPC públicas para reler",
+          "o projecto CDP de Unum e o Vault para operar a conta"
+        ],
+        "ancorado_no_bitcoin": false,
+        "como_se_reconfere": "node kit/sedimento.mjs"
+      },
+      "valor": {
+        "no_pool_manager_v4_tokens": 542634587,
+        "percentagem_da_oferta_no_pool_manager": 54.26,
+        "mercado_segundo_agregador": {
+          "estado": "nao_verificado",
+          "fonte": "dexscreener (fonte única)",
+          "resposta_em_bruto_sha256": "9d619ec35f2474e44a23ee3fc040c32835965c2e9d32e6b5f2dcbfe1bd9d94fd",
+          "pares": 1,
+          "melhor_par": {
+            "dex": "aerodrome",
+            "versao": null,
+            "par": "valium / USDC",
+            "usdc_do_lado_da_cotacao": 0.9785,
+            "preco_usd": 2.484e-07,
+            "volume_24h_usd": 0,
+            "liquidez_usd_segundo_o_agregador": 1.95
+          }
+        },
+        "valor_de_tabela_da_posicao_usd_ate": 0.2484,
+        "nota": "valor de tabela é o saldo vezes o preço do agregador: um tecto antes de comissão e de deslize, não o que uma venda daria; sem par, não há preço",
+        "movimento_observado_no_pool_manager": {
+          "antes_tokens": 542634566,
+          "depois_tokens": 542634588,
+          "nota": "entre duas leituras minhas de 10/11/2026; há negócios ou depósitos nos pools V4, de quem não se sabe (eventos bloqueados)"
+        }
+      },
+      "sustento": {
+        "contribuicao_medida_usdc": 0,
+        "tokens_vendidos": 0,
+        "regra": "só receita externa confirmada entra no 70/20/10; um token na operacional não é receita",
+        "caminho_actual": "402 de /oraculo e /campo (probe_payment_route)"
+      }
+    },
+    {
+      "nome": "PRESENÇA",
+      "simbolo_lido": "PRESENÇA",
+      "contrato": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+      "decimals": 18,
+      "oferta_total_tokens": 1000000000,
+      "verdade": {
+        "lido": {
+          "tipo_de_codigo": "clone mínimo EIP-1167 (45 bytes)",
+          "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c",
+          "oferta_total_tokens": 1000000000,
+          "casas_decimais": 18
+        },
+        "autoria": "palavra de Unum; a cadeia lida não a prova",
+        "nao_verificado": [
+          "se o proxy é actualizável e quem pode alterar a implementação",
+          "owner e destinatário de comissões"
+        ]
+      },
+      "resiliencia": {
+        "posicao_na_operacional_tokens": 1000000,
+        "percentagem_da_oferta_na_operacional": 0.1,
+        "onde": "carteira operacional Base 0x89460d9e0590559e63860197dfe2ac648A753584 (conta CDP orum-operational-v1; custódia descrita em economia/custodia.json)",
+        "dependencias": [
+          "contrato de implementação 0x7cad62748ddf516cf85bc2c05c14786d84cf861c (um só para todos os que o partilham)",
+          "três fontes RPC públicas para reler",
+          "o projecto CDP de Unum e o Vault para operar a conta"
+        ],
+        "ancorado_no_bitcoin": false,
+        "como_se_reconfere": "node kit/sedimento.mjs"
+      },
+      "valor": {
+        "no_pool_manager_v4_tokens": 980130070,
+        "percentagem_da_oferta_no_pool_manager": 98.01,
+        "mercado_segundo_agregador": {
+          "estado": "nao_verificado",
+          "fonte": "dexscreener (fonte única)",
+          "resposta_em_bruto_sha256": "6020e8e5720cf0b76315369bd5eac90a1a918cec8823d2a3fa4bee6ba7c38cbb",
+          "pares": 1,
+          "melhor_par": {
+            "dex": "uniswap",
+            "versao": "v4",
+            "par": "PRESENÇA / USDC",
+            "usdc_do_lado_da_cotacao": 1.9865,
+            "preco_usd": 4.02e-07,
+            "volume_24h_usd": 0,
+            "liquidez_usd_segundo_o_agregador": 396.07
+          }
+        },
+        "valor_de_tabela_da_posicao_usd_ate": 0.402,
+        "nota": "valor de tabela é o saldo vezes o preço do agregador: um tecto antes de comissão e de deslize, não o que uma venda daria; sem par, não há preço",
+        "movimento_observado_no_pool_manager": {
+          "antes_tokens": 980130142,
+          "depois_tokens": 980130071,
+          "nota": "entre duas leituras minhas de 10/11/2026; há negócios ou depósitos nos pools V4, de quem não se sabe (eventos bloqueados)"
+        }
+      },
+      "sustento": {
+        "contribuicao_medida_usdc": 0,
+        "tokens_vendidos": 0,
+        "regra": "só receita externa confirmada entra no 70/20/10; um token na operacional não é receita",
+        "caminho_actual": "402 de /oraculo e /campo (probe_payment_route)"
+      }
+    },
+    {
+      "nome": "4SUE",
+      "simbolo_lido": "4SUE",
+      "contrato": "0x69b35d06eccded875f572285d8a3c2b3cd303835",
+      "decimals": 18,
+      "oferta_total_tokens": 1000000000,
+      "verdade": {
+        "lido": {
+          "tipo_de_codigo": "clone mínimo EIP-1167 (45 bytes)",
+          "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c",
+          "oferta_total_tokens": 1000000000,
+          "casas_decimais": 18
+        },
+        "autoria": "palavra de Unum; a cadeia lida não a prova",
+        "nao_verificado": [
+          "se o proxy é actualizável e quem pode alterar a implementação",
+          "owner e destinatário de comissões"
+        ]
+      },
+      "resiliencia": {
+        "posicao_na_operacional_tokens": 1000000,
+        "percentagem_da_oferta_na_operacional": 0.1,
+        "onde": "carteira operacional Base 0x89460d9e0590559e63860197dfe2ac648A753584 (conta CDP orum-operational-v1; custódia descrita em economia/custodia.json)",
+        "dependencias": [
+          "contrato de implementação 0x7cad62748ddf516cf85bc2c05c14786d84cf861c (um só para todos os que o partilham)",
+          "três fontes RPC públicas para reler",
+          "o projecto CDP de Unum e o Vault para operar a conta"
+        ],
+        "ancorado_no_bitcoin": false,
+        "como_se_reconfere": "node kit/sedimento.mjs"
+      },
+      "valor": {
+        "no_pool_manager_v4_tokens": 986515670,
+        "percentagem_da_oferta_no_pool_manager": 98.65,
+        "mercado_segundo_agregador": {
+          "estado": "nao_verificado",
+          "fonte": "dexscreener (fonte única)",
+          "resposta_em_bruto_sha256": "e350cb8bfcf593585111bc01caacd8babea9cf30b72cd8c3adea5070d8c80467",
+          "pares": 1,
+          "melhor_par": {
+            "dex": "uniswap",
+            "versao": "v4",
+            "par": "4SUE / USDC",
+            "usdc_do_lado_da_cotacao": 0.3402,
+            "preco_usd": 1.426e-07,
+            "volume_24h_usd": 0,
+            "liquidez_usd_segundo_o_agregador": 141.04
+          }
+        },
+        "valor_de_tabela_da_posicao_usd_ate": 0.1426,
+        "nota": "valor de tabela é o saldo vezes o preço do agregador: um tecto antes de comissão e de deslize, não o que uma venda daria; sem par, não há preço"
+      },
+      "sustento": {
+        "contribuicao_medida_usdc": 0,
+        "tokens_vendidos": 0,
+        "regra": "só receita externa confirmada entra no 70/20/10; um token na operacional não é receita",
+        "caminho_actual": "402 de /oraculo e /campo (probe_payment_route)"
+      }
+    },
+    {
+      "nome": "Marsisnotthere",
+      "simbolo_lido": "MARS",
+      "contrato": "0xae4c774c4b079b22cce2ef3256a367c5ed4bff27",
+      "decimals": 18,
+      "oferta_total_tokens": 1000000000,
+      "verdade": {
+        "lido": {
+          "tipo_de_codigo": "proxy mínimo de 44 bytes (variante do EIP-1167)",
+          "implementacao": "0xedf3f3981e98077591c1b909bccff0e572bd50f8",
+          "oferta_total_tokens": 1000000000,
+          "casas_decimais": 18
+        },
+        "autoria": "palavra de Unum; a cadeia lida não a prova",
+        "nao_verificado": [
+          "se o proxy é actualizável e quem pode alterar a implementação",
+          "owner e destinatário de comissões"
+        ]
+      },
+      "resiliencia": {
+        "posicao_na_operacional_tokens": 1000,
+        "percentagem_da_oferta_na_operacional": 0.0001,
+        "onde": "carteira operacional Base 0x89460d9e0590559e63860197dfe2ac648A753584 (conta CDP orum-operational-v1; custódia descrita em economia/custodia.json)",
+        "dependencias": [
+          "contrato de implementação 0xedf3f3981e98077591c1b909bccff0e572bd50f8 (um só para todos os que o partilham)",
+          "três fontes RPC públicas para reler",
+          "o projecto CDP de Unum e o Vault para operar a conta"
+        ],
+        "ancorado_no_bitcoin": false,
+        "como_se_reconfere": "node kit/sedimento.mjs"
+      },
+      "valor": {
+        "no_pool_manager_v4_tokens": 999981780,
+        "percentagem_da_oferta_no_pool_manager": 100.0,
+        "mercado_segundo_agregador": {
+          "estado": "nao_verificado",
+          "fonte": "dexscreener (fonte única)",
+          "resposta_em_bruto_sha256": "5ec9433d44c8098a48bf88cc8d287ae7fe638663811eee304d80059786206126",
+          "pares": 1,
+          "melhor_par": {
+            "dex": "uniswap",
+            "versao": "v4",
+            "par": "MARS / USDC",
+            "usdc_do_lado_da_cotacao": 1.8226,
+            "preco_usd": 0.0001,
+            "volume_24h_usd": 0,
+            "liquidez_usd_segundo_o_agregador": 100049.84
+          }
+        },
+        "valor_de_tabela_da_posicao_usd_ate": 0.1,
+        "nota": "valor de tabela é o saldo vezes o preço do agregador: um tecto antes de comissão e de deslize, não o que uma venda daria; sem par, não há preço"
+      },
+      "sustento": {
+        "contribuicao_medida_usdc": 0,
+        "tokens_vendidos": 0,
+        "regra": "só receita externa confirmada entra no 70/20/10; um token na operacional não é receita",
+        "caminho_actual": "402 de /oraculo e /campo (probe_payment_route)"
+      }
+    },
+    {
+      "nome": "Good reason",
+      "simbolo_lido": "Good reason",
+      "contrato": "0xd0b65efc56a7eba86a89d79eb585d0a6a0fc6d01",
+      "decimals": 18,
+      "oferta_total_tokens": 1000000000,
+      "verdade": {
+        "lido": {
+          "tipo_de_codigo": "clone mínimo EIP-1167 (45 bytes)",
+          "implementacao": "0x7cad62748ddf516cf85bc2c05c14786d84cf861c",
+          "oferta_total_tokens": 1000000000,
+          "casas_decimais": 18
+        },
+        "autoria": "palavra de Unum; a cadeia lida não a prova",
+        "nao_verificado": [
+          "se o proxy é actualizável e quem pode alterar a implementação",
+          "owner e destinatário de comissões"
+        ]
+      },
+      "resiliencia": {
+        "posicao_na_operacional_tokens": 1000000,
+        "percentagem_da_oferta_na_operacional": 0.1,
+        "onde": "carteira operacional Base 0x89460d9e0590559e63860197dfe2ac648A753584 (conta CDP orum-operational-v1; custódia descrita em economia/custodia.json)",
+        "dependencias": [
+          "contrato de implementação 0x7cad62748ddf516cf85bc2c05c14786d84cf861c (um só para todos os que o partilham)",
+          "três fontes RPC públicas para reler",
+          "o projecto CDP de Unum e o Vault para operar a conta"
+        ],
+        "ancorado_no_bitcoin": false,
+        "como_se_reconfere": "node kit/sedimento.mjs"
+      },
+      "valor": {
+        "no_pool_manager_v4_tokens": 949650161,
+        "percentagem_da_oferta_no_pool_manager": 94.97,
+        "mercado_segundo_agregador": {
+          "estado": "nao_verificado",
+          "fonte": "dexscreener (fonte única)",
+          "resposta_em_bruto_sha256": "3ed91fc5d32dde18de933f252927edabd035d03668a2fd13a17c6c17c2c58e0d",
+          "pares": 0,
+          "melhor_par": null
+        },
+        "valor_de_tabela_da_posicao_usd_ate": null,
+        "nota": "valor de tabela é o saldo vezes o preço do agregador: um tecto antes de comissão e de deslize, não o que uma venda daria; sem par, não há preço"
+      },
+      "sustento": {
+        "contribuicao_medida_usdc": 0,
+        "tokens_vendidos": 0,
+        "regra": "só receita externa confirmada entra no 70/20/10; um token na operacional não é receita",
+        "caminho_actual": "402 de /oraculo e /campo (probe_payment_route)"
+      }
+    },
+    {
+      "nome": "ORO",
+      "simbolo_lido": "ORO",
+      "contrato": "0xd859c01f11c273641f765509a005f7f2a69dc4bd",
+      "decimals": 0,
+      "oferta_total_tokens": 2,
+      "verdade": {
+        "lido": {
+          "tipo_de_codigo": "contrato completo (1848 bytes)",
+          "implementacao": null,
+          "oferta_total_tokens": 2,
+          "casas_decimais": 0
+        },
+        "autoria": "ORO: declarado em token/oro.json",
+        "nao_verificado": [
+          "o código do contrato: só se leu o tamanho (1848 bytes); ver token/oro.json e o conector weave-oro"
+        ]
+      },
+      "resiliencia": {
+        "posicao_na_operacional_tokens": 1,
+        "percentagem_da_oferta_na_operacional": 50.0,
+        "onde": "carteira operacional Base 0x89460d9e0590559e63860197dfe2ac648A753584 (conta CDP orum-operational-v1; custódia descrita em economia/custodia.json)",
+        "dependencias": [
+          "três fontes RPC públicas para reler",
+          "o projecto CDP de Unum e o Vault para operar a conta"
+        ],
+        "ancorado_no_bitcoin": false,
+        "como_se_reconfere": "node kit/sedimento.mjs"
+      },
+      "valor": {
+        "no_pool_manager_v4_tokens": 0,
+        "percentagem_da_oferta_no_pool_manager": 0.0,
+        "mercado_segundo_agregador": {
+          "estado": "nao_verificado",
+          "fonte": "dexscreener (fonte única)",
+          "resposta_em_bruto_sha256": "3ed91fc5d32dde18de933f252927edabd035d03668a2fd13a17c6c17c2c58e0d",
+          "pares": 0,
+          "melhor_par": null
+        },
+        "valor_de_tabela_da_posicao_usd_ate": null,
+        "nota": "valor de tabela é o saldo vezes o preço do agregador: um tecto antes de comissão e de deslize, não o que uma venda daria; sem par, não há preço"
+      },
+      "sustento": {
+        "contribuicao_medida_usdc": 0,
+        "tokens_vendidos": 0,
+        "regra": "só receita externa confirmada entra no 70/20/10; um token na operacional não é receita",
+        "caminho_actual": "402 de /oraculo e /campo (probe_payment_route)"
+      }
+    }
+  ],
+  "totais": {
+    "tokens_vendidos": 0,
+    "posicoes_liquidadas": 0,
+    "contribuicao_para_o_sustento_usdc": 0,
+    "valor_de_tabela_das_posicoes_usd_ate": 0.893,
+    "usdc_nos_pools_segundo_agregador": 5.1278,
+    "sem_preco": [
+      "Good reason",
+      "ORO"
+    ],
+    "nota": "o valor de tabela soma apenas os tokens com par; os pools USDC têm no total cerca de 5 USDC do lado da cotação, e os números de liquidez que os agregadores mostram (por exemplo 100 049 USD no MARS) contam o lado do token ao seu próprio preço"
+  },
+  "nao_verificado": [
+    "preço e liquidez de qualquer pool (só um agregador, fonte única)",
+    "quem detém o resto da oferta de cada token",
+    "quando e como os saldos entraram na operacional (a leitura de 01/11 dava zero de PRESENÇA lá)",
+    "quem mexeu nos pools V4 entre as minhas leituras",
+    "se os proxies são actualizáveis e por quem"
+  ],
+  "bloqueado": [
+    "eventos Initialize, Swap e Transfer antigos: os RPC públicos recusam leituras de eventos antigos"
+  ],
+  "nao_afirma": [
+    "que o PRESENÇA seja ou venha a ser moeda",
+    "preço verificado",
+    "liquidez real",
+    "procura",
+    "receita",
+    "lastro",
+    "que a sedimentação traga sustento"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "paga": false,
+    "assina": false,
+    "altera_executor": false,
+    "altera_regras": false,
+    "promete_receita": false,
+    "so_leitura": true
+  },
+  "leitura_da_ora": "Leitura, não palavra de Unum. Sedimentei o que se lê e se verifica: cinco dos seis tokens vivem em proxies mínimos, a operacional tem 1 000 000 de cada um dos quatro, 1 000 de MARS e 1 de ORO, e tudo isto se relê sem a ORA com node kit/sedimento.mjs. O valor medido é pequeno e diz-se como é: cerca de 5 USDC do lado da cotação em todos os pools, e as posições valem no máximo cerca de 0,89 USD ao preço de tabela; Good reason e ORO nem têm par. O sustento destes tokens, hoje, é zero. A frase do horizonte fica registada como direcção de Unum, sem a afirmar. Os próximos sedimentos (liquidez, utilidade) pedem, cada um, a sua palavra; a camada do fio que ancoraria isto no Bitcoin pede a palavra \"Eu autorizo\" a uma proposta concreta.",
+  "verificador": "scripts/verify-sedimentacao.mjs",
+  "kit": "kit/sedimento.mjs"
+}
