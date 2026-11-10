@@ -31,11 +31,19 @@ function verificar(txt) {
   assert.match(t.escolha_de_unum.cobre, /nem executar nenhuma venda/);
   // Estado: proposta enquanto a acção não existir no executor e a adenda não a registar.
   const nasce = NOMES.filter((n) => accoesNoExecutor.includes(n));
-  assert.ok(['proposta_a_aguardar_palavra', 'implantada'].includes(t.estado), 'estado desconhecido');
+  assert.ok(['proposta_a_aguardar_palavra', 'implantada', 'retirada_por_unum'].includes(t.estado), 'estado desconhecido');
+  assert.equal(Boolean(t.retirada), t.estado === 'retirada_por_unum', 'o campo retirada e o estado têm de andar juntos');
+  if (t.estado === 'retirada_por_unum') {
+    assert.match(t.retirada.citacao, /não liquidares as posições da operacional/, 'a citação da retirada tem de ser a de Unum');
+    assert.match(t.retirada.o_que_a_ora_entendeu, /não é um 'Eu autorizo' a nada novo/);
+    assert.equal(nasce.length, 0, 'a proposta foi retirada mas o executor tem a acção de venda');
+    assert.equal(adenda.capacidade.accao_de_venda_aprovada, null, 'a proposta foi retirada mas a adenda aprova uma venda');
+    assert.match(t.leitura_da_ora, /Retirada por Unum/);
+  }
   if (t.estado === 'proposta_a_aguardar_palavra') {
     assert.equal(nasce.length, 0, `o executor já tem ${nasce}: o estado da proposta tem de mudar`);
     assert.equal(adenda.capacidade.accao_de_venda_aprovada, null, 'a adenda aprova uma acção que ainda é só proposta');
-  } else {
+  } else if (t.estado === 'implantada') {
     assert.equal(nasce.length, NOMES.length, 'o estado diz implantada mas o executor não tem as três acções');
     assert.ok(NOMES.includes(adenda.capacidade.accao_de_venda_aprovada), 'a adenda não regista a acção implantada');
   }
@@ -119,6 +127,11 @@ n += rejeita('citação trocada', (t) => { t.escolha_de_unum.citacao = 'Sim'; })
 n += rejeita('a palavra passa a cobrir a implantação', (t) => { t.escolha_de_unum.cobre = 'Tudo, incluindo implantar.'; });
 n += rejeita('estado de implantada sem a acção existir', (t) => { t.estado = 'implantada'; });
 n += rejeita('estado inventado', (t) => { t.estado = 'aprovada'; });
+n += rejeita('retirada sem a citação de Unum', (t) => { t.retirada.citacao = 'Sim, retira.'; });
+n += rejeita('retirada que passa por autorização', (t) => { t.retirada.o_que_a_ora_entendeu = 'Unum autoriza a venda'; });
+n += rejeita('retirada sem o registo na leitura da ORA', (t) => { t.leitura_da_ora = t.leitura_da_ora.replace('Retirada por Unum', 'Mantida'); });
+n += rejeita('voltar a proposta viva sem palavra', (t) => { t.estado = 'proposta_a_aguardar_palavra'; });
+n += rejeita('apagar a retirada e deixar o estado', (t) => { delete t.retirada; });
 n += rejeita('uma só fonte', (t) => { t.leitura.fontes_rpc = ['mainnet.base.org']; });
 n += rejeita('fontes não concordam', (t) => { t.leitura.concordam_nas_fontes = false; });
 n += rejeita('router de outra fábrica', (t) => { t.leitura.router.defaultFactory = '0x0000000000000000000000000000000000000001'; });
