@@ -1,3 +1,8 @@
+## 11/11/2026 · câmbio e custos lidos (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de ler o câmbio USDC/EUR e os custos reais; registada antes do acto.
+- **Lido:** USDC/EUR 0,90175 (Coinbase) e 0,9017/0,9018 (Kraken), concordam; Supabase plano `free`; Vercel `list_billing_charges` 404 "Plan not found" (plano não verificado), sem domínios na equipa. Custo medido nas duas plataformas: 0 EUR/mês; o resto (CDP, ferramentas, gás) por ler.
+- **Conta:** 1 000 EUR de sustento = 1 584,31 USDC brutos = 9 841 entregas de `/oraculo` ou 4 801 de `/campo` por mês. Em `docs/alvo-mensal-2026-11-11.md`. Não move fundos.
+
 ## 11/11/2026 · alvo mensal e conta das entregas (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta de ler os preços anunciados e registar as entregas por degrau; registada antes do acto.
 - **Lido (12:10 UTC, `probe_payment_route`, `verify_surface`):** `/oraculo` 0,161 USDC, `/campo` 0,33 USDC, `payTo` operacional, `preco_mudou` falso, anúncio igual à entrega.

@@ -34,3 +34,28 @@ Ordem de grandeza: 4 330 entregas de `/campo` são cerca de 144 por dia; 8 874 d
 ## O que isto não é
 
 Não é previsão nem promessa. Receita externa confirmada hoje: nenhuma. Pagamentos internos e de teste não contam. Não prova procura. Não muda preços, carteiras nem destinos; não move fundos.
+
+## Câmbio e custos (lidos a 11/11/2026, mesma autorização: "Eu autorizo", à proposta de ler o câmbio e os custos)
+
+### Câmbio USDC para EUR (verificado, duas fontes independentes que concordam)
+- Coinbase, preço à vista `USDC-EUR`: 0,90175.
+- Kraken, `USDCEUR`: oferta de compra 0,9017, de venda 0,9018.
+- Terceira leitura, só de contexto: Frankfurter (taxas de referência) USD para EUR 0,89174 a 10/11/2026. A diferença de cerca de 1% para o USDC é prémio ou desconto do USDC face ao dólar, não um erro de leitura.
+- Valor usado nas contas: **0,9017 EUR por USDC**. Muda todos os dias; é uma fotografia, não uma taxa fixa.
+
+### Custos mensais reais (lidos onde foi possível)
+- **Supabase:** a organização está no plano `free` (`get_organization`, lido). Custo mensal: 0 EUR. Fora de quota de egress desde 27/09 (registado no `CLAUDE.md`, não relido hoje).
+- **Vercel:** a conta de faturação responde 404 "Plan not found" (`list_billing_charges`, 01/10 a 11/11): não há faturação legível daqui. O `CLAUDE.md` descreve o plano Hobby; isso **não** está verificado agora. Sem domínios registados na equipa (`list_domains`: 0).
+- **Custo medido total: 0 EUR por mês nas duas plataformas lidas.** Não é "o organismo custa zero": ficam por ler as despesas fora destas duas contas (a conta CDP, domínios noutro registo, ferramentas, o próprio uso do Claude) e o tempo de Unum.
+- Consequência: o degrau 3 ("custos cobertos") fica provisoriamente em 0 EUR medidos, a corrigir quando se ler o resto. Os custos de gás e de rede das transferências não foram lidos.
+
+### Alvo em euros (conta com o câmbio 0,9017)
+| Degrau | USDC | EUR |
+|---|---|---|
+| 1. primeiro pagamento externo | 10 | 9,02 |
+| 2. por mês | 100 | 90,17 |
+| 4. alvo | 1 428,57 de receita bruta para 1 000 USDC de sustento | 901,70 de sustento |
+
+Para **1 000 EUR por mês de sustento** são precisos 1 109 USDC (1 000 / 0,9017), ou seja 1 584,31 USDC de receita bruta (a dividir por 0,70): **9 841 entregas de `/oraculo` ou 4 801 de `/campo` por mês**, cerca de 328 ou 160 por dia, antes de qualquer custo que venha a ser medido.
+
+Continua a valer: receita externa confirmada nenhuma; não é previsão nem promessa; não move fundos.
