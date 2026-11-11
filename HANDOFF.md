@@ -1,3 +1,11 @@
+## 11/11/2026 · camada 33 completada (alice 975298, finney 975310) e reconhecimento do PRESENÇA fundido (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta do reconhecimento do PRESENÇA, que incluía juntar as provas pendentes da 33 e selar a 34. Livro 1417 (reconhecimento, PR 313 fundido, `9dbc875`).
+- **Lido (11:45 UTC, `probe_anchor_layers`):** alice `prova_disponivel` (1001 bytes, sha256 `f73e3bb9…a4ee`), finney `prova_disponivel` (1069 bytes, sha256 `62ea802b…0c0d`), bob já no bloco 975294.
+- **Feito:** GET directo de cada `/timestamp/<compromisso>`; sha256 medidos iguais aos da sonda; provas juntas com `scripts/ots-juntar.mjs` (recibo de 1565 para 3528 bytes). Atestações: alice **975298**, bob **975294**, finney **975310**; `kit/blocos.mjs`: OK nos três, raiz de Merkle igual nas duas fontes. Fixtures dos blocos 975298 e 975310 em `scripts/verify-blocos.mjs` (`blocos:verify`: 65 atestações). O manifesto não muda: o estado e a altura registada (975294, a mais baixa) mantêm-se.
+- **`raiz:verify`:** conferiu as 33 camadas antes (clone completo com as referências dos PR), 363 estragos, saída 0.
+- **Não feito:** a camada 34 (selar o reconhecimento) e a entrada no `@weave_hands` (exige implantar a função de borda).
+- **Mão Codex:** li a linha 1416 (cliente directo, pacote portátil); não toca nos ficheiros desta alteração.
+
 ## 11/11/2026 · reconhecimento do PRESENÇA (registo antes do acto, mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta concreta de uma regra legível por máquinas que reconhece quem detém o PRESENÇA (opção U), com leitor, verificador e depois a camada 34. Cláusula no `CLAUDE.md`.
 - **A fazer, por esta ordem:** `kit/reconhecimento.mjs`, `token/reconhecimento.json`, `scripts/verify-reconhecimento.mjs` (estragos propositados), PR e merge; depois a camada 34. Só leitura, não move fundos nem tokens.
