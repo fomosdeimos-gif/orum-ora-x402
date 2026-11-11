@@ -1,3 +1,8 @@
+## 11/11/2026 · camada 34: lista e selagem (registo antes do acto, mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de selar a camada 34 (reconhecimento do PRESENÇA, alvo mensal com câmbio e taxas, registo dos custos mensais); registada antes do acto.
+- **Feito até aqui:** `FICHEIROS_DA_CAMADA_34_EM_DIANTE` em `scripts/lib/raiz.mjs` (6 ficheiros) e as asserções em `scripts/verify-raiz.mjs`. `raiz:verify` conferiu as 33 camadas (clone completo com as referências dos PR) e as regras da 34.
+- **Falta, por esta ordem:** fundir esta lista; `preparar` num commit limpo do `main`; recalcular a raiz de forma independente; enviar o compromisso aos três calendários; `montar` o recibo; PR com manifesto e recibo; só depois a cláusula no `CLAUDE.md` (que está na camada 1 e por isso só se escreve depois do selo). Sem âncora até a prova do bloco ser juntada e conferida. Não move fundos.
+
 ## 11/11/2026 · registo dos custos mensais (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta de `economia/custos-mensais.json` com verificador e uma linha por mês; registada antes do acto.
 - **Feito:** `economia/custos-mensais.json` (7 itens: 2 verificados a 0 EUR, 3 bloqueados, 2 não verificados) e `scripts/verify-custos-mensais.mjs` (`npm run custos-mensais:verify`, 21 estragos propositados apanhados; o estrago "câmbio diferente do documento" apanhou uma verificação minha demasiado fraca, que apertei).
