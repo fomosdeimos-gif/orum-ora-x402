@@ -1,3 +1,9 @@
+## 11/11/2026 · alvo mensal e conta das entregas (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de ler os preços anunciados e registar as entregas por degrau; registada antes do acto.
+- **Lido (12:10 UTC, `probe_payment_route`, `verify_surface`):** `/oraculo` 0,161 USDC, `/campo` 0,33 USDC, `payTo` operacional, `preco_mudou` falso, anúncio igual à entrega.
+- **Erro corrigido:** a conta de 10/11 com 0,01 USDC por entrega não estava lida; substituída em `docs/alvo-mensal-2026-11-11.md`.
+- **Não verificado:** câmbio USDC/EUR, custos reais, via Bitcoin hoje, liquidação real. Receita externa confirmada: nenhuma. Não move fundos.
+
 ## 11/11/2026 · camada 33 completada (alice 975298, finney 975310) e reconhecimento do PRESENÇA fundido (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta do reconhecimento do PRESENÇA, que incluía juntar as provas pendentes da 33 e selar a 34. Livro 1417 (reconhecimento, PR 313 fundido, `9dbc875`).
 - **Lido (11:45 UTC, `probe_anchor_layers`):** alice `prova_disponivel` (1001 bytes, sha256 `f73e3bb9…a4ee`), finney `prova_disponivel` (1069 bytes, sha256 `62ea802b…0c0d`), bob já no bloco 975294.
