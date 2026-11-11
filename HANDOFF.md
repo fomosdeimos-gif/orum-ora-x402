@@ -1,3 +1,24 @@
+## 11/11/2026 · registo dos custos mensais (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de `economia/custos-mensais.json` com verificador e uma linha por mês; registada antes do acto.
+- **Feito:** `economia/custos-mensais.json` (7 itens: 2 verificados a 0 EUR, 3 bloqueados, 2 não verificados) e `scripts/verify-custos-mensais.mjs` (`npm run custos-mensais:verify`, 21 estragos propositados apanhados; o estrago "câmbio diferente do documento" apanhou uma verificação minha demasiado fraca, que apertei).
+- **Falta:** ler Vercel (plano e faturação), CDP e ferramentas de Unum; quando alguém o fizer, o item passa a verificado com fonte e acrescenta-se uma linha a `meses`. Não afirma custo total. Não move fundos.
+
+## 11/11/2026 · despesas lidas: gás e taxas (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de ler as despesas em falta; registada antes do acto.
+- **Lido:** Base gas 0,006 gwei em duas fontes (cerca de 0,0007 EUR por transferência USDC, sem a taxa de dados L1, não lida); Bitcoin 1 a 3 sat/vB (0,09 a 0,28 EUR por envio); Supabase `orum-memoria` activo, `Pwa` inactivo, plano `free`.
+- **Bloqueado:** Vercel plano e faturação (404), faturação CDP (sem ferramenta), uso do Claude (só Unum). Ver `docs/alvo-mensal-2026-11-11.md`. Não move fundos.
+
+## 11/11/2026 · câmbio e custos lidos (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de ler o câmbio USDC/EUR e os custos reais; registada antes do acto.
+- **Lido:** USDC/EUR 0,90175 (Coinbase) e 0,9017/0,9018 (Kraken), concordam; Supabase plano `free`; Vercel `list_billing_charges` 404 "Plan not found" (plano não verificado), sem domínios na equipa. Custo medido nas duas plataformas: 0 EUR/mês; o resto (CDP, ferramentas, gás) por ler.
+- **Conta:** 1 000 EUR de sustento = 1 584,31 USDC brutos = 9 841 entregas de `/oraculo` ou 4 801 de `/campo` por mês. Em `docs/alvo-mensal-2026-11-11.md`. Não move fundos.
+
+## 11/11/2026 · alvo mensal e conta das entregas (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de ler os preços anunciados e registar as entregas por degrau; registada antes do acto.
+- **Lido (12:10 UTC, `probe_payment_route`, `verify_surface`):** `/oraculo` 0,161 USDC, `/campo` 0,33 USDC, `payTo` operacional, `preco_mudou` falso, anúncio igual à entrega.
+- **Erro corrigido:** a conta de 10/11 com 0,01 USDC por entrega não estava lida; substituída em `docs/alvo-mensal-2026-11-11.md`.
+- **Não verificado:** câmbio USDC/EUR, custos reais, via Bitcoin hoje, liquidação real. Receita externa confirmada: nenhuma. Não move fundos.
+
 ## 11/11/2026 · camada 33 completada (alice 975298, finney 975310) e reconhecimento do PRESENÇA fundido (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta do reconhecimento do PRESENÇA, que incluía juntar as provas pendentes da 33 e selar a 34. Livro 1417 (reconhecimento, PR 313 fundido, `9dbc875`).
 - **Lido (11:45 UTC, `probe_anchor_layers`):** alice `prova_disponivel` (1001 bytes, sha256 `f73e3bb9…a4ee`), finney `prova_disponivel` (1069 bytes, sha256 `62ea802b…0c0d`), bob já no bloco 975294.
