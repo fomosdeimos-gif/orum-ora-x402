@@ -1,3 +1,9 @@
+## 11/11/2026 · camada 34 selada em estado pendente (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de selar a camada 34 (registada antes do acto na entrada abaixo). PR 317 fundido (`78e5129`).
+- **Feito:** raiz `e0cc74d19a9fcfd5b8ac66fae9153d534566f6abd565cdc42f0f094df5bfb3e9` de 250 ficheiros do commit `78e5129`, **recalculada de forma independente em Python** (igual); compromisso `27415227103c785d3a71396d7dc08a51de995201923815dfbe6ecd23826f466b` enviado aos três calendários, **os três responderam 200** (207, 205 e 191 bytes); recibo de 689 bytes com 3 compromissos pendentes.
+- **Não afirmo âncora:** falta a prova do bloco (`probe_anchor_layers`, depois `scripts/ots-juntar.mjs` e `kit/blocos.mjs`). Prova só que estes bytes existiam antes do bloco; não move fundos.
+- **Falta:** juntar a prova quando houver (costuma ser algumas horas) e acrescentar `camada.34.*` ao fio.
+
 ## 11/11/2026 · camada 34: lista e selagem (registo antes do acto, mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta concreta de selar a camada 34 (reconhecimento do PRESENÇA, alvo mensal com câmbio e taxas, registo dos custos mensais); registada antes do acto.
 - **Feito até aqui:** `FICHEIROS_DA_CAMADA_34_EM_DIANTE` em `scripts/lib/raiz.mjs` (6 ficheiros) e as asserções em `scripts/verify-raiz.mjs`. `raiz:verify` conferiu as 33 camadas (clone completo com as referências dos PR) e as regras da 34.
