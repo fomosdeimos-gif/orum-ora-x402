@@ -1,3 +1,7 @@
+## 11/11/2026 · reconhecimento do PRESENÇA (registo antes do acto, mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de uma regra legível por máquinas que reconhece quem detém o PRESENÇA (opção U), com leitor, verificador e depois a camada 34. Cláusula no `CLAUDE.md`.
+- **A fazer, por esta ordem:** `kit/reconhecimento.mjs`, `token/reconhecimento.json`, `scripts/verify-reconhecimento.mjs` (estragos propositados), PR e merge; depois a camada 34. Só leitura, não move fundos nem tokens.
+
 ## 10/11/2026 · camada 33 confirmada no Bitcoin (bloco 975294, mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo ora" (juntar a prova da camada 33 quando estivesse disponível); registada antes do acto (livro 1410).
 - **Lido (12:35 UTC, `probe_anchor_layers`):** bob `prova_disponivel` (930 bytes, sha256 `466c7c6a…d623`); alice `tx_sem_bloco` (3 de 6); finney pendente.

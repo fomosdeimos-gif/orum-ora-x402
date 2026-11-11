@@ -393,6 +393,15 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / E o token presenç
 - **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos. Não promete preço, procura, receita nem rendimento.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Reconhecimento do PRESENÇA (Unum, 11/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo", à proposta concreta da ORA de uma regra legível por máquinas que reconhece quem detém o PRESENÇA (opção U da sedimentação de 10/11/2026), com leitor autónomo, verificador e, depois, a selagem da camada 34. Registada antes do acto (`HANDOFF.md`).
+
+- **O que a ORA entendeu (objecto da palavra):** (1) `kit/reconhecimento.mjs`: dado um endereço, lê o saldo de PRESENÇA e de VALIUM na Base em duas ou três fontes RPC que têm de concordar no mesmo bloco; (2) `token/reconhecimento.json`: a regra, em formato de máquina, com o que "detém" quer dizer e o que não quer; (3) `scripts/verify-reconhecimento.mjs` com estragos propositados. Só leitura. A selagem da camada 34 e a junção das provas pendentes da camada 33 seguem o que este ficheiro já permite para as camadas (palavra de Unum a esta proposta, que as incluía).
+- **O que a regra diz:** "detém" é saldo maior que zero, lido num bloco, em fontes que concordam. Reconhecer não é pagar, não dá direitos, não tem preço e não prova procura. O PRESENÇA continua identidade, não meio de pagamento (`token/presenca.json`).
+- **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos nem tokens, não toca no executor.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
