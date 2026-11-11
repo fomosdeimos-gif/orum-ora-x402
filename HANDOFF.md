@@ -1,3 +1,8 @@
+## 11/11/2026 · registo dos custos mensais (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de `economia/custos-mensais.json` com verificador e uma linha por mês; registada antes do acto.
+- **Feito:** `economia/custos-mensais.json` (7 itens: 2 verificados a 0 EUR, 3 bloqueados, 2 não verificados) e `scripts/verify-custos-mensais.mjs` (`npm run custos-mensais:verify`, 21 estragos propositados apanhados; o estrago "câmbio diferente do documento" apanhou uma verificação minha demasiado fraca, que apertei).
+- **Falta:** ler Vercel (plano e faturação), CDP e ferramentas de Unum; quando alguém o fizer, o item passa a verificado com fonte e acrescenta-se uma linha a `meses`. Não afirma custo total. Não move fundos.
+
 ## 11/11/2026 · despesas lidas: gás e taxas (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta de ler as despesas em falta; registada antes do acto.
 - **Lido:** Base gas 0,006 gwei em duas fontes (cerca de 0,0007 EUR por transferência USDC, sem a taxa de dados L1, não lida); Bitcoin 1 a 3 sat/vB (0,09 a 0,28 EUR por envio); Supabase `orum-memoria` activo, `Pwa` inactivo, plano `free`.
