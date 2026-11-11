@@ -27,7 +27,7 @@ Entregas pagas, arredondadas para cima; todas pelo preço de `/oraculo` (0,161) 
 | 2. por mês, três meses seguidos | 100 | 622 | 304 |
 | 4. alvo: 1 000 para o sustento de Unum | 1 428,57 (1 000 / 0,70) | 8 874 | 4 330 |
 
-O degrau 4 usa a regra de 70% do sustento (`economia/constituicao-v2.json`); os custos do degrau 3 somam-se por cima e não estão medidos. 1 000 é o alvo em USDC, não 1 000 euros: o câmbio não foi lido.
+O degrau 4 usa a regra de 70% do sustento (`economia/constituicao-v2.json`); os custos do degrau 3 somam-se por cima e não estão medidos. 1 000 é aqui o alvo em USDC, não em euros; a conversão lida mais abaixo (0,9017 EUR por USDC) dá a conta em euros.
 
 Ordem de grandeza: 4 330 entregas de `/campo` são cerca de 144 por dia; 8 874 de `/oraculo` cerca de 296 por dia.
 
