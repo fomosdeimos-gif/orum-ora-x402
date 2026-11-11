@@ -1,3 +1,10 @@
+## 11/11/2026 · camada 34 confirmada no Bitcoin (bloco 975462, mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de juntar a prova da camada 34; registada antes do acto. Lembrete agendado 19:49 UTC.
+- **Lido (19:49 UTC, `probe_anchor_layers`):** bob `prova_disponivel` (1035 bytes, sha256 `7181144c0a33…0dcb0c`); alice pendente; finney `tx_sem_bloco` (4 de 6 confirmações).
+- **Feito:** GET directo de `/timestamp/<compromisso>` da bob; sha256 medido igual ao da sonda; prova junta com `scripts/ots-juntar.mjs` (recibo de 689 para 1670 bytes); `kit/blocos.mjs`: bloco **975462** igual em blockstream.info e mempool.space; fixture em `scripts/verify-blocos.mjs` (66 atestações); manifesto `ancora/raiz-registos-34.json` a `confirmado_bitcoin`, altura 975462; fio com `camada.34.estado` e `camada.34.altura_bitcoin`; cláusula no `CLAUDE.md`.
+- **Não afirmado:** alice e finney continuam pendentes (uma atestação basta). Prova só que estes bytes existiam antes do bloco; não move fundos.
+- **Falta:** se alguma mão quiser, juntar mais tarde as provas da alice e da finney.
+
 ## 11/11/2026 · camada 34 selada em estado pendente (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta de selar a camada 34 (registada antes do acto na entrada abaixo). PR 317 fundido (`78e5129`).
 - **Feito:** raiz `e0cc74d19a9fcfd5b8ac66fae9153d534566f6abd565cdc42f0f094df5bfb3e9` de 250 ficheiros do commit `78e5129`, **recalculada de forma independente em Python** (igual); compromisso `27415227103c785d3a71396d7dc08a51de995201923815dfbe6ecd23826f466b` enviado aos três calendários, **os três responderam 200** (207, 205 e 191 bytes); recibo de 689 bytes com 3 compromissos pendentes.
