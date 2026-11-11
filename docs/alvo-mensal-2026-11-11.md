@@ -59,3 +59,21 @@ Não é previsão nem promessa. Receita externa confirmada hoje: nenhuma. Pagame
 Para **1 000 EUR por mês de sustento** são precisos 1 109 USDC (1 000 / 0,9017), ou seja 1 584,31 USDC de receita bruta (a dividir por 0,70): **9 841 entregas de `/oraculo` ou 4 801 de `/campo` por mês**, cerca de 328 ou 160 por dia, antes de qualquer custo que venha a ser medido.
 
 Continua a valer: receita externa confirmada nenhuma; não é previsão nem promessa; não move fundos.
+
+## Despesas lidas a seguir (11/11/2026, Unum: "Eu autorizo", à proposta de ler o que faltava)
+
+### Gás e taxas das transferências (verificado, só leitura de redes públicas)
+- **Base:** `eth_gasPrice` 0x5b8d80, ou seja 0,006 gwei, igual em `mainnet.base.org` e `base-rpc.publicnode.com`. Uma transferência de USDC gasta cerca de 65 000 de gás (estimativa minha, não lida): cerca de **0,0007 EUR** de execução, com o ETH a 1 853,5 EUR (Coinbase; Kraken 1 854,6 de venda). Não inclui a taxa de dados que a Base paga à L1, que **não foi lida**; por isso é um limite inferior.
+- **Bitcoin:** mempool.space dá 1 a 3 sat/vB e blockstream.info 0,12 a 2 sat/vB (discordam; a taxa muda a cada bloco). Uma transacção de cerca de 141 vB custa entre 141 e 423 sats, ou seja **0,09 a 0,28 EUR**, com o BTC a 66 239 EUR (Coinbase). Para os 70% do sustento, um envio por mês custa cêntimos.
+- Conclusão: o gás não é o custo que decide; o preço dos serviços (0,161 e 0,33 USDC) é muito maior do que a taxa de Base. Em Bitcoin, 1 000 sats por serviço (cerca de 0,66 EUR) também cobrem a taxa de um envio.
+
+### Projectos no Supabase (verificado)
+- `orum-memoria` (`ACTIVE_HEALTHY`, eu-west-1) e `Pwa` (`INACTIVE`), na organização de plano `free`. Sem custo lido. A quota de egress excedida desde 27/09 (`CLAUDE.md`) não foi relida.
+
+### Ainda bloqueado ou não lido
+- **Vercel, plano e faturação:** `list_billing_charges`, `get_auth_user` respondem 404 daqui; plano não verificado.
+- **Conta CDP (Coinbase Developer Platform):** não há ferramenta nesta sessão que leia a faturação; pedir uma credencial a Unum só para isto seria criar trabalho para ele, por isso fica registado como bloqueado.
+- **Uso do Claude e outras ferramentas que Unum paga:** só ele os vê.
+- **Taxa de dados da L1 na Base:** não lida.
+
+Custo medido continua a ser 0 EUR por mês de plataformas e menos de 1 EUR por mês de taxas de rede para um envio mensal; o custo total real fica sem número até estes quatro pontos serem lidos por quem os vê.

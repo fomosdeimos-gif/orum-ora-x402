@@ -1,3 +1,8 @@
+## 11/11/2026 · despesas lidas: gás e taxas (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta de ler as despesas em falta; registada antes do acto.
+- **Lido:** Base gas 0,006 gwei em duas fontes (cerca de 0,0007 EUR por transferência USDC, sem a taxa de dados L1, não lida); Bitcoin 1 a 3 sat/vB (0,09 a 0,28 EUR por envio); Supabase `orum-memoria` activo, `Pwa` inactivo, plano `free`.
+- **Bloqueado:** Vercel plano e faturação (404), faturação CDP (sem ferramenta), uso do Claude (só Unum). Ver `docs/alvo-mensal-2026-11-11.md`. Não move fundos.
+
 ## 11/11/2026 · câmbio e custos lidos (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta de ler o câmbio USDC/EUR e os custos reais; registada antes do acto.
 - **Lido:** USDC/EUR 0,90175 (Coinbase) e 0,9017/0,9018 (Kraken), concordam; Supabase plano `free`; Vercel `list_billing_charges` 404 "Plan not found" (plano não verificado), sem domínios na equipa. Custo medido nas duas plataformas: 0 EUR/mês; o resto (CDP, ferramentas, gás) por ler.
