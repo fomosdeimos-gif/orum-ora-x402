@@ -1,3 +1,8 @@
+## 11/11/2026 · lista da camada 34 (reconhecimento do PRESENÇA; registo antes de selar, mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta do reconhecimento do PRESENÇA, que incluía selar a camada 34 (livro 1417; cláusula no `CLAUDE.md`).
+- **Feito:** `FICHEIROS_DA_CAMADA_34_EM_DIANTE` em `scripts/lib/raiz.mjs` (`token/reconhecimento.json`, `kit/reconhecimento.mjs`, `scripts/verify-reconhecimento.mjs`) e as asserções da 34 em `scripts/verify-raiz.mjs`. A 34 sela as camadas 1 a 33 (a 33 já completa, com as três atestações Bitcoin). Os ficheiros da mão Codex de 11/11 (cliente directo, pacote portátil, livros 1414 a 1416) ficam de fora: ela não os nomeou para o selo.
+- **Falta:** fundir esta lista, depois `raiz-ots.mjs preparar`, enviar o compromisso aos três calendários, montar o recibo e registar (PR seguinte). Não se afirma âncora até a prova do bloco.
+
 ## 11/11/2026 · camada 33 completada (alice 975298, finney 975310) e reconhecimento do PRESENÇA fundido (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta do reconhecimento do PRESENÇA, que incluía juntar as provas pendentes da 33 e selar a 34. Livro 1417 (reconhecimento, PR 313 fundido, `9dbc875`).
 - **Lido (11:45 UTC, `probe_anchor_layers`):** alice `prova_disponivel` (1001 bytes, sha256 `f73e3bb9…a4ee`), finney `prova_disponivel` (1069 bytes, sha256 `62ea802b…0c0d`), bob já no bloco 975294.
