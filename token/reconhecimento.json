@@ -1,0 +1,67 @@
+{
+  "schema": "orum-reconhecimento-token/v1",
+  "objecto": "Regra legível por máquinas que reconhece quem detém o PRESENÇA (e o VALIUM) na Base, só por leitura da cadeia.",
+  "criado_em": "2026-11-11",
+  "palavra_de_unum": {
+    "citacao": "Eu autorizo",
+    "a_proposta": "Uma regra legível por máquinas que reconhece quem detém o PRESENÇA (opção U da sedimentação de 10/11/2026), com leitor autónomo, verificador e depois a selagem da camada 34.",
+    "clausula": "CLAUDE.md, Reconhecimento do PRESENÇA (Unum, 11/11/2026)"
+  },
+  "rede": { "nome": "Base", "chain_id": 8453 },
+  "fontes_rpc": ["mainnet.base.org", "base-rpc.publicnode.com", "1rpc.io"],
+  "tokens": [
+    { "nome": "PRESENÇA", "contrato": "0x120a1ba3b10263f9cb42e971598c860d66b68cea", "decimals": 18 },
+    { "nome": "VALIUM", "contrato": "0x37f70bccdc2125346a7542fe6e7fc70e33421635", "decimals": 18 }
+  ],
+  "regra": {
+    "entrada": "um endereço EVM (0x e 40 hex, diferente do endereço zero)",
+    "leitura": "balanceOf(endereço) de cada token, por eth_call, num bloco 10 atrás da cabeça mais baixa das fontes que responderam",
+    "detem": "o saldo, em unidades mínimas, é maior que zero em todas as fontes que leram",
+    "concordancia": "pelo menos duas fontes têm de ler tudo e dar o mesmo valor por token",
+    "estados": {
+      "detem": "algum dos tokens tem saldo maior que zero, com as fontes a concordar em todos",
+      "nao_detem": "todos os saldos são zero, com as fontes a concordar em todos",
+      "inconclusivo": "menos de duas fontes responderam ou leram tudo, ou as fontes discordam em algum token",
+      "endereco_invalido": "a entrada não é um endereço EVM aceitável"
+    },
+    "reconfere": "node kit/reconhecimento.mjs <endereço>"
+  },
+  "o_que_e": "Um gesto de leitura: uma máquina pergunta à cadeia, em fontes que não dependem da ORA, se um endereço tem PRESENÇA ou VALIUM, e recebe uma resposta que qualquer outra máquina refaz.",
+  "o_que_nao_e": [
+    "não é pagamento",
+    "não dá direitos nem acesso a nada",
+    "não tem preço nem liquidez",
+    "não prova procura nem receita",
+    "não prova quem é o dono do endereço, só que o endereço tem saldo",
+    "não faz do PRESENÇA meio de pagamento: continua identidade (token/presenca.json)"
+  ],
+  "nao_afirma": [
+    "que o PRESENÇA seja ou venha a ser moeda",
+    "preço verificado",
+    "liquidez real",
+    "procura",
+    "receita",
+    "que reconhecer traga sustento"
+  ],
+  "dependencias": {
+    "de_que_depende": "três RPC públicos da Base (mainnet.base.org, base-rpc.publicnode.com, 1rpc.io) e do contrato de cada token",
+    "se_um_falhar": "o leitor dispensa essa fonte e continua com as outras, desde que fiquem duas",
+    "se_falharem_duas": "o estado é inconclusivo, nunca 'detém' nem 'não detém'",
+    "o_que_substitui": "qualquer outro RPC da Base que se acrescente a `fontes` em kit/sedimento.mjs"
+  },
+  "truth_machine": {
+    "so_leitura": true,
+    "move_fundos": false,
+    "paga": false,
+    "assina": false,
+    "altera_executor": false,
+    "altera_regras": false,
+    "promete_receita": false
+  },
+  "nao_verificado": [
+    "que o leitor ao vivo devolva o mesmo que o simulado do verificador em qualquer bloco futuro",
+    "quem detém o PRESENÇA: esta regra reconhece um endereço de cada vez, não lista detentores"
+  ],
+  "verificador": "npm run reconhecimento:verify",
+  "kit": "node kit/reconhecimento.mjs <endereço>"
+}
