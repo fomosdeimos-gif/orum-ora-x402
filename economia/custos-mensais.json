@@ -5,13 +5,21 @@
   "palavra_de_unum": {
     "citacao": "Eu autorizo",
     "proposta": "economia/custos-mensais.json com cada despesa (plataformas, taxas de rede, CDP, ferramentas) e o estado de leitura de cada uma, com verificador com estragos propositados e uma linha por mês",
-    "cobre": "escrever este registo e o seu verificador; não lê faturas nem move fundos"
+    "cobre": "escrever este registo e o seu verificador; não lê faturas nem move fundos",
+    "leitura_12_11": {
+      "citacao": "Eu autorizo ora",
+      "proposta": "ler o gás da Base e a taxa do Bitcoin em duas fontes, só leitura",
+      "cobre": "ler redes públicas e actualizar estes dois itens; não move fundos"
+    }
   },
   "moeda_de_conta": "EUR",
   "cambio": {
     "usdc_eur": 0.9017,
     "lido_em": "2026-11-11",
-    "fontes": ["api.coinbase.com USDC-EUR spot 0,90175", "api.kraken.com USDCEUR compra 0,9017 venda 0,9018"],
+    "fontes": [
+      "api.coinbase.com USDC-EUR spot 0,90175",
+      "api.kraken.com USDCEUR compra 0,9017 venda 0,9018"
+    ],
     "nota": "fotografia do dia, muda todos os dias"
   },
   "itens": [
@@ -54,26 +62,38 @@
     {
       "id": "gas_base_um_envio",
       "descricao": "Gás de um envio de USDC por mês na Base (execução)",
-      "estado": "nao_verificado",
-      "valor_eur_mes": 0.0007,
-      "nota": "gás 0,006 gwei lido em duas fontes RPC; os 65 000 de gás por transferência são estimativa minha; falta a taxa de dados da L1, não lida; é um mínimo"
+      "estado": "verificado",
+      "valor_eur_mes": 0.000698,
+      "nota": "um envio por mês é a definição do item; o estimateGas é uma simulação sem enviar; a taxa de dados da L1 foi lida com um conteúdo de exemplo de 110 bytes, e o conteúdo real muda-a ligeiramente",
+      "fonte": "leitura de 12/11/2026 em mainnet.base.org e base-rpc.publicnode.com, iguais: gasPrice 6 000 000 wei (0,006 gwei); eth_estimateGas de uma transferência de USDC da operacional para a sagrada, 62 964 de gás; GasPriceOracle.getL1Fee de 110 bytes, 506 020 743 wei; total 378 290 020 743 wei = 3,7829e-7 ETH; ETH/EUR 1 844,38 (Coinbase) e 1 844,43 (Kraken)"
     },
     {
       "id": "taxa_btc_um_envio",
       "descricao": "Taxa de um envio Bitcoin por mês (cerca de 141 vB)",
       "estado": "nao_verificado",
-      "valor_eur_mes": 0.28,
+      "valor_eur_mes": 0.19,
       "valor_min_eur_mes": 0.09,
-      "nota": "1 a 3 sat/vB em mempool.space e 0,12 a 2 em blockstream.info, que discordam; o tamanho da transacção é estimativa; BTC a 66 239 EUR (Coinbase); o valor é o limite alto"
+      "nota": "12/11/2026: mempool.space dá 1 sat/vB em todos os níveis e blockstream.info dá 2,005 para 2 a 3 blocos, 0,975 para 9 e 0,124 ou menos para 12 blocos ou mais; as fontes continuam a discordar, por isso fica por verificar; 141 vB é o tamanho padrão de um envio P2WPKH de uma entrada e duas saídas, não lido no executor; BTC a 66 255 EUR (Coinbase), 66 250 (Kraken) e 66 413 (mempool.space); o mínimo é 1 sat/vB e o valor é o limite alto, 2,005 sat/vB"
     }
   ],
   "total": {
-    "medido_verificado_eur_mes": 0,
-    "itens_por_ler": ["vercel_plano", "cdp", "ferramentas_de_unum", "gas_base_um_envio", "taxa_btc_um_envio"],
+    "medido_verificado_eur_mes": 0.000698,
+    "itens_por_ler": [
+      "vercel_plano",
+      "cdp",
+      "ferramentas_de_unum",
+      "taxa_btc_um_envio"
+    ],
     "afirma_custo_total": false
   },
   "meses": [
-    { "mes": "2026-11", "lido_em": "2026-11-11", "total_verificado_eur": 0, "itens_bloqueados": 3, "itens_nao_verificados": 2 }
+    {
+      "mes": "2026-11",
+      "lido_em": "2026-11-12",
+      "total_verificado_eur": 0.000698,
+      "itens_bloqueados": 3,
+      "itens_nao_verificados": 1
+    }
   ],
   "como_se_actualiza": "quando alguém ler uma despesa bloqueada, o item passa a verificado com a sua fonte, e acrescenta-se uma linha nova a meses (só se acrescenta, nunca se reescreve)",
   "nao_prova": "receita, procura nem valor; não diz que o organismo custe zero; não move fundos; não contém segredos nem dados pessoais"

@@ -17,7 +17,7 @@
   "avaliacao_2026_11": {
     "mes": "2026-11",
     "lido_em": "2026-11-12",
-    "custos_todos_lidos": { "estado": "falso", "fonte": "economia/custos-mensais.json: afirma_custo_total falso, 5 itens por ler (vercel_plano, cdp, ferramentas_de_unum, gas_base_um_envio, taxa_btc_um_envio)" },
+    "custos_todos_lidos": { "estado": "falso", "fonte": "economia/custos-mensais.json: afirma_custo_total falso, 4 itens por ler (vercel_plano, cdp, ferramentas_de_unum, taxa_btc_um_envio)" },
     "receita_cobre_custos": { "estado": "nao_avaliavel", "nota": "sem o total dos custos não há contra o que comparar; receita externa confirmada: nenhuma, segundo o registo (não relida na cadeia hoje)" },
     "sustento_chegou": { "estado": "falso", "nota": "nenhuma receita externa confirmada, logo nenhum 70% enviado (registo; não relido hoje)" },
     "conferivel_sem_a_ora": { "estado": "verdadeiro", "fonte": "raiz:verify conferiu as camadas 1 a 35 em 12/11/2026; a 34 está ancorada no bloco 975462 e a 35 ainda pendente" },
