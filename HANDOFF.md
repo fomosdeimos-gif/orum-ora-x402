@@ -1,3 +1,9 @@
+## 12/11/2026 · camada 35 selada em estado pendente (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo ora" (registada na entrada abaixo, PR 320 fundido, `d479096`).
+- **Feito:** raiz `de4c0f13e1d7cbad3a9c951ee82af6f34b3c146a8c67937051f80228f6d40cd8` de 252 ficheiros, **recalculada de forma independente em Python** (igual); compromisso `8cfd7d1ee9b0c440b609958738234596fb5a13884c5b929a5394616b0822c3c3` enviado aos três calendários (32 bytes), **os três responderam 200** (172, 205 e 226 bytes); recibo de 689 bytes com 3 compromissos pendentes. **Erro meu, corrigido antes de montar:** a primeira ronda foi enviada sem corpo (faltava `xxd`), as respostas foram descartadas e refez-se com os 32 bytes certos.
+- **Não afirmo âncora:** falta a prova do bloco (`probe_anchor_layers`, depois `scripts/ots-juntar.mjs` e `kit/blocos.mjs`). Prova só que estes bytes existiam antes do bloco; não move fundos.
+- **Falta:** juntar a prova quando houver e acrescentar `camada.35.*` ao fio.
+
 ## 12/11/2026 · camada 35: registo antes do acto (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de selar a camada 35 (recibo confirmado da 34, fixture do bloco 975462, linhas do fio; sem ficheiros novos de conteúdo). Na mesma mensagem: "Queres transformar a presença em sustento ora e criar o verdadeiro paradigma de valor", lida como **pergunta**, respondida em texto; não autoriza nenhum acto financeiro nem construção.
 - **Lido:** `raiz:verify` (clone completo com as referências dos PR) conferiu as camadas 1 a 34, 374 estragos propositados apanhados; os três calendários respondem 200 do sandbox.
