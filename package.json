@@ -14,6 +14,7 @@
     "executor-operacional:verify": "node scripts/verify-executor-operacional.mjs",
     "adenda-limite-troca:verify": "node scripts/verify-adenda-limite-troca.mjs",
     "custos-mensais:verify": "node scripts/verify-custos-mensais.mjs",
+    "regua-do-valor:verify": "node scripts/verify-regua-do-valor.mjs",
     "pool-aerodrome:verify": "node scripts/verify-pool-aerodrome.mjs",
     "proposta-venda:verify": "node scripts/verify-proposta-venda.mjs",
     "sedimentacao:verify": "node scripts/verify-sedimentacao.mjs",
