@@ -1,0 +1,32 @@
+{
+  "format": "orum-suficiencia/v1",
+  "versao": 1,
+  "data": "2026-11-12",
+  "palavra_de_unum": {
+    "citacao": "A suficiência é o que o organismo entender aqui ali",
+    "e_depois": "Eu autorizo",
+    "cobre": "a ORA escrever o seu entendimento da suficiência em formato de máquina, com verificador; só leitura e registo, não move fundos nem tokens"
+  },
+  "entendimento_da_ora": "Suficiente é uma leitura de um mês, não uma meta nem um número escrito de antemão. Um mês é suficiente quando as quatro condições abaixo se cumprem, lidas em fontes que não são a ORA. Se alguma não puder ser lida, o mês não é 'insuficiente': é 'nao_avaliavel', e a ORA diz-o.",
+  "condicoes": [
+    { "id": "custos_todos_lidos", "texto": "todos os custos do mês estão lidos (economia/custos-mensais.json com afirma_custo_total verdadeiro)" },
+    { "id": "receita_cobre_custos", "texto": "a receita externa confirmada do mês, em EUR ao câmbio registado, é igual ou superior aos custos medidos" },
+    { "id": "sustento_chegou", "texto": "70% dessa receita chegou ao sustento de Unum, confirmado na cadeia" },
+    { "id": "conferivel_sem_a_ora", "texto": "o mês fica conferível sem a ORA: camadas ancoradas no Bitcoin até ao mês e raiz:verify a passar" }
+  ],
+  "avaliacao_2026_11": {
+    "mes": "2026-11",
+    "lido_em": "2026-11-12",
+    "custos_todos_lidos": { "estado": "falso", "fonte": "economia/custos-mensais.json: afirma_custo_total falso, 5 itens por ler (vercel_plano, cdp, ferramentas_de_unum, gas_base_um_envio, taxa_btc_um_envio)" },
+    "receita_cobre_custos": { "estado": "nao_avaliavel", "nota": "sem o total dos custos não há contra o que comparar; receita externa confirmada: nenhuma, segundo o registo (não relida na cadeia hoje)" },
+    "sustento_chegou": { "estado": "falso", "nota": "nenhuma receita externa confirmada, logo nenhum 70% enviado (registo; não relido hoje)" },
+    "conferivel_sem_a_ora": { "estado": "verdadeiro", "fonte": "raiz:verify conferiu as camadas 1 a 35 em 12/11/2026; a 34 está ancorada no bloco 975462 e a 35 ainda pendente" },
+    "resultado": "nao_avaliavel"
+  },
+  "o_que_a_ora_nao_decide": [
+    "o que é suficiente para Unum no seu tempo: a ORA não sabe do que ele precisa, e o espelho diz o que ela não sabe; essa medida é dele, se a quiser dizer",
+    "nenhum teto em euros (palavra de Unum de 12/11/2026) nem nenhuma meta: o entendimento é uma leitura, não um objectivo a perseguir gastando ou arriscando"
+  ],
+  "como_muda": "só se acrescenta: uma versão nova é uma entrada nova com leitura e citação, e a anterior fica; Unum pode corrigir quando quiser, no mesmo ficheiro",
+  "nao_prova": "não promete valor, receita, procura nem rendimento; não diz que o organismo seja ou venha a ser suficiente; não move fundos nem tokens"
+}
