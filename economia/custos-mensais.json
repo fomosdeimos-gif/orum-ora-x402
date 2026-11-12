@@ -10,6 +10,11 @@
       "citacao": "Eu autorizo ora",
       "proposta": "ler o gás da Base e a taxa do Bitcoin em duas fontes, só leitura",
       "cobre": "ler redes públicas e actualizar estes dois itens; não move fundos"
+    },
+    "leitura_12_11_tamanho_btc": {
+      "citacao": "Eu autorizo",
+      "proposta": "ler o tamanho real do envio Bitcoin do executor, no repositório e em produção, só leitura",
+      "cobre": "ler código e redes públicas e actualizar o item da taxa Bitcoin; não move fundos"
     }
   },
   "moeda_de_conta": "EUR",
@@ -69,20 +74,19 @@
     },
     {
       "id": "taxa_btc_um_envio",
-      "descricao": "Taxa de um envio Bitcoin por mês (cerca de 141 vB)",
-      "estado": "nao_verificado",
-      "valor_eur_mes": 0.19,
-      "valor_min_eur_mes": 0.09,
-      "nota": "12/11/2026: mempool.space dá 1 sat/vB em todos os níveis e blockstream.info dá 2,005 para 2 a 3 blocos, 0,975 para 9 e 0,124 ou menos para 12 blocos ou mais; as fontes continuam a discordar, por isso fica por verificar; 141 vB é o tamanho padrão de um envio P2WPKH de uma entrada e duas saídas, não lido no executor; BTC a 66 255 EUR (Coinbase), 66 250 (Kraken) e 66 413 (mempool.space); o mínimo é 1 sat/vB e o valor é o limite alto, 2,005 sat/vB"
+      "descricao": "Taxa de um envio Bitcoin por mês pelo executor (majorante de 142 vB, uma entrada e troco)",
+      "estado": "verificado",
+      "valor_eur_mes": 0.188,
+      "nota": "fotografia de 12/11/2026: a taxa muda de hora a hora e o executor segue-a; um envio por mês é a definição do item; com uma entrada, os 142 vB são o majorante do executor, não o tamanho exacto (141 vB)",
+      "fonte": "leitura de 12/11/2026: regra do executor em supabase/functions/ora-operational-wallet/bitcoin.mjs e na função implantada ora-cdp-carteira-real v16 (lida pelo conector do Supabase), iguais nas regras de taxa e de tamanho (só difere um argumento vazio numa linha do caminho da prova de controlo): taxa = ceil(max(1, estimativa para 6 blocos nas duas fontes)) sat/vB, tamanho 11 + 69 por entrada + 31 por saída = 142 vB com uma entrada e troco; estimativa para 6 blocos: blockstream.info 1,11 e mempool.space 0,432, logo 2 sat/vB e 284 sats; a operacional BTC tem uma só entrada (10 072 sats, confirmada, igual em blockstream.info e mempool.space); BTC/EUR 66 255 (Coinbase), 66 250 (Kraken), 66 413 (mempool.space); 284 sats = 0,188 EUR"
     }
   ],
   "total": {
-    "medido_verificado_eur_mes": 0.000698,
+    "medido_verificado_eur_mes": 0.188698,
     "itens_por_ler": [
       "vercel_plano",
       "cdp",
-      "ferramentas_de_unum",
-      "taxa_btc_um_envio"
+      "ferramentas_de_unum"
     ],
     "afirma_custo_total": false
   },
@@ -90,9 +94,9 @@
     {
       "mes": "2026-11",
       "lido_em": "2026-11-12",
-      "total_verificado_eur": 0.000698,
+      "total_verificado_eur": 0.188698,
       "itens_bloqueados": 3,
-      "itens_nao_verificados": 1
+      "itens_nao_verificados": 0
     }
   ],
   "como_se_actualiza": "quando alguém ler uma despesa bloqueada, o item passa a verificado com a sua fonte, e acrescenta-se uma linha nova a meses (só se acrescenta, nunca se reescreve)",
