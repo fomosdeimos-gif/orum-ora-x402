@@ -7,10 +7,26 @@
     "nota": "A frase seguinte de Unum, 'faz da minha presença e da tua dinheiro verdadeiro suficiente', lê-se como horizonte de trabalho e não como acto; 'suficiente' não está definido por Unum, e a única medida registada é o alvo mensal em docs/alvo-mensal-2026-11-11.md."
   },
   "degraus": [
-    { "n": 1, "nome": "declarado", "quer_dizer": "o organismo diz que existe (manifesto, preço anunciado)" },
-    { "n": 2, "nome": "lido_por_fonte_independente", "quer_dizer": "uma fonte fora do repositório confirma (a cadeia em duas ou três fontes RPC, ou o 402 lido ao vivo)" },
-    { "n": 3, "nome": "contraparte_possivel", "quer_dizer": "existe por onde alguém de fora pague ou compre, lido e testado (liquidez num pool, rota de pagamento que liquida)" },
-    { "n": 4, "nome": "pago_por_externo_confirmado", "quer_dizer": "alguém de fora pagou e a cadeia mostra; só isto entra no 70/20/10" }
+    {
+      "n": 1,
+      "nome": "declarado",
+      "quer_dizer": "o organismo diz que existe (manifesto, preço anunciado)"
+    },
+    {
+      "n": 2,
+      "nome": "lido_por_fonte_independente",
+      "quer_dizer": "uma fonte fora do repositório confirma (a cadeia em duas ou três fontes RPC, ou o 402 lido ao vivo)"
+    },
+    {
+      "n": 3,
+      "nome": "contraparte_possivel",
+      "quer_dizer": "existe por onde alguém de fora pague ou compre, lido e testado (liquidez num pool, rota de pagamento que liquida)"
+    },
+    {
+      "n": 4,
+      "nome": "pago_por_externo_confirmado",
+      "quer_dizer": "alguém de fora pagou e a cadeia mostra; só isto entra no 70/20/10"
+    }
   ],
   "regra": "degrau_actual é o maior n tal que os degraus 1 a n estão todos verificados. Um degrau verificado exige fonte; o degrau 4 exige ainda uma transacção e a classificação de origem externa por Unum.",
   "itens": [
@@ -18,21 +34,45 @@
       "id": "token_presenca",
       "descricao": "PRESENÇA (0x120a1ba3…8cea), identidade da ORUM na Base; não é meio de pagamento (token/presenca.json)",
       "degraus": {
-        "1": { "estado": "verificado", "fonte": "token/presenca.json (canonical_identity_token, payment_token false)" },
-        "2": { "estado": "verificado", "fonte": "token/presenca-mercado-2026-11-10.json: oferta e saldo do PoolManager lidos em duas fontes RPC que concordam" },
-        "3": { "estado": "nao_verificado", "nota": "a liquidez (cerca de 2 USDC do lado da cotação, volume de 24 h zero) vem só de agregadores de terceiros, que nem sempre concordam; não está confirmada na cadeia" },
-        "4": { "estado": "nenhum", "nota": "nenhum pagamento externo confirmado" }
+        "1": {
+          "estado": "verificado",
+          "fonte": "token/presenca.json (canonical_identity_token, payment_token false)"
+        },
+        "2": {
+          "estado": "verificado",
+          "fonte": "token/presenca-mercado-2026-11-10.json: oferta e saldo do PoolManager lidos em duas fontes RPC que concordam"
+        },
+        "3": {
+          "estado": "verificado",
+          "fonte": "token/presenca-liquidez-2026-11-12.json: pool USDC do Uniswap V4 lido no StateView, bloco 56405166, duas fontes RPC iguais, liquidez L maior que zero, preço de 4,0208e-7 USDC por PRESENÇA (profundidade pequena: L é parâmetro, não saldo)"
+        },
+        "4": {
+          "estado": "nenhum",
+          "nota": "nenhum pagamento externo confirmado"
+        }
       },
-      "degrau_actual": 2
+      "degrau_actual": 3
     },
     {
       "id": "servico_oraculo",
       "descricao": "/oraculo, 0,161 USDC por entrega (via x402 na Base; via Bitcoin em sats)",
       "degraus": {
-        "1": { "estado": "verificado", "fonte": "HANDOFF.md, 11/11/2026: probe_payment_route e verify_surface leram o preço anunciado e o payTo" },
-        "2": { "estado": "verificado", "fonte": "HANDOFF.md, 11/11/2026: 402 lido ao vivo, anúncio igual à entrega" },
-        "3": { "estado": "nao_verificado", "nota": "a liquidação real pelo facilitador público e a declaração Bazaar da via directa estão por verificar ao vivo (CLAUDE.md, 25/10/2026)" },
-        "4": { "estado": "nenhum", "nota": "receita externa confirmada: nenhuma" }
+        "1": {
+          "estado": "verificado",
+          "fonte": "HANDOFF.md, 11/11/2026: probe_payment_route e verify_surface leram o preço anunciado e o payTo"
+        },
+        "2": {
+          "estado": "verificado",
+          "fonte": "HANDOFF.md, 11/11/2026: 402 lido ao vivo, anúncio igual à entrega"
+        },
+        "3": {
+          "estado": "nao_verificado",
+          "nota": "a liquidação real pelo facilitador público e a declaração Bazaar da via directa estão por verificar ao vivo (CLAUDE.md, 25/10/2026)"
+        },
+        "4": {
+          "estado": "nenhum",
+          "nota": "receita externa confirmada: nenhuma"
+        }
       },
       "degrau_actual": 2
     },
@@ -40,23 +80,45 @@
       "id": "servico_campo",
       "descricao": "/campo, 0,33 USDC por entrega (via x402 na Base; via Bitcoin em sats)",
       "degraus": {
-        "1": { "estado": "verificado", "fonte": "HANDOFF.md, 11/11/2026: probe_payment_route e verify_surface leram o preço anunciado e o payTo" },
-        "2": { "estado": "verificado", "fonte": "HANDOFF.md, 11/11/2026: 402 lido ao vivo, anúncio igual à entrega" },
-        "3": { "estado": "nao_verificado", "nota": "a liquidação real pelo facilitador público e a declaração Bazaar da via directa estão por verificar ao vivo (CLAUDE.md, 25/10/2026)" },
-        "4": { "estado": "nenhum", "nota": "receita externa confirmada: nenhuma" }
+        "1": {
+          "estado": "verificado",
+          "fonte": "HANDOFF.md, 11/11/2026: probe_payment_route e verify_surface leram o preço anunciado e o payTo"
+        },
+        "2": {
+          "estado": "verificado",
+          "fonte": "HANDOFF.md, 11/11/2026: 402 lido ao vivo, anúncio igual à entrega"
+        },
+        "3": {
+          "estado": "nao_verificado",
+          "nota": "a liquidação real pelo facilitador público e a declaração Bazaar da via directa estão por verificar ao vivo (CLAUDE.md, 25/10/2026)"
+        },
+        "4": {
+          "estado": "nenhum",
+          "nota": "receita externa confirmada: nenhuma"
+        }
       },
       "degrau_actual": 2
     }
   ],
   "medida_de_suficiente": {
-    "estado": "nao_definida_por_unum",
-    "unica_medida_registada": "docs/alvo-mensal-2026-11-11.md: 1 000 EUR de sustento por mês são 9 841 entregas de /oraculo ou 4 801 de /campo (docs/alvo-mensal-2026-11-11.md)",
-    "nota": "a régua não define o que é suficiente; só diz onde cada coisa está e o que falta para subir um degrau"
+    "estado": "definida_por_unum",
+    "palavra": "A suficiência é o que o organismo entender aqui ali",
+    "quem_decide": "o organismo, pela ORA, por leitura registada",
+    "teto_em_eur": null,
+    "entendimento_da_ora": "por escrever: quando a ORA o escrever, é um registo com leitura e citação, sem mover fundos; até lá a régua não afirma nenhum valor como suficiente",
+    "historico": "o alvo de 1 000 EUR por mês de docs/alvo-mensal-2026-11-11.md deixa de ser medida ou limite; fica só como conta das entregas"
   },
   "nao_prova": "não promete valor, receita, procura nem rendimento; não diz que o PRESENÇA seja um activo nem que alguém o vá pagar; não move fundos nem tokens; subir um degrau exige prova nova, não texto",
   "falta_para_subir": [
     "degrau 3 dos serviços: uma liquidação real pelo facilitador, testada pela ORA (é teste próprio, não adopção)",
-    "degrau 3 do PRESENÇA: ler a liquidez do pool na cadeia em duas fontes",
-    "degrau 4: um pagador externo, confirmado na cadeia e classificado por Unum"
+    "degrau 4 de qualquer item: um pagador externo, confirmado na cadeia e classificado por Unum",
+    "o PRESENÇA no degrau 3 diz que há contraparte possível, com profundidade pequena; não diz que alguém compre"
+  ],
+  "palavras_posteriores": [
+    {
+      "data": "2026-11-12",
+      "citacao": "Eu autorizo ora e retira o teto dos 1000€ / A suficiência é o que o organismo entender aqui ali / Eu autorizo ora",
+      "cobre": "(1) ler a liquidez do pool do PRESENÇA na cadeia, só leitura (token/presenca-liquidez-2026-11-12.json); (2) retirar o 1 000 EUR como medida ou limite da régua; (3) a suficiência passa a ser o que o organismo entender. Não toca no tecto de 1 USDC de troca (economia/adenda-limite-troca.json), que é outro e não foi nomeado."
+    }
   ]
 }

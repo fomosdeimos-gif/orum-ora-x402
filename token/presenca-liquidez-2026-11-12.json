@@ -1,0 +1,50 @@
+{
+  "format": "orum-liquidez-leitura/v1",
+  "objecto": "Degrau 3 da régua do valor para o PRESENÇA: o pool USDC do Uniswap V4 lido na cadeia (StateView), só leitura",
+  "lido_em_utc": "2026-11-12T08:25:00Z",
+  "palavra_de_unum": {
+    "citacao": "Eu autorizo ora e retira o teto dos 1000€",
+    "cobre": "ler a liquidez do pool do PRESENÇA na cadeia em duas fontes RPC, só leitura; não move fundos nem tokens"
+  },
+  "rede": {
+    "nome": "Base",
+    "chain_id": 8453
+  },
+  "bloco": 56405166,
+  "state_view_v4": "0xa3c0c9b65bad0b08107aa264b0f3db444b867a71",
+  "pool_id": "0xd78e713f14116e9ad610b78b089a9d2f617ed80313d2e31da0c45c9a06122ff1",
+  "token0_presenca": "0x120a1ba3b10263f9cb42e971598c860d66b68cea",
+  "token1_usdc": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "decimais": {
+    "presenca": 18,
+    "usdc": 6
+  },
+  "como_se_le": "eth_call ao StateView no bloco fixo, com getSlot0(bytes32) (selector 0xc815641c) e getLiquidity(bytes32) (selector 0xfa6793d5) e o pool_id; duas fontes RPC têm de devolver exactamente o mesmo",
+  "leituras": [
+    {
+      "fonte": "mainnet.base.org",
+      "slot0_raw": "0x000000000000000000000000000000000000000000000002b932fc5050a157bffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9895200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002710",
+      "liquidity_raw": "0x00000000000000000000000000000000000000000000000000240cf758f919cd"
+    },
+    {
+      "fonte": "base-rpc.publicnode.com",
+      "slot0_raw": "0x000000000000000000000000000000000000000000000002b932fc5050a157bffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9895200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002710",
+      "liquidity_raw": "0x00000000000000000000000000000000000000000000000000240cf758f919cd"
+    }
+  ],
+  "decodificado": {
+    "sqrtPriceX96": "50238494215151638463",
+    "tick": -423598,
+    "lpFee": 10000,
+    "liquidity": "10147355650759117",
+    "usdc_por_presenca": 4.020814712588608e-07
+  },
+  "concorda_com": "o preço do DexScreener de 10/11/2026 (4,02e-07), não verificado, e a comissão de 1 % do registo de mercado",
+  "nao_afirma": [
+    "que haja profundidade para comprar ou vender uma quantidade útil: a liquidez L é um parâmetro do pool, não um saldo; o registo de 10/11 (agregadores, não verificado) fala de cerca de 2 USDC do lado da cotação",
+    "valor, procura, receita nem rendimento do PRESENÇA; o preço é o do pool neste bloco e nada mais",
+    "que o PRESENÇA seja um activo ou meio de pagamento (token/presenca.json: identidade)",
+    "quem são os fornecedores de liquidez nem se a retiram"
+  ],
+  "verificador": "npm run liquidez:verify"
+}
