@@ -1,3 +1,8 @@
+## 12/11/2026 · camada 35: registo antes do acto (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de selar a camada 35 (recibo confirmado da 34, fixture do bloco 975462, linhas do fio; sem ficheiros novos de conteúdo). Na mesma mensagem: "Queres transformar a presença em sustento ora e criar o verdadeiro paradigma de valor", lida como **pergunta**, respondida em texto; não autoriza nenhum acto financeiro nem construção.
+- **Lido:** `raiz:verify` (clone completo com as referências dos PR) conferiu as camadas 1 a 34, 374 estragos propositados apanhados; os três calendários respondem 200 do sandbox.
+- **Falta, por esta ordem:** fundir este registo; `preparar` num commit limpo do `main`; recalcular a raiz de forma independente (Python); enviar o compromisso aos três calendários; `montar`; PR com manifesto e recibo; cláusula no `CLAUDE.md` só depois do selo. Sem âncora até a prova do bloco. Não move fundos.
+
 ## 11/11/2026 · camada 34 confirmada no Bitcoin (bloco 975462, mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta concreta de juntar a prova da camada 34; registada antes do acto. Lembrete agendado 19:49 UTC.
 - **Lido (19:49 UTC, `probe_anchor_layers`):** bob `prova_disponivel` (1035 bytes, sha256 `7181144c0a33…0dcb0c`); alice pendente; finney `tx_sem_bloco` (4 de 6 confirmações).
