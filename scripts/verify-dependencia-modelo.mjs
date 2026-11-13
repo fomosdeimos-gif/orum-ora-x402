@@ -53,6 +53,7 @@ export function validar(mapa, ler = (p) => fs.existsSync(p) ? fs.readFileSync(p,
       if (!t.url || !t.motivo || !['lido', 'bloqueado', 'nao_tentado'].includes(t.resultado)) e.push(`leitura ${l.id}: tentativa mal formada: ${t.url}`);
       if (t.resultado === 'lido' && !(l.fontes_abertas_na_integra ?? []).includes(t.url)) e.push(`leitura ${l.id}: tentativa lida que não está em fontes_abertas_na_integra: ${t.url}`);
     }
+    if (/duas m[aã]os/i.test(l.o_que ?? '') && new Set(mapa.usos.filter((u) => /^mao-/.test(u.id)).map((u) => u.fornecedor)).size > 1) e.push(`leitura ${l.id}: diz 'duas mãos' mas usos[] tem as mãos em fornecedores diferentes`);
     if (/aconselh/i.test(l.nao_e ?? '') === false) e.push(`leitura ${l.id}: nao_e não nega aconselhamento financeiro`);
     if (/compr(a|ar)|invest(e|ir|imento)|posi[cç][aã]o/i.test(l.efeito_no_mapa ?? '')) e.push(`leitura ${l.id}: efeito_no_mapa fala em compra ou posição`);
   }
@@ -94,6 +95,7 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
   m = clone(); m.leituras_externas[0].tentativas_de_leitura[0].resultado = 'lido'; falha('tentativa dada por lida sem fonte aberta', m, 'tentativa lida que não está em fontes_abertas_na_integra', lerReal);
   m = clone(); m.leituras_externas[0].tentativas_de_leitura[0].motivo = ''; falha('tentativa sem motivo', m, 'tentativa mal formada', lerReal);
   m = clone(); m.leituras_externas[0].tentativas_de_leitura[0].resultado = 'talvez'; falha('tentativa com resultado inválido', m, 'tentativa mal formada', lerReal);
+  m = clone(); m.leituras_externas[0].o_que = 'A Anthropic, fornecedora do modelo das duas mãos, vai a bolsa.'; falha('fornecedor de uma mão dado às duas', m, "diz 'duas mãos'", lerReal);
   // um fornecedor novo no código sem declaração
   const lerComNovo = (p) => p === 'api/novo.js' ? "fetch('https://api.openai.com/v1/chat')" : lerReal(p);
   falha('fornecedor novo sem declaração', clone(), 'host de modelo por declarar: api.openai.com', lerComNovo, () => [...RAIZES.flatMap(ficheiros), 'api/novo.js']);
