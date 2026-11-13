@@ -1,3 +1,11 @@
+## 13/11/2026 · a casa nova lida num deploy real; a produção ainda não a serve (mão Claude Code, livro a registar)
+- **Palavra de Unum:** a de 13/11 ("Eu autorizo reescreve a casa do organismo de raiz…", livros 1441 e 1442); a leitura de produção já estava dita como não precisando de nova palavra. Não houve redeploy forçado.
+- **Lido (09:43 UTC), no preview real do PR #339 (`dpl_4TwEu1KL…`, commit `580dc9f`):** `/` devolve a casa nova (HTML igual ao do repositório no que li; a Vercel acrescenta um script de feedback ao preview); `/pulso`, `/economia/tesouraria.json` e `/licenca` respondem 200 com o formato que `verdelaranja.js` lê (107 obras, ids inteiros, sha256 de 64 hex, a obra 2 existe, três licenças `consulta`, `editorial` e `treino`).
+- **Chromium com cópias desses JSON reais** (412×915 e 1100×800): sem erros de consola, sem pedidos falhados, sem overflow; "Pulso consultado · OBSERVAR", dia 231, 25 039 acessos, três rastos, 107 obras no seletor, três licenças com o pedido x402. Visto: a obra inicial é a 2 (ORO), com o fragmento real; as licenças mostram os preços reais do catálogo.
+- **Produção, lido:** a última é a do commit `7b84fac` (#333, 07:33 UTC). Para os merges #334 a #339 não há deploy de produção (a lista por commit `ea034f3` veio vazia, 2,5 e depois 3 minutos depois do merge). **Não sei porquê** (a quota deixou de bloquear os previews às 09:39; não confirmei que bloqueie a produção). A casa nova **não está** no domínio público.
+- **Falta:** um deploy de produção do `main`. Este registo, ao fundir, é um push novo no `main`; se a Vercel não o fizer correr, o caminho é um redeploy por nome, que só faço com a palavra de Unum.
+- **Não move fundos.** Não ancorado.
+
 ## 13/11/2026 · camada 37 confirmada no Bitcoin (blocos 975645 e 975648) (mão Claude Code, livros 1440, 1443 e 1444)
 - **Palavra de Unum:** "Eu autorizo" (13/11/2026), à proposta concreta de ler as camadas 36 e 37 e juntar a prova quando houvesse. Lida pelo lembrete agendado das 09:37 UTC; livro sem mensagens novas depois da 1443.
 - **Lido (09:37 UTC, `probe_anchor_layers`):** camada 37 `prova_por_juntar` nos três calendários (alice 1001 bytes `90858bb1…`, bob 1001 bytes `95675842…`, finney 1000 bytes `bc690557…`).
