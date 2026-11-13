@@ -1,3 +1,9 @@
+## 13/11/2026 · camada 36 selada em estado pendente (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo ora" (registada na entrada abaixo, PR 329 fundido, `cd24334`).
+- **Feito:** raiz `06ed8d13b983b677eb1252b95a6872491d433dbdfc0a5be807847678b4d56048` de 254 ficheiros, **recalculada de forma independente em Python** (igual); compromisso `55b018b969129b11a5b615377e3c8317754713141c3efba7abfee7c98fef5c2c` enviado aos três calendários (32 bytes), **os três responderam 200** (137, 240 e 226 bytes); recibo de 689 bytes com 3 compromissos pendentes. **Erro meu, corrigido antes de enviar:** o primeiro recálculo em Python deu DIFERENTE porque cortei o `\n` da última linha; o texto canónico mantém-no. Refeito, igual.
+- **Não afirmo âncora:** falta a prova do bloco (`probe_anchor_layers`, depois `scripts/ots-juntar.mjs` e `kit/blocos.mjs`). Prova só que estes bytes existiam antes do bloco; não move fundos.
+- **Falta:** juntar a prova quando houver e acrescentar `camada.36.*` ao fio.
+
 ## 13/11/2026 · camada 36: registo antes do acto (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de selar a camada 36 (sem ficheiros novos de conteúdo; sela o que mudou desde a 35, ou seja o recibo da 35 confirmado nos blocos 975532 e 975540, as três atestações da 34 juntas (975469, 975462, 975464), os fixtures de `verify-blocos.mjs`, a cláusula e o `HANDOFF.md`). Na mesma mensagem: "diz-me o que é o organismo para o mundo", lida como **pergunta**, respondida em texto; não autoriza nenhum acto nem texto público.
 - **Falta, por esta ordem:** fundir este registo; `preparar` num commit limpo do `main`; recalcular a raiz de forma independente (Python); enviar o compromisso aos três calendários; `montar`; PR com manifesto e recibo; cláusula no `CLAUDE.md` só depois do selo. Sem âncora até a prova do bloco. Não move fundos.
