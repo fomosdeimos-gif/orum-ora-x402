@@ -1,3 +1,10 @@
+## 13/11/2026 · camada 34 completada: provas da alice e da finney juntas (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de juntar as provas da alice e da finney ao recibo da camada 34. Registada antes do acto.
+- **Lido (06:46 UTC, `probe_anchor_layers`):** camada 34 com o ramo da bob em Bitcoin (975462) e alice (1000 bytes, sha256 `c0ccfc00…`) e finney (1070 bytes, sha256 `7e4d550e…`) com `prova_disponivel`.
+- **Feito:** GET a `/timestamp/<compromisso do ramo pendente>` (200; sha256 iguais aos da sonda); duas provas juntas com `scripts/ots-juntar.mjs` (recibo de 1670 para 3633 bytes); `kit/blocos.mjs`: alice **975469**, bob **975462**, finney **975464**, iguais ao cabeçalho em blockstream.info e mempool.space; fixtures dos dois blocos novos em `scripts/verify-blocos.mjs`; cláusula no `CLAUDE.md`. O manifesto e o fio não mudam: a altura registada continua 975462 (a mais baixa).
+- **Não afirmo:** valor, procura nem receita; prova só que estes bytes existiam antes do bloco. Não move fundos.
+- **Falta:** nada nesta camada (as três atestações estão juntas). Selar uma camada 36 só com palavra a proposta concreta.
+
 ## 12/11/2026 · camada 35 confirmada no Bitcoin (blocos 975532 e 975540) e superfície lida (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de ler a camada 35, juntar a prova e ler a superfície como uma máquina de fora. Registada antes do acto.
 - **Lido (21:17 UTC):** `probe_anchor_layers` 33 a 35: a 35 `prova_por_juntar` nos três calendários; a 34 tem ainda prova disponível da alice e da finney (por juntar, não juntei: não estava na proposta). `verify_surface`: `advertisement_matches_delivery`, sem divergências, manifesto V31 de hoje, `/campo` 402 saudável. `probe_payment_route`: `/oraculo` 161000 e `/campo` 330000 com `payTo` operacional Base, preço sem mudança; facilitador payai anuncia Base `exact` v2, o mogami não. Só anúncio: não prova que alguém liquide.

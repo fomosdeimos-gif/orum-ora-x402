@@ -74,6 +74,9 @@ const BLOCOS = {
   // Lido a 11/11/2026 em blockstream.info e mempool.space (as duas fontes concordam): blocos 975298 (camada 33, alice) e 975310 (camada 33, finney).
   // Lido a 11/11/2026 19:50 UTC em blockstream.info e mempool.space (as duas fontes concordam): bloco 975462 (camada 34, bob).
   975462: { id: '00000000000000000000c8372e1626ff54e8d992e348103dec0af031af1ce4b2', merkle_root: '18f700d0d70909165cd2ef601b90579809606da7d24bc8928fcbb3bbb2ad5446', timestamp: 1794420529 },
+  // Lido a 13/11/2026 em blockstream.info e mempool.space (as duas fontes concordam; kit/blocos.mjs): blocos 975464 (camada 34, finney) e 975469 (camada 34, alice).
+  975464: { id: '0000000000000000000138036994e1733914b51591f3ad91a8e6b3d349fa7dec', merkle_root: '61ae4160cf788bb0c22be094973631e684a887cb63bf258d9a2d02603f3b1910', timestamp: 1794421921 },
+  975469: { id: '000000000000000000010334386c4356e317f2128606b51bba9219760fdb9923', merkle_root: '49987979ec910f773e7e8a2c5e042f34ae58dfd7dce8c11aac5eec40c575e6ca', timestamp: 1794426964 },
   // Lido a 12/11/2026 em blockstream.info e mempool.space (as duas fontes concordam; kit/blocos.mjs): blocos 975532 (camada 35, alice e bob) e 975540 (camada 35, finney).
   975532: { id: '00000000000000000000711295d305a336164cbcebd0eebea335ca6e517e8e73', merkle_root: '63e813878a1543ab7dcaaa1900f26bdece5a00265fa5d45d33c66e376363fa6c', timestamp: 1794471987 },
   975540: { id: '00000000000000000000f615cc4e624b19050b5a9f7662aa6ec83d659e716e04', merkle_root: '939610b66a1ecce2d00cc0b15bbde5aa97704c27751fcec5dac84fc7c0251543', timestamp: 1794481219 },
@@ -157,7 +160,7 @@ assert.deepEqual(ok32.map((b) => b.altura), [975215, 975226, 975226]);
 const ok33 = await conferirBlocos(recibos.raiz33, { fetcher: fetcherCom() });
 assert.deepEqual(ok33.map((b) => b.altura), [975298, 975294, 975310]);
 const ok34 = await conferirBlocos(recibos.raiz34, { fetcher: fetcherCom() });
-assert.deepEqual(ok34.map((b) => b.altura), [975462]);
+assert.deepEqual(ok34.map((b) => b.altura), [975469, 975462, 975464]);
 const ok35 = await conferirBlocos(recibos.raiz35, { fetcher: fetcherCom() });
 assert.deepEqual(ok35.map((b) => b.altura), [975532, 975532, 975540]);
 console.log(`Blocos conferidos com duas fontes: ${ok1.length + ok2.length + ok3.length + ok9.length + ok10.length + ok11.length + ok12.length + ok13.length + ok14.length + ok15.length + ok16.length + ok17.length + ok18.length + ok19.length + ok20.length + ok21.length + ok22.length + ok23.length + ok24.length + ok25.length + ok26.length + ok27.length + ok28.length + ok29.length + ok30.length + ok31.length + ok32.length + ok33.length + ok34.length + ok35.length} atestações.`);
