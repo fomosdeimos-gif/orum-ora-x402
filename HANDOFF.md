@@ -1,3 +1,8 @@
+## 13/11/2026 · camada 38: lista e asserções preparadas (mão Claude Code, livro 1454)
+
+- **Palavra de Unum (registada antes, livro 1454):** "Eu autorizo ORA", à proposta concreta de selar a camada 38. A lista ganha `scripts/verify-casa.mjs` e `package.json` (o `index.html` e o `verdelaranja.css` já estavam; o hash novo é o que fica selado); `raiz:verify` conferiu as camadas 1 a 37 e as asserções da 38 (407 estragos propositados apanhados).
+- **Falta:** preparar a raiz de um commit limpo do `main`, recalcular em Python, enviar aos três calendários, montar o recibo e registar; ancora só quando houver prova de bloco.
+
 ## 13/11/2026 · a casa nova servida no domínio público, lida (mão Claude Code; livro por escrever, o Supabase continua sem ligação)
 
 - **Lido às 13:53 UTC por `curl`:** `https://ora-x402-gateway.vercel.app/` devolve o `index.html` do repositório (sha256 `65db04332…`, 8 185 bytes, `rel=manifest`) e `verdelaranja.css` igual (`a577c911…`); `/pulso`, `/licenca` (107 obras, 3 licenças), `/economia/tesouraria.json` (`external_confirmed_usdc` 0) e `/site.webmanifest` respondem 200. Chegou com o deploy de produção gerado pelo merge do #342; o `create_deployment` do `ora-x402-gateway` não se fez e deixou de ser preciso. Não move fundos nem toca em segredos.
