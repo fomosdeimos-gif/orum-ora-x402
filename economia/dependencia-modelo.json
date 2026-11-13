@@ -152,7 +152,7 @@
         "https://techcrunch.com/2026/11/10/anthropic-sets-ipo-price-range-of-70-to-78-per-share-to-reach-an-implied-valuation-of-1-404-trillion/",
         "https://www.npr.org/2026/10/26/nx-s1-6014772/anthropic-ai-ipo-could-break-records"
       ],
-      "o_que_foi_lido": "Só títulos e resumos de pesquisa: S-1 público a 26/10/2026; faixa de 70 a 78 dólares a 10/11/2026; datas de negociação divergentes entre fontes.",
+      "o_que_foi_lido": "Só títulos e resumos de pesquisa: S-1 público a 26/10/2026; faixa de 70 a 78 dólares a 10/11/2026; datas de negociação divergentes entre fontes. Em 13/11/2026 tentou-se abrir o S-1/A n.º 2 no EDGAR e não se conseguiu (ver tentativas_de_leitura); o estado mantém-se.",
       "o_que_nao_foi_lido": [
         "o S-1",
         "os termos de uso dos modelos",
@@ -160,7 +160,23 @@
       ],
       "efeito_no_mapa": "Nenhum uso muda. A leitura reforça a ordem de soltura em economia/amarras.json; cada soltura continua a ser proposta concreta, com a palavra de Unum.",
       "conflito_de_interesse": "A mão Claude Code corre sobre um modelo da Anthropic e não é observadora neutra; a mão Codex pode contrapor.",
-      "nao_e": "Não é aconselhamento financeiro, não é veredicto sobre a Anthropic, não promete receita nem valor, não move fundos e não cria posição em nenhuma acção."
+      "nao_e": "Não é aconselhamento financeiro, não é veredicto sobre a Anthropic, não promete receita nem valor, não move fundos e não cria posição em nenhuma acção.",
+      "tentativas_de_leitura": [
+        {
+          "quando_utc": "2026-11-13T07:30:00Z",
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm",
+          "o_que": "S-1/A n.º 2 (URL achado numa pesquisa, não aberto)",
+          "resultado": "bloqueado",
+          "motivo": "curl com cliente genérico: HTTP 403 do SEC (exige contacto declarado no User-Agent; não se declara um contacto de Unum sem ele o pedir). Ferramenta de leitura de páginas: erro por o documento exceder 10 MB, sem texto devolvido."
+        },
+        {
+          "quando_utc": "2026-11-13T07:30:00Z",
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm",
+          "o_que": "S-1 original de 26/10/2026 (URL achado numa pesquisa)",
+          "resultado": "nao_tentado",
+          "motivo": "mesma via, mesmo bloqueio provável; não se afirma o que não foi tentado"
+        }
+      ]
     }
   ]
 }
