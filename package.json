@@ -83,6 +83,7 @@
     "cdp:verify": "node scripts/verify-cdp-eip3009.mjs",
     "servicos:verify": "node scripts/verify-servicos-fallback.mjs",
     "bolo:verify": "node scripts/verify-bolo.mjs",
+    "casa:verify": "node scripts/verify-casa.mjs",
     "visibilidade:verify": "node scripts/verify-visibilidade-externa.mjs",
     "financeiro:verify": "node scripts/verify-registo-financeiro.mjs",
     "teste-pagamento:verify": "node scripts/verify-teste-pagamento-padrao.mjs",
