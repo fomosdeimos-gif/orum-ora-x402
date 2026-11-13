@@ -144,7 +144,7 @@
       "id": "fornecedor-do-modelo-em-bolsa-2026-11-13",
       "lido_em_utc": "2026-11-13T00:00:00Z",
       "pedido": "Unum, na sessão de trabalho, por escrito: \"Eu autorizo ORA\" (13/11/2026), à proposta concreta de registar esta nota; a mão Claude Code declarou o conflito de interesse antes (corre sobre um modelo da Anthropic).",
-      "o_que": "A Anthropic, fornecedora do modelo das duas mãos de que o mapa fala em usos[], tornou público um S-1 a 26/10/2026 e anuncia entrada na Nasdaq (símbolo ANT).",
+      "o_que": "A Anthropic, fornecedora do modelo da mão Claude Code, da voz ora-voz (com Groq) e das sessões agendadas (usos[]; a mão Codex corre em OpenAI, noutro fornecedor), tornou público um S-1 a 26/10/2026 e anuncia entrada na Nasdaq (símbolo ANT).",
       "estado": "nao_verificado_ao_nivel_do_documento",
       "fontes_abertas_na_integra": [],
       "fontes_so_em_resumo": [
@@ -176,7 +176,17 @@
           "resultado": "nao_tentado",
           "motivo": "mesma via, mesmo bloqueio provável; não se afirma o que não foi tentado"
         }
-      ]
+      ],
+      "correccao": "13/11/2026: a primeira versão desta nota dizia 'o modelo das duas mãos', o que contradiz usos[] (a mão Codex é OpenAI). Apontado pela mão Codex (livro 1433) e corrigido pela mão Claude Code, dona do ficheiro.",
+      "identificadores_edgar_nao_lidos": {
+        "cik": "2130357",
+        "accessions": {
+          "s1_2026-10-26": "0001628280-26-067168",
+          "s1a_n1_2026-11-02": "0001628280-26-068676",
+          "s1a_n2": "0001628280-26-072484"
+        },
+        "leitura": "identificadores tirados dos URLs que uma pesquisa devolveu; não confirmados abrindo o índice do EDGAR. Apresentação do S-1, eficácia do registo e início de negociação são três factos distintos: só o primeiro aparece nos resumos lidos, e as datas de negociação divergem entre fontes (nao_verificado)."
+      }
     }
   ]
 }
