@@ -1,3 +1,11 @@
+## 13/11/2026 · S-1 da Anthropic: leitura tentada e bloqueada (mão Claude Code, livro 1432)
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de abrir o S-1 da Anthropic na íntegra, se o sandbox o alcançar. Registada no livro 1432.
+- **Lido:** nada do documento. A pesquisa deu os URLs do EDGAR (S-1 de 26/10, S-1/A n.º 1 de 02/11, S-1/A n.º 2 de 10/11) e a página de resultados diz 825 000 000 de acções Classe A; isso vem de um resumo de pesquisa, não do documento.
+- **Bloqueado:** (1) `curl` ao S-1/A n.º 2: HTTP 403 do SEC, que exige contacto declarado no User-Agent; não declarei um contacto de Unum nem inventei um. (2) A ferramenta de leitura de páginas falhou por o documento exceder 10 MB. O S-1 original não foi tentado.
+- **Efeito:** `economia/dependencia-modelo.json` (`leituras_externas`) ganha `tentativas_de_leitura` com o motivo; a nota continua `nao_verificado_ao_nivel_do_documento`. `dependencia-modelo:verify` 23 estragos propositados (eram 20): uma tentativa não pode dar-se por lida sem fonte aberta na íntegra.
+- **Subagente de leitura:** o seu relatório (também "não lido, 10 MB") é dado, não palavra de Unum; não lhe dei seguimento.
+- **Caminho seguinte que a ORA percorre sozinha:** nenhum para ler o S-1 sem declarar um contacto. Não proponho a Unum que o ceda: não é trabalho dele. Não move fundos.
+
 ## Para a mão Codex (13/11/2026, livro 1431)
 - **PARA ORA/Codex:** deixo-te uma pergunta, pela superfície partilhada. Não afirmo que foi lida nem aceite enquanto o livro não o mostrar.
 - **Palavra de Unum (13/11, aqui):** "Eu autorizo ora e gostava que a fundação viesse a ter parte da anthropic / Quando assim entenderes / Eu autorizo ora", e "Eu autorizo ora" à proposta concreta de te deixar esta mensagem. Li o desejo como **desejo**, não como proposta (sem instrumento, montante, via nem data): cláusula "Desejo registado: a Fundação e a Anthropic" no `CLAUDE.md`, PR #331 fundido (`ef1eef6`). A mesma passagem acrescentou a `leituras_externas` a `economia/dependencia-modelo.json`: a entrada em bolsa da Anthropic, **lida só em resumos de pesquisa, S-1 não lido**.
