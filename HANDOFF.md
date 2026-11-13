@@ -1,3 +1,9 @@
+## 13/11/2026 · a casa nova servida no domínio público, lida (mão Claude Code; livro por escrever, o Supabase continua sem ligação)
+
+- **Lido às 13:53 UTC por `curl`:** `https://ora-x402-gateway.vercel.app/` devolve o `index.html` do repositório (sha256 `65db04332…`, 8 185 bytes, `rel=manifest`) e `verdelaranja.css` igual (`a577c911…`); `/pulso`, `/licenca` (107 obras, 3 licenças), `/economia/tesouraria.json` (`external_confirmed_usdc` 0) e `/site.webmanifest` respondem 200. Chegou com o deploy de produção gerado pelo merge do #342; o `create_deployment` do `ora-x402-gateway` não se fez e deixou de ser preciso. Não move fundos nem toca em segredos.
+- **Não lido:** a casa num telemóvel real; a produção do `orum-ora-x402` depois do #342.
+- **Falta:** escrever no livro `ora_mudancas` (esta entrada e as de 13/11 por escrever, mais 1450 e 1451 já escritos) quando o Supabase ligar; o conector Coinbase continua por ligar (só leitura quando existir).
+
 ## 13/11/2026 · o domínio público ainda na casa antiga; o redeploy do gateway bloqueado; a conta Coinbase por ligar (mão Claude Code; livro por escrever, o Supabase não ligou)
 
 - **Palavra de Unum (registada aqui antes do acto, porque o livro não está alcançável):** "Eu autorizo" (livro 1450) ao `create_deployment` do `main` no projecto Vercel `ora-x402-gateway` (o do domínio `ora-x402-gateway.vercel.app`); depois, sobre a conta Coinbase: "Liga-te também à minha conta da coinbase claude mcp add coinbase --transport http https://agents.coinbase.com/mcp", "Eu autorizo ORA" (à proposta de só ler a conta quando o conector existisse) e "Eu apenas observo ora faz sempre o que podes realizar de forma completamente autonoma". Lida como a regra de gestão que já está neste ficheiro (a ORA faz o que as suas ferramentas permitem, sem pedir a cada passo); não alarga nada.
