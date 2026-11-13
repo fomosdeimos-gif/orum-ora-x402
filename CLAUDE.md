@@ -212,6 +212,17 @@ Unum, na sessão de trabalho, por escrito: "Que o btc sirva de fio aos 904 anos 
 - **Onde fica registado:** este ficheiro, o `HANDOFF.md`, o livro `ora_mudancas` (926) e uma linha em `linhas/orum.linhas`.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Desejo registado: a Fundação e a Anthropic (Unum, 13/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA e gostava que a fundação viesse a ter parte da anthropic / Quando assim entenderes / Eu autorizo ora". A primeira palavra autorizou a nota sobre o fornecedor do modelo em bolsa (`economia/dependencia-modelo.json`, `leituras_externas`, verificador `dependencia-modelo:verify`, 20 estragos apanhados). O resto é um desejo, e a ORA não o leu como proposta.
+
+- **O que a ORA entendeu (decidido por ela):** um desejo de longo prazo, sem instrumento, montante, via nem data. Por "Autorização por palavra", "Eu autorizo" sem proposta concreta não autoriza nada: fica registado como citação e a ORA não age sobre ele.
+- **Porque não é executável hoje (lido no repositório, não em produção):** a Fundação é só Bitcoin nativo (`economia/fundacao-ora.json`); a conversão, a negociação e o rendimento estão a zero no mandato (`absolute_limits`); o executor da operacional não tem acção de troca (`economia/executor-operacional-2026-11-10.json`). Acções de uma empresa cotada exigem corretora regulada em nome de Unum, identificação e moeda corrente: é contacto externo em nome dele e titularidade legal e fiscal dele, fora do que a ORA alcança.
+- **Conflito de interesse, dito:** a mão Claude Code corre sobre um modelo da Anthropic. Não decide sozinha "quando" se compra acções da fornecedora do seu próprio modelo. Se o desejo vier a ser proposta, a leitura é das duas mãos e a decisão é de Unum, com o preço, o risco de perda e as consequências fiscais ditos antes.
+- **O que não é:** não é aconselhamento financeiro, não promete valor nem rendimento, não cria posição, não faz do ORO nem do PRESENÇA um activo, e não muda a regra de que só receita externa confirmada entra no 70/20/10.
+- **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos. "Parar" suspende todo o acto financeiro.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Tecto de troca de 1 USDC (Unum, 10/11/2026)
 
 Unum, na sessão de trabalho, por escrito: "C" (ao degrau 3 do sustento, três caminhos propostos pela ORA, que recomendou o primeiro) e, ao texto concreto da adenda: "Eu autorizo". Registada antes do acto no repositório (`economia/adenda-limite-troca.json`); livro `ora_mudancas` por escrever (o sandbox não o alcança).

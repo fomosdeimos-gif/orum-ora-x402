@@ -40,6 +40,18 @@ export function validar(mapa, ler = (p) => fs.existsSync(p) ? fs.readFileSync(p,
   }
   for (const h of declarados) if (!codigo().some((f) => !f.endsWith('verify-dependencia-modelo.mjs') && (ler(f) ?? '').includes(h))) e.push(`host declarado que o código não usa: ${h}`);
   if (!Array.isArray(mapa.nao_verificado) || !mapa.nao_verificado.length) e.push('sem nao_verificado no mapa');
+  const lids = new Set();
+  for (const l of mapa.leituras_externas ?? []) {
+    if (!l.id || lids.has(l.id)) e.push(`leitura externa: id em falta ou repetido: ${l.id}`);
+    lids.add(l.id);
+    for (const k of ['o_que', 'o_que_foi_lido', 'conflito_de_interesse', 'nao_e', 'efeito_no_mapa']) if (!l[k]) e.push(`leitura ${l.id}: falta ${k}`);
+    if (!Array.isArray(l.o_que_nao_foi_lido) || !l.o_que_nao_foi_lido.length) e.push(`leitura ${l.id}: falta o_que_nao_foi_lido`);
+    if (!['verificado', 'nao_verificado_ao_nivel_do_documento'].includes(l.estado)) e.push(`leitura ${l.id}: estado inválido`);
+    if (l.estado === 'verificado' && !(l.fontes_abertas_na_integra ?? []).length) e.push(`leitura ${l.id}: verificado sem fonte aberta na íntegra`);
+    if (!(l.fontes_abertas_na_integra ?? []).length && !(l.fontes_so_em_resumo ?? []).length) e.push(`leitura ${l.id}: sem fontes`);
+    if (/aconselh/i.test(l.nao_e ?? '') === false) e.push(`leitura ${l.id}: nao_e não nega aconselhamento financeiro`);
+    if (/compr(a|ar)|invest(e|ir|imento)|posi[cç][aã]o/i.test(l.efeito_no_mapa ?? '')) e.push(`leitura ${l.id}: efeito_no_mapa fala em compra ou posição`);
+  }
   return e;
 }
 
@@ -68,6 +80,13 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
   m = clone(); m.usos[2].hosts = ['api.groq.com']; falha('host por declarar (anthropic)', m, 'host de modelo por declarar: api.anthropic.com', lerReal);
   m = clone(); m.usos[2].hosts = ['api.anthropic.com', 'api.groq.com', 'api.openai.com']; falha('host declarado sem uso', m, 'host declarado que o código não usa: api.openai.com', lerReal);
   m = clone(); m.nao_verificado = []; falha('mapa sem nao_verificado', m, 'sem nao_verificado no mapa', lerReal);
+  m = clone(); m.leituras_externas[0].estado = 'verificado'; falha('leitura dada por verificada sem fonte aberta', m, 'verificado sem fonte aberta na íntegra', lerReal);
+  m = clone(); m.leituras_externas[0].o_que_nao_foi_lido = []; falha('leitura sem o que não foi lido', m, 'falta o_que_nao_foi_lido', lerReal);
+  m = clone(); m.leituras_externas[0].conflito_de_interesse = ''; falha('leitura sem conflito de interesse', m, 'falta conflito_de_interesse', lerReal);
+  m = clone(); m.leituras_externas[0].nao_e = 'Não promete nada.'; falha('leitura sem negar aconselhamento', m, 'nao_e não nega aconselhamento', lerReal);
+  m = clone(); m.leituras_externas[0].efeito_no_mapa = 'A Fundação deve comprar acções.'; falha('leitura que fala em compra', m, 'fala em compra ou posição', lerReal);
+  m = clone(); m.leituras_externas[0].fontes_so_em_resumo = []; falha('leitura sem fontes', m, 'sem fontes', lerReal);
+  m = clone(); m.leituras_externas.push({ ...m.leituras_externas[0] }); falha('leitura repetida', m, 'repetido', lerReal);
   // um fornecedor novo no código sem declaração
   const lerComNovo = (p) => p === 'api/novo.js' ? "fetch('https://api.openai.com/v1/chat')" : lerReal(p);
   falha('fornecedor novo sem declaração', clone(), 'host de modelo por declarar: api.openai.com', lerComNovo, () => [...RAIZES.flatMap(ficheiros), 'api/novo.js']);
