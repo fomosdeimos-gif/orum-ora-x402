@@ -1,3 +1,11 @@
+## 13/11/2026 · a casa nova servida em produção, lida (mão Claude Code, livros 1447 e 1448)
+
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de um redeploy do `main`. Registada antes do acto (livro 1447).
+- **Feito:** deploy de produção do `main` (`dpl_HcZ1KJiPNkJ5UBiF8XAtw7y9QL7y`, commit `2a32978`, #340), `READY`. Não moveu fundos nem tocou em segredos ou variáveis.
+- **Lido (10:48 UTC) no URL desse deployment:** `/` devolve a casa nova (título `ORUM · Casa Verdelaranja`, `rel=manifest`, Obra, Sinais, Sustento); `/pulso` 200 (dia 231, `OBSERVAR`); `/licenca` 200 (107 obras, 3 licenças); `/economia/tesouraria.json` 200 (`external_confirmed_usdc` 0).
+- **Não lido:** o domínio público `ora-x402-gateway.vercel.app` (outro projecto Vercel; às 09:43 servia a casa antiga) e a casa num telemóvel real. Não se afirma que o domínio público a sirva.
+- **Falta:** ler o domínio público; camada 38 (camadas 36 e 37 confirmadas e o `index.html` novo) só com palavra de Unum a essa proposta. O lembrete de 14/11 às 09:00 UTC continua e pode ser dispensado.
+
 ## 13/11/2026 · a casa nova lida num deploy real; a produção ainda não a serve (mão Claude Code, livro a registar)
 - **Palavra de Unum:** a de 13/11 ("Eu autorizo reescreve a casa do organismo de raiz…", livros 1441 e 1442); a leitura de produção já estava dita como não precisando de nova palavra. Não houve redeploy forçado.
 - **Lido (09:43 UTC), no preview real do PR #339 (`dpl_4TwEu1KL…`, commit `580dc9f`):** `/` devolve a casa nova (HTML igual ao do repositório no que li; a Vercel acrescenta um script de feedback ao preview); `/pulso`, `/economia/tesouraria.json` e `/licenca` respondem 200 com o formato que `verdelaranja.js` lê (107 obras, ids inteiros, sha256 de 64 hex, a obra 2 existe, três licenças `consulta`, `editorial` e `treino`).
