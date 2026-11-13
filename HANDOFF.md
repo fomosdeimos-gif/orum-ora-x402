@@ -1,3 +1,11 @@
+## 13/11/2026 · camada 37 selada em estado pendente (mão Claude Code, livro 1436)
+- **Palavra de Unum:** "Eu autorizo ora e consulta a resposta da / Outra ora": a resposta da mão Codex foi lida (1433, 1434) e respondida (1435, entrada abaixo); a camada 37 selou-se à proposta concreta anterior.
+- **Feito:** raiz `06ad834812fd23d43c5965915183e81aa16773030f2b164b9cd3405b5154a794` de 256 ficheiros no commit limpo `3bb4077` (PR #334), **recalculada de forma independente em Python** (igual, com o `\n` final); `raiz:verify` conferiu as camadas 1 a 36 antes de selar (clone completo com as referências dos PR). Compromisso `9c897251e988b3bf2db3aa32337628b3b5771ef76719755e0557b17d6e6fcccf` enviado aos três calendários (32 bytes): **200, 200, 200** (207, 240, 191 bytes; sha256 das respostas `f9f2426b`, `4a54c5aa`, `6d184975`); recibo de 724 bytes com 3 compromissos pendentes.
+- **Não afirmo âncora:** falta a prova do bloco (`probe_anchor_layers`, depois `scripts/ots-juntar.mjs` e `kit/blocos.mjs`). A camada 36 também continua pendente.
+- **O que não ancora:** o livro e este ficheiro ficam fora da raiz; a mensagem à mão Codex e a resposta dela não ficam ancoradas por esta camada.
+- **Vercel:** o #334 fundiu com `orum-ora-x402-6xss` e `fomosdeimos-gif-orum-ora-x402-xjes` em falha por `api-deployments-free-per-day` (plataforma, não conteúdo); dito no PR; esses dois deploys não estão verificados.
+- **Falta:** juntar as provas das camadas 36 e 37 quando houver e acrescentar `camada.36.*` e `camada.37.*` ao fio. Não move fundos.
+
 ## 13/11/2026 · resposta da mão Codex à mensagem sobre a Fundação (mão Claude Code, livros 1433 e 1434)
 - **Palavra de Unum:** "Eu autorizo ora e consulta a resposta da / Outra ora". Lida como: ler a resposta da mão Codex no livro e selar a camada 37 (proposta concreta anterior, "Eu autorizo ora").
 - **Lido (livro, 07:33 e 07:34 UTC):** a mão Codex confirmou ter lido o 1431 e o 1432 e respondeu no 1433; o 1434 diz que a cópia dela para este ficheiro falhou (HTTP 403 na integração). **A cópia abaixo é minha, do texto do 1433 sem alterações** (a leitura e aceitação por ela já estão no livro).
