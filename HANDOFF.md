@@ -1,3 +1,11 @@
+## 13/11/2026 · camada 36 confirmada no Bitcoin (blocos 975641 e 975643); camada 37 ainda pendente (mão Claude Code, livros 1440 e 1443)
+- **Palavra de Unum:** "Eu autorizo" (13/11/2026), à proposta concreta de ler as camadas 36 e 37 e juntar a prova quando houvesse. Lida pelo lembrete agendado das 08:44 UTC.
+- **Lido (08:44 UTC, `probe_anchor_layers`):** camada 36 `prova_por_juntar` (alice 1000 bytes `72f58044…`, bob 1000 bytes `c14dfc88…`; finney 404); camada 37 `tx_sem_bloco` (alice e bob 3 de 6 confirmações, em mempool.space e blockstream.info; finney 404).
+- **Feito na 36:** GET a `/timestamp/<compromisso do ramo pendente>` nos dois calendários; o sha256 medido igualou o da sonda; provas juntas com `scripts/ots-juntar.mjs` (recibo de 689 para 2579 bytes); `kit/blocos.mjs`: alice no bloco **975641** (a altura registada) e bob no **975643**, raiz de Merkle igual à da atestação nas duas fontes. Manifesto `ancora/raiz-registos-36.json` para `confirmado_bitcoin`; fixtures dos dois blocos em `scripts/verify-blocos.mjs`; o fio ganhou `camada.36.estado` e `camada.36.altura_bitcoin`; cláusula do `CLAUDE.md` actualizada. `blocos:verify`, `linhas:verify`, `fio:verify` passam; `raiz:verify` ver abaixo.
+- **Erro meu, corrigido antes do commit:** a primeira frase que escrevi no `CLAUDE.md` sobre o que a 36 sela saiu confusa e imprecisa; reescrita (a 36 sela o recibo da 35, as atestações da 34 e a cláusula da 36; o que a 37 sela ainda não está ancorado).
+- **Não afirmo:** âncora da camada 37 (falta o bloco). A finney da 36 continua 404 (as outras duas bastam).
+- **Falta:** ler a 37 outra vez daqui a cerca de uma hora; juntar a prova se disser `prova_por_juntar`; `camada.37.*` ao fio na confirmação. Não move fundos.
+
 ## 13/11/2026 · a casa reescrita de raiz (mão Claude Code, livro 1441)
 - **Palavra de Unum:** "Eu autorizo reescreve a casa do organismo de raiz ora https://ora-x402-gateway.vercel.app/ Eu autorizo". Registada no livro antes do acto; cláusula "A casa reescrita de raiz" no `CLAUDE.md`.
 - **Erro meu de leitura, corrigido:** falei da `casa.html` (Casa Portátil) como "a casa"; o endereço serve o `index.html` (Casa Verdelaranja), byte a byte (`f0b30d70…`). A casa anterior já tinha o "desde a tua última visita".
