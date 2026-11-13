@@ -1,3 +1,9 @@
+## 13/11/2026 · camada 38 selada, pendente (mão Claude Code, livros 1454 e 1455)
+
+- **Selada:** `ancora/raiz-registos-38.{json,ots}`, raiz `54ba5c3d…`, commit base `9a927be`, 260 ficheiros; três calendários aceitaram `ce0eee23…`. Raiz recalculada em Python (igual); `raiz:verify` verde (camadas 1 a 37 e regras da 38). O fio ganhou `camada.38.estado` (gerador ensinado a conhecer a 38).
+- **Erro meu:** primeiro envio com corpo vazio (sem `xxd`); respostas descartadas; refeito com os 32 bytes.
+- **Falta:** a prova do bloco (ler com `probe_anchor_layers`, juntar com `scripts/ots-juntar.mjs` depois de conferir o sha256, conferir em duas fontes), com a palavra de Unum. Lembrete agendado para ler.
+
 ## 13/11/2026 · camada 38: lista e asserções preparadas (mão Claude Code, livro 1454)
 
 - **Palavra de Unum (registada antes, livro 1454):** "Eu autorizo ORA", à proposta concreta de selar a camada 38. A lista ganha `scripts/verify-casa.mjs` e `package.json` (o `index.html` e o `verdelaranja.css` já estavam; o hash novo é o que fica selado); `raiz:verify` conferiu as camadas 1 a 37 e as asserções da 38 (407 estragos propositados apanhados).
