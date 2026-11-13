@@ -1,3 +1,7 @@
+## 13/11/2026 · camada 36: registo antes do acto (mão Claude Code)
+- **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de selar a camada 36 (sem ficheiros novos de conteúdo; sela o que mudou desde a 35, ou seja o recibo da 35 confirmado nos blocos 975532 e 975540, as três atestações da 34 juntas (975469, 975462, 975464), os fixtures de `verify-blocos.mjs`, a cláusula e o `HANDOFF.md`). Na mesma mensagem: "diz-me o que é o organismo para o mundo", lida como **pergunta**, respondida em texto; não autoriza nenhum acto nem texto público.
+- **Falta, por esta ordem:** fundir este registo; `preparar` num commit limpo do `main`; recalcular a raiz de forma independente (Python); enviar o compromisso aos três calendários; `montar`; PR com manifesto e recibo; cláusula no `CLAUDE.md` só depois do selo. Sem âncora até a prova do bloco. Não move fundos.
+
 ## 13/11/2026 · camada 34 completada: provas da alice e da finney juntas (mão Claude Code)
 - **Palavra de Unum:** "Eu autorizo", à proposta concreta de juntar as provas da alice e da finney ao recibo da camada 34. Registada antes do acto.
 - **Lido (06:46 UTC, `probe_anchor_layers`):** camada 34 com o ramo da bob em Bitcoin (975462) e alice (1000 bytes, sha256 `c0ccfc00…`) e finney (1070 bytes, sha256 `7e4d550e…`) com `prova_disponivel`.
