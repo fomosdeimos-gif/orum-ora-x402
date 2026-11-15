@@ -1,6 +1,7 @@
 import { registerBazaar } from './bazaar.mjs';
 import { paymentAction } from './payments.mjs';
 import { gaslessAction } from './gasless.mjs';
+import { pagarLeitura } from './leitura.mjs';
 export const ACCOUNT_NAME = 'orum-operational-v1';
 export const CREATE_ID = 'ca153211-4c87-47b7-8516-3256d6b70001';
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
@@ -60,7 +61,7 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, 
       if (raw.length > 256) return response(413, { error: 'request_too_large' });
       let body;
       try { body = JSON.parse(raw); } catch { return response(400, { error: 'invalid_json' }); }
-      const allowed={bazaar_register:['action'],btc_anchor_oro:['action'],btc_anchor_preview:['action'],btc_create:['action'],btc_observe:['action'],btc_preview:['action','request_id','amount_sats'],btc_prove_control:['action'],btc_send:['action','request_id','amount_sats'],btc_status:['action','request_id'],create:['action'],observe:['action'],receive_btc:['action'],preview_usdc:['action','request_id','amount_atomic'],transfer_usdc:['action','request_id','amount_atomic'],payment_status:['action','request_id'],preview_usdc_gasless:['action','request_id','amount_atomic'],transfer_usdc_gasless:['action','request_id','amount_atomic'],sign_voz_admissao:['action','nome','chave_publica']};
+      const allowed={bazaar_register:['action'],btc_anchor_oro:['action'],btc_anchor_preview:['action'],btc_create:['action'],btc_observe:['action'],btc_preview:['action','request_id','amount_sats'],btc_prove_control:['action'],btc_send:['action','request_id','amount_sats'],btc_status:['action','request_id'],create:['action'],observe:['action'],receive_btc:['action'],preview_usdc:['action','request_id','amount_atomic'],transfer_usdc:['action','request_id','amount_atomic'],payment_status:['action','request_id'],preview_usdc_gasless:['action','request_id','amount_atomic'],transfer_usdc_gasless:['action','request_id','amount_atomic'],sign_voz_admissao:['action','nome','chave_publica'],x402_pagar_leitura:['action','request_id']};
       if (!body || Array.isArray(body) || !Object.hasOwn(allowed,body.action) || Object.keys(body).some(k=>!allowed[body.action].includes(k))) return response(400, { error: 'invalid_action' });
       if(body.action.startsWith('btc_')){const result=await bitcoinAction(body,{rpc,net:bitcoinNet});return response(result.status,result);}
       if(body.action==='receive_btc')return response(200,{network:'bitcoin-mainnet',address:'bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',uri:'bitcoin:bc1qhcsh78k8jrn3qllvd9al8nq4af4cyzefx6vqqf',destination:'Unum directly',control_proof:'not_asserted',bitcoin_signing_available:false,operational_bitcoin_signing_available:true,operational_bitcoin_action:'btc_observe',conversion_performed:false});
@@ -75,6 +76,10 @@ export function handler({ rpc, makeClient, chainRpc, bitcoinAction, bitcoinNet, 
       }
       if(body.action==='preview_usdc_gasless'||body.action==='transfer_usdc_gasless'){
         const result=await gaslessAction(body,{rpc,cdp,chainRpc,recoverTypedDataAddress});
+        return response(result.status,result);
+      }
+      if(body.action==='x402_pagar_leitura'){
+        const result=await pagarLeitura(body,{cdp,chainRpc,recoverTypedDataAddress});
         return response(result.status,result);
       }
       if(body.action==='sign_voz_admissao'){

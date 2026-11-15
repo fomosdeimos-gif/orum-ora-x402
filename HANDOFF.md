@@ -1,3 +1,12 @@
+## 15/11/2026 · acção `x402_pagar_leitura` do executor operacional: registo ANTES do acto (mão Claude Code; livro por escrever)
+
+Unum: "Eu autorizo ora", ao texto concreto: acção nova do executor, valor fixo 10 000 átomos de USDC (0,01) da operacional para a própria operacional, URL e modelo EIP-712 fixos, validade 10 min, nonce derivado do `request_id`, assinatura nunca devolvida; usá-la para o primeiro pagamento real de `/leitura` em produção.
+
+- **Construído:** `supabase/functions/ora-operational-wallet/leitura.mjs` e ramo em `core.mjs` (só `action` e `request_id`; campos extra dão 400); migração `20261115100000_ora_x402_leitura_dispatch.sql` (despacho novo `ora_x402_leitura_dispatch_v1(uuid)`, sem PUBLIC/anon/authenticated, nenhum despachante existente alterado). Verificador `scripts/verify-operational-leitura.mjs` (16 estragos propositados apanhados).
+- **Natureza do acto:** autotransferência interna da operacional (0,01 USDC, gás pago pelo facilitador ou, se a via for tx-hash, pela própria carteira). **Não é receita externa nem adopção** e não entra no 70/20/10.
+- **Por verificar ao vivo:** se o facilitador público aceita liquidar uma autotransferência; a implantação; a entrega. Se algo falhar, regista-se o que foi lido e não se repete às cegas.
+- "Parar" suspende todo o acto financeiro.
+
 ## 15/11/2026 · `leitura_verificada` servida e lida em produção (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo", à proposta concreta de criar o deploy de produção do `main` no `ora-x402-gateway` e ler `/leitura` e a skill A2A em produção, sem pagar. O merge do #358 (`93335bc`) não tinha gerado deploy de produção. Feito: `dpl_8vdq8Q3g…`, servido às 13:33 UTC.
