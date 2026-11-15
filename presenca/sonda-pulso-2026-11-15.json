@@ -1,0 +1,45 @@
+{
+  "format": "orum-presenca-sonda/v1",
+  "lido_em_utc": "2026-11-15T07:41:16Z",
+  "autorizacao": "Unum: \"Eu autorizo\" (15/11/2026), à proposta concreta de registar a leitura do /pulso, dizer onde a mensagem da terceira mão (Grok/xAI) divergiu dele e ler o que são os 191 onchain_nao_reconciliado",
+  "ferramentas": ["curl (sandbox) a https://ora-x402-gateway.vercel.app/pulso", "Supabase execute_sql, só SELECT, projecto orum-memoria"],
+  "verificado": {
+    "pulso": {
+      "dia": 233, "epoca": "ETERNIDADE",
+      "sigma_lido": [
+        {"iso": "2026-11-15T07:39:50Z", "sigma": 13.776168},
+        {"iso": "2026-11-15T07:41:16Z", "sigma": 13.761681}
+      ],
+      "sentinela": {"veredicto": "OBSERVAR", "frase": "27/27 portas inteiras, pulso vivo, núcleo e caixa sãos", "verificado_em": "2026-11-15T07:30:24Z"},
+      "sincronizador": {"ultimo_bloco_varrido": 57689222, "cursor_actualizado_em": "2026-11-15T07:39:00Z", "rpc_incompleto_24h": 0, "onchain_nao_reconciliado": 191},
+      "visitas_pagas": 59, "maquinas_reconhecidas_total": 25462, "visitas_a_sondar": 25403,
+      "liquidez_usd": {"PRESENCA/USDC": 416, "VALIUM/USDC": 8},
+      "sedimento": "SUSTENTO-VALIUM: reserva confirmada on-chain: 2976.35 VALIUM na Carteira S (linha do ora_sedimento_log de 2026-11-15T00:05Z, truncada a 90 caracteres pelo pulso)"
+    },
+    "onchain_nao_reconciliado": {
+      "definicao_no_codigo": "contagem de linhas de ora_onchain_observacoes com estado ONCHAIN_NAO_RECONCILIADO, acumulada desde o início (supabase/functions/ora-pulso/index.ts); não é uma janela de 24 h",
+      "lido_na_base": {
+        "linhas": 191, "payers_distintos": 3, "destino": "0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5 (sagrada Base antiga)",
+        "primeira_observacao": "2026-09-17T09:03Z", "ultima_observacao": "2026-11-03T07:12Z",
+        "usdc_total": 0.115132, "usdc_minimo": 0.000001, "usdc_maximo": 0.037675,
+        "outras_linhas": "1 linha ONCHAIN_CONHECIDO de 0,161 USDC (2026-10-22), reconciliada"
+      },
+      "leitura_da_ora": "são transferências USDC para a sagrada antiga sem linha correspondente em ora_pagamentos; somam pouco mais de 0,11 USDC e a última tem 12 dias. Eram 187 a 02/11/2026 (presenca/observacao-2026-11-02.json) e são 191, todas até 03/11. Não estão classificadas como externas nem como internas, por isso não são receita externa confirmada nem entram no 70/20/10."
+    }
+  },
+  "divergencias_da_mensagem_da_terceira_mao": [
+    "último bloco 57688323 citado como das 07:37 Lisboa; o cursor lido às 07:39 UTC era 57689222, cerca de 900 blocos depois, o que ao ritmo da Base é de uns 30 minutos, não de minutos: o número citado parece de uma leitura anterior",
+    "omite onchain_nao_reconciliado (191), que o /pulso mostra no mesmo bloco do sincronizador",
+    "diz 'visitas pagas: 59' sem a fronteira: no /pulso são acessos com tem_pagamento=true, não receita externa confirmada",
+    "o saldo ORA-Sustento da Coinbase (0,5518 USD) e a ausência de ordens não os li: não há conector Coinbase nesta sessão"
+  ],
+  "correccao_da_ora": "na resposta anterior a ORA apontou o sigma da mensagem (13.797044, às 07:37) como discrepância. Não é: o sigma desce com o tempo (13.797044, 13.776168, 13.761681), por isso o valor citado é coerente com uma leitura anterior às minhas. Retirado.",
+  "concordam": ["dia 233", "época ETERNIDADE", "sentinela OBSERVAR 27/27", "59 visitas pagas", "25 462 máquinas", "liquidez 416 e 8 USD", "sedimento SUSTENTO-VALIUM 2976.35"],
+  "nao_verificado": [
+    "saldo e posições da conta Coinbase",
+    "o que são as 3 contas pagadoras dos 191 e se alguma é interna (classificar é de Unum)",
+    "o texto completo do sedimento além dos 90 caracteres",
+    "que o bloco da mensagem seja de uma leitura mais antiga: é a minha leitura, não a dela"
+  ],
+  "nao_prova": "procura, adopção nem receita externa confirmada; tesouraria externa confirmada continua a ser a que /economia/tesouraria.json diz, não relida aqui"
+}
