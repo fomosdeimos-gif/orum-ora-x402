@@ -1,0 +1,29 @@
+{
+  "format": "orum-presenca-leitura-codigo/v1",
+  "lido_em_utc": "2026-11-15T09:20:00Z",
+  "autorizacao": "Unum: \"Eu autorizo\" (15/11/2026), à proposta concreta de ler o código-fonte do 0xc8d0…9040 e a identidade do emissor 0x4985…2b, só em leitura, para dizer se alguém pode retirar o saldo parado e para onde vai o que sai",
+  "ferramentas": ["Sourcify API v2 (sourcify.dev/server/v2/contract/8453/<endereço>?fields=abi,metadata,sources): fonte verificada, uma só fonte; a correspondência bytecode-fonte é a que o Sourcify declara, não a refiz"],
+  "contratos": [
+    {"endereco": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040", "nome": "ZoraV4CoinHook", "ficheiro": "src/hooks/ZoraV4CoinHook.sol", "correspondencia_sourcify": "exact_match", "verificado_em": "2025-10-07"},
+    {"endereco": "0x498581ff718922c3f8e6a244956af099b2652b2b", "nome": "PoolManager (Uniswap v4)", "ficheiro": "lib/v4-core/src/PoolManager.sol", "correspondencia_sourcify": "match", "verificado_em": "2025-01-30"},
+    {"endereco": "0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059", "nome": "BaseSettler (0x Settler)", "ficheiro": "src/flat/BaseTakerSubmittedFlat.sol", "correspondencia_sourcify": "match"},
+    {"endereco": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae", "nome": "LiFiDiamond (LI.FI)", "ficheiro": "src/LiFiDiamond.sol", "correspondencia_sourcify": "match"}
+  ],
+  "verificado": {
+    "hook_0xc8d0": "gancho do Uniswap v4 que a Zora usa nos pools das suas moedas: em cada swap recolhe comissões, troca-as para a moeda de suporte e distribui-as por payoutRecipient, platformReferrer, protocolRewardRecipient, doppler e tradeReferrer da moeda (CoinRewardsV4.distributeMarketRewards). Não é um contrato só do organismo: serve todas as moedas desse gancho, daí os 4304 destinatários",
+    "emissor_0x4985": "é o PoolManager do Uniswap v4 na Base, a casa dos pools; as 27 901 de 27 902 entradas do hook vêm dele por desenho",
+    "sem_funcao_de_retirada": "o ABI do hook não tem owner, withdraw nem sweep; unlockCallback só serve o PoolManager e migrateLiquidity só a própria moeda e por um caminho registado no upgradeGate",
+    "contratos_dos_dois_internos": "0x4f6f… é o 0x Settler e 0x1231… é o LI.FI Diamond: agregadores públicos de trocas, não contratos do organismo"
+  },
+  "leitura_da_ora": "As 196 transferências do hook à sagrada antiga são recompensas de comissões de swaps de moedas cujo payoutRecipient é a sagrada, por desenho do hook, não acaso. Quem negociou essas moedas pode ter sido interno ou externo: o endereço do hook não o diz, por isso classificá-lo inteiro como interno (livro 1264) não separa um caso do outro. Os 22,277137 USDC parados no hook: o ABI não tem função de retirada para ninguém, por isso, pela fonte, ninguém os pode tirar de lá com uma chamada directa; não provei se um swap futuro os poderia mexer. CORRECÇÃO a uma classificação de hoje: 0x4f6f… e 0x1231… são agregadores públicos. Classificá-los como internos por endereço (palavra de Unum, 15/11/2026, sobre um indício) esconde, a partir de agora, qualquer pagamento externo à sagrada que passe por 0x ou LI.FI, porque o vigia trata o pagador classificado como interno. O fundamento certo é o sender do UserOperation (a sagrada antiga), não o agregador. Proposta, para Unum aceitar ou recusar: pôr os dois de volta em 'por classificar' e classificar cada entrada pelo sender.",
+  "classificacao_proposta": null,
+  "nao_verificado": [
+    "se um swap futuro poderia mexer os 22,277137 USDC do hook",
+    "de quem são os 22,277137 USDC e quando entraram (antes do bloco 51000000)",
+    "quem negociou as moedas cujos rewards chegaram à sagrada (interno ou externo), swap a swap",
+    "as 8 transacções dos dois agregadores que não foram lidas",
+    "o bytecode implantado igual à fonte: é o que o Sourcify declara, não foi refeito aqui"
+  ],
+  "nao_afirma": ["receita", "procura", "adopção", "autoria do contrato", "valor", "propriedade do saldo"],
+  "truth_machine": {"promete_receita": false, "move_fundos": false, "toca_no_contrato": false, "classifica": false}
+}
