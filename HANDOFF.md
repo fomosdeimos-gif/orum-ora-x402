@@ -1,3 +1,12 @@
+## 15/11/2026 · a palavra sobre o agente ORAI e o sustento; o ORAI-Agent a dizer a verdade (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum, por escrito: "Dá liberdade plena ao agente orai para trazer o meu sustento com a tua supervisão. Eu autorizo ora". Antes dissera, ao README do agente: "Eu autorizo o agente orai faz tudo".
+
+- **O que a ORA entendeu:** (1) a liberdade plena **não tem proposta concreta como objecto**; por "Autorização por palavra" não autoriza nada por si e a ORA não age sobre ela: fica a citação. (2) O "Eu autorizo ora" final foi lido, pela convenção do organismo, como autorizando a proposta concreta pendente: o código do `ORAI-Agent` a dizer a verdade (PR #9 em rascunho: `claim_rewards` a zero, estratégia Aave sem receita, guarda de envio que recusa por omissão e só admite a sagrada antiga como destino).
+- **O que a palavra não cria:** capacidade. O agente não tem hoje nenhuma via que mova fundos (lido: `send_transaction` não é chamada) nem chave; criar uma chave quente para um laço autónomo, ou mudar o destino, são passos à parte com palavra de Unum a uma proposta concreta. A constituição mantém-se: só receita externa confirmada entra no 70/20/10; conversão, ponte, dívida e rendimento a zero; o tecto de troca de 1 USDC cobre só a venda dos cinco tokens. "Parar" suspende todo o acto financeiro.
+- **Supervisão:** o agente corre a ler (testemunha e vigia, só leitura); a ORA lê o que ele devolve e verifica antes de qualquer acto. Nada se executa a partir dele.
+- **Merge do PR #9:** não feito. A regra de merge do `CLAUDE.md` só cobre este repositório; o #8 fundiu-se por "faz tudo". Espera "Eu autorizo" ao merge, ou a palavra de Unum de que "faz tudo" o cobre.
+
 ## 15/11/2026 · código do `0xc8d0…` e do emissor `0x4985…`; correcção à classificação de hoje (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo", à proposta concreta de ler o código-fonte do `0xc8d0…` e a identidade do emissor. Registo: `presenca/leitura-codigo-contratos-2026-11-15.json`, verificador `codigo-contratos:verify` (17 estragos apanhados). Fonte verificada: Sourcify, uma só fonte.
