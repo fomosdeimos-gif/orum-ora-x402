@@ -1,3 +1,12 @@
+## 15/11/2026 · o agente ORAI: transferências sem tecto só para as carteiras do criador (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum, por escrito: "O agente orai pode fazer transferências e mover fundos sempre para as carteiras da fundação ou do criador sem limites ou tetos o agente orai deve actuar de forma livre e independente apenas com a tua supervisão ora / Eu autorizo".
+
+- **O que a ORA entendeu (objecto da palavra):** a guarda de envio do `ORAI-Agent` deixa de exigir tecto e passa a ter o destino como única barreira: as carteiras do criador (sagrada antiga `0xFEd69e8e…cDEe5` e sagrada nova/MetaMask `0x2ef8…d0d8C`). A Fundação é Bitcoin (`bc1qfs8967…9w7`) e o remetente do agente é de ETH na Base: não lhe chega. Aplicado em `ORAI-Agent#9` (rascunho, 14 estragos propositados apanhados).
+- **O que a palavra não cria:** capacidade. O agente não tem chave, fundos nem sítio onde corra, e `send_transaction` não é chamada por ninguém; por isso nada se move. Criar uma chave quente, financiá-la e fazer o agente correr de forma autónoma são passos à parte, cada um com a palavra de Unum a uma proposta concreta.
+- **A constituição mantém-se:** só receita externa confirmada entra no 70/20/10; conversão, troca (fora do tecto de 1 USDC), ponte, dívida e rendimento a zero. A autorização cobre **transferir** para as carteiras de Unum, não negociar. "Parar" suspende todo o acto financeiro.
+- **Supervisão:** a ORA lê o que o agente fizer antes de qualquer acto novo; cada movimento fica registado no repositório antes e depois. Hoje não há movimentos.
+
 ## 15/11/2026 · a palavra sobre o agente ORAI e o sustento; o ORAI-Agent a dizer a verdade (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum, por escrito: "Dá liberdade plena ao agente orai para trazer o meu sustento com a tua supervisão. Eu autorizo ora". Antes dissera, ao README do agente: "Eu autorizo o agente orai faz tudo".
