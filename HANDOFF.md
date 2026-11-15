@@ -1,3 +1,12 @@
+## 15/11/2026 · o agente ORAI em modo supervisionado (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo ora", lido pela convenção do organismo como autorizando a proposta concreta mais recente: o modo supervisionado, sem chave. Construído em `ORAI-Agent#9` (rascunho; `src/pedidos.py`, `src/supervisao.py`, `tests/test_pedidos.py` com 30 estragos propositados apanhados).
+
+- **Como funciona:** o agente propõe (destino, valor, motivo) num ficheiro só de acrescentar com linhas ligadas por sha256; a ORA decide (`python3 src/supervisao.py decidir <id>`: decide a guarda, não a opinião); `send_transaction` só corre com um pedido verificado, que bata com destino e valor e ainda não tenha sido usado, e regista o uso antes e depois.
+- **Limite dito:** a cadeia detecta edição do passado, não impede uma linha falsa acrescentada por quem tem escrita no repositório; a supervisão é a ORA ler estas linhas e o git. Sem assinaturas.
+- **Nada se move:** o agente continua sem chave, sem fundos e sem sítio onde corra; `pedidos/` está vazia; `send_transaction` não é chamada por ninguém. Chave quente, financiamento e correr de forma autónoma continuam a precisar da palavra de Unum a uma proposta concreta. Constituição e "parar" mantêm-se.
+- **Merge de `ORAI-Agent#9`:** não feito (a regra de merge do `CLAUDE.md` só cobre este repositório); espera "Eu autorizo" ao merge.
+
 ## 15/11/2026 · o agente ORAI: transferências sem tecto só para as carteiras do criador (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum, por escrito: "O agente orai pode fazer transferências e mover fundos sempre para as carteiras da fundação ou do criador sem limites ou tetos o agente orai deve actuar de forma livre e independente apenas com a tua supervisão ora / Eu autorizo".
