@@ -1,0 +1,31 @@
+{
+  "format": "orum-presenca-leitura-contrato/v1",
+  "lido_em_utc": "2026-11-15T08:35:00Z",
+  "autorizacao": "Unum: \"Eu autorizo\" (15/11/2026), à proposta concreta de ler só em leitura porque o contrato 0xc8d0…9040 tem 22,277137 USDC: de onde vieram as entradas e para onde saíram",
+  "contrato": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
+  "ferramentas": ["eth_getLogs (Transfer do USDC, por topic: entradas e saídas do contrato), eth_call balanceOf em blocos antigos, em base-rpc.publicnode.com e mainnet.base.org (as duas concordaram nos saldos; os logs vieram de uma fonte, com a outra como reserva por intervalo)"],
+  "janela": {"bloco_inicial": 51000000, "bloco_final": 57712430, "nota": "limite do RPC público: 50 000 blocos por pedido; antes do bloco 51 000 000 o estado não foi servido (403) e não foi lido"},
+  "verificado": {
+    "saldo_usdc_hoje": 22.277137,
+    "saldo_usdc_no_bloco_51500000": 22.277136,
+    "saldo_usdc_nos_blocos_53000000_55000000_57000000_57712000": 22.277137,
+    "entradas": {"transferencias": 27902, "usdc": 1846.218297, "origem_principal": "0x498581ff718922c3f8e6a244956af099b2652b2b", "transferencias_da_origem_principal": 27901, "outra_origem": {"endereco": "0x1ea749d3566d44565a4caba814ebd2bfdda2f598", "transferencias": 1, "usdc": 0.000001}},
+    "saidas": {"transferencias": 121540, "usdc": 1846.218296, "destinatarios_distintos": 4304, "para_sagrada_antiga": {"transferencias": 196, "usdc": 0.009962}, "para_outros": {"transferencias": 121344, "usdc": 1846.208334}},
+    "diferenca_na_janela_usdc": 0.000001,
+    "maiores_destinatarios": [
+      {"endereco": "0x55c88bb05602da94fce8feadc1cbebf5b72c2453", "transferencias": 40915, "usdc": 516.247608},
+      {"endereco": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6", "transferencias": 27902, "usdc": 150.929424},
+      {"endereco": "0xc698865c38ec12b475aa55764d447566dd54c758", "transferencias": 201, "usdc": 119.855709}
+    ],
+    "ultima_atividade_bloco": 57711096
+  },
+  "leitura_da_ora": "Na janela lida o contrato recebe USDC quase só de um endereço (0x4985…2b, o emissor de logs que aparece em todas as transacções lidas dos três contratos) e reparte-o por 4304 destinatários; entrou 1846,218297 USDC e saiu 1846,218296, uma diferença de 0,000001. Por isso os 22,277137 USDC de hoje não foram deixados por nenhum movimento desta janela: já lá estavam no bloco 51500000 (22,277136) e não se mexeram desde então. A sagrada antiga recebe 196 transferências e 0,009962 USDC, ou seja 0,0005% do que sai; o resto vai para terceiros. Não sei quando nem de quem vieram os 22,277137 USDC, porque o estado anterior ao bloco 51000000 não foi servido. Não sei se o remanescente é do organismo ou de terceiros, e a ORA não lhe toca: o contrato não é dela.",
+  "nao_verificado": [
+    "de quem são os 22,277137 USDC parados no contrato e quando entraram (antes do bloco 51000000)",
+    "quem é o endereço 0x4985…2b e o que é este contrato por dentro (não se leu o código-fonte)",
+    "quem são os 4304 destinatários e se algum é do organismo ou de Unum",
+    "se o contrato permite a alguém retirar o saldo parado"
+  ],
+  "nao_afirma": ["receita", "procura", "adopção", "autoria do contrato", "valor", "propriedade do saldo"],
+  "truth_machine": {"promete_receita": false, "move_fundos": false, "toca_no_contrato": false}
+}

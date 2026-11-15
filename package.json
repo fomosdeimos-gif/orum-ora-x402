@@ -11,6 +11,7 @@
     "espelho:verify": "node scripts/verify-espelho.mjs",
     "presenca:verify": "node scripts/verify-presenca.mjs",
     "pagadores:verify": "node scripts/verify-leitura-pagadores.mjs",
+    "contrato-c8d0:verify": "node scripts/verify-leitura-contrato-c8d0.mjs",
     "presenca-mercado:verify": "node scripts/verify-presenca-mercado.mjs",
     "executor-operacional:verify": "node scripts/verify-executor-operacional.mjs",
     "adenda-limite-troca:verify": "node scripts/verify-adenda-limite-troca.mjs",

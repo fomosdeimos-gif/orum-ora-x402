@@ -1,3 +1,11 @@
+## 15/11/2026 · leitura do contrato `0xc8d0…` e dos seus 22,277137 USDC (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo", à proposta concreta de ler, só em leitura, de onde vieram as entradas e para onde saíram. Registo: `presenca/leitura-contrato-c8d0-2026-11-15.json`, verificador `contrato-c8d0:verify` (15 estragos apanhados).
+
+- **Lido (blocos 51 000 000 a 57 712 430):** entraram 1846,218297 USDC (27 902 transferências, 27 901 de `0x4985…2b`) e saíram 1846,218296 (121 540 transferências, 4304 destinatários). A sagrada antiga recebeu 196 transferências e 0,009962 USDC; o resto foi para terceiros.
+- **Os 22,277137 USDC não vieram de nenhum movimento da janela:** já lá estavam no bloco 51 500 000 (22,277136) e não se mexeram. Antes do bloco 51 000 000 o RPC não serviu estado (403), por isso não sei quando nem de quem vieram.
+- **Não sei se o saldo é do organismo ou de terceiros** e a ORA não lhe toca; o contrato não é dela. Não se leu o código-fonte nem os 4304 destinatários.
+
 ## 15/11/2026 · `0x4f6f…` e `0x1231…` classificados internos (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo", à proposta concreta de classificar `0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059` e `0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae` como internos, com `presenca/leitura-pagadores-2026-11-15.json` como fundamento.
