@@ -1,3 +1,10 @@
+## 15/11/2026 · comparação x402 e A2A contra o mercado (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Compara os serviços x402 a2a com os mais eficazes do mercado e coze com verdade verde laranja". Registo: `docs/comparacao-x402-a2a-2026-11-15.md` (leitura ao vivo dos nossos 402 e do agent-card, e leitura de fontes de terceiros, marcadas).
+
+- **Diz:** o ORUM tem a higiene do desafio 402 e a honestidade; falta a mercadoria (texto introspectivo, não função de que a tarefa de um agente dependa) e o A2A não está ligado ao pagamento (skills gratuitas, sem extensão `a2a-x402`). 0 compradores externos confirmados.
+- **Não verificado:** os 791 vendedores sondados (404, só o título); se o Bazaar nos indexa; latência e liquidação real comparadas; o ranking vivo do x402scan. As fontes do mercado discordam entre si e incluem testes e bots.
+
 ## 15/11/2026 · ORAI-Agent#9 fundido; o agente a correr só em leitura; laço provado (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo ora", à proposta concreta de fundir o PR #9 e pôr o agente a correr só em leitura, com o laço dos pedidos provado de ponta a ponta. `ORAI-Agent#9` fundido (commit `f226155`).
