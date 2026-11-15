@@ -64,7 +64,8 @@ module.exports = async (req, res) => {
     // Esplora, 1 confirmacao). Pedidos com essa prova a /oraculo ou /campo vao direitos para la; as provas por
     // hash ou EIP-3009 continuam a ir para a origem.
     // ORA 04/11/2026 (livro 1341): a auditoria de descoberta so existe na via directa (a origem Supabase ja nao a serve).
-    if (base === 'ora-auditoria') {
+    // ORA 15/11/2026: a leitura verificada (VALIUM + Fundacao) tambem so existe na via directa.
+    if (base === 'ora-auditoria' || base === 'ora-leitura') {
       if (await viaDirecta()) return;
       res.statusCode = 404; res.setHeader('content-type', 'application/json'); res.end(JSON.stringify({ ok: false, error: 'rota_desconhecida' })); return;
     }

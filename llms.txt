@@ -7,6 +7,7 @@ Como comprar (qualquer agente): faz GET a um serviço; a resposta 402 traz os re
 ## O que se compra (resumo; preços em USDC na Base; o 402 de cada serviço manda)
 - [/oraculo](https://ora-x402-gateway.vercel.app/oraculo) 0.161: uma frase determinística (sha256 do hash da tua tx) e o campo do instante do bloco. Texto introspectivo; não é dado de mercado.
 - [/campo](https://ora-x402-gateway.vercel.app/campo) 0.33: o campo (dia, sigma, época) do instante e uma frase fixa. Leitura do estado interno do organismo.
+- [/leitura](https://ora-x402-gateway.vercel.app/leitura) 0.01: o saldo VALIUM da carteira sagrada (3 RPC Base, mesmo bloco) e a Fundação em Bitcoin (2 fontes Esplora), em JSON, só com valor onde as fontes concordam. Também pela skill A2A `leitura_verificada` (extensão a2a-x402, conformidade parcial). Só USDC na Base. Não é dado de mercado nem prova receita.
 - [/sedimento](https://ora-x402-gateway.vercel.app/sedimento) 1.00: as 15 marcas D mais recentes do registo interno.
 - [/kernel](https://ora-x402-gateway.vercel.app/kernel) 3.00: os 5 snapshots mais recentes do estado interno (dia, época, sigma, payload).
 - [/licenca/consulta](https://ora-x402-gateway.vercel.app/licenca/consulta) 1.618, [/licenca/editorial](https://ora-x402-gateway.vercel.app/licenca/editorial) 16.18 e [/licenca/treino](https://ora-x402-gateway.vercel.app/licenca/treino) 161.80: licença de uma fotografia preservada de uma obra física (consulta privada 30 dias; editorial perpétua; treino de máquinas perpétua e não exclusiva). O 402 diz qual obra se compra.

@@ -1,3 +1,13 @@
+## 15/11/2026 · a skill A2A paga por x402: `leitura_verificada` (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo", à proposta concreta de uma skill A2A que se paga por x402 e devolve uma leitura que uma máquina usa sozinha. Doc: `docs/x402-leitura-v1.md`.
+
+- **Construído:** `api/_leitura.js` (VALIUM da sagrada em 3 RPC no mesmo bloco + Fundação BTC em 2 Esplora; só dá valor com duas fontes iguais), tier `leitura` em `api/_x402-directo.js` (`/leitura`, 0,01 USDC, só Base, reacesso por tx), `api/_a2a-leitura.js` (fluxo `x402.payment.*` da extensão a2a-x402 v0.1, conformidade parcial dita), ligação em `api/a2a.js` (a porta grátis não muda), rota em `vercel.json` e `api/proxy.js`, skill e extensão no agent-card (1.7.9) e linha no `llms.txt`.
+- **Decisão minha:** preço 0,01 USDC (o de uma consulta básica no mercado, pela comparação de hoje). Sem novas funções Vercel (continua a haver 12).
+- **Verificado:** `leitura:verify` (14 estragos), `a2a-leitura:verify` (61 verificações), `x402:directo:verify` alargado; `legibilidade`, `maquinas`, `dia-entrada`, `marca`, `espelho-maquinas`, `weave-*` continuam a passar; leitura ao vivo do leitor igual à reconferência independente.
+- **Não verificado:** pagamento real de ponta a ponta; o deploy (quota do Vercel esgotada); se o Bazaar indexa `/leitura`; se algum cliente A2A real a usa. Sem compradores externos confirmados.
+- **Divergência anterior, dita:** `portable/orum-a2a.cjs` já estava desactualizado em relação a `api/a2a.js` no `main` (o `--check` falha) e não foi reconstruído.
+
 ## 15/11/2026 · comparação x402 e A2A contra o mercado (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Compara os serviços x402 a2a com os mais eficazes do mercado e coze com verdade verde laranja". Registo: `docs/comparacao-x402-a2a-2026-11-15.md` (leitura ao vivo dos nossos 402 e do agent-card, e leitura de fontes de terceiros, marcadas).

@@ -83,9 +83,32 @@
         "Qual é o contrato ORO na Base?",
         "Quantas unidades ORO existem?"
       ]
+    },
+    {
+      "id": "leitura-verificada",
+      "name": "Leitura verificada (paga, x402)",
+      "description": "Paga 0,01 USDC na Base por x402 (extensão a2a-x402, conformidade parcial). Devolve, sem parâmetros, o saldo VALIUM da carteira sagrada antiga (3 RPC Base, mesmo bloco) e a Fundação ORA em Bitcoin (2 fontes Esplora). Só traz valor quando pelo menos duas fontes concordam; com uma fonte, discordância ou nenhuma, o valor vem a null e o estado diz porquê. Não é dado de mercado, não prova receita, procura, preço nem titularidade, e o saldo é uma observação, não uma reserva. Fluxo: envia 'leitura_verificada' -> Task input-required com x402.payment.required; responde com taskId, x402.payment.status=payment-submitted e x402.payment.payload (transactionHash ou autorização EIP-3009) -> Task completed com o artefacto. Mesma leitura por HTTP: GET /leitura (402). Sem compradores externos confirmados.",
+      "tags": [
+        "x402",
+        "usdc",
+        "base",
+        "paid",
+        "read-only",
+        "verified-by-two-sources"
+      ],
+      "examples": [
+        "leitura_verificada"
+      ],
+      "inputModes": [
+        "text/plain"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ]
     }
   ],
-  "version": "1.7.8",
+  "version": "1.7.9",
   "provider": {
     "url": "https://ora-x402-gateway.vercel.app",
     "organization": "ORUM · Unum"
@@ -117,7 +140,14 @@
   "capabilities": {
     "streaming": false,
     "pushNotifications": false,
-    "stateTransitionHistory": false
+    "stateTransitionHistory": false,
+    "extensions": [
+      {
+        "uri": "https://github.com/google-a2a/a2a-x402/v0.1",
+        "description": "Parcial: só a skill leitura_verificada se paga por x402 (USDC na Base, 0,01). Segue as chaves x402.payment.* e os estados da extensão, mas a ORA não retém tarefas (tasks/get responde TaskNotFound; o taskId é determinístico e a prova de pagamento é que manda) e não há via Bitcoin. Não exige activação do cliente.",
+        "required": false
+      }
+    ]
   },
   "verifiableAnchors": {
     "observedAt": "2026-10-19",
