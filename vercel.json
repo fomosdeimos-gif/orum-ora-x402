@@ -113,6 +113,14 @@
       "destination": "/api/proxy?base=ora-auditoria"
     },
     {
+      "source": "/leitura/:rest*",
+      "destination": "/api/proxy?base=ora-leitura&rest=:rest*"
+    },
+    {
+      "source": "/leitura",
+      "destination": "/api/proxy?base=ora-leitura"
+    },
+    {
       "source": "/.well-known/x402.json",
       "destination": "/api/proxy?base=ora-x402&rest=.well-known/x402.json"
     },

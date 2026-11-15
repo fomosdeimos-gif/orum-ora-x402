@@ -21,6 +21,8 @@ const chain = {
   [tx(4)]: { value: 400000n, ageS: 80 * 3600 },     // fora da janela
   [tx(5)]: { value: 161000n, ageS: 60, to: '0x2222222222222222222222222222222222222222' },
   [tx(6)]: { value: 161000n, ageS: 60, failed: true },
+  [tx(7)]: { value: 10000n, ageS: 60 },             // leitura exacta (0,01 USDC)
+  [tx(8)]: { value: 9999n, ageS: 60 },              // leitura: um atomo a menos
 };
 const rpc = async (method, params) => {
   if (method === 'eth_getTransactionReceipt') {
@@ -108,12 +110,67 @@ const dres = mockRes();
 await down({ headers: { 'x-payment': JSON.stringify({ transactionHash: tx(1) }) } }, dres, { base: 'ora-oraculo', rest: '', origin: ORIGIN });
 assert.equal(dres.statusCode, 503);
 
+
+// Leitura verificada (15/11/2026): 0,01 USDC, só Base, entrega a leitura do leitor; o leitor aqui é simulado (sem rede).
+{
+  const { validarLeitura } = require('../api/_leitura.js');
+  const boa = { formato: 'orum-leitura-verificada/v1', lido_em: '2026-09-30T12:00:00.000Z',
+    valium_na_sagrada: { carteira: '0xFEd69e8ee87A1F0fBbF8409ab654FC51832cDEe5', contrato: '0x37f70bccdc2125346a7542fe6e7fc70e33421635', decimais: 18, estado: 'concordam', verificado: true, bloco: 1, valor_wei: '1500000000000000000', valium: '1.5', fontes_ok: ['a', 'b'], fontes_falhadas: [] },
+    fundacao_btc: { estado: 'concordam', verificado: true, endereco: 'bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7', fontes_ok: ['a', 'b'], fontes_falhadas: [], saldo_confirmado_sats: 10072, saldo_mempool_sats: 0, transaccoes_confirmadas: 2 },
+    regra: 'só diz concordam com pelo menos duas fontes iguais', nao_afirma: ['receita', 'procura', 'preco do VALIUM', 'reserva ou lastro'] };
+  assert.deepEqual(validarLeitura(boa), []);
+  let leituras = 0;
+  const hL = d.createHandler({ rpc, now: () => NOW, leitor: { ler: async () => { leituras++; return { ...boa, lido_em: 'leitura-' + leituras }; } } });
+  const callL = async (rest, payment) => {
+    const res = mockRes();
+    const rq = { headers: payment ? { 'x-payment': Buffer.from(JSON.stringify(payment)).toString('base64') } : {} };
+    const handled = await hL(rq, res, { base: 'ora-leitura', rest, origin: ORIGIN });
+    return { handled, status: res.statusCode, body: res.body, h: res.h };
+  };
+  // desafio: 402 v2, 10000 atomos, payTo operacional, Bazaar, sem via Bitcoin
+  const cl = await callL('');
+  assert.equal(cl.status, 402);
+  const reqL = JSON.parse(Buffer.from(cl.h['payment-required'], 'base64').toString());
+  assert.equal(reqL.accepts[0].amount, '10000'); assert.equal(reqL.accepts[0].payTo, d.WALLET); assert.equal(reqL.resource.url, ORIGIN + '/leitura');
+  assert.ok(reqL.extensions.bazaar.info.output.example.leitura);
+  assert.match(cl.body.legibilidade.para_que, /duas fontes/); assert.match(cl.body.legibilidade.para_que, /Não prova receita/);
+  assert.equal(cl.body.pagamento_alternativo_bitcoin.disponivel, false);
+  assert.ok(cl.body.legibilidade.resposta_paga_schema.properties.leitura);
+  // pago: a leitura vem na resposta, e a resposta e a do leitor
+  const pl = await callL('', { transactionHash: tx(7) });
+  assert.equal(pl.status, 200); assert.equal(pl.body.tier, 'leitura'); assert.equal(pl.body.tx_hash, tx(7));
+  assert.deepEqual(pl.body.leitura, { ...boa, lido_em: 'leitura-1' }); assert.equal(pl.body.reacesso, false); assert.equal(pl.body.truth_machine.reads_public_chain, true); assert.equal(pl.body.truth_machine.is_introspective_reading, false);
+  assert.ok(pl.h['payment-response']);
+  // a mesma prova repete a MESMA leitura e nao volta a gastar as fontes (reacesso); uma tx diferente tem leitura nova
+  const pl2 = await callL('', { transactionHash: tx(7) });
+  assert.equal(pl2.status, 200); assert.equal(pl2.body.reacesso, true); assert.deepEqual(pl2.body.leitura, pl.body.leitura); assert.equal(leituras, 1, 'o leitor nao foi chamado outra vez');
+  chain[tx(7)].ageS = 80 * 3600; // fora da janela: a prova deixa de servir, mesmo com a leitura guardada
+  assert.equal((await callL('', { transactionHash: tx(7) })).status, 402); chain[tx(7)].ageS = 60;
+  // um atomo a menos, tx de outro servico mais barato (o preco e por servico) e prova inexistente nao entregam
+  assert.equal((await callL('', { transactionHash: tx(8) })).status, 402);
+  assert.equal((await callL('', { transactionHash: tx(9) })).status, 402);
+  // a via Bitcoin nao existe para a leitura
+  const bl = await callL('', { bitcoin: { txid: 'a'.repeat(64) } });
+  assert.equal(bl.status, 402); assert.match(bl.body.erro, /so existe para \/oraculo e \/campo/);
+  // leitor em falha: 503, o pagamento fica confirmado e diz-se para repetir sem pagar de novo
+  const hF = d.createHandler({ rpc, now: () => NOW, leitor: { ler: async () => { throw new Error('fontes em baixo'); } } });
+  const rF = mockRes();
+  await hF({ headers: { 'x-payment': JSON.stringify({ transactionHash: tx(7) }) } }, rF, { base: 'ora-leitura', rest: '', origin: ORIGIN });
+  assert.equal(rF.statusCode, 503); assert.equal(rF.body.error, 'leitura_indisponivel'); assert.match(rF.body.nota, /nao pagues de novo/);
+  // eco: forma sem leitura real
+  const el = await callL('eco');
+  assert.equal(el.status, 200); assert.equal(el.body.eco, 'gratuito'); assert.ok(el.body.exemplo_de_resposta.properties.valium_na_sagrada); assert.ok(!('leitura' in el.body));
+  // o servico mais caro nao e comprado com o preco da leitura
+  assert.equal((await call('ora-oraculo', '', { transactionHash: tx(7) })).status, 402);
+  assert.equal((await call('ora-x402', '', { transactionHash: tx(7) })).status, 402);
+}
+
 // Free sample and manifest.
 assert.equal((await call('ora-oraculo', 'eco')).status, 200);
 const man = await call('ora-x402', '.well-known/x402.json');
 assert.equal(man.status, 200);
-assert.deepEqual(man.body.resources.map((r) => r.resource), [ORIGIN + '/oraculo', ORIGIN + '/campo', ORIGIN + '/auditoria']);
-assert.deepEqual(man.body.resources.map((r) => r.accepts[0].amount), ['161000', '330000', '500000']);
+assert.deepEqual(man.body.resources.map((r) => r.resource), [ORIGIN + '/oraculo', ORIGIN + '/campo', ORIGIN + '/auditoria', ORIGIN + '/leitura']);
+assert.deepEqual(man.body.resources.map((r) => r.accepts[0].amount), ['161000', '330000', '500000', '10000']);
 assert.ok(man.body.indisponiveis_nesta_via.includes('sedimento') && man.body.indisponiveis_nesta_via.includes('kernel'));
 assert.ok(!JSON.stringify(man.body.resources).includes('/sedimento') && !JSON.stringify(man.body.resources).includes('/kernel'));
 

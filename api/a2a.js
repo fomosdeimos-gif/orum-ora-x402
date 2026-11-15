@@ -35,6 +35,11 @@ const PAID_SERVICES = Object.freeze([
   Object.freeze({ id: 'oraculo', priceUsdc: '0.161', endpoint: BASE + '/oraculo', sample: BASE + '/oraculo/eco' }),
   Object.freeze({ id: 'campo', priceUsdc: '0.33', endpoint: BASE + '/campo', sample: BASE + '/x402/eco' })
 ]);
+// 15/11/2026: a skill paga `leitura_verificada` (api/_a2a-leitura.js) carrega-se so quando e pedida; a porta gratuita nao muda.
+const A2A_X402_URI = 'https://github.com/google-a2a/a2a-x402/v0.1';
+const PAGAMENTO = 'x402.payment.status';
+let leituraImpl = null;
+const leituraA2a = () => (leituraImpl ||= require('./_a2a-leitura').criar());
 const LIMIT = 16384;
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -157,7 +162,7 @@ module.exports = async (req, res) => {
   res.setHeader('cache-control', 'no-store');
   res.setHeader('access-control-allow-origin', '*');
   res.setHeader('access-control-allow-methods', 'POST, OPTIONS');
-  res.setHeader('access-control-allow-headers', 'Content-Type');
+  res.setHeader('access-control-allow-headers', 'Content-Type, X-A2A-Extensions');
   const send = (status, value) => { res.statusCode = status; res.end(JSON.stringify(value)); };
   const error = (id, code, message, status = 200) => send(status, { jsonrpc: '2.0', id, error: { code, message } });
   if (req.method === 'OPTIONS') { res.statusCode = 204; return res.end(); }
@@ -169,7 +174,9 @@ module.exports = async (req, res) => {
   if (rpc.method !== 'message/send') return error(rpc.id, -32601, 'Method not found');
   const m = rpc.params?.message;
   if (!m || m.kind !== 'message' || m.role !== 'user' || typeof m.messageId !== 'string' || !m.messageId.length || m.messageId.length > 128 || !Array.isArray(m.parts) || !m.parts.length || m.parts.some(p => !p || p.kind !== 'text' || typeof p.text !== 'string')) return error(rpc.id, -32602, 'Expected a user Message with text parts and messageId');
-  if (m.taskId) return error(rpc.id, -32001, 'Task not found');
+  const metaPagamento = m.metadata && typeof m.metadata === 'object' && !Array.isArray(m.metadata) ? m.metadata[PAGAMENTO] : undefined;
+  const aPagar = metaPagamento !== undefined;
+  if (m.taskId && !aPagar) return error(rpc.id, -32001, 'Task not found');
   if (rpc.params.configuration?.pushNotificationConfig) return error(rpc.id, -32003, 'Push notifications not supported');
   const modes = rpc.params.configuration?.acceptedOutputModes;
   if (modes && (!Array.isArray(modes) || !modes.includes('text/plain'))) return error(rpc.id, -32005, 'Only text/plain output is supported');
@@ -179,9 +186,17 @@ module.exports = async (req, res) => {
   let thread = randomUUID();
   if (m.contextId !== undefined) {
     if (typeof m.contextId !== 'string') return error(rpc.id, -32602, 'Invalid contextId');
-    const context = /^orum-a2a-v1:(open|oro|principles|auditoria|x402):([a-f0-9-]{36})$/.exec(m.contextId);
+    const context = /^orum-a2a-v1:(open|oro|principles|auditoria|x402|leitura):([a-f0-9-]{36})$/.exec(m.contextId);
     if (!context) return error(rpc.id, -32602, 'Unknown context format; omit contextId to start');
     [, topic, thread] = context;
+  }
+  if (aPagar || /^leitura_verificada(?:\s|$)/.test(text)) {
+    const contextoPago = m.contextId || `orum-a2a-v1:leitura:${thread}`;
+    if (String((req.headers && req.headers['x-a2a-extensions']) || '').includes(A2A_X402_URI)) res.setHeader('x-a2a-extensions', A2A_X402_URI);
+    let saida;
+    try { saida = await leituraA2a().tratar({ m, text, contextId: contextoPago }); } catch { return error(rpc.id, -32603, 'Internal error'); }
+    if (saida.erro) return error(rpc.id, saida.erro[0], saida.erro[1]);
+    return send(200, { jsonrpc: '2.0', id: rpc.id, result: saida.result });
   }
   const result = answer(text, topic);
   const contextId = m.contextId || `orum-a2a-v1:${result.topic}:${thread}`;
@@ -195,3 +210,4 @@ module.exports = async (req, res) => {
       inference: result.comparison ? 'deterministic text comparison; no factual verification' : 'deterministic public-capsule retrieval' }
   } });
 };
+module.exports.definirLeitura = (impl) => { leituraImpl = impl; }; // so para verificadores

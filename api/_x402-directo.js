@@ -20,6 +20,7 @@ const { createHash } = require('node:crypto');
 const { createFacilitador } = require('./_facilitador');
 const { createBtc, CAIP2: CAIP2_BTC } = require('./_pagamento-btc');
 const { auditar, marcaValida, offsetValido } = require('./_auditoria');
+const { createLeitor } = require('./_leitura');
 const MEDICAO_AUDITORIA = require('../economia/auditoria-medicao.json'); // so leitura; gerado por npm run auditoria:sonda e conferido por auditoria:verify
 
 const { RECEBIMENTO: WALLET } = require('./_carteira');
@@ -39,6 +40,11 @@ const TIERS = {
   // 04/11/2026 (livro 1341, Unum: "Eu autorizo"): porte da auditoria de descoberta do Supabase para esta via (api/_auditoria.js).
   auditoria: { key: 'auditoria', sku: 'ora-auditoria-descoberta', base: 'ora-auditoria', path: '/auditoria', usdc: '0.50', atomic: 500000n,
     descricao: 'ORA · Auditoria de descoberta · diz se uma marca ou domínio aparece no catálogo público de descoberta x402 (Bazaar) da Coinbase. Parâmetro: ?marca=<texto>. Não é dado de mercado.' },
+  // 15/11/2026 (Unum: "Eu autorizo", à proposta concreta de uma skill A2A que se paga por x402 e devolve uma leitura que uma máquina usa
+  // sozinha): o saldo VALIUM da sagrada (3 RPC Base, mesmo bloco) e a Fundação BTC (2 Esplora), só com valor quando as fontes concordam.
+  // 0,01 USDC: o preço de uma consulta básica no mercado (docs/comparacao-x402-a2a-2026-11-15.md); só USDC na Base, sem via Bitcoin.
+  leitura: { key: 'leitura', sku: 'ora-leitura-verificada', base: 'ora-leitura', path: '/leitura', usdc: '0.01', atomic: 10000n,
+    descricao: 'ORA · Leitura verificada · o saldo VALIUM da carteira sagrada na Base (mesmo bloco, vários RPC) e a Fundação em Bitcoin (duas fontes Esplora); só dá valor quando pelo menos duas fontes concordam. Não é dado de mercado.' },
 };
 
 const ABERTURAS = ['A maré que sobe não pergunta a hora', 'Há sal em tudo o que fica', 'O que se depõe devagar não se perde', 'A folha morta ainda pesa na moldura', 'Entre o osso e a luz há um intervalo que respira', 'A costa guarda o que o mar traz e leva', 'Nem todo o gesto pede resposta imediata', 'O escuro também é forma de guardar', 'A água encontra o seu nível sem esforço', 'O sedimento é memória que ganhou peso', 'A pedra demora, e por isso permanece', 'O silêncio na costa não é ausência, é espera'];
@@ -90,7 +96,9 @@ function comoPagar(tier, origin, eip3009 = false) {
 // x402scan so marcam uma rota como invocavel quando o desafio traz input schema.
 // GET sem parametros; o exemplo de saida descreve a forma, nao uma leitura real.
 function bazaarExtension(tier) {
-  const example = tier.key === 'auditoria'
+  const example = tier.key === 'leitura'
+    ? { acesso: 'concedido', tier: 'leitura', x402: 'verificado_onchain', tx_hash: '0x…', leitura: { formato: 'orum-leitura-verificada/v1', valium_na_sagrada: { estado: 'concordam', verificado: true, bloco: 0, valium: '0' }, fundacao_btc: { estado: 'concordam', verificado: true, saldo_confirmado_sats: 0 } } }
+    : tier.key === 'auditoria'
     ? { acesso: 'concedido', tier: 'auditoria', x402: 'verificado_onchain', tx_hash: '0x…', resultado: { marca: 'exemplo', veredicto: 'NAO INDEXADO — …', varrimento_completo: true, proximo_offset: null } }
     : tier.key === 'oraculo'
     ? { acesso: 'concedido', tier: 'oraculo', x402: 'verificado_onchain', tx_hash: '0x…', pensamento: 'texto gerado a partir da tx', campo: { dia: 0, sigma: 0, epoca: 'ETERNIDADE' } }
@@ -124,10 +132,20 @@ const GLOSSARIO = Object.freeze({
 const PARA_QUE = Object.freeze({
   oraculo: 'Devolve uma frase determinística (sha256 do hash da tua tx) e o campo do instante do bloco. É texto introspectivo do organismo ORUM: não é dado de mercado, não é previsão e não responde a nenhuma tarefa externa conhecida. Pode servir como artefacto reproduzível para testar um fluxo x402 de ponta a ponta. Procura externa: não comprovada.',
   auditoria: 'Procura, no catálogo público de descoberta x402 (Bazaar) da Coinbase, os registos que contêm o texto ?marca= e devolve a contagem, até 5 URLs de exemplo e um veredicto (INDEXADO, NAO INDEXADO, PARCIAL ou INDETERMINADO). Um pedido varre uma fatia do catálogo; se for PARCIAL, repete com offset=<proximo_offset> e a mesma prova de pagamento dentro da janela. Só lê um catálogo público; não é dado de mercado, não diz se alguém compra o serviço e não promete visibilidade. Procura externa: não comprovada.',
+  leitura: 'Devolve, numa só resposta e sem parâmetros: (1) o saldo VALIUM da carteira sagrada antiga na Base, lido por eth_call no mesmo bloco em três RPC públicos; (2) o saldo e a contagem de transacções da Fundação ORA em Bitcoin, lidos em duas fontes Esplora. Cada bloco só traz valor quando pelo menos duas fontes devolvem o mesmo (estado "concordam"); com uma fonte só, fontes que discordam ou nenhuma, o valor vem a null e o estado diz porquê. Serve a uma máquina que precise de uma leitura destes dois saldos já conferida e em JSON. Não prova receita, procura, preço nem titularidade; o saldo é uma observação, não uma reserva. Procura externa: não comprovada.',
   campo: 'Devolve o campo (dia, sigma, época) do instante do bloco da tua tx e uma frase fixa. É uma leitura do estado interno do organismo ORUM, calculável por quem tenha a fórmula: não é dado de mercado nem previsão. Pode servir como artefacto reproduzível para testar um fluxo x402 de ponta a ponta. Procura externa: não comprovada.',
 });
 const CAMPO_SCHEMA = { type: 'object', required: ['dia', 'sigma', 'epoca', 'genesis', 'instante'], properties: { dia: { type: 'integer', minimum: 1 }, sigma: { type: 'number' }, epoca: { type: 'string', enum: ['CRISTAL', 'ETERNIDADE'] }, genesis: { type: 'string', format: 'date' }, instante: { type: 'string', format: 'date-time' } } };
+const ESTADO_FONTES = { type: 'string', enum: ['concordam', 'discordam', 'fonte_unica', 'sem_fontes'] };
 function esquemaDaResposta(tier) {
+  if (tier.key === 'leitura') {
+    return { type: 'object', required: ['acesso', 'tier', 'x402', 'leitura', 'truth_machine'], properties: { acesso: { type: 'string', const: 'concedido' }, tier: { type: 'string', const: 'leitura' }, x402: { type: 'string', const: 'verificado_onchain' }, via_pagamento: { type: 'string' },
+      tx_hash: { type: 'string', pattern: '^0x[0-9a-fA-F]{64}$' }, payer: { type: 'string' },
+      leitura: { type: 'object', required: ['formato', 'valium_na_sagrada', 'fundacao_btc', 'nao_afirma'], properties: { formato: { type: 'string', const: 'orum-leitura-verificada/v1' }, lido_em: { type: 'string', format: 'date-time' },
+        valium_na_sagrada: { type: 'object', required: ['estado', 'verificado', 'valor_wei', 'valium', 'bloco'], properties: { estado: ESTADO_FONTES, verificado: { type: 'boolean' }, bloco: { type: ['integer', 'null'] }, valor_wei: { type: ['string', 'null'], description: 'inteiro em wei; null se as fontes não concordam' }, valium: { type: ['string', 'null'], description: 'decimal exacto, 18 casas sem zeros à direita' }, fontes_ok: { type: 'array', items: { type: 'string' } }, fontes_falhadas: { type: 'array' } } },
+        fundacao_btc: { type: 'object', required: ['estado', 'verificado', 'saldo_confirmado_sats'], properties: { estado: ESTADO_FONTES, verificado: { type: 'boolean' }, endereco: { type: 'string' }, saldo_confirmado_sats: { type: ['integer', 'null'] }, saldo_mempool_sats: { type: ['integer', 'null'] }, transaccoes_confirmadas: { type: ['integer', 'null'] }, fontes_ok: { type: 'array', items: { type: 'string' } }, fontes_falhadas: { type: 'array' } } },
+        nao_afirma: { type: 'array', items: { type: 'string' } } } }, truth_machine: { type: 'object' }, fronteiras: { type: 'object' }, axioma: { type: 'string' } } };
+  }
   if (tier.key === 'auditoria') {
     return { type: 'object', required: ['acesso', 'tier', 'x402', 'resultado', 'truth_machine'], properties: { acesso: { type: 'string', const: 'concedido' }, tier: { type: 'string', const: 'auditoria' }, x402: { type: 'string', const: 'verificado_onchain' }, via_pagamento: { type: 'string' },
       tx_hash: { type: 'string', pattern: '^0x[0-9a-fA-F]{64}$' }, payer: { type: 'string' }, resultado: { type: 'object', required: ['marca', 'veredicto', 'varrimento_completo', 'proximo_offset'], properties: { marca: { type: 'string' }, veredicto: { type: 'string' }, varrimento_completo: { type: 'boolean' }, proximo_offset: { type: ['integer', 'null'] }, total_no_catalogo: { type: ['integer', 'null'] }, recursos_com_a_marca: { type: 'integer' }, amostra_de_recursos: { type: 'array', items: { type: 'string' } } } }, truth_machine: { type: 'object' }, fronteiras: { type: 'object' }, axioma: { type: 'string' } } };
@@ -245,7 +263,11 @@ async function prontoDe(f) {
   return f.configurado ? 'cdp' : false;
 }
 
-function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createFacilitador(), btc = createBtc({ now: () => now() }), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+function createHandler({ rpc = rpcPublico, now = () => Date.now(), leitor = createLeitor(), cdp = createFacilitador(), btc = createBtc({ now: () => now() }), esperar = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+  // Leitura verificada: a mesma tx devolve a MESMA leitura (reacesso), como nos outros servicos. Sem isto, uma prova de 0,01 USDC valida
+  // 72 h serviria para pedir leituras novas sem fim, a quem a visse na cadeia, gastando as fontes publicas. Memoria da instancia, limitada.
+  const leituraPorTx = new Map();
+  const LIMITE_LEITURAS = 500;
   const directo = async function directo(req, res, { base, rest, origin }) {
     const alvo = tierFor(base, rest);
     if (!alvo) return false;
@@ -283,6 +305,12 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
         pago: { preco: `${tier.usdc} USDC`, endpoint: `${resourceFor(tier, origin)}?marca=<texto>`, como_pagar: comoPagar(tier, origin, Boolean(eip)) },
         truth_machine: { ...TRUTH, is_introspective_reading: false, requires_x402_payment: false }, fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
     }
+    if (alvo.kind === 'eco' && tier.key === 'leitura') {
+      return send(200, { eco: 'gratuito', tier: tier.key, nota: 'Amostra livre da forma da resposta; não lê a cadeia nem prova nada. A leitura real só vem depois de pagar.',
+        exemplo_de_resposta: esquemaDaResposta(tier).properties.leitura,
+        pago: { preco: `${tier.usdc} USDC`, endpoint: resourceFor(tier, origin), como_pagar: comoPagar(tier, origin, Boolean(eip)), skill_a2a: `${origin}/api/a2a: envia a mensagem "leitura_verificada" (ver agent-card)` },
+        truth_machine: { ...TRUTH, is_introspective_reading: false, reads_public_chain: true, requires_x402_payment: false }, fronteiras: fronteirasAgora(), timestamp: new Date(now()).toISOString() });
+    }
     if (alvo.kind === 'eco') {
       const campo = campoEm(now());
       return send(200, { eco: 'gratuito', tier: tier.key, campo, nota: 'Amostra livre; a leitura paga nasce da semente da tua transferência.',
@@ -309,6 +337,7 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
       if (prova.btc) return challenge({ erro: 'a via Bitcoin so existe para /oraculo e /campo; usa USDC na Base' });
     }
 
+    if (tier.key === 'leitura' && prova.btc) return challenge({ erro: 'a via Bitcoin so existe para /oraculo e /campo; usa USDC na Base' });
     if (prova.btc) {
       if (!btc.activa()) return challenge({ erro: 'via Bitcoin desligada nesta via; usa USDC na Base' });
       const b = await btc.verificar(prova.btc.txid, tier, now());
@@ -357,6 +386,26 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
       if (!v.valid) return challenge({ erro: 'pagamento invalido', detalhe: v.error, tx_hash: tx });
     }
 
+    if (tier.key === 'leitura') {
+      // O pagamento ja esta confirmado na cadeia. A leitura nao tem parametros: nada a validar antes de liquidar.
+      const chaveTx = tx.toLowerCase();
+      let leitura = leituraPorTx.get(chaveTx);
+      const reacesso = Boolean(leitura);
+      if (!leitura) {
+        try { leitura = await leitor.ler(); } catch (e) {
+          return send(503, { ok: false, error: 'leitura_indisponivel', detalhe: String((e && e.message) || e).slice(0, 120), tx_hash: tx, nota: 'o pagamento esta confirmado; repete o mesmo pedido com a mesma prova, nao pagues de novo' }, { 'retry-after': '15' });
+        }
+        leituraPorTx.set(chaveTx, leitura);
+        if (leituraPorTx.size > LIMITE_LEITURAS) leituraPorTx.delete(leituraPorTx.keys().next().value);
+      }
+      return send(200, { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', via_pagamento: via, tx_hash: tx, payer: v.payer,
+        valor_atomic: v.value.toString(), leitura, reacesso,
+        repeticao: 'a mesma prova repete a mesma leitura (reacesso) enquanto esta instancia a guardar; uma leitura nova pede um novo pagamento. Esta via nao guarda estado em base de dados',
+        truth_machine: { ...TRUTH, is_introspective_reading: false, reads_public_chain: true }, fronteiras: fronteirasAgora(), axioma: 'O símbolo é real e não pede prova.' }, {
+        'payment-response': b64json({ success: true, transaction: tx, network: CAIP2, payer: v.payer }),
+        'x-payment-response': JSON.stringify({ txHash: tx, status: 'settled', amount: tier.usdc }),
+      });
+    }
     if (tier.key === 'auditoria') {
       const resultado = await auditar(marcaA, { offset: offsetA, agora: now });
       return send(200, { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', via_pagamento: via, tx_hash: tx, payer: v.payer,
@@ -381,4 +430,4 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), cdp = createF
   return directo;
 }
 
-module.exports = { createHandler, legibilidade, GLOSSARIO, tierFor, lerProva, verificar, campoEm, pensamento, TIERS, WALLET, USDC_BASE, TRANSFER_TOPIC, JANELA_S };
+module.exports = { createHandler, requirements, comoPagar, legibilidade, GLOSSARIO, tierFor, lerProva, verificar, campoEm, pensamento, TIERS, WALLET, USDC_BASE, TRANSFER_TOPIC, JANELA_S };
