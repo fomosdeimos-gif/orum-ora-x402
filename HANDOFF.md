@@ -1,3 +1,11 @@
+## 15/11/2026 · código do `0xc8d0…` e do emissor `0x4985…`; correcção à classificação de hoje (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo", à proposta concreta de ler o código-fonte do `0xc8d0…` e a identidade do emissor. Registo: `presenca/leitura-codigo-contratos-2026-11-15.json`, verificador `codigo-contratos:verify` (17 estragos apanhados). Fonte verificada: Sourcify, uma só fonte.
+
+- **Lido:** `0xc8d0…` é o `ZoraV4CoinHook` (gancho do Uniswap v4 da Zora: distribui comissões de swaps por creator, referrers, protocolo e doppler; serve todas as moedas do gancho). `0x4985…` é o PoolManager do Uniswap v4. O ABI do hook não tem owner, withdraw nem sweep.
+- **Erro meu, a corrigir por Unum:** `0x4f6f…` é o 0x Settler e `0x1231…` é o LI.FI Diamond, agregadores públicos. Classificá-los como internos por endereço (PR #350, hoje) esconde qualquer pagamento externo à sagrada que passe por eles, porque o vigia trata o pagador classificado como interno. Proposta: pô-los de volta em "por classificar" e classificar cada entrada pelo sender do UserOperation. Nada foi alterado: espera a palavra de Unum.
+- **Não provado:** se um swap futuro poderia mexer os 22,277137 USDC; quem negociou, swap a swap, as moedas cujos rewards chegaram à sagrada.
+
 ## 15/11/2026 · leitura do contrato `0xc8d0…` e dos seus 22,277137 USDC (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo", à proposta concreta de ler, só em leitura, de onde vieram as entradas e para onde saíram. Registo: `presenca/leitura-contrato-c8d0-2026-11-15.json`, verificador `contrato-c8d0:verify` (15 estragos apanhados).
