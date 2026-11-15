@@ -1,3 +1,13 @@
+## 15/11/2026 · primeiro pagamento real de `/leitura`, ponta a ponta, em produção: DEPOIS do acto (mão Claude Code; livro por escrever)
+
+Acção `x402_pagar_leitura` (executor `ora-cdp-carteira-real` v17, implantado; despacho novo `ora_x402_leitura_dispatch_v1`), chamada UMA vez com `request_id` `bc153211-4c87-47b7-8516-3256d6b70010` (net._http_response 534991).
+
+- **Lido (verificado):** o gateway respondeu 200, `delivered: true`, `via_pagamento: eip3009-publico`, `reacesso: false`, `tx_hash` `0x34f6e21f…76d7`; a leitura veio com VALIUM da sagrada `2976.352211822864886784` (bloco 57800983, `concordam`) e Fundação BTC `10072` sats (`concordam`). `signature_returned: false`.
+- **Cadeia, conferida por mim em dois RPC (mainnet.base.org e base-rpc.publicnode.com):** recibo `0x1` no bloco 57800987; o USDC emitiu `AuthorizationUsed` e `Transfer` de `0x8946…3584` para `0x8946…3584` de 0x2710 = 10 000 átomos. A transacção foi submetida por um facilitador (`from 0xc669…cb63`, via Multicall3), não pela operacional. Saldo da operacional antes: 161 000 átomos, ETH 794310000000000 wei (`observe` 534990).
+- **O que isto é:** autotransferência interna, validação do fluxo (desafio 402, assinatura EIP-3009, verificação, liquidação por facilitador público, entrega só depois de ver a cadeia). **Não é receita externa, não é adopção, não entra no 70/20/10.** Compradores externos confirmados continuam a ser 0.
+- **Agora verificado:** o facilitador público aceita liquidar a autotransferência e `/leitura` entrega em produção. **Ainda não verificado:** saldo da operacional depois (esperado: 161 000 menos o que o facilitador não cobra; relido por `observe` na próxima passagem), o Bazaar indexar `/leitura`, uso por um cliente real.
+- A autorização do nonce deste pedido está consumida; repetir o mesmo `request_id` não paga outra vez.
+
 ## 15/11/2026 · acção `x402_pagar_leitura` do executor operacional: registo ANTES do acto (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo ora", ao texto concreto: acção nova do executor, valor fixo 10 000 átomos de USDC (0,01) da operacional para a própria operacional, URL e modelo EIP-712 fixos, validade 10 min, nonce derivado do `request_id`, assinatura nunca devolvida; usá-la para o primeiro pagamento real de `/leitura` em produção.
