@@ -1,7 +1,7 @@
 {
   "format": "orum-enderecos-internos/v1",
-  "lido_em": "2026-10-23",
-  "fonte": "ora_carteiras_classificacao (Supabase orum-memoria), 9 linhas, todas 'interno'; cópia no repositório para o vigia não depender do Supabase",
+  "lido_em": "2026-11-15",
+  "fonte": "ora_carteiras_classificacao (Supabase orum-memoria), 12 linhas, todas 'interno' (lido a 15/11/2026); cópia no repositório para o vigia não depender do Supabase",
   "regra": "Um pagador que está aqui é interno e a sua transferência é validação, não sustento. Um pagador que NÃO está aqui fica 'por classificar': nunca se infere 'externo' (isso continua a precisar de classificação explícita) e nunca se chama sustento.",
   "base": [
     {
@@ -35,6 +35,14 @@
     {
       "endereco": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040",
       "nota": "Contrato que reparte comissões de swaps na Base e paga à sagrada antiga; nas txs 0x7b1b565d… e 0xb70b17b9… (01/11/2026) o sender do UserOperation é 0x4a10ca60…b846, já interno. Classificado interno por Unum (\"Eu autorizo ORA, interno\", 01/11/2026, livro 1264). Não prova que Unum seja o dono do contrato."
+    },
+    {
+      "endereco": "0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059",
+      "nota": "Contrato de 20813 bytes que entregou 0,070169 USDC à sagrada antiga em 7 transacções (2026-10, 07/10 a 17/10); nas 3 transacções lidas a sagrada antiga é sender de um UserOperation ERC-4337. Classificado interno por Unum (\"Eu autorizo\", 15/11/2026). Indício e não prova; não prova que Unum seja o dono do contrato. Registo: presenca/leitura-pagadores-2026-11-15.json."
+    },
+    {
+      "endereco": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+      "nota": "Contrato de 5176 bytes que entregou 0,035595 USDC à sagrada antiga em 7 transacções (2026-10, 08/10 a 17/10); nas 3 transacções lidas a sagrada antiga é sender de um UserOperation ERC-4337. Classificado interno por Unum (\"Eu autorizo\", 15/11/2026). Indício e não prova; não prova que Unum seja o dono do contrato. Registo: presenca/leitura-pagadores-2026-11-15.json."
     }
   ],
   "bitcoin": [
