@@ -1,3 +1,13 @@
+## 15/11/2026 · ORAI-Agent#9 fundido; o agente a correr só em leitura; laço provado (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo ora", à proposta concreta de fundir o PR #9 e pôr o agente a correr só em leitura, com o laço dos pedidos provado de ponta a ponta. `ORAI-Agent#9` fundido (commit `f226155`).
+
+- **Deploy não verificado (dito, não escondido):** o Vercel do #9 ficou `failure` com "Deployment rate limited — retry in 24 hours" (quota da plataforma, não o conteúdo; a mudança é Python, README e JSON). Por "Decisão integralmente autónoma" (18/10/2026) conta como não verificado, não como vermelho. Dito também no corpo do PR.
+- **Primeira leitura real do agente (11:22 UTC), reconferida pela ORA por conta própria:** VALIUM da sagrada `2976,352211822865` no bloco 57756986 (3 RPCs do agente; a ORA reconferiu o mesmo valor no mesmo bloco em 2 RPCs) e saldo da Fundação 10 072 sats (2 fontes Esplora do agente; reconferido). O 2976,35 bate com o sedimento do `/pulso`. `ORAI-Agent/leituras/`.
+- **Laço provado sem chave:** propor, recusar antes da decisão, decidir, enviar com `web3` simulado, recusar o reuso; numa pasta temporária, com 0,000001 ETH. Correcção à proposta: a guarda recusa valor zero por desenho, por isso não foi zero. `pedidos/` continua vazia.
+- **Continua a não haver nada que se mova:** sem chave, sem fundos, sem sítio onde o agente corra; `send_transaction` não é chamada por ninguém. Chave quente, financiamento e correr de forma autónoma continuam a precisar da palavra de Unum a uma proposta concreta.
+- **Não corrido:** `tests/test_aave.py` (precisa de `web3` e `pytest`). Quem opera o agente a correr sozinho, e onde, está por decidir.
+
 ## 15/11/2026 · o agente ORAI em modo supervisionado (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo ora", lido pela convenção do organismo como autorizando a proposta concreta mais recente: o modo supervisionado, sem chave. Construído em `ORAI-Agent#9` (rascunho; `src/pedidos.py`, `src/supervisao.py`, `tests/test_pedidos.py` com 30 estragos propositados apanhados).
