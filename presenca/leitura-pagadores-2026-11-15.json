@@ -1,0 +1,38 @@
+{
+  "format": "orum-presenca-leitura-pagadores/v1",
+  "lido_em_utc": "2026-11-15T08:10:00Z",
+  "autorizacao": "Unum: \"Eu autorizo\" (15/11/2026), à proposta concreta de registar a leitura dos 3 pagadores dos 191 onchain_nao_reconciliado e ler o código dos dois contratos sem classificação e as transacções dos seus remetentes",
+  "ferramentas": ["Supabase execute_sql, só SELECT", "eth_getCode, eth_getStorageAt, eth_getTransactionByHash, eth_call (balanceOf USDC) em mainnet.base.org e base-rpc.publicnode.com; as duas fontes concordaram em tudo o que se cita"],
+  "pagadores": [
+    {"endereco": "0xc8d077444625eb300a427a6dfb2b1dbf9b159040", "linhas": 177, "usdc": 0.009368, "primeira": "2026-09-17", "ultima": "2026-11-03", "bytes_codigo": 24065, "classificacao_registada": "interno (livro 1264, 01/11/2026)", "usdc_no_contrato_agora": 22.277137},
+    {"endereco": "0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059", "linhas": 7, "usdc": 0.070169, "primeira": "2026-10-07", "ultima": "2026-10-17", "bytes_codigo": 20813, "classificacao_registada": null, "usdc_no_contrato_agora": 0},
+    {"endereco": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae", "linhas": 7, "usdc": 0.035595, "primeira": "2026-10-08", "ultima": "2026-10-17", "bytes_codigo": 5176, "classificacao_registada": null, "usdc_no_contrato_agora": 0}
+  ],
+  "total_linhas": 191,
+  "verificado": {
+    "todos_contratos": true,
+    "entrada_comum": "nas 6 transacções lidas (3 de cada contrato sem classificação) a chamada é handleOps do ponto de entrada ERC-4337 0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789 e correu com sucesso",
+    "amostra": [
+      {"pagador": "0x1231…", "tx": "0x594790dd62813f2eade66273356ecb54a96847b87a9d13e0ea68233756505e8c", "bundler": "0x8d47ba07ff9ccccf58c7e8810ee42c0dc8b8b123", "senders_userop": ["0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5"]},
+      {"pagador": "0x1231…", "tx": "0x9e06f1a8d5685abda3df67f701a0c837009c8dea117a7797efac664314bb246b", "bundler": "0x048ef1062cbb39b338ac2685da72adf104b4cef5", "senders_userop": ["0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5"]},
+      {"pagador": "0x1231…", "tx": "0x5ac10984892635588edc8b4ac0a45fefc2c9c2443db44dd4b1b41f423b81f220", "bundler": "0x048ef1062cbb39b338ac2685da72adf104b4cef5", "senders_userop": ["0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5"]},
+      {"pagador": "0x4f6f…", "tx": "0x35031b47d85c87d15327bfa4013860a990e393320d37effa7369f854b53add7f", "bundler": "0x8d47ba07ff9ccccf58c7e8810ee42c0dc8b8b123", "senders_userop": ["0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5", "0x11796068665fee211b45aa675f2bcd3a724cab5a"]},
+      {"pagador": "0x4f6f…", "tx": "0x8a1ad64477d102856d3cd33f0b0869bf8f7c1f62ec084ac53469d182d42e33ba", "bundler": "0x4b5c33c3c7a31bd108f5a99b64683b0056a62226", "senders_userop": ["0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5"]},
+      {"pagador": "0x4f6f…", "tx": "0xab43692f5e0654a11c3284afd67e96cd8bad2d50063aeb9963ba15db697d3dad", "bundler": "0x1278c1e48e3c9548a5d9f2b16dc27ed311b0697c", "senders_userop": ["0xfed69e8ee87a1f0fbbf8409ab654fc51832cdee5", "0xae19464a98dd77a7986b9330929e0186593848a1"]}
+    ],
+    "sagrada_antiga_e_sender": "em 6 de 6 transacções da amostra um UserOperation tem como sender a sagrada antiga 0xfed69e8e…cdee5 (a conta de depósito de sustento): a conta que recebe os USDC é a que assina a operação que os faz chegar. Em 2 transacções (do 0x4f6f…) há também UserOperations de outros dois senders, 0x1179…24ab5a e 0xae19…8848a1, que não foram lidos",
+    "contrato_1231": "proxy mínimo com 5176 bytes; o slot 0 vale 1; o slot de implementação EIP-1967 está a zero (por isso não se sabe para onde delega por esta via)",
+    "contrato_4f6f": "20813 bytes; slots 0 e de implementação a zero; muitos endereços embutidos no código; não se leu o código-fonte"
+  },
+  "leitura_da_ora": "Os dois contratos sem classificação entregam USDC à sagrada antiga dentro de operações ERC-4337 em que a própria sagrada antiga é o sender. Isso é um indício forte de que são operações da conta de Unum (comissões ou trocas), e não pagamentos de um terceiro; não é prova, porque a amostra é de 6 das 14 transacções e porque duas delas trazem UserOperations de outros senders. Classificar é de Unum. Proposta, para Unum aceitar ou recusar: classificar 0x1231… e 0x4f6f… como internos, com este registo como fundamento, e acrescentá-los a economia/enderecos-internos.json.",
+  "classificacao_proposta": null,
+  "nao_verificado": [
+    "quem escreveu e opera os contratos 0x1231… e 0x4f6f…",
+    "as 8 transacções destes dois contratos que não foram lidas, nem os UserOperations dos senders 0x1179… e 0xae19…",
+    "de onde vêm os USDC de dentro de cada operação (qual pool ou swap)",
+    "porque o contrato 0xc8d0… tem hoje 22,277137 USDC: lido, não interpretado",
+    "o código-fonte dos três contratos"
+  ],
+  "nao_afirma": ["receita", "procura", "adopção", "autoria dos contratos", "valor"],
+  "truth_machine": {"promete_receita": false, "move_fundos": false, "classifica": false}
+}
