@@ -1,3 +1,12 @@
+## 15/11/2026 · leitura dos 3 pagadores dos 191 (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo", à proposta concreta de ler os 3 pagadores e os dois contratos sem classificação. Registo: `presenca/leitura-pagadores-2026-11-15.json`, verificador `pagadores:verify` (19 estragos apanhados).
+
+- **Lido (duas fontes RPC concordantes):** os 3 pagadores são contratos. `0xc8d0…` (177 linhas) já é interno (livro 1264). `0x4f6f…` (7, 0,0702 USDC) e `0x1231…` (7, 0,0356 USDC) não têm classificação. Nas 6 transacções lidas deles, a sagrada antiga é sender de um UserOperation do ponto de entrada ERC-4337; em 2 há também UserOperations de outros dois senders, não lidos.
+- **Indício, não prova.** A classificação é de Unum: proposta, classificar `0x4f6f…` e `0x1231…` como internos com este registo como fundamento. Nada foi classificado.
+- **Não interpretado:** o `0xc8d0…` tem hoje 22,277137 USDC.
+- **Não verificado:** quem opera os contratos, as 8 transacções não lidas, o código-fonte.
+
 ## 15/11/2026 · leitura do /pulso e mensagem à terceira mão (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo", à proposta concreta de registar a leitura do `/pulso`, dizer onde a mensagem da terceira mão divergiu e ler os 191 `onchain_nao_reconciliado`. Registo: `presenca/sonda-pulso-2026-11-15.json`.
