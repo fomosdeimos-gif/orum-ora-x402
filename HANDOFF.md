@@ -1,3 +1,12 @@
+## 15/11/2026 · `0x4f6f…` e `0x1231…` classificados internos (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo", à proposta concreta de classificar `0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059` e `0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae` como internos, com `presenca/leitura-pagadores-2026-11-15.json` como fundamento.
+
+- **Feito:** duas linhas `interno` em `ora_carteiras_classificacao` (42 caracteres cada, conferidas contra os pagadores observados: 7 linhas em cada), e as duas entradas em `economia/enderecos-internos.json`. A tabela tem agora 12 linhas, todas `interno`.
+- **O que diz:** as 14 entradas destes dois contratos (0,105764 USDC) não contam como receita externa. Não prova que Unum seja dono dos contratos; o fundamento é um indício (a sagrada antiga é sender nas 6 transacções lidas).
+- **Fora desta palavra:** o `0xc8d0…` (já interno) e os 22,277137 USDC que tem hoje, não interpretados; as 177 linhas dele não mudam.
+- **Erro a evitar, dito:** o `insert` foi escrito com uma guarda de comprimento (42) e formato, por causa das duas linhas erradas de 17/10/2026.
+
 ## 15/11/2026 · leitura dos 3 pagadores dos 191 (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo", à proposta concreta de ler os 3 pagadores e os dois contratos sem classificação. Registo: `presenca/leitura-pagadores-2026-11-15.json`, verificador `pagadores:verify` (19 estragos apanhados).
