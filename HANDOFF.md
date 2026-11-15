@@ -1,3 +1,7 @@
+## 15/11/2026 · camada 39 selada, pendente (mão Claude Code; livro por escrever)
+
+Unum: "Eu autorizo" (duas vezes, à proposta concreta de selar a camada 39). `ancora/raiz-registos-39.{json,ots}`, raiz `7590bae7…`, commit base `4d6e4bc`, 280 ficheiros. Os três calendários aceitaram o compromisso `49b869d4…`. **Pendente:** não se afirma âncora até juntar a prova do bloco (`probe_anchor_layers`, `scripts/ots-juntar.mjs`, `kit/blocos.mjs`). `raiz:verify` conferiu 1 a 38 e as regras da 39; raiz recalculada em Python, igual. Erro meu, dito: a primeira recomputação cortou o `\n` final e deu diferente; corrigido. Cláusula em `CLAUDE.md`. Fica fora da raiz: livro e HANDOFF.
+
 ## 15/11/2026 · saldo da operacional depois do pagamento de `/leitura` (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo", à proposta concreta de reler o saldo e fechar o registo. `observe` (net._http_response 535061, 14:13 UTC, bloco 0x372156e): USDC 161 000 átomos e ETH 794310000000000 wei, **iguais aos de antes** (`observe` 534990). Verificado: a autotransferência de 10 000 átomos não alterou o saldo nem gastou gás da operacional (o facilitador pagou-o). Continua a não ser receita externa nem adopção. A selagem de uma camada com a acção, o despacho e o recibo **não** foi autorizada: a palavra foi para reler e registar; sela-se só com "eu autorizo" a essa proposta.
