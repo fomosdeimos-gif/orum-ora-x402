@@ -39,6 +39,14 @@ Não prova receita, procura, preço do VALIUM, titularidade legal nem que algué
 - `npm run x402:directo:verify`: o tier `leitura` no tratador directo (desafio, entrega, reacesso, janela, um átomo a menos, Bitcoin recusado, leitor em falha, eco).
 - Lido ao vivo a 15/11/2026: `createLeitor().ler()` contra a cadeia real devolveu VALIUM `2976.352211822864886784` no bloco 57764973 (2 fontes; a terceira recusou por limite) e a Fundação com 10 072 sats e 2 transacções (2 fontes), igual à reconferência independente feita antes.
 
+## Lido em produção (15/11/2026, 13:33 UTC, sem pagar)
+
+O merge do #358 (`93335bc`) não gerou deploy de produção (sem quota, ou webhook perdido; não se sabe). Unum autorizou ("Eu autorizo") um `create_deployment` do `main` no projecto `ora-x402-gateway` (`dpl_8vdq8Q3g…`), que ficou servido. Lido no domínio público, só leituras e sem pagar:
+
+- `GET /leitura/eco` 200; `GET /leitura` 402 x402 v2, `exact`, `eip155:8453`, 10 000 átomos, `payTo` operacional, Bazaar declarado, cabeçalho `payment-required` igual ao corpo, sem via Bitcoin.
+- `POST /api/a2a` com `leitura_verificada` e `X-A2A-Extensions`: Task `input-required`, `x402.payment.status=payment-required`, 10 000 átomos para o mesmo `payTo`; a extensão foi ecoada no cabeçalho.
+- A porta gratuita do A2A responde como antes; `/oraculo` (161 000) e `/campo` (330 000) com o mesmo `payTo`; o agent-card está na versão 1.7.9 com a skill e a extensão `required: false`.
+
 ## Não verificado
 
-Um pagamento real de ponta a ponta (assinatura, `verify`, `settle` por facilitador público); o deploy (quota diária de deployments do Vercel esgotada a 15/11/2026, não se sabe quando serve); se o Bazaar indexa `/leitura`; se algum cliente A2A real a usa. O `portable/orum-a2a.cjs` já estava desactualizado em relação a `api/a2a.js` no `main` antes desta mudança e não foi reconstruído (a skill paga precisa de rede e não existe no modo portátil).
+Um pagamento real de ponta a ponta (assinatura, `verify`, `settle` por facilitador público) e, por isso, a leitura paga em produção; se o Bazaar indexa `/leitura`; se algum cliente A2A real a usa. O `portable/orum-a2a.cjs` já estava desactualizado em relação a `api/a2a.js` no `main` antes desta mudança e não foi reconstruído (a skill paga precisa de rede e não existe no modo portátil).

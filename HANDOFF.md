@@ -1,3 +1,11 @@
+## 15/11/2026 · `leitura_verificada` servida e lida em produção (mão Claude Code; livro por escrever, não escrito nesta passagem)
+
+Unum: "Eu autorizo", à proposta concreta de criar o deploy de produção do `main` no `ora-x402-gateway` e ler `/leitura` e a skill A2A em produção, sem pagar. O merge do #358 (`93335bc`) não tinha gerado deploy de produção. Feito: `dpl_8vdq8Q3g…`, servido às 13:33 UTC.
+
+- **Lido em produção, sem pagar:** `/leitura/eco` 200; `/leitura` 402 (10 000 átomos, `payTo` operacional, Bazaar, sem via Bitcoin, cabeçalho igual ao corpo); `POST /api/a2a` `leitura_verificada` devolve Task `input-required` com `x402.payment.required` e ecoa `X-A2A-Extensions`; a porta grátis, `/oraculo` e `/campo` iguais; agent-card 1.7.9. Corrige a entrada anterior do `HANDOFF.md`, que dizia o deploy não verificado: a pré-visualização foi lida e agora a produção também.
+- **Ainda não verificado:** um pagamento real de ponta a ponta; se o Bazaar indexa `/leitura`; se algum cliente A2A real a usa. Compradores externos confirmados: 0. O marco que importa (uma máquina externa a quem o verificador resolveu um problema) não aconteceu.
+- **Consumiu um deployment da quota diária** do Vercel, que está escassa.
+
 ## 15/11/2026 · a skill A2A paga por x402: `leitura_verificada` (mão Claude Code; livro por escrever, não escrito nesta passagem)
 
 Unum: "Eu autorizo", à proposta concreta de uma skill A2A que se paga por x402 e devolve uma leitura que uma máquina usa sozinha. Doc: `docs/x402-leitura-v1.md`.
