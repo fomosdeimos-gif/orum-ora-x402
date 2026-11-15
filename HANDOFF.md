@@ -1,3 +1,7 @@
+## 15/11/2026 · saldo da operacional depois do pagamento de `/leitura` (mão Claude Code; livro por escrever)
+
+Unum: "Eu autorizo", à proposta concreta de reler o saldo e fechar o registo. `observe` (net._http_response 535061, 14:13 UTC, bloco 0x372156e): USDC 161 000 átomos e ETH 794310000000000 wei, **iguais aos de antes** (`observe` 534990). Verificado: a autotransferência de 10 000 átomos não alterou o saldo nem gastou gás da operacional (o facilitador pagou-o). Continua a não ser receita externa nem adopção. A selagem de uma camada com a acção, o despacho e o recibo **não** foi autorizada: a palavra foi para reler e registar; sela-se só com "eu autorizo" a essa proposta.
+
 ## 15/11/2026 · primeiro pagamento real de `/leitura`, ponta a ponta, em produção: DEPOIS do acto (mão Claude Code; livro por escrever)
 
 Acção `x402_pagar_leitura` (executor `ora-cdp-carteira-real` v17, implantado; despacho novo `ora_x402_leitura_dispatch_v1`), chamada UMA vez com `request_id` `bc153211-4c87-47b7-8516-3256d6b70010` (net._http_response 534991).
