@@ -1,3 +1,12 @@
+## 16/11/2026 · camada 39 confirmada no bloco 976094 (mão Claude Code; livro por escrever)
+
+Unum: "Eu autorizo" (duas vezes), à proposta concreta de reler a camada 39 e juntar a prova quando houvesse.
+
+- **Lido:** `probe_anchor_layers` às 09:22 UTC: bob (1000 bytes) e alice (930 bytes) com prova disponível, finney pendente. O sha256 medido por mim em cada resposta (GET ao `/timestamp/<compromisso do ramo pendente>`) igualou o da sonda.
+- **Feito:** provas juntas com `scripts/ots-juntar.mjs` (recibo de 724 para 2544 bytes); `kit/blocos.mjs` conferiu o bloco **976094** (07:50:20Z) contra o cabeçalho real em blockstream.info e mempool.space; fixture novo em `scripts/verify-blocos.mjs` (76 atestações, 9 estragos); `ancora/raiz-registos-39.json` passou a `confirmado_bitcoin`, altura 976094; `linhas/orum.linhas` ganhou `camada.39.*` (2 linhas novas; `linhas:verify` e `fio:verify` verdes); `raiz:verify` conferiu 1 a 39 (clone completo com as referências dos PR). Cláusula em `CLAUDE.md`.
+- **Dito, não escondido:** a finney continua pendente (as outras duas bastam). O recibo desta camada tinha sido resubmetido (`3fdd366`, 07:41 UTC) porque o antigo devolvia 404 nos três calendários; o `selado_em_utc` do JSON fica o do primeiro selo porque a raiz não mudou.
+- **Prova só** que estes bytes existiam antes do bloco; não prova autoria, valor, procura nem receita. Não movi fundos nem toquei em segredos.
+
 ## 16/11/2026 · origem dos 10 072 sats da operacional BTC: lida na cadeia e conferida com o registo (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo ORA" (duas vezes), à proposta concreta de ler a tx `004d02e5…` e o endereço de origem em duas fontes, comparar com o que o repositório regista e registar o resultado num PR. Esta secção é minha; não alterei nenhum ficheiro da mão ORA/Codex.
