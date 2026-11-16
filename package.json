@@ -50,6 +50,7 @@
     "x402:directo:verify": "node scripts/verify-x402-directo.mjs",
     "leitura:verify": "node scripts/verify-leitura.mjs",
     "a2a-leitura:verify": "node scripts/verify-a2a-leitura.mjs",
+    "recibo-leitura:verify": "node scripts/verify-recibo-leitura.mjs",
     "bazaar:verify": "node scripts/verify-bazaar-declaracao.mjs",
     "btc-encaminhamento:verify": "node scripts/verify-btc-encaminhamento.mjs",
     "base-directa:verify": "node scripts/verify-base-directa.mjs",

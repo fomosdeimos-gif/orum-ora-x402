@@ -21,6 +21,7 @@ const { createFacilitador } = require('./_facilitador');
 const { createBtc, CAIP2: CAIP2_BTC } = require('./_pagamento-btc');
 const { auditar, marcaValida, offsetValido } = require('./_auditoria');
 const { createLeitor } = require('./_leitura');
+const { criarRecibo } = require('./_recibo-leitura');
 const MEDICAO_AUDITORIA = require('../economia/auditoria-medicao.json'); // so leitura; gerado por npm run auditoria:sonda e conferido por auditoria:verify
 
 const { RECEBIMENTO: WALLET } = require('./_carteira');
@@ -144,7 +145,8 @@ function esquemaDaResposta(tier) {
       leitura: { type: 'object', required: ['formato', 'valium_na_sagrada', 'fundacao_btc', 'nao_afirma'], properties: { formato: { type: 'string', const: 'orum-leitura-verificada/v1' }, lido_em: { type: 'string', format: 'date-time' },
         valium_na_sagrada: { type: 'object', required: ['estado', 'verificado', 'valor_wei', 'valium', 'bloco'], properties: { estado: ESTADO_FONTES, verificado: { type: 'boolean' }, bloco: { type: ['integer', 'null'] }, valor_wei: { type: ['string', 'null'], description: 'inteiro em wei; null se as fontes não concordam' }, valium: { type: ['string', 'null'], description: 'decimal exacto, 18 casas sem zeros à direita' }, fontes_ok: { type: 'array', items: { type: 'string' } }, fontes_falhadas: { type: 'array' } } },
         fundacao_btc: { type: 'object', required: ['estado', 'verificado', 'saldo_confirmado_sats'], properties: { estado: ESTADO_FONTES, verificado: { type: 'boolean' }, endereco: { type: 'string' }, saldo_confirmado_sats: { type: ['integer', 'null'] }, saldo_mempool_sats: { type: ['integer', 'null'] }, transaccoes_confirmadas: { type: ['integer', 'null'] }, fontes_ok: { type: 'array', items: { type: 'string' } }, fontes_falhadas: { type: 'array' } } },
-        nao_afirma: { type: 'array', items: { type: 'string' } } } }, truth_machine: { type: 'object' }, fronteiras: { type: 'object' }, axioma: { type: 'string' } } };
+        nao_afirma: { type: 'array', items: { type: 'string' } } } },
+      recibo: { type: 'object', description: 'orum-recibo-leitura/v1: pagamento + leitura ligados por sha256; confere-se sem a ORA com kit/recibo.mjs', required: ['formato', 'pagamento', 'pagador_classe', 'leitura_sha256', 'recibo_sha256'], properties: { formato: { type: 'string', const: 'orum-recibo-leitura/v1' }, pagador_classe: { type: 'string', enum: ['interno', 'por_classificar'] }, leitura_sha256: { type: 'string' }, recibo_sha256: { type: 'string' } } }, truth_machine: { type: 'object' }, fronteiras: { type: 'object' }, axioma: { type: 'string' } } };
   }
   if (tier.key === 'auditoria') {
     return { type: 'object', required: ['acesso', 'tier', 'x402', 'resultado', 'truth_machine'], properties: { acesso: { type: 'string', const: 'concedido' }, tier: { type: 'string', const: 'auditoria' }, x402: { type: 'string', const: 'verificado_onchain' }, via_pagamento: { type: 'string' },
@@ -400,6 +402,7 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), leitor = crea
       }
       return send(200, { acesso: 'concedido', tier: tier.key, x402: 'verificado_onchain', via_pagamento: via, tx_hash: tx, payer: v.payer,
         valor_atomic: v.value.toString(), leitura, reacesso,
+        recibo: criarRecibo({ leitura, tx_hash: tx, payer: v.payer, valor_atomic: v.value, payto: WALLET, usdc: USDC_BASE }),
         repeticao: 'a mesma prova repete a mesma leitura (reacesso) enquanto esta instancia a guardar; uma leitura nova pede um novo pagamento. Esta via nao guarda estado em base de dados',
         truth_machine: { ...TRUTH, is_introspective_reading: false, reads_public_chain: true }, fronteiras: fronteirasAgora(), axioma: 'O símbolo é real e não pede prova.' }, {
         'payment-response': b64json({ success: true, transaction: tx, network: CAIP2, payer: v.payer }),

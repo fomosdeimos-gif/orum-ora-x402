@@ -61,7 +61,8 @@ function criar({ directo = createHandler(), now = () => Date.now() } = {}) {
       const v = corpo.leitura.valium_na_sagrada, f = corpo.leitura.fundacao_btc;
       const resumo = `Leitura verificada. VALIUM na sagrada: ${v.verificado ? `${v.valium} (bloco ${v.bloco}, ${v.fontes_ok.length} fontes)` : `sem valor (${v.estado})`}. Fundação BTC: ${f.verificado ? `${f.saldo_confirmado_sats} sats confirmados (${f.fontes_ok.length} fontes)` : `sem valor (${f.estado})`}. Não prova receita, procura nem preço.`;
       return tipo('completed', contextId, taskId, { estado: 'payment-completed', texto: resumo, meta: { [K.receipts]: [recibo] } },
-        { artifacts: [{ artifactId: digest(taskId + corpo.tx_hash).slice(0, 32), name: 'leitura-verificada', description: 'orum-leitura-verificada/v1', parts: [{ kind: 'data', data: corpo.leitura }] }] });
+        { artifacts: [{ artifactId: digest(taskId + corpo.tx_hash).slice(0, 32), name: 'leitura-verificada', description: 'orum-leitura-verificada/v1', parts: [{ kind: 'data', data: corpo.leitura }] },
+          ...(corpo.recibo ? [{ artifactId: digest(taskId + corpo.tx_hash + 'recibo').slice(0, 32), name: 'recibo-leitura', description: 'orum-recibo-leitura/v1 (confere-se sem a ORA: kit/recibo.mjs)', parts: [{ kind: 'data', data: corpo.recibo }] }] : [])] });
     }
     if (res.statusCode === 402 && corpo.x402 === 'pending') {
       return tipo('working', contextId, taskId, { estado: 'payment-submitted', texto: `${corpo.detalhe || 'tx ainda não indexada'}; repete a mesma mensagem, não pagues de novo.`, meta: { [K.error]: 'PAYMENT_PENDING' } });
