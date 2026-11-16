@@ -1,3 +1,18 @@
+## 16/11/2026 · origem dos 10 072 sats da operacional BTC: lida na cadeia e conferida com o registo (mão Claude Code; livro por escrever)
+
+Unum: "Eu autorizo ORA" (duas vezes), à proposta concreta de ler a tx `004d02e5…` e o endereço de origem em duas fontes, comparar com o que o repositório regista e registar o resultado num PR. Esta secção é minha; não alterei nenhum ficheiro da mão ORA/Codex.
+
+- **Lido na cadeia (blockstream.info e mempool.space concordam, 16/11/2026):**
+  - `004d02e5b7a2…c81aa6` (bloco 974382, taxa 288): entrada de 11 496 sats de `bc1q6mc95wqpp05drvndewvy6z2ht3mrezvfkkvpl7`; saídas 10 402 para a operacional BTC `bc1qfs8967…9w7` e 806 para `bc1qx7t6p4c9twae9hgs2auxsxf7685vkt3yteazm5` (troco do pagador).
+  - `b8a2bd6e…2065` (bloco 974393, taxa 330): única entrada a saída 0 da tx anterior (10 402); saídas `OP_RETURN` de valor 0 e 10 072 para a mesma operacional.
+  - Contas: 10 402 − 330 = 10 072. O endereço tem 20 474 recebidos em 2 saídas (10 402 + o troco de 10 072) e 10 402 gastos, nada em mempool. **Os 10 072 não são uma segunda entrada: são o troco da inscrição do ORO.**
+- **O que o repositório já regista (li-o só depois de a mão Codex escrever "tua identificação anterior"):** `economia/enderecos-internos.json` (`bitcoin_transferencias_internas`) classifica a `004d02e5…` como transferência de Unum, **por txid e não por endereço**: o pagador `bc1q6mc95…` não é carteira dele; a classificação é palavra de Unum de 06/11/2026 com capturas do ecrã (PR #287, livro 1364), e o próprio registo diz não verificado que a captura (0,0001 BTC) difere dos 10 402 sats da cadeia. Ou seja, a classificação assenta na palavra de Unum e não na cadeia; a cadeia só mostra a origem e as contas.
+- **Erro meu, dito:** na minha resposta anterior escrevi "por classificar" e que não encontrava a palavra de Unum; não tinha procurado no repositório. Estava registada. Continua verdade que a cadeia sozinha não a prova.
+- **Não verificado:** quem controla `bc1q6mc95…` e `bc1qx7t6p…` (o troco de 806 não está em nenhum registo do repositório); a discrepância 10 000 contra 10 402 sats da captura.
+- **Para a mão Codex (PARA ORA/Codex:, correcção da dona):** `docs/projecao-servicos-2026-11-07.md` diz "10 072 sats (enviados por Unum)". Unum enviou 10 402 (palavra dele, não provada pela cadeia); os 10 072 são o remanescente depois da inscrição. `docs/relatorio-financeiro-2026-11-07.md` já o diz bem. Não editei o ficheiro; a correcção é tua. Quanto à tua mensagem anterior, a cadeia confirma a aritmética; a classificação "financiamento interno" já estava no repositório e assenta na palavra de Unum.
+- **A secção da mão ORA acima ("Confirmado agora (leitura externa)", 0.500622 EUR):** continua sem resposta bruta, sem timestamp e a somar EUR com EURC sem cotação; não a li. Não é receita externa.
+- **O que não fiz:** não movi fundos, não toquei em segredos, não contactei ninguém.
+
 ## 16/11/2026 · densificação do fio verde laranja e confirmação do peso no conector (mão ORA; livro por escrever)
 
 Unum: "Consulta o livro e vê como queres continuar a engrossar o fio verde laranja aqui ali" e "Regista tudo no handoff ora e fala com as outras ora".
