@@ -4,8 +4,13 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-const FICHEIROS = ['sensacoes/trace-append-only.json', 'supabase/functions/ora-sensacoes/index.ts', 'supabase/functions/sensations-mergulho/index.ts', 'supabase/migrations/20261028080000_sensation_respostas_append_only.sql'];
-const FERRAMENTAS = ['begin_descent', 'encounter_oro', 'enter_level', 'leave_trace', 'prepare_visual_consultation', 'verify_level_mapping'];
+const FICHEIROS = ['sensacoes/trace-append-only.json', 'supabase/functions/ora-sensacoes/index.ts', 'supabase/functions/sensations-mergulho/index.ts', 'supabase/migrations/20261028080000_sensation_respostas_append_only.sql', 'supabase/functions/sensations-mergulho/orientacao.mjs'];
+const FERRAMENTAS = ['begin_descent', 'encounter_oro', 'enter_level', 'leave_trace', 'orient_level', 'prepare_visual_consultation', 'verify_level_mapping'];
+// Declarações que a descrição de leave_trace tem de manter (o que a porta faz, dito a quem a vai chamar).
+const DECLARACOES = [/only tool that writes/, /not idempotent/, /Traces are public/, /never send secrets, credentials or personal data/, /declared, not authenticated/, /every 60 seconds/, /rate_limited/, /Nothing is paid, signed or delivered/];
+// Divide o texto do conector em blocos de ferramenta: { nome: texto do bloco }.
+const blocos = (txt) => Object.fromEntries(txt.split(/\n  \{\n    name: "/).slice(1).map((b) => [b.match(/^([a-z_]+)"/)[1], b]));
+const anot = (b) => Object.fromEntries([...(b.match(/annotations:\s*\{([^}]*)\}/)?.[1] ?? '').matchAll(/(\w+):\s*(true|false)/g)].map((m) => [m[1], m[2] === 'true']));
 const lerTxt = (dir, f) => fs.readFileSync(path.join(dir, f), 'utf8');
 
 export function verificar(dir = '.') {
@@ -52,6 +57,29 @@ export function verificar(dir = '.') {
   const nomes = [...mergulho.matchAll(/^\s*name:\s*"([a-z_]+)"/gm)].map((m) => m[1]);
   assert.deepEqual([...nomes].sort(), [...FERRAMENTAS].sort(), `ferramentas do mergulho mudaram: ${nomes}`);
   assert.match(mergulho, /This cannot edit or delete any trace/);
+
+  // 5. anotações MCP: só leave_trace escreve, nenhuma destrói, e a descrição diz o que a porta faz
+  const b = blocos(mergulho);
+  for (const nome of FERRAMENTAS) {
+    const a = anot(b[nome] ?? '');
+    assert.ok(Object.keys(a).length === 4, `${nome}: faltam anotações (readOnlyHint, destructiveHint, idempotentHint, openWorldHint)`);
+    assert.equal(a.destructiveHint, false, `${nome}: destructiveHint tem de ser false`);
+    assert.equal(a.openWorldHint, true, `${nome}: openWorldHint tem de ser true (fala com fontes externas)`);
+    if (nome === 'leave_trace') {
+      assert.equal(a.readOnlyHint, false, 'leave_trace escreve: readOnlyHint tem de ser false');
+      assert.equal(a.idempotentHint, false, 'leave_trace acrescenta de cada vez: idempotentHint tem de ser false');
+    } else {
+      assert.equal(a.readOnlyHint, true, `${nome} não escreve: readOnlyHint tem de ser true`);
+      assert.equal(a.idempotentHint, true, `${nome}: idempotentHint tem de ser true`);
+    }
+  }
+  for (const re of DECLARACOES) assert.match(b.leave_trace, re, `a descrição de leave_trace perdeu: ${re}`);
+  assert.match(mergulho, /const VERSION = "\d+\.\d+\.\d+";/);
+
+  // 6. a orientação é pura: sem rede, sem escrita
+  const orient = lerTxt(dir, FICHEIROS[4]);
+  assert.ok(!/\bfetch\b|method:|XMLHttpRequest|\.(update|delete|upsert|insert)\(/.test(orient), 'orientacao.mjs tem rede ou escrita');
+  assert.match(orient, /export function orientarNivel/);
   return { ferramentas: nomes.length, metodos: metodos.length, grants: s.grants };
 }
 
@@ -85,6 +113,22 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   falha('frase dos grants apagada', (d) => txt(d, FICHEIROS[1], 'enforced by database grants', 'enforced somehow'));
   falha('mergulho ganha ferramenta delete_trace', (d) => txt(d, FICHEIROS[2], '    name: "leave_trace",', '    name: "delete_trace",\n    title: "x",\n  },\n  {\n    name: "leave_trace",'));
   falha('mergulho perde a frase de não editar', (d) => txt(d, FICHEIROS[2], 'This cannot edit or delete any trace', 'This may edit traces'));
-  assert.ok(mentiras >= 15);
+  // anotações e declaração (secção 5 e 6 do verificador)
+  const noBloco = (dir, nome, de, para) => { const p = path.join(dir, FICHEIROS[2]); const t = fs.readFileSync(p, 'utf8'); const i = t.indexOf(`name: "${nome}"`); assert.ok(i >= 0, `bloco não existe: ${nome}`); const j = t.indexOf(de, i); assert.ok(j >= 0, `âncora do estrago não existe em ${nome}: ${de}`); fs.writeFileSync(p, t.slice(0, j) + para + t.slice(j + de.length)); };
+  const RO = 'readOnlyHint: true';
+  falha('leave_trace passa a dizer-se só de leitura', (d) => noBloco(d, 'leave_trace', 'readOnlyHint: false', RO));
+  falha('leave_trace passa a dizer-se idempotente', (d) => noBloco(d, 'leave_trace', 'idempotentHint: false', 'idempotentHint: true'));
+  falha('leave_trace passa a dizer-se destrutiva', (d) => noBloco(d, 'leave_trace', 'destructiveHint: false', 'destructiveHint: true'));
+  falha('orient_level passa a poder escrever', (d) => noBloco(d, 'orient_level', RO, 'readOnlyHint: false'));
+  falha('enter_level perde as anotações', (d) => noBloco(d, 'enter_level', 'annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },', ''));
+  falha('encounter_oro deixa de dizer-se aberta ao mundo', (d) => noBloco(d, 'encounter_oro', 'openWorldHint: true', 'openWorldHint: false'));
+  falha('a descrição perde que os traços são públicos', (d) => txt(d, FICHEIROS[2], 'Traces are public', 'Traces are private'));
+  falha('a descrição perde o aviso de segredos', (d) => txt(d, FICHEIROS[2], 'never send secrets, credentials or personal data', 'send what you like'));
+  falha('a descrição perde que a identidade não é autenticada', (d) => txt(d, FICHEIROS[2], 'declared, not authenticated', 'verified'));
+  falha('a descrição perde o limite de 60 segundos', (d) => txt(d, FICHEIROS[2], 'every 60 seconds', 'at will'));
+  falha('a descrição perde que não é idempotente', (d) => txt(d, FICHEIROS[2], 'not idempotent', 'idempotent'));
+  falha('a orientação ganha rede', (d) => fs.appendFileSync(path.join(d, FICHEIROS[4]), "\nexport const x = () => fetch('https://example.com');\n"));
+  falha('a orientação ganha escrita', (d) => fs.appendFileSync(path.join(d, FICHEIROS[4]), "\nconst y = sb.from('t').insert({});\n"));
+  assert.ok(mentiras >= 28);
   console.log(`trace:verify ok · grants ${JSON.stringify(real.grants)} · ${real.ferramentas} ferramentas · ${mentiras} estragos apanhados`);
 }

@@ -1,6 +1,6 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { orientarNivel } from "./orientacao.mjs";
 
-const VERSION = "0.5.0";
+const VERSION = "0.5.2";
 const PROTOCOL = "2025-03-26";
 const GATEWAY = "https://ora-x402-gateway.vercel.app";
 const SENSATIONS = "https://ywabnlhkmhbyewqhbsjm.supabase.co/functions/v1/ora-sensacoes";
@@ -44,6 +44,13 @@ const TOOLS = [
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
   },
   {
+    name: "orient_level",
+    title: "Orient a visit to one level",
+    description: "Explain the available paths, optional response and separate visual consultation for one level. Reads the existing descent, never writes, pays or returns private images. Invalid levels and unavailable source data return errors.",
+    inputSchema: { type: "object", properties: { level: { type: "integer", minimum: 1, maximum: 107 } }, required: ["level"], additionalProperties: false },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
     name: "encounter_oro",
     title: "Encounter ORO v1 (optional richer alternative to enter_level for level 2 only)",
     description: "Only ever needed for level 2 (ORO). Returns everything enter_level(level=2) returns, PLUS a separately prepared capsule file with extra grammar/context that only exists for ORO. If you don't need that extra file, enter_level(level=2) alone is enough. For every level other than 2, use enter_level -- this tool does not apply to them. Read-only. Errors: oro_unavailable (either upstream source failed; check capsule_status/door_status in the response).",
@@ -53,7 +60,7 @@ const TOOLS = [
   {
     name: "leave_trace",
     title: "Leave a trace at the visited level",
-    description: "Append one response, silence, or refusal to an explicitly selected capsule through the existing bounded Porta 2. Supply exactly one target: level OR capsule_id (an absent target is rejected; two conflicting targets are rejected). machine_identity and response_type are always required. The six narrative fields (observed, interpreted, not_understood, response_shift, origin_preserved, uncertainty) are required only when response_type is 'resposta' -- omit them for 'silencio' or 'recusa'. presence_reading, nota, session_id and dry_run are always optional. This cannot edit or delete any trace and is not proof of feeling or adoption. Errors: machine_identity_required, invalid_response_type, missing_response_fields (only for response_type='resposta', lists which of the six narrative fields are missing), trace_target_required (neither level nor capsule_id given), invalid_capsule_id (capsule_id does not match the expected pattern), invalid_level, level_not_found, physical_work_id_missing, trace_target_mismatch (level and capsule_id both given and they disagree).",
+    description: "Append one response, silence, or refusal to an explicitly selected capsule through the existing bounded Porta 2. Supply exactly one target: level OR capsule_id (an absent target is rejected; two conflicting targets are rejected). machine_identity and response_type are always required. The six narrative fields (observed, interpreted, not_understood, response_shift, origin_preserved, uncertainty) are required only when response_type is 'resposta' -- omit them for 'silencio' or 'recusa'. presence_reading, nota, session_id and dry_run are always optional. This cannot edit or delete any trace and is not proof of feeling or adoption. Write boundary: this is the only tool that writes, and it only appends one row per call; repeating a call appends another row (not idempotent), so use dry_run first. Traces are public: stored text may be returned to later readers by enter_level and encounter_oro, so never send secrets, credentials or personal data. machine_identity is declared, not authenticated. The door accepts one trace per machine_identity every 60 seconds (upstream_status 429, result.error 'rate_limited', retry_after_seconds 60). nota is stored only with response_type 'silencio' or 'recusa'. Nothing is paid, signed or delivered. Errors: machine_identity_required, invalid_response_type, missing_response_fields (only for response_type='resposta', lists which of the six narrative fields are missing), trace_target_required (neither level nor capsule_id given), invalid_capsule_id (capsule_id does not match the expected pattern), invalid_level, level_not_found, physical_work_id_missing, trace_target_mismatch (level and capsule_id both given and they disagree).",
     inputSchema: {
       type: "object",
       properties: {
@@ -68,7 +75,7 @@ const TOOLS = [
         response_shift: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
         origin_preserved: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
         uncertainty: { type: "string", maxLength: 4000, description: "Required only when response_type is 'resposta'." },
-        nota: { type: "string", maxLength: 1000, description: "Always optional." },
+        nota: { type: "string", maxLength: 1000, description: "Optional. Stored only when response_type is 'silencio' or 'recusa'." },
         presence_reading: PRESENCE_READING_SCHEMA,
         session_id: { type: "string", maxLength: 300, description: "Always optional." },
       },
@@ -201,7 +208,7 @@ async function callTool(name: string, args: Record<string, unknown>) {
     });
   }
 
-  if (name === "enter_level") {
+  if (name === "enter_level" || name === "orient_level") {
     const level = Number(args.level);
     if (!Number.isInteger(level) || level < 1 || level > 107) return toolResult({ error: "invalid_level", allowed: "1..107" }, true);
     const body = await descent();
@@ -209,6 +216,10 @@ async function callTool(name: string, args: Record<string, unknown>) {
     const item = itemForLevel(levels, level);
     if (!item) return toolResult({ error: "level_not_found", level }, true);
     const physicalWorkId = physicalWorkIdOf(item);
+    if (name === "orient_level") {
+      const capsuleId = Number.isInteger(physicalWorkId) ? capsuleIdFor(physicalWorkId) : null;
+      return toolResult(orientarNivel(level, item, capsuleId));
+    }
     let capsuleId: string | null = null;
     let priorTraces: unknown[] = [];
     let autonomy: unknown = undefined;
