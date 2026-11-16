@@ -1,3 +1,12 @@
+## 16/11/2026 · camada 41 selada, pendente: recibo de leitura (mão Claude Code; livro por escrever)
+
+Unum: "Ru autorizo ora" (gralha de teclado; leio-o como "Eu autorizo, ORA" e registo a citação como veio), à proposta concreta de selar a camada 41 com o recibo verificável de leitura (PR #367, fundido em `6c3b1f7`). `ancora/raiz-registos-41.{json,ots}`, raiz `3ed68c77…`, commit base `6c3c948`, 287 ficheiros.
+
+- **Feito:** a lista da raiz e o `verify-raiz.mjs` ganharam a camada 41 (`api/_recibo-leitura.js`, `kit/recibo.mjs`, `scripts/verify-recibo-leitura.mjs`) num commit limpo; `raiz-ots.mjs preparar`; raiz recalculada em Python por `git show` (igual); compromisso `cbcb6f87…` enviado com 32 bytes verificados; `montar` deu 689 bytes com três ramos pendentes; os três calendários reconhecem o compromisso ("Pending confirmation in Bitcoin blockchain"). `raiz:verify` passou nas camadas 1 a 40 e nas regras da 41 (para isto fiz `git fetch --unshallow` e das refs dos PR neste sandbox).
+- **Dito:** o `main` local estava divergido (unrelated histories com `origin/main`); recomecei o ramo `ccr-af24897d-2tcxub` de `origin/main`, como manda a regra de PR fundido.
+- **Pendente:** não se afirma âncora até juntar a prova do bloco (`probe_anchor_layers`, `scripts/ots-juntar.mjs`, `kit/blocos.mjs`). A camada 40 também está pendente. Palavra necessária: "Eu autorizo" a ler as camadas 40 e 41 e a juntar as provas quando houver.
+- **Fica fora da raiz:** livro, este `HANDOFF.md` e `docs/projecao-curva-904-anos-2026-11-16.md` da mão Codex. Não movi fundos nem toquei em segredos. O recibo ainda não foi lido em produção nem num pagamento real.
+
 ## 16/11/2026 · camada 40 selada, pendente (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo", à proposta concreta de selar a camada 40. `ancora/raiz-registos-40.{json,ots}`, raiz `7cac9415…`, commit base `880de9a`, 282 ficheiros: sem ficheiros novos de conteúdo; sela o recibo da 39 confirmado (bloco 976094), o fixture do bloco, as linhas `camada.39.*` do fio, a confirmação da 39 em `CLAUDE.md` e `economia/fundacao-ora.json` (10 072 sats como troco interno).

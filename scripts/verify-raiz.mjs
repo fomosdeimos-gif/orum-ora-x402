@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { verificarRaiz, manifestosDeCamadas } from '../kit/raiz.mjs';
 import { lerRecibo } from './lib/ots.mjs';
-import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE, FICHEIROS_DA_CAMADA_13_EM_DIANTE, FICHEIROS_DA_CAMADA_14_EM_DIANTE, FICHEIROS_DA_CAMADA_15_EM_DIANTE, FICHEIROS_DA_CAMADA_16_EM_DIANTE, FICHEIROS_DA_CAMADA_17_EM_DIANTE, FICHEIROS_DA_CAMADA_18_EM_DIANTE, FICHEIROS_DA_CAMADA_19_EM_DIANTE, FICHEIROS_DA_CAMADA_20_EM_DIANTE, FICHEIROS_DA_CAMADA_23_EM_DIANTE, FICHEIROS_DA_CAMADA_24_EM_DIANTE, FICHEIROS_DA_CAMADA_26_EM_DIANTE, FICHEIROS_DA_CAMADA_27_EM_DIANTE, FICHEIROS_DA_CAMADA_28_EM_DIANTE, FICHEIROS_DA_CAMADA_29_EM_DIANTE, FICHEIROS_DA_CAMADA_30_EM_DIANTE, FICHEIROS_DA_CAMADA_31_EM_DIANTE, FICHEIROS_DA_CAMADA_33_EM_DIANTE, FICHEIROS_DA_CAMADA_34_EM_DIANTE, FICHEIROS_DA_CAMADA_38_EM_DIANTE, FICHEIROS_DA_CAMADA_39_EM_DIANTE } from './lib/raiz.mjs';
+import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE, FICHEIROS_DA_CAMADA_13_EM_DIANTE, FICHEIROS_DA_CAMADA_14_EM_DIANTE, FICHEIROS_DA_CAMADA_15_EM_DIANTE, FICHEIROS_DA_CAMADA_16_EM_DIANTE, FICHEIROS_DA_CAMADA_17_EM_DIANTE, FICHEIROS_DA_CAMADA_18_EM_DIANTE, FICHEIROS_DA_CAMADA_19_EM_DIANTE, FICHEIROS_DA_CAMADA_20_EM_DIANTE, FICHEIROS_DA_CAMADA_23_EM_DIANTE, FICHEIROS_DA_CAMADA_24_EM_DIANTE, FICHEIROS_DA_CAMADA_26_EM_DIANTE, FICHEIROS_DA_CAMADA_27_EM_DIANTE, FICHEIROS_DA_CAMADA_28_EM_DIANTE, FICHEIROS_DA_CAMADA_29_EM_DIANTE, FICHEIROS_DA_CAMADA_30_EM_DIANTE, FICHEIROS_DA_CAMADA_31_EM_DIANTE, FICHEIROS_DA_CAMADA_33_EM_DIANTE, FICHEIROS_DA_CAMADA_34_EM_DIANTE, FICHEIROS_DA_CAMADA_38_EM_DIANTE, FICHEIROS_DA_CAMADA_39_EM_DIANTE, FICHEIROS_DA_CAMADA_41_EM_DIANTE } from './lib/raiz.mjs';
 
 function verificarCamada(caminhoManifesto) {
   const manifestoBytes = fs.readFileSync(caminhoManifesto);
@@ -213,6 +213,13 @@ assert.ok(f39.includes('ancora/raiz-registos-38.json') && f39.includes('ancora/r
 for (const x of FICHEIROS_DA_CAMADA_39_EM_DIANTE) { assert.ok(f39.includes(x), `a camada 39 devia selar ${x}`); assert.ok(!ficheirosDaCamada(38).includes(x), `a camada 38 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 39 tem de existir: ${x}`); }
 for (const x of FICHEIROS_DA_CAMADA_38_EM_DIANTE) assert.ok(f39.includes(x), `a camada 39 tem de continuar a selar ${x}`);
 assert.equal(new Set(f39).size, f39.length, 'caminho repetido na camada 39');
+const f40 = ficheirosDaCamada(40);
+assert.ok(f40.includes('ancora/raiz-registos-39.json') && f40.includes('ancora/raiz-registos-39.ots'), 'a camada 40 sela a 39');
+const f41 = ficheirosDaCamada(41);
+assert.ok(f41.includes('ancora/raiz-registos-40.json') && f41.includes('ancora/raiz-registos-40.ots'), 'a camada 41 sela a 40');
+for (const x of FICHEIROS_DA_CAMADA_41_EM_DIANTE) { assert.ok(f41.includes(x), `a camada 41 devia selar ${x}`); assert.ok(!f40.includes(x), `a camada 40 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 41 tem de existir: ${x}`); }
+for (const x of FICHEIROS_DA_CAMADA_39_EM_DIANTE) assert.ok(f41.includes(x), `a camada 41 tem de continuar a selar ${x}`);
+assert.equal(new Set(f41).size, f41.length, 'caminho repetido na camada 41');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
