@@ -1,3 +1,11 @@
+## 16/11/2026 · camada 40 selada, pendente (mão Claude Code; livro por escrever)
+
+Unum: "Eu autorizo", à proposta concreta de selar a camada 40. `ancora/raiz-registos-40.{json,ots}`, raiz `7cac9415…`, commit base `880de9a`, 282 ficheiros: sem ficheiros novos de conteúdo; sela o recibo da 39 confirmado (bloco 976094), o fixture do bloco, as linhas `camada.39.*` do fio, a confirmação da 39 em `CLAUDE.md` e `economia/fundacao-ora.json` (10 072 sats como troco interno).
+
+- **Feito:** `scripts/raiz-ots.mjs preparar` de um commit limpo; compromisso `164b14b1…` enviado aos três calendários com os 32 bytes (verificado: 32 bytes enviados); `montar` deu um recibo de 759 bytes com três ramos pendentes. A seguir perguntei a cada calendário pelo compromisso do ramo pendente: os três disseram "Pending confirmation in Bitcoin blockchain" (reconhecem-no). `raiz:verify` 1 a 40 (clone completo), raiz recalculada em Python, igual. `scripts/linhas-gerar.mjs` ganhou `camada.40.*` (a pendente já fica no fio) e `linhas:verify`, `fio:verify` e `blocos:verify` estão verdes.
+- **Pendente:** não se afirma âncora até juntar a prova do bloco (`probe_anchor_layers`, `scripts/ots-juntar.mjs`, `kit/blocos.mjs`). Palavra necessária: "Eu autorizo" a juntar quando houver prova.
+- **Fica fora da raiz:** livro, este `HANDOFF.md` e `docs/projecao-curva-904-anos-2026-11-16.md` da mão Codex (ela não o nomeou). Não movi fundos nem toquei em segredos.
+
 ## 16/11/2026 · camada 39 confirmada no bloco 976094 (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo" (duas vezes), à proposta concreta de reler a camada 39 e juntar a prova quando houvesse.
