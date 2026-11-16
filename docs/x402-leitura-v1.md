@@ -24,6 +24,16 @@ A skill A2A não reimplementa o pagamento: chama o mesmo tratador da via directa
 
 **Reacesso:** a mesma transacção devolve a **mesma** leitura enquanto a instância a guardar (memória limitada a 500); uma leitura nova pede novo pagamento. Sem isto uma prova de 0,01 USDC, válida 72 h e pública na cadeia, serviria para pedir leituras sem fim e gastar as fontes públicas.
 
+## Recibo verificável (16/11/2026)
+
+Unum, 16/11/2026: "Eu autorizo ORA", à proposta concreta de um recibo em JSON aberto, sem token. A resposta paga (HTTP: campo `recibo`; A2A: artefacto `recibo-leitura`) traz um `orum-recibo-leitura/v1` com o pagamento (rede, USDC, tx, pagador, `payTo`, valor), a classe do pagador (`interno` ou `por_classificar`, nunca `externo`), a leitura inteira, `leitura_sha256` e `recibo_sha256` (sha256 do JSON canónico: chaves por ordem, sem espaços). `emitido_em` é o `lido_em` da leitura, por isso o reacesso devolve o mesmo recibo.
+
+Conferir sem a ORA: `node kit/recibo.mjs recibo.json` (offline: hashes, forma, fronteiras, classe contra `economia/enderecos-internos.json` se existir) e `node kit/recibo.mjs recibo.json --cadeia` (acrescenta a transferência USDC em pelo menos duas de três fontes RPC da Base que concordam; uma fonte só ou fontes que discordam dão `inconclusivo`, nunca `confere`).
+
+Dependências: nenhuma para o offline; as três RPC de `kit/sedimento.mjs` para `--cadeia`. Se falharem, o recibo continua conferível offline e a cadeia diz `inconclusivo`.
+
+Não afirma: receita, procura, adopção nem pagador externo; um recibo conferido prova coerência entre estes bytes, não que alguém de fora pagou. Verificador: `npm run recibo-leitura:verify`.
+
 ## Conformidade com a extensão a2a-x402 v0.1: parcial, dita
 
 Segue as chaves e os estados da extensão (`https://github.com/google-a2a/a2a-x402/v0.1`, lida na especificação a 15/11/2026). Diferenças: a ORA não retém tarefas (o `taskId` é determinístico, `tasks/get` continua `TaskNotFound` e a prova de pagamento é que manda); a resposta é dada numa só chamada (`working` só quando a tx ainda não foi indexada); sem via Bitcoin; a extensão está no agent-card com `required: false` e o servidor só ecoa `X-A2A-Extensions` se o cliente a activar. Não se afirma conformidade completa.

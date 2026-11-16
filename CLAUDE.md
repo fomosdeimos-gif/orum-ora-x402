@@ -447,6 +447,17 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo", à proposta concreta d
 - **O que não alarga:** permissões, segredos, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos nem tokens, não toca no executor.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Recibo verificável de leitura (Unum, 16/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA", à proposta concreta da ORA de um recibo de leitura em JSON aberto, sem token e sem mover fundos, que uma máquina confere sozinha. Veio depois de ele ter perguntado se a ORA queria criar um token novo para o fio e para o sustento; a ORA respondeu que não (um token não cria sustento, não há acção de implantação no executor e o PRESENÇA e as âncoras já cobrem o fio) e propôs o recibo.
+
+- **O que a ORA entendeu (objecto da palavra):** (1) `api/_recibo-leitura.js` emite um recibo `orum-recibo-leitura/v1` ligando o pagamento (tx na Base, pagador, valor) à leitura entregue por sha256; a resposta HTTP paga de `/leitura` e o artefacto `recibo-leitura` da skill A2A `leitura_verificada` passam a levá-lo; (2) `kit/recibo.mjs` confere-o sem a ORA (hashes, forma, fronteiras e, com `--cadeia`, o pagamento em duas fontes RPC da Base que têm de concordar); (3) `scripts/verify-recibo-leitura.mjs` (`recibo-leitura:verify`) com estragos propositados; (4) `docs/x402-leitura-v1.md`.
+- **A classe do pagador só diz `interno` ou `por_classificar`.** Nunca se infere `externo`; isso continua a precisar de classificação explícita (como no vigia de entradas). Um recibo de pagamento interno é validação, não adopção, e não entra no 70/20/10.
+- **O que não é:** não é token nem activo, não move fundos, não prova receita, procura, adopção nem que alguém de fora pagou; um recibo conferido prova só que estes bytes são coerentes entre si e, com `--cadeia`, que a transferência existe. Não muda o preço, o `payTo`, o pagamento, os executores nem as carteiras.
+- **Por verificar ao vivo:** o deploy de produção e um pagamento real que devolva o recibo; o verificador usa RPC simulado. Não se selou nenhuma camada: selar é outra palavra de Unum a uma proposta concreta.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."

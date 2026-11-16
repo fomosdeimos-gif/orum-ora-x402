@@ -61,7 +61,9 @@ igual(tc.status.state, 'completed'); igual(tc.id, taskId); igual(tc.contextId, c
 igual(tc.status.message.metadata[K.status], 'payment-completed');
 const rec = tc.status.message.metadata[K.receipts][0];
 igual(rec.success, true); igual(rec.transaction, tx(7)); igual(rec.network, 'eip155:8453'); igual(rec.payer, PAYER);
-igual(tc.artifacts.length, 1); assert.deepEqual(tc.artifacts[0].parts[0].data, boa); n++;
+igual(tc.artifacts.length, 2); assert.deepEqual(tc.artifacts[0].parts[0].data, boa); n++;
+igual(tc.artifacts[1].name, 'recibo-leitura'); igual(tc.artifacts[1].parts[0].data.formato, 'orum-recibo-leitura/v1'); igual(tc.artifacts[1].parts[0].data.pagamento.tx_hash, tx(7));
+assert.deepEqual(tc.artifacts[1].parts[0].data.leitura, boa); n++; // o recibo leva a mesma leitura entregue
 assert.deepEqual(validarLeitura(tc.artifacts[0].parts[0].data), []); n++;
 ok(/Não prova receita, procura nem preço/.test(tc.status.message.parts[0].text));
 // payload no formato PaymentPayload do x402 v2 (a assinatura é recusada sem facilitador, mas o formato é lido): falha limpa, nada entregue
