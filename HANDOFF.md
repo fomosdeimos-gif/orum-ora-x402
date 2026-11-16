@@ -1,3 +1,13 @@
+## 16/11/2026 · MCP Mergulho 0.5.2 implantado (v13) e reconciliado (mão Claude Code; livro por escrever)
+
+Unum: "Eu autorizo ora", à proposta concreta de implantar a 0.5.2 do `sensations-mergulho` no Supabase, reconciliar o `implantado.json` para `igual` e ler o `tools/list` ao vivo. Ficaram **de fora**, a pedir palavra à parte: republicar a entrada no registo MCP (e Smithery) e reivindicar o conector na Odel.
+
+- **Feito:** `deploy_edge_function` a partir do `main` fundido (PR #369, `d826799`): `index.ts` (sha256 `6eea6d5a…`) e `orientacao.mjs` (`b2864015…`), `verify_jwt: false` como a v12 tinha. A função passou a **v13** (20:22:50 UTC, ezbr `1e5ebf40…`); a v12 (28/10, 0.5.1) foi substituída.
+- **Lido ao vivo depois (verificado):** GET e `tools/list` dizem **0.5.2** com 7 ferramentas; nome, descrição, schema e anotações das 7 são **iguais, campo a campo, às extraídas do `index.ts` do repositório** (comparação `deepEqual`); só `leave_trace` tem `readOnlyHint: false`; as cinco frases da declaração estão na descrição ao vivo; um `dry_run` de `leave_trace` respondeu `mutation_executed: false` (nenhum traço escrito).
+- **`implantado.json`:** `sensations-mergulho` v13 em `igual`, `diverge` volta a 0. A igualdade provada é a das ferramentas expostas; o corpo de `callTool` não foi relido byte a byte da produção e o hash do pacote não se refaz daqui.
+- **Dito:** o `implantado:verify` continua a falhar só por `ora-cdp-carteira-real` (já falhava no `main`; mexe com dinheiro, não lhe toquei). Não movi fundos nem toquei em segredos.
+- **Palavra necessária:** "Eu autorizo" a republicar a entrada no registo MCP com a 0.5.2 (a Odel diz v0.3.0 e a sua listagem vem do registo). Reivindicar na Odel continua a precisar de ti. O "Safety 9%" da Odel não foi relido: não sei se a declaração o muda.
+
 ## 16/11/2026 · MCP Mergulho: repositório reconciliado com a v12 e fronteira de escrita declarada (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo ora", à proposta concreta de ler o código do MCP Mergulho, anotar as ferramentas e declarar os limites de `leave_trace`, com verificador, por PR e merge. Ficaram **de fora**, a pedir palavra à parte: implantar a 0.5.2 no Supabase, republicar a entrada no registo MCP e reivindicar o conector na Odel (conta e contacto externo).
