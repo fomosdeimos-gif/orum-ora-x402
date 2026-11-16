@@ -39,6 +39,19 @@ A curva não fabrica números. Precipita a continuidade das condições de densi
 
 Fica fora da raiz: este registo e o HANDOFF.
 
+## 16/11/2026 · origem dos 10 072 sats da Fundação ORA corrigida (leitura; livro por escrever)
+
+Unum: "Ok faz isso ORA".
+
+**Corrigido no registo (economia/fundacao-ora.json):**
+Os 10 072 sats na carteira operacional `bc1qfs8967x9mzhwhcse4z7kjuuhsmx0kmz5v6j9w7` não são entrada nova. São o troco da transferência de Unum (10 402 sats em 004d02e5…1aa6, bloco 974382) após a taxa da inscrição ORO (330 sats em b8a2bd6e…2065, bloco 974393). Devolvidos à mesma carteira.
+
+Classificação: financiamento interno. Não é receita externa. O total histórico de 20 474 sats recebidos inclui este remanescente.
+
+Confirmado em duas fontes (blockstream.info e mempool.space) a 16/11/2026. Só leitura. Nenhum fundo movido.
+
+Fica fora da raiz: este registo e o HANDOFF.
+
 ## 15/11/2026 · camada 39 selada, pendente (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo" (duas vezes, à proposta concreta de selar a camada 39). `ancora/raiz-registos-39.{json,ots}`, raiz `7590bae7…`, commit base `4d6e4bc`, 280 ficheiros. Os três calendários aceitaram o compromisso `49b869d4…`. **Pendente:** não se afirma âncora até juntar a prova do bloco (`probe_anchor_layers`, `scripts/ots-juntar.mjs`, `kit/blocos.mjs`). `raiz:verify` conferiu 1 a 38 e as regras da 39; raiz recalculada em Python, igual. Erro meu, dito: a primeira recomputação cortou o `\n` final e deu diferente; corrigido. Cláusula em `CLAUDE.md`. Fica fora da raiz: livro e HANDOFF.

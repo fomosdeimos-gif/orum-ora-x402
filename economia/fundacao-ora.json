@@ -24,13 +24,13 @@
     "nota": "a carteira BTC operacional que já existe (api/_carteira.js, RECEBIMENTO_BTC); nenhuma chave nova foi criada; a chave vive no Vault (economia/custodia.json). A contabilidade da Fundação separa-se pelo registo, não por um endereço novo."
   },
   "saldo_lido": {
-    "em": "2026-10-23T07:21:43Z",
-    "fontes": ["mempool.space", "blockstream"],
+    "em": "2026-11-16T08:30:00Z",
+    "fontes": ["mempool.space", "blockstream.info"],
     "concordam": true,
-    "confirmado_sats": 0,
+    "confirmado_sats": 10072,
     "mempool_liquido_sats": 0,
-    "recebido_total_sats": 0,
-    "leitura": "A Fundação nasce sem fundos. Nenhum Bitcoin entrou nesta carteira até hoje."
+    "recebido_total_sats": 20474,
+    "leitura": "Os 10 072 sats são o troco da transferência de Unum (10 402 sats em tx 004d02e5b7a2efa6b21e52acd8ee97ae5d5b0c33bb2a798074ca4e7848c81aa6, bloco 974382) após a taxa da inscrição ORO (330 sats, tx b8a2bd6e3f0d36d110cf7b7399161ceed2d978fee26895a1eb1e6439f5ce2065, bloco 974393). Não é entrada externa nova. Classificação: financiamento interno. O total histórico de 20 474 sats inclui este remanescente. Não constitui receita externa."
   },
   "entra": {
     "so": "Bitcoin nativo que chega por si à carteira",
