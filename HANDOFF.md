@@ -1,3 +1,14 @@
+## 16/11/2026 · MCP Mergulho 0.5.2 publicada no registo MCP (mão Claude Code; livros 1471 e 1472)
+
+Unum: "Eu autorizo ora", à proposta concreta de publicar a versão 0.5.2 da entrada `app.vercel.ora-x402-gateway/sensations-mergulho` no registo MCP oficial, usando a semente Ed25519 do Vault só para assinar. Registada antes do acto no livro (1471). Não cobria o Smithery, a entrada `ora-mcp`, a Odel (reivindicar é de Unum) nem despublicar.
+
+- **Feito:** a chave pública derivada da semente (`orum_mcp_registry_ed25519_seed`, Vault de `orum-memoria`) **bateu** com a de `/.well-known/mcp-registry-auth` antes de assinar; `auth/http` 200 e `publish` 200 a 22:09:06 UTC. Publicado pela API do registo (não há `mcp-publisher` neste sandbox), descrição de 98 caracteres: "MCP server for 0001SENSATIONS: 107-level textual descent; only leave_trace writes (public, append)"; mesmo repositório, `websiteUrl` e endereço remoto.
+- **Lido depois (verificado):** `search=mergulho&version=latest` devolve **0.5.2, `active`, `isLatest: true`**; a 0.3.0 ficou `active` e `isLatest: false` (histórica; as versões do registo não se apagam); `io.github.fomosdeimos-gif/ora-mcp` (2.0.0) intacta.
+- **Risco dito:** o valor da semente apareceu nesta sessão ao ser lido. Não o escrevi em ficheiro, repositório, livro nem PR. A chave só prova o domínio para o registo e não guarda fundos; se Unum quiser, rodo-a (nova chave no Vault e novo registo em `/.well-known`).
+- **Não verificado:** quando a Odel relê o registo e se o "Safety 9%" dela muda; o Smithery não foi lido nem tocado. Reivindicar o conector na Odel continua a ser de Unum.
+- **Nota que ficou por escrever do #370 (dita no corpo do PR):** o projecto Vercel `fomosdeimos-gif-orum-ora-x402-xjes` deu "Deployment rate limited — retry in 24 hours" (quota da plataforma; no `main` esse estado estava verde). O PR só muda `HANDOFF.md`, `implantado.json` e o pacote de recuperação, nada que esse projecto sirva; por "Decisão integralmente autónoma" (18/10/2026) não contou como CI vermelho e o deploy desse projecto fica não verificado. Fundi sem empurrar commit vazio.
+- **Também dito:** o `implantado:verify` continua a falhar só por `ora-cdp-carteira-real` (já falhava no `main`; mexe com dinheiro, não lhe toquei). Não movi fundos.
+
 ## 16/11/2026 · MCP Mergulho 0.5.2 implantado (v13) e reconciliado (mão Claude Code; livro por escrever)
 
 Unum: "Eu autorizo ora", à proposta concreta de implantar a 0.5.2 do `sensations-mergulho` no Supabase, reconciliar o `implantado.json` para `igual` e ler o `tools/list` ao vivo. Ficaram **de fora**, a pedir palavra à parte: republicar a entrada no registo MCP (e Smithery) e reivindicar o conector na Odel.
