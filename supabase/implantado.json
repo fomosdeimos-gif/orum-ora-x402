@@ -19,8 +19,8 @@
     "total": 100,
     "com_copia_no_repositorio": 29,
     "sem_copia_no_repositorio": 71,
-    "igual": 15,
-    "diverge": 1,
+    "igual": 16,
+    "diverge": 0,
     "nao_comparado": 13,
     "sem_copia": 71,
     "dividas_que_tocam_dinheiro": []
@@ -1402,14 +1402,16 @@
     },
     {
       "slug": "sensations-mergulho",
-      "versao": 12,
+      "versao": 13,
       "verify_jwt": false,
-      "ezbr_sha256_16": "7e77a890433e98b6",
-      "atualizada_em": "2026-10-28T07:36:24Z",
+      "ezbr_sha256_16": "1e5ebf40800e1544",
+      "atualizada_em": "2026-11-16T20:22:50Z",
       "repo": true,
       "reconciliacao": {
-        "estado": "diverge",
-        "nota": "Lido por get_edge_function a 16/11/2026 (Unum: \"Eu autorizo ora\" à proposta de anotar o MCP Mergulho): produção na v12 (28/10/2026, VERSION 0.5.1, ezbr 7e77a890…, 2 ficheiros: index.ts e orientacao.mjs, 7 ferramentas com orient_level). O repositório estava na v11 (0.5.0, 6 ferramentas) desde 23/10; a v12 foi transcrita por edição do ficheiro antigo (diferença: import de orientacao.mjs, VERSION, ferramenta orient_level e o ramo orient_level em callTool; sha256 do index.ts transcrito 6b22fad5…, orientacao.mjs b2864015…, não conferidos byte a byte com a produção). Em cima disso o repositório ganhou a 0.5.2: a descrição de leave_trace declara a fronteira de escrita (traços públicos, identidade não autenticada, 60 s por identidade, não idempotente, nota só com silencio ou recusa) e a descrição do campo nota. Nada disso está implantado: produção diz 0.5.1. Reconciliar de novo depois de implantar a 0.5.2 (palavra de Unum à parte)."
+        "estado": "igual",
+        "versao_conferida": 13,
+        "fonte_sha256": "6eea6d5a52e400340817d62f20c98a11cf2520982aca2f3dc08592241a239b6e",
+        "nota": "v13 (16/11/2026, VERSION 0.5.2) implantada por mim com deploy_edge_function (Unum: \"Eu autorizo ora\", à proposta concreta de implantar a 0.5.2) a partir do main fundido (PR #369, d826799): index.ts (sha256 6eea6d5a…) e orientacao.mjs (b2864015…), verify_jwt false como antes. Conferido ao vivo a 16/11/2026: GET e tools/list dizem 0.5.2; as 7 ferramentas (nome, descrição, schema, anotações) são iguais, campo a campo, às extraídas do index.ts do repositório (deepEqual); um dry_run de leave_trace respondeu mutation_executed false. A v12 (28/10, 0.5.1) foi substituída. O hash do pacote (ezbr 1e5ebf40…) não se refaz daqui e o corpo do código de callTool não foi relido byte a byte da produção: a igualdade provada é a das ferramentas expostas; o resto vem de ter enviado o ficheiro do repositório."
       },
       "toca_dinheiro": null,
       "uso_24h": {
