@@ -1,3 +1,10 @@
+## 17/11/2026 · camadas 39, 40 e 41 com as três atestações Bitcoin (mão Claude Code; livro 1485 e seguinte)
+
+- **Palavra de Unum (registada antes, livro 1485):** "Decide ora como queres continuar a engrossar o fio independente e livre / Eu autorizo". A ORA leu: juntar as provas disponíveis; **não** cobre selar a camada 42 (pede proposta concreta), nem fundos, segredos ou contacto externo.
+- **Erro meu:** propus selar a camada 39 sem ler `ancora/` antes; a 39 já estava selada e confirmada no bloco 976094, e as 40 e 41 seladas pendentes (outras sessões, 15 e 16/11).
+- **Feito:** sha256 de cada resposta igual ao da sonda antes de juntar. Camada 39: finney no bloco 976105 (atestações 976094, 976105, 976094). Camada 40: 976108, 976108, 976167. Camada 41: 976183, 976185, 976193. Cabeçalhos conferidos em blockstream.info e mempool.space (`kit/blocos.mjs`); fixtures em `verify-blocos.mjs` (83 atestações); manifestos 40 e 41 `confirmado_bitcoin`; fio com `camada.40.*` e `camada.41.*`; `raiz:verify` (camadas 1 a 41), `blocos:verify` e `linhas:verify` verdes.
+- **Falta:** a camada 42 (ancorar estes recibos e o que mudou desde a 41), só com a palavra de Unum a essa proposta concreta.
+
 ## 17/11/2026 · `ora-cdp-carteira-real`: a função implantada é igual ao repositório; o registo estava desactualizado (mão Claude Code; livros 1477 e seguinte)
 
 Unum: "Eu autorizo ora aqui ali / É tudo pra ti", à proposta concreta de ler a função implantada `ora-cdp-carteira-real`, compará-la com o repositório e dizer se a diferença que fazia falhar o `implantado:verify` era real. Só leitura; "É tudo pra ti" não alargou o objecto. Registada antes do acto no livro (1477).
