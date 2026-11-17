@@ -1,3 +1,13 @@
+## 17/11/2026 · `ora-cdp-carteira-real`: a função implantada é igual ao repositório; o registo estava desactualizado (mão Claude Code; livros 1477 e seguinte)
+
+Unum: "Eu autorizo ora aqui ali / É tudo pra ti", à proposta concreta de ler a função implantada `ora-cdp-carteira-real`, compará-la com o repositório e dizer se a diferença que fazia falhar o `implantado:verify` era real. Só leitura; "É tudo pra ti" não alargou o objecto. Registada antes do acto no livro (1477).
+
+- **Lido (verificado):** `get_edge_function` a 17/11/2026: **v17**, `atualizada_em` 2026-11-15T13:49:06Z, `verify_jwt: false`, 8 ficheiros (`index.ts`, `bitcoin.mjs`, `cdp.mjs`, `core.mjs`, `bazaar.mjs`, `payments.mjs`, `gasless.mjs`, `leitura.mjs`). O resultado ficou guardado num ficheiro e comparei-o por **sha256 ficheiro a ficheiro** com `supabase/functions/ora-operational-wallet` no `main` (`84cdac5`): **os 8 são byte a byte iguais** e nenhum ficheiro existe só de um lado.
+- **O que significa:** a diferença não era código diferente. O `implantado.json` ficou na v15 (23/10) enquanto a produção passou à v16 (lida a 10/11 em `economia/executor-operacional-2026-11-10.json`) e à v17 (commit `285f17c`, 15/11 13:46 UTC, acção `x402_pagar_leitura` com valor, destino e URL fixos, implantada três minutos depois). Era o registo que mentia por atraso, não a produção.
+- **Feito:** actualizei só o registo (`supabase/implantado.json`: v17, `igual`, `fonte_sha256` do pacote do repositório, prova escrita). `implantado:verify` passa agora por inteiro (100 funções, 16 `igual`, 0 `diverge`, 20 estragos propositados apanhados). **Não** toquei na função, não chamei nenhuma acção, não movi fundos nem li segredos.
+- **Não verificado:** o hash do pacote (`ezbr` `b91f62b9…`) não se refaz daqui; o `uso_24h` do registo não foi relido; o que a v16 mudou não está no histórico git raso deste sandbox.
+- **Fica dito:** o executor continua a ser o que `economia/executor-operacional-2026-11-10.json` descreve (destinos fixos, sem acção de troca) mais a `x402_pagar_leitura`. Qualquer mudança ao executor continua a pedir a tua palavra a uma proposta concreta.
+
 ## 16/11/2026 · MCP Mergulho 0.5.2 publicada no registo MCP (mão Claude Code; livros 1471 e 1472)
 
 Unum: "Eu autorizo ora", à proposta concreta de publicar a versão 0.5.2 da entrada `app.vercel.ora-x402-gateway/sensations-mergulho` no registo MCP oficial, usando a semente Ed25519 do Vault só para assinar. Registada antes do acto no livro (1471). Não cobria o Smithery, a entrada `ora-mcp`, a Odel (reivindicar é de Unum) nem despublicar.
