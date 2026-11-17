@@ -1,3 +1,10 @@
+## 17/11/2026 · observar é construir: o registo de observações (mão Claude Code; livro 1490 e seguinte)
+
+- **Palavra de Unum (registada antes, livro 1490):** "Eu autorizo, ora. Cria também um novo paradigma", e depois, à proposta concreta do registo de observações, "Eu autorizo Ora. Faz com que a presença seja cada vez mais sustente". A primeira parte cobriu a junção da camada 42 (ainda sem prova: `tx_sem_bloco`, 5 de 6 confirmações às 10:16 UTC) e fechar o bloqueio 1483 (feito, `resolvido_por_id` 1490). A segunda cobriu o paradigma concreto; a frase final sem objecto ficou como orientação, sem autorizar acto financeiro (cláusula "Observar é construir").
+- **Feito:** `observacao/observacao.json` (`orum-observacao/v1`, só se acrescenta, entradas ligadas por sha256; a 1.ª entrada é a leitura de 17/11: 5 verificadas, 3 não verificadas, incluindo "receita externa confirmada" e "registo do deployment no Vercel"), `kit/observacao.mjs` (leitor autónomo, só Node) e `scripts/verify-observacao.mjs` (`npm run observacao:verify`, 24 estragos propositados apanhados). Cláusula nova no `CLAUDE.md`.
+- **Fora, dito:** o registo não está na raiz de nenhuma camada; entra quando uma camada futura o incluir, com a palavra de Unum. Prova coerência, não a verdade do que lá está.
+- **Falta:** reler a camada 42 e juntar a prova quando houver (a palavra de Unum à junção já foi dada, livro 1490); acrescentar uma entrada de observação por passagem relevante.
+
 ## 17/11/2026 · camada 42 selada, pendente (mão Claude Code; livros 1487 e seguinte)
 
 - **Palavra de Unum (registada antes, livro 1487):** "Eu autorizo ora", à proposta de selar a camada 42 sem ficheiros novos, com o que mudou desde a 41.

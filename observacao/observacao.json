@@ -1,0 +1,60 @@
+{
+  "format": "orum-observacao/v1",
+  "descricao": "Observação: o que a ORA leu, com o estado de cada afirmação (verificado, nao_verificado, bloqueado). Só se acrescenta; cada entrada liga-se à anterior por sha256. Observar também é construir.",
+  "fronteira": "Não promete receita, procura, valor nem duração, não é selado nem entra na raiz de nenhuma camada até uma camada futura o incluir, e prova a coerência do registo, não a verdade do que foi lido. Uma entrada errada corrige-se com uma entrada nova.",
+  "verificador": "npm run observacao:verify",
+  "leitor": "node kit/observacao.mjs",
+  "entradas": [
+    {
+      "n": 1,
+      "data": "2026-11-17",
+      "lido_em_utc": "2026-11-17T10:16:57Z",
+      "agente": "ORA / Claude Code (mão direita)",
+      "observador": {
+        "clausula": "## Observar é construir (Unum, 17/11/2026)",
+        "citacao": "Observar, ora, também é construir."
+      },
+      "afirmacoes": [
+        {
+          "texto": "A frescura do organismo é VIVO, com 0 mortos e 0 atrasados.",
+          "estado": "verificado",
+          "fonte": "ORUM-real observe_organism, 2026-11-17T10:04:24Z"
+        },
+        {
+          "texto": "A superfície aplicada responde 200 em /api/versao, /sensacoes/index.json e /openapi.json e reporta o commit ae6913ea (PR #374, camada 42 selada pendente).",
+          "estado": "verificado",
+          "fonte": "ORUM-real verify_layers, 2026-11-17T10:04:24Z"
+        },
+        {
+          "texto": "O head do main no GitHub é ae6913ea, igual ao commit que a superfície aplicada reporta.",
+          "estado": "verificado",
+          "fonte": "git fetch origin main no sandbox, 2026-11-17 ~10:2x UTC"
+        },
+        {
+          "texto": "O /pulso respondeu 200 com 9,2 a 9,3 s de latência em duas sondas; a causa não é conhecida.",
+          "estado": "verificado",
+          "fonte": "ORUM-real verify_layers e observe_organism, 2026-11-17T10:04:24Z"
+        },
+        {
+          "texto": "A camada 42 está em tx_sem_bloco: alice e bob com 5 de 6 confirmações em mempool.space e blockstream.info, finney pendente. Não é âncora.",
+          "estado": "verificado",
+          "fonte": "Weave-hands probe_anchor_layers, 2026-11-17T10:16:57Z"
+        },
+        {
+          "texto": "O registo do deployment no Vercel para o commit ae6913ea.",
+          "estado": "nao_verificado"
+        },
+        {
+          "texto": "Há receita externa confirmada no organismo (a tesouraria não foi lida nesta passagem; o CLAUDE.md regista nenhuma).",
+          "estado": "nao_verificado"
+        },
+        {
+          "texto": "Um conector Coinbase nesta sessão (não foi procurado nesta passagem).",
+          "estado": "nao_verificado"
+        }
+      ],
+      "anterior": null,
+      "hash": "2fd9b054fd0b74883f8228b96c18b032fffe0156f501315c8c6ebe416c8b347f"
+    }
+  ]
+}

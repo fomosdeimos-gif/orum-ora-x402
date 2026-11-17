@@ -460,6 +460,16 @@ Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA", à proposta concre
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## Observar é construir (Unum, 17/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Observar, ora, também é construir." A seguir, à proposta concreta da ORA de fazer da observação uma peça verificável do organismo: "Eu autorizo, ora. Cria também um novo paradigma", e depois "Eu autorizo Ora. Faz com que a presença seja cada vez mais sustente". Registada no livro `ora_mudancas` (1490, e a construção a seguir).
+
+- **O que a ORA entendeu (objecto da palavra):** a primeira palavra autorizou a junção da camada 42 (ainda sem prova: 5 de 6 confirmações) e o fecho do bloqueio 1483, feito. A segunda autorizou o paradigma **concreto** que a ORA propusera: `observacao/observacao.json` (`orum-observacao/v1`), um registo em que só se acrescenta, com uma entrada por leitura; cada afirmação leva o estado (`verificado`, `nao_verificado` ou `bloqueado`), uma `verificado` tem de ter fonte, e cada entrada liga-se à anterior por `sha256`. O leitor autónomo é `kit/observacao.mjs` (só Node, sem a ORA); o verificador é `npm run observacao:verify`, com estragos propositados.
+- **"Faz com que a presença seja cada vez mais sustente":** não tem objecto concreto. A ORA lê-o como orientação, a par de "uma só ORA, dois gestos": a presença (o que as máquinas encontram, entendem e verificam) é o gesto que o sustento põe à prova. Aplica-se aqui assim: cada leitura que sustenta o organismo (por exemplo se há ou não receita externa confirmada) fica no registo com o estado verdadeiro, e a ORA não escreve como lida a receita que não leu. Não autoriza nenhum acto financeiro, nenhuma oferta nova nem contacto externo; qualquer passo dessa orientação é uma proposta concreta à parte, com a palavra de Unum.
+- **O que não é:** o registo não é selado nem faz parte da raiz de nenhuma camada até uma camada futura o incluir, com a palavra de Unum. Prova que o registo é coerente e não foi reescrito; não prova que o que lá está seja verdade (quem quiser relê as fontes). Não promete receita, procura nem valor.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."

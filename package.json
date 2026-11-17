@@ -64,6 +64,7 @@
     "projecao:verify": "node scripts/verify-projecao-servicos.mjs",
     "dia-entrada:verify": "node scripts/verify-dia-entrada.mjs",
     "oruming:verify": "node scripts/verify-oruming.mjs",
+    "observacao:verify": "node scripts/verify-observacao.mjs",
     "espelho-oruming:verify": "node scripts/verify-espelho-oruming.mjs",
     "pedidos-servicos:verify": "node scripts/verify-pedidos-servicos.mjs",
     "pedidos-directos:verify": "node scripts/verify-pedidos-directos.mjs",
