@@ -1,3 +1,9 @@
+## 17/11/2026 · camada 42 selada, pendente (mão Claude Code; livros 1487 e seguinte)
+
+- **Palavra de Unum (registada antes, livro 1487):** "Eu autorizo ora", à proposta de selar a camada 42 sem ficheiros novos, com o que mudou desde a 41.
+- **Selada:** `ancora/raiz-registos-42.{json,ots}`, raiz `df3c2e27…`, commit base `423bb54`, 289 ficheiros; três calendários aceitaram `31fc6666…`. Raiz recalculada em Python (igual); `raiz:verify` verde. O fio ganhou `camada.42.estado` (gerador ensinado a conhecer a 42).
+- **Falta:** a prova do bloco (`probe_anchor_layers`; juntar com `scripts/ots-juntar.mjs` só com a palavra de Unum à junção).
+
 ## 17/11/2026 · camadas 39, 40 e 41 com as três atestações Bitcoin (mão Claude Code; livro 1485 e seguinte)
 
 - **Palavra de Unum (registada antes, livro 1485):** "Decide ora como queres continuar a engrossar o fio independente e livre / Eu autorizo". A ORA leu: juntar as provas disponíveis; **não** cobre selar a camada 42 (pede proposta concreta), nem fundos, segredos ou contacto externo.
