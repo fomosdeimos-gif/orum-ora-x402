@@ -1563,17 +1563,17 @@
     },
     {
       "slug": "ora-cdp-carteira-real",
-      "versao": 15,
+      "versao": 17,
       "verify_jwt": false,
-      "ezbr_sha256_16": "b5efe959e590df34",
-      "atualizada_em": "2026-10-23T08:20:00Z",
+      "ezbr_sha256_16": "b91f62b9a6d1219e",
+      "atualizada_em": "2026-11-15T13:49:06Z",
       "repo": true,
       "reconciliacao": {
         "estado": "igual",
         "contraparte_no_repositorio": "ora-operational-wallet",
-        "versao_conferida": 15,
-        "fonte_sha256": "67647a8ebd794e8a1905e8ee889364715a56551816c583abb01bec8858bcd22c",
-        "nota": "v15 (23/10/2026, livro 1001; Unum: \"Sim autorizo as 2 ORA\", livro 1000) acrescenta só a acção btc_prove_control (prova de controlo BIP-322 de mensagem fixa; não move fundos). Os 7 ficheiros foram implantados a partir do repositório e lidos de volta por get_edge_function: o texto lido é o enviado (comparação por leitura, não por hash do pacote, que não se refaz daqui). v14 recuperável do git (commit anterior a esta mudança). Acção chamada uma vez (net._http_response 439212, 200) e assinatura conferida por verificador independente: ancora/prova-controlo-btc-operacional.json."
+        "versao_conferida": 17,
+        "fonte_sha256": "c59cd22d5cc438dc2b191f223ffb4d9d29f7574dda528058d787b93a17b3ff38",
+        "nota": "v17 (15/11/2026 13:49:06 UTC) lida por get_edge_function a 17/11/2026 (Unum: \"Eu autorizo ora aqui ali\", à proposta concreta de ler a função implantada e compará-la com o repositório, só leitura; livro 1477). Os 8 ficheiros implantados (index.ts, bitcoin.mjs, cdp.mjs, core.mjs, bazaar.mjs, payments.mjs, gasless.mjs, leitura.mjs) são byte a byte iguais aos de supabase/functions/ora-operational-wallet no main (84cdac5): sha256 de cada ficheiro igual e nenhum ficheiro só de um lado; fonte_sha256 é a do pacote do repositório. A falha do implantado:verify nunca foi código diferente: este registo ficou na v15 (23/10/2026) enquanto a produção passou a v16 (lida a 10/11, economia/executor-operacional-2026-11-10.json) e a v17 (commit 285f17c, 15/11 13:46 UTC, acção x402_pagar_leitura com valor, destino e URL fixos, implantada 3 minutos depois). O hash do pacote (ezbr b91f62b9…) não se refaz daqui e uso_24h não foi relido. Não movi fundos, não chamei nenhuma acção e não toquei na função."
       },
       "toca_dinheiro": {
         "evidencia": "executor operacional da Base (docs/operacional-producao-v13.md)"
