@@ -3,8 +3,11 @@
 // Sem rede. Cada mentira testada aqui tem de falhar.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 
-const SCRIPTS = ['verdelaranja.js', 'live-refresh-v1.js', 'desde-visita-v1.js'];
+const SCRIPTS = ['casa-nucleo.js', 'verdelaranja.js', 'live-refresh-v1.js', 'desde-visita-v1.js'];
+// Os ids que o núcleo escreve com texto (a casca entrega-lhe o resultado por id); o HTML tem de os ter todos.
+const IDS_DO_NUCLEO = createRequire(import.meta.url)('../casa-nucleo.js').IDS;
 const PROMESSAS = /receita garantida|reembolso garantido|rendimento garantido|904 anos garantidos|compra garantida/i;
 const LIGACOES = ['/pagar-teste.html', '/caixa.html', '/oro.html', '/organismo.html', '/observatorio.html', '/sustento.html', '/licenca', '/pulso'];
 const lerReal = (p) => fs.readFileSync(new URL('../' + p, import.meta.url), 'utf8');
@@ -20,10 +23,10 @@ export function idsDosScripts(ler = lerReal) {
   return ids;
 }
 
-export function validar(html, css, ler = lerReal) {
+export function validar(html, css, ler = lerReal, idsNucleo = IDS_DO_NUCLEO) {
   const e = [];
   const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
-  const pedidos = idsDosScripts(ler);
+  const pedidos = new Set([...idsDosScripts(ler), ...idsNucleo]);
   if (pedidos.size < 20) e.push(`os scripts pedem poucos ids (${pedidos.size}): a extracção falhou`);
   for (const id of pedidos) if (!ids.has(id)) e.push(`falta o id que um script liga: ${id}`);
   const repetidos = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]).filter((x, i, a) => a.indexOf(x) !== i);
@@ -55,8 +58,8 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop()
   assert.deepEqual(real, [], `a casa real tem de passar: ${JSON.stringify(real)}`);
 
   let n = 0;
-  const falha = (nome, h, c, trecho, ler) => {
-    const r = validar(h, c, ler);
+  const falha = (nome, h, c, trecho, ler, ids) => {
+    const r = validar(h, c, ler, ids);
     assert.ok(r.some((x) => x.includes(trecho)), `estrago não apanhado (${nome}): ${JSON.stringify(r)}`);
     n++;
   };
@@ -75,11 +78,13 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop()
   falha('perde a oferta Campo', html.replace('href="/pagar-teste.html"', 'href="/outra.html"'), css, 'falta a ligação /pagar-teste.html');
   falha('perde a entrada da obra', html.replace('href="/caixa.html"', 'href="/x.html"'), css, 'falta a ligação /caixa.html');
   falha('deixa de ligar o script do catálogo', html.replace('<script src="/verdelaranja.js" defer></script>', ''), css, 'não liga verdelaranja.js');
+  falha('deixa de ligar o núcleo', html.replace('<script src="/casa-nucleo.js" defer></script>', ''), css, 'não liga casa-nucleo.js');
   falha('script inline', html.replace('</body>', '<script>fetch("/x")</script></body>'), css, 'script inline');
   falha('liga a um terceiro', html.replace('</body>', '<a href="https://exemplo.com/">x</a></body>'), css, 'liga a um terceiro');
   falha('sem pt-PT', html.replace('lang="pt-PT"', 'lang="en"'), css, 'sem lang pt-PT');
   falha('sem viewport', html.replace('width=device-width', 'width=1200'), css, 'sem viewport de telemóvel');
   falha('CSS ignora movimento reduzido', html, css.replace('prefers-reduced-motion:reduce', 'prefers-color-scheme:dark'), 'prefers-reduced-motion');
+  falha('o núcleo escreve um id que o HTML não tem', html, css, 'falta o id que um script liga: inventado', lerReal, [...IDS_DO_NUCLEO, 'inventado']);
   falha('extracção de ids falha', html, css, 'os scripts pedem poucos ids', (p) => (SCRIPTS.includes(p) ? '' : lerReal(p)));
-  console.log(JSON.stringify({ verified: true, ids_ligados_pelos_scripts: idsDosScripts().size, bytes_html: Buffer.byteLength(html), bytes_css: Buffer.byteLength(css), estragos_apanhados: n }));
+  console.log(JSON.stringify({ verified: true, ids_ligados_pelos_scripts: new Set([...idsDosScripts(), ...IDS_DO_NUCLEO]).size, bytes_html: Buffer.byteLength(html), bytes_css: Buffer.byteLength(css), estragos_apanhados: n }));
 }

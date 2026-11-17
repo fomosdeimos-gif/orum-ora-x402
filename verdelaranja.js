@@ -1,18 +1,17 @@
+/* ORUM · casca da casa. Vai buscar o pulso, a tesouraria e o catálogo, entrega-os ao núcleo (casa-nucleo.js, a única cópia da regra)
+   e escreve o resultado nos elementos da página. Não decide o que a casa diz; só lê, entrega e desenha. */
 (function () {
   'use strict';
+  const N = window.ORUMCasa;
+  if (!N) return; // sem o núcleo a página fica como o HTML a deixou; nada se inventa
   const $ = id => document.getElementById(id);
-  const number = value => typeof value === 'number' && Number.isFinite(value) && value >= 0;
-  const format = value => number(value) ? value.toLocaleString('pt-PT', { maximumFractionDigits: 6 }) : '—';
-  const when = value => {
-    const date = new Date(value);
-    return value && Number.isFinite(date.getTime()) ? date.toLocaleString('pt-PT', { timeZone: 'Europe/Lisbon', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'hora desconhecida';
-  };
-  const old = (value, age) => !value || !Number.isFinite(Date.parse(value)) || Date.now() - Date.parse(value) > age;
-  const sources = { pulse: null, treasury: null };
-  let catalog = null;
-  let catalogCurrent = false;
-  let selected = null;
-  let catalogBusy = false;
+  // memoria: já houve uma leitura viva boa (o texto da falha muda). catalogo: a última leitura boa do catálogo.
+  const memoria = { pulso: false, tesouraria: false };
+  let catalogo = null;
+  let catalogoActual = false;
+  let obras = [];
+  let escolhida = null;
+  let catalogoOcupado = false;
   let reader = null;
   function el(tag, text, className) {
     const node = document.createElement(tag);
@@ -29,105 +28,16 @@
       return await response.json();
     } finally { clearTimeout(timer); }
   }
-  function showWork(id) {
-    const work = catalog.obras.find(item => item.id === Number(id));
-    if (!work) return;
-    selected = work;
-    $('workSelect').value = String(work.id);
-    $('workId').textContent = 'OBRA ' + String(work.id).padStart(3, '0');
-    $('workTitle').textContent = work.titulo || 'Sem título declarado';
-    $('workDescription').textContent = work.descricao_visivel || 'Esta obra ainda não tem um vestígio textual publicado.';
-    $('workPosition').textContent = (catalog.obras.indexOf(work) + 1) + ' / ' + catalog.obras.length;
-    $('workHash').textContent = work.sha256 || 'Hash não publicado';
-    $('selectedWork').textContent = String(work.id).padStart(3, '0') + (work.titulo ? ' · ' + work.titulo : ' · Sem título declarado');
-    renderLicenses();
+  function escrever(visivel, chaves) { for (const id of chaves) $(id).textContent = visivel[id]; }
+  function estadoDaFonte(id, estado) { $(id).dataset.state = estado; }
+  function rasto(r) {
+    const li = el('li');
+    const time = el('time', r.hora);
+    if (r.quando && Number.isFinite(Date.parse(r.quando))) time.dateTime = r.quando;
+    li.append(time, el('span', r.texto));
+    return li;
   }
-  function renderLicenses() {
-    if (!catalogCurrent) {
-      $('licenses').replaceChildren(el('p', 'Licenças por reconfirmar. Consulta o catálogo ou atualiza a leitura.'));
-      return;
-    }
-    const nodes = [];
-    const labels = { consulta: 'Para observar', editorial: 'Para publicar', treino: 'Para investigar' };
-    for (const item of catalog.licencas) {
-      if (!['consulta', 'editorial', 'treino'].includes(item.tipo)) continue;
-      const card = el('article', undefined, 'license');
-      card.append(el('h3', labels[item.tipo]), el('div', item.preco || 'Preço por consultar', 'license-price'));
-      card.append(el('p', item.descricao || 'Consultar os termos no catálogo.'));
-      card.append(el('p', 'Licença: ' + (item.duracao_da_licenca || 'duração não indicada') + '.', 'duration'));
-      if (typeof selected.sha256 === 'string' && /^[a-f0-9]{64}$/i.test(selected.sha256)) {
-        // Same-origin fixed route; never trust arbitrary URLs from a catalogue.
-        const query = new URLSearchParams({ obra: String(selected.id), sha256: selected.sha256 });
-        const link = el('a', 'Abrir pedido x402 ↗');
-        link.href = '/licenca/' + item.tipo + '?' + query;
-        link.setAttribute('aria-label', 'Abrir pedido x402: ' + item.tipo + ', obra ' + selected.id);
-        card.append(link);
-      } else card.append(el('p', 'Pedido indisponível: falta o hash da obra.'));
-      nodes.push(card);
-    }
-    $('licenses').replaceChildren(...(nodes.length ? nodes : [el('p', 'Não há licenças disponíveis nesta leitura do catálogo.') ]));
-  }
-  async function loadCatalog() {
-    if (catalogBusy) return;
-    catalogBusy = true;
-    try {
-      const data = await getJSON('/licenca');
-      if (!Array.isArray(data.obras) || !data.obras.length || !Array.isArray(data.licencas)) throw new Error('Catálogo incompleto');
-      data.obras = data.obras.filter(work => Number.isInteger(work.id) && work.id > 0);
-      if (!data.obras.length) throw new Error('Sem obras válidas');
-      catalog = data;
-      catalogCurrent = true;
-      const options = catalog.obras.map(work => {
-        const option = el('option', String(work.id).padStart(3, '0') + (work.titulo ? ' · ' + work.titulo : ' · Sem título'));
-        option.value = String(work.id);
-        return option;
-      });
-      $('workSelect').replaceChildren(...options);
-      const requested = Number(new URLSearchParams(location.search).get('obra'));
-      const initial = selected?.id || (catalog.obras.some(work => work.id === requested) ? requested : (catalog.obras.find(work => work.id === 2) || catalog.obras[0]).id);
-      showWork(initial);
-      $('workSelect').disabled = false;
-      $('nextWork').disabled = false;
-      $('catalogStatus').textContent = 'Catálogo consultado às ' + when(Date.now()) + '. Fotografias privadas; esta amostra é textual.';
-    } catch (_) {
-      catalogCurrent = false;
-      $('catalogStatus').textContent = 'Não foi possível atualizar o catálogo. ' + (catalog ? 'O vestígio anterior permanece; preços por reconfirmar na fonte.' : 'Podes tentar de novo em “Atualizar leitura” ou abrir a fonte.');
-      // Never leave a stale commercial request actionable after failed refresh.
-      $('licenses').replaceChildren(el('p', 'Licenças por reconfirmar. Consulta o catálogo ou atualiza a leitura.'));
-    } finally { catalogBusy = false; }
-  }
-  function eventItems(list) {
-    const seen = new Set();
-    return (Array.isArray(list) ? list : []).filter(event => {
-      const key = JSON.stringify([event.tipo, event.quando, event.detalhe]);
-      if (seen.has(key)) return false;
-      seen.add(key); return true;
-    }).slice(0, 3).map(event => {
-      const li = el('li');
-      const time = el('time', when(event.quando));
-      if (event.quando && Number.isFinite(Date.parse(event.quando))) time.dateTime = event.quando;
-      li.append(time, el('span', event.detalhe || event.tipo || 'Evento sem descrição'));
-      return li;
-    });
-  }
-  // Quando o Supabase falha, /pulso devolve a cópia de recurso (sem sentinela nem convite).
-  // Mostra o que ela realmente traz, sempre marcado como desactualizado; o resto fica em "—".
-  function renderPulseSnapshot(data) {
-    if (!data.campo) throw new Error('Pulso incompleto');
-    const observed = when(data.snapshot_observado_em);
-    $('fieldDay').textContent = number(data.campo.dia) ? 'Dia ' + format(data.campo.dia) + ' do organismo' : 'Tempo do organismo desconhecido';
-    $('accessCount').textContent = '—';
-    $('sentinelState').textContent = 'Sem vigilância viva';
-    $('sentinelDescription').textContent = 'A fonte viva não respondeu. Isto é uma cópia de recurso e não prova actividade posterior.';
-    $('pulseSourceTime').textContent = 'Cópia de recurso observada em ' + observed + ' (Lisboa).';
-    $('sinceSummary').textContent = 'Sem leitura viva do pulso: não há como comparar com a última visita.';
-    $('sinceList').replaceChildren();
-    const items = eventItems(data.eventos);
-    $('events').replaceChildren(...(items.length ? items : [el('li', 'Nenhum acontecimento nesta cópia.')]));
-    $('pulseDot').className = 'status-dot stale';
-    $('pulseSummary').textContent = 'Cópia de recurso · desactualizada';
-    sourceStatus('pulse', 'stale', 'Pulso: fonte viva indisponível; a mostrar a cópia de recurso de ' + observed + ' (Lisboa). “—” não significa zero.');
-  }
+
   // Compara os rastos do pulso com a última visita guardada neste dispositivo. A hora só se grava ao sair da página.
   let visitaBase;
   function desdeVisita(eventos) {
@@ -137,79 +47,100 @@
     const r = D.comparar(eventos, visitaBase, Date.now());
     const resumo = $('sinceSummary');
     if (r.estado === 'primeira') resumo.textContent = 'Primeira visita neste dispositivo: ainda não há nada a comparar.';
-    else if (r.estado === 'nada') resumo.textContent = 'Desde ' + when(visitaBase) + ' (Lisboa) o pulso não registou rastos novos.';
-    else resumo.textContent = 'Desde ' + when(visitaBase) + ' (Lisboa) o pulso registou ' + r.novos.length + (r.novos.length === 1 ? ' rasto novo.' : ' rastos novos.');
+    else if (r.estado === 'nada') resumo.textContent = 'Desde ' + N.quando(visitaBase) + ' (Lisboa) o pulso não registou rastos novos.';
+    else resumo.textContent = 'Desde ' + N.quando(visitaBase) + ' (Lisboa) o pulso registou ' + r.novos.length + (r.novos.length === 1 ? ' rasto novo.' : ' rastos novos.');
     $('sinceList').replaceChildren(...r.novos.slice(0, 2).map(e => {
-      const li = el('li'); li.append(el('time', when(e.quando)), el('span', e.detalhe || e.tipo || 'Evento sem descrição')); return li;
+      const li = el('li'); li.append(el('time', N.quando(e.quando)), el('span', e.detalhe || e.tipo || 'Evento sem descrição')); return li;
     }));
   }
-  function guardarVisita() { if (window.ORUMDesdeVisita && sources.pulse) window.ORUMDesdeVisita.guardar(window.localStorage, new Date().toISOString()); }
+  function guardarVisita() { if (window.ORUMDesdeVisita && memoria.pulso) window.ORUMDesdeVisita.guardar(window.localStorage, new Date().toISOString()); }
   addEventListener('pagehide', guardarVisita);
   document.addEventListener('visibilitychange', () => { if (document.hidden) guardarVisita(); });
+
   function renderPulse(data) {
-    if (data && data.estado === 'snapshot_desactualizado') return renderPulseSnapshot(data);
-    if (!data || !data.campo || !data.sentinela || !data.convite) throw new Error('Pulso incompleto');
-    sources.pulse = data;
-    $('accessCount').textContent = format(data.convite.maquinas_reconhecidas_total);
-    $('fieldDay').textContent = number(data.campo.dia) ? 'Dia ' + format(data.campo.dia) + ' do organismo' : 'Tempo do organismo desconhecido';
-    $('sentinelState').textContent = data.sentinela.veredicto || 'Sem veredicto';
-    $('sentinelDescription').textContent = data.sentinela.frase || 'A fonte não publicou uma descrição.';
-    $('pulseSourceTime').textContent = 'Sentinela: ' + when(data.sentinela.verificado_em) + ' (Lisboa).';
-    const seen = new Set();
-    const entries = (Array.isArray(data.eventos) ? data.eventos : []).filter(event => {
-      const key = JSON.stringify([event.tipo, event.quando, event.detalhe]);
-      if (seen.has(key)) return false;
-      seen.add(key); return true;
-    }).slice(0, 3);
-    desdeVisita(data.eventos);
-    $('events').replaceChildren(...entries.map(event => {
-      const li = el('li');
-      const time = el('time', when(event.quando));
-      if (event.quando && Number.isFinite(Date.parse(event.quando))) time.dateTime = event.quando;
-      li.append(time, el('span', event.detalhe || event.tipo || 'Evento sem descrição'));
-      return li;
+    const r = N.lerPulso(data, Date.now(), memoria.pulso);
+    escrever(r.visivel, r.escrever);
+    $('pulseDot').className = r.ponto;
+    estadoDaFonte('pulseStatus', r.fonteEstado);
+    if (r.eventosEscrever) $('events').replaceChildren(...(r.eventos.length ? r.eventos.map(rasto) : [el('li', r.semEventos)]));
+    if (r.estado === 'viva' || r.estado === 'viva_antiga') { memoria.pulso = true; desdeVisita(data.eventos); }
+    else if (r.estado === 'copia') {
+      $('sinceSummary').textContent = 'Sem leitura viva do pulso: não há como comparar com a última visita.';
+      $('sinceList').replaceChildren();
+    }
+  }
+  function renderTreasury(dado) {
+    const r = N.lerTesouraria(dado, Date.now(), memoria.tesouraria);
+    escrever(r.visivel, r.escrever);
+    estadoDaFonte('treasuryStatus', r.fonteEstado);
+    if (r.estado !== 'indisponivel') memoria.tesouraria = true;
+  }
+
+  function licencas(r) {
+    if (!r.licencas.length) { $('licenses').replaceChildren(el('p', r.mensagemLicencas)); return; }
+    $('licenses').replaceChildren(...r.licencas.map(l => {
+      const card = el('article', undefined, 'license');
+      card.append(el('h3', l.rotulo), el('div', l.preco, 'license-price'), el('p', l.descricao), el('p', l.duracao, 'duration'));
+      if (l.pedido) {
+        // Rota fixa da mesma origem; nunca se confia em URLs arbitrários vindos de um catálogo.
+        const link = el('a', 'Abrir pedido x402 ↗');
+        link.href = l.pedido;
+        link.setAttribute('aria-label', 'Abrir pedido x402: ' + l.tipo + ', obra ' + r.obra);
+        card.append(link);
+      } else card.append(el('p', l.aviso));
+      return card;
     }));
-    if (!entries.length) $('events').append(el('li', 'Nenhum acontecimento nesta leitura.'));
-    const stale = old(data.sentinela.verificado_em, 30 * 60 * 1000);
-    $('pulseDot').className = 'status-dot ' + (stale ? 'stale' : 'observed');
-    $('pulseSummary').textContent = stale ? 'Vigilância por atualizar' : 'Pulso consultado · ' + (data.sentinela.veredicto || 'sem veredicto');
-    sourceStatus('pulse', stale ? 'stale' : 'current', 'Pulso: ' + (stale ? 'vigilância com mais de 30 min ou hora desconhecida.' : 'leitura recebida às ' + when(Date.now()) + '.'));
   }
-  function renderTreasury(data) {
-    if (!data?.evidence?.source?.available || !number(data.evidence.external_confirmed_usdc)) throw new Error('Contabilidade incompleta');
-    sources.treasury = data;
-    $('revenue').textContent = format(data.evidence.external_confirmed_usdc);
-    const sourceTime = data.evidence.source.observed_at;
-    sourceStatus('treasury', old(sourceTime, 24 * 60 * 60 * 1000) ? 'stale' : 'current', 'Contabilidade: dados da fonte de ' + when(sourceTime) + ' (Lisboa).' + (old(sourceTime, 24 * 60 * 60 * 1000) ? ' Leitura antiga ou hora desconhecida.' : ''));
+  // Mostra uma obra (a escolhida pela pessoa ou a inicial). Não toca no estado da leitura do catálogo.
+  function mostrarObra(id) {
+    if (!catalogo || !obras.some(o => o.id === Number(id))) return;
+    const r = N.lerCatalogo(catalogo, Date.now(), { obra: Number(id), falhou: !catalogoActual });
+    escolhida = r.obra;
+    $('workSelect').value = String(r.obra);
+    escrever(r.obraVisivel, ['workId', 'workTitle', 'workDescription', 'workPosition', 'workHash', 'selectedWork']);
+    licencas(r);
   }
-  function sourceStatus(name, state, text) {
-    const target = $(name === 'pulse' ? 'pulseStatus' : 'treasuryStatus');
-    target.textContent = text;
-    target.dataset.state = state;
+  async function loadCatalog() {
+    if (catalogoOcupado) return;
+    catalogoOcupado = true;
+    try {
+      const dado = await getJSON('/licenca');
+      const pedida = Number(new URLSearchParams(location.search).get('obra'));
+      const r = N.lerCatalogo(dado, Date.now(), { obra: escolhida || pedida });
+      if (r.estado !== 'actual') throw new Error('Catálogo incompleto');
+      catalogo = dado; catalogoActual = true; obras = r.obras;
+      $('workSelect').replaceChildren(...obras.map(o => { const op = el('option', o.rotulo); op.value = String(o.id); return op; }));
+      mostrarObra(r.obra);
+      $('workSelect').disabled = false;
+      $('nextWork').disabled = false;
+      $('catalogStatus').textContent = r.catalogStatus;
+    } catch (_) {
+      catalogoActual = false;
+      const r = N.lerCatalogo(catalogo, Date.now(), { obra: escolhida, falhou: true });
+      $('catalogStatus').textContent = r.catalogStatus;
+      // Nunca deixar um pedido comercial desactualizado accionável depois de uma leitura falhada.
+      $('licenses').replaceChildren(el('p', r.mensagemLicencas));
+    } finally { catalogoOcupado = false; }
   }
-  function failed(name) {
-    sourceStatus(name, sources[name] ? 'stale' : 'unavailable', (name === 'pulse' ? 'Pulso' : 'Contabilidade') + ': atualização indisponível.' + (sources[name] ? ' Valores anteriores sem confirmação atual.' : ' Ainda sem leitura; “—” não significa zero.'));
-    if (name === 'pulse') { $('pulseSummary').textContent = 'Pulso sem confirmação atual'; $('pulseDot').className = 'status-dot stale'; }
-  }
-  const tasks = [['pulse', '/pulso', renderPulse], ['treasury', '/economia/tesouraria.json', renderTreasury]];
+
+  const tarefas = [['/pulso', renderPulse], ['/economia/tesouraria.json', renderTreasury]];
   reader = ORUMLiveRefresh.start({
-    read: () => Promise.allSettled(tasks.map(async ([, path]) => getJSON(path))),
-    render: results => results.forEach((result, index) => {
-      const [name, , render] = tasks[index];
-      try { if (result.status !== 'fulfilled') throw result.reason; render(result.value); }
-      catch (_) { failed(name); }
+    read: () => Promise.allSettled(tarefas.map(([caminho]) => getJSON(caminho))),
+    render: resultados => resultados.forEach((resultado, i) => {
+      // Uma falha de leitura é entregue ao núcleo como ausência de dado; ele diz o que a página deve mostrar.
+      tarefas[i][1](resultado.status === 'fulfilled' ? resultado.value : undefined);
     }),
     status: ({ state }) => {
       const labels = { current: 'Consulta a cada 30 s enquanto a página está visível. Estado de cada fonte abaixo.', stale: 'A leitura falhou. Valores anteriores sem confirmação atual.', offline: 'Sem ligação. Os valores anteriores não estão confirmados agora.', paused: 'Leitura suspensa enquanto a página está oculta.' };
       $('refreshStatus').textContent = labels[state];
-      if (state === 'offline' || state === 'stale') { failed('pulse'); failed('treasury'); }
+      if (state === 'offline' || state === 'stale') { renderPulse(undefined); renderTreasury(undefined); }
     }
   });
-  $('workSelect').addEventListener('change', event => showWork(event.target.value));
+  $('workSelect').addEventListener('change', event => mostrarObra(event.target.value));
   $('nextWork').addEventListener('click', () => {
-    if (!catalog || !selected) return;
-    const next = (catalog.obras.indexOf(selected) + 1) % catalog.obras.length;
-    showWork(catalog.obras[next].id);
+    if (!catalogo || escolhida === null) return;
+    const i = obras.findIndex(o => o.id === escolhida);
+    mostrarObra(obras[(i + 1) % obras.length].id);
   });
   $('refresh').hidden = false;
   $('refresh').addEventListener('click', async () => {

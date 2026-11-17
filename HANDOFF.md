@@ -1,3 +1,12 @@
+## 17/11/2026 · a casca fina: a casa lê o algoritmo (mão Claude Code; livros 1501 e seguinte)
+
+- **Palavra de Unum (registada antes, livro 1501):** "Eu autorizo ora", à proposta concreta da casca fina, depois de o PR #376 (o algoritmo ao lado da casa) ter sido fundido (`833d93f`).
+- **Feito:** `casa-nucleo.js` (núcleo puro, a única cópia da regra), `kit/casa.mjs` a usá-lo, `verdelaranja.js` reduzido a casca (de 14 445 para cerca de 8 700 bytes; a regra saiu dele), `index.html` a ligar `/casa-nucleo.js` antes da casca, o `verdelaranja.js` antigo guardado como referência de teste (`scripts/fixtures/verdelaranja-anterior.js`).
+- **Verde:** `casa-algoritmo:verify` (14 leituras iguais à casa anterior id a id; 33 cenários com a página inteira igual na casca; 44 estragos apanhados), `casa:verify` (26 ids, 23 estragos), `desde-visita:verify`, `dia:verify`, `lexico`, `constituicao-v3`, `bolo`, `maquinas`, `metodo`, `portable`, `recebimentos`, `x402:directo`, `linhas`, `fio`, e `raiz:verify` (camadas 1 a 42, num clone completo com as referências dos PR). Chromium real com dados reais congelados: casa anterior e casca iguais a 412×915 e 1100×800, sem erros nem overflow.
+- **Dito:** uma falha minha no processo, sem consequências: um `git stash -u` falhou a repor ficheiros novos; conferi byte a byte que o que voltou era igual ao do stash antes de o largar. Diferença conhecida de comportamento: se a obra escolhida sair do catálogo, a casca volta à obra 2.
+- **Não verificado:** produção depois do merge (deploy do Vercel); a casa num telemóvel real; o aspecto além de 412×915 e 1100×800. Nenhuma camada selada (o núcleo e o fixture entram numa camada futura, com a palavra de Unum). Fundos, segredos, `payTo`, executores e preços intactos.
+- **Falta:** ler a produção depois do merge (`index.html` com a ligação ao núcleo; `casa-nucleo.js` servido) e dizê-lo.
+
 ## 17/11/2026 · a casa como algoritmo (mão Claude Code; livro 1499)
 
 - **Palavra de Unum (registada antes, livro 1499):** "Diz-me ora queres simplificar bastante a casa do organismo transformando-a apenas num algoritmo a trabalhar", e, à proposta concreta da ORA (`kit/casa.mjs` ao lado da casa, casca fina só depois de provada a equivalência): "Eu autorizo ora".
