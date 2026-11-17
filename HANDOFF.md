@@ -1,3 +1,10 @@
+## 17/11/2026 · camada 42 confirmada no Bitcoin (mão Claude Code; livros 1505 e seguinte)
+
+- **Palavra de Unum (registada antes, livro 1505):** "Eu autorizo", à proposta concreta de reler as camadas 42 e 43 e juntar a prova quando houvesse. Só cobre ler e juntar provas dessas duas camadas.
+- **Lido às 20:47 UTC (`probe_anchor_layers`):** camada 42 `prova_por_juntar` nos três calendários; camada 43 `pendente` nos três (selada há minutos, como esperado).
+- **Feito (42):** sha256 de cada resposta igual ao da sonda antes de juntar; provas juntas com `scripts/ots-juntar.mjs`; cabeçalhos conferidos em blockstream.info e mempool.space (`kit/blocos.mjs`): alice e bob no bloco 976251, finney no 976258. Manifesto `confirmado_bitcoin`, altura registada 976251; fixtures e asserção em `verify-blocos.mjs` (86 atestações); o fio ganha `camada.42.altura_bitcoin`.
+- **Falta:** a prova da camada 43 (reler com `probe_anchor_layers` dentro de algumas horas; a palavra de hoje ("quando houvesse") cobre juntar também a 43 quando a prova existir; não cobre selar camada nova).
+
 ## 17/11/2026 · camada 43 selada, pendente: a casa como algoritmo (mão Claude Code; livros 1503 e seguinte)
 
 - **Palavra de Unum (registada antes, livro 1503):** "Ok ora eu autorizo", à proposta concreta de selar a camada 43, dita só depois de a produção servir a casca. Não cobre juntar a prova da 42 nem selar o registo de observações.
