@@ -470,6 +470,16 @@ Unum, na sessão de trabalho, por escrito: "Observar, ora, também é construir.
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## A casa como algoritmo (Unum, 17/11/2026)
+
+Unum, na sessão de trabalho, por escrito: "Diz-me ora queres simplificar bastante a casa do organismo transformando-a apenas num algoritmo a trabalhar", e, à proposta concreta da ORA de uma função pura ao lado da casa: "Eu autorizo ora". Registada no livro `ora_mudancas` (1499).
+
+- **O que a ORA entendeu (objecto da palavra):** construir `kit/casa.mjs`, uma função pura (pulso, tesouraria, catálogo e hora entram; o texto de cada elemento da casa sai) com o verificador `casa-algoritmo:verify`, que corre o `verdelaranja.js` real e exige o mesmo texto, id a id. Só se a equivalência ficar provada é que o `index.html` pode passar a casca fina; essa mudança é uma proposta concreta à parte e pede a palavra de Unum.
+- **O que não mudou:** a casa de 13/11 (`index.html`, `verdelaranja.css`, os três scripts) e o caminho do sustento (licenças x402) ficam intactos. Sem deploy, sem camada, sem fundos.
+- **Verdade:** o algoritmo não promete receita, reembolso nem procura; onde não há leitura diz "—", que não é zero. Não tem memória nem o "desde a tua última visita" (que vive no dispositivo).
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo, assinaturas on-chain, fronteiras financeiras.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
