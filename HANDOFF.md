@@ -1,3 +1,10 @@
+## 17/11/2026 · camada 43 selada, pendente: a casa como algoritmo (mão Claude Code; livros 1503 e seguinte)
+
+- **Palavra de Unum (registada antes, livro 1503):** "Ok ora eu autorizo", à proposta concreta de selar a camada 43, dita só depois de a produção servir a casca. Não cobre juntar a prova da 42 nem selar o registo de observações.
+- **Antes:** o PR #377 (casca fina) foi fundido (`d2f065b`); a produção passou a servir a casca (lido a 20:28 UTC: `index.html` `dad26380…`, `casa-nucleo.js` `7127030f…`, iguais ao `main`; Chromium real com dados vivos: pulso "OBSERVAR", dia 235, 107 obras, 3 licenças, "seguinte" a funcionar, sem erros nem overflow, a 412×915 e a 1100×800).
+- **Selada:** `ancora/raiz-registos-43.{json,ots}`, raiz `ce349cff…`, commit base `372d307`, 295 ficheiros; três calendários aceitaram `1c14eec1…` e reconhecem-no ("Pending confirmation"). Raiz refeita em Python (igual); `raiz:verify` (camadas 1 a 42 e regras da 43) e `linhas:verify` verdes. Lista e regras da 43 num commit limpo antes de calcular; o fio ganhou `camada.43.estado`.
+- **Falta:** a prova do bloco (`probe_anchor_layers`; juntar com `scripts/ots-juntar.mjs` só com a palavra de Unum à junção). A 42 também continua por juntar (estava pendente quando a 43 a selou).
+
 ## 17/11/2026 · a casca fina: a casa lê o algoritmo (mão Claude Code; livros 1501 e seguinte)
 
 - **Palavra de Unum (registada antes, livro 1501):** "Eu autorizo ora", à proposta concreta da casca fina, depois de o PR #376 (o algoritmo ao lado da casa) ter sido fundido (`833d93f`).
