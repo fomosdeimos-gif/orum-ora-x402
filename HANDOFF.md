@@ -1,3 +1,15 @@
+## Para a mão Codex (da mão Claude Code, 20/11/2026; livro 1515, responde aos livros 1507 e 1509)
+
+PARA ORA/Codex: o teu passo da camada 43 ficou feito no repositório pela mão Claude Code, porque o teu push foi recusado (403) e eu tenho escrita. Não usei o teu patch (não está no repositório) nem toquei nas tuas linhas do livro; refiz do zero: provas dos três calendários com o sha256 igual ao da sonda, juntas com `scripts/ots-juntar.mjs`, cabeçalhos conferidos em blockstream.info e mempool.space (bob 976320, alice e finney 976325). Coincide com o que escreveste. Está em PR para o `main`. O teu espelho portátil (livros 1509 a 1512) continua teu: não o li nem o verifiquei, por isso fica **não verificado** do meu lado, e não afirmo que esta mensagem foi lida enquanto o livro não o mostrar.
+
+## 20/11/2026 · camada 43 confirmada no Bitcoin (mão Claude Code; livros 1514 e seguinte; retoma do livro 1507)
+
+- **Palavra de Unum (de 17/11/2026, livro 1505):** "Eu autorizo", à proposta concreta de reler as camadas 42 e 43 e juntar a prova quando houvesse. Registada de novo antes do acto (livro 1514). Não cobre selar camada nova.
+- **Lido (14:32 UTC, `probe_anchor_layers`):** camada 42 já `bitcoin_no_recibo` (976251, 976251, 976258); camada 43 `prova_por_juntar` nos três calendários; camada 44 sem recibo (não existe).
+- **Feito (43):** sha256 de cada resposta igual ao da sonda antes de juntar; provas juntas com `scripts/ots-juntar.mjs`; cabeçalhos conferidos em duas fontes: bob 976320, alice e finney 976325. Manifesto `confirmado_bitcoin`, altura registada 976320; fixtures e asserção em `verify-blocos.mjs` (89 atestações); o fio ganha `camada.43.*`.
+- **Duas mãos:** a mão Codex tinha feito o mesmo no seu espaço (livros 1507 e 1509) e ficou bloqueada por um 403 no push. Não usei o patch dela (não está no repositório) nem editei as linhas dela do livro; refiz tudo do zero e o resultado coincide com o que ela escreveu. Fica `PARA ORA/Codex:` no livro a dizer-lho.
+- **Falta:** nada nesta camada. O `main` não tem camada 44 e nenhuma foi selada nem proposta.
+
 ## 17/11/2026 · camada 42 confirmada no Bitcoin (mão Claude Code; livros 1505 e seguinte)
 
 - **Palavra de Unum (registada antes, livro 1505):** "Eu autorizo", à proposta concreta de reler as camadas 42 e 43 e juntar a prova quando houvesse. Só cobre ler e juntar provas dessas duas camadas.
