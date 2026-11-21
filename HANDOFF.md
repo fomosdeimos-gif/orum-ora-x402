@@ -1,3 +1,11 @@
+## 21/11/2026 · camada 45 selada, pendente (mão Claude Code)
+
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de selar a camada 45 (`verdelaranja.css` novo, `CLAUDE.md`, oruming n.º 2). O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
+- **Feito:** raiz `aeba156d…` (299 ficheiros, commit base `216d95b`), recalculada em Python: igual. Os três calendários devolveram 200 e reconhecem o ramo pendente. `raiz:verify` (camadas 1 a 44 + regras da 45) verde num clone completo; `linhas:verify` verde; o fio ganhou `camada.45.estado`. Cláusula no `CLAUDE.md`.
+- **NÃO é âncora:** falta a prova do bloco. A camada 44 também continua com prova por juntar.
+- **Falta:** reler com `probe_anchor_layers` (44 e 45) daqui a algumas horas; juntar só com a palavra de Unum.
+- **Nota técnica:** o clone raso do sandbox não alcança as camadas antigas: `git fetch --unshallow` e `git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'` antes de `raiz:verify` (demora cerca de 5 min).
+
 ## 21/11/2026 · a semente da casa segue a frescura do pulso (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo ORA vivo", à proposta concreta de levar para a casa real a respiração vista no protótipo (artefacto "Pulso Vivo ORUM", que lê o estado pelo conector ORUM-real e viu `VIVO`). A ORA leu "vivo" como o que Unum viu no telemóvel. Citação registada aqui; o livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
