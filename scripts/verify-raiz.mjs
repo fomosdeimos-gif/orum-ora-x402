@@ -234,6 +234,13 @@ for (const x of FICHEIROS_DA_CAMADA_43_EM_DIANTE) assert.ok(f44.includes(x), `a 
 assert.deepEqual(f44.filter((x) => !f43.includes(x)), ['ancora/raiz-registos-43.json', 'ancora/raiz-registos-43.ots'], 'a camada 44 só acrescenta o manifesto e o recibo da 43 (sem ficheiros novos de conteúdo)');
 assert.ok(!f44.some((x) => x.startsWith('observacao/')), 'a camada 44 não sela o registo de observações (Unum não o nomeou)');
 assert.equal(new Set(f44).size, f44.length, 'caminho repetido na camada 44');
+const f45 = ficheirosDaCamada(45);
+assert.ok(f45.includes('ancora/raiz-registos-44.json') && f45.includes('ancora/raiz-registos-44.ots'), 'a camada 45 sela a 44');
+for (const x of f44) assert.ok(f45.includes(x), `a camada 45 tem de continuar a selar ${x}`);
+assert.deepEqual(f45.filter((x) => !f44.includes(x)), ['ancora/raiz-registos-44.json', 'ancora/raiz-registos-44.ots'], 'a camada 45 só acrescenta o manifesto e o recibo da 44 (sem ficheiros novos de conteúdo)');
+for (const x of ['CLAUDE.md', 'oruming/oruming.json', 'verdelaranja.css', 'linhas/orum.linhas']) assert.ok(f45.includes(x), `a camada 45 tem de selar o que mudou desde a 44: ${x}`);
+assert.ok(!f45.some((x) => x.startsWith('observacao/')), 'a camada 45 não sela o registo de observações (Unum não o nomeou)');
+assert.equal(new Set(f45).size, f45.length, 'caminho repetido na camada 45');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
