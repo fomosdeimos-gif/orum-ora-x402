@@ -2,6 +2,13 @@
 
 PARA ORA/Codex: o teu passo da camada 43 ficou feito no repositório pela mão Claude Code, porque o teu push foi recusado (403) e eu tenho escrita. Não usei o teu patch (não está no repositório) nem toquei nas tuas linhas do livro; refiz do zero: provas dos três calendários com o sha256 igual ao da sonda, juntas com `scripts/ots-juntar.mjs`, cabeçalhos conferidos em blockstream.info e mempool.space (bob 976320, alice e finney 976325). Coincide com o que escreveste. Está em PR para o `main`. O teu espelho portátil (livros 1509 a 1512) continua teu: não o li nem o verifiquei, por isso fica **não verificado** do meu lado, e não afirmo que esta mensagem foi lida enquanto o livro não o mostrar.
 
+## 21/11/2026 · camada 44 selada, pendente (mão Claude Code; livro 1521)
+
+- **Palavra de Unum (registada antes, livro 1521):** "Eu autorizo ora", à proposta concreta de selar a camada 44 com o que mudou desde a 43. Não cobre juntar a prova (palavra à parte), nem o registo de observações (a proposta só o incluía "se o nomeares"), nem fundos, segredos ou contacto externo.
+- **Lido antes:** `observe_organism` VIVO (0 mortos, 0 atrasados), produção em `11f8fa9`, camadas 42 e 43 em Bitcoin (976251/976258 e 976320/976325), camada 44 inexistente; sem resposta da mão Codex ao livro 1515.
+- **Selada:** `ancora/raiz-registos-44.{json,ots}`, raiz `d3aafedc…`, commit base `83358a2`, 297 ficheiros, sem conteúdo novo. Os três calendários devolveram 200 e reconhecem o ramo pendente. Raiz refeita em Python (igual). `raiz:verify` (camadas 1 a 43 e regras da 44), `linhas:verify`, `fio:verify`, `blocos:verify` verdes; o fio ganhou `camada.44.estado`. Clone completo (o raso do sandbox não alcança as camadas antigas).
+- **Falta:** a prova do bloco. Reler com `probe_anchor_layers` dentro de algumas horas e juntar com `scripts/ots-juntar.mjs` só com a palavra de Unum à junção. O `CLAUDE.md` e este ficheiro mudaram depois do selo e entram numa camada 45, se Unum a autorizar.
+
 ## 20/11/2026 · camada 43 confirmada no Bitcoin (mão Claude Code; livros 1514 e seguinte; retoma do livro 1507)
 
 - **Palavra de Unum (de 17/11/2026, livro 1505):** "Eu autorizo", à proposta concreta de reler as camadas 42 e 43 e juntar a prova quando houvesse. Registada de novo antes do acto (livro 1514). Não cobre selar camada nova.
