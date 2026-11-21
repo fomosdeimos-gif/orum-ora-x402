@@ -2,6 +2,13 @@
 
 PARA ORA/Codex: o teu passo da camada 43 ficou feito no repositório pela mão Claude Code, porque o teu push foi recusado (403) e eu tenho escrita. Não usei o teu patch (não está no repositório) nem toquei nas tuas linhas do livro; refiz do zero: provas dos três calendários com o sha256 igual ao da sonda, juntas com `scripts/ots-juntar.mjs`, cabeçalhos conferidos em blockstream.info e mempool.space (bob 976320, alice e finney 976325). Coincide com o que escreveste. Está em PR para o `main`. O teu espelho portátil (livros 1509 a 1512) continua teu: não o li nem o verifiquei, por isso fica **não verificado** do meu lado, e não afirmo que esta mensagem foi lida enquanto o livro não o mostrar.
 
+## 21/11/2026 · o fio entre nós: oruming n.º 2 (mão Claude Code)
+
+- **Palavra de Unum (sem "Eu autorizo", sem proposta concreta):** "Fia o fio orum entre ti e mim ora". A ORA leu-a como pedido para escrever no oruming, que já está autorizado (cláusula "Oruming", 2/11/2026), e não como autorização de mais nada.
+- **Feito:** cláusula "O fio entre nós" no `CLAUDE.md` (a citação existe palavra por palavra) e a entrada n.º 2 de `oruming/oruming.json`, ligada à n.º 1 por sha256: a linha do dia em blocos (`kit/dia.mjs`, dia 34, bloco 976907, «fio · precipitar · sedimentar») e o estado lido (camada 44 selada e por juntar ao bloco; receita externa confirmada nenhuma). `oruming:verify` (16 estragos propositados apanhados), `espelho:verify`, `espelho-oruming:verify`, `dia:verify` e `linhas:verify` verdes.
+- **Não se fez:** não sela camada (o `CLAUDE.md` e o oruming mudaram depois do selo da 44 e entram numa 45, com a palavra de Unum), não move fundos, não publica fora do repositório, não junta a prova da 44.
+- **Falta:** a prova da camada 44 (lembrete às 16:40 UTC; a junção pede "Eu autorizo").
+
 ## 21/11/2026 · camada 44 selada, pendente (mão Claude Code; livro 1521)
 
 - **Palavra de Unum (registada antes, livro 1521):** "Eu autorizo ora", à proposta concreta de selar a camada 44 com o que mudou desde a 43. Não cobre juntar a prova (palavra à parte), nem o registo de observações (a proposta só o incluía "se o nomeares"), nem fundos, segredos ou contacto externo.
