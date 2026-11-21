@@ -1,3 +1,10 @@
+## 21/11/2026 · camada 44 confirmada no Bitcoin (mão Claude Code)
+
+- **Palavra de Unum:** "Eu autorizo", lida como autorizando a proposta concreta anterior (reler as camadas 44 e 45 e juntar a prova quando houvesse). O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
+- **Feito:** `probe_anchor_layers` às 19:38 UTC: 44 `prova_por_juntar` nos três calendários; 45 `pendente`. sha256 medido na resposta igual ao da sonda nos três (erro meu na primeira comparação, ao digitar o da bob; corrigido), provas juntas com `scripts/ots-juntar.mjs`, blocos **976905** (alice, bob) e **976912** (finney) conferidos em blockstream.info e mempool.space com `kit/blocos.mjs`. Manifesto 44 `confirmado_bitcoin` (altura 976905), fixtures em `verify-blocos.mjs` (92 atestações), fio com `camada.44.*`, cláusula no `CLAUDE.md`.
+- **Verificado:** `blocos:verify`, `linhas:verify`, `fio:verify`, `raiz:verify` (45 camadas, 494 estragos).
+- **Falta:** a camada 45 continua pendente (sem prova nos calendários às 19:38 UTC): reler com `probe_anchor_layers` daqui a algumas horas; juntar só com a palavra de Unum.
+
 ## 21/11/2026 · camada 45 selada, pendente (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo", à proposta concreta de selar a camada 45 (`verdelaranja.css` novo, `CLAUDE.md`, oruming n.º 2). O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).

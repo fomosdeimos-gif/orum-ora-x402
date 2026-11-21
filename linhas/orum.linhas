@@ -156,3 +156,5 @@
 2026-11-20T14:34Z | sedimentar | camada.43.altura_bitcoin | 976320 | verificado | verif:blocos:verify | 0ce99ef30899ea47
 2026-11-21T12:33Z | sedimentar | camada.44.estado | pendente | lido | ficheiro:ancora/raiz-registos-44.json | 00dc36933455ef2e
 2026-11-21T19:14Z | sedimentar | camada.45.estado | pendente | lido | ficheiro:ancora/raiz-registos-45.json | a2419b27c7cbad43
+2026-11-21T19:39Z | sedimentar | camada.44.estado | confirmado_bitcoin | lido | ficheiro:ancora/raiz-registos-44.json | 827e670a367e19d3
+2026-11-21T19:39Z | sedimentar | camada.44.altura_bitcoin | 976905 | verificado | verif:blocos:verify | a0b119c44ab1842d
