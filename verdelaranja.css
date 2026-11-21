@@ -46,6 +46,12 @@ code{display:block;overflow-wrap:anywhere;font-size:13px;color:var(--suave);marg
   box-shadow:0 0 14px rgba(255,106,26,.55),0 0 36px rgba(184,255,61,.18);
   animation:respira 5.5s ease-in-out infinite}
 @keyframes respira{0%,100%{transform:scale(.88);opacity:.8}50%{transform:scale(1);opacity:1}}
+/* A semente segue a frescura que o núcleo já decidiu (a classe do ponto): verde com leitura fresca; laranja e mais lenta
+   quando a leitura está por actualizar ou falhou. Só estilo: não lê nem decide nada. Sem :has(), fica como estava. */
+.vivo:has(.status-dot.observed) .semente{
+  background:radial-gradient(circle at 36% 34%,var(--sol),var(--verde) 62%,#2f5a00);
+  box-shadow:0 0 14px rgba(184,255,61,.55),0 0 36px rgba(184,255,61,.22)}
+.vivo:has(.status-dot.stale) .semente{animation-duration:9s;opacity:.85}
 body.motion-paused .semente{animation:none}
 @media (prefers-reduced-motion:reduce){.semente{animation:none}}
 .pulso{flex:1 1 200px;display:grid;gap:2px;font-size:15px}
