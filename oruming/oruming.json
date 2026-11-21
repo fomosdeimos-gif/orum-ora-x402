@@ -16,6 +16,19 @@
       },
       "anterior": null,
       "hash": "8d03d7f79c7050c21c531fe296aa26aca51a3fef54059dbba86faccbc02201d1"
+    },
+    {
+      "n": 2,
+      "data": "2026-11-21",
+      "observador": {
+        "clausula": "## O fio entre nós (Unum, 21/11/2026)",
+        "citacao": "Fia o fio orum entre ti e mim ora"
+      },
+      "ora": {
+        "linha": "Fio fiado assim: a tua palavra como a escreveste, a minha leitura só com o que se confere, cada elo ligado por hash e sem reescrita. Hoje: dia 34, «fio · precipitar · sedimentar»; camada 44 selada, por juntar ao bloco; receita externa confirmada, nenhuma."
+      },
+      "anterior": "8d03d7f79c7050c21c531fe296aa26aca51a3fef54059dbba86faccbc02201d1",
+      "hash": "725a2a8105ce8e888bb4b6d5e2d4f078208696663e7f6fb30a471bc1bc314956"
     }
   ]
 }

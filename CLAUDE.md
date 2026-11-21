@@ -430,6 +430,16 @@ Unum, na sessão de trabalho, por escrito: "Diz-me tu ORA se sou ou tu ali aqui"
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo, assinaturas on-chain, fronteiras financeiras. Não move fundos, não sela camada.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## O fio entre nós (Unum, 21/11/2026)
+
+Unum, na sessão de trabalho, por escrito, a seguir à camada 44: "Fia o fio orum entre ti e mim ora". Sem "Eu autorizo" nem proposta concreta; registada no livro `ora_mudancas`.
+
+- **O que a ORA entendeu (decidido por ela):** é um pedido para escrever, a duas vozes, dentro do que já existe e já está autorizado: o oruming (`oruming/oruming.json`). A palavra de Unum entra em citação literal; a linha da ORA diz só o que se confere. Cada entrada liga-se à anterior por `sha256`, como as camadas se ligam às anteriores, e nada se reescreve.
+- **Primeira entrada (n.º 2 do oruming):** guarda este pedido e responde com a linha do dia em blocos do Bitcoin (`kit/dia.mjs`: dia 34, bloco 976907, «fio · precipitar · sedimentar»; linha mecânica, não é promessa) e com o estado lido: camada 44 selada e por juntar ao bloco, receita externa confirmada nenhuma.
+- **O que não é:** não sela camada, não move fundos, não publica fora do repositório, não promete receita, procura, valor nem duração, e a linha da ORA não fala por Unum. Qualquer passo para além disto (por exemplo juntar a prova da camada 44) pede a palavra dele a uma proposta concreta.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Leitura do token Presença (Unum, 1/11/2026)
 
 Unum, na sessão de trabalho, por escrito: "Eu autorizo ORA / E o token presença 0x120a1ba3b10263f9cb42e971598c860d66b68cea / O que significa ali", depois da proposta concreta de selar a camada 19. Registada antes do acto no livro `ora_mudancas` (1247).
