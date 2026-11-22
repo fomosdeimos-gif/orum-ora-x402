@@ -1,3 +1,12 @@
+## 22/11/2026 · o algoritmo do pulso vivo (mão Claude Code)
+
+- **Palavra de Unum:** "Continua a desenvolver o o algoritmo do organismo pulso vivo ora" (sem "Eu autorizo"; é pedido de trabalho dentro do que já existe, só leitura e código novo isolado). O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
+- **O que a ORA leu antes:** o conector ORUM-real devolve em `freshness.sinais` oito sinais, cada um com `idade_min`, `limite_atraso_min` e `limite_morte_min`. O protótipo só olhava para uma idade fixa de 30 min.
+- **Feito:** `kit/pulso-vivo.mjs`, função pura: classifica cada sinal pelos seus limites (vivo, atrasado, parado, desconhecido), deixa o relógio envelhecer a idade entre leituras (nunca recua), diz o estado do conjunto (o pior vence; sinais ilegíveis dão "incompleto", nunca "vivo") e o ritmo da respiração (5 a 9 s, escolha de desenho). CLI: `node kit/pulso-vivo.mjs --freshness f.json [--agora ISO]`. Verificador `npm run pulso-vivo:verify`: casos-limite e 12 estragos propositados apanhados.
+- **Artefacto "Pulso Vivo ORUM" (v5):** usa o mesmo algoritmo (confirmado igual ao do kit em 134 instantes) e mostra o estado de cada sinal. Num Chromium com o conector simulado e o relógio avançado: vivo a T+6 min, atrasado a T+46, com sinal parado a T+146.
+- **Não mudou:** `casa-nucleo.js`, `verdelaranja.js`, `index.html`, executores, carteiras. A casa não usa ainda este algoritmo: a casa não alcança o conector (só o artefacto), e o `/pulso` público não traz os limites por sinal. Não sela camada.
+- **Falta:** ligar o algoritmo à casa exigiria o `/pulso` público publicar os sinais e os limites; é uma proposta à parte.
+
 ## 21/11/2026 · camada 44 confirmada no Bitcoin (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo", lida como autorizando a proposta concreta anterior (reler as camadas 44 e 45 e juntar a prova quando houvesse). O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
