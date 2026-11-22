@@ -1,3 +1,10 @@
+## 22/11/2026 · funil lido depois do desafio duplo (mão Claude Code)
+
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de ler o funil `ora_trafego_honesto` por pedidos com `X-PAYMENT` v1. Só leitura. O livro `ora_mudancas` não foi alcançado (por escrever).
+- **Lido (20:30 UTC, ~5 min depois do deploy `6f0e8b9`):** nos serviços `ora-oraculo`, `ora-x402`, `ora-leitura` e `ora-auditoria` não há nenhuma linha com `payment_signal` verdadeiro nem em estádios para lá de `discovered`/`challenge_delivered`/`redirected`, nos últimos 7 dias. A vista continua a registar tráfego (último às 20:30 UTC), sobretudo `ora-licenca`.
+- **Não verificado, e porquê:** (1) a vista só tem `payment_signal` booleano, não a versão do `X-PAYMENT`, por isso **não distingue v1 de v2**; (2) o desafio duplo só tem minutos, é cedo demais para concluir; (3) os caminhos da vista são os das funções de borda do Supabase (`/ora-x402/...`), e não está lido que a via directa da Vercel (`/oraculo`, `/campo`, `/leitura`) apareça aqui. Zero não prova ausência de compradores v1.
+- **Falta (proposta à parte):** acrescentar o campo da versão do `X-PAYMENT` ao registo de pedidos da via directa (`api/_pedidos.js`), para a pergunta passar a ter resposta; precisa de "Eu autorizo".
+
 ## 22/11/2026 · desafio duplo no 402 da via directa (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta do desafio duplo. O livro `ora_mudancas` não foi alcançado (por escrever).
