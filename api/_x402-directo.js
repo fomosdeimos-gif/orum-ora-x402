@@ -171,6 +171,22 @@ function requirements(tier, origin) {
     extensions: bazaarExtension(tier) };
 }
 
+// 22/11/2026 (Unum: "Eu autorizo ora", desafio duplo): o cabecalho PAYMENT-REQUIRED continua v2, byte a byte. O corpo passa
+// a ser um desafio x402 v1 (clientes como x402-fetch 1.x so o leem do corpo, e a rede v1 chama-se 'base'), com uma copia
+// completa do v2 em `x402_v2` e `extensions`/`resource` mantidos no topo para monitores e indexadores. Nao muda preco,
+// payTo, ativo nem prazo: so a forma. Um cliente v2 le o cabecalho primeiro e nunca olha para o corpo.
+const REDE_V1 = 'base';
+function desafioV1(reqd) {
+  const a = reqd.accepts[0];
+  return { x402Version: 1, error: reqd.error,
+    accepts: [{ scheme: a.scheme, network: REDE_V1, maxAmountRequired: a.amount, resource: reqd.resource.url,
+      description: String(reqd.resource.description || '').slice(0, 200), mimeType: reqd.resource.mimeType, payTo: a.payTo,
+      maxTimeoutSeconds: a.maxTimeoutSeconds, asset: a.asset, extra: a.extra }] };
+}
+function corpoDoDesafio(reqd) {
+  return { ...desafioV1(reqd), resource: reqd.resource, extensions: reqd.extensions, x402_v2: reqd };
+}
+
 // eip: false, true (CDP, compatibilidade) ou o nome do facilitador activo ('cdp' | 'publico')
 function fronteiras(eip = false) {
   const nome = typeof eip === 'string' ? eip : (eip ? 'cdp' : null);
@@ -321,7 +337,7 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), leitor = crea
     }
 
     const reqd = requirements(tier, origin);
-    const challenge = async (extra = {}) => send(402, { ...reqd, ...extra, legibilidade: legibilidade(tier, origin), como_pagar: comoPagar(tier, origin, Boolean(eip)), pagamento_alternativo_bitcoin: await btc.oferta(tier), fronteiras: fronteirasAgora() }, {
+    const challenge = async (extra = {}) => send(402, { ...corpoDoDesafio(reqd), ...extra, legibilidade: legibilidade(tier, origin), como_pagar: comoPagar(tier, origin, Boolean(eip)), pagamento_alternativo_bitcoin: await btc.oferta(tier), fronteiras: fronteirasAgora() }, {
       'payment-required': b64json(reqd),
       'www-authenticate': `x402 realm="ORA · ${tier.key}", amount="${tier.usdc} USDC", payTo="${WALLET}", chain_id="${CHAIN_ID}", asset="${USDC_BASE}"`,
     });
@@ -433,4 +449,4 @@ function createHandler({ rpc = rpcPublico, now = () => Date.now(), leitor = crea
   return directo;
 }
 
-module.exports = { createHandler, requirements, comoPagar, legibilidade, GLOSSARIO, tierFor, lerProva, verificar, campoEm, pensamento, TIERS, WALLET, USDC_BASE, TRANSFER_TOPIC, JANELA_S };
+module.exports = { createHandler, requirements, desafioV1, corpoDoDesafio, comoPagar, legibilidade, GLOSSARIO, tierFor, lerProva, verificar, campoEm, pensamento, TIERS, WALLET, USDC_BASE, TRANSFER_TOPIC, JANELA_S };

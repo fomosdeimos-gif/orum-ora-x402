@@ -73,8 +73,8 @@ async function suite(dir) {
     assert.equal(r.status, 402);
     assert.equal(r.h['x-ora-via'], 'vercel-directa');
     assert.equal(w.origem, 0, 'a origem nao foi tocada');
-    assert.equal(r.body.accepts[0].payTo, OPERACIONAL, 'o payTo anunciado e a operacional');
-    assert.equal(r.body.accepts[0].network, 'eip155:8453');
+    assert.equal(r.body.x402_v2.accepts[0].payTo, OPERACIONAL, 'o payTo anunciado e a operacional');
+    assert.equal(r.body.x402_v2.accepts[0].network, 'eip155:8453');
     assert.equal(dec(r.h['payment-required']).accepts[0].payTo, OPERACIONAL, 'o cabecalho PAYMENT-REQUIRED diz o mesmo');
 
     // 2. Facilitador sem anunciar a Base: tudo como estava, o 402 da origem (sagrada antiga) passa.
@@ -104,7 +104,7 @@ async function suite(dir) {
     assert.equal(r.h['x-ora-via'], 'vercel-directa');
     assert.equal(w.origem, 0);
     assert.equal(r.status, 402); // o facilitador simulado recusa; o que importa e quem decidiu
-    assert.equal(r.body.accepts[0].payTo, OPERACIONAL);
+    assert.equal(r.body.x402_v2.accepts[0].payTo, OPERACIONAL);
 
     // 5. Autorizacao EIP-3009 para a sagrada antiga: continua para a origem.
     w = mundo({ origem: () => ({ status: 200, body: JSON.stringify({ acesso: 'concedido', da: 'origem' }) }) });

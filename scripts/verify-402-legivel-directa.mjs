@@ -61,17 +61,17 @@ function verificar({ tier, challenge, req, pago, fonteTxt }) {
   if (!/2026-03-28/.test(L.glossario?.dia || '')) x('o glossário não dá a data da génese');
   if (!/2026-06-26/.test(L.glossario?.epoca || '')) x('o glossário não dá a data da mudança de época');
   // o x402 padrão não mudou
-  if (!(challenge.body.accepts[0].payTo === d.WALLET)) x('payTo mudou');
-  if (challenge.body.accepts[0].amount !== (tier === 'oraculo' ? '161000' : '330000')) x('montante mudou');
-  if ('legibilidade' in req || 'outputSchema' in challenge.body.accepts[0]) x('a legibilidade entrou no payment-required ou em accepts');
-  if (JSON.stringify(challenge.body.accepts) !== JSON.stringify(req.accepts)) x('accepts do corpo difere do cabeçalho');
+  if (!(challenge.body.x402_v2.accepts[0].payTo === d.WALLET)) x('payTo mudou');
+  if (challenge.body.x402_v2.accepts[0].amount !== (tier === 'oraculo' ? '161000' : '330000')) x('montante mudou');
+  if ('legibilidade' in req || 'outputSchema' in challenge.body.x402_v2.accepts[0]) x('a legibilidade entrou no payment-required ou em accepts');
+  if (JSON.stringify(challenge.body.x402_v2.accepts) !== JSON.stringify(req.accepts)) x('accepts do corpo difere do cabeçalho');
   // a resposta paga cumpre o esquema anunciado
   for (const e of valida(pago.body, L.resposta_paga_schema)) x('resposta paga fora do esquema: ' + e);
   // a fronteira não afirma uma indisponibilidade que já não se observa
   if (/Edge Functions Supabase indisponíveis/.test(JSON.stringify(challenge.body.fronteiras || {}))) x('fronteiras ainda afirma que as Edge Functions Supabase estão indisponíveis');
   if (!/a 27\/10\/2026 a origem Supabase voltou a responder/.test(JSON.stringify(challenge.body.fronteiras || {}))) x('fronteiras.motivo perdeu a leitura de 27/10/2026');
   // a fonte chama a legibilidade no desafio e não toca em accepts
-  if (!/send\(402, \{ \.\.\.reqd, \.\.\.extra, legibilidade: legibilidade\(tier, origin\)/.test(fonteTxt)) x('o desafio deixou de incluir a legibilidade');
+  if (!/send\(402, \{ \.\.\.corpoDoDesafio\(reqd\), \.\.\.extra, legibilidade: legibilidade\(tier, origin\)/.test(fonteTxt)) x('o desafio deixou de incluir a legibilidade');
   if (!/accepts: \[\{ scheme: 'exact', network: CAIP2, amount: tier\.atomic\.toString\(\), asset: USDC_BASE, payTo: WALLET,\n\s+maxTimeoutSeconds: 300, extra: \{ name: 'USD Coin', version: '2' \} \}\]/.test(fonteTxt)) x('accepts da via directa foi alterado');
   return erros;
 }
@@ -108,9 +108,9 @@ falha('glossário com época sem data', (c) => { c.challenge.body.legibilidade.g
 falha('esquema exige um campo que a resposta não tem', (c) => { c.challenge.body.legibilidade.resposta_paga_schema.required.push('inexistente'); });
 falha('esquema diz que sigma é texto', (c) => { c.challenge.body.legibilidade.resposta_paga_schema.properties.campo.properties.sigma = { type: 'string' }; });
 falha('esquema fixa a época numa só', (c) => { c.challenge.body.legibilidade.resposta_paga_schema.properties.campo.properties.epoca = { type: 'string', enum: ['CRISTAL'] }; });
-falha('payTo mudou', (c) => { c.challenge.body.accepts[0].payTo = '0x0000000000000000000000000000000000000001'; });
-falha('montante mudou', (c) => { c.challenge.body.accepts[0].amount = '1'; });
-falha('a legibilidade entrou em accepts', (c) => { c.challenge.body.accepts[0].outputSchema = {}; c.req.accepts[0].outputSchema = {}; });
+falha('payTo mudou', (c) => { c.challenge.body.x402_v2.accepts[0].payTo = '0x0000000000000000000000000000000000000001'; });
+falha('montante mudou', (c) => { c.challenge.body.x402_v2.accepts[0].amount = '1'; });
+falha('a legibilidade entrou em accepts', (c) => { c.challenge.body.x402_v2.accepts[0].outputSchema = {}; c.req.accepts[0].outputSchema = {}; });
 falha('a legibilidade entrou no payment-required', (c) => { c.req.legibilidade = {}; });
 falha('accepts do corpo difere do cabeçalho', (c) => { c.req.accepts[0].amount = '2'; });
 falha('o desafio deixa de incluir a legibilidade', (c) => { c.fonteTxt = fonte.replace('legibilidade: legibilidade(tier, origin), como_pagar', 'como_pagar'); });
