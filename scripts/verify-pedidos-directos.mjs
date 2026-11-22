@@ -50,6 +50,17 @@ async function suite(caminhoApi) {
   assert.equal(construir(fakeReq({ 'payment-signature': 'lixo' }), fakeRes(), alvoPago).tipo_prova, 'invalida');
   assert.equal(construir(fakeReq(), fakeRes(), alvoPago).tipo_prova, null);
 
+  // versao do X-PAYMENT (22/11/2026): so a versao do envelope entra em tipo_prova; a prova nunca
+  const envio = (v) => fakeReq({ 'x-payment': prova({ ...(v === undefined ? {} : { x402Version: v }), payload: { signature: '0x' + 'ab'.repeat(65), authorization: { from: PAGADOR, to: PAGADOR } } }) });
+  assert.equal(construir(envio(1), fakeRes(), alvoPago).tipo_prova, 'eip3009_v1');
+  assert.equal(construir(envio(2), fakeRes(), alvoPago).tipo_prova, 'eip3009_v2');
+  assert.equal(construir(envio(undefined), fakeRes(), alvoPago).tipo_prova, 'eip3009');
+  assert.equal(construir(envio(3), fakeRes(), alvoPago).tipo_prova, 'eip3009');
+  assert.equal(construir(envio('1'), fakeRes(), alvoPago).tipo_prova, 'eip3009');
+  assert.equal(construir(fakeReq({ 'payment-signature': prova({ x402Version: 2, payload: { signature: '0x' + 'ab'.repeat(65), authorization: { from: PAGADOR, to: PAGADOR } } }) }), fakeRes(), alvoPago).tipo_prova, 'eip3009_v2');
+  assert.equal(construir(fakeReq({ 'x-payment': prova({ x402Version: 1, transactionHash: '0x' + 'c'.repeat(64) }) }), fakeRes(), alvoPago).tipo_prova, 'tx', 'a versao so distingue a autorizacao EIP-3009');
+  assert.ok(!JSON.stringify(construir(envio(1), fakeRes(), alvoPago)).includes('ab'.repeat(20)), 'a assinatura nao entra no registo');
+
   // medir: regista uma vez e só depois deixa sair a resposta, uma só vez
   let chamadas = []; const ordem = [];
   const res1 = fakeRes(); const fimOriginal = res1.end.bind(res1); res1.end = (...a) => { ordem.push('fim'); fimOriginal(...a); };
@@ -80,13 +91,16 @@ async function suite(caminhoApi) {
 }
 
 // ficheiros: o proxy liga o registo; a migração limita a escrita aberta e não guarda nada pessoal
-function conferirFicheiros(proxyTexto, sql) {
+function conferirFicheiros(proxyTexto, sql, versaoSql = null) {
   assert.ok(/require\('\.\/_pedidos'\)/.test(proxyTexto) && /medir\(req, res, alvoPago\)/.test(proxyTexto), 'o proxy tem de ligar medir()');
   const m = (re, msg) => assert.ok(re.test(sql), msg);
   m(/security definer/i, 'a RPC é security definer'); m(/revoke all on table public\.ora_pedidos_directos from anon, authenticated/i, 'sem acesso directo à tabela');
   m(/enable row level security/i, 'RLS ligado');
   const marca = readFileSync(join(RAIZ, 'supabase/migrations/20261029100000_ora_pedidos_directos_classe_orum.sql'), 'utf8');
   assert.ok(/'orum_declarado'/.test(marca), 'a restrição de classe tem de aceitar orum_declarado');
+  const versao = versaoSql ?? readFileSync(join(RAIZ, 'supabase/migrations/20261122210000_ora_pedidos_directos_versao_x402.sql'), 'utf8');
+  for (const v of ['btc', 'eip3009', 'eip3009_v1', 'eip3009_v2', 'tx', 'invalida']) assert.ok(new RegExp(`'${v}'`).test(versao.replace(/--.*/g, '')), `a restrição de tipo_prova tem de aceitar ${v}`);
+  assert.ok(!/\b(drop\s+table|drop\s+column|delete\s+from|truncate)\b/i.test(versao.replace(/--.*/g, '')), 'a migração da versão é só aditiva');
   const endurecida = readFileSync(join(RAIZ, 'supabase/migrations/20261029080000_ora_pedidos_directos_estado_http_plausivel.sql'), 'utf8');
   assert.ok(/not in \(200, 204[^)]*402[^)]*\)/.test(endurecida), 'a RPC tem de recusar estados fora da lista');
   assert.ok(!/\b29\d\b/.test(endurecida.replace(/-- .*/g, '')), 'a lista de estados não pode conter 29x'); m(/interval '1 minute'\) >= 300\b/i, 'tecto de escrita por minuto');
@@ -97,6 +111,7 @@ function conferirFicheiros(proxyTexto, sql) {
 
 const proxyReal = readFileSync(join(RAIZ, 'api/proxy.js'), 'utf8');
 const sqlReal = readFileSync(MIGRACAO, 'utf8');
+const versaoReal = readFileSync(join(RAIZ, 'supabase/migrations/20261122210000_ora_pedidos_directos_versao_x402.sql'), 'utf8');
 await suite(join(RAIZ, 'api'));
 conferirFicheiros(proxyReal, sqlReal);
 
@@ -112,6 +127,11 @@ const estragos = [
   ['ignora ORUM_PEDIDOS=off', 'api/_pedidos.js', " || env.ORUM_PEDIDOS === 'off'", ""],
   ['mede o manifesto', 'api/_pedidos.js', "(alvo.kind !== 'pago' && alvo.kind !== 'eco')", "false"],
   ['perde a marca do organismo', 'api/_pedidos.js', "if (/^ORUM-/i.test(u)) return 'orum_declarado';", ""],
+  ['v1 vira v2', 'api/_pedidos.js', "({ 1: 'eip3009_v1', 2: 'eip3009_v2' })", "({ 1: 'eip3009_v2', 2: 'eip3009_v2' })"],
+  ['v2 vira v1', 'api/_pedidos.js', "({ 1: 'eip3009_v1', 2: 'eip3009_v2' })", "({ 1: 'eip3009_v1', 2: 'eip3009_v1' })"],
+  ['versao ausente vira v1', 'api/_pedidos.js', "|| 'eip3009')", "|| 'eip3009_v1')"],
+  ['aceita qualquer versao', 'api/_pedidos.js', "d.x402Version === 1 || d.x402Version === 2) ? d.x402Version : null", "true) ? d.x402Version : null"],
+  ['a versao so se le do cabecalho x-payment', 'api/_pedidos.js', "versaoProva(cab)", "versaoProva(req.headers['x-payment'])"],
   ['via errada', 'api/_pedidos.js', "=== 'vercel-directa' ? 'vercel-directa'", "=== 'vercel-directa' ? 'origem'"],
 ];
 for (const [nome, f, de, para] of estragos) {
@@ -131,6 +151,9 @@ for (const [nome, f, de, para] of estragos) {
   } finally { rmSync(dir, { recursive: true, force: true }); }
 }
 const estragosFicheiros = [
+  ['migracao sem eip3009_v1', () => conferirFicheiros(proxyReal, sqlReal, versaoReal.replace("'eip3009_v1', ", ''))],
+  ['migracao sem o eip3009 antigo', () => conferirFicheiros(proxyReal, sqlReal, versaoReal.replace("'eip3009', ", ''))],
+  ['migracao apaga linhas', () => conferirFicheiros(proxyReal, sqlReal, versaoReal + '\ndelete from public.ora_pedidos_directos;')],
   ['proxy sem medir', () => conferirFicheiros(proxyReal.replace('medir(req, res, alvoPago)', 'void 0'), sqlReal)],
   ['sem tecto de escrita', () => conferirFicheiros(proxyReal, sqlReal.replace("interval '1 minute') >= 300", "interval '1 minute') >= 300000000"))],
   ['sem RLS', () => conferirFicheiros(proxyReal, sqlReal.replace(/alter table public\.ora_pedidos_directos enable row level security;/i, ''))],

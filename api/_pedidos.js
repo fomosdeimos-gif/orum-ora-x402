@@ -22,10 +22,21 @@ function classe(ua) {
   return 'outro';
 }
 
+// 22/11/2026 (Unum: "Eu autorizo ora", a registar a versao do X-PAYMENT): so a versao do envelope (1 ou 2), nunca a prova.
+// Um cliente v1 (x402-fetch) envia X-PAYMENT com x402Version 1; um cliente v2 envia PAYMENT-SIGNATURE com x402Version 2.
+function versaoProva(cab) {
+  try {
+    let d = null;
+    try { d = JSON.parse(Buffer.from(cab, 'base64').toString('utf8')); } catch {}
+    if (!d || typeof d !== 'object') d = JSON.parse(cab);
+    return d && (d.x402Version === 1 || d.x402Version === 2) ? d.x402Version : null;
+  } catch { return null; }
+}
+
 function construir(req, res, alvo) {
   const cab = req.headers['x-payment'] || req.headers['payment-signature'];
   const prova = cab ? lerProva(cab) : null;
-  const tipo = !cab ? null : prova && prova.btc ? 'btc' : prova && prova.eip3009 ? 'eip3009' : prova && prova.tx ? 'tx' : 'invalida';
+  const tipo = !cab ? null : prova && prova.btc ? 'btc' : prova && prova.eip3009 ? (({ 1: 'eip3009_v1', 2: 'eip3009_v2' })[versaoProva(cab)] || 'eip3009') : prova && prova.tx ? 'tx' : 'invalida';
   const via = res.getHeader && res.getHeader('x-ora-via') === 'vercel-directa' ? 'vercel-directa' : (res.getHeader && res.getHeader('x-ora-fonte') ? 'snapshot' : 'origem');
   return {
     rota: alvo.tier.path + (alvo.kind === 'eco' ? '/eco' : ''),
@@ -64,4 +75,4 @@ function medir(req, res, alvo, { rpc = rpcPublico, prazoMs = 400, env = process.
   };
 }
 
-module.exports = { medir, construir, classe, rpcPublico };
+module.exports = { medir, construir, classe, rpcPublico, versaoProva };
