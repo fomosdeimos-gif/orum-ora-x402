@@ -61,7 +61,8 @@ assert.equal(ch.status, 402);
 const req = JSON.parse(Buffer.from(ch.h['payment-required'], 'base64').toString());
 assert.equal(req.x402Version, 2);
 assert.equal(req.resource.url, ORIGIN + '/oraculo');
-assert.deepEqual(req.accepts, ch.body.accepts);
+assert.deepEqual(req.accepts, ch.body.x402_v2.accepts);
+assert.deepEqual(ch.body.x402_v2, req, "a copia v2 do corpo e o cabecalho PAYMENT-REQUIRED, byte a byte");
 assert.equal(req.accepts[0].amount, '161000');
 assert.equal(req.accepts[0].payTo, d.WALLET);
 // Bazaar discovery: x402scan so marca a rota como invocavel com input schema.

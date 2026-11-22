@@ -3,6 +3,7 @@
 // pedido, o "pago", é simulado localmente: nada é enviado ao serviço, a chave é descartável e sem fundos, e nada é pago.
 // Uso: ORUM_X402_CLIENTES=<pasta com node_modules de @x402/fetch @x402/evm @x402/core viem x402-fetch> \
 //        node scripts/teste-clientes-x402.mjs [oraculo|campo|leitura] [--base https://ora-x402-gateway.vercel.app]
+//      --local      em vez de pedir ao serviço, gera o desafio com o código deste repositório (api/_x402-directo.js, sem rede)
 //      --corpo-v1   substitui o corpo por um corpo v1 derivado do v2 (protótipo do desafio duplo; não toca no serviço)
 // O repositório não tem dependências por desenho: as bibliotecas vêm de fora (instalar com `npm install --ignore-scripts`).
 // Prova só se o CLIENTE anexa um pagamento ao desafio; não prova que o servidor o liquide, nem procura, adopção ou receita.
@@ -20,10 +21,19 @@ const { generatePrivateKey, privateKeyToAccount } = req('viem/accounts');
 
 // 1. o desafio real
 const url = `${base}/${porta}`;
-const r0 = await fetch(url, { headers: { 'user-agent': 'orum-teste-clientes-x402/1' } });
-const cabecalho = r0.headers.get('payment-required');
-let corpo = await r0.text();
-if (r0.status !== 402) { console.log(JSON.stringify({ porta, erro: `esperava 402, veio ${r0.status}` })); process.exit(1); }
+let r0; let cabecalho; let corpo;
+if (process.argv.includes('--local')) {
+  process.env.ORUM_PEDIDOS = 'off'; process.env.ORUM_FACILITATOR_URL = 'off'; process.env.ORUM_BTC_RAIL = 'off';
+  const d = createRequire(import.meta.url)('../api/_x402-directo.js');
+  const h = d.createHandler({ rpc: async () => { throw new Error('sem rede'); }, now: Date.now });
+  const res = { h: {}, setHeader(k, v) { this.h[k.toLowerCase()] = v; }, end(raw) { this.corpo = raw; } };
+  const b = { oraculo: 'ora-oraculo', campo: 'ora-x402', leitura: 'ora-leitura' }[porta];
+  await h({ headers: {} }, res, { base: b, rest: '', origin: base });
+  r0 = { status: res.statusCode }; cabecalho = res.h['payment-required'] || null; corpo = res.corpo;
+} else {
+  r0 = await fetch(url, { headers: { 'user-agent': 'orum-teste-clientes-x402/1' } });
+  cabecalho = r0.headers.get('payment-required'); corpo = await r0.text();
+}
 if (process.argv.includes('--corpo-v1')) {
   const b = JSON.parse(corpo); const a = b.accepts[0];
   corpo = JSON.stringify({ x402Version: 1, error: 'X-PAYMENT header required', accepts: [{ scheme: 'exact', network: 'base', maxAmountRequired: a.amount, resource: b.resource.url, description: String(b.resource.description).slice(0, 200), mimeType: b.resource.mimeType, payTo: a.payTo, maxTimeoutSeconds: a.maxTimeoutSeconds, asset: a.asset, extra: a.extra }] });
@@ -56,4 +66,4 @@ try {
   const { wrapFetchWithPayment } = req('x402-fetch'); const v = versao('x402-fetch');
   saida.push(await correr(`x402-fetch ${v} (protocolo v1)`, () => wrapFetchWithPayment(falso, conta, 1000000n)(url)));
 } catch (e) { saida.push({ cliente: 'x402-fetch', nao_correu: String(e).slice(0, 120) }); }
-console.log(JSON.stringify({ formato: 'orum-teste-clientes-x402/v1', porta, url, desafio_http: r0.status, corpo_v1_simulado: process.argv.includes('--corpo-v1'), resultados: saida, nao_afirma: ['que o servidor verifique ou liquide um pagamento destes', 'procura, adopção ou receita'] }, null, 1));
+console.log(JSON.stringify({ formato: 'orum-teste-clientes-x402/v1', porta, url, desafio_http: r0.status, corpo_v1_simulado: process.argv.includes('--corpo-v1'), local: process.argv.includes('--local'), resultados: saida, nao_afirma: ['que o servidor verifique ou liquide um pagamento destes', 'procura, adopção ou receita'] }, null, 1));

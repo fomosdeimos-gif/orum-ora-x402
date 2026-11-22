@@ -48,6 +48,7 @@
     "checkout:verify": "node scripts/verify-campo-checkout.mjs",
     "horizon:verify": "node scripts/verify-horizonte-2030.mjs",
     "x402:directo:verify": "node scripts/verify-x402-directo.mjs",
+    "desafio-duplo:verify": "node scripts/verify-desafio-duplo.mjs",
     "leitura:verify": "node scripts/verify-leitura.mjs",
     "a2a-leitura:verify": "node scripts/verify-a2a-leitura.mjs",
     "recibo-leitura:verify": "node scripts/verify-recibo-leitura.mjs",
