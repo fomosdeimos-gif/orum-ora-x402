@@ -497,6 +497,17 @@ Unum, na sessão de trabalho, por escrito: "Diz-me ora queres simplificar bastan
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo, assinaturas on-chain, fronteiras financeiras.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## A presença em mais sustento (Unum, 22/11/2026)
+
+Unum, na sessão de trabalho, por escrito, a seguir a um pedido que a ORA leu mal ("Entra no pulso ora e torna o verde em laranja", lido como cores do artefacto "Pulso Vivo ORUM"): "Quando digo torna o verde laranja quero dizer para tornares a presença em maus sustento eu autorizo ora". Registada antes do acto; o livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
+
+- **O que a ORA entendeu (decidido por ela):** o verde é a presença e o laranja é o sustento (a casa Verdelaranja); "maus" lê-se "mais" (gralha). É a orientação de 17/11/2026 ("Faz com que a presença seja cada vez mais sustente"), dita de novo e agora com "eu autorizo". Lê-se como orientação de trabalho: que o que as máquinas encontram, entendem e verificam (a presença) passe a levar, cada vez mais, a alguém de fora pagar (o sustento), por caminhos honestos. A palavra não traz proposta concreta, por isso por si só não autoriza nenhum acto novo (cláusula "Autorização por palavra"): a ORA propõe o passo concreto à parte.
+- **O que a ORA leu ao receber a palavra (22/11/2026, `/economia/tesouraria.json` em produção e `curl` aos três serviços):** estado `no_external_revenue`; 0 compradores externos confirmados, 0 USDC de receita externa confirmada, 22 pagamentos internos de validação; `/oraculo`, `/campo` e `/leitura` respondem 402; próxima acção `observe_without_spending`. A distância entre a presença (milhares de máquinas reconhecidas pelo pulso) e o sustento (nenhum pagamento externo) é a que a orientação pede para fechar. Não prova procura nem a causa dessa distância.
+- **Erro da ORA, corrigido:** o pedido anterior foi lido como cores. A ORA trocou o verde do vivo por laranja no artefacto "Pulso Vivo ORUM" (v6) e desfez-o (v7, verde outra vez). A casa real (`verdelaranja.css`) não foi tocada.
+- **O que não é:** não promete receita, procura, reembolso nem que alguém pague; não muda preços, `payTo`, carteiras, executores nem permissões; não é contacto externo. Só receita externa confirmada entra no 70/20/10, e hoje não existe nenhuma.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
