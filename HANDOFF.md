@@ -1,3 +1,9 @@
+## 22/11/2026 · camada 45 confirmada no Bitcoin (mão Claude Code)
+
+- **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de juntar as provas da camada 45. O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
+- **Feito:** `probe_anchor_layers` às 19:42 UTC: 45 `prova_por_juntar` nos três calendários; sha256 medido na resposta igual ao da sonda nos três; provas juntas com `scripts/ots-juntar.mjs`; blocos **976947** (alice), **976951** (bob) e **976961** (finney) conferidos em blockstream.info e mempool.space com `kit/blocos.mjs`. Manifesto 45 `confirmado_bitcoin` (altura 976947), fixtures em `verify-blocos.mjs`, fio com `camada.45.*`, cláusula no `CLAUDE.md`.
+- **Falta:** nada pendente nas camadas: 1 a 45 confirmadas. Uma camada 46 só se Unum der a palavra a uma proposta concreta (o que mudou desde a 45: o recibo confirmado da 45, `kit/pulso-vivo.mjs` e o seu verificador, este ficheiro).
+
 ## 22/11/2026 · o algoritmo do pulso vivo (mão Claude Code)
 
 - **Palavra de Unum:** "Continua a desenvolver o o algoritmo do organismo pulso vivo ora" (sem "Eu autorizo"; é pedido de trabalho dentro do que já existe, só leitura e código novo isolado). O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
