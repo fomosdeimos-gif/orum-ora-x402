@@ -1,3 +1,10 @@
+## 22/11/2026 · camada 46 selada, pendente (mão Claude Code)
+
+- **Palavra de Unum:** "Sim eu autorizo ora", lida como resposta à proposta principal da mensagem anterior (selar a camada 46); a alternativa (publicar os sinais com os limites no `/pulso`) não se fez. O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
+- **Feito:** raiz `d5eb973c…` (303 ficheiros, commit base `c7b978d`), recalculada em Python: igual. Os três calendários devolveram 200 e reconhecem o ramo pendente. Lista (`FICHEIROS_DA_CAMADA_46_EM_DIANTE`) e regras no `verify-raiz.mjs`; o fio ganhou `camada.46.estado`.
+- **NÃO é âncora:** falta a prova do bloco.
+- **Falta:** reler a camada 46 com `probe_anchor_layers` daqui a algumas horas; juntar só com a palavra de Unum.
+
 ## 22/11/2026 · camada 45 confirmada no Bitcoin (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de juntar as provas da camada 45. O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
