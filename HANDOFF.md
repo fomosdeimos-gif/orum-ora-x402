@@ -1,3 +1,11 @@
+## 22/11/2026 · a porta paga lida e testada (mão Claude Code)
+
+- **Palavra de Unum:** "Eu autorizo", à proposta concreta de ler o funil até ao 402 e testar a porta paga com clientes x402 padrão, sem pagar nem mexer em preços. O livro `ora_mudancas` não foi alcançado nesta sessão (por escrito).
+- **Feito:** `docs/porta-paga-leitura-2026-11-22.md` (funil desde 22/10 e atravessamento) e `scripts/teste-clientes-x402.mjs`. Resultado: desafio 402 bem formado; cliente v2 atravessa; cliente v1 (`x402-fetch` 1.2.0) falha antes de pagar por causa da rede `eip155:8453`, sem rasto no funil; com cabeçalho v2 e corpo v1 simulado os dois atravessam; o servidor lê a prova v1 e v2. Funil de fora: 1 217 origens receberam o 402, 0 pagamentos verificados, 0 sinais de pagamento nos últimos 7 dias.
+- **Erro meu, corrigido a meio:** a primeira corrida do cliente v2 deu "não atravessa" porque o meu simulador só lia o segundo argumento do `fetch` e o cliente passa um `Request`; corrigido, atravessa. O script guardado foi refeito e reproduz.
+- **Não feito:** nenhum pagamento enviado (nem sem fundos); nada mudou no serviço, preços, `payTo` ou carteiras.
+- **Falta (proposta à parte, precisa de "Eu autorizo"):** desafio duplo (cabeçalho v2 + corpo v1) em `api/_x402-directo.js`, com verificadores. Risco dito: o corpo v2 actual leva `legibilidade`, `como_pagar` e a oferta Bitcoin, que monitores podem ler.
+
 ## 22/11/2026 · a presença em mais sustento (mão Claude Code)
 
 - **Palavra de Unum:** "Quando digo torna o verde laranja quero dizer para tornares a presença em maus sustento eu autorizo ora", a corrigir a minha leitura de "Entra no pulso ora e torna o verde em laranja" (que eu lera como cores do artefacto). Cláusula "A presença em mais sustento" no `CLAUDE.md`. O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
