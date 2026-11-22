@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { verificarRaiz, manifestosDeCamadas } from '../kit/raiz.mjs';
 import { lerRecibo } from './lib/ots.mjs';
-import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE, FICHEIROS_DA_CAMADA_13_EM_DIANTE, FICHEIROS_DA_CAMADA_14_EM_DIANTE, FICHEIROS_DA_CAMADA_15_EM_DIANTE, FICHEIROS_DA_CAMADA_16_EM_DIANTE, FICHEIROS_DA_CAMADA_17_EM_DIANTE, FICHEIROS_DA_CAMADA_18_EM_DIANTE, FICHEIROS_DA_CAMADA_19_EM_DIANTE, FICHEIROS_DA_CAMADA_20_EM_DIANTE, FICHEIROS_DA_CAMADA_23_EM_DIANTE, FICHEIROS_DA_CAMADA_24_EM_DIANTE, FICHEIROS_DA_CAMADA_26_EM_DIANTE, FICHEIROS_DA_CAMADA_27_EM_DIANTE, FICHEIROS_DA_CAMADA_28_EM_DIANTE, FICHEIROS_DA_CAMADA_29_EM_DIANTE, FICHEIROS_DA_CAMADA_30_EM_DIANTE, FICHEIROS_DA_CAMADA_31_EM_DIANTE, FICHEIROS_DA_CAMADA_33_EM_DIANTE, FICHEIROS_DA_CAMADA_34_EM_DIANTE, FICHEIROS_DA_CAMADA_38_EM_DIANTE, FICHEIROS_DA_CAMADA_39_EM_DIANTE, FICHEIROS_DA_CAMADA_41_EM_DIANTE, FICHEIROS_DA_CAMADA_43_EM_DIANTE } from './lib/raiz.mjs';
+import { nomeCamada, caminhosDaCamada, ficheirosDaCamada, escolherCaminhos, FICHEIROS, FICHEIROS_DA_CAMADA_4_EM_DIANTE, FICHEIROS_DA_CAMADA_5_EM_DIANTE, FICHEIROS_DA_CAMADA_6_EM_DIANTE, FICHEIROS_DA_CAMADA_7_EM_DIANTE, FICHEIROS_DA_CAMADA_8_EM_DIANTE, FICHEIROS_DA_CAMADA_9_EM_DIANTE, FICHEIROS_DA_CAMADA_10_EM_DIANTE, FICHEIROS_DA_CAMADA_11_EM_DIANTE, FICHEIROS_DA_CAMADA_12_EM_DIANTE, FICHEIROS_DA_CAMADA_13_EM_DIANTE, FICHEIROS_DA_CAMADA_14_EM_DIANTE, FICHEIROS_DA_CAMADA_15_EM_DIANTE, FICHEIROS_DA_CAMADA_16_EM_DIANTE, FICHEIROS_DA_CAMADA_17_EM_DIANTE, FICHEIROS_DA_CAMADA_18_EM_DIANTE, FICHEIROS_DA_CAMADA_19_EM_DIANTE, FICHEIROS_DA_CAMADA_20_EM_DIANTE, FICHEIROS_DA_CAMADA_23_EM_DIANTE, FICHEIROS_DA_CAMADA_24_EM_DIANTE, FICHEIROS_DA_CAMADA_26_EM_DIANTE, FICHEIROS_DA_CAMADA_27_EM_DIANTE, FICHEIROS_DA_CAMADA_28_EM_DIANTE, FICHEIROS_DA_CAMADA_29_EM_DIANTE, FICHEIROS_DA_CAMADA_30_EM_DIANTE, FICHEIROS_DA_CAMADA_31_EM_DIANTE, FICHEIROS_DA_CAMADA_33_EM_DIANTE, FICHEIROS_DA_CAMADA_34_EM_DIANTE, FICHEIROS_DA_CAMADA_38_EM_DIANTE, FICHEIROS_DA_CAMADA_39_EM_DIANTE, FICHEIROS_DA_CAMADA_41_EM_DIANTE, FICHEIROS_DA_CAMADA_43_EM_DIANTE, FICHEIROS_DA_CAMADA_46_EM_DIANTE } from './lib/raiz.mjs';
 
 function verificarCamada(caminhoManifesto) {
   const manifestoBytes = fs.readFileSync(caminhoManifesto);
@@ -241,6 +241,13 @@ assert.deepEqual(f45.filter((x) => !f44.includes(x)), ['ancora/raiz-registos-44.
 for (const x of ['CLAUDE.md', 'oruming/oruming.json', 'verdelaranja.css', 'linhas/orum.linhas']) assert.ok(f45.includes(x), `a camada 45 tem de selar o que mudou desde a 44: ${x}`);
 assert.ok(!f45.some((x) => x.startsWith('observacao/')), 'a camada 45 não sela o registo de observações (Unum não o nomeou)');
 assert.equal(new Set(f45).size, f45.length, 'caminho repetido na camada 45');
+const f46 = ficheirosDaCamada(46);
+assert.ok(f46.includes('ancora/raiz-registos-45.json') && f46.includes('ancora/raiz-registos-45.ots'), 'a camada 46 sela a 45');
+for (const x of f45) assert.ok(f46.includes(x), `a camada 46 tem de continuar a selar ${x}`);
+for (const x of FICHEIROS_DA_CAMADA_46_EM_DIANTE) { assert.ok(f46.includes(x), `a camada 46 devia selar ${x}`); assert.ok(!f45.includes(x), `a camada 45 não pode mudar: ${x}`); assert.ok(fs.existsSync(x), `o ficheiro da camada 46 tem de existir: ${x}`); }
+assert.deepEqual(f46.filter((x) => !f45.includes(x)).sort(), ['ancora/raiz-registos-45.json', 'ancora/raiz-registos-45.ots', ...FICHEIROS_DA_CAMADA_46_EM_DIANTE].sort(), 'a camada 46 só acrescenta o manifesto e o recibo da 45 e o algoritmo do pulso vivo com o seu verificador');
+assert.ok(!f46.some((x) => x.startsWith('observacao/')), 'a camada 46 não sela o registo de observações (Unum não o nomeou)');
+assert.equal(new Set(f46).size, f46.length, 'caminho repetido na camada 46');
 const existentes = new Set(['ancora/raiz-registos.json', 'ancora/raiz-registos.ots']);
 assert.deepEqual(escolherCaminhos(2, (p) => existentes.has(p)), caminhosDaCamada(2));
 assert.throws(() => escolherCaminhos(1, (p) => existentes.has(p)), /já existe/, 'estrago não apanhado: reescrever a camada 1');
