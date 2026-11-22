@@ -4,7 +4,7 @@
 - **Feito:** `api/_x402-directo.js` (`desafioV1`, `corpoDoDesafio`): cabeçalho v2 intacto, corpo v1 com `x402_v2` (cópia igual ao cabeçalho), `extensions`/`resource` e o resto no topo. `scripts/verify-desafio-duplo.mjs` (19 estragos apanhados), `desafio-duplo:verify`; `verify-x402-directo`, `verify-402-legivel-directa`, `verify-base-directa`, `verify-auditoria` ajustados para ler `x402_v2.accepts`. `teste-clientes-x402.mjs --local`: `@x402/fetch` 2.32.0 e `x402-fetch` 1.2.0 anexam pagamento em `/oraculo`, `/campo`, `/leitura`.
 - **Lido:** `verify-bazaar-declaracao`, `verify-license-selection` e `verify-sdk-compatibility` já falhavam antes desta mudança (confirmado com stash); não são desta mudança e ficam por diagnosticar.
 - **Não feito:** nenhum pagamento enviado; preços, `payTo`, carteiras e executores intactos; produção por ler depois do deploy.
-- **Falta:** ler em produção (`curl` às três portas: cabeçalho v2, corpo v1) e correr o teste de clientes sem `--local`.
+- **Lido em produção (22/11/2026, 20:27 UTC, `6f0e8b9`):** três portas com cabeçalho v2, corpo v1, `x402_v2` igual ao cabeçalho; `@x402/fetch` e `x402-fetch` atravessam sem `--local`. **Falta:** um pagamento real de cliente v1 (não verificado).
 
 ## 22/11/2026 · a porta paga lida e testada (mão Claude Code)
 
