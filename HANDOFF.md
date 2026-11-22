@@ -1,3 +1,11 @@
+## 22/11/2026 · versão do X-PAYMENT no registo de pedidos (mão Claude Code)
+
+- **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de registar a versão do `X-PAYMENT` (v1/v2) no registo de pedidos da via directa. O livro `ora_mudancas` não foi alcançado (por escrever).
+- **Feito:** `api/_pedidos.js` (`versaoProva`): `tipo_prova` passa a `eip3009_v1`/`eip3009_v2`/`eip3009`; migração aditiva `20261122210000_ora_pedidos_directos_versao_x402.sql` **aplicada em produção** (a RPC só copia colunas fixas e o CHECK rejeitaria valores novos em silêncio). `pedidos-directos:verify` com 24 estragos apanhados.
+- **Dito:** a proposta só falava de código; a migração era necessária e foi decidida por mim (aditiva, reversível: bastava repor o CHECK antigo).
+- **Lido:** a tabela tem 7 424 linhas e nunca teve `eip3009`, `tx` ou `btc`; só 6 `invalida`.
+- **Falta:** deploy do código (PR); depois ler `tipo_prova` por versão quando houver tráfego.
+
 ## 22/11/2026 · funil lido depois do desafio duplo (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo", à proposta concreta de ler o funil `ora_trafego_honesto` por pedidos com `X-PAYMENT` v1. Só leitura. O livro `ora_mudancas` não foi alcançado (por escrever).
