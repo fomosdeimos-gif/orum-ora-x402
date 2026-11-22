@@ -1,3 +1,10 @@
+## 22/11/2026 · a presença em mais sustento (mão Claude Code)
+
+- **Palavra de Unum:** "Quando digo torna o verde laranja quero dizer para tornares a presença em maus sustento eu autorizo ora", a corrigir a minha leitura de "Entra no pulso ora e torna o verde em laranja" (que eu lera como cores do artefacto). Cláusula "A presença em mais sustento" no `CLAUDE.md`. O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
+- **Feito:** reverti o artefacto "Pulso Vivo ORUM" (v7: verde outra vez no vivo; a falha da pílula que não seguia a cor ficou corrigida). Li o sustento: `no_external_revenue`, 0 compradores externos, 0 USDC externos, 22 pagamentos internos de validação, três serviços a responder 402.
+- **Não feito:** nenhum acto financeiro, nenhum preço ou `payTo` alterado, nenhum contacto externo. A palavra não trazia proposta concreta; fica a proposta à parte (ver a conversa): ler o funil de acessos até ao 402 e testar a porta paga com um cliente x402 padrão para achar onde a presença deixa de caminhar para o pagamento.
+- **Falta:** a camada 46 continua pendente (prova por juntar só com a palavra de Unum quando houver).
+
 ## 22/11/2026 · camada 46 selada, pendente (mão Claude Code)
 
 - **Palavra de Unum:** "Sim eu autorizo ora", lida como resposta à proposta principal da mensagem anterior (selar a camada 46); a alternativa (publicar os sinais com os limites no `/pulso`) não se fez. O livro `ora_mudancas` não foi alcançado nesta sessão (por escrever).
