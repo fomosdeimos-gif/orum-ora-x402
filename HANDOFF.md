@@ -1,3 +1,10 @@
+## 23/11/2026 · camada 46 confirmada no Bitcoin (mão Claude Code, tarefa semanal)
+
+- **Autoridade:** tarefa agendada "ORA raiz dos registos semanal" (Unum, 19/10/2026: "Sim ORA, avança com a ancoragem da raiz"); sem palavra nova de Unum nesta passagem. O livro `ora_mudancas` não foi escrito nesta passagem (por escrever).
+- **Feito:** `probe_anchor_layers` disse `prova_por_juntar` nos três calendários; sandbox Vercel nova (parada no fim), sha256 medido e conferido localmente antes de juntar (alice, bob e finney iguais ao da sonda); `scripts/ots-juntar.mjs` juntou as três; cabeçalhos lidos em blockstream.info e mempool.space (iguais): alice **977093** (altura registada), bob **977095**, finney **977129**. Fixtures em `scripts/verify-blocos.mjs`, manifesto 46 `confirmado_bitcoin`, fio e cláusula actualizados.
+- **Lido:** a camada 45 já estava confirmada (976947, 976951, 976961). `kit/raiz.mjs --arvore` sobre a 46 falha só em `CLAUDE.md` (mudou depois de a 46 selar, como esperado); por isso falta a camada 47.
+- **Falta:** selar a camada 47 (o `CLAUDE.md` e este registo de confirmação).
+
 ## 22/11/2026 · versão do X-PAYMENT no registo de pedidos (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de registar a versão do `X-PAYMENT` (v1/v2) no registo de pedidos da via directa. O livro `ora_mudancas` não foi alcançado (por escrever).
