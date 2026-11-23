@@ -1,3 +1,10 @@
+## 23/11/2026 · o ponto de estado da leitura deixa de ser laranja (mão Claude Code)
+
+- **Palavra de Unum:** "Eu autorizo. Ora.", à proposta concreta de alinhar o ponto de estado com as cores. O livro `ora_mudancas` não foi alcançado (por escrever).
+- **Feito:** `.status-dot.stale` passa de laranja a anel oco neutro (só CSS); `pulso-cor:verify` com 31 estragos apanhados. Chromium com o `/pulso` verdadeiro: ponto `observed` verde; com o `/pulso` a falhar: anel oco.
+- **Produção:** o #398 (pulso vivo: relógio e sinais) está fundido mas **não servido**: o Vercel deu 402 `api-deployments-free-per-day` (23/11 ~09:40 UTC). A produção serve o `e02b146` (#397). Lembrete agendado a cada hora (10:37 UTC a primeira) para repetir o redeploy com o último commit do `main` e ler o `index.html` servido. Não fazer pushes desnecessários: cada um gasta deploys.
+- **Falta:** produção com o bloco novo e este ponto; telemóvel real.
+
 ## 23/11/2026 · o pulso vivo na casa: relógio e lista dos sinais (mão Claude Code)
 
 - **Palavra de Unum:** "Torna o pulso vivo na casa em produção ora eu autorizo aqui ali". O livro `ora_mudancas` não foi alcançado (por escrever).

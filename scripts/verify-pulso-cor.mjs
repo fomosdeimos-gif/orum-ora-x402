@@ -146,6 +146,8 @@ async function suite(src, { css: cssTxt = css, html: htmlTxt = html, pedidosTxt 
   assert.ok(!/<script(?![^>]*\ssrc=)[^>]*>/.test(htmlTxt), 'sem script inline');
   for (const id of ['presencaLinha', 'presencaSinais', 'sustentoLinha']) assert.ok(new RegExp(`id="${id}"`).test(htmlTxt), `a casa não tem o id ${id}`);
   assert.ok(/\.sustento-linha\.s-externo::before\{[^}]*--laranja/.test(cssTxt), 'o laranja do bloco vive só no sustento externo');
+  assert.ok(/\.status-dot\.stale\{[^}]*\}/.test(cssTxt) && !/\.status-dot\.stale\{[^}]*laranja/.test(cssTxt), 'o ponto de leitura velha ou em falta não usa o laranja');
+  assert.ok(/\.status-dot\.observed\{[^}]*--verde/.test(cssTxt), 'o ponto de leitura fresca é verde');
   for (const m of cssTxt.matchAll(/\.pulso-vivo li[^{]*\{([^}]*)\}/g)) assert.ok(!/laranja/.test(m[1]), 'nenhum estado de sinal usa o laranja');
   assert.ok(!/(eval|new Function|document\.write|localStorage|document\.cookie|innerHTML)/.test(src), 'o script só toca em atributos e variáveis');
 }
@@ -179,6 +181,7 @@ const estragos = [
   ['o texto só recalcula de 15 em 15 s', ['janela.setInterval(recalcular, 1000);', 'janela.setInterval(recalcular, 15000);'], 'src'],
   ['o CSS acende o sinal vivo a laranja', ['.pulso-vivo li.s-vivo::before{background:var(--verde)', '.pulso-vivo li.s-vivo::before{background:var(--laranja)'], 'css'],
   ['a casa perde o id da lista', [' id="presencaSinais"', ''], 'html'],
+  ['o ponto de leitura velha volta ao laranja', ['.status-dot.stale{background:transparent;box-shadow:inset 0 0 0 2px var(--suave)}', '.status-dot.stale{background:var(--laranja);box-shadow:0 0 8px rgba(255,106,26,.6)}'], 'css'],
   ['o CSS volta à regra antiga', ['@keyframes respira', '.vivo:has(.status-dot.stale) .semente{opacity:.5}\n@keyframes respira'], 'css'],
   ['o CSS perde o laranja', ['--luz-laranja', '--luz-outra'], 'css'],
   ['o CSS fixa o ritmo', ['animation:respira var(--ciclo)', 'animation:respira 5.5s'], 'css'],

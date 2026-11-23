@@ -73,7 +73,8 @@ body.motion-paused .semente{animation:none}
 .sustento-linha.s-externo::before{background:var(--laranja);box-shadow:0 0 6px rgba(255,106,26,.6)}
 .status-dot{width:10px;height:10px;border-radius:50%;background:#554a38;flex:none}
 .status-dot.observed{background:var(--verde);box-shadow:0 0 8px rgba(184,255,61,.7)}
-.status-dot.stale{background:var(--laranja);box-shadow:0 0 8px rgba(255,106,26,.6)}
+/* leitura em falta ou velha: anel oco neutro (o laranja é só do sustento, ver a semente) */
+.status-dot.stale{background:transparent;box-shadow:inset 0 0 0 2px var(--suave)}
 .texto{min-height:44px;padding:0 4px;background:none;border:0;color:var(--suave);
   text-decoration:underline;text-underline-offset:5px;font-size:14px}
 .texto:hover{color:var(--sol)}
