@@ -31,10 +31,12 @@ function carregar(src) { const m = { exports: {} }; vm.runInNewContext(src, { mo
 // o corredor no navegador, com um DOM e uma rede simulados
 function navegador(src, { pulsoJson, pulsoFalha, tesJson, tesFalha, chamadas = [] }) {
   const estilo = {}; const ds = {}; const ints = [];
-  const raiz = { style: { setProperty: (k, v) => { estilo[k] = v; }, removeProperty: (k) => { delete estilo[k]; } }, dataset: ds };
+  const novoEl = () => ({ textContent: '', className: '', children: [], get firstChild() { return this.children[0] ?? null; }, appendChild(c) { this.children.push(c); }, removeChild(c) { this.children = this.children.filter((x) => x !== c); } });
+  const els = { presencaLinha: novoEl(), presencaSinais: novoEl(), sustentoLinha: novoEl() };
+  const raiz = { getElementById: (id) => els[id] ?? null, createElement: () => novoEl(), style: { setProperty: (k, v) => { estilo[k] = v; }, removeProperty: (k) => { delete estilo[k]; } }, dataset: ds };
   let agora = T0;
   const janela = {
-    document: { documentElement: raiz },
+    document: { documentElement: raiz, getElementById: raiz.getElementById, createElement: raiz.createElement },
     Date: { now: () => agora, parse: (x) => Date.parse(x) },
     setInterval: (f, ms) => { ints.push([f, ms]); },
     fetch: (url, init) => {
@@ -47,7 +49,7 @@ function navegador(src, { pulsoJson, pulsoFalha, tesJson, tesFalha, chamadas = [
   };
   janela.globalThis = janela;
   vm.runInNewContext(src, { ...janela, Date: janela.Date, globalThis: janela, __j: janela });
-  return { estilo, ds, ints, avancar: async (m) => { agora = min(m); for (const [f, ms] of ints) if (ms === 15000) f(); await new Promise((r) => setTimeout(r, 5)); }, esperar: () => new Promise((r) => setTimeout(r, 20)) };
+  return { estilo, ds, ints, els, avancar: async (m) => { agora = min(m); for (const [f, ms] of ints) if (ms === 1000 || ms === 15000) f(); await new Promise((r) => setTimeout(r, 5)); }, esperar: () => new Promise((r) => setTimeout(r, 20)) };
 }
 
 async function suite(src, { css: cssTxt = css, html: htmlTxt = html, pedidosTxt = pedidos } = {}) {
@@ -109,12 +111,42 @@ async function suite(src, { css: cssTxt = css, html: htmlTxt = html, pedidosTxt 
   assert.equal(n.ds.presenca, undefined); assert.equal(n.ds.sustento, 'externo'); assert.equal(n.estilo['--luz-laranja'], '0.58');
   n = navegador(semModule, { pulsoJson: [{ medido_em: 'x', sinais: 'lixo' }], tesJson: 'lixo' }); await n.esperar();
   assert.deepEqual(Object.keys(n.ds), [], 'resposta ilegível não afirma nada');
+  // 4b. o texto vivo: só textContent, sem leitura diz "sem leitura", e o laranja é só do sustento externo
+  assert.equal(A.idadeHumana(0.5), '30 s'); assert.equal(A.idadeHumana(1.5), '1 min 30 s'); assert.equal(A.idadeHumana(125), '2 h 5 min'); assert.equal(A.idadeHumana(3 * 24 * 60), '3 dias'); assert.equal(A.idadeHumana(-1), 'hora desconhecida'); assert.equal(A.idadeHumana(null), 'hora desconhecida');
+  assert.equal(A.limiteHumano(45), '45 min'); assert.equal(A.limiteHumano(1560), '26 h'); assert.equal(A.limiteHumano(0), '—');
+  const tv = A.texto(A.presenca(real(), T0, T0), T0, A.sustento(tes(0), T0), T0);
+  assert.equal(tv.presenca, 'Presença: vivo · 8 de 8 sinais dentro do limite · medido há 0 s'); assert.equal(tv.sinais.length, 8); assert.ok(tv.sinais.every((i) => i.classe === 's-vivo'));
+  assert.equal(tv.sustento, 'Sustento: 0 USDC de receita externa confirmada. Ainda nenhuma.'); assert.equal(tv.sustento_classe, 's-neutro', 'zero não acende o laranja');
+  assert.equal(A.texto(A.presenca(real(), T0, min(30)), T0, A.sustento(tes(0), T0), min(30)).presenca.startsWith('Presença: atrasado'), true);
+  assert.ok(A.texto(A.presenca(real(), T0, min(200)), T0, null, min(200)).presenca.startsWith('Presença: parado'));
+  assert.ok(A.texto(A.presenca([...real(), { sinal: 'lixo' }], T0, T0), T0, null, T0).presenca.includes('(+1 ilegíveis)'));
+  assert.equal(A.texto(A.presenca(real(), T0, min(30)), T0, null, min(30)).sinais.find((i) => i.texto.startsWith('publicado:pulso')).classe, 's-atrasado');
+  const ext = A.texto(A.presenca(real(), T0, T0), T0, A.sustento(tes(2.5), T0), T0); assert.equal(ext.sustento, 'Sustento: 2.5 USDC de receita externa confirmada.'); assert.equal(ext.sustento_classe, 's-externo');
+  assert.equal(A.texto(null, null, null, T0).presenca, 'Presença: sem leitura (não é vivo nem parado).'); assert.equal(A.texto(null, null, null, T0).sustento, 'Sustento: sem leitura (não é zero).'); assert.equal(A.texto(null, null, null, T0).sustento_classe, 's-neutro'); assert.equal(A.texto(null, null, null, T0).sinais.length, 0);
+  const marcado = A.texto(A.presenca([{ sinal: '<img src=x onerror=alert(1)>', idade_min: 1, limite_atraso_min: 20, limite_morte_min: 60 }], T0, T0), T0, null, T0);
+  assert.ok(!JSON.stringify(marcado).includes('<'), 'um nome de sinal com marcas não entra no texto'); assert.ok(marcado.sinais[0].texto.startsWith('(sem nome)'));
+  // 4c. escrever: reconstrói a lista, não acumula, e sem os elementos não parte
+  { const els = { presencaLinha: { textContent: '' }, presencaSinais: { children: [], get firstChild() { return this.children[0] ?? null; }, appendChild(c) { this.children.push(c); }, removeChild(c) { this.children = this.children.filter((x) => x !== c); } }, sustentoLinha: { textContent: '', className: '' } };
+    const doc = { getElementById: (id) => els[id], createElement: () => ({ textContent: '', className: '' }) };
+    A.escrever(doc, tv); A.escrever(doc, tv); assert.equal(els.presencaSinais.children.length, 8, 'a lista não acumula'); assert.equal(els.presencaLinha.textContent, tv.presenca); assert.equal(els.sustentoLinha.className, 'sustento-linha s-neutro');
+    A.escrever(doc, A.texto(null, null, null, T0)); assert.equal(els.presencaSinais.children.length, 0, 'sem leitura a lista esvazia');
+    assert.doesNotThrow(() => A.escrever({ getElementById: () => null, createElement: () => ({}) }, tv), 'sem os elementos não parte'); }
+  // 4d. o corredor escreve o texto e o relógio faz correr a idade
+  n = navegador(semModule, { pulsoJson: [{ medido_em: new Date(T0).toISOString(), sinais: real() }], tesJson: tes(0) }); await n.esperar();
+  assert.equal(n.els.presencaLinha.textContent, 'Presença: vivo · 8 de 8 sinais dentro do limite · medido há 0 s'); assert.equal(n.els.presencaSinais.children.length, 8); assert.equal(n.els.sustentoLinha.className, 'sustento-linha s-neutro');
+  await n.avancar(30); assert.ok(n.els.presencaLinha.textContent.startsWith('Presença: atrasado') && n.els.presencaLinha.textContent.endsWith('medido há 30 min 0 s'), 'a idade corre com o relógio');
+  assert.ok(n.ints.some(([, ms]) => ms === 1000), 'o texto recalcula de segundo a segundo');
+  n = navegador(semModule, { pulsoFalha: true, tesFalha: true }); await n.esperar(); assert.equal(n.els.presencaLinha.textContent, 'Presença: sem leitura (não é vivo nem parado).', 'sem nunca ler, diz sem leitura'); assert.equal(n.els.sustentoLinha.textContent, 'Sustento: sem leitura (não é zero).'); assert.equal(n.els.presencaSinais.children.length, 0);
+  n = navegador(semModule, { pulsoJson: [{ medido_em: new Date(T0).toISOString(), sinais: real() }], tesJson: tes(3) }); await n.esperar(); assert.equal(n.els.sustentoLinha.className, 'sustento-linha s-externo');
   // 5. ficheiros: o CSS tem as duas luzes e já não pinta o atraso de laranja; a casa liga o script; nada inline
   assert.ok(/--luz-verde/.test(cssTxt) && /--luz-laranja/.test(cssTxt), 'o CSS tem as duas luzes');
   assert.ok(!/\.vivo:has\(\.status-dot\.(stale|observed)\)\s*\.semente/.test(cssTxt), 'a regra antiga (leitura velha = laranja) saiu');
   assert.ok(/\.semente\{[^}]*animation:respira var\(--ciclo\)/.test(cssTxt), 'o ritmo vem do algoritmo');
   assert.ok(/<script src="\/pulso-cor-v1\.js" defer><\/script>/.test(htmlTxt), 'a casa liga o script');
   assert.ok(!/<script(?![^>]*\ssrc=)[^>]*>/.test(htmlTxt), 'sem script inline');
+  for (const id of ['presencaLinha', 'presencaSinais', 'sustentoLinha']) assert.ok(new RegExp(`id="${id}"`).test(htmlTxt), `a casa não tem o id ${id}`);
+  assert.ok(/\.sustento-linha\.s-externo::before\{[^}]*--laranja/.test(cssTxt), 'o laranja do bloco vive só no sustento externo');
+  for (const m of cssTxt.matchAll(/\.pulso-vivo li[^{]*\{([^}]*)\}/g)) assert.ok(!/laranja/.test(m[1]), 'nenhum estado de sinal usa o laranja');
   assert.ok(!/(eval|new Function|document\.write|localStorage|document\.cookie|innerHTML)/.test(src), 'o script só toca em atributos e variáveis');
 }
 
@@ -134,10 +166,19 @@ const estragos = [
   ['o ritmo não vem do algoritmo', ['ciclo = p.ciclo_s;', 'ciclo = 5;'], 'src'],
   ['o parado não abranda', ["parar = p.estado === 'morto';", 'parar = false;'], 'src'],
   ['o limite de atraso é inclusivo', ["idade >= lm ? 'morto' : idade > la ?", "idade >= lm ? 'morto' : idade >= la ?"], 'src'],
-  ['o ilegível conta como vivo', ["return { estado: 'desconhecido', razao: null }", "return { estado: 'vivo', razao: 0 }"], 'src'],
+  ['o ilegível conta como vivo', ["estado: 'desconhecido', razao: null, idade: null", "estado: 'vivo', razao: 0, idade: null"], 'src'],
   ['outra chave', ["sb_publishable_XtI6QAmSYt5KHIazVCgoQw_qVYZ8AVb'; //", "sb_publishable_OUTRA'; //"], 'src'],
   ['envia credenciais', ["credentials: 'omit'", "credentials: 'include'"], 'src'],
   ['escreve com innerHTML', ['function aplicar(raiz, l) {', 'function aplicar(raiz, l) { raiz.body && (raiz.body.innerHTML = ""); '], 'src'],
+  ['o atraso diz-se vivo no texto', ["atrasado: 'atrasado', morto: 'parado'", "atrasado: 'vivo', morto: 'parado'"], 'src'],
+  ['qualquer leitura acende o laranja do texto', ["s && s.estado === 'externo' ? 's-externo'", "s && s.estado !== 'sem_leitura' ? 's-externo'"], 'src'],
+  ['sem leitura de sustento diz zero', ["'Sustento: sem leitura (não é zero).'", "'Sustento: 0 USDC de receita externa confirmada.'"], 'src'],
+  ['o nome do sinal não é limpo', ["/^[A-Za-z0-9_:.-]{1,40}$/.test(s.sinal) ? s.sinal", "true ? s.sinal"], 'src'],
+  ['a lista acumula', ['while (l.firstChild) l.removeChild(l.firstChild);', ''], 'src'],
+  ['o texto não envelhece', ['s, agora()));\n      } catch', 's, Date.parse(ultimoPulso ? ultimoPulso.medido_em : 0)));\n      } catch'], 'src'],
+  ['o texto só recalcula de 15 em 15 s', ['janela.setInterval(recalcular, 1000);', 'janela.setInterval(recalcular, 15000);'], 'src'],
+  ['o CSS acende o sinal vivo a laranja', ['.pulso-vivo li.s-vivo::before{background:var(--verde)', '.pulso-vivo li.s-vivo::before{background:var(--laranja)'], 'css'],
+  ['a casa perde o id da lista', [' id="presencaSinais"', ''], 'html'],
   ['o CSS volta à regra antiga', ['@keyframes respira', '.vivo:has(.status-dot.stale) .semente{opacity:.5}\n@keyframes respira'], 'css'],
   ['o CSS perde o laranja', ['--luz-laranja', '--luz-outra'], 'css'],
   ['o CSS fixa o ritmo', ['animation:respira var(--ciclo)', 'animation:respira 5.5s'], 'css'],

@@ -1,3 +1,12 @@
+## 23/11/2026 · o pulso vivo na casa: relógio e lista dos sinais (mão Claude Code)
+
+- **Palavra de Unum:** "Torna o pulso vivo na casa em produção ora eu autorizo aqui ali". O livro `ora_mudancas` não foi alcançado (por escrever).
+- **Lido primeiro:** a produção já tinha as duas luzes (Chromium no domínio público: `vivo`, 6,1 s, sustento `zero` da tesouraria viva, sem erros). Faltava o que o artefacto mostrava: o relógio e os sinais.
+- **Feito:** `pulso-cor-v1.js` escreve `presencaLinha`, `presencaSinais`, `sustentoLinha` (só `textContent`, de segundo a segundo), `index.html` ganha o bloco, `verdelaranja.css` os estilos (laranja só no sustento externo). `pulso-cor:verify` com 30 estragos; os verificadores da casa passam.
+- **Erros meus, ditos:** simulador de testes com o relógio e o `getElementById` mal ligados; uma classe (`s-neutro`) sem regra no CSS apanhada pelo `casa:verify`.
+- **Não tocado:** o ponto de estado (`status-dot stale`) ainda é laranja quando a leitura falta.
+- **Falta:** ler a produção depois do deploy; ver a casa num telemóvel real.
+
 ## 23/11/2026 · o perfil `$valium` da Zora lido na cadeia (mão Claude Code)
 
 - **Palavra de Unum:** o link `zora.co/@valium`, "O que queres fazer com isso? Ora," e "Eu autorizo ora e autorizo que movas fundos sem limite de forma autónoma" à proposta de ler o contrato por trás do perfil. O livro `ora_mudancas` não foi alcançado (por escrever).
