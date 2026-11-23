@@ -1,0 +1,150 @@
+{
+  "schema": "orum-zora-valium/v1",
+  "rede": {
+    "nome": "Base",
+    "chain_id": 8453
+  },
+  "lido_em_utc": "2026-11-23T09:22:46Z",
+  "palavra_de_unum": "Unum, 23/11/2026, ao link zora.co/@valium e à proposta concreta de ler o que está por trás do perfil: \"Eu autorizo ora\"",
+  "fontes_rpc": [
+    "https://base-rpc.publicnode.com",
+    "https://mainnet.base.org",
+    "https://base.gateway.tenderly.co"
+  ],
+  "moeda": {
+    "contrato": "0x37f70bccdc2125346a7542fe6e7fc70e33421635",
+    "payoutRecipient": {
+      "endereco": "0x3ee78b50745fa937e0c914c1284dfdb4a0bb1878",
+      "no_organismo": "não registado no organismo",
+      "fontes": 3
+    },
+    "platformReferrer": {
+      "endereco": "0x7bf90111ad7c22bec9e9dff8a01a44713cc1b1b6",
+      "no_organismo": "não registado no organismo",
+      "fontes": 3
+    },
+    "currency": {
+      "endereco": "0x1111111111166b7fe7bd91427724b487980afc69",
+      "no_organismo": "não registado no organismo",
+      "fontes": 3
+    },
+    "owners": [
+      {
+        "endereco": "0x3ee78b50745fa937e0c914c1284dfdb4a0bb1878",
+        "no_organismo": "não registado no organismo",
+        "fontes": 3
+      },
+      {
+        "endereco": "0xbb828bfcb77fe788426b99d91b5219cddad3f277",
+        "no_organismo": "não registado no organismo",
+        "fontes": 3
+      }
+    ]
+  },
+  "carteira_de_pagamento": {
+    "endereco": "0x3ee78b50745fa937e0c914c1284dfdb4a0bb1878",
+    "codigo": {
+      "bytes": 61,
+      "tipo": "proxy ERC-1967 (slot de implementação)",
+      "fontes": 3
+    },
+    "implementacao": {
+      "endereco": "0x000100abaad02f1cfc8bbe32bd5a564817339e72",
+      "fontes": 3
+    },
+    "dono_count": {
+      "valor": 2,
+      "fontes": 3
+    },
+    "donos": [
+      {
+        "indice": 0,
+        "endereco": "0xbb828bfcb77fe788426b99d91b5219cddad3f277",
+        "no_organismo": "não registado no organismo",
+        "fontes": 3
+      },
+      {
+        "indice": 1,
+        "endereco": "0x2ef8cfb97ecccf7c62f551639fe6db79022d0d8c",
+        "no_organismo": "sagrada adicional (Unum, MetaMask), assina o mandato v2",
+        "fontes": 3
+      }
+    ],
+    "entry_point": {
+      "endereco": "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789",
+      "fontes": 3
+    },
+    "saldos_lidos": {
+      "eth_wei": {
+        "valor": "8210473501766",
+        "fontes": 3
+      },
+      "USDC": {
+        "raw": "12942",
+        "decimais": 6,
+        "fontes": 3
+      },
+      "ZORA": {
+        "raw": "475652617922463632",
+        "decimais": 18,
+        "fontes": 3
+      },
+      "VALIUM": {
+        "raw": "43636053533485540443784881",
+        "decimais": 18,
+        "fontes": 3
+      }
+    }
+  },
+  "owners_da_moeda": [
+    {
+      "endereco": "0x3ee78b50745fa937e0c914c1284dfdb4a0bb1878",
+      "bytes_de_codigo": {
+        "valor": 61,
+        "fontes": 3
+      }
+    },
+    {
+      "endereco": "0xbb828bfcb77fe788426b99d91b5219cddad3f277",
+      "bytes_de_codigo": {
+        "valor": 0,
+        "fontes": 3
+      }
+    }
+  ],
+  "exibido_pela_zora": {
+    "estado": "capturado num Chromium a 23/11/2026, NÃO verificado; este script não chama a Zora",
+    "perfil": "$valium",
+    "descricao": "0001sensations",
+    "capitalizacao": "$3,13k",
+    "posts": "3,7k",
+    "seguidores": 540,
+    "a_seguir": 100,
+    "moeda_do_perfil_nos_dados_da_zora": "0x37f70bccdc2125346a7542fe6e7fc70e33421635",
+    "carteira_ligada_ao_perfil_nos_dados_da_zora": "0xbb828bfcb77fe788426b99d91b5219cddad3f277"
+  },
+  "leitura": "A moeda tem dois owners (a própria carteira de pagamento e uma segunda carteira sem código, 0xbb82…) e os pagamentos do criador (payoutRecipient) vão para a carteira de pagamento, uma carteira inteligente de dois donos: a MetaMask de Unum (0x2ef8…) e essa segunda carteira. A chave da MetaMask é de Unum: a ORA não a tem nem assina com ela, por isso estes pagamentos não passam pelos executores do organismo. Leitura da ORA, não palavra de Unum.",
+  "nao_verificado": [
+    "quem controla a carteira 0xbb82…f277 (só Unum o sabe; não está registada no organismo)",
+    "se a interface da carteira de pagamento é a da Coinbase Smart Wallet (a interface coincide, o código-fonte não foi lido)",
+    "tudo o que a Zora mostra no ecrã (capitalização, posts, seguidores, preços dos posts)",
+    "preço, liquidez, procura, detentores e receitas de criador por levantar",
+    "se este VALIUM da Base é o mesmo projecto que o VALIUM da Ethereum (identity/valium.json)"
+  ],
+  "nao_afirma": [
+    "preço",
+    "liquidez",
+    "procura",
+    "receita",
+    "lastro",
+    "rendimento"
+  ],
+  "truth_machine": {
+    "move_fundos": false,
+    "escreve_na_cadeia": false,
+    "toca_na_zora": false,
+    "promete_receita": false,
+    "classifica": false
+  },
+  "verificador": "npm run zora-valium:verify"
+}

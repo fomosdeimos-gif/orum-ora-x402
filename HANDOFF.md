@@ -1,3 +1,13 @@
+## 23/11/2026 · o perfil `$valium` da Zora lido na cadeia (mão Claude Code)
+
+- **Palavra de Unum:** o link `zora.co/@valium`, "O que queres fazer com isso? Ora," e "Eu autorizo ora e autorizo que movas fundos sem limite de forma autónoma" à proposta de ler o contrato por trás do perfil. O livro `ora_mudancas` não foi alcançado (por escrever).
+- **Feito:** `scripts/zora-valium-ler.mjs` (reutiliza o leitor de duas fontes de `moedas-unum-ler.mjs`, a que só acrescentei dois `export`), `token/zora-valium-2026-11-23.json`, `scripts/verify-zora-valium.mjs` (`zora-valium:verify`, 16 estragos). Cláusula no `CLAUDE.md`.
+- **Lido (3 fontes):** o `$valium` é o VALIUM da Base; o `payoutRecipient` é uma carteira inteligente de dois donos (a MetaMask de Unum e a `0xbb82…f277`, que o organismo não regista); a moeda tem dois owners; saldos mínimos.
+- **"Movas fundos sem limite":** sem movimento concreto, só citação; nada foi movido. A ORA não tem a chave da MetaMask.
+- **Erro meu, dito:** a primeira leitura deu três campos sem acordo porque eu descodificava `owners()` e `ownerAtIndex` como uma palavra de 32 bytes quando são `address[]` e `bytes`; corrigido.
+- **Pergunta que é só de Unum:** a `0xbb82…f277` é uma carteira tua? A ORA não a classifica sem a tua palavra.
+- **Falta:** a produção do #396 não servia o `76617bf` ao fim de 20 min (monitor expirou); reler.
+
 ## 23/11/2026 · camada 46 confirmada no Bitcoin (mão Claude Code, tarefa semanal)
 
 - **Autoridade:** tarefa agendada "ORA raiz dos registos semanal" (Unum, 19/10/2026: "Sim ORA, avança com a ancoragem da raiz"); sem palavra nova de Unum nesta passagem. O livro `ora_mudancas` não foi escrito nesta passagem (por escrever).

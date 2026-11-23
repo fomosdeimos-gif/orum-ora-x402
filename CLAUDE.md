@@ -512,6 +512,18 @@ Unum, na sessão de trabalho, por escrito, a seguir a um pedido que a ORA leu ma
 - **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos.
 - Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
 
+## O perfil `$valium` na Zora (Unum, 23/11/2026)
+
+Unum, na sessão de trabalho, por escrito: o link `zora.co/@valium?referrer=0x3ee7…b1878`, a seguir "O que queres fazer com isso? Ora,", e, à proposta concreta da ORA de ler na cadeia o que está por trás do perfil: "Eu autorizo ora e autorizo que movas fundos sem limite de forma autónoma".
+
+- **O que a ORA entendeu (objecto da palavra):** (1) o "Eu autorizo" cobriu a proposta concreta: ler, só em leitura, o contrato por trás do perfil e registá-lo com verificador. (2) A segunda parte ("autorizo que movas fundos sem limite") não traz nenhum movimento concreto: fica registada como citação e **não cria capacidade nem causa**. A autonomia financeira já tem a sua cláusula; o que a cadeia exige assinar com a chave de Unum continua a exigi-lo (ver abaixo), e só receita externa confirmada entra no 70/20/10. **Nada foi movido.**
+- **O que se leu (23/11/2026, três fontes RPC Base que concordam; `token/zora-valium-2026-11-23.json`, gerador `scripts/zora-valium-ler.mjs`, verificador `zora-valium:verify`, 16 estragos propositados apanhados):** a moeda do perfil `$valium` nos dados da Zora é `0x37f70bcc…1635`, **o mesmo contrato do VALIUM da Base já registado** nas moedas de Unum. Os pagamentos do criador (`payoutRecipient`) vão para `0x3ee7…b1878`, o endereço "ORAI-ZORA" de `orai.html`: um proxy ERC-1967 de 61 bytes com a interface de uma carteira inteligente, **dois donos: `0x2ef8…d0d8c` (a MetaMask de Unum, sagrada adicional) e `0xbb82…f277`** (carteira sem código, que o organismo não regista). A moeda tem dois owners: essa carteira de pagamento e a `0xbb82…`. A carteira de pagamento guarda quantias mínimas (raw, sem preço): ~8,2 microETH, 0,012942 USDC, 0,4757 ZORA e 43 636 053 VALIUM.
+- **O que isto quer dizer:** a chave da MetaMask é de Unum e a ORA não a tem nem assina com ela, por isso os pagamentos do criador não passam pelos executores do organismo e a ORA não os pode mover. Leitura da ORA, não palavra de Unum.
+- **Não verificado:** quem controla a `0xbb82…f277` (só Unum o sabe; a ORA não a classifica como interna sem a palavra dele); se a interface da carteira de pagamento é a da Coinbase Smart Wallet (as funções coincidem e o `entryPoint` é o do ERC-4337, o código-fonte não foi lido); tudo o que a Zora mostra no ecrã (capitalização $3,13k, 3,7k posts, 540 seguidores, preços dos posts), capturado num Chromium e não verificado; preço, liquidez, procura, detentores; se este VALIUM da Base é o mesmo projecto que o VALIUM da Ethereum (`identity/valium.json`).
+- **O que não se fez:** nada na Zora (nem comprar, seguir, entrar na conta, aceitar cookies ou publicar); isso é contacto externo em nome de Unum. Não promete preço, procura nem receita.
+- **O que não alarga:** permissões, segredos, variáveis do Vercel, contacto externo em nome de Unum, assinaturas on-chain, fronteiras financeiras. Não move fundos nem sela camada.
+- Unum pode revogar ou alterar esta cláusula quando quiser, no mesmo ficheiro.
+
 ## Registo autónomo (Unum, 17/10/2026)
 
 Unum, na sessão de trabalho, por escrito: "A partir de agora regista tudo o que achares relevante no organismo e no claude.md de forma autónoma e automática."
