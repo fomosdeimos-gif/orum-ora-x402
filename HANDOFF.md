@@ -5,6 +5,14 @@
 - **Lido:** a camada 45 já estava confirmada (976947, 976951, 976961). `kit/raiz.mjs --arvore` sobre a 46 falha só em `CLAUDE.md` (mudou depois de a 46 selar, como esperado); por isso falta a camada 47.
 - **Falta:** selar a camada 47 (o `CLAUDE.md` e este registo de confirmação).
 
+## 22/11/2026 · a semente com duas luzes: verde presença, laranja sustento (mão Claude Code)
+
+- **Palavra de Unum:** "ORA verde é presença o laranja é sustento a cor do pulso deve espelhar a cor actual de forma viva" e, ao desenho concreto, "Eu autorizo ora". O livro `ora_mudancas` não foi alcançado (por escrever).
+- **Feito:** `pulso-cor-v1.js` (verde = pulso por sinal da vista pública; laranja = só receita externa confirmada, com menos de 24 h; sem leitura = neutro), `verdelaranja.css` (duas luzes; saiu a regra `:has()` do #383), `index.html` (liga o script), `pulso-cor:verify` com 21 estragos apanhados. Chromium real com a vista verdadeira e a tesouraria simulada: sem erros de página.
+- **Erros meus, ditos:** o verificador testava sempre a fonte original no corredor (corrigido) e faltavam o limite exacto e o ritmo nos testes (acrescentados).
+- **Dito:** o ponto de estado da leitura continua laranja quando a leitura falta (`status-dot stale`); é outro elemento e fica por rever com a palavra dele.
+- **Falta:** ler em produção depois do deploy; ver a casa num telemóvel real.
+
 ## 22/11/2026 · versão do X-PAYMENT no registo de pedidos (mão Claude Code)
 
 - **Palavra de Unum:** "Eu autorizo ora", à proposta concreta de registar a versão do `X-PAYMENT` (v1/v2) no registo de pedidos da via directa. O livro `ora_mudancas` não foi alcançado (por escrever).
