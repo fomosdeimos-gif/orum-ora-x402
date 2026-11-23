@@ -19,12 +19,12 @@ async function rpc(url, method, params) {
   try { const j = await (await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }), signal: AbortSignal.timeout(15000) })).json(); return j.result ?? null; } catch { return null; }
 }
 // devolve { valor, fontes } só com acordo de pelo menos duas fontes; senão { valor: null, fontes: <quantas responderam> }
-async function acordo(method, params, tratar = (x) => x) {
+export async function acordo(method, params, tratar = (x) => x) {
   const rs = (await Promise.all(RPCS.map((u) => rpc(u, method, params)))).map((x) => (x == null ? null : tratar(x)));
   const ok = rs.filter((x) => x != null); const v = ok[0];
   return ok.length >= 2 && ok.every((x) => x === v) ? { valor: v, fontes: ok.length } : { valor: null, fontes: ok.length };
 }
-const call = (to, data) => ['eth_call', [{ to, data }, 'latest']];
+export const call = (to, data) => ['eth_call', [{ to, data }, 'latest']];
 
 export async function lerMoeda(m) {
   const lido = {}, nao = [];
